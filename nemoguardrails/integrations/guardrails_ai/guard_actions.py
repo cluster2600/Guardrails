@@ -1,3 +1,4 @@
+import inspect
 from guardrails import Guard
 
 from nemoguardrails.rails.llm.llmrails import LLMRails
@@ -11,18 +12,21 @@ except ImportError:
     )
 
 def register_guardrails_guard_actions(rails: LLMRails, guard: Guard, guard_name: str):
-    def fix_action(text, metadata={}):
+    async def fix_action(text, metadata={}):
         response = guard.validate(llm_output=text, metadata=metadata)
+        if inspect.iscoroutine(response):
+            response = await response
         return (
             response.validated_output
             if response.validation_passed
             else None
         )
 
-    def validate_action(text, metadata={}):
-        return guard.validate(llm_output=text, metadata=metadata).validation_passed
+    async def validate_action(text, metadata={}):
+        response = guard.validate(llm_output=text, metadata=metadata)
+        if inspect.iscoroutine(response):
+            response = await response
+        return response.validation_passed
 
     rails.register_action(fix_action, f"{guard_name}_fix")
-    rails.register_action(validate_action, f"{guard_name}_validate")
-    rails.register_action(validate_action, f"{guard_name}_validate")
     rails.register_action(validate_action, f"{guard_name}_validate")
