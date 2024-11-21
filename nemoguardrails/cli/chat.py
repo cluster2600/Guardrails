@@ -30,7 +30,7 @@ from nemoguardrails.colang.v2_x.runtime.runtime import RuntimeV2_x
 from nemoguardrails.logging import verbose
 from nemoguardrails.logging.verbose import console
 from nemoguardrails.streaming import StreamingHandler
-from nemoguardrails.utils import new_event_dict, new_uuid
+from nemoguardrails.utils import get_or_create_event_loop, new_event_dict, new_uuid
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -662,6 +662,7 @@ def run_chat(
         )
     elif rails_config.colang_version == "2.x":
         rails_app = LLMRails(rails_config, verbose=verbose)
-        asyncio.run(_run_chat_v2_x(rails_app))
+        loop = get_or_create_event_loop()
+        loop.run_until_complete(_run_chat_v2_x(rails_app))
     else:
         raise Exception(f"Invalid colang version: {rails_config.colang_version}")

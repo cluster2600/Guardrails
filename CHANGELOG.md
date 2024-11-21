@@ -7,14 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 NOTE:
 The changes related to the Colang language and runtime have moved to [CHANGELOG-Colang](./CHANGELOG-Colang.md) file.
 
-## [0.11.0] - 2024-11-18
+## [0.11.0] - 2024-11-19
 
 ### Added
 
 - **Observability**: Add observability support with support for different backends ([#844](https://github.com/NVIDIA/NeMo-Guardrails/pull/844)) by @Pouyanpi
 - **Private AI Integration**: Add Private AI Integration ([#815](https://github.com/NVIDIA/NeMo-Guardrails/pull/815)) by @letmerecall
 - **Patronus Evaluate API Integration**: Patronus Evaluate API Integration ([#834](https://github.com/NVIDIA/NeMo-Guardrails/pull/834)) by @varjoshi
-- **railsignore**: Add support for .railsignore file ([#846](https://github.com/NVIDIA/NeMo-Guardrails/pull/790)) by @ajanitshimanga
+- **railsignore**: Add support for .railsignore file ([#790](https://github.com/NVIDIA/NeMo-Guardrails/pull/790)) by @ajanitshimanga
 
 ### Changed
 
