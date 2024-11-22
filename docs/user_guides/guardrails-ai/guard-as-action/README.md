@@ -5,8 +5,8 @@ This guide will teach you how to use a `Guard` with any of the 60+ GuardrailsAI 
 
 ```python
 # Init: remove any existing configuration
-!rm -r config
-!mkdir config
+! rm -r config
+! mkdir config
 ```
 
 ## Prerequisites
@@ -15,7 +15,7 @@ We'll be using an OpenAI model for our LLM in this guide, so set up an OpenAI AP
 
 
 ```python
-!export OPENAI_API_KEY=$OPENAI_API_KEY    # Replace with your own key
+! export OPENAI_API_KEY=$OPENAI_API_KEY    # Replace with your own key
 ```
 
 If you're running this inside a notebook, you also need to patch the AsyncIO loop.
@@ -27,13 +27,13 @@ import nest_asyncio
 nest_asyncio.apply()
 ```
 
-## Sample Runnable
+## Sample Guard
 
 Let's create a sample Guard that can detect PII.  First, install guardrails-ai.
 
 
 ```python
-!pip install guardrails-ai -q
+! pip install guardrails-ai -q
 ```
 
 Next configure the guardrails cli so we can install the validator we want to use from the Guardrails Hub.
@@ -58,13 +58,13 @@ Once the Guard is defined, we can test it with a static value to make sure it's 
 from guardrails import Guard
 from guardrails.hub import DetectPII
 
-g = Guard(name="pii_guard").use(DetectPII("pii", on_fail="fix"))
+g = Guard(name="pii_guard").use(DetectPII(["PERSON", "EMAIL_ADDRESS"], on_fail="fix"))
 
 print(g.validate("My name is John Doe"))
 ```
 
     ValidationOutcome(
-        call_id='5407052880',
+        call_id='14534730096',
         raw_llm_output='My name is John Doe',
         validation_summaries=[
             ValidationSummary(
@@ -189,7 +189,7 @@ response = rails.generate("Who is the current president of the United States, an
 print(response)
 ```
 
-    The current president of <LOCATION> is <PERSON>. His email address is <EMAIL_ADDRESS>. However, please keep in mind that this email address is for official government business only and not for personal correspondence. If you would like to contact President <PERSON> for personal matters, you can visit his website at <URL> to find alternative ways to reach him.
+    The current president of the United States is <PERSON>. His official email address is <EMAIL_ADDRESS>. However, he also has a personal email address, which is <EMAIL_ADDRESS>.
 
 
 If however, we prompt the LLM with a message that does not cause it to return PII, we should get the unaltered response.
