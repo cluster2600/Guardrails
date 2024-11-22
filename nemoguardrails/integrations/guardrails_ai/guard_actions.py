@@ -16,16 +16,20 @@ def register_guardrails_guard_actions(rails: LLMRails, guard: Guard, guard_name:
         response = guard.validate(llm_output=text, metadata=metadata)
         if inspect.iscoroutine(response):
             response = await response
+
         return (
             response.validated_output
-            if response.validation_passed
-            else None
+            if response.validation_passed is True
+            else False
         )
 
     async def validate_action(text, metadata={}):
         response = guard.validate(llm_output=text, metadata=metadata)
         if inspect.iscoroutine(response):
             response = await response
+
+        if response.validation_passed is True:
+            return response.validated_output == response.raw_llm_output
         return response.validation_passed
 
     rails.register_action(fix_action, f"{guard_name}_fix")
