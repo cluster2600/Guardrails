@@ -874,16 +874,16 @@ def test_finish_flow_event():
     content = """
     flow a
       await UtteranceBotAction(script="Hi")
+      return "failed"
 
     flow b
-      match a.Finished()
-      await UtteranceBotAction(script="Yes")
+      $result = await a
+      await UtteranceBotAction(script=$result)
 
     flow main
       start b
-      start a
       match UtteranceUserAction().Finished(final_transcript="Hi")
-      send FinishFlow(flow_id="a")
+      send FinishFlow(flow_id="a", return_value="success")
       match WaitAction().Finished()
     """
 
@@ -912,7 +912,7 @@ def test_finish_flow_event():
             },
             {
                 "type": "StartUtteranceBotAction",
-                "script": "Yes",
+                "script": "success",
             },
         ],
     )
@@ -2365,4 +2365,4 @@ def test_single_flow_activation_3():
 
 
 if __name__ == "__main__":
-    test_interaction_loop_priorities()
+    test_finish_flow_event()

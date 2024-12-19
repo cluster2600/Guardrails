@@ -543,6 +543,9 @@ def _process_internal_events_without_default_matchers(
                 )
 
     elif event.name == InternalEvents.FINISH_FLOW:
+        # Extract flow parameters
+        arguments = dict(event.arguments)
+
         if "flow_instance_uid" in event.arguments:
             flow_instance_uid = event.arguments["flow_instance_uid"]
             if flow_instance_uid in state.flow_states:
@@ -552,15 +555,14 @@ def _process_internal_events_without_default_matchers(
                         state,
                         flow_state,
                         event.matching_scores,
+                        arguments.get("return_value", None),
                     )
                     assert flow_state.loop_id
                     handled_event_loops.add(flow_state.loop_id)
         elif "flow_id" in event.arguments:
-            # Extract flow parameters
-            arguments = dict(event.arguments)
-
             flow_id = arguments.pop("flow_id", None)
             deactivate = arguments.pop("deactivate", False)
+            return_value = arguments.pop("return_value", None)
             arguments.pop("source_flow_instance_uid", None)
             arguments.pop("source_head_uid", None)
             if flow_id in state.flow_id_states:
@@ -571,6 +573,7 @@ def _process_internal_events_without_default_matchers(
                             flow_state,
                             event.matching_scores,
                             deactivate,
+                            return_value,
                         )
                         assert flow_state.loop_id
                         handled_event_loops.add(flow_state.loop_id)
@@ -1513,6 +1516,7 @@ def _finish_flow(
     flow_state: FlowState,
     matching_scores: List[float],
     deactivate_flow: bool = False,
+    return_value: Optional[Any] = None,
 ) -> None:
     """Finish a flow instance and all its active child flows and decrement number of references of activated flow."""
 
@@ -1599,6 +1603,8 @@ def _finish_flow(
 
     # Generate FlowFinished event
     event = flow_state.finished_event(matching_scores)
+    if return_value:
+        event.arguments["return_value"] = return_value
     _push_internal_event(state, event)
 
     _log_action_or_intents(state, flow_state, matching_scores)
