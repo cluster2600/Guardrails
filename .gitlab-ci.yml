@@ -16,20 +16,23 @@ include:
 
 variables:
   PIP_CACHE_DIR: "${CI_PROJECT_DIR}/.cache/pip"
+  POETRY_VERSION: "1.8.2"
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
   LATEST_TAG: $CI_REGISTRY_IMAGE:latest
 
 cache:
-  key: "${CI_JOB_NAME}"
+  key: "${CI_JOB_NAME}-${CI_COMMIT_REF_SLUG}"
   paths:
+    - .venv/
     - .cache/pip
-    - .venv
+    - poetry.lock
+    - pyproject.toml
 
 # Jobs templates
 
 .install-deps-template: &install-deps
   before_script:
-    - pip install poetry
+    - pip install poetry==$POETRY_VERSION
     - poetry --version
     - poetry config virtualenvs.in-project true
     - poetry install --extras all --with dev
@@ -86,5 +89,6 @@ docker-test:
     - docker run --rm $IMAGE_TAG pytest || (docker rmi $IMAGE_TAG && exit 1)
   only:
     - tags
+
   tags:
     - gitlab-runner-bignlp-api
