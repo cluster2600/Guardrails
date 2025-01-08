@@ -130,6 +130,8 @@ To get started quickly, follow the steps below.
 
 4. we use `Poetry` to manage the project dependencies. To install Poetry follow the instructions [here](https://python-poetry.org/docs/#installation):
 
+> Note: This project requires Poetry version >=1.8,<2.0. Please ensure you are using a compatible version before running any Poetry commands.
+
   Ensure you have `poetry` installed:
 
    ```bash
