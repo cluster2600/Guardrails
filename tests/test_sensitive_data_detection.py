@@ -21,6 +21,8 @@ from nemoguardrails.actions.actions import ActionResult
 from tests.utils import TestChat
 
 # We detect if the environment is set up correct for SDD (presidio + downloaded spacy model)
+# poetry install -e "sdd" --with dev
+# python -m spacy download en_core_web_lg
 try:
     import presidio_analyzer
     import presidio_anonymizer
@@ -196,3 +198,209 @@ def test_masking_retrieval():
 
     chat >> "Hi!"
     chat << "Hello there!"
+
+
+@pytest.mark.skipif(
+    not SDD_SETUP_PRESENT, reason="Sensitive Data Detection setup is not present."
+)
+@pytest.mark.unit
+def test_score_threshold():
+    config = RailsConfig.from_content(
+        yaml_content="""
+            models: []
+            rails:
+              config:
+                sensitive_data_detection:
+
+                  input:
+                    score_threshold: 0.4
+                    entities:
+                      - PERSON
+                  output:
+
+                    score_threshold: 0.4
+                    entities:
+                      - PERSON
+              input:
+                flows:
+                  - detect sensitive data on input
+              output:
+                flows:
+                  - detect sensitive data on output
+        """,
+        colang_content="""
+            define user express greeting
+              "hi"
+
+            define flow
+              user express greeting
+              bot express greeting
+
+            define bot inform answer unknown
+              "I can't answer that."
+        """,
+    )
+
+    chat = TestChat(
+        config,
+        llm_completions=["  express greeting", '  "Hi! My name is John as well."'],
+    )
+
+    # This will trigger the input rail
+    chat >> "Hi! I am Mr. John!"
+    chat << "I can't answer that."
+
+    # This will trigger only the output one
+    chat >> "Hi!"
+    chat << "I can't answer that."
+
+
+@pytest.mark.skipif(
+    not SDD_SETUP_PRESENT, reason="Sensitive Data Detection setup is not present."
+)
+@pytest.mark.unit
+def test_invalid_score_threshold(caplog):
+    config = RailsConfig.from_content(
+        yaml_content="""
+            models: []
+            rails:
+              config:
+                sensitive_data_detection:
+
+                  input:
+                    score_threshold: -0.4
+                    entities:
+                      - PERSON
+                  output:
+
+                    score_threshold: -0.4
+                    entities:
+                      - PERSON
+              input:
+                flows:
+                  - detect sensitive data on input
+              output:
+                flows:
+                  - detect sensitive data on output
+        """,
+        colang_content="""
+            define user express greeting
+              "hi"
+
+            define flow
+              user express greeting
+              bot express greeting
+
+            define bot inform answer unknown
+              "I can't answer that."
+        """,
+    )
+
+    chat = TestChat(
+        config,
+        llm_completions=["  express greeting", '  "Hi! My name is John as well."'],
+    )
+
+    rails = chat.app
+
+    messages = [
+        {"role": "user", "content": "Hi! I am Mr. John!"},
+    ]
+
+    _ = rails.generate(messages=messages)
+
+    assert "score_threshold must be a float between 0 and 1 (inclusive)." in caplog.text
+
+
+@pytest.mark.skipif(
+    not SDD_SETUP_PRESENT, reason="Sensitive Data Detection setup is not present."
+)
+@pytest.mark.unit
+def test_invalid_score_threshold_chat_message():
+    config = RailsConfig.from_content(
+        yaml_content="""
+            models: []
+            rails:
+              config:
+                sensitive_data_detection:
+
+                  input:
+                    score_threshold: 50
+                    entities:
+                      - PERSON
+                  output:
+
+                    score_threshold: 200
+                    entities:
+                      - PERSON
+              input:
+                flows:
+                  - detect sensitive data on input
+              output:
+                flows:
+                  - detect sensitive data on output
+        """,
+        colang_content="""
+            define user express greeting
+              "hi"
+
+            define flow
+              user express greeting
+              bot express greeting
+
+            define bot inform answer unknown
+              "I can't answer that."
+        """,
+    )
+
+    chat = TestChat(
+        config,
+        llm_completions=["  express greeting", '  "Hi! My name is John as well."'],
+    )
+
+    # This will trigger the input rail
+    chat >> "Hi! I am Mr. John!"
+    chat << "I'm sorry, an internal error has occurred."
+
+
+@pytest.mark.skipif(
+    not SDD_SETUP_PRESENT, reason="Sensitive Data Detection setup is not present."
+)
+@pytest.mark.unit
+def test_high_score_threshold_disables_rails():
+    config = RailsConfig.from_content(
+        yaml_content="""
+            models: []
+            rails:
+              config:
+                sensitive_data_detection:
+
+                  input:
+                    score_threshold: 1.0
+                    entities:
+                      - PERSON
+              input:
+                flows:
+                  - detect sensitive data on input
+        """,
+        colang_content="""
+            define user express greeting
+              "hi"
+
+            define flow
+              user express greeting
+              bot express greeting
+
+            define bot inform answer unknown
+              "I can't answer that."
+        """,
+    )
+
+    chat = TestChat(
+        config,
+        llm_completions=["  express greeting", '  "Hi! My name is John as well."'],
+    )
+
+    # This will trigger the input rail
+    chat >> "Hi! I am Mr. John!"
+    chat << "Hi! My name is John as well."
