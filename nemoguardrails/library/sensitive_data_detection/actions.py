@@ -102,13 +102,13 @@ async def detect_sensitive_data(source: str, text: str, config: RailsConfig):
     if source not in ["input", "output", "retrieval"]:
         raise ValueError("source must be one of 'input', 'output', or 'retrieval'")
     options: SensitiveDataDetectionOptions = getattr(sdd_config, source)
-    score_threshold = getattr(options, "score_threshold", 0.4)
+    default_score_threshold = getattr(options, "score_threshold")
 
     # If we don't have any entities specified, we stop
     if len(options.entities) == 0:
         return False
 
-    analyzer = _get_analyzer(default_score_threshold=score_threshold)
+    analyzer = _get_analyzer(score_threshold=default_score_threshold)
     results = analyzer.analyze(
         text=text,
         language="en",
