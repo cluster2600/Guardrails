@@ -37,7 +37,6 @@ rails:
       - self check hallucination
       - activefence moderation
       - check sensitive data
-      - gotitai rag truthcheck
 
   # Execution rails are triggered before and after an action is invoked
   # TODO

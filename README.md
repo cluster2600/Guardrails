@@ -165,7 +165,6 @@ rails:
       - self check facts
       - self check hallucination
       - activefence moderation
-      - gotitai rag truthcheck
 
   config:
     # Configure the types of entities that should be masked on user input.
