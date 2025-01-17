@@ -19,3 +19,7 @@ Advanced
    streaming
    using-docker
    vertexai-setup
+   nemoguard-contentsafety-deployment
+   nemoguard-topiccontrol-deployment
+   jailbreak-detection-heuristics-deployment
+   safeguarding-ai-virtual-assistant-blueprint

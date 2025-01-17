@@ -1,7 +1,7 @@
 # Blueprint with NemoGuard NIMs
 
 ```{note}
-This documentation is intended for developers that want to integrate NeMo Guardrails into [NVIDIA Blueprints](https://build.nvidia.com/blueprints)**
+This documentation is intended for developers that want to integrate NeMo Guardrails into [NVIDIA Blueprints](https://build.nvidia.com/blueprints)
 ```
 
 NVIDIA Blueprints are comprehensive reference workflows that accelerate AI application development and deployment. They make it easy to start building and setting up virtual assistants, offering ready-made workflows and tools. Whether you need a simple AI-powered chatbot or a fully animated digital human interface, NVIDIA provides resources to help you create an AI assistant that’s scalable and aligned with your brand. For example, developers can use the **[NVIDIA AI Blueprint for AI virtual assistants](https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service)** to build an AI assistant for customer service for delivering a responsive, efficient customer support experience.

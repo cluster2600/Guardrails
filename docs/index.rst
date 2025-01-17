@@ -51,6 +51,7 @@ NVIDIA NeMo Guardrails
    user-guides/jailbreak-detection-heuristics/index
    user-guides/llm/index
    user-guides/multi-config-api/index
+   user-guides/migration-guide
 
 .. toctree::
    :caption: Security
@@ -82,10 +83,13 @@ NVIDIA NeMo Guardrails
    user-guides/advanced/extract-user-provided-values
    user-guides/advanced/bot-message-instructions
    user-guides/advanced/event-based-api
-   user-guides/advanced/jailbreak-detection-heuristics-deployment
    user-guides/advanced/llama-guard-deployment
    user-guides/advanced/nested-async-loop
    user-guides/advanced/vertexai-setup
+   user-guides/advanced/nemoguard-contentsafety-deployment
+   user-guides/advanced/nemoguard-topiccontrol-deployment
+   user-guides/advanced/jailbreak-detection-heuristics-deployment
+   user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint
 
 .. toctree::
    :caption: Other
