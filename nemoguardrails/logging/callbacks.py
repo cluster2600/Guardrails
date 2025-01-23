@@ -21,7 +21,8 @@ from uuid import UUID
 from langchain.callbacks import StdOutCallbackHandler
 from langchain.callbacks.base import AsyncCallbackHandler, BaseCallbackManager
 from langchain.callbacks.manager import AsyncCallbackManagerForChainRun
-from langchain.schema import AgentAction, AgentFinish, BaseMessage, LLMResult
+from langchain.schema import AgentAction, AgentFinish, AIMessage, BaseMessage, LLMResult
+from langchain_core.outputs import ChatGeneration
 
 from nemoguardrails.context import explain_info_var, llm_call_info_var, llm_stats_var
 from nemoguardrails.logging.explain import LLMCallInfo
@@ -189,8 +190,52 @@ class LoggingCallbackHandler(AsyncCallbackHandler, StdOutCallbackHandler):
         llm_call_info.duration = took
 
         # Update the token usage stats as well
-        if response.llm_output:
+        token_stats_found = False
+        if response.generations:
+            # For chat models completions (most models) token stats should be accessed from
+            # the standardized fields present in the AIMessage messages from response.generations.
+
+            # Initialize LLM call info stats
+            if not llm_call_info.total_tokens:
+                llm_call_info.total_tokens = 0
+            if not llm_call_info.prompt_tokens:
+                llm_call_info.prompt_tokens = 0
+            if not llm_call_info.completion_tokens:
+                llm_call_info.completion_tokens = 0
+
+            # Compute stats over all LLM generations in the response object
+            for gen_list in response.generations:
+                for gen in gen_list:
+                    if (
+                        isinstance(gen, ChatGeneration)
+                        and isinstance(gen.message, AIMessage)
+                        and gen.message.usage_metadata
+                    ):
+                        token_stats_found = True
+                        token_usage = gen.message.usage_metadata
+                        llm_stats.inc(
+                            "total_tokens", token_usage.get("total_tokens", 0)
+                        )
+                        llm_call_info.total_tokens += token_usage.get("total_tokens", 0)
+                        llm_stats.inc(
+                            "total_prompt_tokens", token_usage.get("input_tokens", 0)
+                        )
+                        llm_call_info.prompt_tokens += token_usage.get(
+                            "input_tokens", 0
+                        )
+                        llm_stats.inc(
+                            "total_completion_tokens",
+                            token_usage.get("output_tokens", 0),
+                        )
+                        llm_call_info.completion_tokens += token_usage.get(
+                            "output_tokens", 0
+                        )
+        if not token_stats_found and response.llm_output:
+            # Fail-back mechanism for non-chat models. This works for OpenAI models,
+            # but it may not work for others as response.llm_output is not standardized.
             token_usage = response.llm_output.get("token_usage", {})
+            if len(token_usage.items()) > 0:
+                token_stats_found = True
             llm_stats.inc("total_tokens", token_usage.get("total_tokens", 0))
             llm_call_info.total_tokens = token_usage.get("total_tokens", 0)
             llm_stats.inc("total_prompt_tokens", token_usage.get("prompt_tokens", 0))
@@ -199,6 +244,11 @@ class LoggingCallbackHandler(AsyncCallbackHandler, StdOutCallbackHandler):
                 "total_completion_tokens", token_usage.get("completion_tokens", 0)
             )
             llm_call_info.completion_tokens = token_usage.get("completion_tokens", 0)
+
+        if not token_stats_found:
+            log.warning(
+                "Token stats in LLM call info cannot be computed for current model!"
+            )
 
         # Finally, we append the LLM call log to the processing log
         processing_log = processing_log_var.get()
