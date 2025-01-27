@@ -15,7 +15,7 @@
 
 import pytest
 
-from nemoguardrails.rails.llm.llmrails import BufferStrategy
+from nemoguardrails.buffer import SlidingWindow as BufferStrategy
 
 
 async def fake_streaming_handler():
