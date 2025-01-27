@@ -304,12 +304,24 @@ class InputRails(BaseModel):
     )
 
 
+class OutputRailsStreamingConfig(BaseModel):
+    enabled: bool = Field(default=False, description="Whether streaming is enabled.")
+    look_back_size: Optional[int] = Field(default=5, description="The look back size.")
+    window_size: Optional[int] = Field(default=10, description="The window size.")
+    model_config = ConfigDict(extra="allow")
+
+
 class OutputRails(BaseModel):
     """Configuration of output rails."""
 
     flows: List[str] = Field(
         default_factory=list,
         description="The names of all the flows that implement output rails.",
+    )
+
+    streaming: Optional[OutputRailsStreamingConfig] = Field(
+        default_factory=OutputRailsStreamingConfig,
+        description="Configuration for streaming output rails.",
     )
 
 
@@ -1206,6 +1218,9 @@ class RailsConfig(BaseModel):
         Currently, we don't support streaming if there are output rails.
         """
         if len(self.rails.output.flows) > 0:
+            # if we have output rails streaming enabled
+            if self.rails.output.streaming.enabled:
+                return True
             return False
 
         return True

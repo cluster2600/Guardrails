@@ -23,6 +23,7 @@ import re
 import threading
 import time
 import warnings
+from copy import copy
 from typing import Any, AsyncIterator, Dict, List, Optional, Tuple, Type, Union, cast
 
 from langchain_core.language_models import BaseLanguageModel
@@ -648,6 +649,7 @@ class LLMRails:
 
             # We also keep a general reference to this object
             self.explain_info = explain_info
+        self.explain_info = explain_info
 
         if prompt is not None:
             # Currently, we transform the prompt request into a single turn conversation
@@ -933,19 +935,26 @@ class LLMRails:
         self,
         prompt: Optional[str] = None,
         messages: Optional[List[dict]] = None,
+        options: Optional[Union[dict, GenerationOptions]] = None,
     ) -> AsyncIterator[str]:
         """Simplified interface for getting directly the streamed tokens from the LLM."""
         streaming_handler = StreamingHandler()
 
+        # todo use a context var for buffer strategy and return it here?
+        # then iterating over buffer strategy is nested loop?
         asyncio.create_task(
             self.generate_async(
                 prompt=prompt,
                 messages=messages,
                 streaming_handler=streaming_handler,
+                options=options,
             )
         )
-
-        return streaming_handler
+        if self.config.rails.output.streaming.enabled:
+            # returns an async generator
+            return self._run_output_rails_in_streaming(streaming_handler)
+        else:
+            return streaming_handler
 
     def generate(
         self,
@@ -1158,3 +1167,148 @@ class LLMRails:
         else:
             config = state["config"]
         self.__init__(config=config, verbose=False)
+
+    async def _run_output_rails_in_streaming(
+        self,
+        streaming_handler: AsyncIterator[str],
+        user_message: Optional[str] = None,
+    ) -> AsyncIterator[str]:
+        """
+        1. Buffers tokens from 'streaming_handler' via BufferStrategy.
+        2. Runs sequential (parallel for colang 2.0 in future) flows for each chunk.
+        3. Yields the chunk if not blocked, or STOP if blocked.
+        """
+
+        output_rails_streaming_config = self.config.rails.output.streaming
+        buffer_strategy = BufferStrategy.from_config(output_rails_streaming_config)
+
+        output_rails_flows_id = self.config.rails.output.flows
+
+        async for chunk_list, chunk_str_rep in buffer_strategy(streaming_handler):
+            chunk_str = " ".join(chunk_list)
+
+            # yield the chunk first then apply output rails
+            # if not comment below and uncomment last line of the function
+            # yield chunk_str_rep
+
+            for flow_id in output_rails_flows_id:
+                action_name = flow_id.replace(" ", "_")
+                # TODO: pass user_message
+                # TODO: create a function to do prepare_params
+                params = {
+                    "context": {
+                        "user_message": "",
+                        "bot_message": chunk_str,
+                    }
+                }
+                params["llm_task_manager"] = self.runtime.llm_task_manager
+                params["config"] = self.config
+
+                if f"{action_name}_llm" in self.runtime.registered_action_params:
+                    params["llm"] = self.runtime.registered_action_params[
+                        f"{action_name}_llm"
+                    ]
+                else:
+                    params["llm"] = self.llm
+
+                result = await self.runtime.action_dispatcher.execute_action(
+                    action_name, params
+                )
+
+                # include explain info
+                explain_info = explain_info_var.get()
+                if explain_info is None:
+                    explain_info = ExplainInfo()
+                    explain_info_var.set(explain_info)
+
+                    # We also keep a general reference to this object
+                    self.explain_info = explain_info
+                if is_blocked(result):
+                    # TODO: while whitespace issue is fixed, remove the space from below
+                    yield " {DATA: STOP}"
+                    return
+
+            # print("explain_info", explain_info_var.get())
+            # If everything is good, yield the chunk
+            yield chunk_str_rep
+
+
+def is_blocked(result: Tuple[bool, str]) -> bool:
+    """Check output rials status."""
+    # result is a tuple of (return_value, success|failure)
+    # return_value is not unified among all the actions
+    # sometimes it is a bool where True means allowed, sometimes True means blocked
+    # sometimes it is a score where allowed/blocked is dictated in flows.co
+    # lack of stable interface for output rails cause this issue
+    # for self_check_output following holds
+    return not result[0]
+
+
+# TODO: move it to buffer.py
+class BufferStrategy:
+    """DRFAT: A minimal buffer strategy that buffers chunks and yields them when the buffer is full."""
+
+    # TODO:  it should be the ABC name
+    # TODO: read and init it from_config
+    # TODO: use a factory function or class
+    # - **chunk_size (X)**: This would correspond to the number of tokens in each chunk processed by the `streaming_handler`.
+    # - **max_validation_length (N)**: This would correspond to the `look_back_size` parameter in the code, representing the maximum number of lookback chunks.
+
+    # In the code:
+    # - `window_size` represents the number of chunks to process in each window.
+    # - `look_back_size` represents the number of previous chunks to include in the window for context.
+
+    def __init__(self, look_back_size: int = 5, window_size: int = 10):
+        self.look_back_size = look_back_size
+        self.window_size = window_size
+        self.last_index = 0
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(look_back_size=config.look_back_size, window_size=config.window_size)
+
+    async def __call__(self, streaming_handler):
+        buffer = []
+        index = 0
+
+        async for chunk in streaming_handler:
+            buffer.append(chunk)
+            index += 1
+            # TODO: this is done in StreamingHandler, we need to find away to remove this duplication
+            # print(f"\033[92m{chunk}\033[0m", end="", flush=True)
+            # the hackish solution in StreamingHandler is resolved in Chat ClI, we should not alter interfaces
+            # when we have stream_async we must use it everywhere, adding enable_print will cause headaches
+            # then this hackish solution will cause a cancer of this hackish solution and will contaminate the whole codebase
+
+            if len(buffer) >= self.window_size:
+                yield (
+                    # buffer is used to apply output rails
+                    buffer[-self.window_size - self.look_back_size :],
+                    # this is what gets printed in the console or yield to user
+                    # to avoid repeating the already streamed/printed chunk
+                    self.generate_chunk_str(
+                        buffer[-self.window_size - self.look_back_size :], index
+                    ),
+                )
+                buffer = buffer[-self.look_back_size :]
+
+        # Yield any remaining buffer if it's not empty
+        if buffer:
+            yield (
+                buffer,
+                self.generate_chunk_str(
+                    buffer[-self.window_size - self.look_back_size :], index
+                ),
+            )
+
+    def generate_chunk_str(self, buffer, current_index):
+        if current_index <= self.last_index:
+            return ""
+
+        new_chunks = buffer[self.last_index - current_index :]
+        self.last_index = current_index
+        # TODO: something causes duplicate whitespaces between tokens, figure out why,
+        # If using `return "".join(new_chunks)` works, then the issue might be elsewhere in the code where the chunks are being generated or processed.
+        # Ensure that the chunks themselves do not contain extra spaces.
+        # WAR: return "".join(new_chunks)
+        return "".join(new_chunks)
