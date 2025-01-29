@@ -23,7 +23,7 @@ import re
 import threading
 import time
 import warnings
-from copy import copy
+from functools import partial
 from typing import Any, AsyncIterator, Dict, List, Optional, Tuple, Type, Union, cast
 
 from langchain_core.language_models import BaseLanguageModel
@@ -1184,6 +1184,8 @@ class LLMRails:
 
         output_rails_flows_id = self.config.rails.output.flows
 
+        get_action_name = partial(get_action_name_from_flow_id, rails=self)
+
         async for chunk_list, chunk_str_rep in buffer_strategy(streaming_handler):
             chunk_str = " ".join(chunk_list)
 
@@ -1192,7 +1194,7 @@ class LLMRails:
             # yield chunk_str_rep
 
             for flow_id in output_rails_flows_id:
-                action_name = flow_id.replace(" ", "_")
+                action_name = get_action_name(flow_id)
                 # TODO: pass user_message
                 # TODO: create a function to do prepare_params
                 params = {
@@ -1312,3 +1314,22 @@ class BufferStrategy:
         # Ensure that the chunks themselves do not contain extra spaces.
         # WAR: return "".join(new_chunks)
         return "".join(new_chunks)
+
+
+def get_action_name_from_flow_id(flow_id: str, rails: LLMRails) -> str:
+    """Get the action name from the flow id."""
+
+    flows = rails.config.flows
+
+    for flow in flows:
+        if flow["id"] == flow_id:
+            for element in flow["elements"]:
+                if (
+                    element["_type"] == "run_action"
+                    and element["_source_mapping"]["filename"] == "flows.v1.co"
+                    and "execute" in element["_source_mapping"]["line_text"]
+                    and "action_name" in element
+                ):
+                    return element["action_name"]
+
+    raise ValueError(f"No action found for flow_id: {flow_id}")
