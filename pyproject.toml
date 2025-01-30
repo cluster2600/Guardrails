@@ -9,27 +9,27 @@ packages = [{ include = "nemoguardrails" }]
 
 
 include = [
-    "LICENSE.md",
-    "LICENSE-Apache-2.0.txt",
-    "LICENCES-3rd-party.txt",
-    "chat-ui/**/*",
-    "examples/**/*",
-    "eval/data/**/*",
-    "**/*.yml",
-    "**/*.co",
-    "**/*.txt",
-    "**/*.json",
-    "**/*.lark",
+  "LICENSE.md",
+  "LICENSE-Apache-2.0.txt",
+  "LICENCES-3rd-party.txt",
+  "chat-ui/**/*",
+  "examples/**/*",
+  "eval/data/**/*",
+  "**/*.yml",
+  "**/*.co",
+  "**/*.txt",
+  "**/*.json",
+  "**/*.lark",
 ]
 
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
 ]
 
 [tool.poetry.urls]
@@ -54,15 +54,15 @@ fastembed = ">=0.2.2, <0.4.1"
 # fastembed depends on onnxruntime we pindown the working version for 3.9 here
 # as it is a transient dependency we must remove it later
 onnxruntime = [
-    { version = ">=1.17.0,<=1.19.2", python = "^3.9" },
-    { version = ">=1.17.0,<2.0.0", python = ">=3.10" },
+  { version = ">=1.17.0,<=1.19.2", python = "^3.9" },
+  { version = ">=1.17.0,<2.0.0", python = ">=3.10" },
 ]
 httpx = ">=0.24.1"
 jinja2 = ">=3.1.5"
 langchain = ">=0.2.14,<0.4.0"
 langchain-core = ">=0.2.14,<0.4.0"
 langchain-community = ">=0.0.16,<0.4.0"
-lark = "~1.1.7"
+lark = ">=1.1.7"
 nest-asyncio = ">=1.5.6,"
 prompt-toolkit = ">=3.0"
 pydantic = ">=1.10"
@@ -106,17 +106,17 @@ tracing = ["opentelemetry-api", "opentelemetry-sdk", "aiofiles"]
 # I also support their decision. There is no PEP for recursive dependencies, but it has been supported in pip since version 21.2.
 # It is here for backward compatibility.
 all = [
-    "presidio-analyzer",
-    "presidio-anonymizer",
-    "spacy",
-    "tqdm",
-    "numpy",
-    "streamlit",
-    "langchain-openai",
-    "google-cloud-language",
-    "opentelemetry-api",
-    "opentelemetry-sdk",
-    "aiofiles",
+  "presidio-analyzer",
+  "presidio-anonymizer",
+  "spacy",
+  "tqdm",
+  "numpy",
+  "streamlit",
+  "langchain-openai",
+  "google-cloud-language",
+  "opentelemetry-api",
+  "opentelemetry-sdk",
+  "aiofiles",
 ]
 
 [tool.poetry.group.dev]
