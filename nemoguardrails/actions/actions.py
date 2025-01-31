@@ -14,13 +14,14 @@
 # limitations under the License.
 
 from dataclasses import dataclass, field
-from typing import Any, List, Optional
+from typing import Any, Callable, List, Optional
 
 
 def action(
     is_system_action: bool = False,
     name: Optional[str] = None,
     execute_async: bool = False,
+    output_mapping: Optional[Callable[[Any], bool]] = None,
 ):
     """Decorator to mark a function or class as an action.
 
@@ -28,7 +29,9 @@ def action(
         is_system_action (bool): Flag indicating if the action is a system action.
         name (Optional[str]): The name to associate with the action.
         execute_async: Whether the function should be executed in async mode.
-
+        output_mapping (Optional[Callable[[Any], bool]]): A function to interpret the action's result.
+            It should accept the return value (e.g. the first element of a tuple) and return True if the output
+            should be considered blocked.
     Returns:
         callable: The decorated function or class.
     """
@@ -53,6 +56,7 @@ def action(
             "name": name or fn_or_cls.__name__,
             "is_system_action": is_system_action,
             "execute_async": execute_async,
+            "output_mapping": output_mapping,
         }
         return fn_or_cls
 

@@ -79,6 +79,38 @@ DEFAULT_CONFIG = {
 default_groundedness_config = {"groundedness_checker": {"verify_response": False}}
 
 
+def mapping_autoalign_output_api(result: dict) -> bool:
+    """
+    Mapping for autoalign_output_api.
+
+    Expects result to be a dict with a key "guardrails_triggered" (a boolean).
+    Returns True (block) if guardrails were triggered.
+    """
+    return result.get("guardrails_triggered", False)
+
+
+def mapping_autoalign_groundedness_output_api(result: float) -> bool:
+    """
+    Mapping for autoalign_groundedness_output_api.
+
+    Expects result to be a numeric score.
+    Returns True (block) if the score is below the default groundedness threshold.
+    """
+    DEFAULT_GROUNDEDNESS_THRESHOLD = 0.5
+    return result < DEFAULT_GROUNDEDNESS_THRESHOLD
+
+
+def mapping_autoalign_factcheck_output_api(result: float) -> bool:
+    """
+    Mapping for autoalign_factcheck_output_api.
+
+    Expects result to be a numeric score.
+    Returns True (block) if the score is below the default factcheck threshold.
+    """
+    DEFAULT_FACTCHECK_THRESHOLD = 0.5
+    return result < DEFAULT_FACTCHECK_THRESHOLD
+
+
 def process_autoalign_output(responses: List[Any], show_toxic_phrases: bool = False):
     """Processes the output provided AutoAlign API"""
 
@@ -285,7 +317,7 @@ async def autoalign_input_api(
     return autoalign_response
 
 
-@action(name="autoalign_output_api")
+@action(name="autoalign_output_api", output_mapping=mapping_autoalign_output_api)
 async def autoalign_output_api(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,
@@ -319,7 +351,10 @@ async def autoalign_output_api(
     return autoalign_response
 
 
-@action(name="autoalign_groundedness_output_api")
+@action(
+    name="autoalign_groundedness_output_api",
+    output_mapping=mapping_autoalign_groundedness_output_api,
+)
 async def autoalign_groundedness_output_api(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,
@@ -355,7 +390,10 @@ async def autoalign_groundedness_output_api(
     return score
 
 
-@action(name="autoalign_factcheck_output_api")
+@action(
+    name="autoalign_factcheck_output_api",
+    output_mapping=mapping_autoalign_factcheck_output_api,
+)
 async def autoalign_factcheck_output_api(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,

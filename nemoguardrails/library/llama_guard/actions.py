@@ -82,7 +82,23 @@ async def llama_guard_check_input(
     return {"allowed": allowed, "policy_violations": policy_violations}
 
 
-@action()
+def mapping_llama_guard_check_output(result: dict) -> bool:
+    """
+    Mapping for llama_guard_check_output.
+
+    Expects result to be a dict with:
+      - "allowed": a boolean indicating if the response passed the safety check.
+      - "policy_violations": additional details (not used in the mapping logic).
+
+    Returns:
+        True if the response should be blocked (i.e. if "allowed" is False),
+        False otherwise.
+    """
+    allowed = result.get("allowed", True)
+    return not allowed
+
+
+@action(output_mapping=mapping_llama_guard_check_output)
 async def llama_guard_check_output(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,

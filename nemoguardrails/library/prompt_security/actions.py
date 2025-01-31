@@ -87,7 +87,22 @@ async def ps_protect_api_async(
         }
 
 
-@action(is_system_action=True)
+def mapping_protect_text(result: dict) -> bool:
+    """
+    Mapping for protect_text action.
+
+    Expects result to be a dict with:
+      - "is_blocked": a boolean indicating if the response passed to prompt security should be blocked.
+
+    Returns:
+        True if the response should be blocked (i.e. if "is_blocked" is True),
+        False otherwise.
+    """
+    blocked = result.get("is_blocked", True)
+    return blocked
+
+
+@action(is_system_action=True, output_mapping=mapping_protect_text)
 async def protect_text(
     user_prompt: Optional[str] = None, bot_response: Optional[str] = None
 ):

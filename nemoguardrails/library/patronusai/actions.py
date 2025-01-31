@@ -60,7 +60,19 @@ def parse_patronus_lynx_response(
     return hallucination, reasoning
 
 
-@action()
+def mapping_patronus_lynx_check_output_hallucination(result: dict) -> bool:
+    """
+    Mapping for patronus_lynx_check_output_hallucination.
+
+    Expects result to be a dict with:
+        "hallucination": a boolean where True indicates a hallucination was detected.
+
+    Block (return True) if "hallucination" is True.
+    """
+    return result.get("hallucination", False)
+
+
+@action(output_mapping=mapping_patronus_lynx_check_output_hallucination)
 async def patronus_lynx_check_output_hallucination(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,
@@ -215,7 +227,23 @@ async def patronus_evaluate_request(
             return response_json
 
 
-@action(name="patronus_api_check_output")
+def mapping_patronus_api_check_output(result: dict) -> bool:
+    """
+    Mapping for patronus_api_check_output.
+
+    Expects result to be a dict with:
+        "pass": a boolean where True means the output passed the check.
+
+    Block (return True) if "pass" is False.
+    """
+    # Default to True (pass) if the key is missing
+    passed = result.get("pass", True)
+    return not passed
+
+
+@action(
+    name="patronus_api_check_output", output_mapping=mapping_patronus_api_check_output
+)
 async def patronus_api_check_output(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,
