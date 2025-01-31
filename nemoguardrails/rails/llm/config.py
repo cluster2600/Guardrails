@@ -305,9 +305,15 @@ class InputRails(BaseModel):
 
 
 class OutputRailsStreamingConfig(BaseModel):
-    enabled: bool = Field(default=False, description="Whether streaming is enabled.")
-    look_back_size: Optional[int] = Field(default=5, description="The look back size.")
-    window_size: Optional[int] = Field(default=10, description="The window size.")
+    enabled: bool = Field(
+        default=False, description="Indicates if streaming is enabled."
+    )
+    look_back_size: int = Field(default=5, description="The look back size.")
+    window_size: int = Field(default=10, description="The window size.")
+    stream_first: bool = Field(
+        default=True,
+        description="Prioritizes streaming chunks before applying output rails.",
+    )
     model_config = ConfigDict(extra="allow")
 
 
