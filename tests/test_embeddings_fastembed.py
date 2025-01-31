@@ -26,7 +26,7 @@ def test_sync_embeddings():
     assert len(result[0]) == 384
 
 
-def test_aditional_params_with_fastembed():
+def test_additional_params_with_fastembed():
     model = FastEmbedEmbeddingModel("all-MiniLM-L6-v2", max_length=512, lazy_load=True)
     result = model.encode(["test"])
 
