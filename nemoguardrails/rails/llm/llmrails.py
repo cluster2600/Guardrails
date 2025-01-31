@@ -32,6 +32,7 @@ from langchain_core.language_models.llms import BaseLLM
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.actions.llm.utils import get_colang_history
 from nemoguardrails.actions.v2_x.generation import LLMGenerationActionsV2dotx
+from nemoguardrails.buffer import get_buffer_strategy
 from nemoguardrails.colang import parse_colang_file
 from nemoguardrails.colang.v1_0.runtime.flows import compute_context
 from nemoguardrails.colang.v1_0.runtime.runtime import Runtime, RuntimeV1_0
@@ -952,7 +953,9 @@ class LLMRails:
         )
         if self.config.rails.output.streaming.enabled:
             # returns an async generator
-            return self._run_output_rails_in_streaming(streaming_handler)
+            return self._run_output_rails_in_streaming(
+                streaming_handler, messages, prompt
+            )
         else:
             return streaming_handler
 
@@ -1171,7 +1174,9 @@ class LLMRails:
     async def _run_output_rails_in_streaming(
         self,
         streaming_handler: AsyncIterator[str],
-        user_message: Optional[str] = None,
+        prompt: Optional[str] = None,
+        messages: Optional[List[dict]] = None,
+        stream_first: Optional[bool] = None,
     ) -> AsyncIterator[str]:
         """
         1. Buffers tokens from 'streaming_handler' via BufferStrategy.
@@ -1179,148 +1184,93 @@ class LLMRails:
         3. Yields the chunk if not blocked, or STOP if blocked.
         """
 
+        def _get_latest_user_message(
+            messages: Optional[List[dict]] = None,
+        ) -> Optional[dict]:
+            if messages is None:
+                return None
+            for message in reversed(messages):
+                if message.get("role") == "user":
+                    return message
+            return None
+
+        def _prepare_params(
+            action_name: str,
+            chunk_str: str,
+            prompt: Optional[str] = None,
+            messages: Optional[List[dict]] = None,
+        ):
+            user_message = prompt or _get_latest_user_message(messages)
+
+            return {
+                # TODO:: are there other context variables that need to be passed?
+                # what happens with `relevant_chuks`
+                "context": {
+                    "user_message": user_message,
+                    "bot_message": chunk_str,
+                },
+                "llm_task_manager": self.runtime.llm_task_manager,
+                "config": self.config,
+                "llm": self.runtime.registered_action_params.get(
+                    f"{action_name}_llm", self.llm
+                ),
+            }
+
+        def _update_explain_info():
+            explain_info = explain_info_var.get()
+            if explain_info is None:
+                explain_info = ExplainInfo()
+                explain_info_var.set(explain_info)
+                self.explain_info = explain_info
+
         output_rails_streaming_config = self.config.rails.output.streaming
-        buffer_strategy = BufferStrategy.from_config(output_rails_streaming_config)
-
+        buffer_strategy = get_buffer_strategy(output_rails_streaming_config)
         output_rails_flows_id = self.config.rails.output.flows
-
-        get_action_name = partial(get_action_name_from_flow_id, rails=self)
+        stream_first = stream_first or output_rails_streaming_config.stream_first
+        get_action_name = partial(get_action_name_from_flow_id, flows=self.config.flows)
 
         async for chunk_list, chunk_str_rep in buffer_strategy(streaming_handler):
             chunk_str = " ".join(chunk_list)
 
-            # yield the chunk first then apply output rails
-            # if not comment below and uncomment last line of the function
-            # yield chunk_str_rep
+            if stream_first:
+                yield chunk_str_rep
 
             for flow_id in output_rails_flows_id:
                 action_name = get_action_name(flow_id)
-                # TODO: pass user_message
-                # TODO: create a function to do prepare_params
-                params = {
-                    "context": {
-                        "user_message": "",
-                        "bot_message": chunk_str,
-                    }
-                }
-                params["llm_task_manager"] = self.runtime.llm_task_manager
-                params["config"] = self.config
 
-                if f"{action_name}_llm" in self.runtime.registered_action_params:
-                    params["llm"] = self.runtime.registered_action_params[
-                        f"{action_name}_llm"
-                    ]
-                else:
-                    params["llm"] = self.llm
+                params = _prepare_params(
+                    action_name=action_name,
+                    chunk_str=chunk_str,
+                    prompt=prompt,
+                    messages=messages,
+                )
 
+                # Execute the action. (Your execute_action returns only the result.)
                 result = await self.runtime.action_dispatcher.execute_action(
                     action_name, params
                 )
+                # Include explain info (whatever _update_explain_info does)
+                _update_explain_info()
 
-                # include explain info
-                explain_info = explain_info_var.get()
-                if explain_info is None:
-                    explain_info = ExplainInfo()
-                    explain_info_var.set(explain_info)
+                # Retrieve the action function from the dispatcher
+                action_func = self.runtime.action_dispatcher.get_action(action_name)
 
-                    # We also keep a general reference to this object
-                    self.explain_info = explain_info
-                if is_blocked(result):
+                # Use the mapping to decide if the result indicates blocked content.
+                if is_blocked(result, action_func):
                     # TODO: while whitespace issue is fixed, remove the space from below
                     yield " {DATA: STOP}"
                     return
 
-            # print("explain_info", explain_info_var.get())
-            # If everything is good, yield the chunk
-            yield chunk_str_rep
+            if not stream_first:
+                yield chunk_str_rep
 
 
-def is_blocked(result: Tuple[bool, str]) -> bool:
-    """Check output rials status."""
-    # result is a tuple of (return_value, success|failure)
-    # return_value is not unified among all the actions
-    # sometimes it is a bool where True means allowed, sometimes True means blocked
-    # sometimes it is a score where allowed/blocked is dictated in flows.co
-    # lack of stable interface for output rails cause this issue
-    # for self_check_output following holds
-    return not result[0]
+def get_action_name_from_flow_id(flow_id: str, flows: List[Union[Dict, Any]]) -> str:
+    """Get the action name from the flow id.
 
+    Flows must be provided from rails.config.flows.
 
-# TODO: move it to buffer.py
-class BufferStrategy:
-    """DRFAT: A minimal buffer strategy that buffers chunks and yields them when the buffer is full."""
-
-    # TODO:  it should be the ABC name
-    # TODO: read and init it from_config
-    # TODO: use a factory function or class
-    # - **chunk_size (X)**: This would correspond to the number of tokens in each chunk processed by the `streaming_handler`.
-    # - **max_validation_length (N)**: This would correspond to the `look_back_size` parameter in the code, representing the maximum number of lookback chunks.
-
-    # In the code:
-    # - `window_size` represents the number of chunks to process in each window.
-    # - `look_back_size` represents the number of previous chunks to include in the window for context.
-
-    def __init__(self, look_back_size: int = 5, window_size: int = 10):
-        self.look_back_size = look_back_size
-        self.window_size = window_size
-        self.last_index = 0
-
-    @classmethod
-    def from_config(cls, config):
-        return cls(look_back_size=config.look_back_size, window_size=config.window_size)
-
-    async def __call__(self, streaming_handler):
-        buffer = []
-        index = 0
-
-        async for chunk in streaming_handler:
-            buffer.append(chunk)
-            index += 1
-            # TODO: this is done in StreamingHandler, we need to find away to remove this duplication
-            # print(f"\033[92m{chunk}\033[0m", end="", flush=True)
-            # the hackish solution in StreamingHandler is resolved in Chat ClI, we should not alter interfaces
-            # when we have stream_async we must use it everywhere, adding enable_print will cause headaches
-            # then this hackish solution will cause a cancer of this hackish solution and will contaminate the whole codebase
-
-            if len(buffer) >= self.window_size:
-                yield (
-                    # buffer is used to apply output rails
-                    buffer[-self.window_size - self.look_back_size :],
-                    # this is what gets printed in the console or yield to user
-                    # to avoid repeating the already streamed/printed chunk
-                    self.generate_chunk_str(
-                        buffer[-self.window_size - self.look_back_size :], index
-                    ),
-                )
-                buffer = buffer[-self.look_back_size :]
-
-        # Yield any remaining buffer if it's not empty
-        if buffer:
-            yield (
-                buffer,
-                self.generate_chunk_str(
-                    buffer[-self.window_size - self.look_back_size :], index
-                ),
-            )
-
-    def generate_chunk_str(self, buffer, current_index):
-        if current_index <= self.last_index:
-            return ""
-
-        new_chunks = buffer[self.last_index - current_index :]
-        self.last_index = current_index
-        # TODO: something causes duplicate whitespaces between tokens, figure out why,
-        # If using `return "".join(new_chunks)` works, then the issue might be elsewhere in the code where the chunks are being generated or processed.
-        # Ensure that the chunks themselves do not contain extra spaces.
-        # WAR: return "".join(new_chunks)
-        return "".join(new_chunks)
-
-
-def get_action_name_from_flow_id(flow_id: str, rails: LLMRails) -> str:
-    """Get the action name from the flow id."""
-
-    flows = rails.config.flows
-
+    """
     for flow in flows:
         if flow["id"] == flow_id:
             for element in flow["elements"]:
@@ -1333,3 +1283,40 @@ def get_action_name_from_flow_id(flow_id: str, rails: LLMRails) -> str:
                     return element["action_name"]
 
     raise ValueError(f"No action found for flow_id: {flow_id}")
+
+
+def default_mapping(result):
+    """
+    A fallback mapping if an action does not provide one.
+
+    - For a boolean result: assume True means allowed (so block if False).
+    - For a numeric result: use 0.5 as a threshold (block if the value is less).
+    - Otherwise, assume the result is allowed.
+    """
+    if isinstance(result, bool):
+        return not result  # block if result is False
+    elif isinstance(result, (int, float)):
+        return result < 0.5
+    else:
+        return False
+
+
+def is_blocked(result, action_func):
+    """
+    Determines if an action result should be blocked using its attached mapping.
+
+    Args:
+        result: The value returned by the action.
+        action_func: The action function (whose metadata contains the mapping).
+
+    Returns:
+        True if the mapping indicates that the output should be blocked, False otherwise.
+    """
+    mapping = getattr(action_func, "action_meta", {}).get("output_mapping")
+    if mapping is None:
+        mapping = default_mapping
+
+    if not isinstance(result, Tuple):
+        result = (result,)
+
+    return mapping(result[0])
