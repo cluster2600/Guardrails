@@ -246,7 +246,7 @@ class LoggingCallbackHandler(AsyncCallbackHandler, StdOutCallbackHandler):
             llm_call_info.completion_tokens = token_usage.get("completion_tokens", 0)
 
         if not token_stats_found:
-            log.warning(
+            log.info(
                 "Token stats in LLM call info cannot be computed for current model!"
             )
 
