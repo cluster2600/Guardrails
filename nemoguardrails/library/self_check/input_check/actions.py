@@ -37,6 +37,7 @@ async def self_check_input(
     context: Optional[dict] = None,
     llm: Optional[BaseLLM] = None,
     config: Optional[RailsConfig] = None,
+    **kwargs,
 ):
     """Checks the input from the user.
 

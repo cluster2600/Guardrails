@@ -70,7 +70,7 @@ def mapping_call_activefence_api(result: dict) -> bool:
 
 
 @action(is_system_action=True, output_mapping=mapping_call_activefence_api)
-async def call_activefence_api(text: Optional[str] = None):
+async def call_activefence_api(text: Optional[str] = None, **kwargs):
     api_key = os.environ.get("ACTIVEFENCE_API_KEY")
 
     if api_key is None:

@@ -284,6 +284,7 @@ async def autoalign_input_api(
     context: Optional[dict] = None,
     show_autoalign_message: bool = True,
     show_toxic_phrases: bool = False,
+    **kwargs,
 ):
     """Calls AutoAlign API for the user message and guardrail configuration provided"""
     user_message = context.get("user_message")
@@ -323,6 +324,7 @@ async def autoalign_output_api(
     context: Optional[dict] = None,
     show_autoalign_message: bool = True,
     show_toxic_phrases: bool = False,
+    **kwargs,
 ):
     """Calls AutoAlign API for the bot message and guardrail configuration provided"""
     bot_message = context.get("bot_message")
@@ -360,6 +362,7 @@ async def autoalign_groundedness_output_api(
     context: Optional[dict] = None,
     factcheck_threshold: float = 0.0,
     show_autoalign_message: bool = True,
+    **kwargs,
 ):
     """Calls AutoAlign groundedness check API and checks whether the bot message is factually grounded according to given
     documents"""

@@ -38,7 +38,12 @@ def mapping_detect_pii(result: bool) -> bool:
 
 
 @action(is_system_action=True, output_mapping=mapping_detect_pii)
-async def detect_pii(source: str, text: str, config: RailsConfig):
+async def detect_pii(
+    source: str,
+    text: str,
+    config: RailsConfig,
+    **kwargs,
+):
     """Checks whether the provided text contains any PII.
 
     Args

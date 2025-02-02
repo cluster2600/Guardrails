@@ -34,6 +34,7 @@ async def content_safety_check_input(
     llm_task_manager: LLMTaskManager,
     model_name: Optional[str] = None,
     context: Optional[dict] = None,
+    **kwargs,
 ) -> dict:
     _MAX_TOKENS = 3
     user_input: str = ""
@@ -112,6 +113,7 @@ async def content_safety_check_output(
     llm_task_manager: LLMTaskManager,
     model_name: Optional[str] = None,
     context: Optional[dict] = None,
+    **kwargs,
 ) -> dict:
     _MAX_TOKENS = 3
     user_input: str = ""

@@ -58,6 +58,7 @@ async def llama_guard_check_input(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,
     llama_guard_llm: Optional[BaseLLM] = None,
+    **kwargs,
 ) -> dict:
     """
     Checks user messages using the configured Llama Guard model

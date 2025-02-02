@@ -44,6 +44,7 @@ async def alignscore_check_facts(
     context: Optional[dict] = None,
     llm: Optional[BaseLLM] = None,
     config: Optional[RailsConfig] = None,
+    **kwargs,
 ):
     """Checks the facts for the bot response using an information alignment score."""
     fact_checking_config = llm_task_manager.config.rails.config.fact_checking

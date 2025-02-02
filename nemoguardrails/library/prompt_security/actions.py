@@ -104,7 +104,7 @@ def mapping_protect_text(result: dict) -> bool:
 
 @action(is_system_action=True, output_mapping=mapping_protect_text)
 async def protect_text(
-    user_prompt: Optional[str] = None, bot_response: Optional[str] = None
+    user_prompt: Optional[str] = None, bot_response: Optional[str] = None, **kwargs
 ):
     """Protects the given user_prompt or bot_response.
     Args:

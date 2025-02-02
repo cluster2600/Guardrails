@@ -47,6 +47,7 @@ async def self_check_facts(
     context: Optional[dict] = None,
     llm: Optional[BaseLLM] = None,
     config: Optional[RailsConfig] = None,
+    **kwargs,
 ):
     """Checks the facts for the bot response by appropriately prompting the base llm."""
     _MAX_TOKENS = 3

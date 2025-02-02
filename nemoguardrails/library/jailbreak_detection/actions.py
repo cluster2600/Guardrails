@@ -43,7 +43,9 @@ log = logging.getLogger(__name__)
 
 @action()
 async def jailbreak_detection_heuristics(
-    llm_task_manager: LLMTaskManager, context: Optional[dict] = None
+    llm_task_manager: LLMTaskManager,
+    context: Optional[dict] = None,
+    **kwargs,
 ) -> bool:
     """Checks the user's prompt to determine if it is attempt to jailbreak the model."""
     jailbreak_config = llm_task_manager.config.rails.config.jailbreak_detection

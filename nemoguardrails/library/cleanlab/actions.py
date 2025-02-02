@@ -36,6 +36,7 @@ def cleanlab_output_mapping(result: dict) -> bool:
 )
 async def call_cleanlab_api(
     context: Optional[dict] = None,
+    **kwargs,
 ) -> Union[ValueError, ImportError, Dict]:
     api_key = os.environ.get("CLEANLAB_API_KEY")
 

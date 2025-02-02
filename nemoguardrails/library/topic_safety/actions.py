@@ -36,6 +36,7 @@ async def topic_safety_check_input(
     model_name: Optional[str] = None,
     context: Optional[dict] = None,
     events: Optional[List[dict]] = None,
+    **kwargs,
 ) -> dict:
     _MAX_TOKENS = 10
     user_input: str = ""

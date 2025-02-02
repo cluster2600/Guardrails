@@ -36,6 +36,7 @@ async def self_check_output(
     context: Optional[dict] = None,
     llm: Optional[BaseLLM] = None,
     config: Optional[RailsConfig] = None,
+    **kwargs,
 ):
     """Checks if the output from the bot.
 

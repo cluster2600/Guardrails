@@ -96,7 +96,12 @@ def mapping_detect_sensitive_data(result: bool) -> bool:
 
 
 @action(is_system_action=True, output_mapping=mapping_detect_sensitive_data)
-async def detect_sensitive_data(source: str, text: str, config: RailsConfig):
+async def detect_sensitive_data(
+    source: str,
+    text: str,
+    config: RailsConfig,
+    **kwargs,
+):
     """Checks whether the provided text contains any sensitive data.
 
     Args

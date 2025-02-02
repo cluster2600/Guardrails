@@ -77,6 +77,7 @@ async def patronus_lynx_check_output_hallucination(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,
     patronus_lynx_llm: Optional[BaseLLM] = None,
+    **kwargs,
 ) -> dict:
     """
     Check the bot response for hallucinations based on the given chunks

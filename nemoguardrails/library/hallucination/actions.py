@@ -46,6 +46,7 @@ async def self_check_hallucination(
     context: Optional[dict] = None,
     use_llm_checking: bool = True,
     config: Optional[RailsConfig] = None,
+    **kwargs,
 ):
     """Checks if the last bot response is a hallucination by checking multiple completions for self-consistency.
 

@@ -103,7 +103,9 @@ def gcp_text_moderation_mapping(result: dict) -> bool:
     is_system_action=True,
     output_mapping=gcp_text_moderation_mapping,
 )
-async def call_gcp_text_moderation_api(context: Optional[dict] = None):
+async def call_gcp_text_moderation_api(
+    context: Optional[dict] = None, **kwargs
+) -> dict:
     """
     Application Default Credentials (ADC) is a strategy used by the GCP authentication libraries to automatically
     find credentials based on the application environment. ADC searches for credentials in the following locations (Search order):
