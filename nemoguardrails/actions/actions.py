@@ -14,7 +14,14 @@
 # limitations under the License.
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Optional, TypedDict, Union
+
+
+class ActionMeta(TypedDict, total=False):
+    name: str
+    is_system_action: bool
+    execute_async: bool
+    output_mapping: Optional[Callable[[Any], bool]]
 
 
 def action(
@@ -22,7 +29,7 @@ def action(
     name: Optional[str] = None,
     execute_async: bool = False,
     output_mapping: Optional[Callable[[Any], bool]] = None,
-):
+) -> Callable[[Union[Callable, type]], Union[Callable, type]]:
     """Decorator to mark a function or class as an action.
 
     Args:
@@ -36,28 +43,22 @@ def action(
         callable: The decorated function or class.
     """
 
-    def decorator(fn_or_cls):
+    def decorator(fn_or_cls: Union[Callable, type]) -> Union[Callable, type]:
         """Inner decorator function to add metadata to the action.
 
         Args:
             fn_or_cls: The function or class being decorated.
         """
+        fn_or_cls_target = getattr(fn_or_cls, "__func__", fn_or_cls)
 
-        # Detect the decorator being applied to staticmethod or classmethod.
-        # Will annotate the the inner function in that case as otherwise
-        # metaclass will be giving us the unannotated enclosed function on
-        # attribute lookup.
-        if hasattr(fn_or_cls, "__func__"):
-            fn_or_cls_target = fn_or_cls.__func__
-        else:
-            fn_or_cls_target = fn_or_cls
-
-        fn_or_cls_target.action_meta = {
+        action_meta: ActionMeta = {
             "name": name or fn_or_cls.__name__,
             "is_system_action": is_system_action,
             "execute_async": execute_async,
             "output_mapping": output_mapping,
         }
+
+        setattr(fn_or_cls_target, "action_meta", action_meta)
         return fn_or_cls
 
     return decorator
