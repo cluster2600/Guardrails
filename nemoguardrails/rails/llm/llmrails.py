@@ -417,6 +417,7 @@ class LLMRails:
                     self.runtime.register_action_param(
                         model_name, getattr(self, model_name)
                     )
+                    # this is used for cotnent safety and topic control
                     llms[llm_config.type] = getattr(self, model_name)
 
             self.runtime.register_action_param("llms", llms)
@@ -954,7 +955,9 @@ class LLMRails:
         if self.config.rails.output.streaming.enabled:
             # returns an async generator
             return self._run_output_rails_in_streaming(
-                streaming_handler, messages, prompt
+                streaming_handler=streaming_handler,
+                messages=messages,
+                prompt=prompt,
             )
         else:
             return streaming_handler
@@ -1184,36 +1187,71 @@ class LLMRails:
         3. Yields the chunk if not blocked, or STOP if blocked.
         """
 
+        def _get_last_context_message(
+            messages: Optional[List[dict]] = None,
+        ) -> dict:
+            if messages is None:
+                return {}
+
+            for message in reversed(messages):
+                if message.get("role") == "context":
+                    return message
+            return {}
+
         def _get_latest_user_message(
             messages: Optional[List[dict]] = None,
-        ) -> Optional[dict]:
+        ) -> dict:
             if messages is None:
-                return None
+                return {}
             for message in reversed(messages):
                 if message.get("role") == "user":
                     return message
-            return None
+            return {}
 
         def _prepare_params(
+            flow_id: str,
             action_name: str,
             chunk_str: str,
             prompt: Optional[str] = None,
             messages: Optional[List[dict]] = None,
+            action_params: Dict[str, Any] = {},
         ):
+            context_message = _get_last_context_message(messages)
             user_message = prompt or _get_latest_user_message(messages)
+
+            context = {
+                "user_message": user_message,
+                "bot_message": chunk_str,
+            }
+
+            if context_message:
+                context.update(context_message["content"])
+
+            model_name = flow_id.split("$")[-1].split("=")[-1].strip('"')
+
+            # we pass action params that are defined in the flow
+            # caveate, e.g. prmpt_security uses bot_response=$bot_message
+            # to resolve replace placeholders in action_params
+            for key, value in action_params.items():
+                if value == "$bot_message":
+                    action_params[key] = chunk_str
+                elif value == "$user_message":
+                    action_params[key] = user_message
 
             return {
                 # TODO:: are there other context variables that need to be passed?
-                # what happens with `relevant_chuks`
-                "context": {
-                    "user_message": user_message,
-                    "bot_message": chunk_str,
-                },
+                # passing events to compute context was not successful
+                # self._events failed
+                # context var failed due to different context
+                "context": context,
                 "llm_task_manager": self.runtime.llm_task_manager,
                 "config": self.config,
+                "model_name": model_name,
+                "llms": self.runtime.registered_action_params.get("llms", {}),
                 "llm": self.runtime.registered_action_params.get(
                     f"{action_name}_llm", self.llm
                 ),
+                **action_params,
             }
 
         def _update_explain_info():
@@ -1227,7 +1265,9 @@ class LLMRails:
         buffer_strategy = get_buffer_strategy(output_rails_streaming_config)
         output_rails_flows_id = self.config.rails.output.flows
         stream_first = stream_first or output_rails_streaming_config.stream_first
-        get_action_name = partial(get_action_name_from_flow_id, flows=self.config.flows)
+        get_action_details = partial(
+            get_action_details_from_flow_id, flows=self.config.flows
+        )
 
         async for chunk_list, chunk_str_rep in buffer_strategy(streaming_handler):
             chunk_str = " ".join(chunk_list)
@@ -1236,13 +1276,15 @@ class LLMRails:
                 yield chunk_str_rep
 
             for flow_id in output_rails_flows_id:
-                action_name = get_action_name(flow_id)
+                action_name, action_params = get_action_details(flow_id)
 
                 params = _prepare_params(
+                    flow_id=flow_id,
                     action_name=action_name,
                     chunk_str=chunk_str,
                     prompt=prompt,
                     messages=messages,
+                    action_params=action_params,
                 )
 
                 # Execute the action. (Your execute_action returns only the result.)
@@ -1265,14 +1307,16 @@ class LLMRails:
                 yield chunk_str_rep
 
 
-def get_action_name_from_flow_id(flow_id: str, flows: List[Union[Dict, Any]]) -> str:
-    """Get the action name from the flow id.
-
-    Flows must be provided from rails.config.flows.
-
-    """
+def get_action_details_from_flow_id(
+    flow_id: str, flows: List[Union[Dict, Any]]
+) -> Tuple[str, Any]:
+    """Get the action name and parameters from the flow id."""
     for flow in flows:
-        if flow["id"] == flow_id:
+        if (
+            flow_id == flow["id"]
+            or flow_id.startswith("content safety check")
+            or flow_id.startswith("topic safety check")
+        ):
             for element in flow["elements"]:
                 if (
                     element["_type"] == "run_action"
@@ -1280,7 +1324,7 @@ def get_action_name_from_flow_id(flow_id: str, flows: List[Union[Dict, Any]]) ->
                     and "execute" in element["_source_mapping"]["line_text"]
                     and "action_name" in element
                 ):
-                    return element["action_name"]
+                    return element["action_name"], element["action_params"]
 
     raise ValueError(f"No action found for flow_id: {flow_id}")
 
