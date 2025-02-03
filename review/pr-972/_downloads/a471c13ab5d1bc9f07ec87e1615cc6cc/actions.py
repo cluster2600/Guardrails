@@ -34,6 +34,7 @@ async def content_safety_check_input(
     llm_task_manager: LLMTaskManager,
     model_name: Optional[str] = None,
     context: Optional[dict] = None,
+    **kwargs,
 ) -> dict:
     _MAX_TOKENS = 3
     user_input: str = ""
@@ -90,12 +91,29 @@ async def content_safety_check_input(
     return {"allowed": is_safe, "policy_violations": violated_policies}
 
 
-@action()
+def content_safety_check_output_mapping(result: dict) -> bool:
+    """
+    Mapping function for content_safety_check_output.
+
+    Assumes result is a dictionary with:
+      - "allowed": a boolean where True means the content is safe.
+      - "policy_violations": a list of policies that were violated (optional in the mapping logic).
+
+    Returns:
+        True if the content should be blocked (i.e. allowed is False),
+        False if the content is safe.
+    """
+    allowed = result.get("allowed", True)
+    return not allowed
+
+
+@action(output_mapping=content_safety_check_output_mapping)
 async def content_safety_check_output(
     llms: Dict[str, BaseLLM],
     llm_task_manager: LLMTaskManager,
     model_name: Optional[str] = None,
     context: Optional[dict] = None,
+    **kwargs,
 ) -> dict:
     _MAX_TOKENS = 3
     user_input: str = ""
