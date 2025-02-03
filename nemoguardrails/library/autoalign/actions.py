@@ -79,7 +79,7 @@ DEFAULT_CONFIG = {
 default_groundedness_config = {"groundedness_checker": {"verify_response": False}}
 
 
-def mapping_autoalign_output_api(result: dict) -> bool:
+def autoalign_output_api_mapping(result: dict) -> bool:
     """
     Mapping for autoalign_output_api.
 
@@ -89,7 +89,7 @@ def mapping_autoalign_output_api(result: dict) -> bool:
     return result.get("guardrails_triggered", False)
 
 
-def mapping_autoalign_groundedness_output_api(result: float) -> bool:
+def autoalign_groundedness_output_api_mapping(result: float) -> bool:
     """
     Mapping for autoalign_groundedness_output_api.
 
@@ -100,7 +100,7 @@ def mapping_autoalign_groundedness_output_api(result: float) -> bool:
     return result < DEFAULT_GROUNDEDNESS_THRESHOLD
 
 
-def mapping_autoalign_factcheck_output_api(result: float) -> bool:
+def autoalign_factcheck_output_api_mapping(result: float) -> bool:
     """
     Mapping for autoalign_factcheck_output_api.
 
@@ -318,7 +318,7 @@ async def autoalign_input_api(
     return autoalign_response
 
 
-@action(name="autoalign_output_api", output_mapping=mapping_autoalign_output_api)
+@action(name="autoalign_output_api", output_mapping=autoalign_output_api_mapping)
 async def autoalign_output_api(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,
@@ -355,7 +355,7 @@ async def autoalign_output_api(
 
 @action(
     name="autoalign_groundedness_output_api",
-    output_mapping=mapping_autoalign_groundedness_output_api,
+    output_mapping=autoalign_groundedness_output_api_mapping,
 )
 async def autoalign_groundedness_output_api(
     llm_task_manager: LLMTaskManager,
@@ -395,7 +395,7 @@ async def autoalign_groundedness_output_api(
 
 @action(
     name="autoalign_factcheck_output_api",
-    output_mapping=mapping_autoalign_factcheck_output_api,
+    output_mapping=autoalign_factcheck_output_api_mapping,
 )
 async def autoalign_factcheck_output_api(
     llm_task_manager: LLMTaskManager,

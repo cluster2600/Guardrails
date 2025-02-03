@@ -85,7 +85,7 @@ def _get_ad_hoc_recognizers(sdd_config: SensitiveDataDetection):
     return ad_hoc_recognizers
 
 
-def mapping_detect_sensitive_data(result: bool) -> bool:
+def detect_sensitive_data_mapping(result: bool) -> bool:
     """
     Mapping for detect_sensitive_data.
 
@@ -95,7 +95,7 @@ def mapping_detect_sensitive_data(result: bool) -> bool:
     return result
 
 
-@action(is_system_action=True, output_mapping=mapping_detect_sensitive_data)
+@action(is_system_action=True, output_mapping=detect_sensitive_data_mapping)
 async def detect_sensitive_data(
     source: str,
     text: str,

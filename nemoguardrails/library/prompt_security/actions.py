@@ -87,7 +87,7 @@ async def ps_protect_api_async(
         }
 
 
-def mapping_protect_text(result: dict) -> bool:
+def protect_text_mapping(result: dict) -> bool:
     """
     Mapping for protect_text action.
 
@@ -102,7 +102,7 @@ def mapping_protect_text(result: dict) -> bool:
     return blocked
 
 
-@action(is_system_action=True, output_mapping=mapping_protect_text)
+@action(is_system_action=True, output_mapping=protect_text_mapping)
 async def protect_text(
     user_prompt: Optional[str] = None, bot_response: Optional[str] = None, **kwargs
 ):

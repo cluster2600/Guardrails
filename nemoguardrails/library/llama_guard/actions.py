@@ -83,7 +83,7 @@ async def llama_guard_check_input(
     return {"allowed": allowed, "policy_violations": policy_violations}
 
 
-def mapping_llama_guard_check_output(result: dict) -> bool:
+def llama_guard_check_output_mapping(result: dict) -> bool:
     """
     Mapping for llama_guard_check_output.
 
@@ -99,7 +99,7 @@ def mapping_llama_guard_check_output(result: dict) -> bool:
     return not allowed
 
 
-@action(output_mapping=mapping_llama_guard_check_output)
+@action(output_mapping=llama_guard_check_output_mapping)
 async def llama_guard_check_output(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,

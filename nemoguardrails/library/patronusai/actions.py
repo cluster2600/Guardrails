@@ -60,7 +60,7 @@ def parse_patronus_lynx_response(
     return hallucination, reasoning
 
 
-def mapping_patronus_lynx_check_output_hallucination(result: dict) -> bool:
+def patronus_lynx_check_output_hallucination_mapping(result: dict) -> bool:
     """
     Mapping for patronus_lynx_check_output_hallucination.
 
@@ -72,7 +72,7 @@ def mapping_patronus_lynx_check_output_hallucination(result: dict) -> bool:
     return result.get("hallucination", False)
 
 
-@action(output_mapping=mapping_patronus_lynx_check_output_hallucination)
+@action(output_mapping=patronus_lynx_check_output_hallucination_mapping)
 async def patronus_lynx_check_output_hallucination(
     llm_task_manager: LLMTaskManager,
     context: Optional[dict] = None,
@@ -228,7 +228,7 @@ async def patronus_evaluate_request(
             return response_json
 
 
-def mapping_patronus_api_check_output(result: dict) -> bool:
+def patronus_api_check_output_mapping(result: dict) -> bool:
     """
     Mapping for patronus_api_check_output.
 
@@ -243,7 +243,7 @@ def mapping_patronus_api_check_output(result: dict) -> bool:
 
 
 @action(
-    name="patronus_api_check_output", output_mapping=mapping_patronus_api_check_output
+    name="patronus_api_check_output", output_mapping=patronus_api_check_output_mapping
 )
 async def patronus_api_check_output(
     llm_task_manager: LLMTaskManager,

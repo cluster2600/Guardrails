@@ -27,7 +27,7 @@ from nemoguardrails.rails.llm.config import PrivateAIDetection
 log = logging.getLogger(__name__)
 
 
-def mapping_detect_pii(result: bool) -> bool:
+def detect_pii_mapping(result: bool) -> bool:
     """
     Mapping for detect_pii.
 
@@ -37,7 +37,7 @@ def mapping_detect_pii(result: bool) -> bool:
     return result
 
 
-@action(is_system_action=True, output_mapping=mapping_detect_pii)
+@action(is_system_action=True, output_mapping=detect_pii_mapping)
 async def detect_pii(
     source: str,
     text: str,

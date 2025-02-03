@@ -25,7 +25,7 @@ from nemoguardrails.utils import new_uuid
 log = logging.getLogger(__name__)
 
 
-def mapping_call_activefence_api(result: dict) -> bool:
+def call_activefence_api_mapping(result: dict) -> bool:
     """
     Mapping for call_activefence_api.
 
@@ -69,7 +69,7 @@ def mapping_call_activefence_api(result: dict) -> bool:
     return False
 
 
-@action(is_system_action=True, output_mapping=mapping_call_activefence_api)
+@action(is_system_action=True, output_mapping=call_activefence_api_mapping)
 async def call_activefence_api(text: Optional[str] = None, **kwargs):
     api_key = os.environ.get("ACTIVEFENCE_API_KEY")
 
