@@ -1274,7 +1274,11 @@ class LLMRails:
             chunk_str = " ".join(chunk_list)
 
             if stream_first:
-                yield chunk_str_rep
+                words = chunk_str_rep.split()
+                if words:
+                    yield words[0]
+                    for word in words[1:]:
+                        yield f" {word}"
 
             for flow_id in output_rails_flows_id:
                 action_name, action_params = get_action_details(flow_id)
@@ -1305,7 +1309,11 @@ class LLMRails:
                     return
 
             if not stream_first:
-                yield chunk_str_rep
+                words = chunk_str_rep.split()
+                if words:
+                    yield words[0]
+                    for word in words[1:]:
+                        yield f" {word}"
 
 
 def _get_action_details_from_flow_id(
