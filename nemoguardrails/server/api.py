@@ -26,7 +26,7 @@ from typing import Any, List, Optional
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from starlette.responses import StreamingResponse
 from starlette.staticfiles import StaticFiles
 
@@ -208,7 +208,7 @@ class RequestBody(BaseModel):
         description="A state object that should be used to continue the interaction.",
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def ensure_config_id(cls, data: Any) -> Any:
         if isinstance(data, dict):
             if data.get("config_id") is not None and data.get("config_ids") is not None:
@@ -223,11 +223,15 @@ class RequestBody(BaseModel):
                 )
         return data
 
-    @validator("config_ids", pre=True, always=True)
+    @field_validator("config_ids", mode="before")
     def ensure_config_ids(cls, v, values):
-        if v is None and values.get("config_id") and values.get("config_ids") is None:
+        if (
+            v is None
+            and values.data.get("config_id")
+            and values.data.get("config_ids") is None
+        ):
             # populate config_ids with config_id if only config_id is provided
-            return [values["config_id"]]
+            return [values.data["config_id"]]
         return v
 
 

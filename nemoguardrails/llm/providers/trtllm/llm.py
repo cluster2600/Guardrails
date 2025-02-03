@@ -22,7 +22,7 @@ from typing import Any, Dict, List, Optional
 
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain_core.language_models.llms import BaseLLM
-from pydantic.v1 import Field, root_validator
+from pydantic import Field, model_validator
 
 from nemoguardrails.llm.providers.trtllm.client import TritonClient
 
@@ -61,12 +61,12 @@ class TRTLLM(BaseLLM):
     client: Any
     streaming: Optional[bool] = True
 
-    @root_validator(allow_reuse=True)
+    @model_validator(mode="after")
     @classmethod
-    def validate_environment(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+    def validate_environment(cls, values: "TRTLLM") -> "TRTLLM":
         """Validate that python package exists in environment."""
         try:
-            values["client"] = TritonClient(values["server_url"])
+            values.client = TritonClient(values.server_url)
 
         except ImportError as err:
             raise ImportError(

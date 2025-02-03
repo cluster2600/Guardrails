@@ -27,7 +27,7 @@ from langchain.callbacks.manager import (
 from langchain.schema import Generation
 from langchain.schema.output import GenerationChunk, LLMResult
 from langchain_core.language_models.llms import BaseLLM
-from pydantic.v1 import root_validator
+from pydantic import model_validator
 
 log = logging.getLogger(__name__)
 
@@ -52,7 +52,7 @@ class NeMoLLM(BaseLLM):
     streaming: bool = False
     check_api_host_version: bool = True
 
-    @root_validator(pre=True, allow_reuse=True)
+    @model_validator(mode="before")
     def check_env_variables(cls, values):
         for field in ["api_host", "api_key", "organization_id"]:
             # If it's an explicit environment variable, we use that

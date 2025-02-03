@@ -23,8 +23,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import yaml
-from pydantic import BaseModel, ConfigDict, ValidationError, root_validator
-from pydantic.fields import Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
 from nemoguardrails import utils
 from nemoguardrails.colang import parse_colang_file, parse_flow_elements
@@ -253,7 +252,7 @@ class TaskPrompt(BaseModel):
         description="The maximum number of tokens that can be generated in the chat completion.",
     )
 
-    @root_validator(pre=True, allow_reuse=True)
+    @model_validator(mode="before")
     def check_fields(cls, values):
         if not values.get("content") and not values.get("messages"):
             raise ValidationError("One of `content` or `messages` must be provided.")
@@ -947,16 +946,15 @@ class RailsConfig(BaseModel):
         description="The list of bot messages that should be used for the rails.",
     )
 
-    # NOTE: the Any below is used to get rid of a warning with pydantic 1.10.x;
-    #   The correct typing should be List[Dict, Flow]. To be updated when
-    #   support for pydantic 1.10.x is dropped.
-    flows: List[Union[Dict, Any]] = Field(
+    flows: List[Union[Dict, Flow]] = Field(
         default_factory=list,
         description="The list of flows that should be used for the rails.",
     )
 
     instructions: Optional[List[Instruction]] = Field(
-        default=[Instruction.parse_obj(obj) for obj in _default_config["instructions"]],
+        default=[
+            Instruction.model_validate(obj) for obj in _default_config["instructions"]
+        ],
         description="List of instructions in natural language that the LLM should use.",
     )
 
@@ -1061,7 +1059,7 @@ class RailsConfig(BaseModel):
         description="Configuration for tracing.",
     )
 
-    @root_validator(pre=True, allow_reuse=True)
+    @model_validator(mode="before")
     def check_prompt_exist_for_self_check_rails(cls, values):
         rails = values.get("rails", {})
 
@@ -1115,7 +1113,7 @@ class RailsConfig(BaseModel):
 
         return values
 
-    @root_validator(pre=True, allow_reuse=True)
+    @model_validator(mode="before")
     def check_output_parser_exists(cls, values):
         tasks_requiring_output_parser = [
             "self_check_input",
@@ -1148,7 +1146,7 @@ class RailsConfig(BaseModel):
                 )
         return values
 
-    @root_validator(pre=True, allow_reuse=True)
+    @model_validator(mode="before")
     def fill_in_default_values_for_v2_x(cls, values):
         instructions = values.get("instructions", {})
         sample_conversation = values.get("sample_conversation")
@@ -1277,7 +1275,7 @@ class RailsConfig(BaseModel):
                 ):
                     flow_data["elements"] = parse_flow_elements(flow_data["elements"])
 
-        return cls.parse_obj(obj)
+        return cls.model_validate(obj)
 
     @property
     def streaming_supported(self):
