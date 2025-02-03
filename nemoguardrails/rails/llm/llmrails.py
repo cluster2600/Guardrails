@@ -31,6 +31,7 @@ from langchain_core.language_models.llms import BaseLLM
 
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.actions.llm.utils import get_colang_history
+from nemoguardrails.actions.output_mapping import should_block_output
 from nemoguardrails.actions.v2_x.generation import LLMGenerationActionsV2dotx
 from nemoguardrails.colang import parse_colang_file
 from nemoguardrails.colang.v1_0.runtime.flows import compute_context
@@ -1266,7 +1267,7 @@ class LLMRails:
         output_rails_flows_id = self.config.rails.output.flows
         stream_first = stream_first or output_rails_streaming_config.stream_first
         get_action_details = partial(
-            get_action_details_from_flow_id, flows=self.config.flows
+            _get_action_details_from_flow_id, flows=self.config.flows
         )
 
         async for chunk_list, chunk_str_rep in buffer_strategy(streaming_handler):
@@ -1298,7 +1299,7 @@ class LLMRails:
                 action_func = self.runtime.action_dispatcher.get_action(action_name)
 
                 # Use the mapping to decide if the result indicates blocked content.
-                if is_blocked(result, action_func):
+                if should_block_output(result, action_func):
                     # TODO: while whitespace issue is fixed, remove the space from below
                     yield " {DATA: STOP}"
                     return
@@ -1307,7 +1308,7 @@ class LLMRails:
                 yield chunk_str_rep
 
 
-def get_action_details_from_flow_id(
+def _get_action_details_from_flow_id(
     flow_id: str, flows: List[Union[Dict, Any]]
 ) -> Tuple[str, Any]:
     """Get the action name and parameters from the flow id."""
@@ -1327,40 +1328,3 @@ def get_action_details_from_flow_id(
                     return element["action_name"], element["action_params"]
 
     raise ValueError(f"No action found for flow_id: {flow_id}")
-
-
-def default_mapping(result):
-    """
-    A fallback mapping if an action does not provide one.
-
-    - For a boolean result: assume True means allowed (so block if False).
-    - For a numeric result: use 0.5 as a threshold (block if the value is less).
-    - Otherwise, assume the result is allowed.
-    """
-    if isinstance(result, bool):
-        return not result  # block if result is False
-    elif isinstance(result, (int, float)):
-        return result < 0.5
-    else:
-        return False
-
-
-def is_blocked(result, action_func):
-    """
-    Determines if an action result should be blocked using its attached mapping.
-
-    Args:
-        result: The value returned by the action.
-        action_func: The action function (whose metadata contains the mapping).
-
-    Returns:
-        True if the mapping indicates that the output should be blocked, False otherwise.
-    """
-    mapping = getattr(action_func, "action_meta", {}).get("output_mapping")
-    if mapping is None:
-        mapping = default_mapping
-
-    if not isinstance(result, Tuple):
-        result = (result,)
-
-    return mapping(result[0])
