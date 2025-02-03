@@ -32,7 +32,6 @@ from langchain_core.language_models.llms import BaseLLM
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.actions.llm.utils import get_colang_history
 from nemoguardrails.actions.v2_x.generation import LLMGenerationActionsV2dotx
-from nemoguardrails.buffer import get_buffer_strategy
 from nemoguardrails.colang import parse_colang_file
 from nemoguardrails.colang.v1_0.runtime.flows import compute_context
 from nemoguardrails.colang.v1_0.runtime.runtime import Runtime, RuntimeV1_0
@@ -59,6 +58,7 @@ from nemoguardrails.logging.processing_log import compute_generation_log
 from nemoguardrails.logging.stats import LLMStats
 from nemoguardrails.logging.verbose import set_verbose
 from nemoguardrails.patch_asyncio import check_sync_call_from_async_loop
+from nemoguardrails.rails.llm.buffer import get_buffer_strategy
 from nemoguardrails.rails.llm.config import EmbeddingSearchProvider, Model, RailsConfig
 from nemoguardrails.rails.llm.options import (
     GenerationLog,
