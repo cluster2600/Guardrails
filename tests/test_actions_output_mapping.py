@@ -19,7 +19,7 @@ import pytest
 from nemoguardrails.actions import action
 from nemoguardrails.actions.output_mapping import (
     default_output_mapping,
-    should_block_output,
+    is_output_blocked,
 )
 
 # Tests for default_output_mapping
@@ -70,21 +70,21 @@ def test_should_block_output_with_tuple_result_and_mapping():
     # Test should_block_output when the result is a tuple and the dummy mapping is used.
     # When the first element equals "block", we expect True.
     result = ("block",)
-    assert should_block_output(result, dummy_action) is True
+    assert is_output_blocked(result, dummy_action) is True
 
     # When the result is not "block", we expect False.
     result = ("allow",)
-    assert should_block_output(result, dummy_action) is False
+    assert is_output_blocked(result, dummy_action) is False
 
 
 def test_should_block_output_with_non_tuple_result_and_mapping():
     # Test should_block_output when the result is not a tuple.
     # The function should wrap it into a tuple.
     result = "block"
-    assert should_block_output(result, dummy_action) is True
+    assert is_output_blocked(result, dummy_action) is True
 
     result = "allow"
-    assert should_block_output(result, dummy_action) is False
+    assert is_output_blocked(result, dummy_action) is False
 
 
 def test_should_block_output_without_action_meta():
@@ -98,9 +98,9 @@ def test_should_block_output_without_action_meta():
         del action_without_meta.action_meta
 
     # Test with a boolean: default_output_mapping for True is False and for False is True.
-    assert should_block_output(True, action_without_meta) is False
-    assert should_block_output(False, action_without_meta) is True
+    assert is_output_blocked(True, action_without_meta) is False
+    assert is_output_blocked(False, action_without_meta) is True
 
     # Test with a numeric value: block if < 0.5.
-    assert should_block_output(0.4, action_without_meta) is True
-    assert should_block_output(0.6, action_without_meta) is False
+    assert is_output_blocked(0.4, action_without_meta) is True
+    assert is_output_blocked(0.6, action_without_meta) is False

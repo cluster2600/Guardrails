@@ -766,7 +766,7 @@ class LLMGenerationActions:
         # we must disable (skip) the output rails which gets executed on $bot_message
         # as it is executed separately in llmrails.py
         # of course, it does not work when passed as context in `run_output_rails_in_streaming`
-        # streming_handler is set when stream_async method is used
+        # streaming_handler is set when stream_async method is used
         if streaming_handler and self.config.rails.output.streaming.enabled:
             context_updates["skip_output_rails"] = True
 
@@ -787,9 +787,7 @@ class LLMGenerationActions:
             context_updates["skip_output_rails"] = True
 
         # Check if the output is supposed to be the content of a context variable
-        # TODO: add this bug fix
-        # elif bot_intent and bot_intent[0] == "$" and bot_intent[1:] in context:
-        elif bot_intent[0] == "$" and bot_intent[1:] in context:
+        elif bot_intent and bot_intent[0] == "$" and bot_intent[1:] in context:
             bot_utterance = context[bot_intent[1:]]
 
         else:

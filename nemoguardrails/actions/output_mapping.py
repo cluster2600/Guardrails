@@ -31,8 +31,8 @@ def default_output_mapping(result: Any) -> bool:
         return False
 
 
-def should_block_output(result: Any, action_func: Any) -> bool:
-    """Determines if an action result should be blocked using its attached mapping.
+def is_output_blocked(result: Any, action_func: Any) -> bool:
+    """Determines if an action result is not allowed using its attached mapping.
 
     Args:
         result: The value returned by the action.

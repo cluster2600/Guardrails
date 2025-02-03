@@ -16,7 +16,7 @@
 from abc import ABC, abstractmethod
 from typing import AsyncGenerator, List, Tuple
 
-from nemoguardrails.rails.llm.config import OutputRailsStreamingConfig, RailsConfig
+from nemoguardrails.rails.llm.config import OutputRailsStreamingConfig
 
 
 class BufferStrategy(ABC):
@@ -104,16 +104,5 @@ class SlidingWindow(BufferStrategy):
 
 def get_buffer_strategy(config: OutputRailsStreamingConfig) -> BufferStrategy:
     # TODO: use a factory function or class
-    # currently we only have SlidingWindo, in future we have a registry
+    # currently we only have SlidingWindow, in future we use a registry
     return SlidingWindow.from_config(config)
-
-
-def is_blocked(result: Tuple[bool, str]) -> bool:
-    """Check output rials status."""
-    # result is a tuple of (return_value, success|failure)
-    # return_value is not unified among all the actions
-    # sometimes it is a bool where True means allowed, sometimes True means blocked
-    # sometimes it is a score where allowed/blocked is dictated in flows.co
-    # lack of stable interface for output rails cause this issue
-    # for self_check_output following holds
-    return not result[0]

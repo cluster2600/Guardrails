@@ -31,7 +31,7 @@ from langchain_core.language_models.llms import BaseLLM
 
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.actions.llm.utils import get_colang_history
-from nemoguardrails.actions.output_mapping import should_block_output
+from nemoguardrails.actions.output_mapping import is_output_blocked
 from nemoguardrails.actions.v2_x.generation import LLMGenerationActionsV2dotx
 from nemoguardrails.colang import parse_colang_file
 from nemoguardrails.colang.v1_0.runtime.flows import compute_context
@@ -1303,7 +1303,7 @@ class LLMRails:
                 action_func = self.runtime.action_dispatcher.get_action(action_name)
 
                 # Use the mapping to decide if the result indicates blocked content.
-                if should_block_output(result, action_func):
+                if is_output_blocked(result, action_func):
                     # TODO: while whitespace issue is fixed, remove the space from below
                     yield " {DATA: STOP}"
                     return
