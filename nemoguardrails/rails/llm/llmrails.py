@@ -939,6 +939,7 @@ class LLMRails:
         prompt: Optional[str] = None,
         messages: Optional[List[dict]] = None,
         options: Optional[Union[dict, GenerationOptions]] = None,
+        state: Optional[Union[dict, State]] = None,
     ) -> AsyncIterator[str]:
         """Simplified interface for getting directly the streamed tokens from the LLM."""
         streaming_handler = StreamingHandler()
@@ -951,6 +952,7 @@ class LLMRails:
                 messages=messages,
                 streaming_handler=streaming_handler,
                 options=options,
+                state=state,
             )
         )
         # TODO:
