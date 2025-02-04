@@ -305,14 +305,22 @@ class InputRails(BaseModel):
 
 
 class OutputRailsStreamingConfig(BaseModel):
+    """Configuration for managing streaming output of LLM tokens."""
+
     enabled: bool = Field(
-        default=False, description="Indicates if streaming is enabled."
+        default=False, description="Enables streaming mode when True."
     )
-    look_back_size: int = Field(default=5, description="The look back size.")
-    window_size: int = Field(default=10, description="The window size.")
+    chunk_size: int = Field(
+        default=200,
+        description="The number of tokens in each processing chunk. This is the size of the token block on which output rails are applied.",
+    )
+    context_size: int = Field(
+        default=50,
+        description="The number of tokens carried over from the previous chunk to provide context for continuity in processing.",
+    )
     stream_first: bool = Field(
         default=True,
-        description="Prioritizes streaming chunks before applying output rails.",
+        description="If True, token chunks are streamed immediately before output rails are applied.",
     )
     model_config = ConfigDict(extra="allow")
 

@@ -266,8 +266,8 @@ def output_rails_streaming_config():
                     "flows": {"self check output"},
                     "streaming": {
                         "enabled": True,
-                        "window_size": 4,
-                        "look_back_size": 2,
+                        "chunk_size": 4,
+                        "context_size": 2,
                         "stream_first": False,
                     },
                 }
@@ -403,15 +403,9 @@ async def test_streaming_output_rails_blocked_at_first_call(
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
 
-def _calculate_number_of_actions(M, W, N):
-    """
-    M: input_length
-    W: window_size
-    N: look_back_size
-    """
-
-    if W <= N:
-        raise ValueError("Window size must be greater than look-back size.")
-    if M <= W:
+def _calculate_number_of_actions(input_length, chunk_size, context_size):
+    if chunk_size <= context_size:
+        raise ValueError("chunk_size must be greater than context_size.")
+    if input_length <= chunk_size:
         return 1
-    return math.ceil((M - N) / (W - N))
+    return math.ceil((input_length - context_size) / (chunk_size - context_size))

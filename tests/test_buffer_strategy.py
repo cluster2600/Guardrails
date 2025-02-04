@@ -15,7 +15,7 @@
 
 import pytest
 
-from nemoguardrails.rails.llm.buffer import SlidingWindow as BufferStrategy
+from nemoguardrails.rails.llm.buffer import RollingBuffer as BufferStrategy
 
 
 async def fake_streaming_handler():
@@ -26,7 +26,7 @@ async def fake_streaming_handler():
 
 @pytest.mark.asyncio
 async def test_buffer_strategy():
-    buffer_strategy = BufferStrategy(look_back_size=5, window_size=10)
+    buffer_strategy = BufferStrategy(buffer_context_size=5, buffer_chunk_size=10)
     streaming_handler = fake_streaming_handler()
 
     expected_buffers = [
@@ -69,7 +69,7 @@ async def async_enumerate(aiterable, start=0):
 
 
 async def test_generate_chunk_str():
-    buffer_strategy = BufferStrategy(look_back_size=5, window_size=10)
+    buffer_strategy = BufferStrategy(buffer_context_size=5, buffer_chunk_size=10)
     buffer = ["chunk0", "chunk1", "chunk2", "chunk3", "chunk4", "chunk5"]
     current_index = 6
 

@@ -25,8 +25,12 @@ class BufferStrategy(ABC):
     def from_config(cls, config: OutputRailsStreamingConfig) -> "BufferStrategy":
         pass
 
+    # The abstract method is not async to ensure the return type
+    # matches the async generator in the concrete implementation.
     @abstractmethod
-    async def __call__(self, streaming_handler) -> AsyncGenerator:
+    def __call__(
+        self, streaming_handler
+    ) -> AsyncGenerator[Tuple[List[str], str], None]:
         pass
 
     @abstractmethod
@@ -34,24 +38,24 @@ class BufferStrategy(ABC):
         pass
 
 
-class SlidingWindow(BufferStrategy):
-    """DRFAT: A minimal buffer strategy that buffers chunks and yields them when the buffer is full."""
+class RollingBuffer(BufferStrategy):
+    """A minimal buffer strategy that buffers chunks and yields them when the buffer is full.
 
-    # - **chunk_size (X)**: This would correspond to the number of tokens in each chunk processed by the `streaming_handler`.
-    # - **max_validation_length (N)**: This would correspond to the `look_back_size` parameter in the code, representing the maximum number of lookback chunks.
-    #
-    # In the code:
-    # - `window_size` represents the number of chunks to process in each window.
-    # - `look_back_size` represents the number of previous chunks to include in the window for context.
+    Args:
+        buffer_context_size (int): The number of tokens carried over from the previous chunk to provide context for continuity in processing.
+        buffer_chunk_size (int): The number of tokens in each processing chunk. This is the size of the token block on which output rails are applied.
+    """
 
-    def __init__(self, look_back_size: int = 5, window_size: int = 10):
-        self.look_back_size = look_back_size
-        self.window_size = window_size
+    def __init__(self, buffer_context_size: int = 5, buffer_chunk_size: int = 10):
+        self.buffer_context_size = buffer_context_size
+        self.buffer_chunk_size = buffer_chunk_size
         self.last_index = 0
 
     @classmethod
     def from_config(cls, config: OutputRailsStreamingConfig):
-        return cls(look_back_size=config.look_back_size, window_size=config.window_size)
+        return cls(
+            buffer_context_size=config.context_size, buffer_chunk_size=config.chunk_size
+        )
 
     async def __call__(
         self, streaming_handler
@@ -62,30 +66,26 @@ class SlidingWindow(BufferStrategy):
         async for chunk in streaming_handler:
             buffer.append(chunk)
             index += 1
-            # TODO: this is done in StreamingHandler, we need to find away to remove this duplication
-            # print(f"\033[92m{chunk}\033[0m", end="", flush=True)
-            # the hackish solution in StreamingHandler is resolved in Chat ClI, we should not alter interfaces
-            # when we have stream_async we must use it everywhere, adding enable_print will cause headaches
-            # then this hackish solution will cause a cancer of this hackish solution and will contaminate the whole codebase
 
-            if len(buffer) >= self.window_size:
+            if len(buffer) >= self.buffer_chunk_size:
                 yield (
-                    # buffer is used to apply output rails
-                    buffer[-self.window_size - self.look_back_size :],
-                    # this is what gets printed in the console or yield to user
+                    # we apply output rails on the buffer
+                    buffer[-self.buffer_chunk_size - self.buffer_context_size :],
+                    # generate_chunk_str is what gets printed in the console or yield to user
                     # to avoid repeating the already streamed/printed chunk
                     self.generate_chunk_str(
-                        buffer[-self.window_size - self.look_back_size :], index
+                        buffer[-self.buffer_chunk_size - self.buffer_context_size :],
+                        index,
                     ),
                 )
-                buffer = buffer[-self.look_back_size :]
+                buffer = buffer[-self.buffer_context_size :]
 
         # Yield any remaining buffer if it's not empty
         if buffer:
             yield (
                 buffer,
                 self.generate_chunk_str(
-                    buffer[-self.window_size - self.look_back_size :], index
+                    buffer[-self.buffer_chunk_size - self.buffer_context_size :], index
                 ),
             )
 
@@ -104,5 +104,5 @@ class SlidingWindow(BufferStrategy):
 
 def get_buffer_strategy(config: OutputRailsStreamingConfig) -> BufferStrategy:
     # TODO: use a factory function or class
-    # currently we only have SlidingWindow, in future we use a registry
-    return SlidingWindow.from_config(config)
+    # currently we only have RollingBuffer, in future we use a registry
+    return RollingBuffer.from_config(config)
