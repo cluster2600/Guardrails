@@ -1074,8 +1074,8 @@ create a class that inherits from <code class="docutils literal notranslate"><sp
 <h3>Output Rails<a class="headerlink" href="#output-rails" title="Link to this heading">#</a></h3>
 <p>Output rails process a bot message. The message to be processed is available in the context variable <code class="docutils literal notranslate"><span class="pre">$bot_message</span></code>. Output rails can alter the <code class="docutils literal notranslate"><span class="pre">$bot_message</span></code> variable, e.g., to mask sensitive information.</p>
 <p>You can deactivate output rails temporarily for the next bot message, by setting the <code class="docutils literal notranslate"><span class="pre">$skip_output_rails</span></code> context variable to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<section id="enabling-streaming-output">
-<h4>Enabling Streaming Output<a class="headerlink" href="#enabling-streaming-output" title="Link to this heading">#</a></h4>
+<section id="streaming-output-configuration">
+<h4>Streaming Output Configuration<a class="headerlink" href="#streaming-output-configuration" title="Link to this heading">#</a></h4>
 <p>By default, the response from an output rail is synchronous.
 You can enable streaming to begin receiving responses from the output rail sooner.</p>
 <p>You must set the top-level <code class="docutils literal notranslate"><span class="pre">streaming:</span> <span class="pre">True</span></code> field in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file.</p>
@@ -1523,7 +1523,7 @@ To understand better what is happening under the hood, here’s how the <code cl
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-definitions">Guardrails Definitions</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-rails">Input Rails</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-rails">Output Rails</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-streaming-output">Enabling Streaming Output</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-output-configuration">Streaming Output Configuration</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-rails">Retrieval Rails</a></li>
