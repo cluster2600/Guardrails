@@ -1219,15 +1219,15 @@ class RailsConfig(BaseModel):
 
     @property
     def streaming_supported(self):
-        """Whether the current config supports streaming or not.
+        """Whether the current config supports streaming or not."""
 
-        Currently, we don't support streaming if there are output rails.
-        """
-        if len(self.rails.output.flows) > 0:
-            # if we have output rails streaming enabled
-            if self.rails.output.streaming.enabled:
-                return True
-            return False
+        # if len(self.rails.output.flows) > 0:
+        #     # if we have output rails streaming enabled
+        #     # we keep it in case it was needed when we have
+        #     # support per rails
+        #     if self.rails.output.streaming.enabled:
+        #         return True
+        #     return False
 
         return True
 

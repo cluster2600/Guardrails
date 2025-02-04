@@ -30,7 +30,6 @@ rails:
     flows:
       - self check output
     streaming:
-      enabled: True
       window_size: 20
 
   dialog:

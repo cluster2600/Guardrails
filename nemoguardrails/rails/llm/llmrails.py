@@ -418,7 +418,7 @@ class LLMRails:
                     self.runtime.register_action_param(
                         model_name, getattr(self, model_name)
                     )
-                    # this is used for cotnent safety and topic control
+                    # this is used for content safety and topic control
                     llms[llm_config.type] = getattr(self, model_name)
 
             self.runtime.register_action_param("llms", llms)
@@ -953,7 +953,11 @@ class LLMRails:
                 options=options,
             )
         )
-        if self.config.rails.output.streaming.enabled:
+        # TODO:
+        # when we have output rails we wrap the streaming handler
+        if len(self.config.rails.output.flows) > 0:
+            #
+            # if self.config.rails.output.streaming.enabled:
             # returns an async generator
             return self._run_output_rails_in_streaming(
                 streaming_handler=streaming_handler,
