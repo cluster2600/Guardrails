@@ -91,7 +91,8 @@ pandas = { version = ">=1.4.0,<3", optional = true }
 # sdd
 presidio-analyzer = { version = ">=2.2", optional = true }
 presidio-anonymizer = { version = ">=2.2", optional = true }
-spacy = { version = ">=3.7.2", optional = true }
+# poetry 3.8.4 does not exist for python 3.9
+spacy = { version = ">=3.7.2,<3.8.4", optional = true }
 
 # gpc
 google-cloud-language = { version = ">=2.14.0", optional = true }
