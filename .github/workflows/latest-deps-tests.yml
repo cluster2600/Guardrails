@@ -1,0 +1,26 @@
+name: Test with Latest Dependencies
+
+on:
+  push:
+    paths-ignore:
+      - ".github/**"
+    tags:
+      - "v*"
+  schedule:
+    - cron: "0 22 * * *" # 10:00 PM UTC, daily
+jobs:
+  call-tests:
+    strategy:
+      matrix:
+        os: [Ubuntu]
+        python-version: ["3.9", "3.10", "3.11"]
+        include:
+          - os: Ubuntu
+            image: ubuntu-latest
+      fail-fast: false
+    uses: ./.github/workflows/_test.yml
+    with:
+      os: ${{ matrix.os }}
+      image: ${{ matrix.image }}
+      python-version: ${{ matrix.python-version }}
+      upgrade-deps: true

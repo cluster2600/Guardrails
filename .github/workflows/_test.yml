@@ -18,6 +18,11 @@ on:
         required: true
         default: "3.10"
         type: string
+      upgrade-deps:
+        description: "Whether to install all extras"
+        required: false
+        default: false
+        type: boolean
 
 defaults:
   run:
@@ -72,7 +77,13 @@ jobs:
         run: poetry check --lock
 
       - name: Install dependencies
-        run: poetry install --with dev
+        run: |
+          if [ "${{ inputs.upgrade-deps}}" = "true" ]; then
+            poetry update
+            poetry install --all-extras --with dev
+          else
+            poetry install --with dev
+          fi
 
       - name: Run pre-commit hooks
         run: poetry run make pre_commit
