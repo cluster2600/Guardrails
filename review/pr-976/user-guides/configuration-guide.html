@@ -1102,11 +1102,19 @@ You can enable streaming to begin receiving responses from the output rail soone
 <tbody>
 <tr class="row-even"><td><p>streaming.chunk_size</p></td>
 <td><p>Specifies the number of tokens for each chunk.
-The toolkit applies output guardrails on each chunk of tokens.</p></td>
+The toolkit applies output guardrails on each chunk of tokens.</p>
+<p>Larger values provide more meaningful information for the rail to assess,
+but can add latency while accumulating tokens for a full chunk.
+The risk of higher latency is especially true if you specify <code class="docutils literal notranslate"><span class="pre">stream_first:</span> <span class="pre">False</span></code>.</p>
+</td>
 <td><p><code class="docutils literal notranslate"><span class="pre">200</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>streaming.context_size</p></td>
-<td><p>Specifies the number of tokens to keep from the previous chunk to provide context and continuity in processing.</p></td>
+<td><p>Specifies the number of tokens to keep from the previous chunk to provide context and continuity in processing.</p>
+<p>Larger values provide continuity across chunks with minimal impact on latency.
+Small values might fail to detect cross-chunk violations.
+Specifying approximately 25% of <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> provides a good compromise.</p>
+</td>
 <td><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>streaming.stream_first</p></td>
