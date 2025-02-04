@@ -1277,7 +1277,6 @@ class LLMRails:
         )
 
         async for chunk_list, chunk_str_rep in buffer_strategy(streaming_handler):
-            print(f"chunk_list: {chunk_list}")
             chunk_str = " ".join(chunk_list)
 
             if stream_first:
@@ -1300,7 +1299,6 @@ class LLMRails:
                 )
 
                 # Execute the action. (Your execute_action returns only the result.)
-                print(f"applyig action: {action_name}")
                 result = await self.runtime.action_dispatcher.execute_action(
                     action_name, params
                 )
