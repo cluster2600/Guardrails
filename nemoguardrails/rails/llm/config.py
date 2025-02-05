@@ -304,12 +304,38 @@ class InputRails(BaseModel):
     )
 
 
+class OutputRailsStreamingConfig(BaseModel):
+    """Configuration for managing streaming output of LLM tokens."""
+
+    enabled: bool = Field(
+        default=False, description="Enables streaming mode when True."
+    )
+    chunk_size: int = Field(
+        default=200,
+        description="The number of tokens in each processing chunk. This is the size of the token block on which output rails are applied.",
+    )
+    context_size: int = Field(
+        default=50,
+        description="The number of tokens carried over from the previous chunk to provide context for continuity in processing.",
+    )
+    stream_first: bool = Field(
+        default=True,
+        description="If True, token chunks are streamed immediately before output rails are applied.",
+    )
+    model_config = ConfigDict(extra="allow")
+
+
 class OutputRails(BaseModel):
     """Configuration of output rails."""
 
     flows: List[str] = Field(
         default_factory=list,
         description="The names of all the flows that implement output rails.",
+    )
+
+    streaming: Optional[OutputRailsStreamingConfig] = Field(
+        default_factory=OutputRailsStreamingConfig,
+        description="Configuration for streaming output rails.",
     )
 
 
@@ -1201,12 +1227,15 @@ class RailsConfig(BaseModel):
 
     @property
     def streaming_supported(self):
-        """Whether the current config supports streaming or not.
+        """Whether the current config supports streaming or not."""
 
-        Currently, we don't support streaming if there are output rails.
-        """
-        if len(self.rails.output.flows) > 0:
-            return False
+        # if len(self.rails.output.flows) > 0:
+        #     # if we have output rails streaming enabled
+        #     # we keep it in case it was needed when we have
+        #     # support per rails
+        #     if self.rails.output.streaming.enabled:
+        #         return True
+        #     return False
 
         return True
 

@@ -37,8 +37,9 @@ def action(
         name (Optional[str]): The name to associate with the action.
         execute_async: Whether the function should be executed in async mode.
         output_mapping (Optional[Callable[[Any], bool]]): A function to interpret the action's result.
-            It should accept the return value (e.g. the first element of a tuple) and return True if the output
-            should be considered blocked.
+            It accepts the return value (e.g. the first element of a tuple) and return True if the output
+            is not safe.
+
     Returns:
         callable: The decorated function or class.
     """

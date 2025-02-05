@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import asyncio
+import json
 import os
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, cast
@@ -82,17 +83,29 @@ async def _run_chat_v1_0(
         if not server_url:
             # If we have streaming from a locally loaded config, we initialize the handler.
             if streaming and not server_url and rails_app.main_llm_supports_streaming:
-                streaming_handler = StreamingHandler(enable_print=True)
+                bot_message_list = []
+                async for chunk in rails_app.stream_async(messages=history):
+                    if '{"event": "ABORT"' in chunk:
+                        dict_chunk = json.loads(chunk)
+                        console.print(
+                            "\n\n[red]"
+                            + f"ABORT streaming. {dict_chunk['data']}"
+                            + "[/]"
+                        )
+                        break
+
+                    console.print("[green]" + f"{chunk}" + "[/]", end="")
+                    bot_message_list.append(chunk)
+
+                bot_message_text = "".join(bot_message_list)
+                bot_message = {"role": "assistant", "content": bot_message_text}
+
             else:
-                streaming_handler = None
+                bot_message = await rails_app.generate_async(messages=history)
 
-            bot_message = await rails_app.generate_async(
-                messages=history, streaming_handler=streaming_handler
-            )
-
-            if not streaming or not rails_app.main_llm_supports_streaming:
-                # We print bot messages in green.
-                console.print("[green]" + f"{bot_message['content']}" + "[/]")
+                if not streaming or not rails_app.main_llm_supports_streaming:
+                    # We print bot messages in green.
+                    console.print("[green]" + f"{bot_message['content']}" + "[/]")
         else:
             data = {
                 "config_id": config_id,

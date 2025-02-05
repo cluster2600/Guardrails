@@ -14,10 +14,13 @@
 # limitations under the License.
 
 import asyncio
+import json
+import math
 
 import pytest
 
 from nemoguardrails import RailsConfig
+from nemoguardrails.actions import action
 from nemoguardrails.streaming import StreamingHandler
 from tests.utils import TestChat
 
@@ -102,6 +105,7 @@ async def test_streaming_predefined_messages():
         chunks.append(chunk)
 
     assert chunks == ["Hello there!"]
+    await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
 
 @pytest.mark.asyncio
@@ -134,6 +138,7 @@ async def test_streaming_dynamic_bot_message():
         chunks.append(chunk)
 
     assert chunks == ["Hello ", "there! ", "How ", "are ", "you ", "today?"]
+    await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
 
 @pytest.mark.asyncio
@@ -169,6 +174,7 @@ async def test_streaming_single_llm_call():
         chunks.append(chunk)
 
     assert chunks == ["Hi, ", "how ", "are ", "you ", "doing?"]
+    await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
 
 @pytest.mark.asyncio
@@ -209,7 +215,7 @@ async def test_streaming_single_llm_call_with_message_override():
     assert chunks == ["Hey! Welcome back!"]
 
     # Wait for proper cleanup, otherwise we get a Runtime Error
-    await asyncio.sleep(1)
+    await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
 
 @pytest.mark.asyncio
@@ -248,4 +254,174 @@ async def test_streaming_single_llm_call_with_next_step_override_and_dynamic_mes
     assert chunks == ["This ", "is ", "a ", "funny ", "joke."]
 
     # Wait for proper cleanup, otherwise we get a Runtime Error
-    await asyncio.sleep(1)
+    await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
+
+
+@pytest.fixture
+def output_rails_streaming_config():
+    return RailsConfig.from_content(
+        config={
+            "models": [],
+            "rails": {
+                "output": {
+                    "flows": {"self check output"},
+                    "streaming": {
+                        "enabled": True,
+                        "chunk_size": 4,
+                        "context_size": 2,
+                        "stream_first": False,
+                    },
+                }
+            },
+            "streaming": True,
+            "prompts": [{"task": "self_check_output", "content": "a test template"}],
+        },
+        colang_content="""
+        define user express greeting
+          "hi"
+
+        define flow
+          user express greeting
+          bot tell joke
+        """,
+    )
+
+
+@action(is_system_action=True, output_mapping=lambda result: not result)
+def self_check_output(**params):
+    """A dummy self check action that checks if the bot message contains the BLOCK keyword."""
+    if params.get("context", {}).get("bot_message"):
+        bot_message_chunk = params.get("context", {}).get("bot_message")
+        print(f"bot_message_chunk: {bot_message_chunk}")
+        if "BLOCK" in bot_message_chunk:
+            return False
+
+    return True
+
+
+async def run_self_check_test(config, llm_completions):
+    """Helper function to run the self check test with the given config, llm completions and expected chunks."""
+
+    chat = TestChat(
+        config,
+        llm_completions=llm_completions,
+        streaming=True,
+    )
+    chat.app.register_action(self_check_output)
+    chunks = []
+    async for chunk in chat.app.stream_async(
+        messages=[{"role": "user", "content": "Hi!"}],
+    ):
+        chunks.append(chunk)
+    return chunks
+
+
+@pytest.mark.asyncio
+async def test_streaming_output_rails_allowed(output_rails_streaming_config):
+    """Checks if the streaming output rails allow the completions without any blocking."""
+
+    llm_completions = [
+        '  express greeting\nbot express greeting\n  "Hi, how are you doing?"',
+        '  "This is a funny joke but you should not laught at it because you will be cursed!."',
+    ]
+    # when we do not yield tokens
+    expected_chunks = [
+        "This is a funny ",
+        "joke but ",
+        "you should ",
+        "not laught ",
+        "at it ",
+        "because you ",
+        "will be ",
+        "cursed!.",
+    ]
+
+    expected_tokens = [
+        "This",
+        " is",
+        " a",
+        " funny",
+        "joke",
+        " but",
+        "you",
+        " should",
+        "not",
+        " laught",
+        "at",
+        " it",
+        "because",
+        " you",
+        "will",
+        " be",
+        "cursed!.",
+    ]
+    tokens = await run_self_check_test(output_rails_streaming_config, llm_completions)
+    assert tokens == expected_tokens
+    # number of buffered chunks should be equal to the number of actions
+    # we are apply #calculate_number_of_actions of time the output rails
+    # FIXME: nice but stupid
+    assert len(expected_chunks) == _calculate_number_of_actions(
+        len(llm_completions[1].lstrip().split(" ")), 4, 2
+    )
+    # Wait for proper cleanup, otherwise we get a Runtime Error
+    await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
+
+
+@pytest.mark.asyncio
+async def test_streaming_output_rails_blocked(output_rails_streaming_config):
+    """This test checks if the streaming output rails block the completions when a BLOCK keyword is present.
+    It verifies that the chunks contain the stop data when the BLOCK keyword is detected.
+    """
+    # when BLOCK is in the bot message, it gets blocked by output rails
+    llm_completions = [
+        '  express greeting\nbot express greeting\n  "Hi, how are you doing?"',
+        '  "This is a funny joke but you should laught at it because [BLOCK] you will be cursed!."',
+    ]
+    expected_chunks = [" {DATA: STOP}"]
+    chunks = await run_self_check_test(output_rails_streaming_config, llm_completions)
+    expected_output = (
+        '{"event": "ABORT", "data": {"reason": "Blocked by self check output rails."}}'
+    )
+    parsed_output = json.loads(expected_output)
+
+    assert parsed_output in [
+        json.loads(chunk) for chunk in chunks if chunk.startswith('{"event": "ABORT"')
+    ]
+    # Wait for proper cleanup, otherwise we get a Runtime Error
+    await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
+
+
+@pytest.mark.asyncio
+async def test_streaming_output_rails_blocked_at_first_call(
+    output_rails_streaming_config,
+):
+    """This test checks if the streaming output rails block the completions when a BLOCK keyword is present at the first call.
+    It verifies that the first chunk is the stop data and that there is only one chunk.
+    """
+    # when BLOCK is in the bot message, it gets blocked by output rails
+    llm_completions = [
+        '  express greeting\nbot express greeting\n  "Hi, how are you doing?"',
+        '  "[BLOCK] This is a funny joke but you should laught at it because [BLOCK] you will be cursed!."',
+    ]
+    chunks = await run_self_check_test(output_rails_streaming_config, llm_completions)
+
+    expected_output = {
+        "event": "ABORT",
+        "data": {"reason": "Blocked by self check output rails."},
+    }
+
+    # Parse the JSON string into a dictionary
+    parsed_output = json.loads(chunks[0])
+
+    assert expected_output == parsed_output
+    assert len(chunks) == 1
+    # Wait for proper cleanup, otherwise we get a Runtime Error
+    await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
+
+
+def _calculate_number_of_actions(input_length, chunk_size, context_size):
+    if chunk_size <= context_size:
+        raise ValueError("chunk_size must be greater than context_size.")
+    if input_length <= chunk_size:
+        return 1
+    return math.ceil((input_length - context_size) / (chunk_size - context_size))

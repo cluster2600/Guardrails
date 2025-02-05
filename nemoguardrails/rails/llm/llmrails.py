@@ -23,6 +23,7 @@ import re
 import threading
 import time
 import warnings
+from functools import partial
 from typing import Any, AsyncIterator, Dict, List, Optional, Tuple, Type, Union, cast
 
 from langchain_core.language_models import BaseLanguageModel
@@ -30,6 +31,7 @@ from langchain_core.language_models.llms import BaseLLM
 
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.actions.llm.utils import get_colang_history
+from nemoguardrails.actions.output_mapping import is_output_blocked
 from nemoguardrails.actions.v2_x.generation import LLMGenerationActionsV2dotx
 from nemoguardrails.colang import parse_colang_file
 from nemoguardrails.colang.v1_0.runtime.flows import compute_context
@@ -57,6 +59,7 @@ from nemoguardrails.logging.processing_log import compute_generation_log
 from nemoguardrails.logging.stats import LLMStats
 from nemoguardrails.logging.verbose import set_verbose
 from nemoguardrails.patch_asyncio import check_sync_call_from_async_loop
+from nemoguardrails.rails.llm.buffer import get_buffer_strategy
 from nemoguardrails.rails.llm.config import EmbeddingSearchProvider, Model, RailsConfig
 from nemoguardrails.rails.llm.options import (
     GenerationLog,
@@ -415,6 +418,7 @@ class LLMRails:
                     self.runtime.register_action_param(
                         model_name, getattr(self, model_name)
                     )
+                    # this is used for content safety and topic control
                     llms[llm_config.type] = getattr(self, model_name)
 
             self.runtime.register_action_param("llms", llms)
@@ -648,6 +652,7 @@ class LLMRails:
 
             # We also keep a general reference to this object
             self.explain_info = explain_info
+        self.explain_info = explain_info
 
         if prompt is not None:
             # Currently, we transform the prompt request into a single turn conversation
@@ -933,19 +938,36 @@ class LLMRails:
         self,
         prompt: Optional[str] = None,
         messages: Optional[List[dict]] = None,
+        options: Optional[Union[dict, GenerationOptions]] = None,
+        state: Optional[Union[dict, State]] = None,
     ) -> AsyncIterator[str]:
         """Simplified interface for getting directly the streamed tokens from the LLM."""
         streaming_handler = StreamingHandler()
 
+        # todo use a context var for buffer strategy and return it here?
+        # then iterating over buffer strategy is nested loop?
         asyncio.create_task(
             self.generate_async(
                 prompt=prompt,
                 messages=messages,
                 streaming_handler=streaming_handler,
+                options=options,
+                state=state,
             )
         )
-
-        return streaming_handler
+        # TODO:
+        # when we have output rails we wrap the streaming handler
+        if len(self.config.rails.output.flows) > 0:
+            #
+            # if self.config.rails.output.streaming.enabled:
+            # returns an async generator
+            return self._run_output_rails_in_streaming(
+                streaming_handler=streaming_handler,
+                messages=messages,
+                prompt=prompt,
+            )
+        else:
+            return streaming_handler
 
     def generate(
         self,
@@ -1158,3 +1180,200 @@ class LLMRails:
         else:
             config = state["config"]
         self.__init__(config=config, verbose=False)
+
+    async def _run_output_rails_in_streaming(
+        self,
+        streaming_handler: AsyncIterator[str],
+        prompt: Optional[str] = None,
+        messages: Optional[List[dict]] = None,
+        stream_first: Optional[bool] = None,
+    ) -> AsyncIterator[str]:
+        """
+        1. Buffers tokens from 'streaming_handler' via BufferStrategy.
+        2. Runs sequential (parallel for colang 2.0 in future) flows for each chunk.
+        3. Yields the chunk if not blocked, or STOP if blocked.
+        """
+
+        def _get_last_context_message(
+            messages: Optional[List[dict]] = None,
+        ) -> dict:
+            if messages is None:
+                return {}
+
+            for message in reversed(messages):
+                if message.get("role") == "context":
+                    return message
+            return {}
+
+        def _get_latest_user_message(
+            messages: Optional[List[dict]] = None,
+        ) -> dict:
+            if messages is None:
+                return {}
+            for message in reversed(messages):
+                if message.get("role") == "user":
+                    return message
+            return {}
+
+        def _prepare_params(
+            flow_id: str,
+            action_name: str,
+            chunk_str: str,
+            prompt: Optional[str] = None,
+            messages: Optional[List[dict]] = None,
+            action_params: Dict[str, Any] = {},
+        ):
+            context_message = _get_last_context_message(messages)
+            user_message = prompt or _get_latest_user_message(messages)
+
+            context = {
+                "user_message": user_message,
+                "bot_message": chunk_str,
+            }
+
+            if context_message:
+                context.update(context_message["content"])
+
+            model_name = flow_id.split("$")[-1].split("=")[-1].strip('"')
+
+            # we pass action params that are defined in the flow
+            # caveate, e.g. prmpt_security uses bot_response=$bot_message
+            # to resolve replace placeholders in action_params
+            for key, value in action_params.items():
+                if value == "$bot_message":
+                    action_params[key] = chunk_str
+                elif value == "$user_message":
+                    action_params[key] = user_message
+
+            return {
+                # TODO:: are there other context variables that need to be passed?
+                # passing events to compute context was not successful
+                # self._events failed
+                # context var failed due to different context
+                "context": context,
+                "llm_task_manager": self.runtime.llm_task_manager,
+                "config": self.config,
+                "model_name": model_name,
+                "llms": self.runtime.registered_action_params.get("llms", {}),
+                "llm": self.runtime.registered_action_params.get(
+                    f"{action_name}_llm", self.llm
+                ),
+                **action_params,
+            }
+
+        def _update_explain_info():
+            explain_info = explain_info_var.get()
+            if explain_info is None:
+                explain_info = ExplainInfo()
+                explain_info_var.set(explain_info)
+                self.explain_info = explain_info
+
+        output_rails_streaming_config = self.config.rails.output.streaming
+        buffer_strategy = get_buffer_strategy(output_rails_streaming_config)
+        output_rails_flows_id = self.config.rails.output.flows
+        stream_first = stream_first or output_rails_streaming_config.stream_first
+        get_action_details = partial(
+            _get_action_details_from_flow_id, flows=self.config.flows
+        )
+
+        async for chunk_list, chunk_str_rep in buffer_strategy(streaming_handler):
+            chunk_str = " ".join(chunk_list)
+
+            if stream_first:
+                words = chunk_str_rep.split()
+                if words:
+                    yield words[0]
+                    for word in words[1:]:
+                        yield f" {word}"
+
+            for flow_id in output_rails_flows_id:
+                action_name, action_params = get_action_details(flow_id)
+
+                params = _prepare_params(
+                    flow_id=flow_id,
+                    action_name=action_name,
+                    chunk_str=chunk_str,
+                    prompt=prompt,
+                    messages=messages,
+                    action_params=action_params,
+                )
+
+                # Execute the action. (Your execute_action returns only the result.)
+                result = await self.runtime.action_dispatcher.execute_action(
+                    action_name, params
+                )
+                # Include explain info (whatever _update_explain_info does)
+                _update_explain_info()
+
+                # Retrieve the action function from the dispatcher
+                action_func = self.runtime.action_dispatcher.get_action(action_name)
+
+                # Use the mapping to decide if the result indicates blocked content.
+                if is_output_blocked(result, action_func):
+                    # TODO: while whitespace issue is fixed, remove the space from below
+                    reason = f"Blocked by {flow_id} rails."
+                    yield f'{{"event": "ABORT", "data": {{"reason": "{reason}"}}}}'
+                    # yield " {DATA: STOP}"
+                    return
+
+            if not stream_first:
+                words = chunk_str_rep.split()
+                if words:
+                    yield words[0]
+                    for word in words[1:]:
+                        yield f" {word}"
+
+
+def _get_action_details_from_flow_id(
+    flow_id: str,
+    flows: List[Union[Dict, Any]],
+    prefixes: Optional[List[str]] = None,
+) -> Tuple[str, Any]:
+    """Get the action name and parameters from the flow id.
+
+    First, try to find an exact match.
+    If not found, then if the provided flow_id starts with one of the special prefixes,
+    return the first flow whose id starts with that same prefix.
+    """
+
+    supported_prefixes = [
+        "content safety check output",
+        "topic safety check output",
+    ]
+    if prefixes:
+        supported_prefixes.extend(prefixes)
+
+    candidate_flow = None
+
+    for flow in flows:
+        # If exact match, use it
+        if flow["id"] == flow_id:
+            candidate_flow = flow
+            break
+
+        # If no exact match, check if both the provided flow_id and this flow's id share a special prefix
+        for prefix in supported_prefixes:
+            if flow_id.startswith(prefix) and flow["id"].startswith(prefix):
+                candidate_flow = flow
+                # We don't break immediately here because an exact match would have been preferred,
+                # but since we’re in the else branch it’s fine to choose the first matching candidate.
+                # TODO:we should avoid having multiple matchin prefixes
+                break
+
+        if candidate_flow is not None:
+            break
+
+    if candidate_flow is None:
+        raise ValueError(f"No action found for flow_id: {flow_id}")
+
+    # we have identified a candidate, look for the run_action element.
+    for element in candidate_flow["elements"]:
+        if (
+            element["_type"] == "run_action"
+            and element["_source_mapping"]["filename"] == "flows.v1.co"
+            and "execute" in element["_source_mapping"]["line_text"]
+            and "action_name" in element
+        ):
+            return element["action_name"], element["action_params"]
+
+    raise ValueError(f"No run_action element found for flow_id: {flow_id}")

@@ -125,6 +125,21 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         await self.push_chunk(self.buffer)
         self.buffer = ""
 
+    def __aiter__(self):
+        async def generator():
+            while True:
+                element = None
+                try:
+                    element = await self.queue.get()
+                except RuntimeError as ex:
+                    if "Event loop is closed" not in str(ex):
+                        raise ex
+                if element is None or element == "":
+                    break
+                yield element
+
+        return generator()
+
     async def __anext__(self):
         element = None
         try:
