@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import asyncio
+import json
 import math
 
 import pytest
@@ -378,7 +379,14 @@ async def test_streaming_output_rails_blocked(output_rails_streaming_config):
     ]
     expected_chunks = [" {DATA: STOP}"]
     chunks = await run_self_check_test(output_rails_streaming_config, llm_completions)
-    assert " {DATA: STOP}" in chunks
+    expected_output = (
+        '{"event": "ABORT", "data": {"reason": "Blocked by self check output rails."}}'
+    )
+    parsed_output = json.loads(expected_output)
+
+    assert parsed_output in [
+        json.loads(chunk) for chunk in chunks if chunk.startswith('{"event": "ABORT"')
+    ]
     # Wait for proper cleanup, otherwise we get a Runtime Error
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
@@ -395,9 +403,17 @@ async def test_streaming_output_rails_blocked_at_first_call(
         '  express greeting\nbot express greeting\n  "Hi, how are you doing?"',
         '  "[BLOCK] This is a funny joke but you should laught at it because [BLOCK] you will be cursed!."',
     ]
-    expected_chunks = [" {DATA: STOP}"]
     chunks = await run_self_check_test(output_rails_streaming_config, llm_completions)
-    assert " {DATA: STOP}" == chunks[0]
+
+    expected_output = {
+        "event": "ABORT",
+        "data": {"reason": "Blocked by self check output rails."},
+    }
+
+    # Parse the JSON string into a dictionary
+    parsed_output = json.loads(chunks[0])
+
+    assert expected_output == parsed_output
     assert len(chunks) == 1
     # Wait for proper cleanup, otherwise we get a Runtime Error
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})

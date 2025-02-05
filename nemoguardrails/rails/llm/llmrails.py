@@ -1311,7 +1311,9 @@ class LLMRails:
                 # Use the mapping to decide if the result indicates blocked content.
                 if is_output_blocked(result, action_func):
                     # TODO: while whitespace issue is fixed, remove the space from below
-                    yield " {DATA: STOP}"
+                    reason = f"Blocked by {flow_id} rails."
+                    yield f'{{"event": "ABORT", "data": {{"reason": "{reason}"}}}}'
+                    # yield " {DATA: STOP}"
                     return
 
             if not stream_first:
