@@ -1,8 +1,8 @@
 # Use nvidia/cuda:12.3.1-base-ubuntu20.04 as the base image
 FROM nvidia/cuda:12.3.1-base-ubuntu20.04
 
-# Install git
-RUN apt-get update && apt-get install -y git gcc g++ && apt-get clean
+# Install git and wget
+RUN apt-get update && apt-get install -y git gcc g++ wget && apt-get clean
 
 # Install python
 RUN apt-get install python3 python3-pip python3-dev -y
@@ -29,8 +29,8 @@ ENV JAILBREAK_CHECK_DEVICE=cuda:0
 
 # Predownload embedding-based jailbreak detection models, set environment variable for path
 WORKDIR /models
-RUN git clone git@hf.co:/nvidia/NemoGuard-JailbreakDetect
-ENV EMBEDDING_CLASSIFIER_PATH=/models/NemoGuard-JailbreakDetect
+RUN wget https://huggingface.co/nvidia/NemoGuard-JailbreakDetect/resolve/main/snowflake.pkl
+ENV EMBEDDING_CLASSIFIER_PATH=/models
 
 # To use nvidia/nv-embedqa-e5-v5 model, uncomment the line below and set your API key
 # ENV NVIDIA_API_KEY=<your_api_key>
