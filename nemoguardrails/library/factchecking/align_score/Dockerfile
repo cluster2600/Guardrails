@@ -9,9 +9,12 @@ WORKDIR /app
 
 # Clone and install the alignscore package
 RUN git clone https://github.com/yuh-zha/AlignScore.git
-WORKDIR /app/AlignScore
-RUN pip install --no-cache-dir .
 
+COPY constraints.txt /app/AlignScore
+
+WORKDIR /app/AlignScore
+
+RUN pip install --no-cache-dir -c constraints.txt .
 # Download the Spacy en_core_web_sm model
 RUN python -m spacy download en_core_web_sm
 
