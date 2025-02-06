@@ -7,9 +7,9 @@ on:
 jobs:
   call-tests:
     strategy:
-      matrix: #
-        os: [Ubuntu, macOS, Windows]
-        python-version: ["3.9", "3.10", "3.11"]
+      matrix:
+        os: [Ubuntu]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
         include:
           - os: Ubuntu
             image: ubuntu-latest
