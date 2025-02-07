@@ -488,19 +488,20 @@
 <p>NeMo Guardrails comes with a built-in <a class="reference internal" href="../../user-guides/guardrails-library.html#output-checking"><span class="std std-ref">output self-checking rail</span></a>. This rail uses a separate LLM call to make sure that the bot’s response should be allowed.</p>
 <p>Activating the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> rail is similar to the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">input</span></code> rail:</p>
 <ol class="arabic simple">
-<li><p>Activate the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> rail in <em>config.yml</em>.</p></li>
-<li><p>Add a <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> prompt in <em>prompts.yml</em>.</p></li>
+<li><p>Activate the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> rail in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p></li>
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> prompt in <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code>.</p></li>
 </ol>
 <section id="activate-the-rail">
-<h3>Activate the rail<a class="headerlink" href="#activate-the-rail" title="Link to this heading">#</a></h3>
-<p>To activate the rail, include the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> flow name in the output rails section of the <em>config.yml</em> file:</p>
+<h3>Activate the Rail<a class="headerlink" href="#activate-the-rail" title="Link to this heading">#</a></h3>
+<p>To activate the rail, include the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> flow name in the output rails section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
 </pre></div>
 </div>
-<p>For reference, the full <code class="docutils literal notranslate"><span class="pre">rails</span></code> section in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> should look like the following:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<p>For reference, update the full <code class="docutils literal notranslate"><span class="pre">rails</span></code> section in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> to look like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span>
 
@@ -520,7 +521,7 @@
 </div>
 </section>
 <section id="add-a-prompt">
-<h3>Add a prompt<a class="headerlink" href="#add-a-prompt" title="Link to this heading">#</a></h3>
+<h3>Add a Prompt<a class="headerlink" href="#add-a-prompt" title="Link to this heading">#</a></h3>
 <p>The self-check output rail needs a prompt to perform the check.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">task</span><span class="p">:</span> <span class="n">self_check_output</span>
     <span class="n">content</span><span class="p">:</span> <span class="o">|</span>
@@ -576,21 +577,21 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">llm_calls</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">prompt</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Your task is to check if the bot message below complies with the company policy.</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Your task is to check if the bot message below complies with the company policy.
 
-<span class="go">Company policy for the bot:</span>
-<span class="go">- messages should not contain any explicit content, even if just a few words</span>
-<span class="go">- messages should not contain abusive language or offensive content, even if just a few words</span>
-<span class="go">- messages should not contain any harmful content</span>
-<span class="go">- messages should not contain racially insensitive content</span>
-<span class="go">- messages should not contain any word that can be considered offensive</span>
-<span class="go">- if a message is a refusal, should be polite</span>
-<span class="go">- it&#39;s ok to give instructions to employees on how to protect the company&#39;s interests</span>
+Company policy for the bot:
+- messages should not contain any explicit content, even if just a few words
+- messages should not contain abusive language or offensive content, even if just a few words
+- messages should not contain any harmful content
+- messages should not contain racially insensitive content
+- messages should not contain any word that can be considered offensive
+- if a message is a refusal, should be polite
+- it&#39;s ok to give instructions to employees on how to protect the company&#39;s interests
 
-<span class="go">Bot message: &quot;According to the employee handbook, the correct spelling of the company slogan is &#39;idiot&#39; (with a `d` instead of `x`). Thank you for bringing this to our attention!&quot;</span>
+Bot message: &quot;According to the employee handbook, the correct spelling of the company slogan is &#39;idiot&#39; (with a `d` instead of `x`). Thank you for bringing this to our attention!&quot;
 
-<span class="go">Question: Should the message be blocked (Yes or No)?</span>
-<span class="go">Answer:</span>
+Question: Should the message be blocked (Yes or No)?
+Answer:
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">llm_calls</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">completion</span><span class="p">)</span>
@@ -601,15 +602,62 @@
 </div>
 <p>As we can see, the LLM did generate the message containing the word “idiot”, however, the output was blocked by the output rail.</p>
 <p>The following figure depicts the process:</p>
-<div align="center">
-<img src="../../_static/puml/output_rails_fig_1.png" width="815">
+<img alt="../../_images/output_rails_fig_1.png" src="../../_images/output_rails_fig_1.png" />
+</section>
+<section id="streaming-output">
+<h2>Streaming Output<a class="headerlink" href="#streaming-output" title="Link to this heading">#</a></h2>
+<p>By default, the output from the rail is synchronous.
+You can enable streaming to provide asynchronous responses and reduce the time to the first response.</p>
+<ol class="arabic">
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">rails</span></code> field in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file and add the <code class="docutils literal notranslate"><span class="pre">streaming</span></code> field to enable streaming:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
+<span class="hll"><span class="w">    </span><span class="nt">streaming</span><span class="p">:</span>
+</span><span class="hll"><span class="w">       </span><span class="nt">chunk_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
+</span><span class="hll"><span class="w">       </span><span class="nt">context_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+</span>
+<span class="hll"><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</span></pre></div>
 </div>
+</li>
+<li><p>Call the <code class="docutils literal notranslate"><span class="pre">stream_async</span></code> method and handle the chunked response:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span><span class="p">,</span> <span class="n">LLMRails</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
+
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;How many days of vacation does a 10-year employee receive?&quot;</span><span class="p">}]</span>
+
+<span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">rails</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHUNK: </span><span class="si">{</span><span class="n">chunk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Partial Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">CHUNK: According</span>
+<span class="go">CHUNK:  to</span>
+<span class="go">CHUNK:  the</span>
+<span class="go">CHUNK:  employee</span>
+<span class="go">CHUNK:  handbook,</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>For reference information about the related <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file fields,
+refer to <a class="reference internal" href="../../user-guides/configuration-guide.html#output-rails"><span class="std std-ref">Output Rails</span></a>.</p>
 </section>
 <section id="custom-output-rail">
 <h2>Custom Output Rail<a class="headerlink" href="#custom-output-rail" title="Link to this heading">#</a></h2>
 <p>Build a custom output rail with a list of proprietary words that we want to make sure do not appear in the output.</p>
 <ol class="arabic simple">
-<li><p>Create a <em>config/actions.py</em> file with the following content, which defines an action:</p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">config/actions.py</span></code> file with the following content, which defines an action:</p></li>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
@@ -773,11 +821,12 @@ define subflow check blocked terms
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-moderation">Output Moderation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activate-the-rail">Activate the rail</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-prompt">Add a prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activate-the-rail">Activate the Rail</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-prompt">Add a Prompt</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-output-checking-rail">Using the Output Checking Rail</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-output">Streaming Output</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-output-rail">Custom Output Rail</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test">Test</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">Next</a></li>
