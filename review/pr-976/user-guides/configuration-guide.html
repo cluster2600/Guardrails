@@ -1091,6 +1091,11 @@ You can enable streaming to begin receiving responses from the output rail soone
 <span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </pre></div>
 </div>
+<p>When streaming is enabled, the toolkit applies output rails to chunks of tokens.
+If a rail blocks a chunk of tokens, the toolkit returns a string in the following format:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{&quot;event&quot;: &quot;ABORT&quot;, &quot;data&quot;: {&quot;reason&quot;: &quot;Blocked by &lt;rail-name&gt; rails.}}</span>
+</pre></div>
+</div>
 <p>The following table describes the subfields for the <code class="docutils literal notranslate"><span class="pre">streaming</span></code> field:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1121,10 +1126,6 @@ Specifying approximately 25% of <code class="docutils literal notranslate"><span
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, the toolkit applies the output rails to the chunks before streaming them to the client.
 If you set this field to <code class="docutils literal notranslate"><span class="pre">False</span></code>, you can avoid streaming chunks of blocked content.</p>
 <p>By default, the toolkit streams the chunks as soon as possible and before applying output rails to them.</p>
-<p>In either case, if a rail blocks a chunk of tokens, the toolkit returns a string in the following format:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{&quot;event&quot;: &quot;ABORT&quot;, &quot;data&quot;: {&quot;reason&quot;: &quot;Blocked by &lt;rail-name&gt; rails.}}</span>
-</pre></div>
-</div>
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
 </tr>
