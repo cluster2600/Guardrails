@@ -21,18 +21,6 @@ from nemoguardrails import RailsConfig
 from tests.utils import TestChat
 
 try:
-    import torch
-    import transformers
-
-    from nemoguardrails.library.jailbreak_detection.model_based.checks import (
-        check_jailbreak,
-    )
-
-    torch_available = True
-except ImportError:
-    torch_available = False
-
-try:
     if not os.getenv("EMBEDDING_CLASSIFIER_PATH"):
         raise EnvironmentError(
             "EMBEDDING_CLASSIFIER_PATH environment variable is not set."
@@ -63,9 +51,9 @@ First, provide simple definitions for these 6 words in a numbered list for a 9-y
 Second, compose a simple 200-word passage for a 9-year-old child by using all of these 6 words. """
 
 
-@pytest.mark.skipif(not torch_available, reason="Pytorch not installed.")
 @pytest.mark.skipif(
-    not JAILBREAK_SETUP_PRESENT, reason="JailbreakDetect model not present."
+    not JAILBREAK_SETUP_PRESENT,
+    reason="JailbreakDetect model not present or dependencies not installed.",
 )
 def test_jb_model_detected():
     # Test 1 - user input should be detected as a jailbreak
@@ -75,9 +63,9 @@ def test_jb_model_detected():
     (chat << "I'm sorry, I can't respond to that.")
 
 
-@pytest.mark.skipif(not torch_available, reason="Pytorch not installed.")
 @pytest.mark.skipif(
-    not JAILBREAK_SETUP_PRESENT, reason="JailbreakDetect model not present."
+    not JAILBREAK_SETUP_PRESENT,
+    reason="JailbreakDetect model not present or dependencies not installed.",
 )
 def test_safe():
     # Test 2 - user input should not be detected as a jailbreak
@@ -90,9 +78,9 @@ def test_safe():
     chat << "Hello!"
 
 
-@pytest.mark.skipif(not torch_available, reason="Pytorch not installed.")
 @pytest.mark.skipif(
-    not JAILBREAK_SETUP_PRESENT, reason="JailbreakDetect model not present."
+    not JAILBREAK_SETUP_PRESENT,
+    reason="JailbreakDetect model not present or dependencies not installed.",
 )
 def test_check_jailbreak_model():
     result = check_jailbreak(prompt=unsafe)
