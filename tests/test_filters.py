@@ -15,7 +15,9 @@
 
 import textwrap
 
-from nemoguardrails.llm.filters import first_turns, last_turns
+import pytest
+
+from nemoguardrails.llm.filters import first_turns, last_turns, remove_reasoning_traces
 
 
 def test_first_turns():
@@ -82,3 +84,50 @@ def test_last_turns():
 
     assert last_turns(colang_history, 1) == colang_history
     assert last_turns(colang_history, 2) == colang_history
+
+
+@pytest.mark.parametrize(
+    "response, start_token, end_token, expected",
+    [
+        (
+            "This is an example [START]hidden reasoning[END] of a response.",
+            "[START]",
+            "[END]",
+            "This is an example  of a response.",
+        ),
+        (
+            "This is an example without an end token.",
+            "[START]",
+            "[END]",
+            "This is an example without an end token.",
+        ),
+        (
+            "This is an example [START] with a start token but no end token.",
+            "[START]",
+            "[END]",
+            "This is an example [START] with a start token but no end token.",
+        ),
+        (
+            "Before [START]hidden[END] middle [START]extra hidden[END] after.",
+            "[START]",
+            "[END]",
+            "Before  after.",
+        ),
+        (
+            "Text [START] first [START] nested [END] second [END] more text.",
+            "[START]",
+            "[END]",
+            "Text  more text.",
+        ),
+        (
+            "[START]Remove this[END] but keep this.",
+            "[START]",
+            "[END]",
+            " but keep this.",
+        ),
+        ("", "[START]", "[END]", ""),
+    ],
+)
+def test_remove_reasoning_traces(response, start_token, end_token, expected):
+    """Test removal of text between start and end tokens with multiple cases."""
+    assert remove_reasoning_traces(response, start_token, end_token) == expected

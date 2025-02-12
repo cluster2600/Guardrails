@@ -53,12 +53,29 @@ standard_library_path = os.path.normpath(
     os.path.join(os.path.dirname(__file__), "..", "..", "colang", "v2_x", "library")
 )
 
-# nemoguardrails/lobrary
+# nemoguardrails/library
 guardrails_stdlib_path = os.path.normpath(
     os.path.join(os.path.dirname(__file__), "..", "..", "..")
 )
 colang_path_dirs.append(standard_library_path)
 colang_path_dirs.append(guardrails_stdlib_path)
+
+
+class ReasoningModelConfig(BaseModel):
+    """Configuration for reasoning models/LLMs, including start and end tokens for reasoning traces."""
+
+    remove_thinking_traces: Optional[bool] = Field(
+        default=True,
+        description="For reasoning models (e.g. OpenAI o1, DeepSeek-r1), if the output parser should remove thinking traces.",
+    )
+    start_token: Optional[str] = Field(
+        default=None,
+        description="The start token used for reasoning traces.",
+    )
+    end_token: Optional[str] = Field(
+        default=None,
+        description="The end token used for reasoning traces.",
+    )
 
 
 class Model(BaseModel):
@@ -77,6 +94,11 @@ class Model(BaseModel):
     model: Optional[str] = Field(
         default=None,
         description="The name of the model. If not specified, it should be specified through the parameters attribute.",
+    )
+
+    reasoning_config: Optional[ReasoningModelConfig] = Field(
+        default_factory=ReasoningModelConfig,
+        description="Configuration parameters for reasoning LLMs.",
     )
     parameters: Dict[str, Any] = Field(default_factory=dict)
 

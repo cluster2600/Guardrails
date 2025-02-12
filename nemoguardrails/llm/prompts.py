@@ -20,7 +20,7 @@ from typing import List, Union
 import yaml
 
 from nemoguardrails.llm.types import Task
-from nemoguardrails.rails.llm.config import RailsConfig, TaskPrompt
+from nemoguardrails.rails.llm.config import Model, RailsConfig, TaskPrompt
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -116,6 +116,21 @@ def _get_prompt(
     raise ValueError(f"Could not find prompt for task {task_name} and model {model}")
 
 
+def get_task_model(config: RailsConfig, task: Union[str, Task]) -> Model:
+    """Return the model for the given task in the current config."""
+    # Fetch current task parameters like name, models to use, and the prompting mode
+    task_name = str(task.value) if isinstance(task, Task) else task
+
+    if config.models:
+        _models = [model for model in config.models if model.type == task_name]
+        if not _models:
+            _models = [model for model in config.models if model.type == "main"]
+
+        return _models[0]
+
+    return None
+
+
 def get_prompt(config: RailsConfig, task: Union[str, Task]) -> TaskPrompt:
     """Return the prompt for the given task."""
 
@@ -123,14 +138,11 @@ def get_prompt(config: RailsConfig, task: Union[str, Task]) -> TaskPrompt:
     task_name = str(task.value) if isinstance(task, Task) else task
 
     task_model = "unknown"
-    if config.models:
-        _models = [model for model in config.models if model.type == task_name]
-        if not _models:
-            _models = [model for model in config.models if model.type == "main"]
-
-        task_model = _models[0].engine
-        if _models[0].model:
-            task_model += "/" + _models[0].model
+    _model = get_task_model(config, task)
+    if _model:
+        task_model = _model.engine
+        if _model.model:
+            task_model += "/" + _model.model
 
     task_prompting_mode = "standard"
     if config.prompting_mode:

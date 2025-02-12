@@ -482,3 +482,26 @@ def conversation_to_events(conversation: List) -> List[dict]:
             )
 
     return events
+
+
+def remove_reasoning_traces(response: str, start_token: str, end_token: str) -> str:
+    """Removes the text between the first occurrence of the start token and the
+    last occurrence of the last token, if these tokens exist in the response.
+
+    This utility function is useful to strip reasoning traces from reasoning LLMs
+    that encode the reasoning traces between specific tokens.
+    """
+    if start_token and end_token:
+        start_index = response.find(start_token)
+        # If the start index is missing, this is probably a continuation of a bot message
+        # started in the prompt.
+        if start_index == -1:
+            start_index = 0
+        end_index = response.rfind(end_token)
+        if end_index == -1:
+            return response
+
+        if start_index != -1 and end_index != -1 and start_index < end_index:
+            return response[:start_index] + response[end_index + len(end_token) :]
+
+    return response

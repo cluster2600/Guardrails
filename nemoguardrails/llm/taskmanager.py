@@ -27,6 +27,7 @@ from nemoguardrails.llm.filters import (
     first_turns,
     indent,
     last_turns,
+    remove_reasoning_traces,
     remove_text_messages,
     to_chat_messages,
     to_intent_messages,
@@ -47,7 +48,7 @@ from nemoguardrails.llm.output_parsers import (
     user_intent_parser,
     verbose_v1_parser,
 )
-from nemoguardrails.llm.prompts import get_prompt
+from nemoguardrails.llm.prompts import get_prompt, get_task_model
 from nemoguardrails.llm.types import Task
 from nemoguardrails.rails.llm.config import MessageTemplate, RailsConfig
 
@@ -274,7 +275,9 @@ class LLMTaskManager:
                 task_prompt_length = self._get_messages_text_length(task_messages)
             return task_messages
 
-    def parse_task_output(self, task: Task, output: str):
+    def parse_task_output(
+        self, task: Task, output: str, forced_output_parser: Optional[str] = None
+    ):
         """Parses the output for the provided tasks.
 
         If an output parser is associated with the prompt, it will be used.
@@ -283,10 +286,22 @@ class LLMTaskManager:
         prompt = get_prompt(self.config, task)
 
         output_parser = None
-        if prompt.output_parser:
+        if forced_output_parser:
+            output_parser = self.output_parsers.get(forced_output_parser)
+        elif prompt.output_parser:
             output_parser = self.output_parsers.get(prompt.output_parser)
-            if not output_parser:
-                logging.warning("No output parser found for %s", prompt.output_parser)
+        if not output_parser:
+            logging.warning("No output parser found for %s", prompt.output_parser)
+
+        model = get_task_model(self.config, task)
+        if (
+            model
+            and model.reasoning_config
+            and model.reasoning_config.remove_thinking_traces
+        ):
+            start_token = model.reasoning_config.start_token
+            end_token = model.reasoning_config.end_token
+            output = remove_reasoning_traces(output, start_token, end_token)
 
         if output_parser:
             return output_parser(output)
