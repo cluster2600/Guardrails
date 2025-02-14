@@ -57,6 +57,8 @@ _providers: Dict[str, Optional[Type[BaseLLM]]] = {
     "nemollm": NeMoLLM,
     "trt_llm": TRTLLM,
     "nvidia_ai_endpoints": None,
+    "google_genai": None,
+    "deepseek": None,
     "nim": None,  # Later patched to "nvidia_ai_endpoints" (synonymous).
 }
 
@@ -266,6 +268,28 @@ def get_llm_provider(model_config: Model) -> Type[BaseLLM]:
             raise ImportError(
                 "Could not import langchain_nvidia_ai_endpoints, please install it with "
                 "`pip install langchain-nvidia-ai-endpoints`."
+            )
+
+    elif model_config.engine == "google_genai":
+        try:
+            from langchain_google_genai import ChatGoogleGenerativeAI
+
+            return ChatGoogleGenerativeAI
+        except ImportError:
+            raise ImportError(
+                "Could not import langchain_google_genai, please install it with "
+                "`pip install langchain_google_genai`."
+            )
+
+    elif model_config.engine == "deepseek":
+        try:
+            from langchain_deepseek import ChatDeepSeek
+
+            return ChatDeepSeek
+        except ImportError:
+            raise ImportError(
+                "Could not import langchain_deepseek, please install it with "
+                "`pip install langchain_deepseek`."
             )
 
     elif model_config.engine == "vertexai":
