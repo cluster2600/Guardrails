@@ -352,27 +352,12 @@ class LLMRails:
 
         # We also need to pass the model, if specified
         if model_config.model:
-            # Some LLM providers use `model_name` instead of model. For backward compatibility
-            # we keep this hard-coded mapping.
-            if model_config.engine in [
-                "azure",
-                "openai",
-                "gooseai",
-                "nlpcloud",
-                "petals",
-                "trt_llm",
-                "vertexai",
-            ]:
-                kwargs["model_name"] = model_config.model
-            elif (
-                model_config.engine == "nvidia_ai_endpoints"
-                or model_config.engine == "nim"
-            ):
+            # Some LLM providers use `model_name` instead of `model`.
+            # Use the `__fields__` attribute which is computed dynamically by pydantic.
+            if "model" in provider_cls.__fields__:
                 kwargs["model"] = model_config.model
-            else:
-                # The `__fields__` attribute is computed dynamically by pydantic.
-                if "model" in provider_cls.__fields__:
-                    kwargs["model"] = model_config.model
+            if "model_name" in provider_cls.__fields__:
+                kwargs["model_name"] = model_config.model
 
         return provider_cls, kwargs
 
