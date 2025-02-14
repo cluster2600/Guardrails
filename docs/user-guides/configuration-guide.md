@@ -94,6 +94,29 @@ To use any of the providers, you must install additional packages; when you firs
 Although you can instantiate any of the previously mentioned LLM providers, depending on the capabilities of the model, the NeMo Guardrails toolkit works better with some providers than others. The toolkit includes prompts that have been optimized for certain types of models, such as `openai` and `nemollm`. For others, you can optimize the prompts yourself following the information in the [LLM Prompts](#llm-prompts) section.
 ```
 
+#### Using LLMs with Reasoning Traces
+
+To use an LLM that outputs the reasoning traces as part of the response (e.g. [DeepSeek-R1](https://huggingface.co/collections/deepseek-ai/deepseek-r1-678e1e131c0169c0bc89728d)), the following model config should be used:
+
+```yaml
+models:
+  - type: main
+    engine: deepseek
+    model: deepseek-reasoner
+    reasoning_config:
+      remove_thinking_traces: True
+      start_token: "<think>"
+      end_token: "</think>"
+```
+
+The `reasoning_config` attribute for a model contains all the required configuration for a reasoning model that outputs reasoning traces.
+In most of the cases, the reasoning traces need to be removed and the guardrails runtime will only process the actual responses from the LLM.
+
+The attributes that can be configured for a reasoning model are:
+- `remove_thinking_traces`: if the reasoning traces should be ignored (defaults to `True`.
+- `start_token`: the start token for the reasoning process (e.g. `<think>` for DeepSeek-R1).
+- `end_token`: the end token for the reasoning process (e.g. `</think>` for DeepSeek-R1).
+
 #### NIM for LLMs
 
 [NVIDIA NIM](https://docs.nvidia.com/nim/index.html) is a set of easy-to-use microservices designed to accelerate the deployment of generative AI models across the cloud, data center, and workstations.
