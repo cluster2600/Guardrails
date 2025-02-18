@@ -1370,7 +1370,7 @@ def _get_action_details_from_flow_id(
     for element in candidate_flow["elements"]:
         if (
             element["_type"] == "run_action"
-            and element["_source_mapping"]["filename"] == "flows.v1.co"
+            and element["_source_mapping"]["filename"].endswith(".co")
             and "execute" in element["_source_mapping"]["line_text"]
             and "action_name" in element
         ):
