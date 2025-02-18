@@ -659,6 +659,34 @@ def dummy_flows() -> List[Union[Dict, Any]]:
                 }
             ],
         },
+        {
+            "id": "test_rails_co",
+            "elements": [
+                {
+                    "_type": "run_action",
+                    "_source_mapping": {
+                        "filename": "rails.co",
+                        "line_text": "execute something",
+                    },
+                    "action_name": "test_action_supported",
+                    "action_params": {"param1": "value1"},
+                }
+            ],
+        },
+        {
+            "id": "test_rails_co_v2",
+            "elements": [
+                {
+                    "_type": "run_action",
+                    "_source_mapping": {
+                        "filename": "rails.co",
+                        "line_text": "await something",  # in colang 2 we use await
+                    },
+                    "action_name": "test_action_not_supported",
+                    "action_params": {"param1": "value1"},
+                }
+            ],
+        },
     ]
 
 
@@ -668,6 +696,21 @@ def test_get_action_details_exact_match(dummy_flows):
     )
     assert action_name == "test_action"
     assert action_params == {"param1": "value1"}
+
+
+def test_get_action_details_exact_match_any_co_file(dummy_flows):
+    action_name, action_params = _get_action_details_from_flow_id(
+        "test_rails_co", dummy_flows
+    )
+    assert action_name == "test_action_supported"
+    assert action_params == {"param1": "value1"}
+
+
+def test_get_action_details_exact_match_not_colang_2(dummy_flows):
+    with pytest.raises(ValueError) as exc_info:
+        _get_action_details_from_flow_id("test_rails_co_v2", dummy_flows)
+
+    assert "No run_action element found for flow_id" in str(exc_info.value)
 
 
 def test_get_action_details_prefix_match(dummy_flows):
