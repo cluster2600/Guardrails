@@ -10,6 +10,14 @@ RUN apt-get install python3 python3-pip python3-dev -y
 # Upgrade pip
 RUN pip install --no-cache-dir --upgrade pip
 
+# Set the device on which the model should load e.g., "cpu", "cuda:0", etc.
+ENV JAILBREAK_CHECK_DEVICE=cuda:0
+
+# Predownload embedding-based jailbreak detection models, set environment variable for path
+WORKDIR /models
+RUN wget https://huggingface.co/nvidia/NemoGuard-JailbreakDetect/resolve/main/snowflake.pkl
+ENV EMBEDDING_CLASSIFIER_PATH=/models
+
 # Set working directory
 WORKDIR /app
 
@@ -24,20 +32,9 @@ COPY . .
 # Predownload the GPT2 model.
 RUN python3 -c "from transformers import GPT2LMHeadModel, GPT2TokenizerFast; GPT2LMHeadModel.from_pretrained('gpt2-large'); GPT2TokenizerFast.from_pretrained('gpt2-large');"
 
-# Set the device on which the model should load e.g., "cpu", "cuda:0", etc.
-ENV JAILBREAK_CHECK_DEVICE=cuda:0
-
-# Predownload embedding-based jailbreak detection models, set environment variable for path
-WORKDIR /models
-RUN wget https://huggingface.co/nvidia/NemoGuard-JailbreakDetect/resolve/main/snowflake.pkl
-ENV EMBEDDING_CLASSIFIER_PATH=/models
-
-# To use nvidia/nv-embedqa-e5-v5 model, uncomment the line below and set your API key
-# ENV NVIDIA_API_KEY=<your_api_key>
-
 # Expose a port for the server
 EXPOSE 1337
 
 # Start the server as the default command
-ENTRYPOINT ["/usr/local/bin/python", "server.py"]
+ENTRYPOINT ["/usr/local/bin/python", "/app/server.py"]
 CMD ["--port=1337"]
