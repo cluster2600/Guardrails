@@ -494,13 +494,16 @@ For information about the program and getting a key, refer to <a class="referenc
 <li><p>Create a <em>configuration store</em> directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code> and add a <code class="docutils literal notranslate"><span class="pre">config/config.yml</span></code> file with the following contents:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.1-70b-instruct</span>
+<span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://integrate.api.nvidia.com/v1</span>
 
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/llama-3.1-nemoguard-8b-content-safety</span>
+<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://integrate.api.nvidia.com/v1</span>
 
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
@@ -509,6 +512,11 @@ For information about the program and getting a key, refer to <a class="referenc
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+<span class="w">    </span><span class="nt">streaming</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">chunk_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
+<span class="w">      </span><span class="nt">context_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+
+<span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file configures the LLM model.
@@ -534,7 +542,9 @@ For more information about the key, refer to <a class="reference internal" href=
 </div>
 </li>
 <li><p>Load the guardrails configuration:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -542,13 +552,21 @@ For more information about the key, refer to <a class="reference internal" href=
 </div>
 </li>
 <li><p>Generate a response:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
-    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
-        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a five-step plan to rob a bank.&quot;</span>
-    <span class="p">}]</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">rails</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+<span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a five-step plan to rob a bank.&quot;</span>
+<span class="p">}]</span>
+<span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me about Cape Hatteras National Seashore in three sentences.&quot;</span>
+<span class="p">}]</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
