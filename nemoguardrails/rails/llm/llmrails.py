@@ -940,9 +940,12 @@ class LLMRails:
         messages: Optional[List[dict]] = None,
         options: Optional[Union[dict, GenerationOptions]] = None,
         state: Optional[Union[dict, State]] = None,
+        include_generation_metadata: Optional[bool] = False,
     ) -> AsyncIterator[str]:
         """Simplified interface for getting directly the streamed tokens from the LLM."""
-        streaming_handler = StreamingHandler()
+        streaming_handler = StreamingHandler(
+            include_generation_metadata=include_generation_metadata
+        )
 
         # todo use a context var for buffer strategy and return it here?
         # then iterating over buffer strategy is nested loop?

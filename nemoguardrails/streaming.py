@@ -31,12 +31,17 @@ log = logging.getLogger(__name__)
 class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
     """Streaming async handler.
 
-    Implements the LangChain AsyncCallbackHandler, so it can be notified of new tokens.
-    It also implements the AsyncIterator interface, so it can be used directly to stream
+    Implements the LangChain AsyncCallbackHandler so it can be notified of new tokens.
+    It also implements the AsyncIterator interface so it can be used directly to stream
     back the response.
     """
 
-    def __init__(self, enable_print: bool = False, enable_buffer: bool = False):
+    def __init__(
+        self,
+        enable_print: bool = False,
+        enable_buffer: bool = False,
+        include_generation_metadata: Optional[bool] = False,
+    ):
         # A unique id for the stream handler
         self.uid = new_uuid()
 
@@ -50,25 +55,24 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         # When buffering is enabled, the chunks will gather in a buffer.
         self.enable_buffer = enable_buffer
 
-        # The prefix/suffix that should be removed
+        # The prefix/suffix that should be removed (text-only processing)
         self.prefix = None
         self.suffix = None
 
         # The current chunk which needs to be checked for prefix/suffix matching
         self.current_chunk = ""
 
-        # The current buffer, until we start the processing.
+        # The current buffer until we start processing.
         self.buffer = ""
 
         # The full completion
         self.completion = ""
 
-        # Weather we're interested in the top k non-empty lines
+        # Whether we're interested in the top k non-empty lines
         self.k = 0
         self.top_k_nonempty_lines_event = asyncio.Event()
 
-        # If set, the chunk will be piped to the specified handler rather than added to
-        # the queue or printed
+        # If set, the chunk will be piped to the specified handler rather than added to the queue or printed
         self.pipe_to = None
 
         self.first_token = True
@@ -76,8 +80,12 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         # The stop chunks
         self.stop = []
 
+        # Generation metadata handling
+        self.include_generation_metadata = include_generation_metadata
+        self.current_generation_info = {}
+
     def set_pattern(self, prefix: Optional[str] = None, suffix: Optional[str] = None):
-        """Sets the patter that is expected.
+        """Sets the pattern that is expected.
 
         If a prefix or a suffix are specified, they will be removed from the output.
         """
@@ -96,7 +104,7 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         """Waits for top k non-empty lines from the LLM.
 
         When k lines have been received (and k+1 has been started) it will return
-        and remove them from the buffer
+        and remove them from the buffer.
         """
         self.k = k
         await self.top_k_nonempty_lines_event.wait()
@@ -121,7 +129,6 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
     async def disable_buffering(self):
         """When we disable the buffer, we process the buffer as a chunk."""
         self.enable_buffer = False
-
         await self.push_chunk(self.buffer)
         self.buffer = ""
 
@@ -136,6 +143,13 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
                         raise ex
                 if element is None or element == "":
                     break
+
+                if isinstance(element, dict):
+                    if element is not None and (
+                        element.get("text") is None or element.get("text") == ""
+                    ):
+                        yield element
+                        break
                 yield element
 
         return generator()
@@ -147,31 +161,43 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         except RuntimeError as ex:
             if "Event loop is closed" not in str(ex):
                 raise ex
+        # following test is because of TestChat and FakeLLM implementation
+        #
         if element is None or element == "":
             raise StopAsyncIteration
+
+        if isinstance(element, dict):
+            if element is not None and (
+                element.get("text") is None or element.get("text") == ""
+            ):
+                raise StopAsyncIteration
         else:
             return element
 
-    async def _process(self, chunk: str):
+    async def _process(
+        self, chunk: str, generation_info: Optional[Dict[str, Any]] = None
+    ):
         """Process a chunk of text.
 
-        If we're in buffering mode, we just record it.
-        If we need to pipe it to another streaming handler, we do that.
+        If we're in buffering mode, record the text.
+        Otherwise, update the full completion, check for stop tokens, and enqueue the chunk.
         """
+
+        if self.include_generation_metadata and generation_info:
+            self.current_generation_info = generation_info
+
         if self.enable_buffer:
             self.buffer += chunk
-
             lines = [line.strip() for line in self.buffer.split("\n")]
             lines = [line for line in lines if len(line) > 0 and line[0] != "#"]
-            # We wait until we got to k+1 lines, to make sure the k-th line is finished
             if len(lines) > self.k > 0:
                 self.top_k_nonempty_lines_event.set()
+
         else:
-            # Temporarily save the content of the completion before this new chunk.
             prev_completion = self.completion
+
             if chunk is not None:
                 self.completion += chunk
-
                 # Check if the completion contains one of the stop chunks
                 for stop_chunk in self.stop:
                     if stop_chunk in self.completion:
@@ -183,7 +209,6 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
                         if len(self.completion) > len(prev_completion):
                             self.current_chunk = self.completion[len(prev_completion) :]
                             await self.push_chunk(None)
-
                         # And we stop the streaming
                         self.streaming_finished_event.set()
                         self.top_k_nonempty_lines_event.set()
@@ -197,14 +222,25 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
             else:
                 if self.enable_print and chunk is not None:
                     print(f"\033[92m{chunk}\033[0m", end="", flush=True)
-                await self.queue.put(chunk)
-
+                # await self.queue.put(chunk)
+                if self.include_generation_metadata:
+                    await self.queue.put(
+                        {
+                            "text": chunk,
+                            "generation_info": self.current_generation_info.copy(),
+                        }
+                    )
+                else:
+                    await self.queue.put(chunk)
+                # If the chunk is empty (used as termination), mark the stream as finished.
                 if chunk is None or chunk == "":
                     self.streaming_finished_event.set()
                     self.top_k_nonempty_lines_event.set()
 
     async def push_chunk(
-        self, chunk: Union[str, GenerationChunk, AIMessageChunk, None]
+        self,
+        chunk: Union[str, GenerationChunk, AIMessageChunk, None],
+        generation_info: Optional[Dict[str, Any]] = None,
     ):
         """Push a new chunk to the stream."""
         if isinstance(chunk, GenerationChunk):
@@ -222,44 +258,38 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
             log.info(f"{self.uid[0:3]} - CHUNK after finish: {chunk}")
             return
 
-        # Only after we get the expected prefix we remove it and start streaming
+        if self.include_generation_metadata and generation_info:
+            self.current_generation_info = generation_info
+
+        # Process prefix: accumulate until the expected prefix is received, then remove it.
         if self.prefix:
             if chunk is not None:
                 self.current_chunk += chunk
-
             if self.current_chunk.startswith(self.prefix):
                 self.current_chunk = self.current_chunk[len(self.prefix) :]
                 self.prefix = None
-
                 # If we're left with something, we "forward it".
                 if self.current_chunk:
                     await self._process(self.current_chunk)
                     self.current_chunk = ""
+        # Process suffix/stop tokens: accumulate and check whether the current chunk ends with one.
         elif self.suffix or self.stop:
-            # If we have a suffix, we always check that the total current chunk does not end
-            # with the suffix.
-
             if chunk is not None:
                 self.current_chunk += chunk
-
             _chunks = []
             if self.suffix:
                 _chunks.append(self.suffix)
             if self.stop:
                 _chunks.extend(self.stop)
-
             skip_processing = False
             for _chunk in _chunks:
                 if skip_processing:
                     break
-
                 for _len in range(len(_chunk)):
                     if self.current_chunk.endswith(_chunk[0 : _len + 1]):
                         skip_processing = True
                         break
 
-            # TODO: improve this logic to work for multi-token suffixes.
-            # if self.current_chunk.endswith(self.suffix):
             if skip_processing and chunk != "" and chunk is not None:
                 # We do nothing in this case. The suffix/stop chunks will be removed when
                 # the generation ends and if there's something left, will be processed then.
@@ -274,13 +304,10 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
                         self.current_chunk = self.current_chunk[
                             0 : -1 * len(self.suffix)
                         ]
-
-                await self._process(self.current_chunk)
+                await self._process(self.current_chunk, generation_info)
                 self.current_chunk = ""
         else:
-            await self._process(chunk)
-
-    # Methods from the LangChain AsyncCallbackHandler
+            await self._process(chunk, generation_info)
 
     async def on_chat_model_start(
         self,
@@ -306,13 +333,15 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         **kwargs: Any,
     ) -> None:
         """Run on new LLM token. Only available when streaming is enabled."""
-        # If the first token is an empty one, we ignore.
         if self.first_token:
             self.first_token = False
             if token == "":
                 return
-
-        await self.push_chunk(chunk)
+        # Pass token as generation metadata.
+        generation_info = (
+            chunk.generation_info if chunk and hasattr(chunk, "generation_info") else {}
+        )
+        await self.push_chunk(chunk, generation_info=generation_info)
 
     async def on_llm_end(
         self,
@@ -330,13 +359,11 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
 
             await self._process(self.current_chunk)
             self.current_chunk = ""
-
         await self._process("")
-
         # We explicitly print a new line here
         if self.enable_print:
             print("")
 
-        # We also reset the prefix/suffix
+        # Reset prefix/suffix for the next generation.
         self.prefix = None
         self.suffix = None
