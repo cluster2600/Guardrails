@@ -7,7 +7,7 @@ on:
 jobs:
   call-tests:
     strategy:
-      matrix:
+      matrix: #
         os: [Ubuntu, macOS, Windows]
         python-version: ["3.9", "3.10", "3.11"]
         include:
