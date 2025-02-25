@@ -522,7 +522,7 @@ For information about the program and getting a key, refer to <a class="referenc
 <p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file configures the LLM model.
 For more information about the key, refer to <a class="reference internal" href="user-guides/configuration-guide.html#the-llm-model"><span class="std std-ref">The LLM Model</span></a>.</p>
 </li>
-<li><p>Create a prompts file, such as <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code>, (<a class="reference internal" href="#../examples/configs/gs_content_safety/prompts.yml"><span class="xref myst">download</span></a>), with contents like the following partial example:</p>
+<li><p>Create a prompts file, such as <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code>, (<a class="reference download internal" download="" href="_downloads/581b1286b50c732ffcf3928197e66b67/prompts.yml"><span class="xref download myst">download</span></a>), with contents like the following partial example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># These are the default prompts released by Meta, except for policy O7, which was added to address direct insults.</span>
 <span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_input $model=content_safety</span>
