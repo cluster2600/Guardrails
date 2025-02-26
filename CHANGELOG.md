@@ -23,7 +23,6 @@ The changes related to the Colang language and runtime have moved to [CHANGELOG-
 ### 🐛 Bug Fixes
 
 - Fix dependency resolution issues in AlignScore Dockerfile([#1002](https://github.com/NVIDIA/NeMo-Guardrails/issues/1002), [#982](https://github.com/NVIDIA/NeMo-Guardrails/issues/982))
-- Fix alignscore dependency resolution in Dockerfile ([#982](https://github.com/NVIDIA/NeMo-Guardrails/issues/982))
 - Fix JailbreakDetect docker files([#981](https://github.com/NVIDIA/NeMo-Guardrails/issues/981), [#1001](https://github.com/NVIDIA/NeMo-Guardrails/pull/1001))
 - Fix TypeError from attempting to unpack already-unpacked dictionary. ([#959](https://github.com/NVIDIA/NeMo-Guardrails/issues/959))
 - Fix token stats usage in LLM call info. ([#953](https://github.com/NVIDIA/NeMo-Guardrails/issues/953))
