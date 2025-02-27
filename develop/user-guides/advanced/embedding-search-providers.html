@@ -474,7 +474,7 @@
 <span class="w">      </span><span class="nt">search_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">None</span>
 <span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-<span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md5</span>
+<span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256</span>
 <span class="w">      </span><span class="nt">store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filesystem</span>
 <span class="w">      </span><span class="nt">store_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 
@@ -490,7 +490,7 @@
 <span class="w">      </span><span class="nt">search_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">None</span>
 <span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-<span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md5</span>
+<span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256</span>
 <span class="w">      </span><span class="nt">store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filesystem</span>
 <span class="w">      </span><span class="nt">store_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </pre></div>
@@ -504,7 +504,7 @@
 <span class="w">      </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text-embedding-ada-002</span>
 <span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-<span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md5</span>
+<span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256</span>
 <span class="w">      </span><span class="nt">store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filesystem</span>
 <span class="w">      </span><span class="nt">store_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 
@@ -516,14 +516,14 @@
 <span class="w">      </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text-embedding-ada-002</span>
 <span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-<span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md5</span>
+<span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256</span>
 <span class="w">      </span><span class="nt">store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filesystem</span>
 <span class="w">      </span><span class="nt">store_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </pre></div>
 </div>
 <p>The default implementation is also designed to support asynchronous execution of the embedding computation process, thereby enhancing the efficiency of the search functionality.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">cache</span></code> configuration is optional. If enabled, it uses the specified <code class="docutils literal notranslate"><span class="pre">key_generator</span></code> and <code class="docutils literal notranslate"><span class="pre">store</span></code> to cache the embeddings. The <code class="docutils literal notranslate"><span class="pre">store_config</span></code> can be used to provide additional configuration options required for the store.
-The default <code class="docutils literal notranslate"><span class="pre">cache</span></code> configuration uses the <code class="docutils literal notranslate"><span class="pre">md5</span></code> key generator and the <code class="docutils literal notranslate"><span class="pre">filesystem</span></code> store. The cache is disabled by default.</p>
+The default <code class="docutils literal notranslate"><span class="pre">cache</span></code> configuration uses the <code class="docutils literal notranslate"><span class="pre">sha256</span></code> key generator and the <code class="docutils literal notranslate"><span class="pre">filesystem</span></code> store. The cache is disabled by default.</p>
 <section id="batch-implementation">
 <h2>Batch Implementation<a class="headerlink" href="#batch-implementation" title="Link to this heading">#</a></h2>
 <p>The default embedding provider includes a batch processing feature designed to optimize the embedding generation process. This feature is designed to initiate the embedding generation process after a predefined latency of 10 milliseconds.</p>
