@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=10ff41cf"></script>
+    <script src="../_static/documentation_options.js?v=437ad5a5"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -487,6 +487,7 @@
 <li><p><a class="reference internal" href="#cleanlab">Cleanlab Trustworthiness Score</a></p></li>
 <li><p><a class="reference internal" href="#gcp-text-moderation">GCP Text Moderation</a></p></li>
 <li><p><a class="reference internal" href="#private-ai-pii-detection">Private AI PII detection</a></p></li>
+<li><p><a class="reference internal" href="#prompt-security-protection">Prompt Security Protection</a></p></li>
 <li><p>OpenAI Moderation API - <em>[COMING SOON]</em></p></li>
 </ul>
 </li>
@@ -1221,6 +1222,24 @@
 <p>For more details, check out the <a class="reference internal" href="community/privateai.html"><span class="std std-doc">Private AI Integration</span></a> page.</p>
 </section>
 </section>
+<section id="prompt-security-protection">
+<h3>Prompt Security Protection<a class="headerlink" href="#prompt-security-protection" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://prompt.security/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">Prompt Security API</a> for protecting input and output retrieval flows.</p>
+<p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">PS_PROTECT_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">PS_APP_ID</span></code> environment variables.</p>
+<section id="id18">
+<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">protect prompt</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">protect response</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference internal" href="community/prompt-security.html"><span class="std std-doc">Prompt Security Integration</span></a> page.</p>
+</section>
+</section>
 </section>
 <section id="other">
 <h2>Other<a class="headerlink" href="#other" title="Link to this heading">#</a></h2>
@@ -1491,6 +1510,10 @@ Times reported below in are <strong>averages</strong> and are reported in millis
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai-pii-detection">Private AI PII Detection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Example usage</a></li>
 </ul>
 </li>
 </ul>
