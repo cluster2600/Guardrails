@@ -542,6 +542,28 @@
 <p>Although you can instantiate any of the previously mentioned LLM providers, depending on the capabilities of the model, the NeMo Guardrails toolkit works better with some providers than others. The toolkit includes prompts that have been optimized for certain types of models, such as <code class="docutils literal notranslate"><span class="pre">openai</span></code> and <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>. For others, you can optimize the prompts yourself following the information in the <a class="reference internal" href="#llm-prompts">LLM Prompts</a> section.</p>
 </div>
 </section>
+<section id="using-llms-with-reasoning-traces">
+<h4>Using LLMs with Reasoning Traces<a class="headerlink" href="#using-llms-with-reasoning-traces" title="Link to this heading">#</a></h4>
+<p>To use an LLM that outputs the reasoning traces as part of the response (e.g. <a class="reference external" href="https://huggingface.co/collections/deepseek-ai/deepseek-r1-678e1e131c0169c0bc89728d">DeepSeek-R1</a>), the following model config should be used:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-reasoner</span>
+<span class="w">    </span><span class="nt">reasoning_config</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">remove_thinking_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">      </span><span class="nt">start_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;think&gt;&quot;</span>
+<span class="w">      </span><span class="nt">end_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;/think&gt;&quot;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config</span></code> attribute for a model contains all the required configuration for a reasoning model that outputs reasoning traces.
+In most of the cases, the reasoning traces need to be removed and the guardrails runtime will only process the actual responses from the LLM.</p>
+<p>The attributes that can be configured for a reasoning model are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">remove_thinking_traces</span></code>: if the reasoning traces should be ignored (defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_token</span></code>: the start token for the reasoning process (e.g. <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> for DeepSeek-R1).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end_token</span></code>: the end token for the reasoning process (e.g. <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code> for DeepSeek-R1).</p></li>
+</ul>
+</section>
 <section id="nim-for-llms">
 <h4>NIM for LLMs<a class="headerlink" href="#nim-for-llms" title="Link to this heading">#</a></h4>
 <p><a class="reference external" href="https://docs.nvidia.com/nim/index.html">NVIDIA NIM</a> is a set of easy-to-use microservices designed to accelerate the deployment of generative AI models across the cloud, data center, and workstations.
@@ -1560,6 +1582,7 @@ To understand better what is happening under the hood, here’s how the <code cl
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-options">General Options</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-llm-model">The LLM Model</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-llm-providers">Supported LLM Providers</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-llms-with-reasoning-traces">Using LLMs with Reasoning Traces</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nim-for-llms">NIM for LLMs</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#self-hosted-nims">Self-hosted NIMs</a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-ai-endpoints">NVIDIA AI Endpoints</a></li>
