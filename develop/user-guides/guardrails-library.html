@@ -487,6 +487,7 @@
 <li><p><a class="reference internal" href="#cleanlab">Cleanlab Trustworthiness Score</a></p></li>
 <li><p><a class="reference internal" href="#gcp-text-moderation">GCP Text Moderation</a></p></li>
 <li><p><a class="reference internal" href="#private-ai-pii-detection">Private AI PII detection</a></p></li>
+<li><p><a class="reference internal" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a></p></li>
 <li><p><a class="reference internal" href="#prompt-security-protection">Prompt Security Protection</a></p></li>
 <li><p>OpenAI Moderation API - <em>[COMING SOON]</em></p></li>
 </ul>
@@ -1206,28 +1207,43 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detect pii on retrieval</span>
 </pre></div>
 </div>
-<p><strong>PII masking</strong></p>
+<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/privateai.md">Private AI Integration</a> page.</p>
+</section>
+</section>
+<section id="fiddler-guardrails-for-safety-and-hallucination-detection">
+<h3>Fiddler Guardrails for Safety and Hallucination Detection<a class="headerlink" href="#fiddler-guardrails-for-safety-and-hallucination-detection" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://docs.fiddler.ai/product-guide/llm-monitoring/guardrails">Fiddler Guardrails</a> for safety and hallucination detection in input and output flows.</p>
+<p>In order to access Fiddler guardrails, you need access to a valid Fiddler environment, and a <a class="reference external" href="https://docs.fiddler.ai/ui-guide/administration-ui/settings#credentials">Fiddler environment key</a>. You’ll need to set the <code class="docutils literal notranslate"><span class="pre">FIDDLER_API_KEY</span></code> environment variable to authenticate into the Fiddler service.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mask pii on input</span>
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mask pii on output</span>
-<span class="w">  </span><span class="nt">retrieval</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mask pii on retrieval</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">fiddler</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://testfiddler.ai</span><span class="w"> </span><span class="c1"># Replace this with your fiddler environment</span>
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference internal" href="community/privateai.html"><span class="std std-doc">Private AI Integration</span></a> page.</p>
+<section id="id18">
+<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">fiddler</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">fiddler_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://testfiddler.ai</span><span class="w"> </span><span class="c1"># Replace this with your fiddler environment</span>
+<span class="w">    </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fiddler user safety</span>
+<span class="w">    </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fiddler bot safety</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fiddler bot faithfulness</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference internal" href="community/fiddler.html"><span class="std std-doc">Fiddler Integration</span></a> page.</p>
 </section>
 </section>
 <section id="prompt-security-protection">
 <h3>Prompt Security Protection<a class="headerlink" href="#prompt-security-protection" title="Link to this heading">#</a></h3>
 <p>NeMo Guardrails supports using <a class="reference external" href="https://prompt.security/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">Prompt Security API</a> for protecting input and output retrieval flows.</p>
 <p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">PS_PROTECT_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">PS_APP_ID</span></code> environment variables.</p>
-<section id="id18">
-<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<section id="id19">
+<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1512,8 +1528,12 @@ Times reported below in are <strong>averages</strong> and are reported in millis
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Example usage</a></li>
 </ul>
 </li>
 </ul>
