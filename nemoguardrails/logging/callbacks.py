@@ -113,7 +113,7 @@ class LoggingCallbackHandler(AsyncCallbackHandler, StdOutCallbackHandler):
                 )
                 + "[/]"
                 + "\n"
-                + msg.content
+                + (msg.content if isinstance(msg.content, str) else "")
                 for msg in messages[0]
             ]
         )

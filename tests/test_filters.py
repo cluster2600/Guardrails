@@ -17,7 +17,13 @@ import textwrap
 
 import pytest
 
-from nemoguardrails.llm.filters import first_turns, last_turns, remove_reasoning_traces
+from nemoguardrails.llm.filters import (
+    first_turns,
+    last_turns,
+    remove_reasoning_traces,
+    to_chat_messages,
+    user_assistant_sequence,
+)
 
 
 def test_first_turns():
@@ -131,3 +137,139 @@ def test_last_turns():
 def test_remove_reasoning_traces(response, start_token, end_token, expected):
     """Test removal of text between start and end tokens with multiple cases."""
     assert remove_reasoning_traces(response, start_token, end_token) == expected
+
+
+class TestToChatMessages:
+    def test_to_chat_messages_with_text_only(self):
+        """Test to_chat_messages with text-only messages."""
+        events = [
+            {"type": "UserMessage", "text": "Hello, how are you?"},
+            {"type": "StartUtteranceBotAction", "script": "I'm doing well, thank you!"},
+            {"type": "UserMessage", "text": "Great to hear."},
+        ]
+
+        result = to_chat_messages(events)
+
+        assert len(result) == 3
+        assert result[0]["role"] == "user"
+        assert result[0]["content"] == "Hello, how are you?"
+        assert result[1]["role"] == "assistant"
+        assert result[1]["content"] == "I'm doing well, thank you!"
+        assert result[2]["role"] == "user"
+        assert result[2]["content"] == "Great to hear."
+
+    def test_to_chat_messages_with_multimodal_content(self):
+        """Test to_chat_messages with multimodal content."""
+        multimodal_message = [
+            {"type": "text", "text": "What's in this image?"},
+            {
+                "type": "image_url",
+                "image_url": {"url": "https://example.com/image.jpg"},
+            },
+        ]
+
+        events = [
+            {"type": "UserMessage", "text": multimodal_message},
+            {"type": "StartUtteranceBotAction", "script": "I see a cat in the image."},
+        ]
+
+        result = to_chat_messages(events)
+
+        assert len(result) == 2
+        assert result[0]["role"] == "user"
+        assert result[0]["content"] == multimodal_message
+        assert result[1]["role"] == "assistant"
+        assert result[1]["content"] == "I see a cat in the image."
+
+    def test_to_chat_messages_with_empty_events(self):
+        """Test to_chat_messages with empty events."""
+        events = []
+        result = to_chat_messages(events)
+        assert result == []
+
+
+class TestUserAssistantSequence:
+    def test_user_assistant_sequence_with_text_only(self):
+        """Test user_assistant_sequence with text-only messages."""
+        events = [
+            {"type": "UserMessage", "text": "Hello, how are you?"},
+            {"type": "StartUtteranceBotAction", "script": "I'm doing well, thank you!"},
+            {"type": "UserMessage", "text": "Great to hear."},
+        ]
+
+        result = user_assistant_sequence(events)
+
+        assert result == (
+            "User: Hello, how are you?\n"
+            "Assistant: I'm doing well, thank you!\n"
+            "User: Great to hear."
+        )
+
+    def test_user_assistant_sequence_with_multimodal_content(self):
+        """Test user_assistant_sequence with multimodal content."""
+        multimodal_message = [
+            {"type": "text", "text": "What's in this image?"},
+            {
+                "type": "image_url",
+                "image_url": {"url": "https://example.com/image.jpg"},
+            },
+        ]
+
+        events = [
+            {"type": "UserMessage", "text": multimodal_message},
+            {"type": "StartUtteranceBotAction", "script": "I see a cat in the image."},
+        ]
+
+        result = user_assistant_sequence(events)
+
+        assert result == (
+            "User: What's in this image? [+ image]\n"
+            "Assistant: I see a cat in the image."
+        )
+
+    def test_user_assistant_sequence_with_empty_events(self):
+        """Test user_assistant_sequence with empty events."""
+        events = []
+        result = user_assistant_sequence(events)
+        assert result == ""
+
+    def test_user_assistant_sequence_with_multiple_text_parts(self):
+        """Test user_assistant_sequence with multiple text parts."""
+        multimodal_message = [
+            {"type": "text", "text": "Hello!"},
+            {"type": "text", "text": "What's in this image?"},
+            {
+                "type": "image_url",
+                "image_url": {"url": "https://example.com/image.jpg"},
+            },
+        ]
+
+        events = [
+            {"type": "UserMessage", "text": multimodal_message},
+            {"type": "StartUtteranceBotAction", "script": "I see a cat in the image."},
+        ]
+
+        result = user_assistant_sequence(events)
+
+        assert result == (
+            "User: Hello! What's in this image? [+ image]\n"
+            "Assistant: I see a cat in the image."
+        )
+
+    def test_user_assistant_sequence_with_image_only(self):
+        """Test user_assistant_sequence with image only."""
+        multimodal_message = [
+            {
+                "type": "image_url",
+                "image_url": {"url": "https://example.com/image.jpg"},
+            },
+        ]
+
+        events = [
+            {"type": "UserMessage", "text": multimodal_message},
+            {"type": "StartUtteranceBotAction", "script": "I see a cat in the image."},
+        ]
+
+        result = user_assistant_sequence(events)
+
+        assert result == ("User:  [+ image]\nAssistant: I see a cat in the image.")

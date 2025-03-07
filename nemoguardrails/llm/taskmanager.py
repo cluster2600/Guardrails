@@ -207,7 +207,16 @@ class LLMTaskManager:
         """Return the length of the text in the messages."""
         text = ""
         for message in messages:
-            text += message["content"] + "\n"
+            content = message["content"]
+            # Handle multimodal content (when content is a list)
+            if isinstance(content, list):
+                # Extract text from multimodal content
+                for item in content:
+                    if isinstance(item, dict) and item.get("type") == "text":
+                        text += item.get("text", "") + "\n"
+            else:
+                # Regular string content
+                text += content + "\n"
         return len(text)
 
     def render_task_prompt(
