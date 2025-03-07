@@ -275,13 +275,19 @@ def verbose_v1(colang_history: str) -> str:
 
 
 def to_chat_messages(events: List[dict]) -> str:
-    """Filter that turns an array of events into a sequence of user/assistant messages."""
+    """Filter that turns an array of events into a sequence of user/assistant messages.
+
+    Properly handles multimodal content by preserving the structure when the content
+    is in the format of a Message object with potential image_url content.
+    """
     messages = []
     for event in events:
         if event["type"] == "UserMessage":
-            messages.append({"type": "user", "content": event["text"]})
+            # Preserve the original structure when possible to support multimodal content
+            content = event["text"]
+            messages.append({"role": "user", "content": content})
         elif event["type"] == "StartUtteranceBotAction":
-            messages.append({"type": "assistant", "content": event["script"]})
+            messages.append({"role": "assistant", "content": event["script"]})
 
     return messages
 
@@ -296,11 +302,30 @@ def user_assistant_sequence(events: List[dict]) -> str:
        User: What can you do?
        Assistant: I can help with many things.
        ```
+
+    For multimodal content, it extracts text content and indicates if there were images.
     """
     history_items = []
     for event in events:
         if event["type"] == "UserMessage":
-            history_items.append("User: " + event["text"])
+            content = event["text"]
+            # Handle multimodal content by extracting text
+            if isinstance(content, list):
+                text_parts = []
+                has_images = False
+                for item in content:
+                    if isinstance(item, dict):
+                        if item.get("type") == "text":
+                            text_parts.append(item.get("text", ""))
+                        elif item.get("type") == "image_url":
+                            has_images = True
+                text_content = " ".join(text_parts)
+                if has_images:
+                    text_content += " [+ image]"
+                history_items.append("User: " + text_content)
+            else:
+                # Regular text content
+                history_items.append("User: " + str(content))
         elif event["type"] == "StartUtteranceBotAction":
             history_items.append("Assistant: " + event["script"])
 
@@ -375,7 +400,8 @@ def user_assistant_sequence_nemollm(events: List[dict]) -> str:
     history_items = []
     for event in events:
         if event["type"] == "UserMessage":
-            history_items.append("<extra_id_1>User\n" + event["text"])
+            # Convert text to string regardless of type (handles both text and multimodal)
+            history_items.append("<extra_id_1>User\n" + str(event["text"]))
         elif event["type"] == "StartUtteranceBotAction":
             history_items.append("<extra_id_1>Assistant\n" + event["script"])
 

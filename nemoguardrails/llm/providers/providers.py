@@ -304,6 +304,15 @@ def get_llm_provider(model_config: Model) -> Type[BaseLLM]:
                 "Could not import langchain_google_vertexai, please install it with "
                 "`pip install langchain-google-vertexai`."
             )
+    elif model_config.engine == "together":
+        try:
+            from langchain_together.chat_models import ChatTogether
+
+            return ChatTogether
+        except ImportError:
+            raise ImportError(
+                "Could not import langchain_together, please install it with "
+            )
 
     else:
         return _providers[model_config.engine]

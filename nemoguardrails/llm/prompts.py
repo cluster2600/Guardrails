@@ -64,6 +64,7 @@ def _get_prompt(
     matching_prompt = None
     matching_score = 0
 
+    model = model.lower()
     for prompt in prompts:
         if prompt.task != task_name:
             continue

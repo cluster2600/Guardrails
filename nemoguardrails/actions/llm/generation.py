@@ -21,8 +21,6 @@ import random
 import re
 import sys
 import threading
-import uuid
-from ast import literal_eval
 from functools import lru_cache
 from time import time
 from typing import Callable, List, Optional, cast
@@ -374,6 +372,12 @@ class LLMGenerationActions:
             # We search for the most relevant similar user utterance
             examples = ""
             potential_user_intents = []
+            if isinstance(event["text"], list):
+                text = " ".join(
+                    [item["text"] for item in event["text"] if item["type"] == "text"]
+                )
+            else:
+                text = event["text"]
 
             if self.user_message_index is not None:
                 threshold = None
@@ -384,7 +388,7 @@ class LLMGenerationActions:
                     )
 
                 results = await self.user_message_index.search(
-                    text=event["text"], max_results=5, threshold=threshold
+                    text=text, max_results=5, threshold=threshold
                 )
 
                 # If the option to use only the embeddings is activated, we take the first
@@ -409,7 +413,7 @@ class LLMGenerationActions:
                     )
                 else:
                     results = await self.user_message_index.search(
-                        text=event["text"], max_results=5
+                        text=text, max_results=5
                     )
                 # We add these in reverse order so the most relevant is towards the end.
                 for result in reversed(results):

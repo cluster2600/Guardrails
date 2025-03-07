@@ -758,7 +758,13 @@ class LLMRails:
 
         if exception:
             new_message = {"role": "exception", "content": exception}
+
         else:
+            # Ensure all items in responses are strings
+            responses = [
+                str(response) if not isinstance(response, str) else response
+                for response in responses
+            ]
             new_message = {"role": "assistant", "content": "\n".join(responses)}
         if response_tool_calls:
             new_message["tool_calls"] = response_tool_calls
