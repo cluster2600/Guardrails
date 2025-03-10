@@ -468,9 +468,13 @@ class JailbreakDetectionConfig(BaseModel):
     prefix_suffix_perplexity_threshold: float = Field(
         default=1845.65, description="The prefix/suffix perplexity threshold."
     )
-    embedding: str = Field(
-        default="nvidia/nv-embedqa-e5-v5",
-        description="Model to use for embedding-based detections.",
+    nim_url: Optional[str] = Field(
+        default=None,
+        description="Location of the NemoGuard JailbreakDetect NIM.",
+    )
+    nim_port: int = Field(
+        default=8000,
+        description="Port the NemoGuard JailbreakDetect NIM is listening on.",
     )
 
 

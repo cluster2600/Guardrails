@@ -35,6 +35,7 @@ from nemoguardrails.actions import action
 from nemoguardrails.library.jailbreak_detection.request import (
     jailbreak_detection_heuristics_request,
     jailbreak_detection_model_request,
+    jailbreak_nim_request,
 )
 from nemoguardrails.llm.taskmanager import LLMTaskManager
 
@@ -93,11 +94,13 @@ async def jailbreak_detection_model(
     jailbreak_config = llm_task_manager.config.rails.config.jailbreak_detection
 
     jailbreak_api_url = jailbreak_config.server_endpoint
+    nim_url = jailbreak_config.nim_url
+    nim_port = jailbreak_config.nim_port
 
     if context is not None:
         prompt = context.get("user_message", "")
 
-    if not jailbreak_api_url:
+    if not jailbreak_api_url and not nim_url:
         from nemoguardrails.library.jailbreak_detection.model_based.checks import (
             check_jailbreak,
             initialize_model,
@@ -111,9 +114,14 @@ async def jailbreak_detection_model(
 
         return jailbreak["jailbreak"]
 
-    jailbreak = await jailbreak_detection_model_request(
-        prompt=prompt, api_url=jailbreak_api_url
-    )
+    if nim_url:
+        jailbreak = await jailbreak_nim_request(
+            prompt=prompt, nim_url=nim_url, nim_port=nim_port
+        )
+    elif jailbreak_api_url:
+        jailbreak = await jailbreak_detection_model_request(
+            prompt=prompt, api_url=jailbreak_api_url
+        )
 
     if jailbreak is None:
         log.warning("Jailbreak endpoint not set up properly.")
