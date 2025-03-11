@@ -1,6 +1,6 @@
 # Jailbreak Detection Deployment
 
-The recommended way to use Jailbreak Detection Heuristics and models with NeMo Guardrails is using the provided [Dockerfile](https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/jailbreak_detection/Dockerfile). 
+The recommended way to use Jailbreak Detection Heuristics and models with NeMo Guardrails is using the provided [Dockerfile](https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/jailbreak_detection/Dockerfile).
 For more details, check out how to [build and use the image](using-docker.md).
 
 If you wish to use the NemoGuard JailbreakDetect NIM, please see the [related documentation](nemoguard-jailbreakdetect-deployment.md).
