@@ -456,7 +456,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="nemoguard-jailbreakdetect-deployment">
 <h1>NemoGuard JailbreakDetect Deployment<a class="headerlink" href="#nemoguard-jailbreakdetect-deployment" title="Link to this heading">#</a></h1>
-<p>The NemoGuard Jailbreak Detect model is available via the <a class="reference internal" href="#user-guides/advanced/jailbreak-detection-deployment.md"><span class="xref myst">Jailbreak Detection Container</span></a> or as an <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard">NVIDIA NIM</a>.</p>
+<p>The NemoGuard Jailbreak Detect model is available via the <a class="reference internal" href="jailbreak-detection-deployment.html"><span class="std std-doc">Jailbreak Detection Container</span></a> or as an <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard">NVIDIA NIM</a>.</p>
 <section id="nim-deployment">
 <h2>NIM Deployment<a class="headerlink" href="#nim-deployment" title="Link to this heading">#</a></h2>
 <p>The first step is to ensure access to NVIDIA NIM assets through NGC using an NVAIE license.
@@ -465,7 +465,7 @@ Once you have the NGC API key with the necessary permissions, set the following 
 docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>-u<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>-p<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
 </pre></div>
 </div>
-<p>Test that you are able to use the NVIDIA NIM assets through by pulling the latest NemoGuard container.</p>
+<p>Test that you are able to use the NVIDIA NIM assets by pulling the latest NemoGuard container.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span><span class="s1">&#39;nvcr.io/nim/nvidia/nemoguard-jailbreak-detect:latest&#39;</span>
 docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_IMAGE</span>
 </pre></div>
