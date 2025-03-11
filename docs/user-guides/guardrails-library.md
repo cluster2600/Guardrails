@@ -76,22 +76,13 @@ If a prompt is not defined, an exception will be raised when the configuration i
 
 The above is an example prompt you can use with the *self check input rail*. See the [Example Prompts](#example-prompts) section below for more details. The `self_check_input` prompt has an input variable `{{ user_input }}` which includes the input from the user. The completion must be "yes" if the input should be blocked and "no" otherwise.
 
-The self-check input rail executes the [`self_check_input` action](https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/input_check/actions.py), which returns `True` if the input should be allowed, and `False` otherwise:
+The self-check input rail executes the [`self_check_input` action](https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/input_check/actions.py), which returns `True` if the input should be allowed, and `False` otherwise.
 
-```colang
-define flow self check input
-  $allowed = execute self_check_input
-
-  if not $allowed
-    bot refuse to respond
-    stop
-```
-
-When the input should not be allowed, the `bot refuse to respond` message is returned. You can override the default response by including the following in one of the Colang files:
+When the input should not be allowed, the `bot refuse to respond` message is returned. You can override the default response by modifying the following `bot refuse to response` flow in one of the Colang files:
 
 ```colang
 define bot refuse to respond
-  "I'm sorry, I can't respond to that."
+  "SOME MODIFIED MESSAGE"
 ```
 
 #### Example prompts
@@ -182,22 +173,13 @@ If a prompt is not defined, an exception will be raised when the configuration i
 
 The above is an example prompt you can use with the *self check output rail*. See the [Example Prompts](#example-prompts-1) section below for more details. The `self_check_output` prompt has an input variable `{{ bot_response }}` which includes the output from the bot. The completion must be "yes" if the output should be blocked and "no" otherwise.
 
-The self-check output rail executes the [`self_check_output` action](https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py), which returns `True` if the output should be allowed, and `False` otherwise:
-
-```colang
-define flow self check output
-  $allowed = execute self_check_output
-
-  if not $allowed
-    bot refuse to respond
-    stop
-```
+The self-check output rail executes the [`self_check_output` action](https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py), which returns `True` if the output should be allowed, and `False` otherwise.
 
 The `bot refuse to respond` message is returned when the output should not be allowed. You can override the default response by including the following in one of the Colang files:
 
 ```colang
 define bot refuse to respond
-  "I'm sorry, I can't respond to that."
+  "SOME MODIFIED MESSAGE"
 ```
 
 #### Example prompts
