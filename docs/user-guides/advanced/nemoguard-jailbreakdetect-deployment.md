@@ -1,6 +1,6 @@
 # NemoGuard JailbreakDetect Deployment
 
-The NemoGuard Jailbreak Detect model is available via the [Jailbreak Detection Container](user-guides/advanced/jailbreak-detection-deployment.md) or as an [NVIDIA NIM](https://docs.nvidia.com/nim/#nemoguard).
+The NemoGuard Jailbreak Detect model is available via the [Jailbreak Detection Container](jailbreak-detection-deployment.md) or as an [NVIDIA NIM](https://docs.nvidia.com/nim/#nemoguard).
 
 ## NIM Deployment
 
@@ -12,7 +12,7 @@ export NGC_API_KEY=<your NGC API key>
 docker login nvcr.io -u '$oauthtoken' -p <<< <your NGC API key>
 ```
 
-Test that you are able to use the NVIDIA NIM assets through by pulling the latest NemoGuard container.
+Test that you are able to use the NVIDIA NIM assets by pulling the latest NemoGuard container.
 
 ```bash
 export NIM_IMAGE='nvcr.io/nim/nvidia/nemoguard-jailbreak-detect:latest'

@@ -22,5 +22,4 @@ Advanced
    nemoguard-contentsafety-deployment
    nemoguard-jailbreakdetect-deployment
    nemoguard-topiccontrol-deployment
-   jailbreak-detection-heuristics-deployment
    safeguarding-ai-virtual-assistant-blueprint

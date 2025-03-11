@@ -17,6 +17,7 @@
 
 import logging
 import os
+import re
 import warnings
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
@@ -475,6 +476,11 @@ class JailbreakDetectionConfig(BaseModel):
     nim_port: int = Field(
         default=8000,
         description="Port the NemoGuard JailbreakDetect NIM is listening on.",
+    )
+    embedding: Optional[str] = Field(
+        default="nvidia/nv-embedqa-e5-v5",
+        description="DEPRECATED: Model to use for embedding-based detections. Use NIM instead.",
+        deprecated=True,
     )
 
 
