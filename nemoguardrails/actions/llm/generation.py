@@ -768,8 +768,8 @@ class LLMGenerationActions:
         # of course, it does not work when passed as context in `run_output_rails_in_streaming`
         # streaming_handler is set when stream_async method is used
 
-        if streaming_handler and len(self.config.rails.output.flows) > 0:
-            # if streaming_handler and self.config.rails.output.streaming.enabled:
+        # if streaming_handler and len(self.config.rails.output.flows) > 0:
+        if streaming_handler and self.config.rails.output.streaming.enabled:
             context_updates["skip_output_rails"] = True
 
         if bot_intent in self.config.bot_messages:
