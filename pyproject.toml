@@ -59,7 +59,7 @@ onnxruntime = [
   { version = ">=1.17.0,<2.0.0", python = ">=3.10" },
 ]
 httpx = ">=0.24.1"
-jinja2 = ">=3.1.5"
+jinja2 = ">=3.1.6"
 langchain = ">=0.2.14,<0.4.0"
 langchain-core = ">=0.2.14,<0.4.0"
 langchain-community = ">=0.0.16,<0.4.0"
