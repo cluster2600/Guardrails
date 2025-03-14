@@ -971,11 +971,10 @@ class LLMRails:
                 state=state,
             )
         )
-        # TODO:
         # when we have output rails we wrap the streaming handler
-        if len(self.config.rails.output.flows) > 0:
-            #
-            # if self.config.rails.output.streaming.enabled:
+        # if len(self.config.rails.output.flows) > 0:
+        #
+        if self.config.rails.output.streaming.enabled:
             # returns an async generator
             return self._run_output_rails_in_streaming(
                 streaming_handler=streaming_handler,
