@@ -560,11 +560,10 @@ class LLMGenerationActions:
                 text = self.llm_task_manager.parse_task_output(
                     Task.GENERAL, output=result
                 )
-                text = result.strip()
+                text = text.strip()
                 if text.startswith('"'):
                     text = text[1:-1]
 
-            text = self.llm_task_manager.parse_task_output(Task.GENERAL, output=result)
             # In streaming mode, we also push this.
             if streaming_handler:
                 await streaming_handler.push_chunk(text)
