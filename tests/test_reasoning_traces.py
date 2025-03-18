@@ -153,6 +153,34 @@ class TestReasoningTraces:
             assert result == input_text
 
     @pytest.mark.asyncio
+    async def test_parse_task_output_with_default_reasoning_traces(self):
+        """Test that parse_task_output works without a reasoning config."""
+        config = MagicMock(spec=RailsConfig)
+
+        # a Model without reasoning_config
+        model_config = Model(type="main", engine="test", model="test-model")
+
+        # Mock the get_prompt and get_task_model functions
+        with (
+            patch("nemoguardrails.llm.taskmanager.get_prompt") as mock_get_prompt,
+            patch(
+                "nemoguardrails.llm.taskmanager.get_task_model"
+            ) as mock_get_task_model,
+        ):
+            mock_get_prompt.return_value = MagicMock(output_parser=None)
+            mock_get_task_model.return_value = model_config
+
+            llm_task_manager = LLMTaskManager(config)
+
+            # test parsing without a reasoning config
+            input_text = "This is a <think>Some reasoning here</think> final answer."
+            expected = "This is a  final answer."
+
+            # without a reasoning config, the default start_token and stop_token are used thus the text should change
+            result = llm_task_manager.parse_task_output(Task.GENERAL, input_text)
+            assert result == expected
+
+    @pytest.mark.asyncio
     async def test_parse_task_output_with_output_parser(self):
         """Test that parse_task_output correctly applies output parsers before returning."""
         config = MagicMock(spec=RailsConfig)
