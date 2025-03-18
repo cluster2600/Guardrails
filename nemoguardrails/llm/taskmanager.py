@@ -291,7 +291,7 @@ class LLMTaskManager:
         elif prompt.output_parser:
             output_parser = self.output_parsers.get(prompt.output_parser)
         if not output_parser:
-            logging.warning("No output parser found for %s", prompt.output_parser)
+            logging.info("No output parser found for %s", prompt.output_parser)
 
         model = get_task_model(self.config, task)
         if (
