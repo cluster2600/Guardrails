@@ -69,11 +69,11 @@ class ReasoningModelConfig(BaseModel):
         description="For reasoning models (e.g. OpenAI o1, DeepSeek-r1), if the output parser should remove thinking traces.",
     )
     start_token: Optional[str] = Field(
-        default=None,
+        default="<think>",
         description="The start token used for reasoning traces.",
     )
     end_token: Optional[str] = Field(
-        default=None,
+        default="</think>",
         description="The end token used for reasoning traces.",
     )
 
