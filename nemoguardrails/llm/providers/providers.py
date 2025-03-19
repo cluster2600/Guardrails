@@ -312,6 +312,7 @@ def get_llm_provider(model_config: Model) -> Type[BaseLLM]:
         except ImportError:
             raise ImportError(
                 "Could not import langchain_together, please install it with "
+                "`pip install langchain-together`."
             )
 
     else:
