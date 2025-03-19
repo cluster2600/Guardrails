@@ -288,6 +288,9 @@ def to_chat_messages(events: List[dict]) -> str:
             messages.append({"role": "user", "content": content})
         elif event["type"] == "StartUtteranceBotAction":
             messages.append({"role": "assistant", "content": event["script"]})
+        elif event["type"] == "SystemMessage" and "content" in event:
+            # Handle system messages that might contain multimodal content
+            messages.append({"role": "system", "content": event["content"]})
 
     return messages
 

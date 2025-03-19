@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import logging
+import re
 from ast import literal_eval
 from typing import Any, Callable, List, Optional, Union
 
@@ -204,19 +205,46 @@ class LLMTaskManager:
         return messages
 
     def _get_messages_text_length(self, messages: List[dict]) -> int:
-        """Return the length of the text in the messages."""
+        """Return the length of the text in the messages for token counting purposes.
+
+        This method calculates text length for token limit checks, using placeholders for base64 images
+        instead of counting their full encoded size. This allows multimodal content with large base64
+        images to pass the length checks while still preserving the actual content.
+        """
+
+        def process_content_for_length(content):
+            """Process any content type (string, list, dict) and return its effective text."""
+            result_text = ""
+
+            if isinstance(content, list):
+                for item in content:
+                    if isinstance(item, dict):
+                        if item.get("type") == "text":
+                            result_text += item.get("text", "") + "\n"
+                        elif item.get("type") == "image_url" and isinstance(
+                            item.get("image_url"), dict
+                        ):
+                            # image_url items, only count a placeholder length
+                            result_text += "[IMAGE_CONTENT]\n"
+
+            # string content that might contain base64 data
+            elif isinstance(content, str):
+                if "data:image/" in content and ";base64," in content:
+                    # Replace base64 content with placeholder using regex
+                    base64_pattern = r"data:image/[^;]+;base64,[A-Za-z0-9+/=]+"
+                    result_text += (
+                        re.sub(base64_pattern, "[IMAGE_CONTENT]", content) + "\n"
+                    )
+                else:
+                    result_text += content + "\n"
+
+            return result_text
+
         text = ""
         for message in messages:
-            content = message["content"]
-            # Handle multimodal content (when content is a list)
-            if isinstance(content, list):
-                # Extract text from multimodal content
-                for item in content:
-                    if isinstance(item, dict) and item.get("type") == "text":
-                        text += item.get("text", "") + "\n"
-            else:
-                # Regular string content
-                text += content + "\n"
+            content = message.get("content", "")
+            text += process_content_for_length(content)
+
         return len(text)
 
     def render_task_prompt(
