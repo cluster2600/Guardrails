@@ -196,7 +196,6 @@ def discover_langchain_providers():
             # If the `langchain_openai` package is not installed, the warning
             # will come from langchain.
             pass
-
     # We also do some monkey patching to make sure that all LLM providers have async support
     for provider_cls in _providers.values():
         # If the "_acall" method is not defined, we add it.
@@ -249,6 +248,18 @@ def get_llm_provider(model_config: Model) -> Type[BaseLLM]:
             raise ImportError(
                 "Could not import langchain_openai, please install it with "
                 "`pip install langchain-openai`."
+            )
+
+    elif model_config.engine == "amazon_bedrock":
+        try:
+            from langchain_aws import ChatBedrock
+
+            return ChatBedrock
+
+        except ImportError:
+            raise ImportError(
+                "Could not import langchain_aws, please install it with "
+                "`pip install langchain-aws`."
             )
     elif model_config.engine == "nvidia_ai_endpoints" or model_config.engine == "nim":
         try:
