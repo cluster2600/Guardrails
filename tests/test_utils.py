@@ -184,14 +184,75 @@ async def test_extract_error_json():
     assert result["error"]["type"] == "invalid_request_error"
     assert result["error"]["code"] == "invalid_api_key"
 
-    # Test with no json part
     error_message = "Some generic error without JSON"
     result = extract_error_json(error_message)
     assert result["error"]["message"] == "Some generic error without JSON"
 
-    # Test with malformed json
+    # malformed json
     error_message = "Error code: 500 - {malformed json}"
     result = extract_error_json(error_message)
-    assert "Error code: 500" in result["error"]["message"]
-    assert "code" in result["error"]
-    assert result["error"]["code"] == "500"
+    assert "Invalid error " in result["error"]["message"]
+
+    # dangerous AST expressions?
+    error_message = "Error code: 500 - {'__complex__': '1j', 'message': 'This is potentially a malicious message? 1'}"
+    result = extract_error_json(error_message)
+    assert isinstance(result, dict)
+    assert "error" in result
+    assert "Invalid error format: Potentially unsafe" in result["error"]["message"]
+
+    # None in error dict
+    error_message = (
+        "Error code: 500 - {'error': {'message': 'Test message', 'param': None}}"
+    )
+    result = extract_error_json(error_message)
+    assert isinstance(result, dict)
+    assert "error" in result
+    assert result["error"]["message"] == "Test message"
+    if "param" in result["error"]:
+        assert result["error"]["param"] is None
+
+    # very nested structure
+    error_message = (
+        "Error code: 500 - {'error': {'nested': {'deeper': {'message': 'Too deep'}}}}"
+    )
+    result = extract_error_json(error_message)
+    assert "Invalid error format: Object too deeply" in result["error"]["message"]
+
+    # large message
+    large_message = "x" * 15000
+    error_message = f"Error code: 500 - {{'error': {{'message': '{large_message}'}}}}"
+    result = extract_error_json(error_message)
+    assert len(result["error"]["message"]) <= 400 + len("... (truncated)")
+    assert "... (truncated)" in result["error"]["message"]
+
+    # list in errors
+    error_message = (
+        "Error code: 500 - {'error': {'items': [1, 2, 3], 'message': 'List test'}}"
+    )
+    result = extract_error_json(error_message)
+    assert "deeply nested" in result["error"]["message"]
+
+    # escaped characters
+    error_message = 'Error code: 500 - {"error": {"message": "Line\\nbreak\\ttab"}}'
+    result = extract_error_json(error_message)
+    assert result["error"]["message"] == "Line\nbreak\ttab"
+
+    # empty error object
+    error_message = "Error code: 500 - {}"
+    result = extract_error_json(error_message)
+    assert result == {}
+
+    # jnon string error message
+    error_message = "Error code: 500 - {'error': {'message': 123}}"
+    result = extract_error_json(error_message)
+    assert result["error"]["message"] == 123
+
+    # multiple error codes
+    # we cannot parse it
+    error_message = (
+        "Error code: 500 - Error code: 401 - {'error': {'message': 'Multiple codes'}}"
+    )
+    result = extract_error_json(error_message)
+    assert result["error"]["message"] == error_message
+    with pytest.raises(KeyError):
+        result["error"]["code"]
