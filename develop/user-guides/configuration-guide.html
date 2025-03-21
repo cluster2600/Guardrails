@@ -1113,10 +1113,18 @@ You can enable streaming to begin receiving responses from the output rail soone
 </pre></div>
 </div>
 <p>When streaming is enabled, the toolkit applies output rails to chunks of tokens.
-If a rail blocks a chunk of tokens, the toolkit returns a string in the following format:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{&quot;event&quot;: &quot;ABORT&quot;, &quot;data&quot;: {&quot;reason&quot;: &quot;Blocked by &lt;rail-name&gt; rails.}}</span>
+If a rail blocks a chunk of tokens, the toolkit returns a JSON error object in the following format:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">  &quot;error&quot;: {</span>
+<span class="go">    &quot;message&quot;: &quot;Blocked by &lt;rail-name&gt; rails.&quot;,</span>
+<span class="go">    &quot;type&quot;: &quot;guardrails_violation&quot;,</span>
+<span class="go">    &quot;param&quot;: &quot;&lt;rail-name&gt;&quot;,</span>
+<span class="go">    &quot;code&quot;: &quot;content_blocked&quot;</span>
+<span class="go">  }</span>
+<span class="go">}</span>
 </pre></div>
 </div>
+<p>When integrating with the OpenAI Python client, this JSON error is designed to be caught by the server code and converted to an API error following OpenAI’s SSE format.</p>
 <p>The following table describes the subfields for the <code class="docutils literal notranslate"><span class="pre">streaming</span></code> field:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
