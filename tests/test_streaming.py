@@ -292,7 +292,6 @@ def self_check_output(**params):
     """A dummy self check action that checks if the bot message contains the BLOCK keyword."""
     if params.get("context", {}).get("bot_message"):
         bot_message_chunk = params.get("context", {}).get("bot_message")
-        print(f"bot_message_chunk: {bot_message_chunk}")
         if "BLOCK" in bot_message_chunk:
             return False
 
@@ -390,7 +389,6 @@ async def test_streaming_output_rails_blocked(output_rails_streaming_config):
 
     # find the error JSON in the chunks
     for chunk in chunks:
-        print(chunk)
         try:
             parsed = json.loads(chunk)
             if "error" in parsed:
