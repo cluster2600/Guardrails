@@ -709,11 +709,20 @@ streaming: True
 ```
 
 When streaming is enabled, the toolkit applies output rails to chunks of tokens.
-If a rail blocks a chunk of tokens, the toolkit returns a string in the following format:
+If a rail blocks a chunk of tokens, the toolkit returns a JSON error object in the following format:
 
 ```output
-{"event": "ABORT", "data": {"reason": "Blocked by <rail-name> rails.}}
+{
+  "error": {
+    "message": "Blocked by <rail-name> rails.",
+    "type": "guardrails_violation",
+    "param": "<rail-name>",
+    "code": "content_blocked"
+  }
+}
 ```
+
+When integrating with the OpenAI Python client, this JSON error is designed to be caught by the server code and converted to an API error following OpenAI's SSE format.
 
 The following table describes the subfields for the `streaming` field:
 
