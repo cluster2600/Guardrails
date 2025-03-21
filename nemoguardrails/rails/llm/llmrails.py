@@ -1334,10 +1334,26 @@ class LLMRails:
 
                 # Use the mapping to decide if the result indicates blocked content.
                 if is_output_blocked(result, action_func):
-                    # TODO: while whitespace issue is fixed, remove the space from below
                     reason = f"Blocked by {flow_id} rails."
-                    yield f'{{"event": "ABORT", "data": {{"reason": "{reason}"}}}}'
-                    # yield " {DATA: STOP}"
+
+                    # return the error as a plain JSON string (not in SSE format)
+                    # NOTE: When integrating with the OpenAI Python client, the server code should:
+                    # 1. detect this JSON error object in the stream
+                    # 2. terminate the stream
+                    # 3. format the error following OpenAI's SSE format
+                    # the OpenAI client will then properly raise an APIError with this error message
+
+                    error_data = {
+                        "error": {
+                            "message": reason,
+                            "type": "guardrails_violation",
+                            "param": flow_id,
+                            "code": "content_blocked",
+                        }
+                    }
+
+                    # return as plain JSON: the server should detect this JSON and convert it to an HTTP error
+                    yield json.dumps(error_data)
                     return
 
             if not stream_first:
