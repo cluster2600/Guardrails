@@ -153,17 +153,20 @@ async def test_streaming_output_rails_blocked_explicit(output_rails_streaming_co
 
     chunks = await run_self_check_test(output_rails_streaming_config, llm_completions)
 
-    # TODO: modify when sse is changed
-    expected_output = {
-        "event": "ABORT",
-        "data": {"reason": "Blocked by self check output rails."},
+    expected_error = {
+        "error": {
+            "message": "Blocked by self check output rails.",
+            "type": "guardrails_violation",
+            "param": "self check output",
+            "code": "content_blocked",
+        }
     }
 
-    abort_chunks = [
-        json.loads(chunk) for chunk in chunks if chunk.startswith('{"event": "ABORT"')
+    error_chunks = [
+        json.loads(chunk) for chunk in chunks if chunk.startswith('{"error":')
     ]
-    assert len(abort_chunks) > 0
-    assert expected_output in abort_chunks
+    assert len(error_chunks) > 0
+    assert expected_error in error_chunks
 
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
@@ -184,17 +187,20 @@ async def test_streaming_output_rails_blocked_default_config(
         output_rails_streaming_config_default, llm_completions
     )
 
-    # TODO: modify when sse is changed
-    expected_output = {
-        "event": "ABORT",
-        "data": {"reason": "Blocked by self check output rails."},
+    expected_error = {
+        "error": {
+            "message": "Blocked by self check output rails.",
+            "type": "guardrails_violation",
+            "param": "self check output",
+            "code": "content_blocked",
+        }
     }
 
-    abort_chunks = [
-        json.loads(chunk) for chunk in chunks if chunk.startswith('{"event": "ABORT"')
+    error_chunks = [
+        json.loads(chunk) for chunk in chunks if chunk.startswith('{"error":')
     ]
-    assert len(abort_chunks) == 0
-    assert expected_output not in abort_chunks
+    assert len(error_chunks) == 0
+    assert expected_error not in error_chunks
 
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
@@ -210,13 +216,17 @@ async def test_streaming_output_rails_blocked_at_start(output_rails_streaming_co
 
     chunks = await run_self_check_test(output_rails_streaming_config, llm_completions)
 
-    expected_output = {
-        "event": "ABORT",
-        "data": {"reason": "Blocked by self check output rails."},
+    expected_error = {
+        "error": {
+            "message": "Blocked by self check output rails.",
+            "type": "guardrails_violation",
+            "param": "self check output",
+            "code": "content_blocked",
+        }
     }
 
     assert len(chunks) == 1
-    assert json.loads(chunks[0]) == expected_output
+    assert json.loads(chunks[0]) == expected_error
 
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 

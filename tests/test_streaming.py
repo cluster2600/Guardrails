@@ -377,16 +377,31 @@ async def test_streaming_output_rails_blocked(output_rails_streaming_config):
         '  express greeting\nbot express greeting\n  "Hi, how are you doing?"',
         '  "This is a funny joke but you should laught at it because [BLOCK] you will be cursed!."',
     ]
-    expected_chunks = [" {DATA: STOP}"]
     chunks = await run_self_check_test(output_rails_streaming_config, llm_completions)
-    expected_output = (
-        '{"event": "ABORT", "data": {"reason": "Blocked by self check output rails."}}'
-    )
-    parsed_output = json.loads(expected_output)
 
-    assert parsed_output in [
-        json.loads(chunk) for chunk in chunks if chunk.startswith('{"event": "ABORT"')
-    ]
+    expected_error = {
+        "error": {
+            "message": "Blocked by self check output rails.",
+            "type": "guardrails_violation",
+            "param": "self check output",
+            "code": "content_blocked",
+        }
+    }
+
+    # find the error JSON in the chunks
+    for chunk in chunks:
+        print(chunk)
+        try:
+            parsed = json.loads(chunk)
+            if "error" in parsed:
+                assert parsed == expected_error
+                break
+        except json.JSONDecodeError:
+            continue
+
+        assert parsed == expected_error
+    else:
+        assert False, f"No JSON error found in chunks: {chunks}"
     # Wait for proper cleanup, otherwise we get a Runtime Error
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
@@ -405,15 +420,23 @@ async def test_streaming_output_rails_blocked_at_first_call(
     ]
     chunks = await run_self_check_test(output_rails_streaming_config, llm_completions)
 
-    expected_output = {
-        "event": "ABORT",
-        "data": {"reason": "Blocked by self check output rails."},
+    expected_error = {
+        "error": {
+            "message": "Blocked by self check output rails.",
+            "type": "guardrails_violation",
+            "param": "self check output",
+            "code": "content_blocked",
+        }
     }
 
-    # Parse the JSON string into a dictionary
-    parsed_output = json.loads(chunks[0])
+    # error chunk is the first chunk
+    error_chunk = chunks[0]
 
-    assert expected_output == parsed_output
+    parsed_error_chunk = json.loads(error_chunk)
+
+    assert parsed_error_chunk == expected_error
+
+    # there should be exactly one chunk with the error
     assert len(chunks) == 1
     # Wait for proper cleanup, otherwise we get a Runtime Error
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
