@@ -15,11 +15,14 @@
 
 """Tests for the LLMTaskManager with multimodal content."""
 
+import random
+import string
+
+import jinja2
 import pytest
 
 from nemoguardrails import RailsConfig
 from nemoguardrails.llm.taskmanager import LLMTaskManager
-from nemoguardrails.rails.llm.config import RailsConfig
 
 
 def test_history_integration_with_filters():
@@ -38,7 +41,6 @@ def test_history_integration_with_filters():
     ]
 
     # Mock a template rendering environment similar to what the task manager would use
-    import jinja2
 
     env = jinja2.Environment()
     env.filters["user_assistant_sequence"] = user_assistant_sequence
@@ -149,10 +151,24 @@ def task_manager(config):
     return LLMTaskManager(config)
 
 
-def test_message_length_with_base64_image(task_manager):
+def get_long_base64_str(length: int):
+    # Set seed for deterministic results
+    random.seed(13)
+
+    # a dummy base64 string with valid alphanumeric characters
+    # https://www.rfc-editor.org/rfc/rfc4648
+    base64_chars = string.ascii_letters + string.digits + "+/"
+    long_base64 = "".join(random.choices(base64_chars, k=length))
+
+    return long_base64
+
+
+@pytest.mark.parametrize("image_type", ["jpeg", "png"])
+def test_message_length_with_base64_image(task_manager, image_type):
     """Test that base64 images don't count their full length in message length calculation."""
     # Create a dummy base64 string
-    long_base64 = "a" * 100000
+
+    long_base64 = get_long_base64_str(100000)
 
     # Create a multimodal message with base64 image
     messages = [
@@ -165,7 +181,9 @@ def test_message_length_with_base64_image(task_manager):
                 },
                 {
                     "type": "image_url",
-                    "image_url": {"url": f"data:image/jpeg;base64,{long_base64}"},
+                    "image_url": {
+                        "url": f"data:image/{image_type};base64,{long_base64}"
+                    },
                 },
             ],
         }
@@ -223,7 +241,7 @@ def test_regular_url_length(task_manager):
 
 def test_base64_embedded_in_string(task_manager):
     """Test handling of base64 data embedded within a string."""
-    long_base64 = "a" * 100000
+    long_base64 = get_long_base64_str(100000)
 
     messages = [
         {
@@ -244,7 +262,7 @@ def test_base64_embedded_in_string(task_manager):
 def test_multiple_base64_images(task_manager):
     """Test handling of multiple base64 images in a single message."""
 
-    long_base64 = "a" * 50000
+    long_base64 = get_long_base64_str(50000)
 
     # openai supports multiple images in a single message
     messages = [
@@ -279,7 +297,7 @@ def test_multiple_base64_images(task_manager):
 def test_multiple_base64_embedded_in_string(task_manager):
     """Test handling of multiple base64 images embedded in a string."""
 
-    base64_segment = "a" * 10000
+    base64_segment = get_long_base64_str(10000)
 
     # openai supports multiple images in a single message
     content_string = (
@@ -308,7 +326,7 @@ def test_multiple_base64_embedded_in_string(task_manager):
 def test_multiple_message_types(task_manager):
     """Test handling of multiple message types with base64 images."""
 
-    long_base64 = "a" * 50000
+    long_base64 = get_long_base64_str(50000)
 
     messages = [
         {

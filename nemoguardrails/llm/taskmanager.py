@@ -229,9 +229,9 @@ class LLMTaskManager:
 
             # string content that might contain base64 data
             elif isinstance(content, str):
-                if "data:image/" in content and ";base64," in content:
+                base64_pattern = r"data:image/[^;]+;base64,[A-Za-z0-9+/=]+"
+                if re.search(base64_pattern, content):
                     # Replace base64 content with placeholder using regex
-                    base64_pattern = r"data:image/[^;]+;base64,[A-Za-z0-9+/=]+"
                     result_text += (
                         re.sub(base64_pattern, "[IMAGE_CONTENT]", content) + "\n"
                     )
