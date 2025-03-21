@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>LangChain Integration &#8212; NVIDIA NeMo Guardrails</title>
+    <title>NemoGuard JailbreakDetect Deployment &#8212; NVIDIA NeMo Guardrails</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/langchain/langchain-integration';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/nemoguard-jailbreakdetect-deployment';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -54,11 +54,9 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/langchain/langchain-integration.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/nemoguard-jailbreakdetect-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="RunnableRails" href="runnable-rails.html" />
-    <link rel="prev" title="LangChain" href="index.html" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -304,7 +302,7 @@
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guides</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../configuration-guide.html">Configuration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
@@ -313,15 +311,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../python-api.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../server-guide.html">Server Guide</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">LangChain</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">LangChain Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html">RunnableRails</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="chain-with-guardrails/README.html">Chain with Guardrails</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="runnable-as-action/index.html">Runnable-As-Action</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="runnable-as-action/README.html">Runnable as Action</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/runnable-as-action/index.html">Runnable-As-Action</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../langchain/runnable-as-action/README.html">Runnable as Action</a></li>
 </ul>
 </details></li>
 </ul>
@@ -360,21 +358,21 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced User Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../advanced/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/prompt-customization.html">Prompt Customization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/using-docker.html">NeMo Guardrails with Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/align-score-deployment.html">AlignScore Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/extract-user-provided-values.html">Extract User-provided Values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/bot-message-instructions.html">Bot Message Instructions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generation-options.html">Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prompt-customization.html">Prompt Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding-search-providers.html">Embedding Search Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-docker.html">NeMo Guardrails with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="align-score-deployment.html">AlignScore Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extract-user-provided-values.html">Extract User-provided Values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bot-message-instructions.html">Bot Message Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event-based-api.html">Event-based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -439,10 +437,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">LangChain</a></li>
-    
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">LangChain Integration</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">NemoGuard JailbreakDetect Deployment</span></li>
   </ul>
 </nav>
 </div>
@@ -459,64 +454,53 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="langchain-integration">
-<h1>LangChain Integration<a class="headerlink" href="#langchain-integration" title="Link to this heading">#</a></h1>
-<p>There are two main ways in which you can use NeMo Guardrails with LangChain:</p>
-<ol class="arabic simple">
-<li><p>Add guardrails to a LangChain chain (or <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>).</p></li>
-<li><p>Use a LangChain chain (or <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>) inside a guardrails configuration.</p></li>
-</ol>
-<section id="add-guardrails-to-a-chain">
-<h2>Add Guardrails to a Chain<a class="headerlink" href="#add-guardrails-to-a-chain" title="Link to this heading">#</a></h2>
-<p>You can easily add guardrails to a chain using the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> class:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.integrations.langchain.runnable_rails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableRails</span>
-
-<span class="c1"># ... initialize `some_chain`</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
-
-<span class="c1"># Using LCEL, you first create a RunnableRails instance, and &quot;apply&quot; it using the &quot;|&quot; operator</span>
-<span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">chain_with_guardrails</span> <span class="o">=</span> <span class="n">guardrails</span> <span class="o">|</span> <span class="n">some_chain</span>
-
-<span class="c1"># Alternatively, you can specify the Runnable to wrap</span>
-<span class="c1"># when creating the RunnableRails instance.</span>
-<span class="n">chain_with_guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">runnable</span><span class="o">=</span><span class="n">some_chain</span><span class="p">)</span>
+  <section class="tex2jax_ignore mathjax_ignore" id="nemoguard-jailbreakdetect-deployment">
+<h1>NemoGuard JailbreakDetect Deployment<a class="headerlink" href="#nemoguard-jailbreakdetect-deployment" title="Link to this heading">#</a></h1>
+<p>The NemoGuard Jailbreak Detect model is available via the <a class="reference internal" href="jailbreak-detection-deployment.html"><span class="std std-doc">Jailbreak Detection Container</span></a> or as an <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard">NVIDIA NIM</a>.</p>
+<section id="nim-deployment">
+<h2>NIM Deployment<a class="headerlink" href="#nim-deployment" title="Link to this heading">#</a></h2>
+<p>The first step is to ensure access to NVIDIA NIM assets through NGC using an NVAIE license.
+Once you have the NGC API key with the necessary permissions, set the following environment variables:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
+docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>-u<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>-p<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference internal" href="runnable-rails.html"><span class="std std-doc">RunnableRails Guide</span></a> and the <a class="reference internal" href="chain-with-guardrails/README.html"><span class="std std-doc">Chain with Guardrails Guide</span></a>.</p>
+<p>Test that you are able to use the NVIDIA NIM assets by pulling the latest NemoGuard container.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span><span class="s1">&#39;nvcr.io/nim/nvidia/nemoguard-jailbreak-detect:latest&#39;</span>
+docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_IMAGE</span>
+</pre></div>
+</div>
+<p>Then run the container.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NGC_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">$NIM_IMAGE</span>
+</pre></div>
+</div>
 </section>
-<section id="using-a-chain-inside-guardrails">
-<h2>Using a Chain inside Guardrails<a class="headerlink" href="#using-a-chain-inside-guardrails" title="Link to this heading">#</a></h2>
-<p>To use a chain (or <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>) inside a guardrails configuration, you can register it as an action.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span><span class="p">,</span> <span class="n">LLMRails</span>
+<section id="using-the-nim-in-guardrails">
+<h2>Using the NIM in Guardrails<a class="headerlink" href="#using-the-nim-in-guardrails" title="Link to this heading">#</a></h2>
+<p>Within your guardrails configuration file, you can specify that you want to use the NIM endpoint as part of the jailbreak detection configuration.
+To do this, ensure that you specify the location of the NIM in the <code class="docutils literal notranslate"><span class="pre">nim_url</span></code> parameter.
+If the NIM is listening on a port other than 8000, specify that port in the <code class="docutils literal notranslate"><span class="pre">nim_port</span></code> parameter.
+An example configuration is shown below.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo-instruct</span>
 
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
-<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
-<span class="n">rails</span><span class="o">.</span><span class="n">register_action</span><span class="p">(</span><span class="n">SampleChainOrRunnable</span><span class="p">(),</span> <span class="s2">&quot;sample_action&quot;</span><span class="p">)</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">jailbreak_detection</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">nim_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0.0.0.0&quot;</span>
+<span class="w">      </span><span class="nt">nim_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8000</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak detection model</span>
 </pre></div>
 </div>
-<p>Once registered, the chain (or <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>) can be invoked from within a flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow
-  ...
-  $result = execute sample_action
-  ...
-</pre></div>
-</div>
-<p>For a complete example, check out the <a class="reference internal" href="runnable-as-action/README.html"><span class="std std-doc">Runnable as Action Guide</span></a>.</p>
-</section>
-<section id="langsmith-integration">
-<h2>LangSmith Integration<a class="headerlink" href="#langsmith-integration" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails integrates out-of-the-box with <a class="reference external" href="https://www.langchain.com/langsmith">LangSmith</a>. To start sending trace information to LangSmith, you have to configure the following environment variables:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_TRACING_V2</span><span class="o">=</span><span class="nb">true</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_ENDPOINT</span><span class="o">=</span>https://api.smith.langchain.com
-<span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_API_KEY</span><span class="o">=</span>&lt;your-api-key&gt;
-<span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_PROJECT</span><span class="o">=</span>&lt;your-project&gt;<span class="w">  </span><span class="c1"># if not specified, defaults to &quot;default&quot;</span>
-</pre></div>
-</div>
-<p>For more details on configuring LangSmith check out the <a class="reference external" href="https://docs.smith.langchain.com/">LangSmith documentation</a>.</p>
 </section>
 </section>
 
@@ -530,24 +514,6 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="index.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">LangChain</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="runnable-rails.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">RunnableRails</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -567,9 +533,8 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-guardrails-to-a-chain">Add Guardrails to a Chain</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-chain-inside-guardrails">Using a Chain inside Guardrails</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langsmith-integration">LangSmith Integration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nim-deployment">NIM Deployment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-nim-in-guardrails">Using the NIM in Guardrails</a></li>
 </ul>
   </nav></div>
 
