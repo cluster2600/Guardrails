@@ -465,10 +465,10 @@
 <h1>Multimodal Data with NeMo Guardrails<a class="headerlink" href="#multimodal-data-with-nemo-guardrails" title="Link to this heading">#</a></h1>
 <section id="about-working-with-multimodal-data">
 <h2>About Working with Multimodal Data<a class="headerlink" href="#about-working-with-multimodal-data" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails toolkit supports adding content safety checks to multimodal content—images and text.
+<p>NeMo Guardrails toolkit supports adding safety checks to multimodal content—images and text.
 The support is for input and output guardrails only.
-Depending on the vision model, you can specify the image to check as a base64 encoded string or as a URL.</p>
-<p>The safety check uses an LLM as-a-judge to determine if the content is safe.
+Depending on the image reasoning model, you can specify the image to check as a base64 encoded data or as a URL.</p>
+<p>The safety check uses the image reasoning model as LLM as-a-judge to determine if the content is safe.
 The OpenAI, Llama Vision, and Llama Guard models can accept multimodal input and act as a judge model.</p>
 <p>You must ensure the image size and prompt length do not exceed the maximum context length of the model.</p>
 </section>
@@ -618,6 +618,44 @@ The sample image is a handgun.</p>
 </li>
 </ol>
 </section>
+<section id="tips-for-base-64-encoded-images">
+<h2>Tips for Base 64 Encoded Images<a class="headerlink" href="#tips-for-base-64-encoded-images" title="Link to this heading">#</a></h2>
+<p>Some models, such as the Llama Vision models, do not read an image from a URL.
+For these models, encode the image in base 64 and provide the encoded image to the model.</p>
+<p>The following code sample shows the common Python statements.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.rails.llm.llmrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./content_safety_vision&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;&lt;path-to-image&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="hll">  <span class="n">base64_image</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span>
+  <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;what is the surface color that the object is placed on?&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image_url&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;image_url&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="hll">          <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;data:image/jpeg;base64,</span><span class="si">{</span><span class="n">base64_image</span><span class="si">}</span><span class="s2">&quot;</span>
+</span>      <span class="p">},</span>
+    <span class="p">},</span>
+  <span class="p">],</span>
+<span class="p">}]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -670,6 +708,7 @@ The sample image is a handgun.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-working-with-multimodal-data">About Working with Multimodal Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-configuration">Sample Configuration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-base-64-encoded-images">Tips for Base 64 Encoded Images</a></li>
 </ul>
   </nav></div>
 
