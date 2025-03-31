@@ -15,7 +15,7 @@ jobs:
   build-wheel:
     runs-on: ubuntu-latest
     env:
-      POETRY_VERSION: "1.8.2"
+      POETRY_VERSION: "2.1.2"
       PYTHON_VERSION: "3.11"
     outputs:
       artifact_name: ${{ steps.set-artifact-name.outputs.artifact_name }}
@@ -104,7 +104,7 @@ jobs:
       - name: Install Wheel
         run: |
           pip install --upgrade pip
-          pip install poetry==1.8.2
+          pip install poetry==2.1.2
           pip install ./*.whl
 
       - name: Start server in the background

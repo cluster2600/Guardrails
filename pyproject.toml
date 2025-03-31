@@ -4,7 +4,7 @@ description = "NeMo Guardrails is an open-source toolkit for easily adding progr
 authors = ["NVIDIA <nemoguardrails@nvidia.com>"]
 license = "LICENSE.md"
 readme = "README.md"
-version = "0.13.0"
+version = "0.14.0-rc1"
 packages = [{ include = "nemoguardrails" }]
 
 
@@ -163,5 +163,5 @@ log-level = "DEBUG"
 log_cli = "False"
 
 [build-system]
-requires = ["poetry-core>=1.0.0,<2.0.0"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

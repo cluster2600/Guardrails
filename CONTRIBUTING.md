@@ -180,7 +180,7 @@ To get started quickly, follow the steps below.
 
    This will run the test suite to ensure everything is set up correctly.
 
-> **Note**: You should use `poetry run` to run commands within the virtual environment. If you want to avoid prefixing commands with `poetry run`, you can activate the environment using `poetry shell`. This will start a new shell with the virtual environment activated, allowing you to run commands directly.
+> **Note**: You should use `poetry run` to run commands within the virtual environment. If you want to avoid prefixing commands with `poetry run`, you can activate the environment using `poetry shell` or follow the docs here if you are using poetry >2 . ForThis will start a new shell with the virtual environment activated, allowing you to run commands directly.
 
 ### Contribution Workflow
 

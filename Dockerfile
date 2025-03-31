@@ -1,4 +1,3 @@
-
 # syntax=docker/dockerfile:experimental
 
 # Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.
@@ -21,7 +20,7 @@ FROM python:3.10
 RUN apt-get update && apt-get install -y git gcc g++
 
 # Set POETRY_VERSION environment variable
-ENV POETRY_VERSION=1.8.2
+ARG POETRY_VERSION=2.1.2
 
 RUN if [ "$(uname -m)" = "x86_64" ]; then \
   export ANNOY_COMPILER_ARGS="-D_CRT_SECURE_NO_WARNINGS,-DANNOYLIB_MULTITHREADED_BUILD,-march=x86-64"; \
