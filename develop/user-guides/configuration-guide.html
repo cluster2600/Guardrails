@@ -549,17 +549,15 @@
 DeepSeek models use <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code> as tokens to identify the traces.</p>
 <p>The reasoning traces and the tokens usually interfere with NeMo Guardrails and result in falsely triggering output guardrails for safe responses.
 To use these reasoning models, you can remove the traces and tokens from the model response with a configuration like the following example.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">:emphasize-lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5-</span>
-
-<span class="nt">models</span><span class="p">:</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-reasoner</span>
-<span class="w">    </span><span class="nt">reasoning_config</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">remove_thinking_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">      </span><span class="nt">start_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;think&gt;&quot;</span>
-<span class="w">      </span><span class="nt">end_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;/think&gt;&quot;</span>
-</pre></div>
+<span class="hll"><span class="w">    </span><span class="nt">reasoning_config</span><span class="p">:</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">remove_thinking_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">start_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;think&gt;&quot;</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">end_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;/think&gt;&quot;</span>
+</span></pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config</span></code> field for a model specifies the required configuration for a reasoning model that returns reasoning traces.
 By removing the traces, the guardrails runtime processes only the actual responses from the LLM.</p>
