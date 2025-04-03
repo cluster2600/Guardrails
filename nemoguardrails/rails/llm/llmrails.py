@@ -29,6 +29,7 @@ from typing import Any, AsyncIterator, Dict, List, Optional, Tuple, Type, Union,
 
 from langchain_core.language_models import BaseLanguageModel
 from langchain_core.language_models.llms import BaseLLM
+from pydantic import BaseModel, ValidationError
 
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.actions.llm.utils import get_colang_history
@@ -79,6 +80,17 @@ from nemoguardrails.utils import (
 log = logging.getLogger(__name__)
 
 process_events_semaphore = asyncio.Semaphore(1)
+
+
+class ErrorDetails(BaseModel):
+    message: str
+    type: str = "guardrails_violation"
+    param: str
+    code: str = "content_blocked"
+
+
+class ErrorData(BaseModel):
+    error: ErrorDetails
 
 
 class LLMRails:
@@ -1342,19 +1354,22 @@ class LLMRails:
                     # 2. terminate the stream
                     # 3. format the error following OpenAI's SSE format
                     # the OpenAI client will then properly raise an APIError with this error message
+                    try:
+                        # Create an instance of the ErrorData Pydantic model
+                        error_data = ErrorData(
+                            error=ErrorDetails(
+                                message=reason,
+                                param=flow_id,
+                            )
+                        )
 
-                    error_data = {
-                        "error": {
-                            "message": reason,
-                            "type": "guardrails_violation",
-                            "param": flow_id,
-                            "code": "content_blocked",
-                        }
-                    }
-
-                    # return as plain JSON: the server should detect this JSON and convert it to an HTTP error
-                    yield json.dumps(error_data)
-                    return
+                        # Serialize the validated Pydantic model to JSON
+                        yield error_data.model_dump_json()
+                    except ValidationError as e:
+                        # Log the validation error
+                        logging.error(f"Validation error: {e}")
+                        # TODO: we should do this, how else we can get here?
+                        raise ValueError("Invalid error data structure") from e
 
             if not stream_first:
                 words = chunk_str_rep.split()
