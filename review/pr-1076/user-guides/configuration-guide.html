@@ -32,7 +32,7 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=4c56b82b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
@@ -142,6 +142,32 @@
   
   <div class="col-lg-9 navbar-header-items">
     
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
     
     <div class="navbar-header-items__end">
       
@@ -228,6 +254,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -246,6 +301,7 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
 
 
 <nav class="bd-docs-nav bd-links"
@@ -393,27 +449,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -540,7 +575,7 @@
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Although you can instantiate any of the previously mentioned LLM providers, depending on the capabilities of the model, the NeMo Guardrails toolkit works better with some providers than others. The toolkit includes prompts that have been optimized for certain types of models, such as <code class="docutils literal notranslate"><span class="pre">openai</span></code> and <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>. For others, you can optimize the prompts yourself following the information in the <a class="reference internal" href="#llm-prompts">LLM Prompts</a> section.</p>
+<p>Although you can instantiate any of the previously mentioned LLM providers, depending on the capabilities of the model, the NeMo Guardrails toolkit works better with some providers than others. The toolkit includes prompts that have been optimized for certain types of models, such as models provided by<code class="docutils literal notranslate"><span class="pre">openai</span></code> or <code class="docutils literal notranslate"><span class="pre">llama3</span></code> models. For others, you can optimize the prompts yourself following the information in the <a class="reference internal" href="#llm-prompts">LLM Prompts</a> section.</p>
 </div>
 </section>
 <section id="using-llms-with-reasoning-traces">
@@ -549,17 +584,15 @@
 DeepSeek models use <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code> as tokens to identify the traces.</p>
 <p>The reasoning traces and the tokens usually interfere with NeMo Guardrails and result in falsely triggering output guardrails for safe responses.
 To use these reasoning models, you can remove the traces and tokens from the model response with a configuration like the following example.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">:emphasize-lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5-</span>
-
-<span class="nt">models</span><span class="p">:</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-reasoner</span>
-<span class="w">    </span><span class="nt">reasoning_config</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">remove_thinking_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">      </span><span class="nt">start_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;think&gt;&quot;</span>
-<span class="w">      </span><span class="nt">end_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;/think&gt;&quot;</span>
-</pre></div>
+<span class="hll"><span class="w">    </span><span class="nt">reasoning_config</span><span class="p">:</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">remove_thinking_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">start_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;think&gt;&quot;</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">end_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;/think&gt;&quot;</span>
+</span></pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config</span></code> field for a model specifies the required configuration for a reasoning model that returns reasoning traces.
 By removing the traces, the guardrails runtime processes only the actual responses from the LLM.</p>
@@ -630,39 +663,6 @@ These models, hosted on the <a class="reference external" href="https://build.nv
 </pre></div>
 </div>
 </section>
-</section>
-<section id="nemo-llm-service">
-<h4>NeMo LLM Service<a class="headerlink" href="#nemo-llm-service" title="Link to this heading">#</a></h4>
-<p>In addition to the LLM providers supported by LangChain, NeMo Guardrails also supports NeMo LLM Service. For example, to use the GPT-43B-905 model as the main LLM, you should use the following configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemollm</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-43b-905</span>
-</pre></div>
-</div>
-<p>You can also use customized NeMo LLM models for specific tasks, e.g., self-checking the user input or the bot output. For example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># ...</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_input</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemollm</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-43b-002</span>
-<span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">tokens_to_generate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="w">      </span><span class="nt">customization_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6e5361fa-f878-4f00-8bc6-d7fbaaada915</span>
-</pre></div>
-</div>
-<p>You can specify additional parameters when using NeMo LLM models using the <code class="docutils literal notranslate"><span class="pre">parameters</span></code> key. The supported parameters are:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code>: the temperature that should be used for making the calls;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">api_host</span></code>: points to the NeMo LLM Service host (default ‘<a class="reference external" href="https://api.llm.ngc.nvidia.com">https://api.llm.ngc.nvidia.com</a>’);</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">api_key</span></code>: the NeMo LLM Service key that should be used;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">organization_id</span></code>: the NeMo LLM Service organization ID that should be used;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tokens_to_generate</span></code>: the maximum number of tokens to generate;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">stop</span></code>: the list of stop words that should be used;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">customization_id</span></code>: if a customization is used, the id should be specified.</p></li>
-</ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">api_host</span></code>, <code class="docutils literal notranslate"><span class="pre">api_key</span></code>, and <code class="docutils literal notranslate"><span class="pre">organization_id</span></code> are fetched automatically from the environment variables <code class="docutils literal notranslate"><span class="pre">NGC_API_HOST</span></code>, <code class="docutils literal notranslate"><span class="pre">NGC_API_KEY</span></code>, and <code class="docutils literal notranslate"><span class="pre">NGC_ORGANIZATION_ID</span></code>, respectively.</p>
-<p>For more details, please refer to the NeMo LLM Service documentation and check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/llm/nemollm/README.md">NeMo LLM example configuration</a>.</p>
 </section>
 <section id="trt-llm">
 <h4>TRT-LLM<a class="headerlink" href="#trt-llm" title="Link to this heading">#</a></h4>
@@ -1579,6 +1579,8 @@ To understand better what is happening under the hood, here’s how the <code cl
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -1602,7 +1604,6 @@ To understand better what is happening under the hood, here’s how the <code cl
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-ai-endpoints">NVIDIA AI Endpoints</a></li>
 </ul>
 </li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nemo-llm-service">NeMo LLM Service</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#trt-llm">TRT-LLM</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-llm-models">Custom LLM Models</a></li>
 </ul>
@@ -1669,6 +1670,7 @@ To understand better what is happening under the hood, here’s how the <code cl
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -1741,6 +1743,7 @@ To understand better what is happening under the hood, here’s how the <code cl
 </div>
       
         <div class="footer-item">
+
 
 
 
