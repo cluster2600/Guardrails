@@ -1440,9 +1440,16 @@ NeMo Guardrails ships with some basic rules for the following categories:</p>
 <li><p>Template injection (Jinja)</p></li>
 </ul>
 <p>Additional rules can be added by including them in the <code class="docutils literal notranslate"><span class="pre">library/injection_detection/yara_rules</span></code> folder or specifying a <code class="docutils literal notranslate"><span class="pre">yara_path</span></code> with all the rules.</p>
+<p>Injection detection has a number of action options that indicate what to do when potential exploitation is detected.
+Two options are currently available: <code class="docutils literal notranslate"><span class="pre">reject</span></code> and <code class="docutils literal notranslate"><span class="pre">omit</span></code>, with <code class="docutils literal notranslate"><span class="pre">sanitize</span></code> planned for a future release.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reject</span></code> will return a message to the user indicating that their query could not be handled and they should try again.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">omit</span></code> will return the model’s output, removing the offending detected content.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sanitize</span></code> attempts to “de-fang” the malicious content, returning the output in a way that is less likely to result exploitation. This action is generally considered unsuitable for production use.</p></li>
+</ul>
 <section id="configuring-injection-detection">
 <h4>Configuring Injection Detection<a class="headerlink" href="#configuring-injection-detection" title="Link to this heading">#</a></h4>
-<p>To activate injection detection, you must include either the <code class="docutils literal notranslate"><span class="pre">reject</span> <span class="pre">injection</span></code> or the <code class="docutils literal notranslate"><span class="pre">mitigate</span> <span class="pre">injection</span></code> output flow.
+<p>To activate injection detection, you must include the <code class="docutils literal notranslate"><span class="pre">injection</span> <span class="pre">detection</span></code> output flow.
 As an example config:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
   config:
@@ -1457,11 +1464,9 @@ As an example config:</p>
 
   output:
     flows:
-      - reject injection
+      - injection detection
 </pre></div>
 </div>
-<p>Note that the <code class="docutils literal notranslate"><span class="pre">reject</span> <span class="pre">injection</span></code> flow corresponds with the <code class="docutils literal notranslate"><span class="pre">reject</span></code> value of the <code class="docutils literal notranslate"><span class="pre">action</span></code> parameter in the config, while <code class="docutils literal notranslate"><span class="pre">mitigate</span> <span class="pre">injection</span></code> corresponds with the <code class="docutils literal notranslate"><span class="pre">omit</span></code> and <code class="docutils literal notranslate"><span class="pre">sanitize</span></code> actions.
-If the specified <code class="docutils literal notranslate"><span class="pre">action</span></code> does not align with the rail, a warning will be logged and guardrails will default to the <code class="docutils literal notranslate"><span class="pre">reject</span> <span class="pre">injection</span></code> rail.</p>
 <p><strong>SECURITY WARNING:</strong> It is <em>strongly</em> advised that the <code class="docutils literal notranslate"><span class="pre">sanitize</span></code> action not be used in production systems, as there is no guarantee of its efficacy, and it may lead to adverse security outcomes.</p>
 <p>This rail is primarily intended to be used in agentic systems to <em>enhance</em> other security controls as part of a defense in depth strategy.
 The provided rules are recommended to be used in the following settings:</p>

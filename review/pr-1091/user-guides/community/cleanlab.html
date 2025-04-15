@@ -493,10 +493,10 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="cleanlab-integration">
 <h1>Cleanlab Integration<a class="headerlink" href="#cleanlab-integration" title="Link to this heading">#</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">cleanlab</span> <span class="pre">trustworthiness</span></code> flow uses trustworthiness score with a default threshold of 0.6 to determine if the output should be allowed or not (i.e., if the trustworthiness score is below the threshold, the response is considered “untrustworthy”).</p>
-<p>A high trustworthiness score generally correlates with high-quality responses. In a question-answering application, high trustworthiness is indicative of correct responses, while in general open-ended applications, a high score corresponds to the response being helpful and informative. Trustworthiness scores are less useful for creative or open-ended requests.</p>
-<p>The mathematical derivation of the score is explained in <a class="reference external" href="https://help.cleanlab.ai/tutorials/tlm/#how-does-the-tlm-trustworthiness-score-work">Cleanlab’s documentation</a>, and you can also access <a class="reference external" href="https://cleanlab.ai/blog/trustworthy-language-model/">trustworthiness score benchmarks</a>.</p>
-<p>You can easily change the cutoff value for the trustworthiness score by adjusting the threshold in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/cleanlab/flows.co">config</a>. For example, to change the threshold to 0.7, you can add the following flow to your config:</p>
+<p>Cleanlab’s state-of-the-art <a class="reference external" href="https://cleanlab.ai/blog/trustworthy-language-model/">LLM uncertainty estimator</a> scores the <em>trustworthiness</em> of any LLM response, to detect incorrect outputs and hallucinations in real-time.</p>
+<p>In question-answering or RAG applications: high trustworthiness is indicative of a correct response. In open-ended chat applications, a high score corresponds to the response being helpful and informative. Low trustworthiness scores indicate outputs that are likely bad or incorrect, or complex prompts where the LLM might have output the right response this time but might output the wrong response when run on the same prompt again (so it cannot be trusted).</p>
+<p>The trustworthiness score is further explained and comprehensively benchmarked in <a class="reference external" href="https://help.cleanlab.ai/tlm/">Cleanlab’s documentation</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cleanlab</span> <span class="pre">trustworthiness</span></code> guardrail flow uses a default trustworthiness score threshold of 0.6 to determine if your LLM output should be allowed or not. When the trustworthiness score falls below the threshold, the corresponding LLM response is flagged as <em>unstrustworthy</em>. You can easily change the cutoff value for the trustworthiness score by adjusting the threshold in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/cleanlab/flows.co">config</a>. For example, to change the threshold to 0.7, add the following flow to your config:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow cleanlab trustworthiness
   &quot;&quot;&quot;Guardrail based on trustworthiness score.&quot;&quot;&quot;
   $result = execute call cleanlab api
@@ -511,11 +511,11 @@ define bot response untrustworthy
 </div>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
-<p>Install <code class="docutils literal notranslate"><span class="pre">cleanlab-studio</span></code> to use Cleanlab’s trustworthiness score:</p>
+<p>Install the Python client to use Cleanlab’s trustworthiness score:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install cleanlab-studio</span>
 </pre></div>
 </div>
-<p>Then, you can get an API key for free by <a class="reference external" href="https://app.cleanlab.ai/?signup_origin=TLM">creating a Cleanlab account</a> or experiment with TLM in the <a class="reference external" href="https://tlm.cleanlab.ai/">playground</a>. You can also <a class="reference external" href="mailto:sales&#37;&#52;&#48;cleanlab&#46;ai">email Cleanlab</a> for any special requests or support.</p>
+<p>You can get an API key for free by <a class="reference external" href="https://tlm.cleanlab.ai/">creating a Cleanlab account</a> or experiment with the trustworthiness scores in the <a class="reference external" href="https://chat.cleanlab.ai/chat">playground</a>. Feel free to <a class="reference external" href="mailto:suport&#37;&#52;&#48;cleanlab&#46;ai">email Cleanlab</a> with any questions.</p>
 <p>Lastly, set the <code class="docutils literal notranslate"><span class="pre">CLEANLAB_API_KEY</span></code> environment variable with the API key.</p>
 </section>
 </section>

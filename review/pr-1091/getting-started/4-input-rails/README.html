@@ -744,9 +744,8 @@
 </pre></div>
 </div>
 <p>The following figure depicts in more details how the self-check input rail works:</p>
-<div align="center">
-<img src="../../_static/puml/input_rails_fig_1.png" width="815">
-</div>
+<a class="reference internal image-reference" href="../../_images/input_rails_fig_1.png"><img alt="Sequence diagram showing how the self-check input rail works in NeMo Guardrails: 1) Application code sends a user message to the Programmable Guardrails system, 2) The message is passed to the Input Rails component, 3) Input Rails calls the self_check_input action, 4) The action uses an LLM to evaluate the message, 5) If the LLM returns 'Yes' indicating inappropriate content, the input is blocked and the bot responds with 'I am not able to respond to this.'" class="align-center" src="../../_images/input_rails_fig_1.png" style="width: 815px;" />
+</a>
 <p>The <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">input</span></code> rail calls the <code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> action, which in turn calls the LLM using the <code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> task prompt.</p>
 <p>Here is a question that the LLM should answer:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
@@ -777,9 +776,8 @@
 </pre></div>
 </div>
 <p>Because the input rail was not triggered, the flow continued as usual.</p>
-<div align="center">
-<img src="../../_static/puml/input_rails_fig_2.png" width="740">
-</div>
+<a class="reference internal image-reference" href="../../_images/input_rails_fig_2.png"><img alt="Sequence diagram showing how the self-check input rail works in NeMo Guardrails when processing a valid user message: 1) Application code sends a user message to the Programmable Guardrails system, 2) The message is passed to the Input Rails component, 3) Input Rails calls the self_check_input action, 4) The action uses an LLM to evaluate the message, 5) If the LLM returns 'No' (indicating appropriate content), the input is allowed to continue, 6) The system then proceeds to generate a bot response using the general task prompt" class="align-center" src="../../_images/input_rails_fig_2.png" style="width: 740px;" />
+</a>
 <p>Note that the final answer is not correct.</p>
 </section>
 <section id="testing-the-bot">
