@@ -32,7 +32,7 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=4c56b82b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
@@ -142,6 +142,32 @@
   
   <div class="col-lg-9 navbar-header-items">
     
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
     
     <div class="navbar-header-items__end">
       
@@ -228,6 +254,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -246,6 +301,7 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
 
 
 <nav class="bd-docs-nav bd-links"
@@ -393,27 +449,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -701,9 +736,8 @@
 <section id="the-follow-up-question">
 <h2>The follow-up question<a class="headerlink" href="#the-follow-up-question" title="Link to this heading">#</a></h2>
 <p>In the previous example, the LLM is prompted once. The following figure provides a summary of the outlined sequence of steps:</p>
-<div align="center">
-<img src="../../_static/puml/core_colang_concepts_fig_1.png" width="486">
-</div>
+<a class="reference internal image-reference" href="../../_images/core_colang_concepts_fig_1.png"><img alt="Sequence diagram showing the three main steps of processing a user greeting: 1) Computing the canonical form of the user message, 2) Determining the next step using flows, and 3) Generating the bot's response message" class="align-center" src="../../_images/core_colang_concepts_fig_1.png" style="width: 486px;" />
+</a>
 <p>Let’s examine the same process for the follow-up question “What is the capital of France?”.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
     <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
@@ -738,9 +772,8 @@
 </pre></div>
 </div>
 <p>Based on these steps, we can see that the <code class="docutils literal notranslate"><span class="pre">ask</span> <span class="pre">general</span> <span class="pre">question</span></code> canonical form is predicted for the user utterance “What is the capital of France?”. Since there is no flow that matches it, the LLM is asked to predict the next step, which in this case is <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">response</span> <span class="pre">for</span> <span class="pre">general</span> <span class="pre">question</span></code>. Also, since there is no predefined response, the LLM is asked a third time to predict the final message.</p>
-<div align="center">
-<img src="../../_static/puml/core_colang_concepts_fig_2.png" width="686">
-</div>
+<a class="reference internal image-reference" href="../../_images/core_colang_concepts_fig_2.png"><img alt="Sequence diagram showing the three main steps of processing a follow-up question in NeMo Guardrails: 1) Computing the canonical form of the user message, such as 'ask general question' for 'What is the capital of France?', 2) Determining the next step using the LLM, such as 'bot response for general question', and 3) Generating the bot's response message. These are the steps to handle a question that doesn't have a predefined flow." class="align-center" src="../../_images/core_colang_concepts_fig_2.png" style="width: 586px;" />
+</a>
 </section>
 <section id="wrapping-up">
 <h2>Wrapping up<a class="headerlink" href="#wrapping-up" title="Link to this heading">#</a></h2>
@@ -786,6 +819,8 @@
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -828,6 +863,7 @@
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -900,6 +936,7 @@
 </div>
       
         <div class="footer-item">
+
 
 
 

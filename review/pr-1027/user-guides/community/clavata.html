@@ -32,7 +32,7 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=4c56b82b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
@@ -140,6 +140,32 @@
   
   <div class="col-lg-9 navbar-header-items">
     
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
     
     <div class="navbar-header-items__end">
       
@@ -192,8 +218,6 @@
       
       
       
-        
-      
       <dialog id="pst-primary-sidebar-modal"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
@@ -228,6 +252,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -246,6 +299,7 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
 
 
 <nav class="bd-docs-nav bd-links"
@@ -393,27 +447,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -460,12 +493,13 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="clavata-integration">
 <h1>Clavata Integration<a class="headerlink" href="#clavata-integration" title="Link to this heading">#</a></h1>
-<p><a class="reference external" href="https://clavata.ai">Clavata</a> provides content moderation capabilities to detect and filter inappropriate content. This integration enables NeMo Guardrails to use Clavata for content moderation in input and output flows.</p>
+<p><a class="reference external" href="https://clavata.ai">Clavata</a> provides real-time moderation capabilities allowing anyone to detect and filter content. The exact rules of what to filter are up to you, but we do provide a number of rulesets for common issues.</p>
+<p>This integration enables NeMo Guardrails to use Clavata for content moderation, topic moderation, and dialog moderation in both input and output flows.</p>
 <section id="getting-access">
 <h2>Getting Access<a class="headerlink" href="#getting-access" title="Link to this heading">#</a></h2>
 <p>To sign up for Clavata or obtain an API key:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.clavata.ai/requestaccess">Request access</a> through the website</p></li>
+<li><p><a class="reference external" href="https://www.clavata.ai/">Request access</a> through the website</p></li>
 <li><p>Contact support at <a class="reference external" href="mailto:hello&#37;&#52;&#48;clavata&#46;ai">hello<span>&#64;</span>clavata<span>&#46;</span>ai</a></p></li>
 </ul>
 </section>
@@ -490,10 +524,8 @@
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">clavata</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">policies</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Threats</span>
-<span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">00000000-0000-0000-0000-000000000000</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Toxicity</span>
-<span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">00000000-0000-0000-0000-000000000000</span>
+<span class="w">        </span><span class="nt">Threats</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">00000000-0000-0000-0000-000000000000</span>
+<span class="w">        </span><span class="nt">Toxicity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">00000000-0000-0000-0000-000000000000</span>
 <span class="w">      </span><span class="nt">label_match_logic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ALL</span><span class="w">  </span><span class="c1"># &quot;ALL&quot; | &quot;ANY&quot;</span>
 <span class="w">      </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">        </span><span class="c1"># Reference an alias above in `policies`</span>
@@ -520,7 +552,7 @@
 <h2>Configuration Details<a class="headerlink" href="#configuration-details" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">server_endpoint</span></code>: The Clavata API endpoint (only if provided by Clavata.ai)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">policies</span></code>: List of policy configurations with aliases and IDs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">policies</span></code>: Map of policy aliases to each policy’s unique ID in your Clavata.ai account</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">label_match_logic</span></code>: (Optional) <code class="docutils literal notranslate"><span class="pre">ALL</span></code> requires all labels specified for a rail to match, <code class="docutils literal notranslate"><span class="pre">ANY</span></code> requires at least one match. Defaults to <code class="docutils literal notranslate"><span class="pre">ANY</span></code> if not set.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">input/output</span></code>: Flow-specific configurations</p>
 <ul>
@@ -558,26 +590,23 @@ import nemoguardrails.library.clavata
 
 # Check the input against the &quot;Toxicity&quot; policy
 flow input rails $input_text
-    clavata check input for $input_text Toxicity
+    clavata check for ($input_text, Toxicity)
 
 # To make the check even more strict so it only matches particular labels in the policy, you can add a comma-separated list of labels at the end:
 flow input rails $input_text
-    clavata check input for $input_text Toxicity &quot;Hate Speech,Harassment&quot;
+    clavata check for ($input_text, Toxicity, [&quot;Hate Speech&quot;,&quot;Harassment&quot;])
 </pre></div>
 </div>
 <blockquote>
-<div><p>The same is true for <code class="docutils literal notranslate"><span class="pre">output</span></code> flows, of course. See <a class="reference internal" href="#/examples/configs/clavata/rails.co"><span class="xref myst">our example</span></a> for more.</p>
+<div><p>The same is true for <code class="docutils literal notranslate"><span class="pre">output</span></code> flows, of course. See <a class="reference download internal" download="" href="../../_downloads/c6cdd678af59185a1ec7266eac729e4e/rails.co"><span class="xref download myst">our example</span></a> for more.</p>
 </div></blockquote>
 </section>
 </section>
 <section id="programmatic-usage">
 <h3>2. Programmatic Usage<a class="headerlink" href="#programmatic-usage" title="Link to this heading">#</a></h3>
-<p>Use the <code class="docutils literal notranslate"><span class="pre">clavata_check_v1</span></code> in your Colang flows to check content using the Colang 1.0 action. You can also use the <code class="docutils literal notranslate"><span class="pre">clavata_check_v2</span></code> action in your own flows if you are using Colang 2.0.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Check input content
-$is_match = await ClavataCheckV2Action(text=$user_message, policy=&quot;Threats&quot;)
-
-# Check output content
-$is_match = await ClavataCheckV2Action(text=$bot_message, policy=&quot;Toxicity&quot;)
+<p>If you are using colang 2.x, you can make use of the Clavata action in your own flows:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Check content
+$is_match = await ClavataCheckAction(text=$some_text, policy=$some_policy_alias)
 </pre></div>
 </div>
 <p>The action returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the content matches the specified policy’s criteria.</p>
@@ -629,6 +658,8 @@ $is_match = await ClavataCheckV2Action(text=$bot_message, policy=&quot;Toxicity&
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -663,6 +694,7 @@ $is_match = await ClavataCheckV2Action(text=$bot_message, policy=&quot;Toxicity&
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -735,6 +767,7 @@ $is_match = await ClavataCheckV2Action(text=$bot_message, policy=&quot;Toxicity&
 </div>
       
         <div class="footer-item">
+
 
 
 
