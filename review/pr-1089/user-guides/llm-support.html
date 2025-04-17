@@ -32,7 +32,7 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=4c56b82b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
@@ -142,6 +142,32 @@
   
   <div class="col-lg-9 navbar-header-items">
     
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
     
     <div class="navbar-header-items__end">
       
@@ -228,6 +254,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -246,6 +301,7 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
 
 
 <nav class="bd-docs-nav bd-links"
@@ -393,27 +449,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -482,7 +517,6 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <tr class="row-odd"><th class="head"><p>Feature</p></th>
 <th class="head"><p>gpt-3.5-turbo-instruct</p></th>
 <th class="head"><p>text-davinci-003</p></th>
-<th class="head"><p>nemollm-43b</p></th>
 <th class="head"><p>llama-2-13b-chat</p></th>
 <th class="head"><p>falcon-7b-instruct</p></th>
 <th class="head"><p>gpt-3.5-turbo</p></th>
@@ -498,7 +532,6 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <tr class="row-even"><td><p>Dialog Rails</p></td>
 <td><p>✔ (0.74)</p></td>
 <td><p>✔ (0.83)</p></td>
-<td><p>✔ (0.82)</p></td>
 <td><p>✔ (0.77)</p></td>
 <td><p>✔ (0.76)</p></td>
 <td><p>❗ (0.45)</p></td>
@@ -512,7 +545,6 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <tr class="row-odd"><td><p>• Single LLM call</p></td>
 <td><p>✔ (0.83)</p></td>
 <td><p>✔ (0.81)</p></td>
-<td><p>✔</p></td>
 <td><p>✖</p></td>
 <td><p>✖</p></td>
 <td><p>✖</p></td>
@@ -535,10 +567,8 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <td><p>✖</p></td>
 <td><p>✖</p></td>
 <td><p>✖</p></td>
-<td><p>✖</p></td>
 </tr>
 <tr class="row-odd"><td><p>Streaming</p></td>
-<td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>-</p></td>
@@ -563,10 +593,8 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <td><p>✖</p></td>
 <td><p>✖</p></td>
 <td><p>✖</p></td>
-<td><p>✖</p></td>
 </tr>
 <tr class="row-odd"><td><p>AskLLM rails</p></td>
-<td><p></p></td>
 <td><p></p></td>
 <td><p></p></td>
 <td><p></p></td>
@@ -582,7 +610,6 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <tr class="row-even"><td><p>• Jailbreak detection</p></td>
 <td><p>✔ (0.88)</p></td>
 <td><p>✔ (0.88)</p></td>
-<td><p>✔ (0.86)</p></td>
 <td><p>✖</p></td>
 <td><p>✖</p></td>
 <td><p>✔ (0.85)</p></td>
@@ -594,7 +621,6 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <td><p>✖</p></td>
 </tr>
 <tr class="row-odd"><td><p>• Output moderation</p></td>
-<td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✖</p></td>
@@ -610,7 +636,6 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <tr class="row-even"><td><p>• Fact-checking</p></td>
 <td><p>✔ (0.81)</p></td>
 <td><p>✔ (0.82)</p></td>
-<td><p>✔ (0.81)</p></td>
 <td><p>✔ (0.80)</p></td>
 <td><p>✖</p></td>
 <td><p>✔ (0.83)</p></td>
@@ -633,10 +658,8 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
-<td><p>✔</p></td>
 </tr>
 <tr class="row-even"><td><p>ActiveFence moderation <em>(LLM independent)</em></p></td>
-<td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
@@ -661,10 +684,8 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
-<td><p>✔</p></td>
 </tr>
 <tr class="row-even"><td><p>Got It AI RAG TruthChecker <em>(LLM independent)</em></p></td>
-<td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
@@ -689,10 +710,8 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
-<td><p>✔</p></td>
 </tr>
 <tr class="row-even"><td><p>GCP Text Moderation <em>(LLM independent)</em></p></td>
-<td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
@@ -717,7 +736,6 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
-<td><p>✔</p></td>
 </tr>
 <tr class="row-even"><td><p>Fiddler Fast Faitfhulness Hallucination Detection <em>(LLM independent)</em></p></td>
 <td><p>✔</p></td>
@@ -731,10 +749,8 @@ If you want to use an LLM and you cannot see a prompt in the <a class="reference
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
-<td><p>✔</p></td>
 </tr>
 <tr class="row-odd"><td><p>Fiddler Fast Safety &amp; Jailbreak Detection <em>(LLM independent)</em></p></td>
-<td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
 <td><p>✔</p></td>
@@ -800,6 +816,8 @@ More details in the <a class="reference external" href="https://github.com/NVIDI
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -821,6 +839,7 @@ More details in the <a class="reference external" href="https://github.com/NVIDI
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -893,6 +912,7 @@ More details in the <a class="reference external" href="https://github.com/NVIDI
 </div>
       
         <div class="footer-item">
+
 
 
 
