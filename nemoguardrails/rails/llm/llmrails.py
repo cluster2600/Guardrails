@@ -31,7 +31,10 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.language_models.llms import BaseLLM
 
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
-from nemoguardrails.actions.llm.utils import get_colang_history
+from nemoguardrails.actions.llm.utils import (
+    get_and_clear_reasoning_trace_contextvar,
+    get_colang_history,
+)
 from nemoguardrails.actions.output_mapping import is_output_blocked
 from nemoguardrails.actions.v2_x.generation import LLMGenerationActionsV2dotx
 from nemoguardrails.colang import parse_colang_file
@@ -48,6 +51,7 @@ from nemoguardrails.context import (
     generation_options_var,
     llm_stats_var,
     raw_llm_request,
+    reasoning_trace_var,
     streaming_handler_var,
 )
 from nemoguardrails.embeddings.index import EmbeddingsIndex
@@ -846,6 +850,14 @@ class LLMRails:
             else:
                 res = GenerationResponse(response=[new_message])
 
+            if reasoning_trace := get_and_clear_reasoning_trace_contextvar():
+                if prompt:
+                    res.response = reasoning_trace + res.response
+                else:
+                    res.response[0]["content"] = (
+                        reasoning_trace + res.response[0]["content"]
+                    )
+
             if self.config.colang_version == "1.0":
                 # If output variables are specified, we extract their values
                 if options.output_vars:
@@ -940,9 +952,14 @@ class LLMRails:
                     input=messages, response=res, adapters=self._log_adapters
                 )
                 await tracer.export_async()
+
             return res
         else:
             # If a prompt is used, we only return the content of the message.
+
+            if reasoning_trace := get_and_clear_reasoning_trace_contextvar():
+                new_message["content"] = reasoning_trace + new_message["content"]
+
             if prompt:
                 return new_message["content"]
             else:

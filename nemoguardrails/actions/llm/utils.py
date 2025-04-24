@@ -24,7 +24,7 @@ from langchain.schema import AIMessage, HumanMessage, SystemMessage
 
 from nemoguardrails.colang.v2_x.lang.colang_ast import Flow
 from nemoguardrails.colang.v2_x.runtime.flows import InternalEvent, InternalEvents
-from nemoguardrails.context import llm_call_info_var
+from nemoguardrails.context import llm_call_info_var, reasoning_trace_var
 from nemoguardrails.logging.callbacks import logging_callbacks
 from nemoguardrails.logging.explain import LLMCallInfo
 
@@ -192,7 +192,7 @@ def get_colang_history(
                     and event["action_name"] == "retrieve_relevant_chunks"
                 ):
                     continue
-                history += f'execute {event["action_name"]}\n'
+                history += f"execute {event['action_name']}\n"
             elif event["type"] == "InternalSystemActionFinished" and not event.get(
                 "is_system_action"
             ):
@@ -577,3 +577,15 @@ def escape_flow_name(name: str) -> str:
     # removes non-word chars and leading digits in a word
     result = re.sub(r"\b\d+|[^\w\s]", "", result)
     return result
+
+
+def get_and_clear_reasoning_trace_contextvar() -> Optional[str]:
+    """Get the current reasoning trace and clear it from the context.
+
+    Returns:
+        Optional[str]: The reasoning trace if one exists, None otherwise.
+    """
+    if reasoning_trace := reasoning_trace_var.get():
+        reasoning_trace_var.set(None)
+        return reasoning_trace
+    return None

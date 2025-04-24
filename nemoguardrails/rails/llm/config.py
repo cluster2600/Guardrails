@@ -444,6 +444,15 @@ class OutputRails(BaseModel):
         description="Configuration for streaming output rails.",
     )
 
+    apply_to_reasoning_traces: bool = Field(
+        default=False,
+        description=(
+            "If True, output rails will apply guardrails to both reasoning traces and output response. "
+            "If False, output rails will only apply guardrails to the output response excluding the reasoning traces, "
+            "thus keeping reasoning traces unaltered."
+        ),
+    )
+
 
 class RetrievalRails(BaseModel):
     """Configuration of retrieval rails."""
@@ -1199,11 +1208,10 @@ class RailsConfig(BaseModel):
         ]
 
         # dialog rails are activated (explicitly or implicitly)
-        has_dialog_rails = (
-            bool(dialog_rails)
-            or bool(values.get("user_messages"))
-            or bool(values.get("bot_messages"))
-            or bool(values.get("flows"))
+        has_dialog_rails = bool(dialog_rails) or (
+            bool(values.get("user_messages"))
+            and bool(values.get("bot_messages"))
+            # and bool(values.get("flows"))
         )
 
         if has_dialog_rails:
