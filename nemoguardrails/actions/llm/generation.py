@@ -445,7 +445,7 @@ class LLMGenerationActions:
             )
             result = result.text
 
-            user_intent = get_first_nonempty_line(text)
+            user_intent = get_first_nonempty_line(result)
             if user_intent is None:
                 user_intent = "unknown message"
 
@@ -529,12 +529,12 @@ class LLMGenerationActions:
                             prompt,
                             custom_callback_handlers=[streaming_handler_var.get()],
                         )
-                    result = self.llm_task_manager.parse_task_output(
+                    text = self.llm_task_manager.parse_task_output(
                         Task.GENERAL, output=text
                     )
 
                     text = _process_parsed_output(
-                        result, self._include_reasoning_traces()
+                        text, self._include_reasoning_traces()
                     )
 
             else:
@@ -569,11 +569,11 @@ class LLMGenerationActions:
                         stop=["User:"],
                     )
 
-                result = self.llm_task_manager.parse_task_output(
+                text = self.llm_task_manager.parse_task_output(
                     Task.GENERAL, output=result
                 )
 
-                text = _process_parsed_output(result, self._include_reasoning_traces())
+                text = _process_parsed_output(text, self._include_reasoning_traces())
                 text = text.strip()
                 if text.startswith('"'):
                     text = text[1:-1]
@@ -659,7 +659,7 @@ class LLMGenerationActions:
 
             # If we don't have multi-step generation enabled, we only look at the first line.
             if not self.config.enable_multi_step_generation:
-                result = get_first_nonempty_line(text)
+                result = get_first_nonempty_line(result)
 
                 if result and result.startswith("bot "):
                     bot_intent = result[4:]
@@ -697,7 +697,7 @@ class LLMGenerationActions:
                 # Otherwise, we parse the output as a single flow.
                 # If we have a parsing error, we try to reduce size of the flow, potentially
                 # up to a single step.
-                lines = text.split("\n")
+                lines = result.split("\n")
                 while True:
                     try:
                         parse_colang_file("dynamic.co", content="\n".join(lines))
@@ -906,9 +906,6 @@ class LLMGenerationActions:
                             llm, prompt, custom_callback_handlers=[streaming_handler]
                         )
 
-                        # it seems that removing the reasoning traces is llm_call responsibility
-                        #
-
                         result = self.llm_task_manager.parse_task_output(
                             Task.GENERAL, output=result
                         )
@@ -1080,7 +1077,7 @@ class LLMGenerationActions:
 
         # We only use the first line for now
         # TODO: support multi-line values?
-        value = text.strip().split("\n")[0]
+        value = result.strip().split("\n")[0]
 
         # Because of conventions from other languages, sometimes the LLM might add
         # a ";" at the end of the line. We remove that
@@ -1296,15 +1293,15 @@ class LLMGenerationActions:
             # Get the next 2 non-empty lines, these should contain:
             # line 1 - user intent, line 2 - bot intent.
             # Afterwards we have the bot message.
-            next_three_lines = get_top_k_nonempty_lines(text, k=2)
+            next_three_lines = get_top_k_nonempty_lines(result, k=2)
             user_intent = next_three_lines[0] if len(next_three_lines) > 0 else None
             bot_intent = next_three_lines[1] if len(next_three_lines) > 1 else None
             bot_message = None
             if bot_intent:
-                pos = text.find(bot_intent)
+                pos = result.find(bot_intent)
                 if pos != -1:
                     # The bot message could be multiline
-                    bot_message = text[pos + len(bot_intent) :]
+                    bot_message = result[pos + len(bot_intent) :]
                     bot_message = get_multiline_response(bot_message)
                     bot_message = strip_quotes(bot_message)
                     # Quick hack for degenerated / empty bot messages
