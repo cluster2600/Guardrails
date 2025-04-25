@@ -508,28 +508,44 @@ For a complete record of changes in a release, refer to the
 <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md">CHANGELOG.md</a> in the GitHub repository.</p>
 <section id="id1">
 <h2>0.14.0<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added support for Python 3.13.</p></li>
+<li><p>Simplified and broadened support for chat model providers from LangChain and
+LangChain Community chat model providers.
+You must use <code class="docutils literal notranslate"><span class="pre">langchain</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.14</span></code> or higher and <code class="docutils literal notranslate"><span class="pre">langchain-community</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.5</span></code> or higher.</p></li>
+<li><p>Added support for code injection detection.
+For more information, refer to <a class="reference internal" href="user-guides/guardrails-library.html#injection-detection"><span class="std std-ref">Injection Detection</span></a>.</p></li>
+<li><p>Enhanced the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI with a <code class="docutils literal notranslate"><span class="pre">find-providers</span></code> argument to list chat and text completion providers.
+For more information, refer to <a class="reference internal" href="user-guides/cli.html#providers"><span class="std std-ref">providers</span></a>.</p></li>
+</ul>
+</section>
 <section id="breaking-changes">
 <h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">#</a></h3>
-<ul>
-<li><p>Previously, the model specification in the guardrails configuration file, <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, supported <code class="docutils literal notranslate"><span class="pre">model_name</span></code> as a top-level field.
+<ul class="simple">
+<li><p>Removed support for the NeMo LLM Service, <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>.
+This provider reached end-of-life on February 5, 2025.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">HuggingFacePipelineCompatible</span></code> provider is refactored.
+Previously, the class was available from the <code class="docutils literal notranslate"><span class="pre">nemoguardrails.llm.providers</span></code> package.
+In this release, the class is moved to the <code class="docutils literal notranslate"><span class="pre">nemoguardrails.llm.providers.huggingface</span></code> package.</p></li>
+</ul>
+</section>
+<section id="fixed-issues">
+<h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fixed an issue when tracing is enabled.
+Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
+In this release, the response is not modified when tracing is enabled.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1103">PR #1103</a>.</p></li>
+<li><p>Fixed an issue with the self check output flow.
+Previously, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction was not executed when <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> was enabled.
+In this release, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction correctly regardless of the <code class="docutils literal notranslate"><span class="pre">enable_rails_execptions</span></code> value.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1126">PR #1126</a>.</p></li>
+<li><p>Previously, the model specification in the guardrails configuration file, <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, did not validate the model name.
 In this release you must specify the model name in the <code class="docutils literal notranslate"><span class="pre">model</span></code> top-level field or as <code class="docutils literal notranslate"><span class="pre">model</span></code> or <code class="docutils literal notranslate"><span class="pre">model_name</span></code> in
-the parameters field.</p>
-<p>Before:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
-<span class="w">    </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.1-8b-instruct</span>
-</pre></div>
-</div>
-<p>After:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.1-8b-instruct</span>
-</pre></div>
-</div>
-<p>For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1084">pull request #1084</a>.</p>
-</li>
+the parameters field.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1084">PR #1084</a>.</p></li>
 </ul>
 </section>
 </section>
