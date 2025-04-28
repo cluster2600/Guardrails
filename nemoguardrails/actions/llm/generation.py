@@ -50,13 +50,14 @@ from nemoguardrails.context import (
     generation_options_var,
     llm_call_info_var,
     raw_llm_request,
+    reasoning_trace_var,
     streaming_handler_var,
 )
 from nemoguardrails.embeddings.index import EmbeddingsIndex, IndexItem
 from nemoguardrails.kb.kb import KnowledgeBase
 from nemoguardrails.llm.params import llm_params
 from nemoguardrails.llm.prompts import get_prompt
-from nemoguardrails.llm.taskmanager import LLMTaskManager
+from nemoguardrails.llm.taskmanager import LLMTaskManager, ParsedTaskOutput
 from nemoguardrails.llm.types import Task
 from nemoguardrails.logging.explain import LLMCallInfo
 from nemoguardrails.patch_asyncio import check_sync_call_from_async_loop
@@ -531,8 +532,11 @@ class LLMGenerationActions:
                     result = self.llm_task_manager.parse_task_output(
                         Task.GENERAL, output=text
                     )
-                    text = result.text
-                    text = text.strip()
+
+                    text = _process_parsed_output(
+                        result, self._include_reasoning_traces()
+                    )
+
             else:
                 # Initialize the LLMCallInfo object
                 llm_call_info_var.set(LLMCallInfo(task=Task.GENERAL.value))
@@ -568,8 +572,8 @@ class LLMGenerationActions:
                 result = self.llm_task_manager.parse_task_output(
                     Task.GENERAL, output=result
                 )
-                text = result.text
-                text = text.strip()
+
+                text = _process_parsed_output(result, self._include_reasoning_traces())
                 if text.startswith('"'):
                     text = text[1:-1]
 
@@ -908,7 +912,9 @@ class LLMGenerationActions:
                             Task.GENERAL, output=result
                         )
 
-                        result = result.text
+                        text = _process_parsed_output(
+                            result, self._include_reasoning_traces()
+                        )
 
                     log.info(
                         "--- :: LLM Bot Message Generation passthrough call took %.2f seconds",
@@ -973,11 +979,11 @@ class LLMGenerationActions:
                     Task.GENERATE_BOT_MESSAGE, output=result
                 )
 
-                result = result.text
+                text = _process_parsed_output(result, self._include_reasoning_traces())
 
                 # TODO: catch openai.error.InvalidRequestError from exceeding max token length
 
-                result = get_multiline_response(result)
+                result = get_multiline_response(text)
                 result = strip_quotes(result)
 
             bot_utterance = result
@@ -1362,7 +1368,9 @@ class LLMGenerationActions:
             result = self.llm_task_manager.parse_task_output(
                 Task.GENERAL, output=result
             )
-            text = result.text
+
+            text = _process_parsed_output(result, self._include_reasoning_traces())
+
             text = text.strip()
             if text.startswith('"'):
                 text = text[1:-1]
@@ -1374,6 +1382,10 @@ class LLMGenerationActions:
             return ActionResult(
                 events=[new_event_dict("BotMessage", text=text)],
             )
+
+    def _include_reasoning_traces(self) -> bool:
+        """Get the configuration value for whether to include reasoning traces in output."""
+        return _get_guardrail_reasoning_traces(self.config)
 
 
 def clean_utterance_content(utterance: str) -> str:
@@ -1392,3 +1404,30 @@ def clean_utterance_content(utterance: str) -> str:
         # It should be translated to an actual \n character.
         utterance = utterance.replace("\\n", "\n")
     return utterance
+
+
+def _process_parsed_output(
+    result: ParsedTaskOutput, guardrail_reasoning_traces: bool
+) -> str:
+    """Process an LLM output result, handling reasoning traces if present.
+
+    Args:
+        result: The parsed output from an LLM call
+        guardrail_reasoning_traces: Whether to include reasoning traces in the output
+
+    Returns:
+        The processed text, combining reasoning trace and main text if present
+    """
+
+    if result.reasoning_trace:
+        reasoning_trace_var.set(result.reasoning_trace)
+
+        if guardrail_reasoning_traces:
+            return result.reasoning_trace + result.text
+
+    return result.text
+
+
+def _get_guardrail_reasoning_traces(config: RailsConfig) -> bool:
+    """Get the configuration value for whether to include reasoning traces in output."""
+    return config.rails.output.guardrail_reasoning_traces
