@@ -48,6 +48,7 @@ from nemoguardrails.context import (
     generation_options_var,
     llm_stats_var,
     raw_llm_request,
+    reasoning_trace_var,
     streaming_handler_var,
 )
 from nemoguardrails.embeddings.index import EmbeddingsIndex
@@ -846,6 +847,9 @@ class LLMRails:
             else:
                 res = GenerationResponse(response=[new_message])
 
+            if reasoning_trace := reasoning_trace_var.get():
+                res["content"] = reasoning_trace + res["content"]
+
             if self.config.colang_version == "1.0":
                 # If output variables are specified, we extract their values
                 if options.output_vars:
@@ -940,9 +944,14 @@ class LLMRails:
                     input=messages, response=res, adapters=self._log_adapters
                 )
                 await tracer.export_async()
+
             return res
         else:
             # If a prompt is used, we only return the content of the message.
+
+            if reasoning_trace := reasoning_trace_var.get():
+                new_message["content"] = reasoning_trace + new_message["content"]
+
             if prompt:
                 return new_message["content"]
             else:
