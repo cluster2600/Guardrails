@@ -31,6 +31,14 @@ from nemoguardrails.logging.explain import LLMCallInfo
 from nemoguardrails.rails.llm.config import Model, RailsConfig, ReasoningModelConfig
 
 
+def create_mock_config():
+    config = MagicMock(spec=RailsConfig)
+    config.rails = MagicMock()
+    config.rails.output = MagicMock()
+    config.rails.output.guardrail_reasoning_traces = False
+    return config
+
+
 class TestReasoningTraces:
     """Test the reasoning traces functionality."""
 
@@ -84,8 +92,7 @@ class TestReasoningTraces:
     async def test_task_manager_parse_task_output(self):
         """Test that the task manager correctly removes reasoning traces."""
         # mock config
-        config = MagicMock(spec=RailsConfig)
-        config.guardrail_reasoning_traces = False
+        config = create_mock_config()
         # Create a ReasoningModelConfig
         reasoning_config = ReasoningModelConfig(
             remove_thinking_traces=True,
@@ -126,8 +133,8 @@ class TestReasoningTraces:
     @pytest.mark.asyncio
     async def test_parse_task_output_without_reasoning_config(self):
         """Test that parse_task_output works without a reasoning config."""
-        config = MagicMock(spec=RailsConfig)
-        config.guardrail_reasoning_traces = False
+
+        config = create_mock_config()
 
         # a Model without reasoning_config
         model_config = Model(type="main", engine="test", model="test-model")
@@ -154,8 +161,8 @@ class TestReasoningTraces:
     @pytest.mark.asyncio
     async def test_parse_task_output_with_default_reasoning_traces(self):
         """Test that parse_task_output works with default reasoning traces."""
-        config = MagicMock(spec=RailsConfig)
-        config.guardrail_reasoning_traces = False
+
+        config = create_mock_config()
 
         # Create a Model with default reasoning_config
         model_config = Model(
@@ -185,8 +192,8 @@ class TestReasoningTraces:
     @pytest.mark.asyncio
     async def test_parse_task_output_with_output_parser(self):
         """Test that parse_task_output works with an output parser."""
-        config = MagicMock(spec=RailsConfig)
-        config.guardrail_reasoning_traces = False
+
+        config = create_mock_config()
 
         # Create a Model with reasoning_config
         model_config = Model(
