@@ -85,7 +85,7 @@ def should_remove_reasoning_traces(config, task):
         and model.reasoning_config.remove_thinking_traces
     )
 
-    if config.guardrail_reasoning_traces:
+    if config.rails.output.guardrail_reasoning_traces:
         return False
     else:
         return model_config
