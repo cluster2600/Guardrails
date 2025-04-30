@@ -31,7 +31,10 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.language_models.llms import BaseLLM
 
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
-from nemoguardrails.actions.llm.utils import get_colang_history
+from nemoguardrails.actions.llm.utils import (
+    get_and_clear_reasoning_trace,
+    get_colang_history,
+)
 from nemoguardrails.actions.output_mapping import is_output_blocked
 from nemoguardrails.actions.v2_x.generation import LLMGenerationActionsV2dotx
 from nemoguardrails.colang import parse_colang_file
@@ -847,7 +850,7 @@ class LLMRails:
             else:
                 res = GenerationResponse(response=[new_message])
 
-            if reasoning_trace := reasoning_trace_var.get():
+            if reasoning_trace := get_and_clear_reasoning_trace():
                 res["content"] = reasoning_trace + res["content"]
 
             if self.config.colang_version == "1.0":
@@ -949,7 +952,7 @@ class LLMRails:
         else:
             # If a prompt is used, we only return the content of the message.
 
-            if reasoning_trace := reasoning_trace_var.get():
+            if reasoning_trace := get_and_clear_reasoning_trace():
                 new_message["content"] = reasoning_trace + new_message["content"]
 
             if prompt:
