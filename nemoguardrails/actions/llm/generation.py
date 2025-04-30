@@ -443,7 +443,7 @@ class LLMGenerationActions:
             result = self.llm_task_manager.parse_task_output(
                 Task.GENERATE_USER_INTENT, output=result
             )
-            text = result.text
+            result = result.text
 
             user_intent = get_first_nonempty_line(text)
             if user_intent is None:
@@ -574,6 +574,7 @@ class LLMGenerationActions:
                 )
 
                 text = _process_parsed_output(result, self._include_reasoning_traces())
+                text = text.strip()
                 if text.startswith('"'):
                     text = text[1:-1]
 
@@ -654,7 +655,7 @@ class LLMGenerationActions:
             result = self.llm_task_manager.parse_task_output(
                 Task.GENERATE_NEXT_STEPS, output=result
             )
-            text = result.text
+            result = result.text
 
             # If we don't have multi-step generation enabled, we only look at the first line.
             if not self.config.enable_multi_step_generation:
@@ -912,7 +913,7 @@ class LLMGenerationActions:
                             Task.GENERAL, output=result
                         )
 
-                        text = _process_parsed_output(
+                        result = _process_parsed_output(
                             result, self._include_reasoning_traces()
                         )
 
@@ -979,11 +980,13 @@ class LLMGenerationActions:
                     Task.GENERATE_BOT_MESSAGE, output=result
                 )
 
-                text = _process_parsed_output(result, self._include_reasoning_traces())
+                result = _process_parsed_output(
+                    result, self._include_reasoning_traces()
+                )
 
                 # TODO: catch openai.error.InvalidRequestError from exceeding max token length
 
-                result = get_multiline_response(text)
+                result = get_multiline_response(result)
                 result = strip_quotes(result)
 
             bot_utterance = result
@@ -1073,7 +1076,7 @@ class LLMGenerationActions:
         result = self.llm_task_manager.parse_task_output(
             Task.GENERATE_VALUE, output=result
         )
-        text = result.text
+        result = result.text
 
         # We only use the first line for now
         # TODO: support multi-line values?
@@ -1285,7 +1288,7 @@ class LLMGenerationActions:
             result = self.llm_task_manager.parse_task_output(
                 Task.GENERATE_INTENT_STEPS_MESSAGE, output=result
             )
-            text = result.text
+            result = result.text
 
             # TODO: Implement logic for generating more complex Colang next steps (multi-step),
             #  not just a single bot intent.
@@ -1368,10 +1371,8 @@ class LLMGenerationActions:
             result = self.llm_task_manager.parse_task_output(
                 Task.GENERAL, output=result
             )
-
-            text = _process_parsed_output(result, self._include_reasoning_traces())
-
-            text = text.strip()
+            result = _process_parsed_output(result, self._include_reasoning_traces())
+            text = result.strip()
             if text.startswith('"'):
                 text = text[1:-1]
 
@@ -1406,26 +1407,23 @@ def clean_utterance_content(utterance: str) -> str:
     return utterance
 
 
+def _record_reasoning_trace(trace: str) -> None:
+    """Store the reasoning trace in context for later retrieval."""
+    reasoning_trace_var.set(trace)
+
+
+def _assemble_response(text: str, trace: Optional[str], include_reasoning: bool) -> str:
+    """Combine trace and text if requested, otherwise just return text."""
+    return (trace + text) if (trace and include_reasoning) else text
+
+
 def _process_parsed_output(
-    result: ParsedTaskOutput, guardrail_reasoning_traces: bool
+    output: ParsedTaskOutput, include_reasoning_trace: bool
 ) -> str:
-    """Process an LLM output result, handling reasoning traces if present.
-
-    Args:
-        result: The parsed output from an LLM call
-        guardrail_reasoning_traces: Whether to include reasoning traces in the output
-
-    Returns:
-        The processed text, combining reasoning trace and main text if present
-    """
-
-    if result.reasoning_trace:
-        reasoning_trace_var.set(result.reasoning_trace)
-
-        if guardrail_reasoning_traces:
-            return result.reasoning_trace + result.text
-
-    return result.text
+    """Record trace, then assemble the final LLM response."""
+    if reasoning_trace := output.reasoning_trace:
+        _record_reasoning_trace(reasoning_trace)
+    return _assemble_response(output.text, reasoning_trace, include_reasoning_trace)
 
 
 def _get_guardrail_reasoning_traces(config: RailsConfig) -> bool:
