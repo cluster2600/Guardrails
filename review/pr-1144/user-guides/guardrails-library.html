@@ -1434,21 +1434,22 @@ Times reported below in are <strong>averages</strong> and are reported in millis
 </section>
 <section id="injection-detection">
 <h3>Injection Detection<a class="headerlink" href="#injection-detection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails offers detection of potential injection attempts such as code injection, cross-site scripting, SQL injection, and template injection.
+<p>NeMo Guardrails offers detection of potential exploitation attempts by using injection such as code injection, cross-site scripting, SQL injection, and template injection.
 Injection detection is primarily intended to be used in agentic systems to enhance other security controls as part of a defense-in-depth strategy.</p>
 <p>The first part of injection detection is <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html">YARA rules</a>.
 A YARA rule specifies a set of strings–text or binary patterns–to match and a Boolean expression that specifies the logic of the rule.
-YARA rules is a technology that is familiar to many security teams.</p>
+YARA rules are a technology that is familiar to many security teams.</p>
 <p>The second part of injection detection is specifying the action to take when a rule is triggered.
 You can specify to <em>reject</em> the text and return “I’m sorry, the desired output triggered rule(s) designed to mitigate exploitation of {detections}.”
-Or, you can specify to <em>omit</em> the triggering text from the response.</p>
+Rejecting the output is the safest action and most appropriate for production deployments.
+As an alternative to rejecting the output, you can specify to <em>omit</em> the triggering text from the response.</p>
 <section id="about-the-default-rules">
 <h4>About the Default Rules<a class="headerlink" href="#about-the-default-rules" title="Link to this heading">#</a></h4>
 <p>By default, NeMo Guardrails provides the following rules:</p>
 <ul class="simple">
 <li><p>Code injection (Python): Recommended if the LLM output is used as an argument to downstream functions or passed to a code interpreter.</p></li>
 <li><p>SQL injection: Recommended if the LLM output is used as part of a SQL query to a database.</p></li>
-<li><p>Template injection (Jinja): Recommended for use if LLM output is rendered using templating languages like Jinja.
+<li><p>Template injection (Jinja): Recommended for use if LLM output is rendered using the Jinja templating language.
 This rule is usually paired with code injection rules.</p></li>
 <li><p>Cross-site scripting (Markdown and Javascript): Recommended if the LLM output is rendered directly in HTML or Markdown.</p></li>
 </ul>
