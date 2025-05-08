@@ -606,7 +606,7 @@ To use these reasoning models, you can remove the traces and tokens from the mod
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-reasoner</span>
 <span class="hll"><span class="w">    </span><span class="nt">reasoning_config</span><span class="p">:</span>
-</span><span class="hll"><span class="w">      </span><span class="nt">remove_thinking_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">remove_reasoning_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </span><span class="hll"><span class="w">      </span><span class="nt">start_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;think&gt;&quot;</span>
 </span><span class="hll"><span class="w">      </span><span class="nt">end_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;/think&gt;&quot;</span>
 </span></pre></div>
@@ -615,7 +615,7 @@ To use these reasoning models, you can remove the traces and tokens from the mod
 By removing the traces, the guardrails runtime processes only the actual responses from the LLM.</p>
 <p>You can specify the following parameters for a reasoning model:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">remove_thinking_traces</span></code>: if the reasoning traces should be ignored (default <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code>: if the reasoning traces should be ignored (default <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">start_token</span></code>: the start token for the reasoning process (default <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">end_token</span></code>: the end token for the reasoning process (default <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code>).</p></li>
 </ul>
