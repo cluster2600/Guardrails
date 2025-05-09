@@ -658,15 +658,17 @@ You can enable streaming to provide asynchronous responses and reduce the time t
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
 <span class="hll"><span class="w">    </span><span class="nt">streaming</span><span class="p">:</span>
+</span><span class="hll"><span class="w">       </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </span><span class="hll"><span class="w">       </span><span class="nt">chunk_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
-</span><span class="hll"><span class="w">       </span><span class="nt">context_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
-</span><span class="w">       </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</span><span class="w">       </span><span class="nt">context_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
 <span class="hll">
 </span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </pre></div>
 </div>
-<p>Note that, the <code class="docutils literal notranslate"><span class="pre">enabled:</span> <span class="pre">True</span></code> filed is needed to enable streaming output rails while <code class="docutils literal notranslate"><span class="pre">streaming:</span> <span class="pre">True</span></code> is needed to enable streaming generation.</p>
 </li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">enabled:</span> <span class="pre">True</span></code> field is required to enable streaming output rails while the <code class="docutils literal notranslate"><span class="pre">streaming:</span> <span class="pre">True</span></code> field is needed to enable streaming generation.</p>
+<ol class="arabic">
 <li><p>Call the <code class="docutils literal notranslate"><span class="pre">stream_async</span></code> method and handle the chunked response:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span><span class="p">,</span> <span class="n">LLMRails</span>
 
