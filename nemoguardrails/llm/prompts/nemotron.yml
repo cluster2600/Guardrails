@@ -25,9 +25,6 @@ prompts:
     messages:
       - type: system
         content: |
-          detailed thinking on
-      - type: system
-        content: |
           {{ general_instructions }}
 
           Your task is to generate the user intent in a conversation given the last user message similar to the examples below.
@@ -50,9 +47,6 @@ prompts:
       - nemotron
     mode: "reasoning"
     messages:
-      - type: system
-        content: |
-          detailed thinking on
       - type: system
         content: |
           {{ general_instructions }}
