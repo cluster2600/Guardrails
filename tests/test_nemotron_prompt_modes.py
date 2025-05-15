@@ -32,6 +32,7 @@ from nemoguardrails.llm.prompts import _get_prompt, _prompts, get_prompt
 from nemoguardrails.llm.types import Task
 
 NEMOTRON_MODEL = "nvidia/llama-3.1-nemotron-ultra-253b-v1"
+DEEPSEEK_MODEL = "deepseek-ai/deepseek-v2"
 
 
 def colang_config():
@@ -47,9 +48,9 @@ def colang_config():
     """
 
 
-def create_config(prompting_mode=None):
-    """Create a test config with nemotron model and specified prompting mode."""
-    config = {"models": [{"type": "main", "engine": "nim", "model": NEMOTRON_MODEL}]}
+def create_config(prompting_mode=None, model=NEMOTRON_MODEL):
+    """Create a test config with specified model and prompting mode."""
+    config = {"models": [{"type": "main", "engine": "nim", "model": model}]}
 
     if prompting_mode:
         config["prompting_mode"] = prompting_mode
@@ -99,6 +100,7 @@ def test_tasks_without_detailed_thinking():
 
 def test_tasks_with_detailed_thinking():
     """Verify tasks that should have two system messages (with detailed thinking)."""
+
     config = RailsConfig.from_content(
         colang_config(), yaml_content=create_config("reasoning")
     )
@@ -124,139 +126,174 @@ def test_tasks_with_detailed_thinking():
         ), f"Task {task} should have 'detailed thinking on' in first system message"
 
 
-def test_other_modes_use_deepseek():
-    """Verify non-reasoning modes use content-based format from deepseek.yml."""
+def test_nemotron_standard_mode():
+    """Verify nemotron in standard mode uses nemotron_standard.yml without detailed thinking."""
+
     # test both standard mode (default) and another explicit mode
     for mode in [None, "compact"]:
         config = RailsConfig.from_content(
             colang_config(), yaml_content=create_config(mode)
         )
-        prompt = get_prompt(config, Task.GENERATE_USER_INTENT)
 
-        # content-based format
+        for task in [Task.GENERATE_BOT_MESSAGE, Task.GENERATE_USER_INTENT]:
+            prompt = get_prompt(config, task)
+
+            # Should use message-based format from nemotron_standard.yml
+            assert hasattr(prompt, "messages") and prompt.messages is not None
+            assert not hasattr(prompt, "content") or prompt.content is None
+
+            # should not have "detailed thinking on" in any system message
+            system_messages = [
+                msg
+                for msg in prompt.messages
+                if hasattr(msg, "type") and msg.type == "system"
+            ]
+
+            for msg in system_messages:
+                assert (
+                    "detailed thinking on" not in msg.content
+                ), f"Task {task} in standard mode should not have 'detailed thinking on'"
+
+            # should not have mode=reasoning
+            assert (
+                not hasattr(prompt, "mode") or prompt.mode != "reasoning"
+            ), f"Task {task} in standard mode should not have reasoning mode"
+
+
+def test_deepseek_uses_deepseek_yml():
+    """Verify DeepSeek models use deepseek.yml."""
+    config = RailsConfig.from_content(
+        colang_config(), yaml_content=create_config(None, DEEPSEEK_MODEL)
+    )
+
+    for task in [Task.GENERATE_BOT_MESSAGE, Task.GENERATE_USER_INTENT]:
+        prompt = get_prompt(config, task)
+
+        # should use content-based format from deepseek.yml
         assert hasattr(prompt, "content") and prompt.content is not None
         assert not hasattr(prompt, "messages") or prompt.messages is None
 
-        # verify it's the deepseek.yml content
+        # should have "Use a short thinking process" from deepseek.yml
         assert "IMPORTANT: Use a short thinking process" in prompt.content
+        assert "deepseek" in prompt.models
+        assert "nemotron" not in prompt.models
 
 
 def test_prompt_selection_logic():
     """Test the direct prompt selection logic to verify file source."""
-    # Create both configs
     reasoning_config = RailsConfig.from_content(
-        colang_config(), yaml_content=create_config("reasoning")
+        colang_config(),
+        yaml_content=create_config("reasoning"),  # Nemotron with reasoning
     )
     standard_config = RailsConfig.from_content(
         colang_config(),
-        yaml_content=create_config(None),  # Standard mode
+        yaml_content=create_config(None),  # Nemotron with standard mode
+    )
+    deepseek_config = RailsConfig.from_content(
+        colang_config(),
+        yaml_content=create_config(None, DEEPSEEK_MODEL),  # DeepSeek model
     )
 
-    # Test various tasks in both modes
     for task in [
         Task.GENERATE_BOT_MESSAGE,
         Task.GENERATE_USER_INTENT,
         Task.GENERATE_NEXT_STEPS,
         Task.GENERATE_VALUE,
     ]:
-        # Check reasoning mode - should select from nemotron.yml
+        # Nemotron with reasoning mode -> nemotron_reasoning.yml with detailed thinking
         reasoning_prompt = get_prompt(reasoning_config, task)
-        assert (
-            reasoning_prompt.mode == "reasoning"
-        ), f"Task {task} should use reasoning mode"
-        assert reasoning_prompt.models == [
-            "nemotron"
-        ], f"Task {task} should use nemotron model template"
+        assert hasattr(reasoning_prompt, "messages")
+        if task in [Task.GENERATE_BOT_MESSAGE, Task.GENERATE_VALUE]:
+            system_messages = [
+                m
+                for m in reasoning_prompt.messages
+                if hasattr(m, "type") and m.type == "system"
+            ]
+            assert len(system_messages) > 1
+            assert "detailed thinking on" in system_messages[0].content
 
-        # Check standard mode - should select from deepseek.yml
+        # Nemotron with standard mode -> nemotron_standard.yml without detailed thinking
         standard_prompt = get_prompt(standard_config, task)
-        assert (
-            not hasattr(standard_prompt, "mode") or standard_prompt.mode != "reasoning"
-        ), f"Task {task} in standard mode should not use reasoning mode"
-        assert (
-            "nemotron" in standard_prompt.models
-        ), f"Task {task} in standard mode should include nemotron in models list"
+        assert hasattr(standard_prompt, "messages")
+        system_messages = [
+            m
+            for m in standard_prompt.messages
+            if hasattr(m, "type") and m.type == "system"
+        ]
+        for msg in system_messages:
+            assert "detailed thinking on" not in msg.content
 
-        # Verify content vs messages format
-        assert (
-            hasattr(reasoning_prompt, "messages")
-            and reasoning_prompt.messages is not None
-        ), f"Task {task} in reasoning mode should use message-based format"
-        assert (
-            hasattr(standard_prompt, "content") and standard_prompt.content is not None
-        ), f"Task {task} in standard mode should use content-based format"
+        # DeepSeek model -> deepseek.yml
+        deepseek_prompt = get_prompt(deepseek_config, task)
+        assert hasattr(deepseek_prompt, "content")
+        assert "IMPORTANT: Use a short thinking process" in deepseek_prompt.content
 
 
 def test_prompt_source_files():
     """Verify the source files for prompts based on model and mode."""
-    # Get a map of all prompts to their source files
-    prompts_by_source = {}
+    nemotron_reasoning_prompts = []
+    nemotron_standard_prompts = []
+    deepseek_prompts = []
 
-    # Get the prompts directory path
-    prompts_dir = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "../nemoguardrails/llm/prompts"
-    )
-
-    # Index all prompts by their source file, task and mode
     for prompt in _prompts:
-        if prompt.models and "nemotron" in prompt.models:
-            key = (prompt.task, getattr(prompt, "mode", "standard"))
-            prompts_by_source[key] = getattr(prompt, "messages", None) is not None
+        if not prompt.models:
+            continue
 
-    # Check that for each task, we have both message-based and content-based versions
-    for task in [
-        Task.GENERATE_BOT_MESSAGE.value,
-        Task.GENERATE_USER_INTENT.value,
-        Task.GENERATE_NEXT_STEPS.value,
-        Task.GENERATE_VALUE.value,
-    ]:
-        # Check reasoning mode uses messages format (from nemotron.yml)
-        assert prompts_by_source.get(
-            (task, "reasoning"), False
-        ), f"Task {task} should have a message-based prompt for reasoning mode"
+        if "nemotron" in prompt.models:
+            if hasattr(prompt, "mode") and prompt.mode == "reasoning":
+                nemotron_reasoning_prompts.append(prompt)
+            elif not hasattr(prompt, "mode") or prompt.mode != "reasoning":
+                nemotron_standard_prompts.append(prompt)
 
-        # Check standard mode uses content format (from deepseek.yml)
-        reasoning_key = (task, "reasoning")
-        standard_key = (task, "standard")
+        if "deepseek" in prompt.models:
+            deepseek_prompts.append(prompt)
 
-        # Either standard explicitly exists or there's a version without mode specified
-        has_standard = standard_key in prompts_by_source or any(
-            k[0] == task and (k[1] != "reasoning" or k[1] is None)
-            for k in prompts_by_source
-        )
+    assert len(nemotron_reasoning_prompts) > 0, "Should have nemotron reasoning prompts"
+    assert len(nemotron_standard_prompts) > 0, "Should have nemotron standard prompts"
+    assert len(deepseek_prompts) > 0, "Should have deepseek prompts"
 
-        assert (
-            has_standard
-        ), f"Task {task} should have a content-based prompt for standard mode"
+    for prompt in nemotron_reasoning_prompts:
+        assert hasattr(
+            prompt, "messages"
+        ), "Reasoning prompts should use message format"
+
+    for prompt in nemotron_standard_prompts:
+        assert hasattr(
+            prompt, "messages"
+        ), "Standard nemotron prompts should use message format"
+
+    for prompt in deepseek_prompts:
+        assert hasattr(prompt, "content"), "DeepSeek prompts should use content format"
 
 
 def test_prompt_selection_mechanism():
     """Test the core prompt selection mechanism directly."""
-    task_name = Task.GENERATE_BOT_MESSAGE.value
-    model_name = NEMOTRON_MODEL
 
-    reasoning_prompt = _get_prompt(task_name, model_name, "reasoning", _prompts)
-    assert reasoning_prompt.mode == "reasoning"
+    task_name = Task.GENERATE_BOT_MESSAGE.value
+    nemotron_model = NEMOTRON_MODEL
+    deepseek_model = DEEPSEEK_MODEL
+
+    # Nemotron with reasoning mode -> detailed thinking
+    reasoning_prompt = _get_prompt(task_name, nemotron_model, "reasoning", _prompts)
     assert hasattr(reasoning_prompt, "messages")
     assert reasoning_prompt.models == ["nemotron"]
+    assert reasoning_prompt.mode == "reasoning"
 
-    # should select a content-based prompt from deepseek.yml
-    standard_prompt = _get_prompt(task_name, model_name, "standard", _prompts)
-    assert not hasattr(standard_prompt, "mode") or standard_prompt.mode != "reasoning"
-    assert hasattr(standard_prompt, "content")
+    # Nemotron with standard mode -> no detailed thinking
+    standard_prompt = _get_prompt(task_name, nemotron_model, "standard", _prompts)
+    assert hasattr(standard_prompt, "messages")
     assert "nemotron" in standard_prompt.models
-    assert "deepseek" in standard_prompt.models
+    assert not hasattr(standard_prompt, "mode") or standard_prompt.mode != "reasoning"
 
-    compact_prompt = _get_prompt(task_name, model_name, "compact", _prompts)
-    assert not hasattr(compact_prompt, "mode") or compact_prompt.mode != "reasoning"
-    assert hasattr(compact_prompt, "content")
+    # Nemotron with compact mode -> should also use standard without detailed thinking
+    compact_prompt = _get_prompt(task_name, nemotron_model, "compact", _prompts)
+    assert hasattr(compact_prompt, "messages")
     assert "nemotron" in compact_prompt.models
-    assert "deepseek" in compact_prompt.models
-
-    model_name = "deepseek-r1"
-
-    compact_prompt = _get_prompt(task_name, model_name, "compact", _prompts)
+    assert "deepseek" not in compact_prompt.models
     assert not hasattr(compact_prompt, "mode") or compact_prompt.mode != "reasoning"
-    assert hasattr(compact_prompt, "content")
-    assert "nemotron" in compact_prompt.models
-    assert "deepseek" in compact_prompt.models
+
+    # DeepSeek model -> should use deepseek.yml
+    deepseek_prompt = _get_prompt(task_name, deepseek_model, "standard", _prompts)
+    assert hasattr(deepseek_prompt, "content")
+    assert "deepseek" in deepseek_prompt.models
+    assert "nemotron" not in deepseek_prompt.models
