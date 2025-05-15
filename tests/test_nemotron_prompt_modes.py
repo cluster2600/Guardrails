@@ -282,6 +282,25 @@ def test_prompt_selection_mechanism():
     # Nemotron with standard mode -> no detailed thinking
     standard_prompt = _get_prompt(task_name, nemotron_model, "standard", _prompts)
     assert hasattr(standard_prompt, "messages")
+
+    # sort the prompts to ensure deterministic selection across Python versions
+    nemotron_prompts = [
+        p
+        for p in _prompts
+        if hasattr(p, "models")
+        and p.models
+        and "nemotron" in p.models
+        and p.task == task_name
+    ]
+    standard_nemotron_prompts = [
+        p for p in nemotron_prompts if not hasattr(p, "mode") or p.mode != "reasoning"
+    ]
+    assert (
+        len(standard_nemotron_prompts) > 0
+    ), "Should have at least one standard Nemotron prompt for this task"
+
+    # the bug is that on Python 3.10/3.11, it's selecting a Llama3 prompt instead of Nemotron
+    # this is likely due to iteration order differences
     assert "nemotron" in standard_prompt.models
     assert not hasattr(standard_prompt, "mode") or standard_prompt.mode != "reasoning"
 
