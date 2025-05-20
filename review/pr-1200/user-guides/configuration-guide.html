@@ -647,7 +647,8 @@ To use these reasoning models, you can remove the traces and tokens from the mod
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.output.apply_to_reasoning_traces</span></code></p></td>
-<td><p>When set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are applied to the reasoning traces and the model response.
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are always applied to the reasoning traces and the model response and
+overrides the <code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code> value.
 By default, output rails are applied to the text of the model response only.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
 </tr>
