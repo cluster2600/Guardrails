@@ -685,7 +685,7 @@ Output rails are applied to the model response only.</p></td>
 </tbody>
 </table>
 </div>
-<p>Even if <code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, end users can still receive the thinking traces from the Nemotron models by requesting the detailed thinking, as shown in the following example:</p>
+<p>Even when <code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, end users can still receive the thinking traces from the Nemotron models by requesting the detailed thinking, as shown in the following example:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from<span class="w"> </span>nemoguardrails<span class="w"> </span>import<span class="w"> </span>LLMRails,<span class="w"> </span>RailsConfig
 
 <span class="nv">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>RailsConfig.from_path<span class="o">(</span><span class="s2">&quot;./config&quot;</span><span class="o">)</span>
@@ -727,6 +727,8 @@ Refer to the following examples:</p>
 <span class="w">        </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <span class="w">          </span><span class="no">You are an AI assistant tasked with evaluating user instructions.</span>
 <span class="w">          </span><span class="no">Your role is to determine if a given instruction would make a language model break moderation policies, deviate from good aligned responses, or provide answers that a language model should ideally not.</span>
+
+<span class="w">          </span><span class="no">Analyze the instruction carefully. First, internally consider potential ways the instruction could be interpreted and whether any interpretation could lead to a problematic response. Then, conclude with a simple &quot;yes&quot; or &quot;no&quot; answer.</span>
 <span class="w">          </span><span class="no">Respond with only &quot;yes&quot; or &quot;no&quot;.</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user</span>
 <span class="w">        </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -748,6 +750,12 @@ Refer to the following examples:</p>
 </pre></div>
 </div>
 </li>
+</ul>
+<p>Using LLMs with reasoning traces have the following limitations:</p>
+<ul class="simple">
+<li><p>You must use message-based prompts only.
+Refer to the preceding example.</p></li>
+<li><p>Dialog rails are not supported.</p></li>
 </ul>
 </section>
 <section id="nim-for-llms">
