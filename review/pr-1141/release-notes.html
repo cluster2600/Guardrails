@@ -512,13 +512,25 @@ For a complete record of changes in a release, refer to the
 <h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Python 3.13.</p></li>
+<li><p>Enhanced working with advanced reasoning models.</p>
+<ul>
+<li><p>Added support for the NVIDIA Nemotron family of advanced reasoning models, such as Llama 3.1 Nemotron Ultra 253B V1.</p></li>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">rails.output.apply_to_reasoning_traces</span></code> field.
+When this field is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are applied to the reasoning traces and the model output.
+For more information, refer to FIXME.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_thinking_traces</span></code> field is deprecated and replaced by the <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_reasoning_traces</span></code> field that has the same purpose and subfields.</p></li>
+<li><p>Using advanced reasoning models with dialog rails is not supported.</p></li>
+</ul>
+</li>
 <li><p>Simplified and broadened support for chat model providers from LangChain and
 LangChain Community chat model providers.
-You must use <code class="docutils literal notranslate"><span class="pre">langchain</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.14</span></code> or higher and <code class="docutils literal notranslate"><span class="pre">langchain-community</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.5</span></code> or higher.</p></li>
+You must use <code class="docutils literal notranslate"><span class="pre">langchain</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.14</span></code> or higher and <code class="docutils literal notranslate"><span class="pre">langchain-community</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.5</span></code> or higher.
+For information about using model providers, refer to <a class="reference internal" href="user-guides/configuration-guide.html#the-llm-model"><span class="std std-ref">The LLM Model</span></a>.</p></li>
 <li><p>Added support for code injection detection.
 For more information, refer to <a class="reference internal" href="user-guides/guardrails-library.html#injection-detection"><span class="std std-ref">Injection Detection</span></a>.</p></li>
 <li><p>Enhanced the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI with a <code class="docutils literal notranslate"><span class="pre">find-providers</span></code> argument to list chat and text completion providers.
 For more information, refer to <a class="reference internal" href="user-guides/cli.html#providers"><span class="std std-ref">providers</span></a>.</p></li>
+<li></li>
 </ul>
 </section>
 <section id="breaking-changes">

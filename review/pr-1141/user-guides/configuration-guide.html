@@ -564,22 +564,27 @@
 </div>
 <p>The meaning of the attributes is as follows:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: is set to “main” indicating the main LLM model.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">engine</span></code>: the LLM provider, e.g., <code class="docutils literal notranslate"><span class="pre">openai</span></code>, <code class="docutils literal notranslate"><span class="pre">huggingface_endpoint</span></code>, <code class="docutils literal notranslate"><span class="pre">self_hosted</span></code>, etc.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: the name of the model, e.g., <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: any additional parameters, e.g., <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">top_k</span></code>, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: is set to <em>main</em> to indicate the model is the application LLM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">engine</span></code>: the LLM provider, such as <code class="docutils literal notranslate"><span class="pre">openai</span></code>, <code class="docutils literal notranslate"><span class="pre">huggingface_endpoint</span></code>, <code class="docutils literal notranslate"><span class="pre">self_hosted</span></code>, and so on.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: the name of the model, such as <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: arguments to pass to the LangChain class used by the LLM provider.
+For example, when <code class="docutils literal notranslate"><span class="pre">engine</span></code> is set to <code class="docutils literal notranslate"><span class="pre">openai</span></code>, the toolkit loads the <code class="docutils literal notranslate"><span class="pre">ChatOpenAI</span></code> class.
+The <a class="reference external" href="https://python.langchain.com/api_reference/openai/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html">ChatOpenAI class</a>
+supports <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">max_tokens</span></code>, and other class-specific arguments.</p></li>
 </ul>
 <section id="supported-llm-providers">
 <h4>Supported LLM Providers<a class="headerlink" href="#supported-llm-providers" title="Link to this heading">#</a></h4>
-<p>You can use any LLM provider that is supported by LangChain, e.g., <code class="docutils literal notranslate"><span class="pre">ai21</span></code>, <code class="docutils literal notranslate"><span class="pre">aleph_alpha</span></code>, <code class="docutils literal notranslate"><span class="pre">anthropic</span></code>, <code class="docutils literal notranslate"><span class="pre">anyscale</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code>, <code class="docutils literal notranslate"><span class="pre">cohere</span></code>, <code class="docutils literal notranslate"><span class="pre">huggingface_endpoint</span></code>, <code class="docutils literal notranslate"><span class="pre">huggingface_hub</span></code>, <code class="docutils literal notranslate"><span class="pre">openai</span></code>, <code class="docutils literal notranslate"><span class="pre">self_hosted</span></code>, <code class="docutils literal notranslate"><span class="pre">self_hosted_hugging_face</span></code>. Check out the LangChain official documentation for the full list.</p>
-<p>In addition to the above LangChain providers, connecting to <a class="reference external" href="https://docs.nvidia.com/nim/index.html">Nvidia NIMs</a> is supported using the engine <code class="docutils literal notranslate"><span class="pre">nvidia_ai_endpoints</span></code> or synonymously <code class="docutils literal notranslate"><span class="pre">nim</span></code>, for both Nvidia hosted NIMs (accessible through an Nvidia AI Enterprise license) and for locally downloaded and elf-hosted NIM containers.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>To use any of the providers, you must install additional packages; when you first try to use a configuration with a new provider, you typically receive an error from LangChain that instructs which packages you should install.</p>
-</div>
+<p>You can use any LLM provider that is supported by LangChain, such as <code class="docutils literal notranslate"><span class="pre">ai21</span></code>, <code class="docutils literal notranslate"><span class="pre">aleph_alpha</span></code>, <code class="docutils literal notranslate"><span class="pre">anthropic</span></code>, <code class="docutils literal notranslate"><span class="pre">anyscale</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code>, <code class="docutils literal notranslate"><span class="pre">cohere</span></code>, <code class="docutils literal notranslate"><span class="pre">huggingface_endpoint</span></code>, <code class="docutils literal notranslate"><span class="pre">huggingface_hub</span></code>, <code class="docutils literal notranslate"><span class="pre">openai</span></code>, <code class="docutils literal notranslate"><span class="pre">self_hosted</span></code>, <code class="docutils literal notranslate"><span class="pre">self_hosted_hugging_face</span></code>. Check out the LangChain official documentation for the full list.</p>
+<p>In addition to the above LangChain providers, connecting to <a class="reference external" href="https://docs.nvidia.com/nim/index.html">NVIDIA NIM microservices</a> is supported using the <code class="docutils literal notranslate"><span class="pre">nim</span></code> engine.
+The <code class="docutils literal notranslate"><span class="pre">nvidia_ai_endpoints</span></code> engine is an alias for the <code class="docutils literal notranslate"><span class="pre">nim</span></code> engine.
+The engine provides access to locally-deployed NIM microservices or NVIDIA hosted models that you can view from <a class="reference external" href="https://build.nvidia.com/models">https://build.nvidia.com/models</a>.</p>
+<p>To use any of the LLM providers, you must install the LangChain package for the provider.
+When you first try to use a configuration with a new provider, you typically receive an error from LangChain that instructs which packages you should install.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Although you can instantiate any of the previously mentioned LLM providers, depending on the capabilities of the model, the NeMo Guardrails toolkit works better with some providers than others. The toolkit includes prompts that have been optimized for certain types of models, such as models provided by<code class="docutils literal notranslate"><span class="pre">openai</span></code> or <code class="docutils literal notranslate"><span class="pre">llama3</span></code> models. For others, you can optimize the prompts yourself following the information in the <a class="reference internal" href="#llm-prompts">LLM Prompts</a> section.</p>
+<p>Although you can instantiate any of the previously mentioned LLM providers, depending on the capabilities of the model, the NeMo Guardrails toolkit works better with some providers than others.
+The toolkit includes prompts that have been optimized for certain types of models, such as models provided by <code class="docutils literal notranslate"><span class="pre">openai</span></code> or <code class="docutils literal notranslate"><span class="pre">llama3</span></code> models.
+For others, you can optimize the prompts yourself following the information in the <a class="reference internal" href="#llm-prompts">LLM Prompts</a> section.</p>
 </div>
 </section>
 <section id="exploring-available-providers">
@@ -607,7 +612,7 @@ To use these reasoning models, you can remove the traces and tokens from the mod
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-reasoner</span>
 <span class="hll"><span class="w">    </span><span class="nt">reasoning_config</span><span class="p">:</span>
-</span><span class="hll"><span class="w">      </span><span class="nt">remove_thinking_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">remove_reasoning_traces</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </span><span class="hll"><span class="w">      </span><span class="nt">start_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;think&gt;&quot;</span>
 </span><span class="hll"><span class="w">      </span><span class="nt">end_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;/think&gt;&quot;</span>
 </span></pre></div>
@@ -616,7 +621,7 @@ To use these reasoning models, you can remove the traces and tokens from the mod
 By removing the traces, the guardrails runtime processes only the actual responses from the LLM.</p>
 <p>You can specify the following parameters for a reasoning model:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">remove_thinking_traces</span></code>: if the reasoning traces should be ignored (default <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code>: if the reasoning traces should be ignored (default <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">start_token</span></code>: the start token for the reasoning process (default <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">end_token</span></code>: the end token for the reasoning process (default <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code>).</p></li>
 </ul>
