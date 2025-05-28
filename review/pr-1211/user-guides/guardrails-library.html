@@ -1434,53 +1434,153 @@ Times reported below in are <strong>averages</strong> and are reported in millis
 </section>
 <section id="injection-detection">
 <h3>Injection Detection<a class="headerlink" href="#injection-detection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails offers detection of potential injection attempts (<em>e.g.</em> code injection, cross-site scripting, SQL injection, template injection) using <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html">YARA rules</a>, a technology familiar to many security teams.
-NeMo Guardrails ships with some basic rules for the following categories:</p>
+<p>NeMo Guardrails offers detection of potential exploitation attempts by using injection such as code injection, cross-site scripting, SQL injection, and template injection.
+Injection detection is primarily intended to be used in agentic systems to enhance other security controls as part of a defense-in-depth strategy.</p>
+<p>The first part of injection detection is <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html">YARA rules</a>.
+A YARA rule specifies a set of strings–text or binary patterns–to match and a Boolean expression that specifies the logic of the rule.
+YARA rules are a technology that is familiar to many security teams.</p>
+<p>The second part of injection detection is specifying the action to take when a rule is triggered.
+You can specify to <em>reject</em> the text and return “I’m sorry, the desired output triggered rule(s) designed to mitigate exploitation of {detections}.”
+Rejecting the output is the safest action and most appropriate for production deployments.
+As an alternative to rejecting the output, you can specify to <em>omit</em> the triggering text from the response.</p>
+<section id="about-the-default-rules">
+<h4>About the Default Rules<a class="headerlink" href="#about-the-default-rules" title="Link to this heading">#</a></h4>
+<p>By default, NeMo Guardrails provides the following rules:</p>
 <ul class="simple">
-<li><p>Code injection (Python)</p></li>
-<li><p>Cross-site scripting (Markdown and Javascript)</p></li>
-<li><p>SQL injection</p></li>
-<li><p>Template injection (Jinja)</p></li>
+<li><p>Code injection (Python): Recommended if the LLM output is used as an argument to downstream functions or passed to a code interpreter.</p></li>
+<li><p>SQL injection: Recommended if the LLM output is used as part of a SQL query to a database.</p></li>
+<li><p>Template injection (Jinja): Recommended for use if LLM output is rendered using the Jinja templating language.
+This rule is usually paired with code injection rules.</p></li>
+<li><p>Cross-site scripting (Markdown and Javascript): Recommended if the LLM output is rendered directly in HTML or Markdown.</p></li>
 </ul>
-<p>Additional rules can be added by including them in the <code class="docutils literal notranslate"><span class="pre">library/injection_detection/yara_rules</span></code> folder or specifying a <code class="docutils literal notranslate"><span class="pre">yara_path</span></code> with all the rules.</p>
-<p>Injection detection has a number of action options that indicate what to do when potential exploitation is detected.
-Two options are currently available: <code class="docutils literal notranslate"><span class="pre">reject</span></code> and <code class="docutils literal notranslate"><span class="pre">omit</span></code>, with <code class="docutils literal notranslate"><span class="pre">sanitize</span></code> planned for a future release.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">reject</span></code> will return a message to the user indicating that their query could not be handled and they should try again.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">omit</span></code> will return the model’s output, removing the offending detected content.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sanitize</span></code> attempts to “de-fang” the malicious content, returning the output in a way that is less likely to result exploitation. This action is generally considered unsuitable for production use.</p></li>
-</ul>
+<p>You can view the default rules in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/injection_detection/yara_rules">yara_rules directory</a> of the GitHub repository.</p>
+</section>
 <section id="configuring-injection-detection">
 <h4>Configuring Injection Detection<a class="headerlink" href="#configuring-injection-detection" title="Link to this heading">#</a></h4>
-<p>To activate injection detection, you must include the <code class="docutils literal notranslate"><span class="pre">injection</span> <span class="pre">detection</span></code> output flow.
+<p>To activate injection detection, you must specify the rules to apply and the action to take as well as include the <code class="docutils literal notranslate"><span class="pre">injection</span> <span class="pre">detection</span></code> output flow.
 As an example config:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
-  config:
-    injection_detection:
-      injections:
-        - code
-        - sqli
-        - template
-        - xss
-      action:
-        reject
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">injection_detection</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">injections</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">code</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqli</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">template</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xss</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">reject</span>
 
-  output:
-    flows:
-      - injection detection
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">injection detection</span>
 </pre></div>
 </div>
-<p><strong>SECURITY WARNING:</strong> It is <em>strongly</em> advised that the <code class="docutils literal notranslate"><span class="pre">sanitize</span></code> action not be used in production systems, as there is no guarantee of its efficacy, and it may lead to adverse security outcomes.</p>
-<p>This rail is primarily intended to be used in agentic systems to <em>enhance</em> other security controls as part of a defense in depth strategy.
-The provided rules are recommended to be used in the following settings:</p>
+<p>Refer to the following table for the <code class="docutils literal notranslate"><span class="pre">rails.config.injection_detection</span></code> field syntax reference:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">injections</span></code></p></td>
+<td><p>Specifies the injection detection rules to use.
+The following injections are part of the library:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">code</span></code>: Recommended if the LLM’s output will be used as an argument to downstream functions or passed to a code interpreter.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sqli</span></code>: Recommended if the LLM’s output will be used as part of a SQL query to a database</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">template</span></code>: Recommended for use if LLM output is rendered using templating languages like Jinja. This rule should usually be paired with <code class="docutils literal notranslate"><span class="pre">code</span></code> rules.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">xss</span></code>: Recommended if LLM output will be rendered directly in HTML or Markdown</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">code</span></code> for Python code injection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sqli</span></code> for SQL injection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">template</span></code> for Jinja template injection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xss</span></code> for cross-site scripting</p></li>
 </ul>
-<p>The included rules are in no way comprehensive.
-They can and should be extended by security teams for use in your application’s particular context and paired with additional security controls.</p>
+</td>
+<td><p>None (required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">action</span></code></p></td>
+<td><p>Specifies the action to take when injection is detected.
+Refer to the following actions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reject</span></code> returns a message to the user indicating that the query could not be handled and they should try again.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">omit</span></code> returns the model response, removing the offending detected content.</p></li>
+</ul>
+</td>
+<td><p>None (required)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">yara_path</span></code></p></td>
+<td><p>Specifies the path to a directory that contains custom YARA rules.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">library/injection_detection/yara_rules</span></code> in the NeMo Guardrails package.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yara_rules</span></code></p></td>
+<td><p>Specifies inline YARA rules.
+The field is a dictionary that maps rule names to the rules.
+The rules use the string data type.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">yara_rules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;inline-rule-name&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<span class="w">    </span><span class="no">&lt;inline-rule-content&gt;</span>
+</pre></div>
+</div>
+<p>If specified, these inline rules override the rules found in the <code class="docutils literal notranslate"><span class="pre">yara_path</span></code> field.</p>
+</td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For information about writing YARA rules, refer to the <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html">YARA documentation</a>.</p>
+</section>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h4>
+<p>Before you begin, install the <code class="docutils literal notranslate"><span class="pre">yara-python</span></code> package or you can install the NeMo Guardrails package with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nemoguardrails[jailbreak]</span></code>.</p>
+<ol class="arabic">
+<li><p>Set your NVIDIA API key as an environment variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span>&lt;nvapi-...&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Create a configuration directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code>, and add a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file with contents like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.3-70b-instruct</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">injection_detection</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">injections</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">code</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqli</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">template</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xss</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reject</span>
+</pre></div>
+</div>
+</li>
+<li><p>Load the guardrails configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Send a possibly unsafe request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Write a Python script that uses the requests library, and maybe urllib, to get the weather in Santa Clara.&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{&#39;role&#39;: &#39;assistant&#39;, &#39;content&#39;: &#39;**Getting the Weather in Santa Clara using Python**\n=====================================================\n\nTo get the weather in Santa Clara, we can use the OpenWeatherMap API, which provides current and forecasted weather conditions. We will use the `requests` library to make an HTTP request to the API and the `json` library to parse the response.\n\n**Prerequisites**\n---------------\n\n* Python 3.x\n* `requests` library (`pip install requests`)\n* OpenWeatherMap API key (sign up for free at [OpenWeatherMap](https://home.openweathermap.org/users/sign_up))\n\n**Code**\n-----\n\n```python\nimport requests\nimport json\n\ndef get_weather(api_key, city, units=\&#39;metric\&#39;):\n    &quot;&quot;&quot;\n    Get the current weather in a city.\n\n    Args:\n        api_key (str): OpenWeatherMap API key\n        city (str): City name\n        units (str, optional): Units of measurement (default: \&#39;metric\&#39;)\n\n    Returns:\n        dict: Weather data\n    &quot;&quot;&quot;\n    base_url = \&#39;http://api.openweathermap.org/data/2.5/weather\&#39;\n    params = {\n        \&#39;q\&#39;: city,\n        \&#39;units\&#39;: units,\n        \&#39;appid\&#39;: api_key\n    }\n    response = requests.get(base_url, params=params)\n    response.raise_for_status()\n    return response.json()\n\ndef main():\n    api_key = \&#39;YOUR_API_KEY\&#39;  # replace with your OpenWeatherMap API key\n    city = \&#39;Santa Clara\&#39;\n    weather_data = get_weather(api_key, city)\n    print(\&#39;Weather in {}:\&#39;.format(city))\n    print(\&#39;Temperature: {}°C\&#39;.format(weather_data[\&#39;main\&#39;][\&#39;temp\&#39;]))\n    print(\&#39;Humidity: {}%\&#39;.format(weather_data[\&#39;main\&#39;][\&#39;humidity\&#39;]))\n    print(\&#39;Conditions: {}\&#39;.format(weather_data[\&#39;weather\&#39;][0][\&#39;description\&#39;]))\n\nif __name__ == \&#39;__main__\&#39;:\n    main()\n```\n\n**Explanation**\n--------------\n\n1. We import the required libraries: `requests` for making HTTP requests and `json` for parsing the response.\n2. We define a function `get_weather` that takes the API key, city name, and units of measurement as arguments.\n3. We construct the API URL and parameters using the `base_url` and `params` dictionary.\n4. We make a GET request to the API using `requests.get` and raise an exception if the response status code is not 200 (OK).\n5. We parse the response data using `response.json()` and return the result as a dictionary.\n6. In the `main` function, we set the API key and city name, call `get_weather`, and print the weather data.\n\n**Notes**\n-------\n\n* Replace `YOUR_API_KEY` with your actual OpenWeatherMap API key.\n* You can adjust the units of measurement by passing a different value for the `units` parameter (e.g., \&#39;imperial\&#39; for Fahrenheit).\n* This script only retrieves the current weather conditions. For forecasted weather, you can use the [OpenWeatherMap forecast API](https://openweathermap.org/forecast5).\n\nI hope this helps! Let me know if you have any questions or need further assistance.&#39;}</span>
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 </section>
 </section>
@@ -1645,7 +1745,9 @@ They can and should be extended by security teams for use in your application’
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#injection-detection">Injection Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-default-rules">About the Default Rules</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-injection-detection">Configuring Injection Detection</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
 </ul>
 </li>
 </ul>
