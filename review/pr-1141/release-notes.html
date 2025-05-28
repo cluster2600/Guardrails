@@ -516,8 +516,8 @@ For a complete record of changes in a release, refer to the
 <ul>
 <li><p>Added support for the NVIDIA Nemotron family of advanced reasoning models, such as Llama 3.1 Nemotron Ultra 253B V1.</p></li>
 <li><p>Added the <code class="docutils literal notranslate"><span class="pre">rails.output.apply_to_reasoning_traces</span></code> field.
-When this field is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are applied to the reasoning traces and the model output.
-For more information, refer to FIXME.</p></li>
+When this field is <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are applied to the reasoning traces and the model output.
+For more information, refer to <a class="reference internal" href="user-guides/configuration-guide.html#using-llms-with-reasoning-traces"><span class="std std-ref"></span></a>.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_thinking_traces</span></code> field is deprecated and replaced by the <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_reasoning_traces</span></code> field that has the same purpose and subfields.</p></li>
 <li><p>Using advanced reasoning models with dialog rails is not supported.</p></li>
 </ul>
@@ -530,7 +530,6 @@ For information about using model providers, refer to <a class="reference intern
 For more information, refer to <a class="reference internal" href="user-guides/guardrails-library.html#injection-detection"><span class="std std-ref">Injection Detection</span></a>.</p></li>
 <li><p>Enhanced the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI with a <code class="docutils literal notranslate"><span class="pre">find-providers</span></code> argument to list chat and text completion providers.
 For more information, refer to <a class="reference internal" href="user-guides/cli.html#providers"><span class="std std-ref">providers</span></a>.</p></li>
-<li></li>
 </ul>
 </section>
 <section id="breaking-changes">
