@@ -1510,9 +1510,23 @@ Refer to the following actions:</p>
 <td><p>Specifies the path to a directory that contains custom YARA rules.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">library/injection_detection/yara_rules</span></code> in the NeMo Guardrails package.</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yara_rules</span></code></p></td>
+<td><p>Specifies inline YARA rules.
+The field is a dictionary that maps rule names to the rules.
+The rules use the string data type.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">yara_rules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;inline-rule-name&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<span class="w">    </span><span class="no">&lt;inline-rule-content&gt;</span>
+</pre></div>
+</div>
+<p>If specified, these inline rules override the rules found in the <code class="docutils literal notranslate"><span class="pre">yara_path</span></code> field.</p>
+</td>
+<td><p>None</p></td>
+</tr>
 </tbody>
 </table>
 </div>
+<p>For information about writing YARA rules, refer to the <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html">YARA documentation</a>.</p>
 </section>
 <section id="example">
 <h4>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h4>
