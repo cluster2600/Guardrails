@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>About NeMo Guardrails &#8212; NVIDIA NeMo Guardrails</title>
+    <title>Release Notes &#8212; NVIDIA NeMo Guardrails</title>
   
   
   
@@ -46,9 +46,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=6dbb43f8"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'release-notes';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,10 +54,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/index.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/release-notes.html" />
     <link rel="icon" href="_static/favicon.png"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation Guide" href="getting-started/installation-guide.html" />
+    <link rel="next" title="Configuration Guide" href="user-guides/configuration-guide.html" />
+    <link rel="prev" title="Getting Started" href="getting-started.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -123,7 +122,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -210,6 +209,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -230,7 +233,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -309,10 +312,10 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA NeMo Guardrails</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">About NeMo Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">About NeMo Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting-started/installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
@@ -462,7 +465,31 @@
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article d-print-none"></div>
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Release Notes</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
               
               
               
@@ -474,34 +501,67 @@
   SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0
 -->
-<section class="tex2jax_ignore mathjax_ignore" id="about-nemo-guardrails">
-<h1>About NeMo Guardrails<a class="headerlink" href="#about-nemo-guardrails" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails enables developers building LLM-based applications to easily add <strong>programmable guardrails</strong> between the application code and the LLM.</p>
-<div align="center">
-  <img src="https://github.com/NVIDIA/NeMo-Guardrails/raw/develop/docs/_static/images/programmable_guardrails.png"  width="75%" alt="Programmable Guardrails">
-</div>
-<p>Key benefits of adding <em>programmable guardrails</em> include:</p>
+<section class="tex2jax_ignore mathjax_ignore" id="release-notes">
+<h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">#</a></h1>
+<p>The following sections summarize and highlight the changes for each release.
+For a complete record of changes in a release, refer to the
+<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md">CHANGELOG.md</a> in the GitHub repository.</p>
+<section id="v0-14-0">
+<span id="id1"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
+<section id="features">
+<span id="v0-14-0-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>Building Trustworthy, Safe, and Secure LLM-based Applications:</strong> you can define rails to guide and safeguard conversations; you can choose to define the behavior of your LLM-based application on specific topics and prevent it from engaging in discussions on unwanted topics.</p></li>
-<li><p><strong>Connecting models, chains, and other services securely:</strong> you can connect an LLM to other services (a.k.a. tools) seamlessly and securely.</p></li>
-<li><p><strong>Controllable dialog</strong>: you can steer the LLM to follow pre-defined conversational paths, allowing you to design the interaction following conversation design best practices and enforce standard operating procedures (e.g., authentication, support).</p></li>
+<li><p>Added support for Python 3.13.</p></li>
+<li><p>Enhanced working with advanced reasoning models.</p>
+<ul>
+<li><p>Added support for the NVIDIA Nemotron family of advanced reasoning models, such as Llama 3.1 Nemotron Ultra 253B V1.</p></li>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">rails.output.apply_to_reasoning_traces</span></code> field.
+When this field is <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are applied to the reasoning traces and the model output.
+For more information, refer to <a class="reference internal" href="user-guides/configuration-guide.html#using-llms-with-reasoning-traces"><span class="std std-ref"></span></a>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_thinking_traces</span></code> field is deprecated and replaced by the <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_reasoning_traces</span></code> field that has the same purpose and subfields.</p></li>
+<li><p>Previously, if <code class="docutils literal notranslate"><span class="pre">remove_thinking_traces</span></code> was set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the reasoning traces were omitted from the final response presented to the end user.
+In this release, <code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code> controls whether reasoning traces are removed from internal tasks and has no effect on the final response presented to the user.</p></li>
+<li><p>Using advanced reasoning models with dialog rails is not supported.</p></li>
 </ul>
-<div class="toctree-wrapper compound" id="nvidia-nemo-guardrails">
-</div>
-<div class="toctree-wrapper compound" id="common-tasks">
-</div>
-<div class="toctree-wrapper compound" id="advanced-uses">
-</div>
-<div class="toctree-wrapper compound" id="security">
-</div>
-<div class="toctree-wrapper compound" id="evaluation">
-</div>
-<div class="toctree-wrapper compound" id="guardrails-with-colang">
-</div>
-<div class="toctree-wrapper compound" id="colang-2-0">
-</div>
-<div class="toctree-wrapper compound" id="reference">
-</div>
+</li>
+<li><p>Simplified and broadened support for chat model providers from LangChain and
+LangChain Community chat model providers.
+You must use <code class="docutils literal notranslate"><span class="pre">langchain</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.14</span></code> or higher and <code class="docutils literal notranslate"><span class="pre">langchain-community</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.5</span></code> or higher.
+For information about using model providers, refer to <a class="reference internal" href="user-guides/configuration-guide.html#the-llm-model"><span class="std std-ref">The LLM Model</span></a>.</p></li>
+<li><p>Added support for code injection detection.
+For more information, refer to <a class="reference internal" href="user-guides/guardrails-library.html#injection-detection"><span class="std std-ref">Injection Detection</span></a>.</p></li>
+<li><p>Enhanced the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI with a <code class="docutils literal notranslate"><span class="pre">find-providers</span></code> argument to list chat and text completion providers.
+For more information, refer to <a class="reference internal" href="user-guides/cli.html#providers"><span class="std std-ref">providers</span></a>.</p></li>
+</ul>
+</section>
+<section id="breaking-changes">
+<span id="v0-14-0-breaking-changes"></span><h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Removed support for the NeMo LLM Service, <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>.
+This provider reached end-of-life on February 5, 2025.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">HuggingFacePipelineCompatible</span></code> provider is refactored.
+Previously, the class was available from the <code class="docutils literal notranslate"><span class="pre">nemoguardrails.llm.providers</span></code> package.
+In this release, the class is moved to the <code class="docutils literal notranslate"><span class="pre">nemoguardrails.llm.providers.huggingface</span></code> package.</p></li>
+</ul>
+</section>
+<section id="fixed-issues">
+<span id="v0-14-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fixed an issue when tracing is enabled.
+Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
+In this release, the response is not modified when tracing is enabled.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1103">PR #1103</a>.</p></li>
+<li><p>Fixed an issue with the self check output flow.
+Previously, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction was not executed when <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> was enabled.
+In this release, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction correctly regardless of the <code class="docutils literal notranslate"><span class="pre">enable_rails_execptions</span></code> value.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1126">PR #1126</a>.</p></li>
+<li><p>Previously, the model specification in the guardrails configuration file, <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, did not validate the model name.
+In this release you must specify the model name in the <code class="docutils literal notranslate"><span class="pre">model</span></code> top-level field or as <code class="docutils literal notranslate"><span class="pre">model</span></code> or <code class="docutils literal notranslate"><span class="pre">model_name</span></code> in
+the parameters field.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1084">PR #1084</a>.</p></li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -514,12 +574,21 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="getting-started.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Getting Started</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="getting-started/installation-guide.html"
+       href="user-guides/configuration-guide.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Installation Guide</p>
+        <p class="prev-next-title">Configuration Guide</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -530,9 +599,25 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-14-0">0.14.0</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 
