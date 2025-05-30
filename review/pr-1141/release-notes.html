@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=51bce9bf"></script>
+    <script src="_static/documentation_options.js?v=2dee5df9"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.13.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -519,6 +519,8 @@ For a complete record of changes in a release, refer to the
 When this field is <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are applied to the reasoning traces and the model output.
 For more information, refer to <a class="reference internal" href="user-guides/configuration-guide.html#using-llms-with-reasoning-traces"><span class="std std-ref"></span></a>.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_thinking_traces</span></code> field is deprecated and replaced by the <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_reasoning_traces</span></code> field that has the same purpose and subfields.</p></li>
+<li><p>Previously, if <code class="docutils literal notranslate"><span class="pre">remove_thinking_traces</span></code> was set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the reasoning traces were omitted from the final response presented to the end user.
+In this release, <code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code> controls whether reasoning traces are removed from internal tasks and has no effect on the final response presented to the user.</p></li>
 <li><p>Using advanced reasoning models with dialog rails is not supported.</p></li>
 </ul>
 </li>
