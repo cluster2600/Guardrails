@@ -24,7 +24,7 @@ models_path = os.environ.get("EMBEDDING_CLASSIFIER_PATH")
 
 
 @lru_cache()
-def initialize_model(classifier_path: str = models_path):
+def initialize_model(classifier_path: str = models_path) -> 'JailbreakClassifier':
     """
     Initialize the global classifier model according to the configuration provided.
     Args

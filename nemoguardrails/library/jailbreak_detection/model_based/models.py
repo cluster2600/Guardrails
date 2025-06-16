@@ -73,6 +73,7 @@ class NvEmbedE5:
 
 class JailbreakClassifier:
     def __init__(self, random_forest_path: str):
+        import pickle
         from sklearn.ensemble import RandomForestClassifier
         self.embed = SnowflakeEmbed()
         with open(random_forest_path, "rb") as fd:
