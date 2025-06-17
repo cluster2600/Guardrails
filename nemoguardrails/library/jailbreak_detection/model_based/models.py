@@ -40,6 +40,7 @@ class SnowflakeEmbed:
 
     def __call__(self, text: str):
         import torch
+
         tokens = self.tokenizer(
             [text], padding=True, truncation=True, return_tensors="pt", max_length=2048
         )
@@ -74,7 +75,9 @@ class NvEmbedE5:
 class JailbreakClassifier:
     def __init__(self, random_forest_path: str):
         import pickle
+
         from sklearn.ensemble import RandomForestClassifier
+
         self.embed = SnowflakeEmbed()
         with open(random_forest_path, "rb") as fd:
             self.classifier = pickle.load(fd)

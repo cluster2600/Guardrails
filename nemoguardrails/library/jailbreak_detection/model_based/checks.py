@@ -24,7 +24,7 @@ models_path = os.environ.get("EMBEDDING_CLASSIFIER_PATH")
 
 
 @lru_cache()
-def initialize_model(classifier_path: str = models_path) -> 'JailbreakClassifier':
+def initialize_model(classifier_path: str = models_path) -> "JailbreakClassifier":
     """
     Initialize the global classifier model according to the configuration provided.
     Args
@@ -50,7 +50,7 @@ def initialize_model(classifier_path: str = models_path) -> 'JailbreakClassifier
 
 def check_jailbreak(
     prompt: str,
-    classifier = None,
+    classifier=None,
 ) -> dict:
     """
     Use embedding-based jailbreak detection model to check for the presence of a jailbreak
