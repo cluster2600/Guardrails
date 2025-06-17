@@ -146,6 +146,7 @@ class MyClass:
         return [[float(ord(c)) for c in text] for text in texts]
 
 
+@pytest.mark.asyncio
 async def test_cache_embeddings():
     with patch(
         "nemoguardrails.rails.llm.config.EmbeddingsCacheConfig"
