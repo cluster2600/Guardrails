@@ -23,6 +23,7 @@ jobs:
       os: ${{ matrix.os }}
       image: ${{ matrix.image }}
       python-version: ${{ matrix.python-version }}
+      run-pre-commit: true
   pr-tests-summary:
     name: PR Tests Summary
     needs: pr-tests-matrix

@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      run-pre-commit:
+        description: "Whether to run pre-commit checks"
+        required: false
+        default: false
+        type: boolean
 
 defaults:
   run:
@@ -90,6 +95,7 @@ jobs:
           fi
 
       - name: Run pre-commit hooks
+        if: inputs.run-pre-commit
         run: poetry run make pre_commit
 
       - name: Run pytest
