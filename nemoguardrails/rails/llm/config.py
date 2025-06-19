@@ -425,6 +425,11 @@ class CoreConfig(BaseModel):
 class InputRails(BaseModel):
     """Configuration of input rails."""
 
+    parallel: Optional[bool] = Field(
+        default=False,
+        description="If True, the input rails are executed in parallel.",
+    )
+
     flows: List[str] = Field(
         default_factory=list,
         description="The names of all the flows that implement input rails.",
@@ -454,6 +459,11 @@ class OutputRailsStreamingConfig(BaseModel):
 
 class OutputRails(BaseModel):
     """Configuration of output rails."""
+
+    parallel: Optional[bool] = Field(
+        default=False,
+        description="If True, the output rails are executed in parallel.",
+    )
 
     flows: List[str] = Field(
         default_factory=list,
