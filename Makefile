@@ -25,8 +25,8 @@ docs:
 	poetry run sphinx-build -b html docs _build/docs
 
 pre_commit:
-	pre-commit install
-	pre-commit run --all-files
+	poetry run pre-commit install
+	poetry run pre-commit run --all-files
 
 
 # HELP
