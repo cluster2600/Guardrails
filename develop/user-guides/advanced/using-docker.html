@@ -542,7 +542,7 @@ docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </
 <section id="optional-build-the-jailbreak-detection-heuristics-server-image">
 <h3>4. [Optional] Build the Jailbreak Detection Heuristics Server Image<a class="headerlink" href="#optional-build-the-jailbreak-detection-heuristics-server-image" title="Link to this heading">#</a></h3>
 <p>If you want to use the jailbreak detection heuristics server, you can also build a Docker image using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/jailbreak_detection/Dockerfile">Dockerfile</a>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nemoguardrails/jailbreak_detection
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nemoguardrails/library/jailbreak_detection
 docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>jailbreak_detection_heuristics<span class="w"> </span>.
 </pre></div>
 </div>
@@ -555,8 +555,8 @@ docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </
 </pre></div>
 </div>
 <p>This will start the NeMo Guardrails server with the example configurations. The Chat UI will be accessible at <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code>.</p>
-<p>NOTE: Since the example configurations use the OpenAI <code class="docutils literal notranslate"><span class="pre">test-davinci-003</span></code> models, you need to provide an <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code>.</p>
-<p>To specify your own config folder for the server, you can have to mount your local configuration into the <code class="docutils literal notranslate"><span class="pre">/config</span></code> path into the container:</p>
+<p>NOTE: Since the example configurations use OpenAI models (such as <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code> and <code class="docutils literal notranslate"><span class="pre">gpt-4</span></code>), you need to provide an <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code>.</p>
+<p>To specify your own config folder for the server, you have to mount your local configuration into the <code class="docutils literal notranslate"><span class="pre">/config</span></code> path into the container:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="nv">$OPENAI_API_KEY</span><span class="w"> </span><span class="se">\</span>
