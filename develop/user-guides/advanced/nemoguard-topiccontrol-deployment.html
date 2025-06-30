@@ -502,10 +502,11 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="llama-3-1-nemoguard-8b-topic-control-deployment">
 <h1>Llama 3.1 NemoGuard 8B Topic Control Deployment<a class="headerlink" href="#llama-3-1-nemoguard-8b-topic-control-deployment" title="Link to this heading">#</a></h1>
-<p>The TopicControl model will be available to download as a LoRA adapter module through HuggingFace, and as an <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard">NVIDIA NIM</a> for low latency optimized inference with <a class="reference external" href="https://docs.nvidia.com/tensorrt-llm/index.html">NVIDIA TensorRT-LLM</a>.</p>
-<p>This guide covers how to deploy the TopicControl model as a NIM, and how to then use the deployed NIM in a NeMo Guardrails configuration.</p>
+<p>The TopicControl model is available to download as a LoRA adapter module through Hugging Face or as an <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/index.html">NVIDIA TopicControl NIM microservice</a> for low-latency optimized inference with <a class="reference external" href="https://docs.nvidia.com/tensorrt-llm/index.html">NVIDIA TensorRT-LLM</a>.</p>
+<p>This guide covers how to deploy the TopicControl model as a NIM microservice and use it in a NeMo Guardrails configuration.</p>
 <section id="nim-deployment">
 <h2>NIM Deployment<a class="headerlink" href="#nim-deployment" title="Link to this heading">#</a></h2>
+<p>Follow the instructions below to deploy the TopicControl NIM microservice and configure it in a NeMo Guardrails application.</p>
 <section id="access">
 <h3>Access<a class="headerlink" href="#access" title="Link to this heading">#</a></h3>
 <p>The first step is to ensure access to NVIDIA NIM assets through NGC using an NVAIE license.
@@ -531,10 +532,10 @@ docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_
 <span class="w">    </span><span class="nv">$NIM_IMAGE</span>
 </pre></div>
 </div>
-<section id="use-the-running-nim-in-your-guardrails-app">
-<h4>Use the running NIM in your Guardrails App<a class="headerlink" href="#use-the-running-nim-in-your-guardrails-app" title="Link to this heading">#</a></h4>
-<p>Any locally running NIM exposes the standard OpenAI interface on the <code class="docutils literal notranslate"><span class="pre">v1/completions</span></code> and <code class="docutils literal notranslate"><span class="pre">v1/chat/completions</span></code> endpoints. NeMo Guardrails provides out of the box support engines that support the standard LLM interfaces. For locally deployed NIMs, you need to use the engine <code class="docutils literal notranslate"><span class="pre">nim</span></code>.</p>
-<p>Thus, your Guardrails configuration file can look like:</p>
+</section>
+<section id="use-topiccontrol-nim-microservice-in-nemo-guardrails-app">
+<h3>Use TopicControl NIM Microservice in NeMo Guardrails App<a class="headerlink" href="#use-topiccontrol-nim-microservice-in-nemo-guardrails-app" title="Link to this heading">#</a></h3>
+<p>A locally running TopicControl NIM microservice exposes the standard OpenAI interface on the <code class="docutils literal notranslate"><span class="pre">v1/chat/completions</span></code> endpoint. NeMo Guardrails provides out-of-the-box support for engines that support the standard LLM interfaces. In Guardrails configuration, use the engine <code class="docutils literal notranslate"><span class="pre">nim</span></code> for the TopicControl NIM microservice as follows.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
@@ -560,7 +561,7 @@ docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_
 </ul>
 </section>
 <section id="bonus-caching-the-optimized-trtllm-inference-engines">
-<h4>Bonus: Caching the optimized TRTLLM inference engines<a class="headerlink" href="#bonus-caching-the-optimized-trtllm-inference-engines" title="Link to this heading">#</a></h4>
+<h3>Bonus: Caching the optimized TRTLLM inference engines<a class="headerlink" href="#bonus-caching-the-optimized-trtllm-inference-engines" title="Link to this heading">#</a></h3>
 <p>If you’d like to not build TRTLLM engines from scratch every time you run the NIM container, you can cache it in the first run by just adding a flag to mount a local directory inside the docker to store the model cache.</p>
 <p>To achieve this, you simply need to mount the folder containing the cached TRTLLM assets onto the docker container while running it using <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">$LOCAL_NIM_CACHE:/opt/nim/.cache</span></code>. See below instructions for the full command. Important: make sure that docker has permissions to write to the cache folder (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chmod</span> <span class="pre">666</span> <span class="pre">$LOCAL_NIM_CACHE</span></code>).</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">### To bind a $LOCAL_NIM_CACHE folder to &quot;/opt/nim/.cache&quot;</span>
@@ -581,7 +582,6 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
 <span class="w">    </span><span class="nv">$NIM_IMAGE</span>
 </pre></div>
 </div>
-</section>
 </section>
 </section>
 <section id="more-details-on-topiccontrol-model">
@@ -645,11 +645,9 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nim-deployment">NIM Deployment</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#access">Access</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-running-nim-in-your-guardrails-app">Use the running NIM in your Guardrails App</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-caching-the-optimized-trtllm-inference-engines">Bonus: Caching the optimized TRTLLM inference engines</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#access">Access</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-topiccontrol-nim-microservice-in-nemo-guardrails-app">Use TopicControl NIM Microservice in NeMo Guardrails App</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-caching-the-optimized-trtllm-inference-engines">Bonus: Caching the optimized TRTLLM inference engines</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-details-on-topiccontrol-model">More details on TopicControl model</a></li>
