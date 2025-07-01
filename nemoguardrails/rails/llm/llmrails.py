@@ -369,6 +369,37 @@ class LLMRails:
 
         return kwargs
 
+    def _configure_main_llm_streaming(
+        self,
+        llm: Union[BaseLLM, BaseChatModel],
+        model_name: Optional[str] = None,
+        provider_name: Optional[str] = None,
+    ):
+        """Configure streaming support for the main LLM.
+
+        Args:
+            llm (Union[BaseLLM, BaseChatModel]): The main LLM model instance.
+            model_name (Optional[str], optional): Optional model name for logging.
+            provider_name (Optional[str], optional): Optional provider name for logging.
+
+        """
+        if not self.config.streaming:
+            return
+
+        if "streaming" in llm.model_fields:
+            llm.streaming = True
+            self.main_llm_supports_streaming = True
+        else:
+            self.main_llm_supports_streaming = False
+            if model_name and provider_name:
+                log.warning(
+                    "Model %s from provider %s does not support streaming.",
+                    model_name,
+                    provider_name,
+                )
+            else:
+                log.warning("Provided main LLM does not support streaming.")
+
     def _init_llms(self):
         """
         Initializes the right LLM engines based on the configuration.
@@ -395,6 +426,8 @@ class LLMRails:
                     "The LLM provided via constructor will be used and the main LLM from config will be ignored."
                 )
             self.runtime.register_action_param("llm", self.llm)
+
+            self._configure_main_llm_streaming(self.llm)
         else:
             # Otherwise, initialize the main LLM from the config
             main_model = next(
@@ -410,6 +443,12 @@ class LLMRails:
                     kwargs=kwargs,
                 )
                 self.runtime.register_action_param("llm", self.llm)
+
+                self._configure_main_llm_streaming(
+                    self.llm,
+                    model_name=main_model.model,
+                    provider_name=main_model.engine,
+                )
             else:
                 log.warning(
                     "No main LLM specified in the config and no LLM provided via constructor."
@@ -437,17 +476,6 @@ class LLMRails:
                     mode=mode,
                     kwargs=kwargs,
                 )
-
-                if self.config.streaming:
-                    if "streaming" in llm_model.model_fields:
-                        llm_model.streaming = True
-                        self.main_llm_supports_streaming = True
-                    else:
-                        log.warning(
-                            "Model %s from provider %s does not support streaming.",
-                            model_name,
-                            provider_name,
-                        )
 
                 if llm_config.type == "main":
                     # If a main LLM was already injected, skip creating another
