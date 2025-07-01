@@ -369,13 +369,19 @@ class LLMRails:
 
         return kwargs
 
-    def _configure_main_llm_streaming(self, llm, model_name=None, provider_name=None):
+    def _configure_main_llm_streaming(
+        self,
+        llm: Union[BaseLLM, BaseChatModel],
+        model_name: Optional[str] = None,
+        provider_name: Optional[str] = None,
+    ):
         """Configure streaming support for the main LLM.
 
         Args:
-            llm: The main LLM model instance
-            model_name: Optional model name for logging
-            provider_name: Optional provider name for logging
+            llm (Union[BaseLLM, BaseChatModel]): The main LLM model instance.
+            model_name (Optional[str], optional): Optional model name for logging.
+            provider_name (Optional[str], optional): Optional provider name for logging.
+
         """
         if not self.config.streaming:
             return
