@@ -19,10 +19,10 @@ import math
 
 import pytest
 
-from nemoguardrails import RailsConfig
+from nemoguardrails import LLMRails, RailsConfig
 from nemoguardrails.actions import action
 from nemoguardrails.streaming import StreamingHandler
-from tests.utils import TestChat
+from tests.utils import FakeLLM, TestChat
 
 
 @pytest.fixture
@@ -499,24 +499,96 @@ async def test_streaming_error_handling():
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
 
 
-def test_main_llm_supports_streaming_flag_with_config():
-    """Ensure main_llm_supports_streaming is properly set when streaming is enabled."""
+@pytest.fixture
+def custom_streaming_provider():
+    """Fixture that registers a custom streaming chat provider for testing."""
+    from langchain.chat_models.base import BaseChatModel
+
+    from nemoguardrails.llm.providers import register_chat_provider
+
+    class CustomStreamingChatModel(BaseChatModel):
+        """Custom chat model that supports streaming for testing."""
+
+        streaming: bool = True
+
+        def _generate(self, messages, stop=None, run_manager=None, **kwargs):
+            pass
+
+        async def _agenerate(self, messages, stop=None, run_manager=None, **kwargs):
+            pass
+
+        @property
+        def _llm_type(self) -> str:
+            return "custom_streaming"
+
+    class CustomNoneStreamingChatModel(BaseChatModel):
+        """Custom chat model that supports streaming for testing."""
+
+        def _generate(self, messages, stop=None, run_manager=None, **kwargs):
+            pass
+
+        async def _agenerate(self, messages, stop=None, run_manager=None, **kwargs):
+            pass
+
+        @property
+        def _llm_type(self) -> str:
+            return "custom_none_streaming"
+
+    register_chat_provider("custom_streaming", CustomStreamingChatModel)
+    register_chat_provider("custom_none_streaming", CustomNoneStreamingChatModel)
+
+    yield
+
+    # clean up
+    from nemoguardrails.llm.providers.providers import _chat_providers
+
+    _chat_providers.pop("custom_streaming", None)
+    _chat_providers.pop("custom_none_streaming", None)
+
+
+def test_main_llm_supports_streaming_flag_with_config(custom_streaming_provider):
+    """Ensure main_llm_supports_streaming is properly set when streaming is enabled and LLM is defined in config."""
 
     config = RailsConfig.from_content(
         config={
             "models": [
-                {"type": "main", "engine": "openai", "model": "gpt-3.5-turbo-instruct"}
+                {"type": "main", "engine": "custom_streaming", "model": "test-model"}
             ],
             "streaming": True,
         }
     )
 
-    chat = TestChat(config, llm_completions=["test"], streaming=True)
+    rails = LLMRails(config)
 
-    assert chat.app.main_llm_supports_streaming is True, (
+    assert rails.main_llm_supports_streaming is True, (
         "main_llm_supports_streaming should be True when streaming is enabled "
         "and the LLM supports streaming"
     )
+
+
+def test_main_llm_does_not_support_streaming_flag_with_config_no_streaming(
+    custom_streaming_provider,
+):
+    """Ensure main_llm_supports_streaming is False when streaming is disabled in config."""
+
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {
+                    "type": "main",
+                    "engine": "custom_none_streaming",
+                    "model": "test-model",
+                }
+            ],
+            "streaming": True,
+        }
+    )
+
+    rails = LLMRails(config)
+
+    assert (
+        rails.main_llm_supports_streaming is False
+    ), "main_llm_supports_streaming should be False when the LLM does not support streaming"
 
 
 def test_main_llm_supports_streaming_flag_with_constructor():
@@ -528,9 +600,10 @@ def test_main_llm_supports_streaming_flag_with_constructor():
         }
     )
 
-    chat = TestChat(config, llm_completions=["test"], streaming=True)
+    fake_llm = FakeLLM(responses=["test"], streaming=True)
+    rails = LLMRails(config, llm=fake_llm)
 
-    assert chat.app.main_llm_supports_streaming is True, (
+    assert rails.main_llm_supports_streaming is True, (
         "main_llm_supports_streaming should be True when streaming is enabled "
         "and LLM provided via constructor supports streaming"
     )
@@ -540,16 +613,13 @@ def test_main_llm_supports_streaming_flag_disabled_when_no_streaming():
     """Test that main_llm_supports_streaming is False when streaming is disabled."""
     config = RailsConfig.from_content(
         config={
-            "models": [
-                {"type": "main", "model": "gpt-3.5-turbo-instruct", "engine": "openai"}
-            ],
+            "models": [],
             "streaming": False,
         }
     )
 
-    from nemoguardrails import LLMRails
-
-    rails = LLMRails(config)
+    fake_llm = FakeLLM(responses=["test"], streaming=False)
+    rails = LLMRails(config, llm=fake_llm)
 
     assert (
         rails.main_llm_supports_streaming is False
