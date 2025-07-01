@@ -384,6 +384,7 @@ class LLMRails:
             llm.streaming = True
             self.main_llm_supports_streaming = True
         else:
+            self.main_llm_supports_streaming = False
             if model_name and provider_name:
                 log.warning(
                     "Model %s from provider %s does not support streaming.",
