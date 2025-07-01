@@ -30,7 +30,7 @@ class BufferStrategy(ABC):
     @abstractmethod
     def __call__(
         self, streaming_handler
-    ) -> AsyncGenerator[Tuple[List[str], str], None]:
+    ) -> AsyncGenerator[Tuple[List[str], List[str]], None]:
         pass
 
     @abstractmethod
@@ -49,7 +49,7 @@ class RollingBuffer(BufferStrategy):
     def __init__(self, buffer_context_size: int = 5, buffer_chunk_size: int = 10):
         self.buffer_context_size = buffer_context_size
         self.buffer_chunk_size = buffer_chunk_size
-        self.last_index = 0
+        self.total_yielded = 0  # Track total chunks yielded to user
 
     @classmethod
     def from_config(cls, config: OutputRailsStreamingConfig):
@@ -59,47 +59,63 @@ class RollingBuffer(BufferStrategy):
 
     async def __call__(
         self, streaming_handler
-    ) -> AsyncGenerator[Tuple[List[str], str], None]:
+    ) -> AsyncGenerator[Tuple[List[str], List[str]], None]:
+        # Reset state for each streaming session
+        self.total_yielded = 0
         buffer = []
-        index = 0
+        total_chunks = 0
 
         async for chunk in streaming_handler:
             buffer.append(chunk)
-            index += 1
+            total_chunks += 1
 
             if len(buffer) >= self.buffer_chunk_size:
-                yield (
-                    # we apply output rails on the buffer
-                    buffer[-self.buffer_chunk_size - self.buffer_context_size :],
-                    # generate_chunk_str is what gets printed in the console or yield to user
-                    # to avoid repeating the already streamed/printed chunk
-                    self.generate_chunk_str(
-                        buffer[-self.buffer_chunk_size - self.buffer_context_size :],
-                        index,
-                    ),
+                # Calculate how many new chunks should be yielded
+                new_chunks_to_yield = min(
+                    self.buffer_chunk_size, total_chunks - self.total_yielded
                 )
+
+                # Create the processing buffer (includes context)
+                processing_buffer = buffer[
+                    -self.buffer_chunk_size - self.buffer_context_size :
+                ]
+
+                # Get the new chunks to yield to user (preserve original token format)
+                if new_chunks_to_yield > 0:
+                    # The new chunks are at the end of the buffer
+                    chunks_to_yield = buffer[-new_chunks_to_yield:]
+                    self.total_yielded += new_chunks_to_yield
+                else:
+                    chunks_to_yield = []
+
+                yield (processing_buffer, chunks_to_yield)
                 buffer = buffer[-self.buffer_context_size :]
 
         # Yield any remaining buffer if it's not empty
         if buffer:
-            yield (
-                buffer,
-                self.generate_chunk_str(
-                    buffer[-self.buffer_chunk_size - self.buffer_context_size :], index
-                ),
+            new_chunks_to_yield = len(buffer) - max(
+                0, self.total_yielded - (total_chunks - len(buffer))
             )
+            if new_chunks_to_yield > 0:
+                chunks_to_yield = (
+                    buffer[-new_chunks_to_yield:]
+                    if new_chunks_to_yield <= len(buffer)
+                    else buffer
+                )
+            else:
+                chunks_to_yield = []
+
+            yield (buffer, chunks_to_yield)
 
     def generate_chunk_str(self, buffer, current_index) -> str:
-        if current_index <= self.last_index:
-            return ""
+        """Legacy method - logic moved to __call__ method."""
+        # This method is kept for compatibility but should not be used
+        return ""
 
-        new_chunks = buffer[self.last_index - current_index :]
-        self.last_index = current_index
-        # TODO: something causes duplicate whitespaces between tokens, figure out why,
-        # If using `return "".join(new_chunks)` works, then the issue might be elsewhere in the code where the chunks are being generated or processed.
-        # Ensure that the chunks themselves do not contain extra spaces.
-        # WAR: return "".join(new_chunks)
-        return "".join(new_chunks)
+    def get_new_chunks(self, buffer, current_index) -> List[str]:
+        """Legacy method - logic moved to __call__ method."""
+        # This method is kept for compatibility but should not be used
+        return []
 
 
 def get_buffer_strategy(config: OutputRailsStreamingConfig) -> BufferStrategy:

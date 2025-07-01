@@ -1056,17 +1056,39 @@ class LLMRails:
             include_generation_metadata=include_generation_metadata
         )
 
-        # todo use a context var for buffer strategy and return it here?
-        # then iterating over buffer strategy is nested loop?
-        asyncio.create_task(
-            self.generate_async(
-                prompt=prompt,
-                messages=messages,
-                streaming_handler=streaming_handler,
-                options=options,
-                state=state,
-            )
-        )
+        # Create a properly managed task with exception handling
+        async def _generation_task():
+            try:
+                await self.generate_async(
+                    prompt=prompt,
+                    messages=messages,
+                    streaming_handler=streaming_handler,
+                    options=options,
+                    state=state,
+                )
+            except Exception as e:
+                # If an exception occurs during generation, push it to the streaming handler
+                # This ensures the streaming pipeline is properly terminated
+                log.error(f"Error in generation task: {e}", exc_info=True)
+                error_message = str(e)
+                error_dict = extract_error_json(error_message)
+                error_payload = json.dumps(error_dict)
+                await streaming_handler.push_chunk(error_payload)
+                await streaming_handler.push_chunk(END_OF_STREAM)
+
+        task = asyncio.create_task(_generation_task())
+
+        # Store task reference to prevent garbage collection and ensure proper cleanup
+        if not hasattr(self, "_active_tasks"):
+            self._active_tasks = set()
+        self._active_tasks.add(task)
+
+        # Clean up task when it's done
+        def task_done_callback(task):
+            self._active_tasks.discard(task)
+
+        task.add_done_callback(task_done_callback)
+
         # when we have output rails we wrap the streaming handler
         # if len(self.config.rails.output.flows) > 0:
         #
@@ -1377,24 +1399,28 @@ class LLMRails:
             _get_action_details_from_flow_id, flows=self.config.flows
         )
 
-        async for chunk_list, chunk_str_rep in buffer_strategy(streaming_handler):
+        async for chunk_list, chunk_tokens in buffer_strategy(streaming_handler):
             chunk_str = " ".join(chunk_list)
 
-            # Check if chunk_str_rep is a JSON string
-            # we yield a json error payload in generate_async when
-            # streaming has errors
-            try:
-                json.loads(chunk_str_rep)
-                yield chunk_str_rep
-                return
-            except json.JSONDecodeError:
+            # Check if chunk_tokens is a list of individual tokens (new format)
+            # or if it's a JSON error string
+            if isinstance(chunk_tokens, list):
+                # Normal case: chunk_tokens is a list of individual tokens to yield
                 pass
+            else:
+                # Legacy case or error case: chunk_tokens might be a JSON string
+                try:
+                    json.loads(chunk_tokens)
+                    yield chunk_tokens
+                    return
+                except (json.JSONDecodeError, TypeError):
+                    # If it's not JSON, treat it as empty list
+                    chunk_tokens = []
+
             if stream_first:
-                words = chunk_str_rep.split()
-                if words:
-                    yield words[0]
-                    for word in words[1:]:
-                        yield f" {word}"
+                # Yield the individual tokens directly from the buffer strategy
+                for token in chunk_tokens:
+                    yield token
 
             for flow_id in output_rails_flows_id:
                 action_name, action_params = get_action_details(flow_id)
@@ -1443,11 +1469,9 @@ class LLMRails:
                     return
 
             if not stream_first:
-                words = chunk_str_rep.split()
-                if words:
-                    yield words[0]
-                    for word in words[1:]:
-                        yield f" {word}"
+                # Yield the individual tokens directly from the buffer strategy
+                for token in chunk_tokens:
+                    yield token
 
 
 def _get_action_details_from_flow_id(
