@@ -497,3 +497,60 @@ async def test_streaming_error_handling():
 
     # Wait for proper cleanup, otherwise we get a Runtime Error
     await asyncio.gather(*asyncio.all_tasks() - {asyncio.current_task()})
+
+
+def test_main_llm_supports_streaming_flag_with_config():
+    """Ensure main_llm_supports_streaming is properly set when streaming is enabled."""
+
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {"type": "main", "engine": "openai", "model": "gpt-3.5-turbo-instruct"}
+            ],
+            "streaming": True,
+        }
+    )
+
+    chat = TestChat(config, llm_completions=["test"], streaming=True)
+
+    assert chat.app.main_llm_supports_streaming is True, (
+        "main_llm_supports_streaming should be True when streaming is enabled "
+        "and the LLM supports streaming"
+    )
+
+
+def test_main_llm_supports_streaming_flag_with_constructor():
+    """Test that main_llm_supports_streaming is properly set when LLM is provided via constructor."""
+    config = RailsConfig.from_content(
+        config={
+            "models": [],
+            "streaming": True,
+        }
+    )
+
+    chat = TestChat(config, llm_completions=["test"], streaming=True)
+
+    assert chat.app.main_llm_supports_streaming is True, (
+        "main_llm_supports_streaming should be True when streaming is enabled "
+        "and LLM provided via constructor supports streaming"
+    )
+
+
+def test_main_llm_supports_streaming_flag_disabled_when_no_streaming():
+    """Test that main_llm_supports_streaming is False when streaming is disabled."""
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {"type": "main", "model": "gpt-3.5-turbo-instruct", "engine": "openai"}
+            ],
+            "streaming": False,
+        }
+    )
+
+    from nemoguardrails import LLMRails
+
+    rails = LLMRails(config)
+
+    assert (
+        rails.main_llm_supports_streaming is False
+    ), "main_llm_supports_streaming should be False when streaming is disabled"
