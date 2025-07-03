@@ -12,7 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
+from unittest.mock import patch
 
+from pydantic import SecretStr
 
 from nemoguardrails.rails.llm.config import JailbreakDetectionConfig
 
@@ -128,3 +131,60 @@ class TestJailbreakDetectionConfig:
         assert config.nim_url is None
         assert config.nim_port is None
         assert config.embedding is None
+
+    def test_get_api_key_no_key(self):
+        """Check when neither `api_key` nor `api_key_env_var` are provided, auth token is None"""
+
+        config = JailbreakDetectionConfig(
+            nim_base_url="http://localhost:8000/v1",
+            nim_server_endpoint="classify",
+        )
+
+        auth_token = config.get_api_key()
+        assert auth_token is None
+
+    def test_get_api_key_api_key(self):
+        """Check when both `api_key` and `api_key_env_var` are provided, `api_key` takes precedence"""
+        api_key_value = "nvapi-abcdef12345"
+        api_key_env_var_name = "CUSTOM_API_KEY"
+        api_key_env_var_value = "env-var-nvapi-abcdef12345"
+
+        with patch.dict(os.environ, {api_key_env_var_name: api_key_env_var_value}):
+            config = JailbreakDetectionConfig(
+                nim_base_url="http://localhost:8000/v1",
+                nim_server_endpoint="classify",
+                api_key=api_key_value,
+                api_key_env_var=api_key_env_var_name,
+            )
+
+            auth_token = config.get_api_key()
+            assert auth_token == api_key_value
+
+    def test_get_api_key_api_key_env_var(self):
+        """Check when only `api_key_env_var` is provided, the env-var value is correctly returned"""
+        api_key_env_var_name = "CUSTOM_API_KEY"
+        api_key_env_var_value = "env-var-nvapi-abcdef12345"
+
+        with patch.dict(os.environ, {api_key_env_var_name: api_key_env_var_value}):
+            config = JailbreakDetectionConfig(
+                nim_base_url="http://localhost:8000/v1",
+                nim_server_endpoint="classify",
+                api_key_env_var=api_key_env_var_name,
+            )
+
+            auth_token = config.get_api_key()
+            assert auth_token == api_key_env_var_value
+
+    def test_get_api_key_api_key_env_var_not_set(self):
+        """Check configuring an `api_key_env_var` that isn't set in the shell returns None"""
+        api_key_env_var_name = "CUSTOM_API_KEY"
+
+        with patch.dict(os.environ, {}):
+            config = JailbreakDetectionConfig(
+                nim_base_url="http://localhost:8000/v1",
+                nim_server_endpoint="classify",
+                api_key_env_var=api_key_env_var_name,
+            )
+
+            auth_token = config.get_api_key()
+            assert auth_token is None

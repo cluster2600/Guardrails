@@ -97,15 +97,7 @@ async def jailbreak_detection_model(
     jailbreak_api_url = jailbreak_config.server_endpoint
     nim_base_url = jailbreak_config.nim_base_url
     nim_classification_path = jailbreak_config.nim_server_endpoint
-    if jailbreak_config.api_key_env_var is not None:
-        nim_auth_token = os.getenv(jailbreak_config.api_key_env_var)
-        if nim_auth_token is None:
-            log.warning(
-                "Specified a value for jailbreak config api_key_env var at %s but the environment variable was not set!"
-                % jailbreak_config.api_key_env_var
-            )
-    else:
-        nim_auth_token = None
+    nim_auth_token = jailbreak_config.get_api_key()
 
     if context is not None:
         prompt = context.get("user_message", "")
