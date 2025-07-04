@@ -1068,3 +1068,83 @@ def test_api_key_environment_variable_logic_without_rails_init():
 
     assert kwargs["api_key"] == "direct-key"
     assert kwargs["temperature"] == 0.3
+
+
+@pytest.mark.asyncio
+@patch("nemoguardrails.rails.llm.llmrails.init_llm_model")
+async def test_stream_usage_enabled_for_streaming_supported_providers(
+    mock_init_llm_model,
+):
+    """Test that stream_usage=True is set when streaming is enabled for supported providers."""
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {
+                    "type": "main",
+                    "engine": "openai",
+                    "model": "gpt-4",
+                }
+            ],
+            "streaming": True,
+        }
+    )
+
+    LLMRails(config=config)
+
+    mock_init_llm_model.assert_called_once()
+    call_args = mock_init_llm_model.call_args
+    kwargs = call_args.kwargs.get("kwargs", {})
+
+    assert kwargs.get("stream_usage") is True
+
+
+@pytest.mark.asyncio
+@patch("nemoguardrails.rails.llm.llmrails.init_llm_model")
+async def test_stream_usage_not_set_without_streaming(mock_init_llm_model):
+    """Test that stream_usage is not set when streaming is disabled."""
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {
+                    "type": "main",
+                    "engine": "openai",
+                    "model": "gpt-4",
+                }
+            ],
+            "streaming": False,
+        }
+    )
+
+    LLMRails(config=config)
+
+    mock_init_llm_model.assert_called_once()
+    call_args = mock_init_llm_model.call_args
+    kwargs = call_args.kwargs.get("kwargs", {})
+
+    assert "stream_usage" not in kwargs
+
+
+@pytest.mark.asyncio
+@patch("nemoguardrails.rails.llm.llmrails.init_llm_model")
+async def test_stream_usage_not_set_without_supported_providers(mock_init_llm_model):
+    """Test that stream_usage is not set with an unspported provider."""
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {
+                    "type": "main",
+                    "engine": "unsupported",
+                    "model": "whatever",
+                }
+            ],
+            "streaming": True,
+        }
+    )
+
+    LLMRails(config=config)
+
+    mock_init_llm_model.assert_called_once()
+    call_args = mock_init_llm_model.call_args
+    kwargs = call_args.kwargs.get("kwargs", {})
+
+    assert "stream_usage" not in kwargs
