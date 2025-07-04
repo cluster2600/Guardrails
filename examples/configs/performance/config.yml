@@ -1,0 +1,21 @@
+models:
+  - type: main
+    engine: openai
+    model: gpt-4o
+
+  - type: content_safety
+    engine: nim
+    model: nvidia/llama-3.1-nemoguard-8b-content-safety
+
+rails:
+  output:
+    parallel: True
+    flows:
+      - content safety check output $model=content_safety
+      - self check output
+      - self check output
+    streaming:
+      enabled: True
+      stream_first: False
+
+streaming: True
