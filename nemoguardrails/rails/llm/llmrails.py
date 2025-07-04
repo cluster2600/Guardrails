@@ -367,6 +367,8 @@ class LLMRails:
             if api_key:
                 kwargs["api_key"] = api_key
 
+        kwargs["stream_usage"] = True
+
         return kwargs
 
     def _configure_main_llm_streaming(
