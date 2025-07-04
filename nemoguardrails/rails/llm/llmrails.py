@@ -367,7 +367,14 @@ class LLMRails:
             if api_key:
                 kwargs["api_key"] = api_key
 
-        kwargs["stream_usage"] = True
+        # enable streaming token usage when streaming is enabled
+        # this is primarily supported by OpenAI and NIM providers
+        if self.config.streaming and model_config.engine in [
+            "openai",
+            "azure_openai",
+            "nim",
+        ]:
+            kwargs["stream_usage"] = True
 
         return kwargs
 
