@@ -33,6 +33,7 @@ from nemoguardrails.colang.v2_x.runtime.runtime import (
     create_flow_configs_from_flow_list,
 )
 from nemoguardrails.colang.v2_x.runtime.statemachine import initialize_state
+from nemoguardrails.llm.types import STREAM_USAGE_SUPPORTED_ENGINES
 from nemoguardrails.utils import EnhancedJsonEncoder, new_event_dict, new_uuid
 
 
@@ -44,6 +45,7 @@ class FakeLLM(LLM):
     streaming: bool = False
     exception: Optional[Exception] = None
     token_usage: Optional[List[Dict[str, int]]] = None  # Token usage per response
+    should_enable_stream_usage: bool = False
 
     @property
     def _llm_type(self) -> str:
@@ -115,16 +117,23 @@ class FakeLLM(LLM):
 
         generations = []
 
-        # Generate responses using the existing _call method to avoid counter issues
         for prompt in prompts:
             response = self._call(prompt, stop, run_manager, **kwargs)
             generation = Generation(text=response)
             generations.append([generation])
 
-        # Create LLMResult with optional token usage
+        # create LLMResult with optional token usage
+        # only provide token usage when it would actually be available:
+        # * When token_usage data is provided AND
+        # * When stream_usage=True is passed in kwargs OR should_enable_stream_usage is True
         llm_output = {}
-        if self.token_usage and self.i > 0 and (self.i - 1) < len(self.token_usage):
-            # Use the token usage for the last response
+        if (
+            self.token_usage
+            and self.i > 0
+            and (self.i - 1) < len(self.token_usage)
+            and (kwargs.get("stream_usage", False) or self.should_enable_stream_usage)
+        ):
+            # use the token usage for the last response
             llm_output = {"token_usage": self.token_usage[self.i - 1]}
 
         return LLMResult(generations=generations, llm_output=llm_output)
@@ -135,16 +144,23 @@ class FakeLLM(LLM):
 
         generations = []
 
-        # Generate responses using the existing _acall method to avoid counter issues
         for prompt in prompts:
             response = await self._acall(prompt, stop, run_manager, **kwargs)
             generation = Generation(text=response)
             generations.append([generation])
 
-        # Create LLMResult with optional token usage
+        # create LLMResult with optional token usage
+        # only provide token usage when it would actually be available:
+        # * when token_usage data is provided AND
+        # * when stream_usage=True is passed in kwargs OR should_enable_stream_usage is True
         llm_output = {}
-        if self.token_usage and self.i > 0 and (self.i - 1) < len(self.token_usage):
-            # Use the token usage for the last response
+        if (
+            self.token_usage
+            and self.i > 0
+            and (self.i - 1) < len(self.token_usage)
+            and (kwargs.get("stream_usage", False) or self.should_enable_stream_usage)
+        ):
+            # use the token usage for the last response
             llm_output = {"token_usage": self.token_usage[self.i - 1]}
 
         return LLMResult(generations=generations, llm_output=llm_output)
@@ -195,8 +211,21 @@ class TestChat:
         """
         self.llm = None
         if llm_completions is not None:
+            # check if we should simulate stream_usage=True behavior
+            # this mirrors the logic in LLMRails._prepare_model_kwargs
+            should_enable_stream_usage = False
+            if config.streaming:
+                main_model = next(
+                    (model for model in config.models if model.type == "main"), None
+                )
+                if main_model and main_model.engine in STREAM_USAGE_SUPPORTED_ENGINES:
+                    should_enable_stream_usage = True
+
             self.llm = FakeLLM(
-                responses=llm_completions, streaming=streaming, token_usage=token_usage
+                responses=llm_completions,
+                streaming=streaming,
+                token_usage=token_usage,
+                should_enable_stream_usage=should_enable_stream_usage,
             )
             if llm_exception:
                 self.llm.exception = llm_exception
