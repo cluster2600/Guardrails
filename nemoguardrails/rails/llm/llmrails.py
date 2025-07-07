@@ -60,6 +60,7 @@ from nemoguardrails.llm.models.initializer import (
     ModelInitializationError,
     init_llm_model,
 )
+from nemoguardrails.llm.types import STREAM_USAGE_SUPPORTED_ENGINES
 from nemoguardrails.logging.explain import ExplainInfo
 from nemoguardrails.logging.processing_log import compute_generation_log
 from nemoguardrails.logging.stats import LLMStats
@@ -369,11 +370,10 @@ class LLMRails:
 
         # enable streaming token usage when streaming is enabled
         # this is primarily supported by OpenAI and NIM providers
-        if self.config.streaming and model_config.engine in [
-            "openai",
-            "azure_openai",
-            "nim",
-        ]:
+        if (
+            self.config.streaming
+            and model_config.engine in STREAM_USAGE_SUPPORTED_ENGINES
+        ):
             kwargs["stream_usage"] = True
 
         return kwargs
