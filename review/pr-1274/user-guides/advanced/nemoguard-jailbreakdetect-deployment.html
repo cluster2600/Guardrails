@@ -527,7 +527,8 @@ docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_
 <p>Within your guardrails configuration file, you can specify that you want to use the NIM endpoint as part of the jailbreak detection configuration.
 To do this, ensure that you specify the endpoint of the NIM in the <code class="docutils literal notranslate"><span class="pre">nim_base_url</span></code> parameter.
 If you need an API key, you can export it as an environment variable and specify the name of that environment variable in <code class="docutils literal notranslate"><span class="pre">api_key_env_var</span></code>.
-If you must hard-code the API key in the config, which is generally not recommended for security reasons, you can also use the <code class="docutils literal notranslate"><span class="pre">api_key</span></code> variable.
+If you must hard-code the API key in the config, which is generally not recommended for security reasons, you can also use the <code class="docutils literal notranslate"><span class="pre">api_key</span></code> parameter.
+The NemoGuard JailbreakDetect container uses <code class="docutils literal notranslate"><span class="pre">&quot;classify&quot;</span></code> as its endpoint for jailbreak detection, but if you are using an endpoint other than <code class="docutils literal notranslate"><span class="pre">&quot;classify&quot;</span></code>, you can specify this via the <code class="docutils literal notranslate"><span class="pre">nim_server_endpoint</span></code> parameter.
 An example configuration is shown below.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
@@ -541,6 +542,7 @@ An example configuration is shown below.</p>
 <span class="w">    </span><span class="nt">jailbreak_detection</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">nim_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8000/v1&quot;</span>
 <span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;JAILBREAK_KEY&quot;</span>
+<span class="w">      </span><span class="nt">nim_server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;classify&quot;</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak detection model</span>
