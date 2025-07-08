@@ -527,6 +527,7 @@ docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_
 <p>Within your guardrails configuration file, you can specify that you want to use the NIM endpoint as part of the jailbreak detection configuration.
 To do this, ensure that you specify the endpoint of the NIM in the <code class="docutils literal notranslate"><span class="pre">nim_base_url</span></code> parameter.
 If you need an API key, you can export it as an environment variable and specify the name of that environment variable in <code class="docutils literal notranslate"><span class="pre">api_key_env_var</span></code>.
+If you must hard-code the API key in the config, which is generally not recommended for security reasons, you can also use the <code class="docutils literal notranslate"><span class="pre">api_key</span></code> variable.
 An example configuration is shown below.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
