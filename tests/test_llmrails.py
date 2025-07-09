@@ -1126,8 +1126,14 @@ async def test_stream_usage_not_set_without_streaming(mock_init_llm_model):
 
 @pytest.mark.asyncio
 @patch("nemoguardrails.rails.llm.llmrails.init_llm_model")
-async def test_stream_usage_not_set_without_supported_providers(mock_init_llm_model):
-    """Test that stream_usage is not set with an unsupported provider."""
+async def test_stream_usage_enabled_for_all_providers_when_streaming(
+    mock_init_llm_model,
+):
+    """Test that stream_usage is passed to ALL providers when streaming is enabled.
+
+    With the new design, stream_usage=True is passed to ALL providers when
+    streaming is enabled. Providers that don't support it will simply ignore it.
+    """
     config = RailsConfig.from_content(
         config={
             "models": [
@@ -1147,4 +1153,5 @@ async def test_stream_usage_not_set_without_supported_providers(mock_init_llm_mo
     call_args = mock_init_llm_model.call_args
     kwargs = call_args.kwargs.get("kwargs", {})
 
-    assert "stream_usage" not in kwargs
+    # stream_usage should be set for all providers when streaming is enabled
+    assert kwargs.get("stream_usage") is True

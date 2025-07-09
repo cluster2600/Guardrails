@@ -15,9 +15,6 @@
 
 from enum import Enum
 
-# LLM engines that support stream_usage parameter for token usage tracking during streaming
-STREAM_USAGE_SUPPORTED_ENGINES = ["openai", "azure_openai", "nim"]
-
 
 class Task(Enum):
     """The various tasks that can be performed by the LLM."""

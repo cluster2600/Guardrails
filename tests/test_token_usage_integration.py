@@ -13,6 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Integration tests for token usage tracking with streaming LLMs.
+
+Note about token usage testing:
+- In production, `stream_usage=True` is passed to ALL providers when streaming is enabled
+- providers that don't support this parameter will simply ignore it
+- for testing purposes, we simulate expected behavior based on known provider capabilities
+- the _TEST_PROVIDERS_WITH_TOKEN_USAGE_SUPPORT list in nemoguardrails.llm.types defines
+  which providers are known to support token usage reporting during streaming
+- test cases verify both supported and unsupported provider behavior
+"""
+
 import pytest
 
 from nemoguardrails import RailsConfig
@@ -23,8 +34,8 @@ from tests.utils import TestChat
 
 @pytest.fixture
 def streaming_config():
-    # this model configuration will trigger
-    # the stream_usage=True parameter
+    # using 'openai' engine which is known to support token usage reporting.
+    # in tests, the FakeLLM will simulate returning token usage data for this provider.
     config = RailsConfig.from_content(
         config={
             "models": [
@@ -308,7 +319,12 @@ async def test_token_usage_not_tracked_without_streaming(llm_calls_option):
 
 @pytest.mark.asyncio
 async def test_token_usage_not_set_for_unsupported_provider():
-    """Integration test verifying token usage is NOT tracked for unsupported providers."""
+    """Integration test verifying token usage is NOT tracked for unsupported providers.
+
+    Even though stream_usage=True is passed to all providers,
+    providers that don't support it won't return token usage data.
+    This test simulates that behavior using an 'unsupported' provider.
+    """
 
     config = RailsConfig.from_content(
         config={
