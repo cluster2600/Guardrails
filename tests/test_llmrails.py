@@ -1127,7 +1127,7 @@ async def test_stream_usage_not_set_without_streaming(mock_init_llm_model):
 @pytest.mark.asyncio
 @patch("nemoguardrails.rails.llm.llmrails.init_llm_model")
 async def test_stream_usage_not_set_without_supported_providers(mock_init_llm_model):
-    """Test that stream_usage is not set with an unspported provider."""
+    """Test that stream_usage is not set with an unsupported provider."""
     config = RailsConfig.from_content(
         config={
             "models": [
