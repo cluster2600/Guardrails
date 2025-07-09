@@ -91,9 +91,6 @@ class FakeLLM(LLM):
             )
 
         response = self.responses[self.i]
-        current_token_usage = None
-        if self.token_usage and self.i - 1 < len(self.token_usage):
-            current_token_usage = self.token_usage[self.i - 1]
 
         self.i += 1
 
@@ -111,58 +108,44 @@ class FakeLLM(LLM):
 
         return response
 
-    def _generate(self, prompts, stop=None, run_manager=None, **kwargs):
-        """Override _generate to provide token usage in LLMResult."""
-        from langchain.schema import Generation, LLMResult
+    def _get_token_usage_for_response(
+        self, response_index: int, kwargs: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Get token usage data for the given response index if conditions are met."""
 
-        generations = []
-
-        for prompt in prompts:
-            response = self._call(prompt, stop, run_manager, **kwargs)
-            generation = Generation(text=response)
-            generations.append([generation])
-
-        # create LLMResult with optional token usage
-        # only provide token usage when it would actually be available:
-        # * When token_usage data is provided AND
-        # * When stream_usage=True is passed in kwargs OR should_enable_stream_usage is True
         llm_output = {}
         if (
             self.token_usage
-            and self.i > 0
-            and (self.i - 1) < len(self.token_usage)
+            and response_index >= 0
+            and response_index < len(self.token_usage)
             and (kwargs.get("stream_usage", False) or self.should_enable_stream_usage)
         ):
-            # use the token usage for the last response
-            llm_output = {"token_usage": self.token_usage[self.i - 1]}
+            llm_output = {"token_usage": self.token_usage[response_index]}
+        return llm_output
 
+    def _generate(self, prompts, stop=None, run_manager=None, **kwargs):
+        """Override _generate to provide token usage in LLMResult."""
+
+        from langchain.schema import Generation, LLMResult
+
+        generations = [
+            [Generation(text=self._call(prompt, stop, run_manager, **kwargs))]
+            for prompt in prompts
+        ]
+
+        llm_output = self._get_token_usage_for_response(self.i - 1, kwargs)
         return LLMResult(generations=generations, llm_output=llm_output)
 
     async def _agenerate(self, prompts, stop=None, run_manager=None, **kwargs):
         """Override _agenerate to provide token usage in LLMResult."""
         from langchain.schema import Generation, LLMResult
 
-        generations = []
+        generations = [
+            [Generation(text=await self._acall(prompt, stop, run_manager, **kwargs))]
+            for prompt in prompts
+        ]
 
-        for prompt in prompts:
-            response = await self._acall(prompt, stop, run_manager, **kwargs)
-            generation = Generation(text=response)
-            generations.append([generation])
-
-        # create LLMResult with optional token usage
-        # only provide token usage when it would actually be available:
-        # * when token_usage data is provided AND
-        # * when stream_usage=True is passed in kwargs OR should_enable_stream_usage is True
-        llm_output = {}
-        if (
-            self.token_usage
-            and self.i > 0
-            and (self.i - 1) < len(self.token_usage)
-            and (kwargs.get("stream_usage", False) or self.should_enable_stream_usage)
-        ):
-            # use the token usage for the last response
-            llm_output = {"token_usage": self.token_usage[self.i - 1]}
-
+        llm_output = self._get_token_usage_for_response(self.i - 1, kwargs)
         return LLMResult(generations=generations, llm_output=llm_output)
 
     @property

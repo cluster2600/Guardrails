@@ -370,13 +370,16 @@ class LLMRails:
 
         # enable streaming token usage when streaming is enabled
         # this is primarily supported by OpenAI and NIM providers
-        if (
-            self.config.streaming
-            and model_config.engine in STREAM_USAGE_SUPPORTED_ENGINES
-        ):
+        if self.config.streaming and self._support_stream_usage(model_config.engine):
             kwargs["stream_usage"] = True
 
         return kwargs
+
+    def _support_stream_usage(self, engine: str) -> bool:
+        """Check if the LLM supports streaming token usage."""
+        if engine in STREAM_USAGE_SUPPORTED_ENGINES:
+            return True
+        return False
 
     def _configure_main_llm_streaming(
         self,

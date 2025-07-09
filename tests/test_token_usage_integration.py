@@ -175,7 +175,7 @@ async def test_token_usage_integration_actual_streaming(llm_calls_option):
     # now verify that even in streaming mode, if we use generate_async with options
     # we can get the token usage information
 
-    chat.llm.i = 0
+    chat.llm.i = 0  # reset counter to run the same scenario again
 
     result = await chat.app.generate_async(
         messages=[{"role": "user", "content": "what is AI?"}], options=llm_calls_option
