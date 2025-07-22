@@ -576,7 +576,72 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For the complete working example, check out this <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/scripts/demo_streaming.py">demo script</a>.</p>
+</section>
+<section id="using-external-token-generators">
+<h3>Using External Token Generators<a class="headerlink" href="#using-external-token-generators" title="Link to this heading">#</a></h3>
+<p>You can also provide your own async generator that yields tokens, which is useful when:</p>
+<ul class="simple">
+<li><p>You want to use a different LLM provider that has its own streaming API</p></li>
+<li><p>You have pre-generated responses that you want to stream through guardrails</p></li>
+<li><p>You want to implement custom token generation logic</p></li>
+<li><p>You want to test your output rails or its config in streaming mode on predefined responses without actually relying on an actual LLM generation.</p></li>
+</ul>
+<p>To use an external generator, pass it to the <code class="docutils literal notranslate"><span class="pre">generator</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">stream_async</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncIterator</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_token_generator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="c1"># This could be from OpenAI API, Anthropic API, or any other LLM API that already has a streaming token generator. Mocking the stream here, for a simple example.</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;world&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">token</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;The most famous program ever written is&quot;</span><span class="p">}]</span><span class="s2">&quot;}]</span>
+
+<span class="c1"># use the external generator with guardrails</span>
+<span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">app</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span>
+    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="n">generator</span><span class="o">=</span><span class="n">my_token_generator</span><span class="p">()</span>
+<span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHUNK: </span><span class="si">{</span><span class="n">chunk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When using an external generator:</p>
+<ul class="simple">
+<li><p>The internal LLM generation is completely bypassed</p></li>
+<li><p>Output rails are still applied to the LLM responses returned by the external generator, if configured</p></li>
+<li><p>The generator should yield string tokens</p></li>
+</ul>
+<p>Example with a real LLM API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">openai_streaming_generator</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Example using OpenAI&#39;s streaming API.&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+
+    <span class="n">stream</span> <span class="o">=</span> <span class="k">await</span> <span class="n">openai</span><span class="o">.</span><span class="n">ChatCompletion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+        <span class="n">stream</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Yield tokens as they arrive</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;config/with_output_rails&quot;</span><span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">app</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a story&quot;</span><span class="p">}],</span>
+    <span class="n">generator</span><span class="o">=</span><span class="n">openai_streaming_generator</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+<span class="p">):</span>
+    <span class="c1"># output rails will be applied to these chunks</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This feature enables seamless integration of NeMo Guardrails with any streaming LLM or token source while maintaining all the safety features of output rails.</p>
 </section>
 <section id="server-api">
 <h3>Server API<a class="headerlink" href="#server-api" title="Link to this heading">#</a></h3>
@@ -676,6 +741,7 @@ add it to the <code class="docutils literal notranslate"><span class="pre">kwarg
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-cli">Chat CLI</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api">Python API</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-external-token-generators">Using External Token Generators</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-for-llms-deployed-using-huggingfacepipeline">Streaming for LLMs deployed using HuggingFacePipeline</a></li>
 </ul>
