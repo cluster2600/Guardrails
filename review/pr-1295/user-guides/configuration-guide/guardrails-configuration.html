@@ -705,7 +705,7 @@
 <h3>When to Use Parallel Rails Execution<a class="headerlink" href="#when-to-use-parallel-rails-execution" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Use parallel execution for rails that perform external API calls or content safety checks with high I/O latency.</p></li>
-<li><p>Enable parallel execution if you have three or more independent rails without shared state dependencies.</p></li>
+<li><p>Enable parallel execution if you have two or more independent input or output rails without shared state dependencies.</p></li>
 <li><p>Use parallel execution in production environments where response latency affects user experience and business metrics.</p></li>
 </ul>
 </section>
