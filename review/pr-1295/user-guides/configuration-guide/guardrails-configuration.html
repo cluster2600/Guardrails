@@ -718,12 +718,12 @@
 </section>
 <section id="configuration-examples">
 <h3>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Link to this heading">#</a></h3>
-<p>To enable parallel execution, set <code class="docutils literal notranslate"><span class="pre">parallel:</span> <span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. The following configuration examples are tested by NVIDIA and show how to enable parallel execution for input and output rails.</p>
+<p>To enable parallel execution, set <code class="docutils literal notranslate"><span class="pre">parallel:</span> <span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">rails.input</span></code> and <code class="docutils literal notranslate"><span class="pre">rails.output</span></code> sections in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. The following configuration examples are tested by NVIDIA and show how to enable parallel execution for input and output rails.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Input rail mutations can produce non-deterministic results during parallel execution due to race conditions in the execution order and completion timing of parallel calls. This behavior may cause output divergence compared to sequential execution. The following examples demonstrate configurations that maintain deterministic behavior in parallel mode.</p>
 </div>
-<p><strong>Template 1</strong></p>
+<p><strong>Example 1</strong></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -740,10 +740,6 @@
 <span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llama-3.1-nemoguard-8b-topic-control&quot;</span>
 
 <span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">jailbreak_detection</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">      </span><span class="nt">embedding</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;snowflake/snowflake-arctic-embed-m-long&quot;</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -756,7 +752,7 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
 </pre></div>
 </div>
-<p><strong>Template 2</strong></p>
+<p><strong>Example 2</strong></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -773,11 +769,6 @@
 <span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama guard check input</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">fact_checking</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">align_score</span>
-<span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:5000/alignscore_base&quot;</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
