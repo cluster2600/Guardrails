@@ -117,6 +117,16 @@ def test_rails_config_from_path():
     assert config.sample_conversation is not None
 
 
+def test_rails_config_from_path_yml_extension():
+    """Test loading RailsConfig from path."""
+
+    config_path = os.path.join(os.path.dirname(__file__), "test_configs", "general.yml")
+    config = RailsConfig.from_path(config_path)
+    assert config is not None
+    assert len(config.instructions) > 0
+    assert config.sample_conversation is not None
+
+
 def test_rails_config_parse_obj():
     """Test parsing RailsConfig from object."""
 
