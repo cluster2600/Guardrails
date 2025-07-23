@@ -701,23 +701,27 @@
 <section id="parallel-execution-of-input-and-output-rails">
 <h2>Parallel Execution of Input and Output Rails<a class="headerlink" href="#parallel-execution-of-input-and-output-rails" title="Link to this heading">#</a></h2>
 <p>You can configure input and output rails to run in parallel. This can improve latency and throughput.</p>
-<p><strong>When to Use Parallel Rails Execution</strong></p>
+<section id="when-to-use-parallel-rails-execution">
+<h3>When to Use Parallel Rails Execution<a class="headerlink" href="#when-to-use-parallel-rails-execution" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Use parallel execution for rails that perform external API calls or content safety checks with high I/O latency.</p></li>
 <li><p>Enable parallel execution if you have three or more independent rails without shared state dependencies.</p></li>
 <li><p>Use parallel execution in production environments where response latency affects user experience and business metrics.</p></li>
 </ul>
-<p><strong>When Not to Use Parallel Rails Execution</strong></p>
+</section>
+<section id="when-not-to-use-parallel-rails-execution">
+<h3>When Not to Use Parallel Rails Execution<a class="headerlink" href="#when-not-to-use-parallel-rails-execution" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Avoid parallel execution for CPU-bound rails, as it might not improve performance and can introduce overhead.</p></li>
 <li><p>Use sequential mode during development and testing for easier debugging and simpler workflows.</p></li>
 </ul>
-<p><strong>Configuration Templates</strong></p>
-<p>To enable parallel execution, set <code class="docutils literal notranslate"><span class="pre">parallel:</span> <span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. The following configurations are tested by NVIDIA and show how to enable parallel execution for input and output rails.</p>
+</section>
+<section id="configuration-examples">
+<h3>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Link to this heading">#</a></h3>
+<p>To enable parallel execution, set <code class="docutils literal notranslate"><span class="pre">parallel:</span> <span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. The following configuration examples are tested by NVIDIA and show how to enable parallel execution for input and output rails.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Full support for parallel rail execution across all configurations requires Colang 2, which is not yet integrated or tested with NeMo Guardrails. As an interim solution, this feature is enabled in Colang 1.</p>
-<p>This point-fix is temporary until the adoption of Colang 2. As a result, support is currently limited to two specific templates.</p>
+<p>Input rail mutations can produce non-deterministic results during parallel execution due to race conditions in the execution order and completion timing of parallel calls. This behavior may cause output divergence compared to sequential execution. The following examples demonstrate configurations that maintain deterministic behavior in parallel mode.</p>
 </div>
 <p><strong>Template 1</strong></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
@@ -781,6 +785,7 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama guard check output</span>
 </pre></div>
 </div>
+</section>
 </section>
 <section id="retrieval-rails">
 <h2>Retrieval Rails<a class="headerlink" href="#retrieval-rails" title="Link to this heading">#</a></h2>
@@ -893,7 +898,12 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-output-configuration">Streaming Output Configuration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-input-and-output-rails">Parallel Execution of Input and Output Rails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-input-and-output-rails">Parallel Execution of Input and Output Rails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-parallel-rails-execution">When to Use Parallel Rails Execution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-parallel-rails-execution">When Not to Use Parallel Rails Execution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-examples">Configuration Examples</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-rails">Retrieval Rails</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dialog-rails">Dialog Rails</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-call-mode">Single Call Mode</a></li>
