@@ -640,7 +640,7 @@
 <p>When streaming is enabled, NeMo Guardrails automatically enables token usage tracking by setting the <code class="docutils literal notranslate"><span class="pre">stream_usage</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code> for the underlying LLM model. This feature:</p>
 <ul class="simple">
 <li><p>Provides token usage statistics even when streaming responses.</p></li>
-<li><p>Is primarily supported by OpenAI, AzureOpenAI, and other providers. The NVIDIA NIM provider always supports it.</p></li>
+<li><p>Is primarily supported by OpenAI, AzureOpenAI, and other providers. The NVIDIA NIM provider supports it by default.</p></li>
 <li><p>Allows to safely pass token usage statistics to LLM providers. If the LLM provider you use don’t support it, the parameter is ignored.</p></li>
 </ul>
 <section id="version-requirements">
@@ -654,7 +654,10 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The NeMo Guardrails toolkit requires <code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.1.0</span></code> as an optional dependency, which provides basic streaming token usage support. For enhanced features and stability, consider upgrading to <code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.2.0</span></code> in your environment.</p>
-<h3 class="rubric" id="accessing-token-usage-information">Accessing Token Usage Information</h3>
+</div>
+</section>
+<section id="accessing-token-usage-information">
+<h3>Accessing Token Usage Information<a class="headerlink" href="#accessing-token-usage-information" title="Link to this heading">#</a></h3>
 <p>You can access token usage statistics through the detailed logging capabilities of the NeMo Guardrails toolkit. Use the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option to capture comprehensive information about LLM calls, including token usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -669,7 +672,6 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prompt tokens: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">prompt_tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completion tokens: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">completion_tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
-</div>
 </div>
 <p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">explain()</span></code> method to get a summary of token usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">explain</span><span class="p">()</span>
@@ -781,6 +783,7 @@ add it to the <code class="docutils literal notranslate"><span class="pre">kwarg
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-requirements">Version Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-token-usage-information">Accessing Token Usage Information</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-for-llms-deployed-using-huggingfacepipeline">Streaming for LLMs deployed using HuggingFacePipeline</a></li>
 </ul>
