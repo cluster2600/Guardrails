@@ -716,14 +716,13 @@
 <li><p>Use sequential mode during development and testing for debugging and simpler workflows.</p></li>
 </ul>
 </section>
-<section id="configuration-examples">
-<h3>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Link to this heading">#</a></h3>
+<section id="configuration-example">
+<h3>Configuration Example<a class="headerlink" href="#configuration-example" title="Link to this heading">#</a></h3>
 <p>To enable parallel execution, set <code class="docutils literal notranslate"><span class="pre">parallel:</span> <span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">rails.input</span></code> and <code class="docutils literal notranslate"><span class="pre">rails.output</span></code> sections in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. The following configuration example is tested by NVIDIA and shows how to enable parallel execution for input and output rails.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Input rail mutations can produce non-deterministic results during parallel execution due to race conditions in the execution order and completion timing of parallel calls. This behavior can cause output divergence compared to sequential execution. The following examples demonstrate configurations that maintain deterministic behavior in parallel mode.</p>
+<p>Input rail mutations can lead to erroneous results during parallel execution because of race conditions arising from the execution order and timing of parallel operations. This can result in output divergence compared to sequential execution. For such cases, use sequential mode.</p>
 </div>
-<p><strong>Example Configuration</strong></p>
 <p>The following is an example configuration for parallel rails using models from NVIDIA Cloud Functions (NVCF). When you use NVCF models, make sure that you export <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code> to access those models.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
@@ -865,7 +864,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-input-and-output-rails">Parallel Execution of Input and Output Rails</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-parallel-rails-execution">When to Use Parallel Rails Execution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-not-to-use-parallel-rails-execution">When Not to Use Parallel Rails Execution</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-examples">Configuration Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-example">Configuration Example</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-rails">Retrieval Rails</a></li>
