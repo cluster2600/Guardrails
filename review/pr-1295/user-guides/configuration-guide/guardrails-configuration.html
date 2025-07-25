@@ -704,7 +704,7 @@
 <section id="when-to-use-parallel-rails-execution">
 <h3>When to Use Parallel Rails Execution<a class="headerlink" href="#when-to-use-parallel-rails-execution" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Use parallel execution for rails that perform external API calls or content safety checks with high I/O latency.</p></li>
+<li><p>Use parallel execution for I/O-bound rails such as external API calls to LLMs or third-party integrations.</p></li>
 <li><p>Enable parallel execution if you have two or more independent input or output rails without shared state dependencies.</p></li>
 <li><p>Use parallel execution in production environments where response latency affects user experience and business metrics.</p></li>
 </ul>
@@ -712,8 +712,8 @@
 <section id="when-not-to-use-parallel-rails-execution">
 <h3>When Not to Use Parallel Rails Execution<a class="headerlink" href="#when-not-to-use-parallel-rails-execution" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Avoid parallel execution for CPU-bound rails, as it might not improve performance and can introduce overhead.</p></li>
-<li><p>Use sequential mode during development and testing for easier debugging and simpler workflows.</p></li>
+<li><p>Avoid parallel execution for CPU-bound rails; it might not improve performance and can introduce overhead.</p></li>
+<li><p>Use sequential mode during development and testing for debugging and simpler workflows.</p></li>
 </ul>
 </section>
 <section id="configuration-examples">
@@ -724,8 +724,8 @@
 <p class="admonition-title">Note</p>
 <p>Input rail mutations can produce non-deterministic results during parallel execution due to race conditions in the execution order and completion timing of parallel calls. This behavior may cause output divergence compared to sequential execution. The following examples demonstrate configurations that maintain deterministic behavior in parallel mode.</p>
 </div>
-<p><strong>Example 1</strong></p>
-<p>Configuration for parallel rails using models from NVIDIA Cloud Functions (NVCF). Make sure that you export <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code> to access NVCF models.</p>
+<p><strong>Example Configuration</strong></p>
+<p>The following is an example configuration for parallel rails using models from NVIDIA Cloud Functions (NVCF). When you use NVCF models, make sure that you export <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code> to access those models.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -748,30 +748,6 @@
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic safety check output $model=topic_control</span>
-</pre></div>
-</div>
-<p><strong>Example 2</strong></p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.1-70b-instruct</span>
-
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama_guard</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vllm_openai</span>
-<span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">openai_api_base</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:5123/v1&quot;</span>
-<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;meta-llama/LlamaGuard-7b&quot;</span>
-
-<span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama guard check input</span>
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">alignscore check facts</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama guard check output</span>
 </pre></div>
 </div>
 </section>
