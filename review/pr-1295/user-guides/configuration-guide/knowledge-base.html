@@ -527,96 +527,92 @@
 <p>Currently, only the Markdown format is supported.</p>
 <section id="document-structure">
 <h2>Document Structure<a class="headerlink" href="#document-structure" title="Link to this heading">#</a></h2>
-<p>Documents in the knowledge base are automatically processed and indexed for retrieval. The system uses the configured embedding model to create vector representations of the document chunks, which are then stored for efficient similarity search.</p>
+<p>Documents in the knowledge base <code class="docutils literal notranslate"><span class="pre">kb</span></code> folder are automatically processed and indexed for retrieval. The system uses the configured embedding model to create vector representations of the document chunks, which are then stored for efficient similarity search.</p>
 </section>
 <section id="retrieval-process">
 <h2>Retrieval Process<a class="headerlink" href="#retrieval-process" title="Link to this heading">#</a></h2>
 <p>When a user query is received, the system:</p>
 <ol class="arabic simple">
-<li><p>Computes embeddings for the user query using the configured embedding model</p></li>
-<li><p>Performs similarity search against the indexed document chunks</p></li>
-<li><p>Retrieves the most relevant chunks based on similarity scores</p></li>
-<li><p>Makes the retrieved chunks available as <code class="docutils literal notranslate"><span class="pre">$relevant_chunks</span></code> in the context</p></li>
-<li><p>Uses these chunks as additional context when generating the bot response</p></li>
+<li><p>Computes embeddings for the user query using the configured embedding model.</p></li>
+<li><p>Performs similarity search against the indexed document chunks.</p></li>
+<li><p>Retrieves the most relevant chunks based on similarity scores.</p></li>
+<li><p>Makes the retrieved chunks available as <code class="docutils literal notranslate"><span class="pre">$relevant_chunks</span></code> in the context.</p></li>
+<li><p>Uses these chunks as additional context when generating the bot response.</p></li>
 </ol>
 </section>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
-<p>The knowledge base functionality is automatically enabled when documents are present in the <code class="docutils literal notranslate"><span class="pre">kb</span></code> folder. The system uses the same embedding model configuration specified in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> under the <code class="docutils literal notranslate"><span class="pre">models</span></code> section:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">embeddings</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FastEmbed</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all-MiniLM-L6-v2</span>
-</pre></div>
-</div>
-</section>
-<section id="retrieval-rails">
-<h2>Retrieval Rails<a class="headerlink" href="#retrieval-rails" title="Link to this heading">#</a></h2>
-<p>You can configure retrieval rails to process the retrieved chunks before they are used for response generation. Retrieval rails are triggered after the <code class="docutils literal notranslate"><span class="pre">retrieve_relevant_chunks</span></code> action has finished and the <code class="docutils literal notranslate"><span class="pre">$relevant_chunks</span></code> variable is populated.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">retrieval</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check retrieval sensitive data</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">filter irrelevant chunks</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validate chunk quality</span>
-</pre></div>
-</div>
-</section>
-<section id="custom-retrieval-actions">
-<h2>Custom Retrieval Actions<a class="headerlink" href="#custom-retrieval-actions" title="Link to this heading">#</a></h2>
-<p>You can implement custom retrieval logic by creating actions that modify the <code class="docutils literal notranslate"><span class="pre">$relevant_chunks</span></code> variable. These actions can:</p>
-<ul class="simple">
-<li><p>Filter chunks based on custom criteria</p></li>
-<li><p>Re-rank chunks using different algorithms</p></li>
-<li><p>Add metadata to chunks</p></li>
-<li><p>Combine chunks from multiple sources</p></li>
-</ul>
-<p>Example custom retrieval action:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">custom_retrieval_filter</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter and re-rank retrieved chunks based on custom logic.&quot;&quot;&quot;</span>
-    <span class="n">chunks</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relevant_chunks&quot;</span><span class="p">,</span> <span class="p">[])</span>
+<p>The knowledge base functionality is automatically enabled when documents are present in the <code class="docutils literal notranslate"><span class="pre">kb</span></code> folder. The system uses the same embedding model configuration specified in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> under the <code class="docutils literal notranslate"><span class="pre">models</span></code> section. For embedding model configuration examples, refer to <a class="reference internal" href="llm-configuration.html#llm-configuration"><span class="std std-ref">LLM Configuration</span></a>.</p>
+<!--
+## Retrieval Rails
 
-    <span class="c1"># Apply custom filtering logic</span>
-    <span class="n">filtered_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">chunk</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span> <span class="k">if</span> <span class="n">custom_filter_criteria</span><span class="p">(</span><span class="n">chunk</span><span class="p">)]</span>
+You can configure retrieval rails to process the retrieved chunks before they are used for response generation. Retrieval rails are triggered after the `retrieve_relevant_chunks` action has finished and the `$relevant_chunks` variable is populated.
 
-    <span class="c1"># Re-rank based on custom scoring</span>
-    <span class="n">ranked_chunks</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">filtered_chunks</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">custom_scoring_function</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+```yaml
+rails:
+  retrieval:
+    flows:
+      - check retrieval sensitive data
+      - filter irrelevant chunks
+      - validate chunk quality
+```
 
-    <span class="c1"># Update the context with filtered chunks</span>
-    <span class="n">context</span><span class="p">[</span><span class="s2">&quot;relevant_chunks&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranked_chunks</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>  <span class="c1"># Keep top 5 chunks</span>
-</pre></div>
-</div>
-</section>
-<section id="integration-with-dialog-flows">
-<h2>Integration with Dialog Flows<a class="headerlink" href="#integration-with-dialog-flows" title="Link to this heading">#</a></h2>
-<p>The knowledge base integrates seamlessly with dialog flows. You can reference the retrieved chunks in your Colang flows:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow answer question
+## Custom Retrieval Actions
+
+You can implement custom retrieval logic by creating actions that modify the `$relevant_chunks` variable. These actions can:
+
+- Filter chunks based on custom criteria
+- Re-rank chunks using different algorithms
+- Add metadata to chunks
+- Combine chunks from multiple sources
+
+Example custom retrieval action:
+
+```python
+def custom_retrieval_filter(context):
+    """Filter and re-rank retrieved chunks based on custom logic."""
+    chunks = context.get("relevant_chunks", [])
+
+    # Apply custom filtering logic
+    filtered_chunks = [chunk for chunk in chunks if custom_filter_criteria(chunk)]
+
+    # Re-rank based on custom scoring
+    ranked_chunks = sorted(filtered_chunks, key=custom_scoring_function, reverse=True)
+
+    # Update the context with filtered chunks
+    context["relevant_chunks"] = ranked_chunks[:5]  # Keep top 5 chunks
+```
+
+## Integration with Dialog Flows
+
+The knowledge base integrates with dialog flows. You can reference the retrieved chunks in your Colang flows as follows:
+
+```colang
+define flow answer question
   when user asks question
     retrieve relevant chunks
     bot respond with knowledge
-      &quot;Based on the available information: {{ $relevant_chunks }}&quot;
-</pre></div>
-</div>
-</section>
-<section id="performance-considerations">
-<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Chunk Size</strong>: Documents are automatically chunked for optimal retrieval. You can adjust chunk size in advanced configurations.</p></li>
-<li><p><strong>Indexing</strong>: Document indexing happens automatically when the configuration is loaded.</p></li>
-<li><p><strong>Caching</strong>: Embeddings are cached to improve performance for repeated queries.</p></li>
-<li><p><strong>Search Parameters</strong>: You can configure similarity thresholds and maximum number of retrieved chunks.</p></li>
-</ul>
-</section>
-<section id="advanced-configuration">
-<h2>Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Link to this heading">#</a></h2>
-<p>For advanced use cases, you can:</p>
-<ul class="simple">
-<li><p>Configure custom embedding search providers</p></li>
-<li><p>Implement hybrid search (combining vector and keyword search)</p></li>
-<li><p>Set up document preprocessing pipelines</p></li>
-<li><p>Configure chunk overlap and size parameters</p></li>
-</ul>
-<p>For more details on advanced embedding search configurations, see the <a class="reference internal" href="../advanced/embedding-search-providers.html"><span class="std std-doc">Embedding Search Providers</span></a> guide.</p>
+      "Based on the available information: {{ $relevant_chunks }}"
+```
+
+## Performance Considerations
+
+- **Chunk Size**: Documents are automatically chunked for optimal retrieval. You can adjust chunk size in advanced configurations.
+- **Indexing**: Document indexing happens automatically when the configuration is loaded.
+- **Caching**: Embeddings are cached to improve performance for repeated queries.
+- **Search Parameters**: You can configure similarity thresholds and maximum number of retrieved chunks.
+
+## Advanced Configuration
+
+For advanced use cases, you can:
+
+- Configure custom embedding search providers
+- Implement hybrid search (combining vector and keyword search)
+- Set up document preprocessing pipelines
+- Configure chunk overlap and size parameters
+
+For more details on advanced embedding search configurations, see the [Embedding Search Providers](../advanced/embedding-search-providers.md) guide.
+-->
 </section>
 </section>
 
@@ -672,11 +668,6 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-structure">Document Structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-process">Retrieval Process</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-rails">Retrieval Rails</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-retrieval-actions">Custom Retrieval Actions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-with-dialog-flows">Integration with Dialog Flows</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-considerations">Performance Considerations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-configuration">Advanced Configuration</a></li>
 </ul>
   </nav></div>
 
