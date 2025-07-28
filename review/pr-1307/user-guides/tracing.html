@@ -514,10 +514,48 @@
 </section>
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
-<p>Try the working example to see tracing in action:</p>
+<p>Here’s a minimal working example to see tracing in action:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>tracing<span class="o">]</span><span class="w"> </span>opentelemetry-sdk
-<span class="nb">cd</span><span class="w"> </span>examples/configs/tracing/
-python<span class="w"> </span>working_example.py
+</pre></div>
+</div>
+<p>Create a simple tracing example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># trace_example.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry.sdk.trace</span><span class="w"> </span><span class="kn">import</span> <span class="n">TracerProvider</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry.sdk.trace.export</span><span class="w"> </span><span class="kn">import</span> <span class="n">BatchSpanProcessor</span><span class="p">,</span> <span class="n">ConsoleSpanExporter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry.sdk.resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">Resource</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
+
+<span class="c1"># Configure OpenTelemetry</span>
+<span class="n">resource</span> <span class="o">=</span> <span class="n">Resource</span><span class="o">.</span><span class="n">create</span><span class="p">({</span><span class="s2">&quot;service.name&quot;</span><span class="p">:</span> <span class="s2">&quot;guardrails-quickstart&quot;</span><span class="p">})</span>
+<span class="n">tracer_provider</span> <span class="o">=</span> <span class="n">TracerProvider</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
+<span class="n">trace</span><span class="o">.</span><span class="n">set_tracer_provider</span><span class="p">(</span><span class="n">tracer_provider</span><span class="p">)</span>
+<span class="n">tracer_provider</span><span class="o">.</span><span class="n">add_span_processor</span><span class="p">(</span><span class="n">BatchSpanProcessor</span><span class="p">(</span><span class="n">ConsoleSpanExporter</span><span class="p">()))</span>
+
+<span class="c1"># Configure guardrails with tracing</span>
+<span class="n">config_yaml</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">models:</span>
+<span class="s2">  - type: main</span>
+<span class="s2">    engine: openai</span>
+<span class="s2">    model: gpt-4o-mini</span>
+
+<span class="s2">rails:</span>
+<span class="s2">  config:</span>
+<span class="s2">    streaming: true</span>
+
+<span class="s2">tracing:</span>
+<span class="s2">  enabled: true</span>
+<span class="s2">  adapters:</span>
+<span class="s2">    - name: OpenTelemetry</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_content</span><span class="p">(</span><span class="n">yaml_content</span><span class="o">=</span><span class="n">config_yaml</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>trace_example.py
 </pre></div>
 </div>
 </section>
@@ -611,10 +649,19 @@ pip<span class="w"> </span>install<span class="w"> </span>opentelemetry-sdk<span
 <span class="c1"># Configure NeMo Guardrails</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_content</span><span class="p">({</span>
-    <span class="s2">&quot;models&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;engine&quot;</span><span class="p">:</span> <span class="s2">&quot;openai&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">}],</span>
-    <span class="s2">&quot;tracing&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;adapters&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenTelemetry&quot;</span><span class="p">}]}</span>
-<span class="p">})</span>
+<span class="n">config_yaml</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">models:</span>
+<span class="s2">  - type: main</span>
+<span class="s2">    engine: openai</span>
+<span class="s2">    model: gpt-4o-mini</span>
+
+<span class="s2">tracing:</span>
+<span class="s2">  enabled: true</span>
+<span class="s2">  adapters:</span>
+<span class="s2">    - name: OpenTelemetry</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_content</span><span class="p">(</span><span class="n">yaml_content</span><span class="o">=</span><span class="n">config_yaml</span><span class="p">)</span>
 
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </pre></div>
@@ -745,7 +792,13 @@ pip<span class="w"> </span>install<span class="w"> </span>opentelemetry-exporter
 <span class="n">tracer_provider</span><span class="o">.</span><span class="n">add_span_processor</span><span class="p">(</span><span class="n">BatchSpanProcessor</span><span class="p">(</span><span class="n">ConsoleSpanExporter</span><span class="p">()))</span>
 
 <span class="c1"># Simple config in config.yml</span>
-<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;tracing&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;adapters&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenTelemetry&quot;</span><span class="p">}]}}</span>
+<span class="n">config_yaml</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">tracing:</span>
+<span class="s2">  enabled: true</span>
+<span class="s2">  adapters:</span>
+<span class="s2">    - name: OpenTelemetry</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_content</span><span class="p">(</span><span class="n">yaml_content</span><span class="o">=</span><span class="n">config_yaml</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
