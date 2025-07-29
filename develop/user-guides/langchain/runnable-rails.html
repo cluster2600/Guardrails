@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -610,7 +619,7 @@
 </section>
 <section id="prompt-passthrough">
 <h2>Prompt Passthrough<a class="headerlink" href="#prompt-passthrough" title="Link to this heading">#</a></h2>
-<p>The role of a guardrail configuration is to validate the user input, check the LLM output, guide the LLM model on how to respond, etc. (see <a class="reference internal" href="../configuration-guide.html#guardrails-definitions"><span class="std std-ref">Configuration Guide</span></a> for more details on the different types of rails). To achieve this, the guardrail configuration might make additional calls to the LLM or other models/APIs (e.g., for fact-checking and content moderation).</p>
+<p>The role of a guardrail configuration is to validate the user input, check the LLM output, guide the LLM model on how to respond, etc. (see <a class="reference internal" href="#../configuration-guide.md#guardrails-definitions"><span class="xref myst">Configuration Guide</span></a> for more details on the different types of rails). To achieve this, the guardrail configuration might make additional calls to the LLM or other models/APIs (e.g., for fact-checking and content moderation).</p>
 <p>By default, when the guardrail configuration decides that it is safe to prompt the LLM, <strong>it will use the exact prompt that was provided as the input</strong> (i.e., string, <code class="docutils literal notranslate"><span class="pre">StringPromptValue</span></code> or <code class="docutils literal notranslate"><span class="pre">ChatPromptValue</span></code>). However, to enforce specific rails (e.g., dialog rails, general instructions), the guardrails configuration needs to alter the prompt used to generate the response. To enable this behavior, which provides more robust rails, you must set the <code class="docutils literal notranslate"><span class="pre">passthrough</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code> when creating the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>

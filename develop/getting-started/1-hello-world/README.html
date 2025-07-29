@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -540,7 +549,7 @@
 <span class="go">│   ├── ...</span>
 </pre></div>
 </div>
-<p>See the <a class="reference internal" href="../../user-guides/configuration-guide.html"><span class="std std-doc">Configuration Guide</span></a> for information about the contents of these files.</p>
+<p>See the <a class="reference internal" href="#../../user-guides/configuration-guide.md"><span class="xref myst">Configuration Guide</span></a> for information about the contents of these files.</p>
 <ol class="arabic simple">
 <li><p>Create a folder, such as <em>config</em>, for your configuration:</p></li>
 </ol>
@@ -556,7 +565,7 @@
 <span class="w">   </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo-instruct</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <em>config.yml</em> file configures the LLM model. For a complete list of supported LLM models, see <a class="reference internal" href="../../user-guides/configuration-guide.html#supported-llm-models"><span class="std std-ref">Supported LLM Models</span></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <em>config.yml</em> file configures the LLM model. For a complete list of supported LLM models, see <a class="reference internal" href="#../../user-guides/configuration-guide.md#supported-llm-models"><span class="xref myst">Supported LLM Models</span></a>.</p>
 </section>
 <section id="step-2-load-the-guardrails-configuration">
 <h2>Step 2: load the guardrails configuration<a class="headerlink" href="#step-2-load-the-guardrails-configuration" title="Link to this heading">#</a></h2>

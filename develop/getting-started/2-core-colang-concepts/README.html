@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -704,8 +713,8 @@
 </div>
 <p>The prompt has four logical sections:</p>
 <ol class="arabic simple">
-<li><p>A set of general instructions. These can be <a class="reference internal" href="../../user-guides/configuration-guide.html#general-instructions"><span class="std std-ref">configured</span></a> using the <code class="docutils literal notranslate"><span class="pre">instructions</span></code> key in <em>config.yml</em>.</p></li>
-<li><p>A sample conversation, which can also be <a class="reference internal" href="../../user-guides/configuration-guide.html#sample-conversation"><span class="std std-ref">configured</span></a> using the <code class="docutils literal notranslate"><span class="pre">sample_conversation</span></code> key in <em>config.yml</em>.</p></li>
+<li><p>A set of general instructions. These can be <a class="reference internal" href="#../../user-guides/configuration-guide.md#general-instructions"><span class="xref myst">configured</span></a> using the <code class="docutils literal notranslate"><span class="pre">instructions</span></code> key in <em>config.yml</em>.</p></li>
+<li><p>A sample conversation, which can also be <a class="reference internal" href="#../../user-guides/configuration-guide.md#sample-conversation"><span class="xref myst">configured</span></a> using the <code class="docutils literal notranslate"><span class="pre">sample_conversation</span></code> key in <em>config.yml</em>.</p></li>
 <li><p>A set of examples for converting user utterances to canonical forms. The top five most relevant examples are chosen by performing a vector search against all the user message examples. For more details see <span class="xref myst">ABC Bot</span>.</p></li>
 <li><p>The current conversation preceded by the first two turns from the sample conversation.</p></li>
 </ol>
