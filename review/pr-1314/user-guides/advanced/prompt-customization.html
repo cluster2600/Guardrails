@@ -354,6 +354,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../jailbreak-detection-heuristics/README.html">Using Jailbreak Detection Heuristics</a></li>
 </ul>
@@ -654,8 +661,8 @@
 <h5>System Variables<a class="headerlink" href="#system-variables" title="Link to this heading">#</a></h5>
 <p>The following is the list of system variables:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">general_instructions</span></code>: the content corresponds to the <a class="reference internal" href="#../configuration-guide.md#general-instructions"><span class="xref myst">general instructions</span></a> specified in the configuration;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sample_conversation</span></code>: the content corresponds to the <a class="reference internal" href="#../configuration-guide.md#sample-conversation"><span class="xref myst">sample conversation</span></a> specified in the configuration;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">general_instructions</span></code>: the content corresponds to the <a class="reference internal" href="../configuration-guide.html#general-instructions"><span class="std std-ref">general instructions</span></a> specified in the configuration;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sample_conversation</span></code>: the content corresponds to the <a class="reference internal" href="../configuration-guide.html#sample-conversation"><span class="std std-ref">sample conversation</span></a> specified in the configuration;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">examples</span></code>: depending on the task, this variable will contain the few-shot examples that the LLM should take into account;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">history</span></code>: contains the history of events (see the <a class="reference internal" href="../../architecture/README.html#complete-example"><span class="std std-ref">complete example</span></a>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">relevant_chunks</span></code>: (only available for the <code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code> task) if a knowledge base is used, this variable will contain the most relevant chunks of text based on the user query.</p></li>
