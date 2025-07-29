@@ -531,7 +531,7 @@
 </ul>
 <section id="basic-configuration">
 <h2>Basic Configuration<a class="headerlink" href="#basic-configuration" title="Link to this heading">#</a></h2>
-<p>Enable tracing in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
+<p>To enable tracing in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, add the following configuration.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
@@ -543,7 +543,7 @@
 </section>
 <section id="opentelemetry-integration">
 <h2>OpenTelemetry Integration<a class="headerlink" href="#opentelemetry-integration" title="Link to this heading">#</a></h2>
-<p>For production environments and integration with observability platforms:</p>
+<p>For production environments and integration with observability platforms, use the <code class="docutils literal notranslate"><span class="pre">OpenTelemetry</span></code> adapter.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
@@ -552,11 +552,11 @@
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Install tracing dependencies: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nemoguardrails[tracing]</span></code></p>
+<p>To use this tracing feature, install tracing dependencies in the NeMo Guardrails SDK by running <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nemoguardrails[tracing]</span></code>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>OpenTelemetry integration requires configuring the OpenTelemetry SDK in your application code. NeMo Guardrails follows OpenTelemetry best practices where libraries use only the API and applications configure the SDK. See the <a class="reference internal" href="#/docs/user-guides/tracing/index.md"><span class="xref myst">Tracing Guide</span></a> for detailed setup instructions and examples.</p>
+<p>OpenTelemetry integration requires configuring the OpenTelemetry SDK in your application code. NeMo Guardrails follows OpenTelemetry best practices where libraries use only the API and applications configure the SDK. See the <a class="reference internal" href="../tracing/index.html#tracing"><span class="std std-ref">Tracing Guide</span></a> for detailed setup instructions and examples.</p>
 </div>
 </section>
 <section id="configuration-options">
@@ -580,7 +580,7 @@
 </tbody>
 </table>
 </div>
-<p>For advanced configuration, custom adapters, and production deployment examples, see the <a class="reference internal" href="#user-guides/tracing/index.md"><span class="xref myst">detailed tracing guide</span></a>.</p>
+<p>For advanced configuration, custom adapters, and production deployment examples, see the <a class="reference internal" href="../tracing/index.html#tracing"><span class="std std-ref">detailed tracing guide</span></a>.</p>
 </section>
 </section>
 
