@@ -57,7 +57,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/release-notes.html" />
     <link rel="icon" href="_static/favicon.png"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Configuration Guide" href="user-guides/configuration-guide.html" />
+    <link rel="next" title="Configuration Guide" href="user-guides/configuration-guide/index.html" />
     <link rel="prev" title="Getting Started" href="getting-started.html" />
 
 
@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -510,10 +519,19 @@
 <p>The following sections summarize and highlight the changes for each release.
 For a complete record of changes in a release, refer to the
 <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md">CHANGELOG.md</a> in the GitHub repository.</p>
-<section id="v0-14-1">
-<span id="id1"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
+<section id="v0-15-0">
+<span id="id1"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
 <section id="features">
-<span id="v0-14-1-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
+<span id="v0-15-0-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">Parallel Execution of Input and Output Rails</span></a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-14-1">
+<span id="id2"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
+<section id="v0-14-1-features">
+<span id="id3"></span><h3>Features<a class="headerlink" href="#v0-14-1-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added direct API key configuration support for jailbreak detection. This change adds a new optional field <code class="docutils literal notranslate"><span class="pre">api_key</span></code> to the <code class="docutils literal notranslate"><span class="pre">JailbreakDetectionConfig</span></code> Pydantic model. This allows to provide an API Key in a <code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> object or YAML file, for use in Jailbreak NIM calls. Prior to this change, the <code class="docutils literal notranslate"><span class="pre">api_key_env_var</span></code> field used an environment variable (for example <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code>) to get the API Key for the Jailbreak NIM.</p></li>
 </ul>
@@ -530,9 +548,9 @@ For a complete record of changes in a release, refer to the
 </section>
 </section>
 <section id="v0-14-0">
-<span id="id2"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
+<span id="id4"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
 <section id="v0-14-0-features">
-<span id="id3"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
+<span id="id5"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Python 3.13.</p></li>
 <li><p>Enhanced working with advanced reasoning models.</p>
@@ -540,7 +558,7 @@ For a complete record of changes in a release, refer to the
 <li><p>Added support for the NVIDIA Nemotron family of advanced reasoning models, such as Llama 3.1 Nemotron Ultra 253B V1.</p></li>
 <li><p>Added the <code class="docutils literal notranslate"><span class="pre">rails.output.apply_to_reasoning_traces</span></code> field.
 When this field is <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are applied to the reasoning traces and the model output.
-For more information, refer to <a class="reference internal" href="user-guides/configuration-guide.html#using-llms-with-reasoning-traces"><span class="std std-ref">Using LLMs with Reasoning Traces</span></a>.</p></li>
+For more information, refer to <a class="reference internal" href="#./user-guides/configuration-guide.md#using-llms-with-reasoning-traces"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/configuration-guide.md#using-llms-with-reasoning-traces</span></code></a>.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_thinking_traces</span></code> field is deprecated and replaced by the <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_reasoning_traces</span></code> field that has the same purpose and subfields.</p></li>
 <li><p>Previously, if <code class="docutils literal notranslate"><span class="pre">remove_thinking_traces</span></code> was set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the reasoning traces were omitted from the final response presented to the end user.
 In this release, <code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code> controls whether reasoning traces are removed from internal tasks and has no effect on the final response presented to the user.</p></li>
@@ -550,7 +568,7 @@ In this release, <code class="docutils literal notranslate"><span class="pre">re
 <li><p>Simplified and broadened support for chat model providers from LangChain and
 LangChain Community chat model providers.
 You must use <code class="docutils literal notranslate"><span class="pre">langchain</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.14</span></code> or higher and <code class="docutils literal notranslate"><span class="pre">langchain-community</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.5</span></code> or higher.
-For information about using model providers, refer to <a class="reference internal" href="user-guides/configuration-guide.html#the-llm-model"><span class="std std-ref">The LLM Model</span></a>.</p></li>
+For information about using model providers, refer to <a class="reference internal" href="#./user-guides/configuration-guide.md#the-llm-model"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/configuration-guide.md#the-llm-model</span></code></a>.</p></li>
 <li><p>Added support for code injection detection.
 For more information, refer to <a class="reference internal" href="user-guides/guardrails-library.html#injection-detection"><span class="std std-ref">Injection Detection</span></a>.</p></li>
 <li><p>Enhanced the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI with a <code class="docutils literal notranslate"><span class="pre">find-providers</span></code> argument to list chat and text completion providers.
@@ -568,7 +586,7 @@ In this release, the class is moved to the <code class="docutils literal notrans
 </ul>
 </section>
 <section id="v0-14-0-fixed-issues">
-<span id="id4"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
+<span id="id6"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue when tracing is enabled.
 Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
@@ -607,7 +625,7 @@ For more information, refer to <a class="reference external" href="https://githu
       </div>
     </a>
     <a class="right-next"
-       href="user-guides/configuration-guide.html"
+       href="user-guides/configuration-guide/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
@@ -636,6 +654,7 @@ For more information, refer to <a class="reference external" href="https://githu
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-15-0">0.15.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-14-1">0.14.1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-14-0">0.14.0</a></li>
 </ul>

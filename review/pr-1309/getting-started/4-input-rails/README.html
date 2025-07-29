@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -539,7 +548,7 @@
 </section>
 <section id="general-instructions">
 <h2>General Instructions<a class="headerlink" href="#general-instructions" title="Link to this heading">#</a></h2>
-<p>Configure the <strong>general instructions</strong> for the bot. You can think of them as the system prompt. For details, see the <a class="reference internal" href="../../user-guides/configuration-guide.html#general-instructions"><span class="std std-ref">Configuration Guide</span></a>. These instructions configure the bot to answer questions about the employee handbook and the company’s policies.</p>
+<p>Configure the <strong>general instructions</strong> for the bot. You can think of them as the system prompt. For details, see the <a class="reference internal" href="#../../user-guides/configuration-guide.md#general-instructions"><span class="xref myst">Configuration Guide</span></a>. These instructions configure the bot to answer questions about the employee handbook and the company’s policies.</p>
 <p>Add the following content to <em>config.yml</em> to create a <strong>general instruction</strong>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">instructions</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">general</span>
@@ -554,7 +563,7 @@
 </section>
 <section id="sample-conversation">
 <h2>Sample Conversation<a class="headerlink" href="#sample-conversation" title="Link to this heading">#</a></h2>
-<p>Another option to influence how the LLM responds to a sample conversation. The sample conversation sets the tone for the conversation between the user and the bot. The sample conversation is included in the prompts, which are shown in a subsequent section. For details, see the <a class="reference internal" href="../../user-guides/configuration-guide.html#sample-conversation"><span class="std std-ref">Configuration Guide</span></a>.</p>
+<p>Another option to influence how the LLM responds to a sample conversation. The sample conversation sets the tone for the conversation between the user and the bot. The sample conversation is included in the prompts, which are shown in a subsequent section. For details, see the <a class="reference internal" href="#../../user-guides/configuration-guide.md#sample-conversation"><span class="xref myst">Configuration Guide</span></a>.</p>
 <p>Add the following to <em>config.yml</em> to create a <strong>sample conversation</strong>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sample_conversation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <span class="w">  </span><span class="no">user &quot;Hi there. Can you help me with some questions I have about the company?&quot;</span>

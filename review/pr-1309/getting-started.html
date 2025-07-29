@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -562,7 +571,7 @@ For information about the program and getting a key, refer to <a class="referenc
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file configures the LLM model.
-For more information about the key, refer to <a class="reference internal" href="user-guides/configuration-guide.html#the-llm-model"><span class="std std-ref">The LLM Model</span></a>.</p>
+For more information about the key, refer to <a class="reference internal" href="#./user-guides/configuration-guide.md#the-llm-model"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/configuration-guide.md#the-llm-model</span></code></a>.</p>
 </li>
 <li><p>Create a prompts file, such as <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code>, (<a class="reference download internal" download="" href="_downloads/581b1286b50c732ffcf3928197e66b67/prompts.yml"><span class="xref download myst">download</span></a>), with contents like the following partial example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># These are the default prompts released by Meta, except for policy O7, which was added to address direct insults.</span>
@@ -638,7 +647,7 @@ The notebook compares LLM responses with and without safety checks and classifie
 to sample prompts as <em>safe</em> or <em>unsafe</em>.
 The notebook shows how to measure the performance of the checks, focusing on how many unsafe
 responses are blocked and how many safe responses are incorrectly blocked.</p></li>
-<li><p>Refer to <a class="reference internal" href="user-guides/configuration-guide.html"><span class="std std-doc">Configuration Guide</span></a> for information about the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file.</p></li>
+<li><p>Refer to <a class="reference internal" href="#user-guides/configuration-guide.md"><code class="xref myst docutils literal notranslate"><span class="pre">user-guides/configuration-guide.md</span></code></a> for information about the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file.</p></li>
 </ul>
 </section>
 </section>

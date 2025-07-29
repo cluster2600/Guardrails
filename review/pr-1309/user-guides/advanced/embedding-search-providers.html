@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -503,7 +512,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="embedding-search-providers">
 <h1>Embedding Search Providers<a class="headerlink" href="#embedding-search-providers" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails utilizes embedding search, also known as vector databases, for implementing the <a class="reference internal" href="../../architecture/README.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a> and for the <a class="reference internal" href="../configuration-guide.html#knowledge-base-documents"><span class="std std-ref">knowledge base</span></a> functionality.</p>
+<p>NeMo Guardrails utilizes embedding search, also known as vector databases, for implementing the <a class="reference internal" href="../../architecture/README.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a> and for the <a class="reference internal" href="#../configuration-guide.md#knowledge-base-documents"><span class="xref myst">knowledge base</span></a> functionality.</p>
 <p>To enhance the efficiency of the embedding search process, NeMo Guardrails can employ a caching mechanism for embeddings. This mechanism stores computed embeddings, thereby reducing the need for repeated computations and accelerating the search process. By default, the caching mechanism is disabled.</p>
 <p>The default embedding search uses FastEmbed for computing the embeddings (the <code class="docutils literal notranslate"><span class="pre">all-MiniLM-L6-v2</span></code> model) and Annoy for performing the search. The default configuration is as follows:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">core</span><span class="p">:</span>
