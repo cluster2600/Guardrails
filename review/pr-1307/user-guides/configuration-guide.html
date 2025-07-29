@@ -57,8 +57,6 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/configuration-guide.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Guardrails Library" href="guardrails-library.html" />
-    <link rel="prev" title="Release Notes" href="../release-notes.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -318,8 +316,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Configuration Guide</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -343,6 +350,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tracing/index.html">Tracing Events</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -1537,7 +1551,7 @@ To understand better what is happening under the hood, here’s how the <code cl
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>OpenTelemetry integration requires configuring the OpenTelemetry SDK in your application code. NeMo Guardrails follows OpenTelemetry best practices where libraries use only the API and applications configure the SDK. See the <a class="reference internal" href="tracing.html"><span class="std std-doc">Tracing Guide</span></a> for detailed setup instructions and examples.</p>
+<p>OpenTelemetry integration requires configuring the OpenTelemetry SDK in your application code. NeMo Guardrails follows OpenTelemetry best practices where libraries use only the API and applications configure the SDK. See the <a class="reference internal" href="#tracing.md"><span class="xref myst">Tracing Guide</span></a> for detailed setup instructions and examples.</p>
 </div>
 </section>
 <section id="configuration-options">
@@ -1561,7 +1575,7 @@ To understand better what is happening under the hood, here’s how the <code cl
 </tbody>
 </table>
 </div>
-<p>For advanced configuration, custom adapters, and production deployment examples, see the <a class="reference internal" href="tracing.html"><span class="std std-doc">detailed tracing guide</span></a>.</p>
+<p>For advanced configuration, custom adapters, and production deployment examples, see the <a class="reference internal" href="#tracing.md"><span class="xref myst">detailed tracing guide</span></a>.</p>
 </section>
 </section>
 <section id="knowledge-base-documents">
@@ -1589,24 +1603,6 @@ To understand better what is happening under the hood, here’s how the <code cl
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="../release-notes.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Release Notes</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="guardrails-library.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Guardrails Library</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               

@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -343,6 +352,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing Events</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -634,6 +650,52 @@
 </div>
 <p>This feature enables seamless integration of NeMo Guardrails with any streaming LLM or token source while maintaining all the safety features of output rails.</p>
 </section>
+</section>
+<section id="token-usage-tracking">
+<h2>Token Usage Tracking<a class="headerlink" href="#token-usage-tracking" title="Link to this heading">#</a></h2>
+<p>When streaming is enabled, NeMo Guardrails automatically enables token usage tracking by setting the <code class="docutils literal notranslate"><span class="pre">stream_usage</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code> for the underlying LLM model. This feature:</p>
+<ul class="simple">
+<li><p>Provides token usage statistics even when streaming responses.</p></li>
+<li><p>Is primarily supported by OpenAI, AzureOpenAI, and other providers. The NVIDIA NIM provider supports it by default.</p></li>
+<li><p>Allows to safely pass token usage statistics to LLM providers. If the LLM provider you use don’t support it, the parameter is ignored.</p></li>
+</ul>
+<section id="version-requirements">
+<h3>Version Requirements<a class="headerlink" href="#version-requirements" title="Link to this heading">#</a></h3>
+<p>For optimal token usage tracking with streaming, ensure you’re using recent versions of LangChain packages:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.1.0</span></code> for basic streaming token support (minimum requirement)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.2.0</span></code> for enhanced features and stability</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">langchain</span> <span class="pre">&gt;=</span> <span class="pre">0.2.14</span></code> and <code class="docutils literal notranslate"><span class="pre">langchain-core</span> <span class="pre">&gt;=</span> <span class="pre">0.2.14</span></code> for universal token counting support</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The NeMo Guardrails toolkit requires <code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.1.0</span></code> as an optional dependency, which provides basic streaming token usage support. For enhanced features and stability, consider upgrading to <code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.2.0</span></code> in your environment.</p>
+</div>
+</section>
+<section id="accessing-token-usage-information">
+<h3>Accessing Token Usage Information<a class="headerlink" href="#accessing-token-usage-information" title="Link to this heading">#</a></h3>
+<p>You can access token usage statistics through the detailed logging capabilities of the NeMo Guardrails toolkit. Use the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option to capture comprehensive information about LLM calls, including token usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;llm_calls&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;activated_rails&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+
+<span class="k">for</span> <span class="n">llm_call</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">llm_calls</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">task</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total tokens: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">total_tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prompt tokens: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">prompt_tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completion tokens: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">completion_tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">explain()</span></code> method to get a summary of token usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">explain</span><span class="p">()</span>
+<span class="n">info</span><span class="o">.</span><span class="n">print_llm_calls_summary</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For more information about streaming token usage support across different providers, refer to the <a class="reference external" href="https://python.langchain.com/docs/how_to/chat_token_usage_tracking/#streaming">LangChain documentation on token usage tracking</a>. For detailed information about accessing generation logs and token usage, see the <a class="reference internal" href="generation-options.html#detailed-logging-information"><span class="std std-ref">Generation Options</span></a> and <a class="reference internal" href="../detailed-logging/README.html"><span class="std std-doc">Detailed Logging</span></a> documentation.</p>
+</section>
 <section id="server-api">
 <h3>Server API<a class="headerlink" href="#server-api" title="Link to this heading">#</a></h3>
 <p>To make a call to the NeMo Guardrails Server in streaming mode, you have to set the <code class="docutils literal notranslate"><span class="pre">stream</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code> inside the JSON body. For example, to get the completion for a chat session using the <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint:</p>
@@ -733,6 +795,11 @@ add it to the <code class="docutils literal notranslate"><span class="pre">kwarg
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-cli">Chat CLI</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api">Python API</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-external-token-generators">Using External Token Generators</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-requirements">Version Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-token-usage-information">Accessing Token Usage Information</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-for-llms-deployed-using-huggingfacepipeline">Streaming for LLMs deployed using HuggingFacePipeline</a></li>
 </ul>
