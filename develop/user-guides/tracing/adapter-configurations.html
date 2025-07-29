@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>NeMo Guardrails with Docker &#8212; NVIDIA NeMo Guardrails</title>
+    <title>Adapter Configurations &#8212; NVIDIA NeMo Guardrails</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/using-docker';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/tracing/adapter-configurations';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -54,11 +54,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/using-docker.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/tracing/adapter-configurations.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Streaming" href="streaming.html" />
-    <link rel="prev" title="Embedding Search Providers" href="embedding-search-providers.html" />
+    <link rel="next" title="Advanced OpenTelemetry Integration" href="opentelemetry-integration.html" />
+    <link rel="prev" title="Quick Start" href="quick-start.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -318,7 +318,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
@@ -354,11 +354,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tracing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -383,23 +383,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../migration-guide.html">Migrating from Colang 1 to Colang 2</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Uses</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="prompt-customization.html">Prompt Customization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">NeMo Guardrails with Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="align-score-deployment.html">AlignScore Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extract-user-provided-values.html">Extract User-provided Values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bot-message-instructions.html">Bot Message Instructions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../advanced/generation-options.html">Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/prompt-customization.html">Prompt Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/embedding-search-providers.html">Embedding Search Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/using-docker.html">NeMo Guardrails with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/align-score-deployment.html">AlignScore Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extract-user-provided-values.html">Extract User-provided Values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/bot-message-instructions.html">Bot Message Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/event-based-api.html">Event-based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/vertexai-setup.html">Vertex AI Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -500,7 +500,10 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">NeMo Guardrails with Docker</span></li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tracing</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Adapter Configurations</span></li>
   </ul>
 </nav>
 </div>
@@ -517,95 +520,94 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="nemo-guardrails-with-docker">
-<h1>NeMo Guardrails with Docker<a class="headerlink" href="#nemo-guardrails-with-docker" title="Link to this heading">#</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>This guide provides step-by-step instructions for running NeMo Guardrails using Docker. Docker offers a seamless and rapid deployment method for getting started with NeMo Guardrails.</p>
-</section>
-<section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
-<p>Ensure Docker is installed on your machine. If not, follow the <a class="reference external" href="https://docs.docker.com/get-docker/">official Docker installation guide</a> for your respective platform.</p>
-</section>
-<section id="build-the-docker-images">
-<h2>Build the Docker Images<a class="headerlink" href="#build-the-docker-images" title="Link to this heading">#</a></h2>
-<section id="clone-the-repository">
-<h3>1. Clone the repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading">#</a></h3>
-<p>Start by cloning the NeMo Guardrails repository:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA/NeMo-Guardrails.git<span class="w"> </span>nemoguardrails
-</pre></div>
+  <section class="tex2jax_ignore mathjax_ignore" id="adapter-configurations">
+<h1>Adapter Configurations<a class="headerlink" href="#adapter-configurations" title="Link to this heading">#</a></h1>
+<p>You can set up the following adapters for tracing.</p>
+<p>The following table summarizes the list of adapters supported by NeMo Guardrails and their use cases.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Adapter Type</p></th>
+<th class="head"><p>Use Case</p></th>
+<th class="head"><p>Configuration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#filesystem-adapter"><span class="std std-ref">FileSystem</span></a></p></td>
+<td><p>Development, debugging, local logging</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">filepath:</span> <span class="pre">&quot;./logs/traces.jsonl&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opentelemetry-adapter"><span class="std std-ref">OpenTelemetry</span></a></p></td>
+<td><p>Production, monitoring platforms, distributed systems</p></td>
+<td><p>Requires SDK configuration</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#custom-adapter"><span class="std std-ref">Custom</span></a></p></td>
+<td><p>Specialized backends or formats</p></td>
+<td><p>Implement <code class="docutils literal notranslate"><span class="pre">InteractionLogAdapter</span></code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
-<p>And change directory into the repository:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nemoguardrails
-</pre></div>
-</div>
-</section>
-<section id="build-the-docker-image">
-<h3>2. Build the Docker image<a class="headerlink" href="#build-the-docker-image" title="Link to this heading">#</a></h3>
-<p>Build the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> Docker image:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>nemoguardrails<span class="w"> </span>.
-</pre></div>
-</div>
-</section>
-<section id="optional-build-the-alignscore-server-image">
-<h3>3. [Optional] Build the AlignScore Server Image<a class="headerlink" href="#optional-build-the-alignscore-server-image" title="Link to this heading">#</a></h3>
-<p>If you want to use AlignScore-based fact-checking, you can also build a Docker image using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/factchecking/align_score/Dockerfile">Dockerfile</a>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nemoguardrails/library/factchecking/align_score
-docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>alignscore-server<span class="w"> </span>.
-</pre></div>
-</div>
-<p>NOTE: the provided Dockerfile downloads only the <code class="docutils literal notranslate"><span class="pre">base</span></code> AlignScore image. If you want support for the large model, uncomment the corresponding line in the Dockerfile.</p>
-</section>
-<section id="optional-build-the-jailbreak-detection-heuristics-server-image">
-<h3>4. [Optional] Build the Jailbreak Detection Heuristics Server Image<a class="headerlink" href="#optional-build-the-jailbreak-detection-heuristics-server-image" title="Link to this heading">#</a></h3>
-<p>If you want to use the jailbreak detection heuristics server, you can also build a Docker image using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/jailbreak_detection/Dockerfile">Dockerfile</a>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nemoguardrails/library/jailbreak_detection
-docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>jailbreak_detection_heuristics<span class="w"> </span>.
+<p>The following sections explain how to configure each adapter in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p>
+<section id="filesystem-adapter">
+<span id="id1"></span><h2>FileSystem Adapter<a class="headerlink" href="#filesystem-adapter" title="Link to this heading">#</a></h2>
+<p>For development and debugging, use the <code class="docutils literal notranslate"><span class="pre">FileSystem</span></code> adapter to log traces locally.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FileSystem</span>
+<span class="w">      </span><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./logs/traces.jsonl&quot;</span>
 </pre></div>
 </div>
 </section>
-</section>
-<section id="running-using-docker">
-<h2>Running using Docker<a class="headerlink" href="#running-using-docker" title="Link to this heading">#</a></h2>
-<p>To run the NeMo Guardrails server using the Docker image, run the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>-e<span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="nv">$OPENAI_API_KEY</span><span class="w"> </span>nemoguardrails
+<section id="opentelemetry-adapter">
+<span id="id2"></span><h2>OpenTelemetry Adapter<a class="headerlink" href="#opentelemetry-adapter" title="Link to this heading">#</a></h2>
+<p>For production environments with observability platforms.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
 </pre></div>
 </div>
-<p>This will start the NeMo Guardrails server with the example configurations. The Chat UI will be accessible at <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code>.</p>
-<p>NOTE: Since the example configurations use OpenAI models (such as <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code> and <code class="docutils literal notranslate"><span class="pre">gpt-4</span></code>), you need to provide an <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code>.</p>
-<p>To specify your own config folder for the server, you have to mount your local configuration into the <code class="docutils literal notranslate"><span class="pre">/config</span></code> path into the container:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-e<span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="nv">$OPENAI_API_KEY</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-v<span class="w"> </span>&lt;/path/to/local/config/&gt;:/config<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>nemoguardrails
-</pre></div>
-</div>
-<p>To use the Chat CLI interface, run the Docker container in interactive mode:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-e<span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="nv">$OPENAI_API_KEY</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-v<span class="w"> </span>&lt;/path/to/local/config/&gt;:/config<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span>--config<span class="o">=</span>/config<span class="w"> </span>--verbose
-</pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>OpenTelemetry requires additional SDK configuration in your application code. See the sections below for setup instructions.</p>
 </div>
 </section>
-<section id="alignscore-fact-checking">
-<h2>AlignScore Fact-checking<a class="headerlink" href="#alignscore-fact-checking" title="Link to this heading">#</a></h2>
-<p>If one of your configurations uses the AlignScore fact-checking model, you can run the AlignScore server in a separate container:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">5000</span>:5000<span class="w"> </span>alignscore-server
+<section id="custom-adapter">
+<span id="id3"></span><h2>Custom Adapter<a class="headerlink" href="#custom-adapter" title="Link to this heading">#</a></h2>
+<p>You can create custom adapters and use them in your application code.</p>
+<ol class="arabic">
+<li><p>Create custom adapters for specialized backends or formats for your use case.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing.adapters.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractionLogAdapter</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomAdapter</span><span class="p">(</span><span class="n">InteractionLogAdapter</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MyCustomAdapter&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">custom_option</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_option</span> <span class="o">=</span> <span class="n">custom_option</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_log</span><span class="p">):</span>
+        <span class="c1"># Transform logic for your backend</span>
+        <span class="k">pass</span>
 </pre></div>
 </div>
-<p>This will start the AlignScore server on port <code class="docutils literal notranslate"><span class="pre">5000</span></code>. You can then specify the AlignScore server URL in your configuration file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">fact_checking</span><span class="p">:</span>
-<span class="w">      </span><span class="c1"># Select AlignScore as the provider</span>
-<span class="w">      </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">align_score</span>
-<span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">        </span><span class="c1"># Point to a running instance of the AlignScore server</span>
-<span class="w">        </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:5000/alignscore_base&quot;</span>
+</li>
+<li><p>Register the adapter in <code class="docutils literal notranslate"><span class="pre">config.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing.adapters.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_log_adapter</span>
+<span class="n">register_log_adapter</span><span class="p">(</span><span class="n">MyCustomAdapter</span><span class="p">,</span> <span class="s2">&quot;MyCustomAdapter&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</li>
+<li><p>Use the adapter in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyCustomAdapter</span>
+<span class="w">      </span><span class="nt">custom_option</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 </section>
 
@@ -620,20 +622,20 @@ docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="embedding-search-providers.html"
+       href="quick-start.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Embedding Search Providers</p>
+        <p class="prev-next-title">Quick Start</p>
       </div>
     </a>
     <a class="right-next"
-       href="streaming.html"
+       href="opentelemetry-integration.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Streaming</p>
+        <p class="prev-next-title">Advanced OpenTelemetry Integration</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -658,17 +660,9 @@ docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-docker-images">Build the Docker Images</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-the-repository">1. Clone the repository</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-docker-image">2. Build the Docker image</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-build-the-alignscore-server-image">3. [Optional] Build the AlignScore Server Image</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-build-the-jailbreak-detection-heuristics-server-image">4. [Optional] Build the Jailbreak Detection Heuristics Server Image</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-using-docker">Running using Docker</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alignscore-fact-checking">AlignScore Fact-checking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filesystem-adapter">FileSystem Adapter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry-adapter">OpenTelemetry Adapter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-adapter">Custom Adapter</a></li>
 </ul>
   </nav></div>
 
