@@ -354,7 +354,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing Events</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
@@ -522,196 +522,65 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="tracing-configuration">
 <h1>Tracing Configuration<a class="headerlink" href="#tracing-configuration" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails includes a tracing feature that allows you to monitor and log interactions for better observability and debugging. Tracing can be easily configured via the existing <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. Below are the steps to enable and configure tracing in your project.</p>
-<section id="enabling-tracing">
-<h2>Enabling Tracing<a class="headerlink" href="#enabling-tracing" title="Link to this heading">#</a></h2>
-<p>To enable tracing, set the enabled flag to true under the tracing section in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
+<p>NeMo Guardrails includes tracing capabilities to monitor and debug your guardrails interactions. Tracing helps you understand:</p>
+<ul class="simple">
+<li><p>Which rails are activated during conversations</p></li>
+<li><p>LLM call patterns and performance</p></li>
+<li><p>Flow execution paths and timing</p></li>
+<li><p>Error conditions and debugging information</p></li>
+</ul>
+<section id="basic-configuration">
+<h2>Basic Configuration<a class="headerlink" href="#basic-configuration" title="Link to this heading">#</a></h2>
+<p>Enable tracing in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FileSystem</span>
+<span class="w">      </span><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./logs/traces.jsonl&quot;</span>
+</pre></div>
+</div>
+<p>This configuration logs traces to local JSON files, which is suitable for development and debugging.</p>
+</section>
+<section id="opentelemetry-integration">
+<h2>OpenTelemetry Integration<a class="headerlink" href="#opentelemetry-integration" title="Link to this heading">#</a></h2>
+<p>For production environments and integration with observability platforms:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
 </pre></div>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>You must install the necessary dependencies to use tracing adapters.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="w">  </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;opentelemetry-api opentelemetry-sdk aiofiles&quot;</span>
-</pre></div>
+<p>Install tracing dependencies: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nemoguardrails[tracing]</span></code></p>
 </div>
-</div>
-</section>
-<section id="configuring-tracing-adapters">
-<h2>Configuring Tracing Adapters<a class="headerlink" href="#configuring-tracing-adapters" title="Link to this heading">#</a></h2>
-<p>Tracing supports multiple adapters that determine how and where the interaction logs are exported. You can configure one or more adapters by specifying them under the adapters list. Below are examples of configuring the built-in <code class="docutils literal notranslate"><span class="pre">OpenTelemetry</span></code> and <code class="docutils literal notranslate"><span class="pre">FileSystem</span></code> adapters:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
-<span class="w">      </span><span class="nt">service_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nemo_guardrails_service&quot;</span>
-<span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;console&quot;</span><span class="w">  </span><span class="c1"># Options: &quot;console&quot;, &quot;zipkin&quot;, etc.</span>
-<span class="w">      </span><span class="nt">resource_attributes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;production&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FileSystem</span>
-<span class="w">      </span><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;./traces/traces.jsonl&#39;</span>
-</pre></div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The “console” is intended for debugging and demonstration purposes only and should not be used in production environments. Using this exporter will output tracing information directly to the console, which can interfere with application output, distort the user interface, degrade performance, and potentially expose sensitive information. For production use, please configure a suitable exporter that sends tracing data to a dedicated backend or monitoring system.</p>
-</div>
-<section id="opentelemetry-adapter">
-<h3>OpenTelemetry Adapter<a class="headerlink" href="#opentelemetry-adapter" title="Link to this heading">#</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">OpenTelemetry</span></code> adapter integrates with the OpenTelemetry framework, allowing you to export traces to various backends. Key configuration options include:</p>
-<p>• <code class="docutils literal notranslate"><span class="pre">service_name</span></code>: The name of your service.
-• <code class="docutils literal notranslate"><span class="pre">exporter</span></code>: The type of exporter to use (e.g., console, zipkin).
-• <code class="docutils literal notranslate"><span class="pre">resource_attributes</span></code>: Additional attributes to include in the trace resource (e.g., environment).</p>
-</section>
-<section id="filesystem-adapter">
-<h3>FileSystem Adapter<a class="headerlink" href="#filesystem-adapter" title="Link to this heading">#</a></h3>
-<p>The  <code class="docutils literal notranslate"><span class="pre">FileSystem</span></code>  adapter exports interaction logs to a local JSON Lines file. Key configuration options include:</p>
-<p>• <code class="docutils literal notranslate"><span class="pre">filepath</span></code>: The path to the file where traces will be stored. If not specified, it defaults to <code class="docutils literal notranslate"><span class="pre">./.traces/trace.jsonl</span></code>.</p>
-</section>
-</section>
-<section id="example-configuration">
-<h2>Example Configuration<a class="headerlink" href="#example-configuration" title="Link to this heading">#</a></h2>
-<p>Below is a comprehensive example of a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file with both <code class="docutils literal notranslate"><span class="pre">OpenTelemetry</span></code> and <code class="docutils literal notranslate"><span class="pre">FileSystem</span></code> adapters enabled:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
-<span class="w">      </span><span class="nt">service_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nemo_guardrails_service&quot;</span>
-<span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;zipkin&quot;</span>
-<span class="w">      </span><span class="nt">resource_attributes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;production&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FileSystem</span>
-<span class="w">      </span><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;./traces/traces.jsonl&#39;</span>
-</pre></div>
-</div>
-<p>To use this configuration, you must ensure that Zipkin is running locally or is accessible via the network.</p>
-<section id="using-zipkin-as-an-exporter">
-<h3>Using Zipkin as an Exporter<a class="headerlink" href="#using-zipkin-as-an-exporter" title="Link to this heading">#</a></h3>
-<p>To use <code class="docutils literal notranslate"><span class="pre">Zipkin</span></code> as an exporter, follow these steps:</p>
-<ol class="arabic">
-<li><p>Install the Zipkin exporter for OpenTelemetry:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>opentelemetry-exporter-zipkin
-</pre></div>
-</div>
-</li>
-<li><p>Run the <code class="docutils literal notranslate"><span class="pre">Zipkin</span></code> server using Docker:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">9411</span>:9411<span class="w"> </span>openzipkin/zipkin
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-</section>
-<section id="registering-opentelemetry-exporters">
-<h2>Registering OpenTelemetry Exporters<a class="headerlink" href="#registering-opentelemetry-exporters" title="Link to this heading">#</a></h2>
-<p>You can also use other <a class="reference external" href="https://opentelemetry.io/ecosystem/registry/?component=exporter&amp;amp;language=python">OpenTelemetry exporters</a> by registering them in the <code class="docutils literal notranslate"><span class="pre">config.py</span></code> file. To do so you need to use <code class="docutils literal notranslate"><span class="pre">register_otel_exporter</span></code> and register the exporter class.Below is an example of registering the <code class="docutils literal notranslate"><span class="pre">Jaeger</span></code> exporter:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This assumes that Jaeger exporter is installed</span>
-<span class="c1"># pip install opentelemetry-exporter-jaeger</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry.exporter.jaeger.thrift</span><span class="w"> </span><span class="kn">import</span> <span class="n">JaegerExporter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing.adapters.opentelemetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_otel_exporter</span>
-
-<span class="n">register_otel_exporter</span><span class="p">(</span><span class="n">JaegerExporter</span><span class="p">,</span> <span class="s2">&quot;jaeger&quot;</span><span class="p">)</span>
-
-</pre></div>
-</div>
-<p>Then you can use it in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file as follows:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
-<span class="w">      </span><span class="nt">service_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nemo_guardrails_service&quot;</span>
-<span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;jaeger&quot;</span>
-<span class="w">      </span><span class="nt">resource_attributes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;production&quot;</span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OpenTelemetry integration requires configuring the OpenTelemetry SDK in your application code. NeMo Guardrails follows OpenTelemetry best practices where libraries use only the API and applications configure the SDK. See the <a class="reference internal" href="#tracing.md"><span class="xref myst">Tracing Guide</span></a> for detailed setup instructions and examples.</p>
 </div>
 </section>
-<section id="custom-interactionlogadapters">
-<h2>Custom InteractionLogAdapters<a class="headerlink" href="#custom-interactionlogadapters" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails allows you to extend its tracing capabilities by creating custom <code class="docutils literal notranslate"><span class="pre">InteractionLogAdapter</span></code> classes. This flexibility enables you to transform and export interaction logs to any backend or format that suits your needs.</p>
-<section id="implementing-a-custom-adapter">
-<h3>Implementing a Custom Adapter<a class="headerlink" href="#implementing-a-custom-adapter" title="Link to this heading">#</a></h3>
-<p>To create a custom adapter, you need to implement the <code class="docutils literal notranslate"><span class="pre">InteractionLogAdapter</span></code> abstract base class. Below is the interface you must follow:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractionLog</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">InteractionLogAdapter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">transform_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_log</span><span class="p">:</span> <span class="n">InteractionLog</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transforms the InteractionLog into the backend-specific format asynchronously.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Placeholder for any cleanup actions if needed.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Enter the runtime context related to this object.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exit the runtime context related to this object.&quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-</pre></div>
+<section id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Adapter</p></th>
+<th class="head"><p>Use Case</p></th>
+<th class="head"><p>Configuration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FileSystem</p></td>
+<td><p>Development, debugging, simple logging</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">filepath:</span> <span class="pre">&quot;./logs/traces.jsonl&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>OpenTelemetry</p></td>
+<td><p>Production, monitoring platforms, distributed systems</p></td>
+<td><p>Requires application-level SDK configuration</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-</section>
-<section id="registering-your-custom-adapter">
-<h3>Registering Your Custom Adapter<a class="headerlink" href="#registering-your-custom-adapter" title="Link to this heading">#</a></h3>
-<p>After implementing your custom adapter, you need to register it so that NemoGuardrails can recognize and utilize it. This is done by adding a registration call in your <code class="docutils literal notranslate"><span class="pre">config.py:</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing.adapters.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_log_adapter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">path.to.your.adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">YourCustomAdapter</span>
-
-<span class="n">register_log_adapter</span><span class="p">(</span><span class="n">YourCustomAdapter</span><span class="p">,</span> <span class="s2">&quot;CustomLogAdapter&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="example-creating-a-custom-adapter">
-<h3>Example: Creating a Custom Adapter<a class="headerlink" href="#example-creating-a-custom-adapter" title="Link to this heading">#</a></h3>
-<p>Here’s a simple example of a custom adapter that logs interaction logs to a custom backend:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing.adapters.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractionLogAdapter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractionLog</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomLogAdapter</span><span class="p">(</span><span class="n">InteractionLogAdapter</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MyCustomLogAdapter&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">custom_option1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_option2</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">custom_option1</span> <span class="o">=</span> <span class="n">custom_option1</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">custom_option2</span> <span class="o">=</span> <span class="n">custom</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_log</span><span class="p">:</span> <span class="n">InteractionLog</span><span class="p">):</span>
-        <span class="c1"># Implement your transformation logic here</span>
-        <span class="n">custom_format</span> <span class="o">=</span> <span class="n">convert_to_custom_format</span><span class="p">(</span><span class="n">interaction_log</span><span class="p">)</span>
-        <span class="n">send_to_custom_backend</span><span class="p">(</span><span class="n">custom_format</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">transform_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_log</span><span class="p">:</span> <span class="n">InteractionLog</span><span class="p">):</span>
-        <span class="c1"># Implement your asynchronous transformation logic here</span>
-        <span class="n">custom_format</span> <span class="o">=</span> <span class="n">convert_to_custom_format</span><span class="p">(</span><span class="n">interaction_log</span><span class="p">)</span>
-        <span class="k">await</span> <span class="n">send_to_custom_backend_async</span><span class="p">(</span><span class="n">custom_format</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Implement any necessary cleanup here</span>
-        <span class="k">await</span> <span class="n">cleanup_custom_resources</span><span class="p">()</span>
-
-</pre></div>
-</div>
-<p>Updating <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> with Your <code class="docutils literal notranslate"><span class="pre">CustomLogAdapter</span></code></p>
-<p>Once registered, you can configure your custom adapter in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> like any other adapter:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyCustomLogAdapter</span>
-<span class="w">      </span><span class="nt">custom_option1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value1&quot;</span>
-<span class="w">      </span><span class="nt">custom_option2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value2&quot;</span>
-</pre></div>
-</div>
-<p>By following these steps, you can leverage the built-in tracing adapters or create and integrate your own custom adapters to enhance the observability of your NeMo Guardrails powered applications. Whether you choose to export logs to the filesystem, integrate with OpenTelemetry, or implement a bespoke logging solution, tracing provides the flexibility to meet your requirements.</p>
-</section>
+<p>For advanced configuration, custom adapters, and production deployment examples, see the <a class="reference internal" href="#user-guides/tracing/index.md"><span class="xref myst">detailed tracing guide</span></a>.</p>
 </section>
 </section>
 
@@ -764,23 +633,9 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-tracing">Enabling Tracing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-tracing-adapters">Configuring Tracing Adapters</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry-adapter">OpenTelemetry Adapter</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filesystem-adapter">FileSystem Adapter</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-configuration">Example Configuration</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-zipkin-as-an-exporter">Using Zipkin as an Exporter</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-opentelemetry-exporters">Registering OpenTelemetry Exporters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-interactionlogadapters">Custom InteractionLogAdapters</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-a-custom-adapter">Implementing a Custom Adapter</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-your-custom-adapter">Registering Your Custom Adapter</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-creating-a-custom-adapter">Example: Creating a Custom Adapter</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-configuration">Basic Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry-integration">OpenTelemetry Integration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-options">Configuration Options</a></li>
 </ul>
   </nav></div>
 
