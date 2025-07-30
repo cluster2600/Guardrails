@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -343,6 +352,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="user-guides/detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -536,7 +552,8 @@ For information about the program and getting a key, refer to <a class="referenc
 </pre></div>
 </div>
 </li>
-<li><p>Create a <em>configuration store</em> directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code> and add a <code class="docutils literal notranslate"><span class="pre">config/config.yml</span></code> file with the following contents:</p>
+<li><p>Create a <em>configuration store</em> directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code>.</p></li>
+<li><p>Copy the following configuration code and save as <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> in the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
@@ -564,7 +581,7 @@ For information about the program and getting a key, refer to <a class="referenc
 <p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file configures the LLM model.
 For more information about the key, refer to <a class="reference internal" href="user-guides/configuration-guide.html#the-llm-model"><span class="std std-ref">The LLM Model</span></a>.</p>
 </li>
-<li><p>Create a prompts file, such as <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code>, (<a class="reference download internal" download="" href="_downloads/581b1286b50c732ffcf3928197e66b67/prompts.yml"><span class="xref download myst">download</span></a>), with contents like the following partial example:</p>
+<li><p>Copy the following prompts code and save as <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> in the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># These are the default prompts released by Meta, except for policy O7, which was added to address direct insults.</span>
 <span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_input $model=content_safety</span>
@@ -580,6 +597,82 @@ For more information about the key, refer to <a class="reference internal" href=
 <span class="w">      </span><span class="no">S6: Suicide and Self Harm.</span>
 <span class="w">      </span><span class="no">S7: Sexual (minor).</span>
 <span class="w">      </span><span class="no">S8: Hate/Identity Hate.</span>
+<span class="w">      </span><span class="no">S9: PII/Privacy.</span>
+<span class="w">      </span><span class="no">S10: Harassment.</span>
+<span class="w">      </span><span class="no">S11: Threat.</span>
+<span class="w">      </span><span class="no">S12: Profanity.</span>
+<span class="w">      </span><span class="no">S13: Needs Caution.</span>
+<span class="w">      </span><span class="no">S14: Other.</span>
+<span class="w">      </span><span class="no">S15: Manipulation.</span>
+<span class="w">      </span><span class="no">S16: Fraud/Deception.</span>
+<span class="w">      </span><span class="no">S17: Malware.</span>
+<span class="w">      </span><span class="no">S18: High Risk Gov Decision Making.</span>
+<span class="w">      </span><span class="no">S19: Political/Misinformation/Conspiracy.</span>
+<span class="w">      </span><span class="no">S20: Copyright/Trademark/Plagiarism.</span>
+<span class="w">      </span><span class="no">S21: Unauthorized Advice.</span>
+<span class="w">      </span><span class="no">S22: Illegal Activity.</span>
+<span class="w">      </span><span class="no">S23: Immoral/Unethical.</span>
+<span class="w">      </span><span class="no">&lt;END UNSAFE CONTENT CATEGORIES&gt;</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">user: {{ user_input }}</span>
+
+<span class="w">      </span><span class="no">&lt;END CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
+<span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
+
+<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
+<span class="w">      </span><span class="no">Output JSON:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_prompt_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_output $model=content_safety</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a &#39;safe&#39; or &#39;unsafe&#39; rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN UNSAFE CONTENT CATEGORIES&gt;</span>
+<span class="w">      </span><span class="no">S1: Violence.</span>
+<span class="w">      </span><span class="no">S2: Sexual.</span>
+<span class="w">      </span><span class="no">S3: Criminal Planning/Confessions.</span>
+<span class="w">      </span><span class="no">S4: Guns and Illegal Weapons.</span>
+<span class="w">      </span><span class="no">S5: Controlled/Regulated Substances.</span>
+<span class="w">      </span><span class="no">S6: Suicide and Self Harm.</span>
+<span class="w">      </span><span class="no">S7: Sexual (minor).</span>
+<span class="w">      </span><span class="no">S8: Hate/Identity Hate.</span>
+<span class="w">      </span><span class="no">S9: PII/Privacy.</span>
+<span class="w">      </span><span class="no">S10: Harassment.</span>
+<span class="w">      </span><span class="no">S11: Threat.</span>
+<span class="w">      </span><span class="no">S12: Profanity.</span>
+<span class="w">      </span><span class="no">S13: Needs Caution.</span>
+<span class="w">      </span><span class="no">S14: Other.</span>
+<span class="w">      </span><span class="no">S15: Manipulation.</span>
+<span class="w">      </span><span class="no">S16: Fraud/Deception.</span>
+<span class="w">      </span><span class="no">S17: Malware.</span>
+<span class="w">      </span><span class="no">S18: High Risk Gov Decision Making.</span>
+<span class="w">      </span><span class="no">S19: Political/Misinformation/Conspiracy.</span>
+<span class="w">      </span><span class="no">S20: Copyright/Trademark/Plagiarism.</span>
+<span class="w">      </span><span class="no">S21: Unauthorized Advice.</span>
+<span class="w">      </span><span class="no">S22: Illegal Activity.</span>
+<span class="w">      </span><span class="no">S23: Immoral/Unethical.</span>
+<span class="w">      </span><span class="no">&lt;END UNSAFE CONTENT CATEGORIES&gt;</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">user: {{ user_input }}</span>
+
+<span class="w">      </span><span class="no">response: agent: {{ bot_response }}</span>
+
+<span class="w">      </span><span class="no">&lt;END CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
+<span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
+
+<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
+<span class="w">      </span><span class="no">Output JSON:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_response_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
 </pre></div>
 </div>
 </li>
