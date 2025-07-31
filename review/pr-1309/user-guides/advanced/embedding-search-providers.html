@@ -354,6 +354,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../jailbreak-detection-heuristics/README.html">Using Jailbreak Detection Heuristics</a></li>
 </ul>
@@ -512,7 +519,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="embedding-search-providers">
 <h1>Embedding Search Providers<a class="headerlink" href="#embedding-search-providers" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails utilizes embedding search, also known as vector databases, for implementing the <a class="reference internal" href="../../architecture/README.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a> and for the <a class="reference internal" href="#../configuration-guide.md#knowledge-base-documents"><span class="xref myst">knowledge base</span></a> functionality.</p>
+<p>NeMo Guardrails utilizes embedding search, also known as vector databases, for implementing the <a class="reference internal" href="../../architecture/README.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a> and for the <a class="reference internal" href="../configuration-guide.html#knowledge-base-documents"><span class="std std-ref">knowledge base</span></a> functionality.</p>
 <p>To enhance the efficiency of the embedding search process, NeMo Guardrails can employ a caching mechanism for embeddings. This mechanism stores computed embeddings, thereby reducing the need for repeated computations and accelerating the search process. By default, the caching mechanism is disabled.</p>
 <p>The default embedding search uses FastEmbed for computing the embeddings (the <code class="docutils literal notranslate"><span class="pre">all-MiniLM-L6-v2</span></code> model) and Annoy for performing the search. The default configuration is as follows:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">core</span><span class="p">:</span>
