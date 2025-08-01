@@ -21,21 +21,14 @@ from unittest.mock import MagicMock, patch
 
 # TODO: check to see if we can add it as a dependency
 # but now we try to import opentelemetry and set a flag if it's not available
-try:
-    from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.trace import NoOpTracerProvider
-
-    from nemoguardrails.tracing.adapters.opentelemetry import OpenTelemetryAdapter
-
-    OPENTELEMETRY_AVAILABLE = True
-except ImportError:
-    OPENTELEMETRY_AVAILABLE = False
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.trace import NoOpTracerProvider
 
 from nemoguardrails.eval.models import Span
 from nemoguardrails.tracing import InteractionLog
+from nemoguardrails.tracing.adapters.opentelemetry import OpenTelemetryAdapter
 
 
-@unittest.skipIf(not OPENTELEMETRY_AVAILABLE, "opentelemetry is not available")
 class TestOpenTelemetryAdapter(unittest.TestCase):
     def setUp(self):
         # Set up a mock tracer provider for testing
@@ -73,7 +66,10 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
         self.assertEqual(self.adapter.tracer, self.mock_tracer)
 
     def test_transform(self):
-        """Test that transform creates spans correctly."""
+        """Test that transform creates spans correctly with proper timing."""
+        mock_span = MagicMock()
+        self.mock_tracer.start_span.return_value = mock_span
+
         interaction_log = InteractionLog(
             id="test_id",
             activated_rails=[],
@@ -83,8 +79,8 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
                     name="test_span",
                     span_id="span_1",
                     parent_id=None,
-                    start_time=0.0,
-                    end_time=1.0,
+                    start_time=1234567890.5,  # historical timestamp
+                    end_time=1234567891.5,  # historical timestamp
                     duration=1.0,
                     metrics={"key": 123},
                 )
@@ -93,27 +89,28 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
 
         self.adapter.transform(interaction_log)
 
-        # Verify that start_as_current_span was called
-        self.mock_tracer.start_as_current_span.assert_called_once_with(
+        # Verify that start_span was called with proper timing (not start_as_current_span)
+        self.mock_tracer.start_span.assert_called_once_with(
             "test_span",
             context=None,
+            start_time=1234567890500000000,  # Converted to nanoseconds
         )
 
-        # We retrieve the mock span instance here
-        span_instance = (
-            self.mock_tracer.start_as_current_span.return_value.__enter__.return_value
-        )
+        mock_span.set_attribute.assert_any_call("key", 123)
+        mock_span.set_attribute.assert_any_call("span_id", "span_1")
+        mock_span.set_attribute.assert_any_call("trace_id", "test_id")
+        mock_span.set_attribute.assert_any_call("duration", 1.0)
 
-        # Verify span attributes were set
-        span_instance.set_attribute.assert_any_call("key", 123)
-        span_instance.set_attribute.assert_any_call("span_id", "span_1")
-        span_instance.set_attribute.assert_any_call("trace_id", "test_id")
-        span_instance.set_attribute.assert_any_call("start_time", 0.0)
-        span_instance.set_attribute.assert_any_call("end_time", 1.0)
-        span_instance.set_attribute.assert_any_call("duration", 1.0)
+        # Verify span was ended with correct end time
+        mock_span.end.assert_called_once_with(
+            end_time=1234567891500000000
+        )  # Converted to nanoseconds
 
     def test_transform_span_attributes_various_types(self):
         """Test that different attribute types are handled correctly."""
+        mock_span = MagicMock()
+        self.mock_tracer.start_span.return_value = mock_span
+
         interaction_log = InteractionLog(
             id="test_id",
             activated_rails=[],
@@ -123,8 +120,8 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
                     name="test_span",
                     span_id="span_1",
                     parent_id=None,
-                    start_time=0.0,
-                    end_time=1.0,
+                    start_time=1234567890.0,
+                    end_time=1234567891.0,
                     duration=1.0,
                     metrics={
                         "int_key": 42,
@@ -138,19 +135,14 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
 
         self.adapter.transform(interaction_log)
 
-        span_instance = (
-            self.mock_tracer.start_as_current_span.return_value.__enter__.return_value
-        )
-
-        span_instance.set_attribute.assert_any_call("int_key", 42)
-        span_instance.set_attribute.assert_any_call("float_key", 3.14)
-        span_instance.set_attribute.assert_any_call("str_key", 123)
-        span_instance.set_attribute.assert_any_call("bool_key", 1)
-        span_instance.set_attribute.assert_any_call("span_id", "span_1")
-        span_instance.set_attribute.assert_any_call("trace_id", "test_id")
-        span_instance.set_attribute.assert_any_call("start_time", 0.0)
-        span_instance.set_attribute.assert_any_call("end_time", 1.0)
-        span_instance.set_attribute.assert_any_call("duration", 1.0)
+        mock_span.set_attribute.assert_any_call("int_key", 42)
+        mock_span.set_attribute.assert_any_call("float_key", 3.14)
+        mock_span.set_attribute.assert_any_call("str_key", 123)
+        mock_span.set_attribute.assert_any_call("bool_key", 1)
+        mock_span.set_attribute.assert_any_call("span_id", "span_1")
+        mock_span.set_attribute.assert_any_call("trace_id", "test_id")
+        mock_span.set_attribute.assert_any_call("duration", 1.0)
+        mock_span.end.assert_called_once_with(end_time=1234567891000000000)
 
     def test_transform_with_empty_trace(self):
         """Test transform with empty trace."""
@@ -163,11 +155,11 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
 
         self.adapter.transform(interaction_log)
 
-        self.mock_tracer.start_as_current_span.assert_not_called()
+        self.mock_tracer.start_span.assert_not_called()
 
     def test_transform_with_tracer_failure(self):
         """Test transform when tracer fails."""
-        self.mock_tracer.start_as_current_span.side_effect = Exception("Tracer failure")
+        self.mock_tracer.start_span.side_effect = Exception("Tracer failure")
 
         interaction_log = InteractionLog(
             id="test_id",
@@ -178,8 +170,8 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
                     name="test_span",
                     span_id="span_1",
                     parent_id=None,
-                    start_time=0.0,
-                    end_time=1.0,
+                    start_time=1234567890.0,
+                    end_time=1234567891.0,
                     duration=1.0,
                     metrics={"key": 123},
                 )
@@ -191,10 +183,78 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
 
         self.assertIn("Tracer failure", str(context.exception))
 
+    def test_transform_with_parent_child_relationships(self):
+        """Test that parent-child relationships are preserved with correct timing."""
+        parent_mock_span = MagicMock()
+        child_mock_span = MagicMock()
+        self.mock_tracer.start_span.side_effect = [parent_mock_span, child_mock_span]
+
+        interaction_log = InteractionLog(
+            id="test_id",
+            activated_rails=[],
+            events=[],
+            trace=[
+                Span(
+                    name="parent_span",
+                    span_id="span_1",
+                    parent_id=None,
+                    start_time=1234567890.0,
+                    end_time=1234567892.0,
+                    duration=2.0,
+                    metrics={"parent_key": 1},
+                ),
+                Span(
+                    name="child_span",
+                    span_id="span_2",
+                    parent_id="span_1",
+                    start_time=1234567890.5,  # child starts after parent
+                    end_time=1234567891.5,  # child ends before parent
+                    duration=1.0,
+                    metrics={"child_key": 2},
+                ),
+            ],
+        )
+
+        with patch(
+            "opentelemetry.trace.set_span_in_context"
+        ) as mock_set_span_in_context:
+            mock_set_span_in_context.return_value = "parent_context"
+
+            self.adapter.transform(interaction_log)
+
+            # verify parent span created first with no context
+            self.assertEqual(self.mock_tracer.start_span.call_count, 2)
+            first_call = self.mock_tracer.start_span.call_args_list[0]
+            self.assertEqual(first_call[0][0], "parent_span")  # name
+            self.assertEqual(first_call[1]["context"], None)  # no parent context
+            self.assertEqual(
+                first_call[1]["start_time"], 1234567890000000000
+            )  # nanoseconds
+
+            # verify child span created with parent context
+            second_call = self.mock_tracer.start_span.call_args_list[1]
+            self.assertEqual(second_call[0][0], "child_span")  # name
+            self.assertEqual(
+                second_call[1]["context"], "parent_context"
+            )  # parent context
+            self.assertEqual(
+                second_call[1]["start_time"], 1234567890500000000
+            )  # nanoseconds
+
+            # verify parent context was set correctly
+            mock_set_span_in_context.assert_called_once_with(parent_mock_span)
+
+            # verify both spans ended with correct times
+            parent_mock_span.end.assert_called_once_with(end_time=1234567892000000000)
+            child_mock_span.end.assert_called_once_with(end_time=1234567891500000000)
+
     def test_transform_async(self):
         """Test async transform functionality."""
 
         async def run_test():
+            mock_span = MagicMock()
+            self.mock_tracer.start_span.return_value = mock_span
+
             interaction_log = InteractionLog(
                 id="test_id",
                 activated_rails=[],
@@ -204,8 +264,8 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
                         name="test_span",
                         span_id="span_1",
                         parent_id=None,
-                        start_time=0.0,
-                        end_time=1.0,
+                        start_time=1234567890.5,
+                        end_time=1234567891.5,
                         duration=1.0,
                         metrics={"key": 123},
                     )
@@ -214,22 +274,17 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
 
             await self.adapter.transform_async(interaction_log)
 
-            self.mock_tracer.start_as_current_span.assert_called_once_with(
+            self.mock_tracer.start_span.assert_called_once_with(
                 "test_span",
                 context=None,
+                start_time=1234567890500000000,
             )
 
-            # We retrieve the mock span instance here
-            span_instance = (
-                self.mock_tracer.start_as_current_span.return_value.__enter__.return_value
-            )
-
-            span_instance.set_attribute.assert_any_call("key", 123)
-            span_instance.set_attribute.assert_any_call("span_id", "span_1")
-            span_instance.set_attribute.assert_any_call("trace_id", "test_id")
-            span_instance.set_attribute.assert_any_call("start_time", 0.0)
-            span_instance.set_attribute.assert_any_call("end_time", 1.0)
-            span_instance.set_attribute.assert_any_call("duration", 1.0)
+            mock_span.set_attribute.assert_any_call("key", 123)
+            mock_span.set_attribute.assert_any_call("span_id", "span_1")
+            mock_span.set_attribute.assert_any_call("trace_id", "test_id")
+            mock_span.set_attribute.assert_any_call("duration", 1.0)
+            mock_span.end.assert_called_once_with(end_time=1234567891500000000)
 
         asyncio.run(run_test())
 
@@ -246,13 +301,13 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
 
             await self.adapter.transform_async(interaction_log)
 
-            self.mock_tracer.start_as_current_span.assert_not_called()
+            self.mock_tracer.start_span.assert_not_called()
 
         asyncio.run(run_test())
 
     def test_transform_async_with_tracer_failure(self):
         """Test async transform when tracer fails."""
-        self.mock_tracer.start_as_current_span.side_effect = Exception("Tracer failure")
+        self.mock_tracer.start_span.side_effect = Exception("Tracer failure")
 
         async def run_test():
             interaction_log = InteractionLog(
@@ -264,8 +319,8 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
                         name="test_span",
                         span_id="span_1",
                         parent_id=None,
-                        start_time=0.0,
-                        end_time=1.0,
+                        start_time=1234567890.0,
+                        end_time=1234567891.0,
                         duration=1.0,
                         metrics={"key": 123},
                     )

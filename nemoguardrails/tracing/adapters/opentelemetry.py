@@ -55,7 +55,7 @@ from __future__ import annotations
 
 import warnings
 from importlib.metadata import version
-from typing import TYPE_CHECKING, Optional, Type
+from typing import TYPE_CHECKING, Type
 
 if TYPE_CHECKING:
     from nemoguardrails.tracing import InteractionLog
@@ -203,17 +203,22 @@ class OpenTelemetryAdapter(InteractionLogAdapter):
         spans,
         trace_id,
     ):
-        with self.tracer.start_as_current_span(
+        start_time_ns = int(span_data.start_time * 1_000_000_000)
+        end_time_ns = int(span_data.end_time * 1_000_000_000)
+
+        span = self.tracer.start_span(
             span_data.name,
             context=parent_context,
-        ) as span:
-            for key, value in span_data.metrics.items():
-                span.set_attribute(key, value)
+            start_time=start_time_ns,
+        )
 
-            span.set_attribute("span_id", span_data.span_id)
-            span.set_attribute("trace_id", trace_id)
-            span.set_attribute("start_time", span_data.start_time)
-            span.set_attribute("end_time", span_data.end_time)
-            span.set_attribute("duration", span_data.duration)
+        for key, value in span_data.metrics.items():
+            span.set_attribute(key, value)
 
-            spans[span_data.span_id] = span
+        span.set_attribute("span_id", span_data.span_id)
+        span.set_attribute("trace_id", trace_id)
+        span.set_attribute("duration", span_data.duration)
+
+        spans[span_data.span_id] = span
+
+        span.end(end_time=end_time_ns)
