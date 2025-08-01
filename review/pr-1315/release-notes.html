@@ -528,11 +528,13 @@ For a complete record of changes in a release, refer to the
 <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md">CHANGELOG.md</a> in the GitHub repository.</p>
 <section id="v0-15-0">
 <span id="id1"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
-<section id="features">
-<span id="v0-15-0-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
+<section id="key-features">
+<span id="v0-15-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">Parallel Execution of Input and Output Rails</span></a>.</p></li>
 <li><p>Implemented a new way of configuring tracing. You can now use the OpenTelemetry SDK and the OpenTelemetry Protocol (OTLP) exporter while configuring the NeMo Guardrails clients in your application code directly. To learn more, refer to the <a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html#tracing-configuration"><span class="std std-ref">basic tracing configuration guide</span></a> and the <a class="reference internal" href="user-guides/tracing/index.html#tracing"><span class="std std-ref">advanced tracing configuration guide</span></a>.</p></li>
+<li><p>Updated the streaming capability of output rails to support parallel execution.</p></li>
+<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="user-guides/advanced/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
 </ul>
 </section>
 <section id="breaking-changes">
@@ -547,18 +549,7 @@ For a complete record of changes in a release, refer to the
 <span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;console&quot;</span>
 </pre></div>
 </div>
-<p>The following code shows the new approach to configure OpenTelemetry in your application.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#  Configure in application code</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry.sdk.trace</span><span class="w"> </span><span class="kn">import</span> <span class="n">TracerProvider</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry.sdk.trace.export</span><span class="w"> </span><span class="kn">import</span> <span class="n">BatchSpanProcessor</span><span class="p">,</span> <span class="n">ConsoleSpanExporter</span>
-<span class="n">tracer_provider</span> <span class="o">=</span> <span class="n">TracerProvider</span><span class="p">()</span>
-<span class="n">trace</span><span class="o">.</span><span class="n">set_tracer_provider</span><span class="p">(</span><span class="n">tracer_provider</span><span class="p">)</span>
-<span class="n">tracer_provider</span><span class="o">.</span><span class="n">add_span_processor</span><span class="p">(</span><span class="n">BatchSpanProcessor</span><span class="p">(</span><span class="n">ConsoleSpanExporter</span><span class="p">()))</span>
-<span class="c1"># Simple config in config.yml</span>
-<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;tracing&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;adapters&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenTelemetry&quot;</span><span class="p">}]}}</span>
-</pre></div>
-</div>
+<p>To find the new way of configuring tracing, refer to <a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html#tracing-configuration"><span class="std std-ref">Tracing Configuration</span></a>.</p>
 </section>
 <section id="deprecated-functions">
 <h3>Deprecated Functions<a class="headerlink" href="#deprecated-functions" title="Link to this heading">#</a></h3>
@@ -569,8 +560,8 @@ For a complete record of changes in a release, refer to the
 </section>
 <section id="v0-14-1">
 <span id="id2"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
-<section id="v0-14-1-features">
-<span id="id3"></span><h3>Features<a class="headerlink" href="#v0-14-1-features" title="Link to this heading">#</a></h3>
+<section id="features">
+<span id="v0-14-1-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added direct API key configuration support for jailbreak detection. This change adds a new optional field <code class="docutils literal notranslate"><span class="pre">api_key</span></code> to the <code class="docutils literal notranslate"><span class="pre">JailbreakDetectionConfig</span></code> Pydantic model. This allows to provide an API Key in a <code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> object or YAML file, for use in Jailbreak NIM calls. Prior to this change, the <code class="docutils literal notranslate"><span class="pre">api_key_env_var</span></code> field used an environment variable (for example <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code>) to get the API Key for the Jailbreak NIM.</p></li>
 </ul>
@@ -587,9 +578,9 @@ For a complete record of changes in a release, refer to the
 </section>
 </section>
 <section id="v0-14-0">
-<span id="id4"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
+<span id="id3"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
 <section id="v0-14-0-features">
-<span id="id5"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
+<span id="id4"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Python 3.13.</p></li>
 <li><p>Enhanced working with advanced reasoning models.</p>
@@ -615,7 +606,7 @@ For more information, refer to <a class="reference internal" href="user-guides/c
 </ul>
 </section>
 <section id="v0-14-0-breaking-changes">
-<span id="id6"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
+<span id="id5"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Removed support for the NeMo LLM Service, <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>.
 This provider reached end-of-life on February 5, 2025.</p></li>
@@ -625,7 +616,7 @@ In this release, the class is moved to the <code class="docutils literal notrans
 </ul>
 </section>
 <section id="v0-14-0-fixed-issues">
-<span id="id7"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
+<span id="id6"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue when tracing is enabled.
 Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
