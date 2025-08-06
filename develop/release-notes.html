@@ -527,17 +527,40 @@ For a complete record of changes in a release, refer to the
 <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md">CHANGELOG.md</a> in the GitHub repository.</p>
 <section id="v0-15-0">
 <span id="id1"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
-<section id="features">
-<span id="v0-15-0-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
+<section id="key-features">
+<span id="v0-15-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">Parallel Execution of Input and Output Rails</span></a>.</p></li>
+<li><p>Implemented a new way of configuring tracing. You can now use the OpenTelemetry SDK and the OpenTelemetry Protocol (OTLP) exporter while configuring the NeMo Guardrails clients in your application code directly. To learn more, refer to the <a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html#tracing-configuration"><span class="std std-ref">basic tracing configuration guide</span></a> and the <a class="reference internal" href="user-guides/tracing/index.html#tracing"><span class="std std-ref">advanced tracing configuration guide</span></a>.</p></li>
+<li><p>Updated the streaming capability of output rails to support parallel execution.</p></li>
+<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="user-guides/advanced/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
+</ul>
+</section>
+<section id="breaking-changes">
+<h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">#</a></h3>
+<p>With the new tracing configuration, the following old configuration for tracing in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> is no longer supported.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">#  No longer supported</span>
+<span class="nt">tracing</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
+<span class="w">      </span><span class="nt">service_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-service&quot;</span>
+<span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;console&quot;</span>
+</pre></div>
+</div>
+<p>To find the new way of configuring tracing, refer to <a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html#tracing-configuration"><span class="std std-ref">Tracing Configuration</span></a>.</p>
+</section>
+<section id="deprecated-functions">
+<h3>Deprecated Functions<a class="headerlink" href="#deprecated-functions" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">register_otel_exporter()</span></code> is deprecated and will be removed in v0.16.0. Configure exporters directly in your application instead.</p></li>
 </ul>
 </section>
 </section>
 <section id="v0-14-1">
 <span id="id2"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
-<section id="v0-14-1-features">
-<span id="id3"></span><h3>Features<a class="headerlink" href="#v0-14-1-features" title="Link to this heading">#</a></h3>
+<section id="features">
+<span id="v0-14-1-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added direct API key configuration support for jailbreak detection. This change adds a new optional field <code class="docutils literal notranslate"><span class="pre">api_key</span></code> to the <code class="docutils literal notranslate"><span class="pre">JailbreakDetectionConfig</span></code> Pydantic model. This allows to provide an API Key in a <code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> object or YAML file, for use in Jailbreak NIM calls. Prior to this change, the <code class="docutils literal notranslate"><span class="pre">api_key_env_var</span></code> field used an environment variable (for example <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code>) to get the API Key for the Jailbreak NIM.</p></li>
 </ul>
@@ -554,9 +577,9 @@ For a complete record of changes in a release, refer to the
 </section>
 </section>
 <section id="v0-14-0">
-<span id="id4"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
+<span id="id3"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
 <section id="v0-14-0-features">
-<span id="id5"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
+<span id="id4"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Python 3.13.</p></li>
 <li><p>Enhanced working with advanced reasoning models.</p>
@@ -581,8 +604,8 @@ For more information, refer to <a class="reference internal" href="user-guides/g
 For more information, refer to <a class="reference internal" href="user-guides/cli.html#providers"><span class="std std-ref">providers</span></a>.</p></li>
 </ul>
 </section>
-<section id="breaking-changes">
-<span id="v0-14-0-breaking-changes"></span><h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">#</a></h3>
+<section id="v0-14-0-breaking-changes">
+<span id="id5"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Removed support for the NeMo LLM Service, <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>.
 This provider reached end-of-life on February 5, 2025.</p></li>
