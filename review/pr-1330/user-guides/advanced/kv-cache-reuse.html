@@ -532,8 +532,8 @@
 <h2>Code Sample<a class="headerlink" href="#code-sample" title="Link to this heading">#</a></h2>
 <p>To enable KV cache reuse for the Content Safety NIM, set the <code class="docutils literal notranslate"><span class="pre">NIM_ENABLE_KV_CACHE_REUSE</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">1</span></code> when running the Docker container.</p>
 <p>To run the Content Safety NIM server with KV cache reuse, use the following commands:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;llama-3.1-nemoguard-8b-content-safety&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span>&lt;llama-3.1-nemoguard-8b-content-safety-image-uri&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;nemoguard-nim-name&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span>&lt;nemoguard-nim-image-uri&gt;
 <span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>&lt;local-nim-cache-directory&gt;
 
 docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
@@ -554,6 +554,10 @@ docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </s
 </pre></div>
 </div>
 <p>To disable KV cache reuse, you can either remove the <code class="docutils literal notranslate"><span class="pre">-e</span> <span class="pre">NIM_ENABLE_KV_CACHE_REUSE=1</span></code> line or set the variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>If you have an existing Docker container running the NIM, you can update the environment variable by running the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span><span class="nv">$MODEL_NAME</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;export NIM_ENABLE_KV_CACHE_REUSE=1&quot;</span>
+</pre></div>
+</div>
 </section>
 </section>
 
