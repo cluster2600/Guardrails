@@ -279,41 +279,6 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
 
         asyncio.run(run_test())
 
-    def test_backward_compatibility_with_old_config(self):
-        """Test that old configuration parameters are still accepted."""
-        # This should not fail even if old parameters are passed
-        adapter = OpenTelemetryAdapter(
-            service_name="test_service",
-            exporter="console",  # this should be ignored gracefully
-            resource_attributes={"test": "value"},  # this should be ignored gracefully
-        )
-
-        # Should still create the adapter successfully
-        self.assertIsInstance(adapter, OpenTelemetryAdapter)
-        self.assertEqual(adapter.tracer, self.mock_tracer)
-
-    def test_deprecation_warning_for_old_parameters(self):
-        """Test that deprecation warnings are raised for old configuration parameters."""
-
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-
-            # adapter with deprecated parameters
-            _adapter = OpenTelemetryAdapter(
-                service_name="test_service",
-                exporter="console",
-                resource_attributes={"test": "value"},
-                span_processor=MagicMock(),
-            )
-
-            # deprecation warning is issued
-            self.assertEqual(len(w), 1)
-            self.assertTrue(issubclass(w[0].category, DeprecationWarning))
-            self.assertIn("deprecated", str(w[0].message))
-            self.assertIn("exporter", str(w[0].message))
-            self.assertIn("resource_attributes", str(w[0].message))
-            self.assertIn("span_processor", str(w[0].message))
-
     def test_no_op_tracer_provider_warning(self):
         """Test that a warning is issued when NoOpTracerProvider is detected."""
 
@@ -342,25 +307,3 @@ class TestOpenTelemetryAdapter(unittest.TestCase):
 
             # no warnings is issued
             self.assertEqual(len(w), 0)
-
-    def test_register_otel_exporter_deprecation(self):
-        """Test that register_otel_exporter shows deprecation warning."""
-        from nemoguardrails.tracing.adapters.opentelemetry import register_otel_exporter
-
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-
-            mock_exporter_cls = MagicMock()
-
-            register_otel_exporter("test-exporter", mock_exporter_cls)
-
-            self.assertEqual(len(w), 1)
-            self.assertTrue(issubclass(w[0].category, DeprecationWarning))
-            self.assertIn("register_otel_exporter is deprecated", str(w[0].message))
-            self.assertIn("0.16.0", str(w[0].message))
-
-            from nemoguardrails.tracing.adapters.opentelemetry import (
-                _exporter_name_cls_map,
-            )
-
-            self.assertEqual(_exporter_name_cls_map["test-exporter"], mock_exporter_cls)

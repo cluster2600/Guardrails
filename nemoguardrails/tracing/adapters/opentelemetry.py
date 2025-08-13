@@ -71,34 +71,6 @@ except ImportError:
 
 from nemoguardrails.tracing.adapters.base import InteractionLogAdapter
 
-# DEPRECATED: global dictionary to store registered exporters
-# will be removed in  v0.16.0
-_exporter_name_cls_map: dict[str, Type] = {}
-
-
-def register_otel_exporter(name: str, exporter_cls: Type):
-    """Register a new exporter.
-
-    Args:
-        name: The name to register the exporter under.
-        exporter_cls: The exporter class to register.
-
-    Deprecated:
-        This function is deprecated and will be removed in version 0.16.0.
-        Please configure OpenTelemetry exporters directly in your application code.
-        See the migration guide at:
-        https://github.com/NVIDIA/NeMo-Guardrails/blob/main/examples/configs/tracing/README.md#migration-guide
-    """
-    warnings.warn(
-        "register_otel_exporter is deprecated and will be removed in version 0.16.0. "
-        "Please configure OpenTelemetry exporters directly in your application code. "
-        "See the migration guide at: "
-        "https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/examples/configs/tracing/README.md#migration-guide",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    _exporter_name_cls_map[name] = exporter_cls
-
 
 class OpenTelemetryAdapter(InteractionLogAdapter):
     """
@@ -114,37 +86,17 @@ class OpenTelemetryAdapter(InteractionLogAdapter):
     def __init__(
         self,
         service_name: str = "nemo_guardrails",
-        **kwargs,
     ):
         """
         Initialize the OpenTelemetry adapter.
 
         Args:
             service_name: Service name for instrumentation scope (not used for resource)
-            **kwargs: Additional arguments (for backward compatibility)
 
         Note:
             Applications must configure the OpenTelemetry SDK before using this adapter.
             The adapter will use the globally configured tracer provider.
         """
-        # check for deprecated parameters and warn users
-        deprecated_params = [
-            "exporter",
-            "exporter_cls",
-            "resource_attributes",
-            "span_processor",
-        ]
-        used_deprecated = [param for param in deprecated_params if param in kwargs]
-
-        if used_deprecated:
-            warnings.warn(
-                f"OpenTelemetry configuration parameters {used_deprecated} in YAML/config are deprecated "
-                "and will be ignored. Please configure OpenTelemetry in your application code. "
-                "See the migration guide at: "
-                "https://github.com/NVIDIA/NeMo-Guardrails/blob/main/examples/configs/tracing/README.md#migration-guide",
-                DeprecationWarning,
-                stacklevel=2,
-            )
 
         # validate that OpenTelemetry is properly configured
         provider = trace.get_tracer_provider()
