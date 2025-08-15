@@ -395,6 +395,7 @@
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
@@ -516,7 +517,7 @@
 <h1>Self-hosting Llama Guard using vLLM<a class="headerlink" href="#self-hosting-llama-guard-using-vllm" title="Link to this heading">#</a></h1>
 <p>Detailed below are steps to self-host Llama Guard using vLLM and HuggingFace. Alternatively, you can do this using your own custom inference code with the downloaded model weights, too.</p>
 <ol class="arabic simple">
-<li><p>Get access to the Llama Guard model from Meta on HuggingFace. See <a class="reference external" href="https://huggingface.co/meta-llama/LlamaGuard-7b">this page</a> for more details.</p></li>
+<li><p>Get access to the Llama Guard model from Meta on HuggingFace. See <a class="reference external" href="https://huggingface.co/meta-llama/LlamaGuard-7b" rel="noreferer noopener" target="_blank">this page</a> for more details.</p></li>
 <li><p>Log in to Hugging Face with your account token</p></li>
 </ol>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>huggingface-cli<span class="w"> </span>login
@@ -531,7 +532,7 @@ python<span class="w"> </span>-m<span class="w"> </span>vllm.entrypoints.openai.
 </div>
 <p>This will serve up the vLLM inference server on <code class="docutils literal notranslate"><span class="pre">http://localhost:5123/</span></code>.</p>
 <ol class="arabic simple" start="4">
-<li><p>Set the host and port in your bot’s YAML configuration files (<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/examples/configs/llama_guard/README.md">example config</a>). If you’re running the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> app on another server, remember to replace <code class="docutils literal notranslate"><span class="pre">localhost</span></code> with your vLLM server’s public IP address.</p></li>
+<li><p>Set the host and port in your bot’s YAML configuration files (<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/examples/configs/llama_guard/README.md" rel="noreferer noopener" target="_blank">example config</a>). If you’re running the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> app on another server, remember to replace <code class="docutils literal notranslate"><span class="pre">localhost</span></code> with your vLLM server’s public IP address.</p></li>
 </ol>
 </section>
 

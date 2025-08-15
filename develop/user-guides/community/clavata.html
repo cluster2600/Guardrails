@@ -397,6 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
@@ -516,14 +517,14 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="clavata-integration">
 <h1>Clavata Integration<a class="headerlink" href="#clavata-integration" title="Link to this heading">#</a></h1>
-<p><a class="reference external" href="https://clavata.ai">Clavata</a> provides real-time moderation capabilities allowing anyone to detect and filter content. The exact rules of what to filter are up to you, but we do provide a number of rulesets for common issues.</p>
+<p><a class="reference external" href="https://clavata.ai" rel="noreferer noopener" target="_blank">Clavata</a> provides real-time moderation capabilities allowing anyone to detect and filter content. The exact rules of what to filter are up to you, but we do provide a number of rulesets for common issues.</p>
 <p>This integration enables NeMo Guardrails to use Clavata for content moderation, topic moderation, and dialog moderation in both input and output flows.</p>
 <section id="getting-access">
 <h2>Getting Access<a class="headerlink" href="#getting-access" title="Link to this heading">#</a></h2>
 <p>To sign up for Clavata or obtain an API key:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.clavata.ai/">Request access</a> through the website</p></li>
-<li><p>Contact support at <a class="reference external" href="mailto:hello&#37;&#52;&#48;clavata&#46;ai">hello<span>&#64;</span>clavata<span>&#46;</span>ai</a></p></li>
+<li><p><a class="reference external" href="https://www.clavata.ai/" rel="noreferer noopener" target="_blank">Request access</a> through the website</p></li>
+<li><p>Contact support at <a class="reference external" href="mailto:hello&#37;&#52;&#48;clavata&#46;ai" rel="noreferer noopener" target="_blank">hello<span>&#64;</span>clavata<span>&#46;</span>ai</a></p></li>
 </ul>
 </section>
 <section id="setup">
@@ -661,7 +662,7 @@ $is_match = await ClavataCheckAction(text=$some_text, policy=$some_policy_alias)
 <li><p>You can configure different policies and label requirements for input and output flows</p></li>
 <li><p>If no labels are specified for a policy, any label match will be considered a hit</p></li>
 </ul>
-<p>For more information on Clavata and its capabilities, please refer to the <a class="reference external" href="https://clavata.helpscoutdocs.com">Clavata documentation</a>.</p>
+<p>For more information on Clavata and its capabilities, please refer to the <a class="reference external" href="https://clavata.helpscoutdocs.com" rel="noreferer noopener" target="_blank">Clavata documentation</a>.</p>
 </section>
 </section>
 

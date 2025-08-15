@@ -399,6 +399,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
@@ -521,10 +522,10 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="runnablerails">
 <h1>RunnableRails<a class="headerlink" href="#runnablerails" title="Link to this heading">#</a></h1>
-<p>This guide will teach you how to integrate guardrail configurations built with NeMo Guardrails into your LangChain applications. The examples in this guide will focus on using the <a class="reference external" href="https://python.langchain.com/docs/expression_language/">LangChain Expression Language</a> (LCEL).</p>
+<p>This guide will teach you how to integrate guardrail configurations built with NeMo Guardrails into your LangChain applications. The examples in this guide will focus on using the <a class="reference external" href="https://python.langchain.com/docs/expression_language/" rel="noreferer noopener" target="_blank">LangChain Expression Language</a> (LCEL).</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails provides a LangChain native interface that implements the <a class="reference external" href="https://python.langchain.com/docs/expression_language/interface">Runnable Protocol</a>, through the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> class. To get started, you must first load a guardrail configuration and create a <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance:</p>
+<p>NeMo Guardrails provides a LangChain native interface that implements the <a class="reference external" href="https://python.langchain.com/docs/expression_language/interface" rel="noreferer noopener" target="_blank">Runnable Protocol</a>, through the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> class. To get started, you must first load a guardrail configuration and create a <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.integrations.langchain.runnable_rails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableRails</span>
 
@@ -564,7 +565,7 @@
 <span class="n">rag_chain_with_guardrails</span> <span class="o">=</span> <span class="n">guardrails</span> <span class="o">|</span> <span class="n">rag_chain</span>
 </pre></div>
 </div>
-<p>You can also use the same approach to add guardrails only around certain parts of your chain. The example below (extracted from the <a class="reference external" href="https://python.langchain.com/docs/expression_language/how_to/routing">RunnableBranch Documentation</a>), adds guardrails around the “anthropic” and “general” branches inside a <code class="docutils literal notranslate"><span class="pre">RunnableBranch</span></code>:</p>
+<p>You can also use the same approach to add guardrails only around certain parts of your chain. The example below (extracted from the <a class="reference external" href="https://python.langchain.com/docs/expression_language/how_to/routing" rel="noreferer noopener" target="_blank">RunnableBranch Documentation</a>), adds guardrails around the “anthropic” and “general” branches inside a <code class="docutils literal notranslate"><span class="pre">RunnableBranch</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableBranch</span>
 
 <span class="n">branch</span> <span class="o">=</span> <span class="n">RunnableBranch</span><span class="p">(</span>

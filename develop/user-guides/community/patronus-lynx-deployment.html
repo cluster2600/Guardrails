@@ -397,6 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
@@ -520,7 +521,7 @@
 <h2>vLLM<a class="headerlink" href="#vllm" title="Link to this heading">#</a></h2>
 <p>Lynx is fully open source, so you can host it however you like. One simple way is using vLLM.</p>
 <ol class="arabic simple">
-<li><p>Get access to Patronus Lynx on HuggingFace. See <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-70B-Instruct">here</a> for the 70B parameters variant, and <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-8B-Instruct">here</a> for the 8B parameters variant. The examples below use the <code class="docutils literal notranslate"><span class="pre">70B</span></code> parameters model, but there’s no additional configuration to deploy the smaller model, so you can swap the model name references out with <code class="docutils literal notranslate"><span class="pre">8B</span></code>.</p></li>
+<li><p>Get access to Patronus Lynx on HuggingFace. See <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-70B-Instruct" rel="noreferer noopener" target="_blank">here</a> for the 70B parameters variant, and <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-8B-Instruct" rel="noreferer noopener" target="_blank">here</a> for the 8B parameters variant. The examples below use the <code class="docutils literal notranslate"><span class="pre">70B</span></code> parameters model, but there’s no additional configuration to deploy the smaller model, so you can swap the model name references out with <code class="docutils literal notranslate"><span class="pre">8B</span></code>.</p></li>
 <li><p>Log in to Hugging Face</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>huggingface-cli<span class="w"> </span>login
@@ -553,8 +554,8 @@ python<span class="w"> </span>-m<span class="w"> </span>vllm.entrypoints.openai.
 <p>You can also run Patronus Lynx 8B on your personal computer using Ollama!</p>
 <ol class="arabic simple">
 <li><p>Install Ollama: https://ollama.com/download.</p></li>
-<li><p>Get access to a GGUF quantized version of Lynx 8B on Huggingface. Check it out <a class="reference external" href="https://huggingface.co/PatronusAI/Lynx-8B-Instruct-Q4_K_M-GGUF">here</a>.</p></li>
-<li><p>Download the gguf model from the repository <a class="reference external" href="https://huggingface.co/PatronusAI/Lynx-8B-Instruct-Q4_K_M-GGUF/blob/main/patronus-lynx-8b-instruct-q4_k_m.gguf">here</a>. This may take a few minutes.</p></li>
+<li><p>Get access to a GGUF quantized version of Lynx 8B on Huggingface. Check it out <a class="reference external" href="https://huggingface.co/PatronusAI/Lynx-8B-Instruct-Q4_K_M-GGUF" rel="noreferer noopener" target="_blank">here</a>.</p></li>
+<li><p>Download the gguf model from the repository <a class="reference external" href="https://huggingface.co/PatronusAI/Lynx-8B-Instruct-Q4_K_M-GGUF/blob/main/patronus-lynx-8b-instruct-q4_k_m.gguf" rel="noreferer noopener" target="_blank">here</a>. This may take a few minutes.</p></li>
 <li><p>Create a file called <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code> with the following contents:</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>FROM<span class="w"> </span><span class="s2">&quot;./patronus-lynx-8b-instruct-q4_k_m.gguf&quot;</span>

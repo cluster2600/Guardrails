@@ -397,6 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
@@ -516,7 +517,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="alignscore-integration">
 <h1>AlignScore Integration<a class="headerlink" href="#alignscore-integration" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails provides out-of-the-box support for the <a class="reference external" href="https://aclanthology.org/2023.acl-long.634.pdf">AlignScore metric (Zha et al.)</a>, which uses a RoBERTa-based model for scoring factual consistency in model responses with respect to the knowledge base.</p>
+<p>NeMo Guardrails provides out-of-the-box support for the <a class="reference external" href="https://aclanthology.org/2023.acl-long.634.pdf" rel="noreferer noopener" target="_blank">AlignScore metric (Zha et al.)</a>, which uses a RoBERTa-based model for scoring factual consistency in model responses with respect to the knowledge base.</p>
 <p>In our testing, we observed an average latency of ~220ms on hosting AlignScore as an HTTP service, and ~45ms on direct inference with the model loaded in-memory. This makes it much faster than the self-check method. However, this method requires an on-prem deployment of the publicly available AlignScore model. Please see the <a class="reference internal" href="../advanced/align-score-deployment.html"><span class="std std-doc">AlignScore Deployment</span></a> guide for more details.</p>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>

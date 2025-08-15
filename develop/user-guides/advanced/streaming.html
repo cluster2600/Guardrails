@@ -399,6 +399,7 @@
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
@@ -693,7 +694,7 @@
 <span class="n">info</span><span class="o">.</span><span class="n">print_llm_calls_summary</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>For more information about streaming token usage support across different providers, refer to the <a class="reference external" href="https://python.langchain.com/docs/how_to/chat_token_usage_tracking/#streaming">LangChain documentation on token usage tracking</a>. For detailed information about accessing generation logs and token usage, see the <a class="reference internal" href="generation-options.html#detailed-logging-information"><span class="std std-ref">Generation Options</span></a> and <a class="reference internal" href="../detailed-logging/README.html"><span class="std std-doc">Detailed Logging</span></a> documentation.</p>
+<p>For more information about streaming token usage support across different providers, refer to the <a class="reference external" href="https://python.langchain.com/docs/how_to/chat_token_usage_tracking/#streaming" rel="noreferer noopener" target="_blank">LangChain documentation on token usage tracking</a>. For detailed information about accessing generation logs and token usage, see the <a class="reference internal" href="generation-options.html#detailed-logging-information"><span class="std std-ref">Generation Options</span></a> and <a class="reference internal" href="../detailed-logging/README.html"><span class="std std-doc">Detailed Logging</span></a> documentation.</p>
 </section>
 <section id="server-api">
 <h3>Server API<a class="headerlink" href="#server-api" title="Link to this heading">#</a></h3>
@@ -715,7 +716,7 @@
 <section id="streaming-for-llms-deployed-using-huggingfacepipeline">
 <h3>Streaming for LLMs deployed using HuggingFacePipeline<a class="headerlink" href="#streaming-for-llms-deployed-using-huggingfacepipeline" title="Link to this heading">#</a></h3>
 <p>We also support streaming for LLMs deployed using <code class="docutils literal notranslate"><span class="pre">HuggingFacePipeline</span></code>.
-One example is provided in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/llm/hf_pipeline_dolly/README.md">HF Pipeline Dolly</a> configuration.</p>
+One example is provided in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/llm/hf_pipeline_dolly/README.md" rel="noreferer noopener" target="_blank">HF Pipeline Dolly</a> configuration.</p>
 <p>To use streaming for HF Pipeline LLMs, you first need to set the streaming flag in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </pre></div>

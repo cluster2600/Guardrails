@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>1 Hello World &#8212; NVIDIA NeMo Guardrails</title>
+    <title>KV Cache Reuse for NemoGuard NIM &#8212; NVIDIA NeMo Guardrails</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started/1-hello-world/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/kv-cache-reuse';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -54,9 +54,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/getting-started/1-hello-world/index.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/kv-cache-reuse.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Blueprint with NemoGuard NIMs" href="safeguarding-ai-virtual-assistant-blueprint.html" />
+    <link rel="prev" title="NemoGuard JailbreakDetect Deployment" href="nemoguard-jailbreakdetect-deployment.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -207,6 +209,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -307,94 +313,94 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA NeMo Guardrails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">About NeMo Guardrails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/general-options.html">General Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/guardrails-library.html">Guardrails Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/guardrails-process.html">Guardrails Process</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/llm-support.html">LLM Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/multimodal.html">Multimodal Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/python-api.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/cli.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/server-guide.html">Server Guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/langchain/langchain-integration.html">LangChain Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/langchain/runnable-rails.html">RunnableRails</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guides/langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../user-guides/langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../colang-language-syntax-guide.html">Colang Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../llm-support.html">LLM Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multimodal.html">Multimodal Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server-guide.html">Server Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guides/langchain/runnable-as-action/index.html">Runnable-As-Action</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../user-guides/langchain/runnable-as-action/README.html">Runnable as Action</a></li>
-</ul>
-</details></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/detailed-logging/README.html">Output Variables</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/tracing/quick-start.html">Quick Start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/tracing/troubleshooting.html">Troubleshooting</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/jailbreak-detection-heuristics/README.html">Using Jailbreak Detection Heuristics</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/llm/index.html">LLMs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guides/llm/nvidia-ai-endpoints/index.html">NVIDIA AI Endpoints</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../user-guides/llm/nvidia-ai-endpoints/README.html">Using LLMs hosted on NVIDIA API Catalog</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../user-guides/llm/vertexai/index.html">Vertex AI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../user-guides/llm/vertexai/README.html">Using LLMs hosted on Vertex AI</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/runnable-as-action/index.html">Runnable-As-Action</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../langchain/runnable-as-action/README.html">Runnable as Action</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../user-guides/multi-config-api/index.html">Multi Config API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../user-guides/multi-config-api/README.html">Multi-config API</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/migration-guide.html">Migrating from Colang 1 to Colang 2</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../jailbreak-detection-heuristics/README.html">Using Jailbreak Detection Heuristics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../llm/index.html">LLMs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../llm/nvidia-ai-endpoints/index.html">NVIDIA AI Endpoints</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../llm/nvidia-ai-endpoints/README.html">Using LLMs hosted on NVIDIA API Catalog</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../llm/vertexai/index.html">Vertex AI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../llm/vertexai/README.html">Using LLMs hosted on Vertex AI</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multi-config-api/index.html">Multi Config API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multi-config-api/README.html">Multi-config API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration-guide.html">Migrating from Colang 1 to Colang 2</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Uses</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/prompt-customization.html">Prompt Customization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/using-docker.html">NeMo Guardrails with Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/align-score-deployment.html">AlignScore Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/extract-user-provided-values.html">Extract User-provided Values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/bot-message-instructions.html">Bot Message Instructions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generation-options.html">Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prompt-customization.html">Prompt Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding-search-providers.html">Embedding Search Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-docker.html">NeMo Guardrails with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="align-score-deployment.html">AlignScore Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extract-user-provided-values.html">Extract User-provided Values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bot-message-instructions.html">Bot Message Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event-based-api.html">Event-based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -407,13 +413,13 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guardrails with Colang</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="README.html">Hello World</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../3-demo-use-case/README.html">Demo Use Case</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../4-input-rails/README.html">Input Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../5-output-rails/README.html">Output Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../6-topical-rails/README.html">Topical Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../7-rag/README.html">Retrieval-Augmented Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/1-hello-world/README.html">Hello World</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/3-demo-use-case/README.html">Demo Use Case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/4-input-rails/README.html">Input Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/5-output-rails/README.html">Output Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/6-topical-rails/README.html">Topical Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/7-rag/README.html">Retrieval-Augmented Generation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Colang 2.0</span></p>
 <ul class="nav bd-sidenav">
@@ -494,7 +500,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">1 Hello World</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">KV Cache Reuse for NemoGuard NIM</span></li>
   </ul>
 </nav>
 </div>
@@ -511,23 +517,48 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="hello-world">
-<h1>1 Hello World<a class="headerlink" href="#hello-world" title="Link to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="README.html">Hello World</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="README.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#step-1-create-a-new-guardrails-configuration">Step 1: create a new guardrails configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#step-2-load-the-guardrails-configuration">Step 2: load the guardrails configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#step-3-use-the-guardrails-configuration">Step 3: use the guardrails configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#step-4-add-your-first-guardrail">Step 4: add your first guardrail</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#cli-chat">CLI Chat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#server-and-chat-ui">Server and Chat UI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#next">Next</a></li>
-</ul>
-</li>
-</ul>
+  <section class="tex2jax_ignore mathjax_ignore" id="kv-cache-reuse-for-nemoguard-nim">
+<h1>KV Cache Reuse for NemoGuard NIM<a class="headerlink" href="#kv-cache-reuse-for-nemoguard-nim" title="Link to this heading">#</a></h1>
+<p>When you configure NeMo Guardrails to call NemoGuard NIMs in response to a client request, every NIM call interjecting the input and response adds to the inference latency.
+The application LLM can only begin generating a response after all input checks, which may <a class="reference internal" href="../configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">run in parallel</span></a>, are complete. Additionally, response latency is introduced if you run the guardrail checks on the application LLM’s response; the larger the response, the longer it takes to check the response.</p>
+<p><a class="reference external" href="https://docs.nvidia.com/nim/large-language-models/latest/kv-cache-reuse.html" rel="noreferer noopener" target="_blank">KV Cache Reuse</a> (also known as prefix-caching) is a feature of the NVIDIA NIM for LLMs that provides a performance improvement by reusing the decoder layers for the prompt.</p>
+<section id="how-key-value-cache-reuse-works">
+<h2>How Key-Value Cache Reuse Works<a class="headerlink" href="#how-key-value-cache-reuse-works" title="Link to this heading">#</a></h2>
+<p>For example, the NemoGuard Content Safety NIM is a fine-tuned Llama 3.1-Instruct using LoRA, and then merging the LoRA weights back into the model weights. When you send requests to the Guardrails client, it calls the Content Safety NIM with the same prompt used for fine-tuning, and inserts the user-supplied query and optional LLM response. The Content Safety NIM responds with a JSON object that classifies the user and response as safe or unsafe.</p>
+<p>Key-Value (KV) cache reuse is the most effective for LLM NIMs that use the same system prompt for all calls up to the point where user query and LLM response are injected. For example, the <a class="reference external" href="https://docs.api.nvidia.com/nim/reference/nvidia-llama-3_1-nemoguard-8b-content-safety#prompt-format" rel="noreferer noopener" target="_blank">system prompt for the NemoGuard Content Safety NIM</a> is about 370 tokens long before the user and LLM response are added. With KV cache reuse, recomputing the decoder layers for these tokens is only necessary on the first inference call. This means that, when the application LLM’s response is typically small, the overall latency is heavily dependent on the prefill stage rather than the generation. For more information about pre-fill and decoding phases in application LLMs, see the blog post <a class="reference external" href="https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization/" rel="noreferer noopener" target="_blank">Mastering LLM Techniques: Inference Optimization</a>.</p>
+<p>You can enable KV cache reuse by setting the <code class="docutils literal notranslate"><span class="pre">NIM_ENABLE_KV_CACHE_REUSE</span></code> variable to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+</section>
+<section id="code-sample">
+<h2>Code Sample<a class="headerlink" href="#code-sample" title="Link to this heading">#</a></h2>
+<p>To enable KV cache reuse for the Content Safety NIM, set the <code class="docutils literal notranslate"><span class="pre">NIM_ENABLE_KV_CACHE_REUSE</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">1</span></code> when you run the Docker container for the NemoGuard NIM microservice.</p>
+<p>For example, to run the Content Safety NemoGuard NIM microservice with KV cache reuse, add <code class="docutils literal notranslate"><span class="pre">NIM_ENABLE_KV_CACHE_REUSE=1</span></code> to the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;nemoguard-nim-name&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span>&lt;nemoguard-nim-image-uri&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>&lt;local-nim-cache-directory&gt;
+
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--network<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--gpus<span class="o">=</span><span class="s1">&#39;&quot;device=0&quot;&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--memory<span class="o">=</span>16g<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cpus<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_ENABLE_KV_CACHE_REUSE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NGC_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_SERVED_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_CUSTOM_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>:<span class="s2">&quot;/opt/nim/.cache/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">$NIM_IMAGE</span>
+</pre></div>
 </div>
+<p>To disable KV cache reuse, you can either remove the <code class="docutils literal notranslate"><span class="pre">-e</span> <span class="pre">NIM_ENABLE_KV_CACHE_REUSE=1</span></code> line or set the variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>If you have an existing Docker container running the NIM, you can update the environment variable by running the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span><span class="nv">$MODEL_NAME</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;export NIM_ENABLE_KV_CACHE_REUSE=1&quot;</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -540,6 +571,24 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="nemoguard-jailbreakdetect-deployment.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NemoGuard JailbreakDetect Deployment</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="safeguarding-ai-virtual-assistant-blueprint.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Blueprint with NemoGuard NIMs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -547,9 +596,26 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-key-value-cache-reuse-works">How Key-Value Cache Reuse Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-sample">Code Sample</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

@@ -395,6 +395,7 @@
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
@@ -514,8 +515,8 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="nested-asyncio-loop">
 <h1>Nested AsyncIO Loop<a class="headerlink" href="#nested-asyncio-loop" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails is an async-first toolkit, i.e., the core functionality is implemented using async functions. To provide a blocking API, the toolkit must invoke async functions inside synchronous code using <code class="docutils literal notranslate"><span class="pre">asyncio.run</span></code>. However, the current Python implementation for <code class="docutils literal notranslate"><span class="pre">asyncio</span></code> does not allow “nested event loops”. This issue is being discussed by the Python core team and, most likely, support will be added (see <a class="reference external" href="https://github.com/python/cpython/issues/66435">GitHub Issue 66435</a> and <a class="reference external" href="https://github.com/python/cpython/pull/93338">Pull Request 93338</a>).</p>
-<p>Meanwhile, NeMo Guardrails makes use of <a class="reference external" href="https://github.com/erdewit/nest_asyncio">nest_asyncio</a>. The patching is applied when the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> package is loaded the first time.</p>
+<p>NeMo Guardrails is an async-first toolkit, i.e., the core functionality is implemented using async functions. To provide a blocking API, the toolkit must invoke async functions inside synchronous code using <code class="docutils literal notranslate"><span class="pre">asyncio.run</span></code>. However, the current Python implementation for <code class="docutils literal notranslate"><span class="pre">asyncio</span></code> does not allow “nested event loops”. This issue is being discussed by the Python core team and, most likely, support will be added (see <a class="reference external" href="https://github.com/python/cpython/issues/66435" rel="noreferer noopener" target="_blank">GitHub Issue 66435</a> and <a class="reference external" href="https://github.com/python/cpython/pull/93338" rel="noreferer noopener" target="_blank">Pull Request 93338</a>).</p>
+<p>Meanwhile, NeMo Guardrails makes use of <a class="reference external" href="https://github.com/erdewit/nest_asyncio" rel="noreferer noopener" target="_blank">nest_asyncio</a>. The patching is applied when the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> package is loaded the first time.</p>
 <p>If the blocking API is not needed, or the <code class="docutils literal notranslate"><span class="pre">nest_asyncio</span></code> patching causes unexpected problems, you can disable it by setting the <code class="docutils literal notranslate"><span class="pre">DISABLE_NEST_ASYNCIO=True</span></code> environment variable.</p>
 </section>
 
