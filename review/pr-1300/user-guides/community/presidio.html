@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=3f2861e3"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.15.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -317,7 +317,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -341,6 +350,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -381,12 +397,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -501,7 +517,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="presidio-integration">
 <h1>Presidio Integration<a class="headerlink" href="#presidio-integration" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails supports detecting sensitive data out-of-the-box using <a class="reference external" href="https://github.com/Microsoft/presidio">Presidio</a>, which provides fast identification and anonymization modules for private entities in text such as credit card numbers, names, locations, social security numbers, bitcoin wallets, US phone numbers, financial data and more. You can detect sensitive data on user input, bot output, or the relevant chunks retrieved from the knowledge base.</p>
+<p>NeMo Guardrails supports detecting sensitive data out-of-the-box using <a class="reference external" href="https://github.com/Microsoft/presidio" rel="noreferer noopener" target="_blank">Presidio</a>, which provides fast identification and anonymization modules for private entities in text such as credit card numbers, names, locations, social security numbers, bitcoin wallets, US phone numbers, financial data and more. You can detect sensitive data on user input, bot output, or the relevant chunks retrieved from the knowledge base.</p>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>To use the built-in sensitive data detection rails, you must install Presidio and download the <code class="docutils literal notranslate"><span class="pre">en_core_web_lg</span></code> model for <code class="docutils literal notranslate"><span class="pre">spacy</span></code>.</p>
@@ -531,7 +547,7 @@ python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
-<p>For the complete list of supported entities, please refer to <a class="reference external" href="https://microsoft.github.io/presidio/supported_entities/">Presidio - Supported Entities</a> page.</p>
+<p>For the complete list of supported entities, please refer to <a class="reference external" href="https://microsoft.github.io/presidio/supported_entities/" rel="noreferer noopener" target="_blank">Presidio - Supported Entities</a> page.</p>
 <p>Also, you have to add the <code class="docutils literal notranslate"><span class="pre">detect</span> <span class="pre">sensitive</span> <span class="pre">data</span> <span class="pre">on</span> <span class="pre">input</span></code> or <code class="docutils literal notranslate"><span class="pre">mask</span> <span class="pre">sensitive</span> <span class="pre">data</span> <span class="pre">on</span> <span class="pre">input</span></code> flows to the list of input rails:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
@@ -605,12 +621,12 @@ python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
-<p>For additional guidance on handling undetected PII entities and minimizing false negatives, refer to the <a class="reference external" href="https://microsoft.github.io/presidio/faq/#what-can-i-do-if-presidio-does-not-detect-some-of-the-pii-entities-in-my-data-false-negatives">Presidio FAQ</a>.</p>
+<p>For additional guidance on handling undetected PII entities and minimizing false negatives, refer to the <a class="reference external" href="https://microsoft.github.io/presidio/faq/#what-can-i-do-if-presidio-does-not-detect-some-of-the-pii-entities-in-my-data-false-negatives" rel="noreferer noopener" target="_blank">Presidio FAQ</a>.</p>
 </section>
 <section id="custom-recognizers">
 <h2>Custom Recognizers<a class="headerlink" href="#custom-recognizers" title="Link to this heading">#</a></h2>
 <p>If you have custom entities that you want to detect, you can define custom <em>recognizers</em>.
-For more details, check out this <a class="reference external" href="https://microsoft.github.io/presidio/tutorial/08_no_code/">tutorial</a> and this <a class="reference external" href="https://github.com/microsoft/presidio/blob/main/presidio-analyzer/presidio_analyzer/conf/example_recognizers.yaml">example</a>.</p>
+For more details, check out this <a class="reference external" href="https://microsoft.github.io/presidio/tutorial/08_no_code/" rel="noreferer noopener" target="_blank">tutorial</a> and this <a class="reference external" href="https://github.com/microsoft/presidio/blob/main/presidio-analyzer/presidio_analyzer/conf/example_recognizers.yaml" rel="noreferer noopener" target="_blank">example</a>.</p>
 <p>Below is an example of configuring a <code class="docutils literal notranslate"><span class="pre">TITLE</span></code> entity and detecting it inside the input rail.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
@@ -635,7 +651,7 @@ For more details, check out this <a class="reference external" href="https://mic
 </section>
 <section id="custom-detection">
 <h2>Custom Detection<a class="headerlink" href="#custom-detection" title="Link to this heading">#</a></h2>
-<p>If you want to implement a completely different sensitive data detection mechanism, you can override the default actions <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/sensitive_data_detection/actions.py"><code class="docutils literal notranslate"><span class="pre">detect_sensitive_data</span></code></a> and <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/sensitive_data_detection/actions.py"><code class="docutils literal notranslate"><span class="pre">mask_sensitive_data</span></code></a>.</p>
+<p>If you want to implement a completely different sensitive data detection mechanism, you can override the default actions <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/sensitive_data_detection/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">detect_sensitive_data</span></code></a> and <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/sensitive_data_detection/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">mask_sensitive_data</span></code></a>.</p>
 </section>
 </section>
 

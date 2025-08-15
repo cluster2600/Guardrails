@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../_static/documentation_options.js?v=3f2861e3"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.15.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -58,7 +58,7 @@
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="LLM Vulnerability Scanning" href="llm-vulnerability-scanning.html" />
-    <link rel="prev" title="Red Teaming" href="../security/red-teaming.html" />
+    <link rel="prev" title="Security Guidelines" href="../security/guidelines.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -343,6 +352,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../user-guides/detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -383,12 +399,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="current nav bd-sidenav">
@@ -539,8 +555,8 @@ current evaluation, this is the step.</p></li>
 <h3>Evaluation Results<a class="headerlink" href="#evaluation-results" title="Link to this heading">#</a></h3>
 <p>For the initial evaluation experiments for dialog rails, we have used two datasets for conversational NLU:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/rahul051296/small-talk-rasa-stack"><em>chit-chat</em></a> dataset</p></li>
-<li><p><a class="reference external" href="https://github.com/PolyAI-LDN/task-specific-datasets/tree/master/banking_data"><em>banking</em></a> dataset</p></li>
+<li><p><a class="reference external" href="https://github.com/rahul051296/small-talk-rasa-stack" rel="noreferer noopener" target="_blank"><em>chit-chat</em></a> dataset</p></li>
+<li><p><a class="reference external" href="https://github.com/PolyAI-LDN/task-specific-datasets/tree/master/banking_data" rel="noreferer noopener" target="_blank"><em>banking</em></a> dataset</p></li>
 </ul>
 <p>The datasets were transformed into a NeMo Guardrails app by defining canonical forms for each intent, specific dialogue flows, and even bot messages (for the <em>chit-chat</em> dataset alone).
 The two datasets have a large number of user intents, thus dialog rails. One of them is very generic and has higher-grained intents (<em>chit-chat</em>), while the <em>banking</em> dataset is domain-specific and more fine-grained.
@@ -554,7 +570,7 @@ Therefore, currently, we only release the results for OpenAI models, but more re
 <li><p>Each step in the three-step approach (user intent, next step/bot intent, bot message) used by Guardrails offers an improvement in performance.</p></li>
 <li><p>It is important to have at least k=3 samples in the vector database for each user intent (canonical form) to achieve good performance.</p></li>
 <li><p>Some models (e.g., gpt-3.5-turbo) produce a wider variety of canonical forms, even with the few-shot prompting used by Guardrails. In these cases, it is useful to add a similarity match instead of exact match for user intents. In this case, the similarity threshold becomes an important inference parameter.</p></li>
-<li><p>Initial results show that even small models, e.g. <a class="reference external" href="https://huggingface.co/databricks/dolly-v2-3b">dolly-v2-3b</a>, <a class="reference external" href="https://huggingface.co/lmsys/vicuna-7b-v1.3">vicuna-7b-v1.3</a>, <a class="reference external" href="https://huggingface.co/mosaicml/mpt-7b-instruct">mpt-7b-instruct</a>, <a class="reference external" href="https://huggingface.co/tiiuae/falcon-7b-instruct">falcon-7b-instruct</a> have good performance for topical rails.</p></li>
+<li><p>Initial results show that even small models, e.g. <a class="reference external" href="https://huggingface.co/databricks/dolly-v2-3b" rel="noreferer noopener" target="_blank">dolly-v2-3b</a>, <a class="reference external" href="https://huggingface.co/lmsys/vicuna-7b-v1.3" rel="noreferer noopener" target="_blank">vicuna-7b-v1.3</a>, <a class="reference external" href="https://huggingface.co/mosaicml/mpt-7b-instruct" rel="noreferer noopener" target="_blank">mpt-7b-instruct</a>, <a class="reference external" href="https://huggingface.co/tiiuae/falcon-7b-instruct" rel="noreferer noopener" target="_blank">falcon-7b-instruct</a> have good performance for topical rails.</p></li>
 <li><p>Using a single call for topical rails shows similar results to the default method (which uses up to 3 LLM calls for generating the final bot message) in most cases for <code class="docutils literal notranslate"><span class="pre">text-davinci-003</span></code> model.</p></li>
 <li><p>Initial experiments show that using compact prompts has similar or even better performance on these two datasets compared to using the longer prompts.</p></li>
 </ul>
@@ -911,7 +927,7 @@ Therefore, currently, we only release the results for OpenAI models, but more re
 </section>
 <section id="alignscore">
 <h4>AlignScore<a class="headerlink" href="#alignscore" title="Link to this heading">#</a></h4>
-<p>This approach is based on the AlignScore model <a class="reference external" href="https://aclanthology.org/2023.acl-long.634.pdf">Zha et al. 2023</a>. Given an evidence passage and the predicted answer, the model is finetuned to predict that they are aligned when:</p>
+<p>This approach is based on the AlignScore model <a class="reference external" href="https://aclanthology.org/2023.acl-long.634.pdf" rel="noreferer noopener" target="_blank">Zha et al. 2023</a>. Given an evidence passage and the predicted answer, the model is finetuned to predict that they are aligned when:</p>
 <ol class="arabic simple">
 <li><p>All information in the predicted answer is present in the evidence passage, and</p></li>
 <li><p>None of the information in the predicted answer contradicts the evidence passage.
@@ -949,7 +965,7 @@ The response is a value between 0.0 and 1.0. In our testing, the best average ac
 <section id="id1">
 <h4>Evaluation Results<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
 <p>Evaluation Date - Nov 23, 2023 (Mar 7 2024 for <code class="docutils literal notranslate"><span class="pre">gemini-1.0-pro</span></code>).</p>
-<p>We evaluate the performance of the fact-checking rail on the <a class="reference external" href="https://huggingface.co/datasets/ms_marco">MSMARCO</a> dataset using the Self-Check and the AlignScore approaches. To build the dataset, we randomly sample 100 (question, correct answer, evidence) triples, and then, for each triple, build a non-factual or incorrect answer to yield 100 (question, incorrect answer, evidence) triples.</p>
+<p>We evaluate the performance of the fact-checking rail on the <a class="reference external" href="https://huggingface.co/datasets/ms_marco" rel="noreferer noopener" target="_blank">MSMARCO</a> dataset using the Self-Check and the AlignScore approaches. To build the dataset, we randomly sample 100 (question, correct answer, evidence) triples, and then, for each triple, build a non-factual or incorrect answer to yield 100 (question, incorrect answer, evidence) triples.</p>
 <p>We breakdown the performance into positive entailment accuracy and negative entailment accuracy. Positive entailment accuracy is the accuracy of the model in correctly identifying answers that are grounded in the evidence passage. Negative entailment accuracy is the accuracy of the model in correctly identifying answers that are <strong>not</strong> supported in the evidence. Details on how to create synthetic negative examples can be found <span class="xref myst">here</span></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1041,7 +1057,7 @@ For more details, consult the [Guardrails library](<a class="reference internal"
 </section>
 <section id="id4">
 <h4>Evaluation Results<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
-<p>We evaluate the moderation rails on the Anthropic <a class="reference external" href="https://huggingface.co/datasets/Anthropic/hh-rlhf/tree/main/red-team-attempts">Red Team Attempts dataset</a> and the Anthropic <a class="reference external" href="https://huggingface.co/datasets/Anthropic/hh-rlhf/tree/main/helpful-base">Helpful Base dataset</a>. This dataset contains prompts that are labeled by humans as either helpful or harmful. We randomly sample 100 prompts from each of the splits and run the evaluation using OpenAI <code class="docutils literal notranslate"><span class="pre">text-davinci-003</span></code> and <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo</span></code> models.</p>
+<p>We evaluate the moderation rails on the Anthropic <a class="reference external" href="https://huggingface.co/datasets/Anthropic/hh-rlhf/tree/main/red-team-attempts" rel="noreferer noopener" target="_blank">Red Team Attempts dataset</a> and the Anthropic <a class="reference external" href="https://huggingface.co/datasets/Anthropic/hh-rlhf/tree/main/helpful-base" rel="noreferer noopener" target="_blank">Helpful Base dataset</a>. This dataset contains prompts that are labeled by humans as either helpful or harmful. We randomly sample 100 prompts from each of the splits and run the evaluation using OpenAI <code class="docutils literal notranslate"><span class="pre">text-davinci-003</span></code> and <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo</span></code> models.</p>
 <p>Evaluation Date - June 02, 2023 (Mar 13 2024 for <code class="docutils literal notranslate"><span class="pre">gemini-1.0-pro</span></code>).</p>
 <p>We breakdown the performance of the models on the two rails into the following metrics:</p>
 <ul class="simple">
@@ -1085,7 +1101,7 @@ For more details, consult the [Guardrails library](<a class="reference internal"
 </tbody>
 </table>
 </div>
-<p><sup>*</sup> Note that as of Mar 13, 2024 <code class="docutils literal notranslate"><span class="pre">gemini-1.0-pro</span></code> when queried via the Vertex AI API occasionally produces <a class="reference external" href="https://github.com/GoogleCloudPlatform/generative-ai/issues/344">this error</a>. Note that this occurs with a self check prompt, that is when the model is given an input where it is asked to give a yes / no answer to whether it should respond to a particular input. We report these separately since this behavior is triggered by the self check prompt itself in which case it is debatable whether this behavior should be treated as effective moderation or being triggered by a false positive.</p>
+<p><sup>*</sup> Note that as of Mar 13, 2024 <code class="docutils literal notranslate"><span class="pre">gemini-1.0-pro</span></code> when queried via the Vertex AI API occasionally produces <a class="reference external" href="https://github.com/GoogleCloudPlatform/generative-ai/issues/344" rel="noreferer noopener" target="_blank">this error</a>. Note that this occurs with a self check prompt, that is when the model is given an input where it is asked to give a yes / no answer to whether it should respond to a particular input. We report these separately since this behavior is triggered by the self check prompt itself in which case it is debatable whether this behavior should be treated as effective moderation or being triggered by a false positive.</p>
 <section id="llamaguard-based-moderation-rails-performance">
 <h5>LlamaGuard-based Moderation Rails Performance<a class="headerlink" href="#llamaguard-based-moderation-rails-performance" title="Link to this heading">#</a></h5>
 <p>Evaluation date: January 8, 2024.</p>
@@ -1159,7 +1175,7 @@ Number of user inputs labeled harmful: 730 (7.2%)</p>
 </section>
 <section id="hallucination-rails">
 <h3>Hallucination Rails<a class="headerlink" href="#hallucination-rails" title="Link to this heading">#</a></h3>
-<p>For general questions that the model uses parametric knowledge to answer, we can define a hallucination rail to detect when the model is potentially making up facts. The default implementation of the hallucination rails is based on <a class="reference external" href="https://arxiv.org/abs/2303.08896">SelfCheckGPT</a>.</p>
+<p>For general questions that the model uses parametric knowledge to answer, we can define a hallucination rail to detect when the model is potentially making up facts. The default implementation of the hallucination rails is based on <a class="reference external" href="https://arxiv.org/abs/2303.08896" rel="noreferer noopener" target="_blank">SelfCheckGPT</a>.</p>
 <ul class="simple">
 <li><p>Given a question, we sample multiple answers from the model, often at a high temperature (temp=1.0).</p></li>
 <li><p>We then check if the answers are consistent with each other. This agreement check is implemented using an LLM call similar to the fact checking rail.</p></li>
@@ -1226,7 +1242,7 @@ For more details, consult the [Guardrails library](<a class="reference internal"
 </table>
 </div>
 <p>We find that gpt-3.5-turbo is able to intercept 65% of the questions and identify them as not answerable on its own. Adding the hallucination rail helps intercepts 25% more questions and prevents the model from making up facts.</p>
-<p><sup>*</sup> Vertex AI models sometimes error out on hallucination and moderation tests due to <a class="reference external" href="https://github.com/GoogleCloudPlatform/generative-ai/issues/344">this issue</a>.</p>
+<p><sup>*</sup> Vertex AI models sometimes error out on hallucination and moderation tests due to <a class="reference external" href="https://github.com/GoogleCloudPlatform/generative-ai/issues/344" rel="noreferer noopener" target="_blank">this issue</a>.</p>
 </section>
 </section>
 </section>
@@ -1243,12 +1259,12 @@ For more details, consult the [Guardrails library](<a class="reference internal"
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../security/red-teaming.html"
+       href="../security/guidelines.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Red Teaming</p>
+        <p class="prev-next-title">Security Guidelines</p>
       </div>
     </a>
     <a class="right-next"

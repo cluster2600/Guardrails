@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=3f2861e3"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.15.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -317,7 +317,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -341,6 +350,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -381,12 +397,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -501,7 +517,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="pangea-ai-guard-integration">
 <h1>Pangea AI Guard integration<a class="headerlink" href="#pangea-ai-guard-integration" title="Link to this heading">#</a></h1>
-<p>The Pangea guardrail uses configurable detection policies (called <em>recipes</em>) from the <a class="reference external" href="https://pangea.cloud/docs/ai-guard/">AI Guard service</a> to identify and mitigate risks in AI application traffic, including:</p>
+<p>The Pangea guardrail uses configurable detection policies (called <em>recipes</em>) from the <a class="reference external" href="https://pangea.cloud/docs/ai-guard/" rel="noreferer noopener" target="_blank">AI Guard service</a> to identify and mitigate risks in AI application traffic, including:</p>
 <ul class="simple">
 <li><p>Prompt injection attacks (with over 99% efficacy)</p></li>
 <li><p>50+ types of PII and sensitive content, with support for custom patterns</p></li>
@@ -574,15 +590,15 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">https:/
 <ul class="simple">
 <li><p>Explore example configurations for integrating Pangea AI Guard with your preferred Colang version:</p>
 <ul>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/pangea">Pangea AI Guard for NeMo Guardrails v1</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/pangea_v2">Pangea AI Guard for NeMo Guardrails v2</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/pangea_v2_no_llm">Pangea AI Guard without LLM (guardrails only)</a> – Use this setup to evaluate AI Guard’s detection and response capabilities independently.</p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/pangea" rel="noreferer noopener" target="_blank">Pangea AI Guard for NeMo Guardrails v1</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/pangea_v2" rel="noreferer noopener" target="_blank">Pangea AI Guard for NeMo Guardrails v2</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/pangea_v2_no_llm" rel="noreferer noopener" target="_blank">Pangea AI Guard without LLM (guardrails only)</a> – Use this setup to evaluate AI Guard’s detection and response capabilities independently.</p></li>
 </ul>
 </li>
-<li><p>Adjust your detection policies to fit your application’s risk profile. See the <a class="reference external" href="https://pangea.cloud/docs/ai-guard/recipes">AI Guard Recipes</a> documentation for configuration details.</p></li>
-<li><p>Enable <a class="reference external" href="https://pangea.cloud/docs/ai-guard/recipes#add-webhooks-to-detectors">AI Guard webhooks</a> to receive real-time alerts for detections in your NeMo Guardrails-powered application.</p></li>
-<li><p>Monitor and analyze detection activity in the <a class="reference external" href="https://pangea.cloud/docs/ai-guard/activity-log">AI Guard Activity Log</a> for auditing and attribution.</p></li>
-<li><p>Learn more about <a class="reference external" href="https://pangea.cloud/docs/deployment-models/">AI Guard Deployment Options</a> to understand how and where AI Guard can run to protect your AI applications.</p></li>
+<li><p>Adjust your detection policies to fit your application’s risk profile. See the <a class="reference external" href="https://pangea.cloud/docs/ai-guard/recipes" rel="noreferer noopener" target="_blank">AI Guard Recipes</a> documentation for configuration details.</p></li>
+<li><p>Enable <a class="reference external" href="https://pangea.cloud/docs/ai-guard/recipes#add-webhooks-to-detectors" rel="noreferer noopener" target="_blank">AI Guard webhooks</a> to receive real-time alerts for detections in your NeMo Guardrails-powered application.</p></li>
+<li><p>Monitor and analyze detection activity in the <a class="reference external" href="https://pangea.cloud/docs/ai-guard/activity-log" rel="noreferer noopener" target="_blank">AI Guard Activity Log</a> for auditing and attribution.</p></li>
+<li><p>Learn more about <a class="reference external" href="https://pangea.cloud/docs/deployment-models/" rel="noreferer noopener" target="_blank">AI Guard Deployment Options</a> to understand how and where AI Guard can run to protect your AI applications.</p></li>
 </ul>
 </section>
 </section>
