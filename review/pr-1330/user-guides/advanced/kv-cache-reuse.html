@@ -519,8 +519,8 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="kv-cache-reuse-for-nemoguard-nim">
 <h1>KV Cache Reuse for NemoGuard NIM<a class="headerlink" href="#kv-cache-reuse-for-nemoguard-nim" title="Link to this heading">#</a></h1>
-<p>The NeMo Guardrails client calls Content Safety and Topic Control NemoGuard NIMs, which are specialized LLMs for specific guardrail types.</p>
-<p>Every NemoGuard NIM call interjecting the application LLM adds to the inference latency. The application LLM can only begin generating a response after all input checks, which may <a class="reference internal" href="../configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">run in parallel</span></a>, are complete. It also introduces response latency if you run the guardrail checks on the application LLM’s response; response latency depends on the response size.</p>
+<p>Upon your Guardrails client setup with the Content Safety and Topic Control NemoGuard NIM microservices, the client calls the NIMs to check the user input and application LLM response.</p>
+<p>Every NemoGuard NIM call interjecting the input and response adds to the inference latency. The application LLM can only begin generating a response after all input checks, which may <a class="reference internal" href="../configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">run in parallel</span></a>, are complete. It also introduces response latency if you run the guardrail checks on the application LLM’s response; the larger the response, the longer the response latency.</p>
 <p><a class="reference external" href="https://docs.nvidia.com/nim/large-language-models/latest/kv-cache-reuse.html">KV Cache Reuse</a> (also known as prefix-caching) is a feature of the NVIDIA NIM for LLMs that provides a performance improvement by reusing the decoder layers for the prompt.</p>
 <section id="how-key-value-cache-reuse-works">
 <h2>How Key-Value Cache Reuse Works<a class="headerlink" href="#how-key-value-cache-reuse-works" title="Link to this heading">#</a></h2>
