@@ -59,7 +59,7 @@ class FileSystemAdapter(InteractionLogAdapter):
         }
 
         with open(self.filepath, "a") as f:
-            f.write(json.dumps(log_dict, indent=2) + "\n")
+            f.write(json.dumps(log_dict) + "\n")
 
     async def transform_async(self, interaction_log: "InteractionLog"):
         try:
@@ -90,4 +90,4 @@ class FileSystemAdapter(InteractionLogAdapter):
         }
 
         async with aiofiles.open(self.filepath, "a") as f:
-            await f.write(json.dumps(log_dict, indent=2) + "\n")
+            await f.write(json.dumps(log_dict) + "\n")
