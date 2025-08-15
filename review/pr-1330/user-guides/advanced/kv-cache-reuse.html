@@ -519,19 +519,19 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="kv-cache-reuse-for-nemoguard-nim">
 <h1>KV Cache Reuse for NemoGuard NIM<a class="headerlink" href="#kv-cache-reuse-for-nemoguard-nim" title="Link to this heading">#</a></h1>
-<p>The NeMo Guardrails client calls NemoGuard NIMs, which are specialized LLMs for specific guardrail types, such as content safety and topic control. A jailbreak-detection NIM also exists to protect against security bypasses.</p>
-<p>Every NIM call interjecting the application LLM adds to the inference latency. The application LLM can only begin generating a response after all input checks, which may <a class="reference internal" href="../configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">run in parallel</span></a>, are complete.</p>
+<p>The NeMo Guardrails client calls Content Safety and Topic Control NemoGuard NIMs, which are specialized LLMs for specific guardrail types.</p>
+<p>Every NemoGuard NIM call interjecting the application LLM adds to the inference latency. The application LLM can only begin generating a response after all input checks, which may <a class="reference internal" href="../configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">run in parallel</span></a>, are complete. It also introduces response latency if you run the guardrail checks on the application LLM’s response; response latency depends on the response size.</p>
 <p><a class="reference external" href="https://docs.nvidia.com/nim/large-language-models/latest/kv-cache-reuse.html">KV Cache Reuse</a> (also known as prefix-caching) is a feature of the NVIDIA NIM for LLMs that provides a performance improvement by reusing the decoder layers for the prompt.</p>
-<section id="how-kv-cache-reuse-works">
-<h2>How KV Cache Reuse Works<a class="headerlink" href="#how-kv-cache-reuse-works" title="Link to this heading">#</a></h2>
+<section id="how-key-value-cache-reuse-works">
+<h2>How Key-Value Cache Reuse Works<a class="headerlink" href="#how-key-value-cache-reuse-works" title="Link to this heading">#</a></h2>
 <p>For example, the NemoGuard Content Safety NIM is a fine-tuned Llama 3.1-Instruct using LoRA, and then merging the LoRA weights back into the model weights. When you send requests to the Guardrails client, it calls the Content Safety NIM with the same prompt used for fine-tuning, and inserts the user-supplied query and optional LLM response. The Content Safety NIM responds with a JSON object that classifies the user and response as safe or unsafe.</p>
-<p>KV cache reuse is the most effective for NIMs that use the same system prompt for all calls up to the point where user query and LLM response are injected. For example, the <a class="reference external" href="https://docs.api.nvidia.com/nim/reference/nvidia-llama-3_1-nemoguard-8b-content-safety#prompt-format">system prompt for the NemoGuard Content Safety NIM</a> is about 370 tokens long before the user and LLM response are added. With KV cache reuse, recomputing the decoder layers for these tokens is only necessary on the first inference call. The NIM’s response is an order of magnitude smaller than the prompt. This means that the overall latency is heavily dependent on the prefill stage rather than the generation.</p>
+<p>Key-Value (KV) cache reuse is the most effective for LLM NIMs that use the same system prompt for all calls up to the point where user query and LLM response are injected. For example, the <a class="reference external" href="https://docs.api.nvidia.com/nim/reference/nvidia-llama-3_1-nemoguard-8b-content-safety#prompt-format">system prompt for the NemoGuard Content Safety NIM</a> is about 370 tokens long before the user and LLM response are added. With KV cache reuse, recomputing the decoder layers for these tokens is only necessary on the first inference call. This means that, when the application LLM’s response is typically small, the overall latency is heavily dependent on the prefill stage rather than the generation.</p>
 <p>You can enable KV cache reuse by setting the <code class="docutils literal notranslate"><span class="pre">NIM_ENABLE_KV_CACHE_REUSE</span></code> variable to <code class="docutils literal notranslate"><span class="pre">1</span></code> for every Content Safety NIM deployment.</p>
 </section>
 <section id="code-sample">
 <h2>Code Sample<a class="headerlink" href="#code-sample" title="Link to this heading">#</a></h2>
-<p>To enable KV cache reuse for the Content Safety NIM, set the <code class="docutils literal notranslate"><span class="pre">NIM_ENABLE_KV_CACHE_REUSE</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">1</span></code> when running the Docker container.</p>
-<p>To run the Content Safety NIM server with KV cache reuse, use the following commands:</p>
+<p>To enable KV cache reuse for the Content Safety NIM, set the <code class="docutils literal notranslate"><span class="pre">NIM_ENABLE_KV_CACHE_REUSE</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">1</span></code> when you run the Docker container for the NemoGuard NIM microservice.</p>
+<p>For example, to run the Content Safety NemoGuard NIM microservice with KV cache reuse, use the following commands:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;nemoguard-nim-name&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span>&lt;nemoguard-nim-image-uri&gt;
 <span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>&lt;local-nim-cache-directory&gt;
@@ -610,7 +610,7 @@ docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </s
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-kv-cache-reuse-works">How KV Cache Reuse Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-key-value-cache-reuse-works">How Key-Value Cache Reuse Works</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-sample">Code Sample</a></li>
 </ul>
   </nav></div>
