@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../_static/documentation_options.js?v=3f2861e3"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.15.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -343,6 +352,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -383,12 +399,12 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -615,16 +631,16 @@
 </ul>
 <p>For convenience, this toolkit also includes a selection of LangChain tools, wrapped as actions:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">apify</span></code>: <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/apify.html">Apify</a> is a web scraping and web automation platform that enables you to build your own web crawlers and web scrapers.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bing_search</span></code>: Wrapper around the <a class="reference external" href="https://www.microsoft.com/en-us/bing/apis/bing-web-search-api">Bing Web Search</a> API.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">google_search</span></code>: Wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/google_search.html">Google Search API</a> from Langchain.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">searx_search</span></code>: Wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/searx.html">Searx</a> API. Alternative to Google/Bing Search.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">google_serper</span></code>: Wrapper around the SerpApi <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/google_serper.html">Google Search API</a>. It can be used to add answer boxes and knowledge graphs from Google Search.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">openweather_query</span></code>: Wrapper around <a class="reference external" href="https://python.langchain.com/en/latest/modules/agents/tools/examples/openweathermap.html">OpenWeatherMap’s</a> API for retrieving weather information.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">serp_api_query</span></code>: Wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/serpapi.html">SerpAPI</a> API. It provides access to search engines and helps answer questions about current events.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">wikipedia_query</span></code>: A wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/modules/agents/tools/examples/wikipedia.html">Wikipedia API</a>. It uses the MediaWiki API to retrieve information from Wikipedia.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">wolfram_alpha_query</span></code>: A wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/wolfram_alpha.html">Wolfram Alpha API</a>. It can be used to answer math and science questions.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">zapier_nla_query</span></code>: Wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/modules/agents/tools/examples/zapier.html">Zapier NLA API</a>. It provides access to over 5k applications and 20k actions to automate your workflows.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apify</span></code>: <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/apify.html" rel="noreferer noopener" target="_blank">Apify</a> is a web scraping and web automation platform that enables you to build your own web crawlers and web scrapers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bing_search</span></code>: Wrapper around the <a class="reference external" href="https://www.microsoft.com/en-us/bing/apis/bing-web-search-api" rel="noreferer noopener" target="_blank">Bing Web Search</a> API.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">google_search</span></code>: Wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/google_search.html" rel="noreferer noopener" target="_blank">Google Search API</a> from Langchain.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">searx_search</span></code>: Wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/searx.html" rel="noreferer noopener" target="_blank">Searx</a> API. Alternative to Google/Bing Search.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">google_serper</span></code>: Wrapper around the SerpApi <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/google_serper.html" rel="noreferer noopener" target="_blank">Google Search API</a>. It can be used to add answer boxes and knowledge graphs from Google Search.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">openweather_query</span></code>: Wrapper around <a class="reference external" href="https://python.langchain.com/en/latest/modules/agents/tools/examples/openweathermap.html" rel="noreferer noopener" target="_blank">OpenWeatherMap’s</a> API for retrieving weather information.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">serp_api_query</span></code>: Wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/serpapi.html" rel="noreferer noopener" target="_blank">SerpAPI</a> API. It provides access to search engines and helps answer questions about current events.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wikipedia_query</span></code>: A wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/modules/agents/tools/examples/wikipedia.html" rel="noreferer noopener" target="_blank">Wikipedia API</a>. It uses the MediaWiki API to retrieve information from Wikipedia.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wolfram_alpha_query</span></code>: A wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/ecosystem/wolfram_alpha.html" rel="noreferer noopener" target="_blank">Wolfram Alpha API</a>. It can be used to answer math and science questions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zapier_nla_query</span></code>: Wrapper around the <a class="reference external" href="https://python.langchain.com/en/latest/modules/agents/tools/examples/zapier.html" rel="noreferer noopener" target="_blank">Zapier NLA API</a>. It provides access to over 5k applications and 20k actions to automate your workflows.</p></li>
 </ul>
 </section>
 <section id="chains-as-actions">

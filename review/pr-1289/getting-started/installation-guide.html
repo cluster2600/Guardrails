@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../_static/documentation_options.js?v=3f2861e3"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.15.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -343,6 +352,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../user-guides/detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -383,12 +399,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -519,19 +535,19 @@
 </section>
 <section id="additional-dependencies">
 <h2>Additional dependencies<a class="headerlink" href="#additional-dependencies" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails uses <a class="reference external" href="https://github.com/spotify/annoy">annoy</a>, which is a C++ library with Python bindings. To install it, you need to have a valid C++ runtime on your computer.
+<p>NeMo Guardrails uses <a class="reference external" href="https://github.com/spotify/annoy" rel="noreferer noopener" target="_blank">annoy</a>, which is a C++ library with Python bindings. To install it, you need to have a valid C++ runtime on your computer.
 Most systems already have installed a C++ runtime. If the <strong>annoy</strong> installation fails due to a missing C++ runtime, you can install a C++ runtime as follows:</p>
 <section id="installing-a-c-runtime-on-linux-mac-or-unix-based-os">
 <h3>Installing a C++ runtime on Linux, Mac, or Unix-based OS<a class="headerlink" href="#installing-a-c-runtime-on-linux-mac-or-unix-based-os" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p>Install <code class="docutils literal notranslate"><span class="pre">gcc</span></code> and <code class="docutils literal notranslate"><span class="pre">g++</span></code> using <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">gcc</span> <span class="pre">g++</span></code>.</p></li>
 <li><p>Update the following environment variables: <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">CC=</span></code><em>path_to_clang</em> and <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">CXX=</span></code><em>path_to_clang</em> (usually, <em>path_to_clang</em> is <em>/usr/bin/clang</em>).</p></li>
-<li><p>In some cases, you might also need to install the <code class="docutils literal notranslate"><span class="pre">python-dev</span></code> package using <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">python-dev</span></code> (or <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">python3-dev</span></code>). Check out this <a class="reference external" href="https://stackoverflow.com/questions/21530577/fatal-error-python-h-no-such-file-or-directory">thread</a> if the error persists.</p></li>
+<li><p>In some cases, you might also need to install the <code class="docutils literal notranslate"><span class="pre">python-dev</span></code> package using <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">python-dev</span></code> (or <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">python3-dev</span></code>). Check out this <a class="reference external" href="https://stackoverflow.com/questions/21530577/fatal-error-python-h-no-such-file-or-directory" rel="noreferer noopener" target="_blank">thread</a> if the error persists.</p></li>
 </ol>
 </section>
 <section id="installing-a-c-runtime-on-windows">
 <h3>Installing a C++ runtime on Windows<a class="headerlink" href="#installing-a-c-runtime-on-windows" title="Link to this heading">#</a></h3>
-<p>Install the <a class="reference external" href="https://visualstudio.microsoft.com/visual-cpp-build-tools/">Microsoft C++ Build Tools</a>. This installs Microsoft Visual C++ (version 14.0 or greater is required by the latest version of <strong>annoy</strong>).</p>
+<p>Install the <a class="reference external" href="https://visualstudio.microsoft.com/visual-cpp-build-tools/" rel="noreferer noopener" target="_blank">Microsoft C++ Build Tools</a>. This installs Microsoft Visual C++ (version 14.0 or greater is required by the latest version of <strong>annoy</strong>).</p>
 </section>
 </section>
 <section id="setting-up-a-virtual-environment">
@@ -637,7 +653,7 @@ For each feature or LLM example, check the readme file associated with it.</p>
 <h2>What’s next?<a class="headerlink" href="#what-s-next" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Check out the <a class="reference internal" href="README.html"><span class="std std-doc">Getting Started Guide</span></a> and start with the <a class="reference internal" href="1-hello-world/README.html"><span class="std std-doc">“Hello World” example</span></a>.</p></li>
-<li><p>Explore more examples in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples">examples</a> folder.</p></li>
+<li><p>Explore more examples in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples" rel="noreferer noopener" target="_blank">examples</a> folder.</p></li>
 <li><p>Review the <a class="reference internal" href="../README.html"><span class="std std-doc">User Guides</span></a>.</p></li>
 </ul>
 </section>

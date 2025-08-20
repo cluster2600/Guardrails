@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../_static/documentation_options.js?v=3f2861e3"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.15.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -58,7 +58,7 @@
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Guardrails Process" href="guardrails-process.html" />
-    <link rel="prev" title="Configuration Guide" href="configuration-guide.html" />
+    <link rel="prev" title="Exceptions and Error Handling" href="configuration-guide/exceptions.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -343,6 +352,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -383,12 +399,12 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -527,11 +543,13 @@
 <ul class="simple">
 <li><p><a class="reference internal" href="#activefence">ActiveFence Moderation</a></p></li>
 <li><p><a class="reference internal" href="#autoalign">AutoAlign</a></p></li>
+<li><p><a class="reference internal" href="#clavata">Clavata.ai</a></p></li>
 <li><p><a class="reference internal" href="#cleanlab">Cleanlab Trustworthiness Score</a></p></li>
 <li><p><a class="reference internal" href="#gcp-text-moderation">GCP Text Moderation</a></p></li>
 <li><p><a class="reference internal" href="#private-ai-pii-detection">Private AI PII detection</a></p></li>
 <li><p><a class="reference internal" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a></p></li>
 <li><p><a class="reference internal" href="#prompt-security-protection">Prompt Security Protection</a></p></li>
+<li><p><a class="reference internal" href="#pangea-ai-guard">Pangea AI Guard</a></p></li>
 <li><p>OpenAI Moderation API - <em>[COMING SOON]</em></p></li>
 </ul>
 </li>
@@ -584,7 +602,7 @@
 <p>If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div>
 <p>The above is an example prompt you can use with the <em>self check input rail</em>. See the <a class="reference internal" href="#example-prompts">Example Prompts</a> section below for more details. The <code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> prompt has an input variable <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">user_input</span> <span class="pre">}}</span></code> which includes the input from the user. The completion must be “yes” if the input should be blocked and “no” otherwise.</p>
-<p>The self-check input rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/input_check/actions.py"><code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> action</a>, which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the input should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise:</p>
+<p>The self-check input rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/input_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> action</a>, which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the input should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow self check input
   $allowed = execute self_check_input
 
@@ -682,7 +700,7 @@
 <p>If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div>
 <p>The above is an example prompt you can use with the <em>self check output rail</em>. See the <a class="reference internal" href="#id2">Example Prompts</a> section below for more details. The <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> prompt has an input variable <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">bot_response</span> <span class="pre">}}</span></code> which includes the output from the bot. The completion must be “yes” if the output should be blocked and “no” otherwise.</p>
-<p>The self-check output rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py"><code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> action</a>, which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the output should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise:</p>
+<p>The self-check output rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> action</a>, which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the output should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow self check output
   $allowed = execute self_check_output
 
@@ -777,7 +795,7 @@
 <p>If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div>
 <p>The above is an example prompt that you can use with the <em>self check facts rail</em>. The <code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> prompt has two input variables: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">evidence</span> <span class="pre">}}</span></code>, which includes the relevant chunks, and <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">response</span> <span class="pre">}}</span></code>, which includes the bot response that should be fact-checked. The completion must be “yes” if the response is factually correct and “no” otherwise.</p>
-<p>The self-check fact-checking rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py"><code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> action</a>, which returns a score between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (response is not accurate) and <code class="docutils literal notranslate"><span class="pre">1.0</span></code> (response is accurate). The reason a number is returned, instead of a boolean, is to keep a consistent API with other methods that return a score, e.g., the AlignScore method below.</p>
+<p>The self-check fact-checking rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> action</a>, which returns a score between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (response is not accurate) and <code class="docutils literal notranslate"><span class="pre">1.0</span></code> (response is accurate). The reason a number is returned, instead of a boolean, is to keep a consistent API with other methods that return a score, e.g., the AlignScore method below.</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow self check facts
   if $check_facts == True
     $check_facts = False
@@ -806,7 +824,7 @@
   bot $answer
 </pre></div>
 </div>
-<p>Please refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/rag/custom_rag_output_rails/README.md">Custom RAG Output Rails example</a>.</p>
+<p>Please refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/rag/custom_rag_output_rails/README.md" rel="noreferer noopener" target="_blank">Custom RAG Output Rails example</a>.</p>
 </section>
 </section>
 <section id="hallucination-detection">
@@ -885,12 +903,12 @@
   bot $answer
 </pre></div>
 </div>
-<p>Please refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/rag/custom_rag_output_rails/README.md">Custom RAG Output Rails example</a>.</p>
+<p>Please refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/rag/custom_rag_output_rails/README.md" rel="noreferer noopener" target="_blank">Custom RAG Output Rails example</a>.</p>
 </section>
 </section>
 <section id="implementation-details">
 <h4>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading">#</a></h4>
-<p>The implementation for the self-check hallucination rail uses a slight variation of the <a class="reference external" href="https://arxiv.org/abs/2303.08896">SelfCheckGPT paper</a>:</p>
+<p>The implementation for the self-check hallucination rail uses a slight variation of the <a class="reference external" href="https://arxiv.org/abs/2303.08896" rel="noreferer noopener" target="_blank">SelfCheckGPT paper</a>:</p>
 <ol class="arabic simple">
 <li><p>First, sample several extra responses from the LLM (by default, two extra responses).</p></li>
 <li><p>Use the LLM to check if the original and extra responses are consistent.</p></li>
@@ -904,7 +922,7 @@
 <p>NeMo Guardrails provides out of the box connectivity for safety models trained by the NVIDIA for specialized use cases. These models shall be provided as both as HuggingFace checkpoints, and as NVIDIA NIM containers that will provide out of the box TRTLLM support with lower latency.</p>
 <section id="content-safety">
 <h3>Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h3>
-<p>The content safety checks in Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as Nvidia’s <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard">NemoGuard ContentSafety</a> model, Meta’s <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/">Llama Guard 3</a>, Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma">ShieldGemma</a>, etc.</p>
+<p>The content safety checks in Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as Nvidia’s <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">NemoGuard ContentSafety</a> model, Meta’s <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/" rel="noreferer noopener" target="_blank">Llama Guard 3</a>, Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma" rel="noreferer noopener" target="_blank">ShieldGemma</a>, etc.</p>
 <p>To use the content safety check, you should:</p>
 <ol class="arabic simple">
 <li><p>Include the desired content safety models in the models section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
@@ -1070,7 +1088,7 @@
 <p>This category of rails relies on open-source models and libraries.</p>
 <section id="alignscore-based-fact-checking">
 <h3>AlignScore-based Fact-Checking<a class="headerlink" href="#alignscore-based-fact-checking" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails provides out-of-the-box support for the <a class="reference external" href="https://aclanthology.org/2023.acl-long.634.pdf">AlignScore metric (Zha et al.)</a>, which uses a RoBERTa-based model for scoring factual consistency in model responses with respect to the knowledge base.</p>
+<p>NeMo Guardrails provides out-of-the-box support for the <a class="reference external" href="https://aclanthology.org/2023.acl-long.634.pdf" rel="noreferer noopener" target="_blank">AlignScore metric (Zha et al.)</a>, which uses a RoBERTa-based model for scoring factual consistency in model responses with respect to the knowledge base.</p>
 <section id="example-usage">
 <h4>Example usage<a class="headerlink" href="#example-usage" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
@@ -1090,7 +1108,7 @@
 </section>
 <section id="llama-guard-based-content-moderation">
 <h3>Llama Guard-based Content Moderation<a class="headerlink" href="#llama-guard-based-content-moderation" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails provides out-of-the-box support for content moderation using Meta’s <a class="reference external" href="https://ai.meta.com/research/publications/llama-guard-llm-based-input-output-safeguard-for-human-ai-conversations/">Llama Guard</a> model.</p>
+<p>NeMo Guardrails provides out-of-the-box support for content moderation using Meta’s <a class="reference external" href="https://ai.meta.com/research/publications/llama-guard-llm-based-input-output-safeguard-for-human-ai-conversations/" rel="noreferer noopener" target="_blank">Llama Guard</a> model.</p>
 <section id="id10">
 <h4>Example usage<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
@@ -1107,7 +1125,7 @@
 </section>
 <section id="patronus-lynx-based-rag-hallucination-detection">
 <h3>Patronus Lynx-based RAG Hallucination Detection<a class="headerlink" href="#patronus-lynx-based-rag-hallucination-detection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports hallucination detection in RAG systems using <a class="reference internal" href="#www.patronus.ai"><span class="xref myst">Patronus AI</span></a>’s Lynx model. The model is hosted on Hugging Face and comes in both a 70B parameters (see <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-70B-Instruct">here</a>) and 8B parameters (see <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-8B-Instruct">here</a>) variant.</p>
+<p>NeMo Guardrails supports hallucination detection in RAG systems using <a class="reference internal" href="#www.patronus.ai"><span class="xref myst">Patronus AI</span></a>’s Lynx model. The model is hosted on Hugging Face and comes in both a 70B parameters (see <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-70B-Instruct" rel="noreferer noopener" target="_blank">here</a>) and 8B parameters (see <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-8B-Instruct" rel="noreferer noopener" target="_blank">here</a>) variant.</p>
 <section id="id11">
 <h4>Example usage<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
@@ -1121,7 +1139,7 @@
 </section>
 <section id="presidio-based-sensitive-data-detection">
 <h3>Presidio-based Sensitive Data Detection<a class="headerlink" href="#presidio-based-sensitive-data-detection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports detecting sensitive data out-of-the-box using <a class="reference external" href="https://github.com/Microsoft/presidio">Presidio</a>, which provides fast identification and anonymization modules for private entities in text such as credit card numbers, names, locations, social security numbers, bitcoin wallets, US phone numbers, financial data and more. You can detect sensitive data on user input, bot output, or the relevant chunks retrieved from the knowledge base.</p>
+<p>NeMo Guardrails supports detecting sensitive data out-of-the-box using <a class="reference external" href="https://github.com/Microsoft/presidio" rel="noreferer noopener" target="_blank">Presidio</a>, which provides fast identification and anonymization modules for private entities in text such as credit card numbers, names, locations, social security numbers, bitcoin wallets, US phone numbers, financial data and more. You can detect sensitive data on user input, bot output, or the relevant chunks retrieved from the knowledge base.</p>
 <p>To activate a sensitive data detection input rail, you have to configure the entities that you want to detect:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
@@ -1156,7 +1174,7 @@
 <p>This category of rails relies on 3rd party APIs for various guardrailing tasks.</p>
 <section id="activefence">
 <h3>ActiveFence<a class="headerlink" href="#activefence" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports using the <a class="reference external" href="https://docs.activefence.com/index.html">ActiveFence ActiveScore API</a> as an input and output rail out-of-the-box (you need to have the <code class="docutils literal notranslate"><span class="pre">ACTIVEFENCE_API_KEY</span></code> environment variable set).</p>
+<p>NeMo Guardrails supports using the <a class="reference external" href="https://docs.activefence.com/index.html" rel="noreferer noopener" target="_blank">ActiveFence ActiveScore API</a> as an input and output rail out-of-the-box (you need to have the <code class="docutils literal notranslate"><span class="pre">ACTIVEFENCE_API_KEY</span></code> environment variable set).</p>
 <section id="id13">
 <h4>Example usage<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
@@ -1188,37 +1206,54 @@
 <p>For more details, check out the <a class="reference internal" href="community/auto-align.html"><span class="std std-doc">AutoAlign Integration</span></a> page.</p>
 </section>
 </section>
-<section id="cleanlab">
-<h3>Cleanlab<a class="headerlink" href="#cleanlab" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports using the <a class="reference external" href="https://cleanlab.ai/blog/trustworthy-language-model/">Cleanlab Trustworthiness Score API</a> as an output rail (you need to have the <code class="docutils literal notranslate"><span class="pre">CLEANLAB_API_KEY</span></code> environment variable set).</p>
+<section id="clavata">
+<h3>Clavata<a class="headerlink" href="#clavata" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://www.clavata.ai/blogs/partner-nvidia" rel="noreferer noopener" target="_blank">Clavata AI</a> as an input and output rail out-of-the-box (you need to have the CLAVATA_API_KEY environment variable set).</p>
 <section id="id15">
 <h4>Example usage<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">clavata</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">policies</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">Fraud</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">00000000-0000-0000-0000-000000000000</span>
+<span class="w">        </span><span class="nt">Bot_Behavior</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">00000000-0000-0000-0000-000000000000</span>
+<span class="w">      </span><span class="nt">label_match_logic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ANY</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference external" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/community/clavata.html" rel="noreferer noopener" target="_blank">Clavata Integration</a> page.</p>
+</section>
+</section>
+<section id="cleanlab">
+<h3>Cleanlab<a class="headerlink" href="#cleanlab" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using the <a class="reference external" href="https://cleanlab.ai/blog/trustworthy-language-model/" rel="noreferer noopener" target="_blank">Cleanlab Trustworthiness Score API</a> as an output rail (you need to have the <code class="docutils literal notranslate"><span class="pre">CLEANLAB_API_KEY</span></code> environment variable set).</p>
+<section id="id16">
+<h4>Example usage<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cleanlab trustworthiness</span>
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/cleanlab.md">Cleanlab Integration</a> page.</p>
+<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/cleanlab.md" rel="noreferer noopener" target="_blank">Cleanlab Integration</a> page.</p>
 </section>
 </section>
 <section id="gcp-text-moderation">
 <h3>GCP Text Moderation<a class="headerlink" href="#gcp-text-moderation" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports using the GCP Text Moderation. You need to be authenticated with GCP, refer <a class="reference external" href="https://cloud.google.com/docs/authentication/application-default-credentials">here</a> for auth details.</p>
-<section id="id16">
-<h4>Example usage<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<p>NeMo Guardrails supports using the GCP Text Moderation. You need to be authenticated with GCP, refer <a class="reference external" href="https://cloud.google.com/docs/authentication/application-default-credentials" rel="noreferer noopener" target="_blank">here</a> for auth details.</p>
+<section id="id17">
+<h4>Example usage<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gcpnlp moderation</span>
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/gcp-text-moderations.md">GCP Text Moderation</a> page.</p>
+<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/gcp-text-moderations.md" rel="noreferer noopener" target="_blank">GCP Text Moderation</a> page.</p>
 </section>
 </section>
 <section id="private-ai-pii-detection">
 <h3>Private AI PII Detection<a class="headerlink" href="#private-ai-pii-detection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports using <a class="reference external" href="https://docs.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">Private AI API</a> for PII detection and masking input, output and retrieval flows.</p>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://docs.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Private AI API</a> for PII detection and masking input, output and retrieval flows.</p>
 <p>To activate the PII detection or masking, you need specify <code class="docutils literal notranslate"><span class="pre">server_endpoint</span></code>, and the entities that you want to detect or mask. You’ll also need to set the <code class="docutils literal notranslate"><span class="pre">PAI_API_KEY</span></code> environment variable if you’re using the Private AI cloud API.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
@@ -1236,8 +1271,8 @@
 <span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
-<section id="id17">
-<h4>Example usage<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<section id="id18">
+<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
 <p><strong>PII detection</strong></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
@@ -1251,21 +1286,21 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detect pii on retrieval</span>
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/privateai.md">Private AI Integration</a> page.</p>
+<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/privateai.md" rel="noreferer noopener" target="_blank">Private AI Integration</a> page.</p>
 </section>
 </section>
 <section id="fiddler-guardrails-for-safety-and-hallucination-detection">
 <h3>Fiddler Guardrails for Safety and Hallucination Detection<a class="headerlink" href="#fiddler-guardrails-for-safety-and-hallucination-detection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports using <a class="reference external" href="https://docs.fiddler.ai/product-guide/llm-monitoring/guardrails">Fiddler Guardrails</a> for safety and hallucination detection in input and output flows.</p>
-<p>In order to access Fiddler guardrails, you need access to a valid Fiddler environment, and a <a class="reference external" href="https://docs.fiddler.ai/ui-guide/administration-ui/settings#credentials">Fiddler environment key</a>. You’ll need to set the <code class="docutils literal notranslate"><span class="pre">FIDDLER_API_KEY</span></code> environment variable to authenticate into the Fiddler service.</p>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://docs.fiddler.ai/product-guide/llm-monitoring/guardrails" rel="noreferer noopener" target="_blank">Fiddler Guardrails</a> for safety and hallucination detection in input and output flows.</p>
+<p>In order to access Fiddler guardrails, you need access to a valid Fiddler environment, and a <a class="reference external" href="https://docs.fiddler.ai/ui-guide/administration-ui/settings#credentials" rel="noreferer noopener" target="_blank">Fiddler environment key</a>. You’ll need to set the <code class="docutils literal notranslate"><span class="pre">FIDDLER_API_KEY</span></code> environment variable to authenticate into the Fiddler service.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">fiddler</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://testfiddler.ai</span><span class="w"> </span><span class="c1"># Replace this with your fiddler environment</span>
 </pre></div>
 </div>
-<section id="id18">
-<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<section id="id19">
+<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">fiddler</span><span class="p">:</span>
@@ -1284,10 +1319,10 @@
 </section>
 <section id="prompt-security-protection">
 <h3>Prompt Security Protection<a class="headerlink" href="#prompt-security-protection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports using <a class="reference external" href="https://prompt.security/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">Prompt Security API</a> for protecting input and output retrieval flows.</p>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://prompt.security/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Prompt Security API</a> for protecting input and output retrieval flows.</p>
 <p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">PS_PROTECT_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">PS_APP_ID</span></code> environment variables.</p>
-<section id="id19">
-<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<section id="id20">
+<h4>Example usage<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1298,6 +1333,25 @@
 </pre></div>
 </div>
 <p>For more details, check out the <a class="reference internal" href="community/prompt-security.html"><span class="std std-doc">Prompt Security Integration</span></a> page.</p>
+</section>
+</section>
+<section id="pangea-ai-guard">
+<h3>Pangea AI Guard<a class="headerlink" href="#pangea-ai-guard" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://pangea.cloud/services/ai-guard/" rel="noreferer noopener" target="_blank">Pangea AI Guard</a> for protecting data and
+interactions with LLMs within AI-powered applications.</p>
+<section id="id21">
+<h4>Example usage<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pangea ai guard input</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pangea ai guard output</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference internal" href="community/pangea.html"><span class="std std-doc">Pangea AI Guard Integration</span></a> page.</p>
 </section>
 </section>
 </section>
@@ -1335,7 +1389,7 @@
 <section id="length-per-perplexity">
 <h5>Length per Perplexity<a class="headerlink" href="#length-per-perplexity" title="Link to this heading">#</a></h5>
 <p>The <em>length per perplexity</em> heuristic computes the length of the input divided by the perplexity of the input. If the value is above the specified threshold (default <code class="docutils literal notranslate"><span class="pre">89.79</span></code>) then the input is considered a jailbreak attempt.</p>
-<p>The default value represents the mean length/perplexity for a set of jailbreaks derived from a combination of datasets including <a class="reference external" href="https://github.com/llm-attacks/llm-attacks">AdvBench</a>, <a class="reference external" href="https://huggingface.co/datasets/lmsys/toxic-chat/blob/main/README.md">ToxicChat</a>, and <a class="reference external" href="https://github.com/verazuo/jailbreak_llms">JailbreakChat</a>, with non-jailbreaks taken from the same datasets and incorporating 1000 examples from <a class="reference external" href="https://huggingface.co/datasets/databricks/databricks-dolly-15k">Dolly-15k</a>.</p>
+<p>The default value represents the mean length/perplexity for a set of jailbreaks derived from a combination of datasets including <a class="reference external" href="https://github.com/llm-attacks/llm-attacks" rel="noreferer noopener" target="_blank">AdvBench</a>, <a class="reference external" href="https://huggingface.co/datasets/lmsys/toxic-chat/blob/main/README.md" rel="noreferer noopener" target="_blank">ToxicChat</a>, and <a class="reference external" href="https://github.com/verazuo/jailbreak_llms" rel="noreferer noopener" target="_blank">JailbreakChat</a>, with non-jailbreaks taken from the same datasets and incorporating 1000 examples from <a class="reference external" href="https://huggingface.co/datasets/databricks/databricks-dolly-15k" rel="noreferer noopener" target="_blank">Dolly-15k</a>.</p>
 <p>The statistics for this metric across jailbreak and non jailbreak datasets are as follows:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1384,7 +1438,7 @@ Increasing this threshold will decrease the number of jailbreaks detected but wi
 <h5>Prefix and Suffix Perplexity<a class="headerlink" href="#prefix-and-suffix-perplexity" title="Link to this heading">#</a></h5>
 <p>The <em>prefix and suffix perplexity</em> heuristic takes the input and computes the perplexity for the prefix and suffix. If any of the is above the specified threshold (default <code class="docutils literal notranslate"><span class="pre">1845.65</span></code>), then the input is considered a jailbreak attempt.</p>
 <p>This heuristic examines strings of more than 20 “words” (strings separated by whitespace) to detect potential prefix/suffix attacks.</p>
-<p>The default threshold value of <code class="docutils literal notranslate"><span class="pre">1845.65</span></code> is the second-lowest perplexity value across 50 different prompts generated using <a class="reference external" href="https://github.com/llm-attacks/llm-attacks">GCG</a> prefix/suffix attacks.
+<p>The default threshold value of <code class="docutils literal notranslate"><span class="pre">1845.65</span></code> is the second-lowest perplexity value across 50 different prompts generated using <a class="reference external" href="https://github.com/llm-attacks/llm-attacks" rel="noreferer noopener" target="_blank">GCG</a> prefix/suffix attacks.
 Using the default value allows for detection of 49/50 GCG-style attacks with a 0.04% false positive rate on the “non-jailbreak” dataset derived above.</p>
 <p><strong>USAGE NOTES</strong>:</p>
 <ul class="simple">
@@ -1399,7 +1453,7 @@ Using the default value allows for detection of 49/50 GCG-style attacks with a 0
 </section>
 <section id="model-based-jailbreak-detections">
 <h4>Model-based Jailbreak Detections<a class="headerlink" href="#model-based-jailbreak-detections" title="Link to this heading">#</a></h4>
-<p>There is currently one available model-based detection, using a random forest-based detector trained on <a class="reference external" href="https://huggingface.co/Snowflake/snowflake-arctic-embed-m-long"><code class="docutils literal notranslate"><span class="pre">snowflake/snowflake-arctic-embed-m-long</span></code></a> embeddings.</p>
+<p>There is currently one available model-based detection, using a random forest-based detector trained on <a class="reference external" href="https://huggingface.co/Snowflake/snowflake-arctic-embed-m-long" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">snowflake/snowflake-arctic-embed-m-long</span></code></a> embeddings.</p>
 </section>
 <section id="setup">
 <h4>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h4>
@@ -1440,7 +1494,7 @@ Times reported below in are <strong>averages</strong> and are reported in millis
 <h3>Injection Detection<a class="headerlink" href="#injection-detection" title="Link to this heading">#</a></h3>
 <p>NeMo Guardrails offers detection of potential exploitation attempts by using injection such as code injection, cross-site scripting, SQL injection, and template injection.
 Injection detection is primarily intended to be used in agentic systems to enhance other security controls as part of a defense-in-depth strategy.</p>
-<p>The first part of injection detection is <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html">YARA rules</a>.
+<p>The first part of injection detection is <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html" rel="noreferer noopener" target="_blank">YARA rules</a>.
 A YARA rule specifies a set of strings–text or binary patterns–to match and a Boolean expression that specifies the logic of the rule.
 YARA rules are a technology that is familiar to many security teams.</p>
 <p>The second part of injection detection is specifying the action to take when a rule is triggered.
@@ -1457,7 +1511,7 @@ As an alternative to rejecting the output, you can specify to <em>omit</em> the 
 This rule is usually paired with code injection rules.</p></li>
 <li><p>Cross-site scripting (Markdown and Javascript): Recommended if the LLM output is rendered directly in HTML or Markdown.</p></li>
 </ul>
-<p>You can view the default rules in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/injection_detection/yara_rules">yara_rules directory</a> of the GitHub repository.</p>
+<p>You can view the default rules in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/injection_detection/yara_rules" rel="noreferer noopener" target="_blank">yara_rules directory</a> of the GitHub repository.</p>
 </section>
 <section id="configuring-injection-detection">
 <h4>Configuring Injection Detection<a class="headerlink" href="#configuring-injection-detection" title="Link to this heading">#</a></h4>
@@ -1530,7 +1584,7 @@ The rules use the string data type.</p>
 </tbody>
 </table>
 </div>
-<p>For information about writing YARA rules, refer to the <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html">YARA documentation</a>.</p>
+<p>For information about writing YARA rules, refer to the <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html" rel="noreferer noopener" target="_blank">YARA documentation</a>.</p>
 </section>
 <section id="example">
 <h4>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h4>
@@ -1601,12 +1655,12 @@ The rules use the string data type.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="configuration-guide.html"
+       href="configuration-guide/exceptions.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Configuration Guide</p>
+        <p class="prev-next-title">Exceptions and Error Handling</p>
       </div>
     </a>
     <a class="right-next"
@@ -1713,24 +1767,32 @@ The rules use the string data type.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleanlab">Cleanlab</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clavata">Clavata</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gcp-text-moderation">GCP Text Moderation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleanlab">Cleanlab</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai-pii-detection">Private AI PII Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gcp-text-moderation">GCP Text Moderation</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai-pii-detection">Private AI PII Detection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Example usage</a></li>
 </ul>
 </li>
 </ul>
