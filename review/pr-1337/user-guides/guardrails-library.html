@@ -549,6 +549,7 @@
 <li><p><a class="reference internal" href="#private-ai-pii-detection">Private AI PII detection</a></p></li>
 <li><p><a class="reference internal" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a></p></li>
 <li><p><a class="reference internal" href="#prompt-security-protection">Prompt Security Protection</a></p></li>
+<li><p><a class="reference internal" href="#pangea-ai-guard">Pangea AI Guard</a></p></li>
 <li><p>OpenAI Moderation API - <em>[COMING SOON]</em></p></li>
 </ul>
 </li>
@@ -1334,6 +1335,25 @@
 <p>For more details, check out the <a class="reference internal" href="community/prompt-security.html"><span class="std std-doc">Prompt Security Integration</span></a> page.</p>
 </section>
 </section>
+<section id="pangea-ai-guard">
+<h3>Pangea AI Guard<a class="headerlink" href="#pangea-ai-guard" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://pangea.cloud/services/ai-guard/" rel="noreferer noopener" target="_blank">Pangea AI Guard</a> for protecting data and
+interactions with LLMs within AI-powered applications.</p>
+<section id="id21">
+<h4>Example usage<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pangea ai guard input</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pangea ai guard output</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference internal" href="community/pangea.html"><span class="std std-doc">Pangea AI Guard Integration</span></a> page.</p>
+</section>
+</section>
 </section>
 <section id="other">
 <h2>Other<a class="headerlink" href="#other" title="Link to this heading">#</a></h2>
@@ -1769,6 +1789,10 @@ The rules use the string data type.</p>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Example usage</a></li>
 </ul>
 </li>
 </ul>
