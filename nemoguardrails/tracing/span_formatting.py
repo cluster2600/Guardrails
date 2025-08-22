@@ -17,22 +17,31 @@
 
 from typing import Any, Dict
 
-from nemoguardrails.tracing.spans import SpanFlat, is_opentelemetry_span
+from nemoguardrails.tracing.spans import SpanLegacy, is_opentelemetry_span
+
+
+def get_schema_version_for_filesystem(span) -> str:
+    """Return the schema version string based on the span type."""
+    if isinstance(span, SpanLegacy):
+        return "1.0"
+    if is_opentelemetry_span(span):
+        return "2.0"
+    raise ValueError(f"Unknown span type: {type(span).__name__}.")
 
 
 def format_span_for_filesystem(span) -> Dict[str, Any]:
     """Format any span type for JSON filesystem storage.
 
     Args:
-        span: Either SpanFlat or typed span (InteractionSpan, RailSpan, etc.)
+        span: Either SpanLegacy or typed span (InteractionSpan, RailSpan, etc.)
 
     Returns:
         Dictionary with all span data for JSON serialization
     """
-    if not isinstance(span, SpanFlat) and not is_opentelemetry_span(span):
+    if not isinstance(span, SpanLegacy) and not is_opentelemetry_span(span):
         raise ValueError(
             f"Unknown span type: {type(span).__name__}. "
-            f"Only SpanFlat and typed spans are supported."
+            f"Only SpanLegacy and typed spans are supported."
         )
 
     result = {
@@ -45,7 +54,7 @@ def format_span_for_filesystem(span) -> Dict[str, Any]:
         "span_type": span.__class__.__name__,
     }
 
-    if isinstance(span, SpanFlat):
+    if isinstance(span, SpanLegacy):
         if hasattr(span, "metrics") and span.metrics:
             result["metrics"] = span.metrics
 
@@ -80,12 +89,12 @@ def extract_span_attributes(span) -> Dict[str, Any]:
     """Extract OpenTelemetry attributes from any span type.
 
     Args:
-        span: Either SpanFlat or typed span
+        span: Either SpanLegacy or typed span
 
     Returns:
         Dictionary of OpenTelemetry attributes
     """
-    if isinstance(span, SpanFlat):
+    if isinstance(span, SpanLegacy):
         return span.metrics.copy() if hasattr(span, "metrics") and span.metrics else {}
 
     elif is_opentelemetry_span(span):
@@ -94,5 +103,5 @@ def extract_span_attributes(span) -> Dict[str, Any]:
     else:
         raise ValueError(
             f"Unknown span type: {type(span).__name__}. "
-            f"Only SpanFlat and typed spans are supported."
+            f"Only SpanLegacy and typed spans are supported."
         )

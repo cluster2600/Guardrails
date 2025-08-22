@@ -73,7 +73,10 @@ from nemoguardrails.rails.llm.options import (
     GenerationOptions,
     GenerationResponse,
 )
-from nemoguardrails.rails.llm.utils import get_history_cache_key
+from nemoguardrails.rails.llm.utils import (
+    get_action_details_from_flow_id,
+    get_history_cache_key,
+)
 from nemoguardrails.streaming import END_OF_STREAM, StreamingHandler
 from nemoguardrails.utils import (
     extract_error_json,
@@ -522,7 +525,21 @@ class LLMRails:
             )
 
             created_count = 0
-            for action_name in actions_needing_llms:
+            # Get the actions from flows defined in rails config
+            get_action_details = partial(
+                get_action_details_from_flow_id, flows=self.config.flows
+            )
+            configured_actions_names = []
+            for flow_id in self.config.rails.input.flows:
+                action_name, _ = get_action_details(flow_id)
+                configured_actions_names.append(action_name)
+            for flow_id in self.config.rails.output.flows:
+                action_name, _ = get_action_details(flow_id)
+                configured_actions_names.append(action_name)
+
+            for action_name in configured_actions_names:
+                if action_name not in actions_needing_llms:
+                    continue
                 if f"{action_name}_llm" not in self.runtime.registered_action_params:
                     isolated_llm = self._create_action_llm_copy(self.llm, action_name)
                     if isolated_llm:
@@ -1600,7 +1617,7 @@ class LLMRails:
         output_rails_flows_id = self.config.rails.output.flows
         stream_first = stream_first or output_rails_streaming_config.stream_first
         get_action_details = partial(
-            _get_action_details_from_flow_id, flows=self.config.flows
+            get_action_details_from_flow_id, flows=self.config.flows
         )
 
         parallel_mode = getattr(self.config.rails.output, "parallel", False)
@@ -1756,58 +1773,3 @@ class LLMRails:
                 # yield the individual chunks directly from the buffer strategy
                 for chunk in user_output_chunks:
                     yield chunk
-
-
-def _get_action_details_from_flow_id(
-    flow_id: str,
-    flows: List[Union[Dict, Any]],
-    prefixes: Optional[List[str]] = None,
-) -> Tuple[str, Any]:
-    """Get the action name and parameters from the flow id.
-
-    First, try to find an exact match.
-    If not found, then if the provided flow_id starts with one of the special prefixes,
-    return the first flow whose id starts with that same prefix.
-    """
-
-    supported_prefixes = [
-        "content safety check output",
-        "topic safety check output",
-    ]
-    if prefixes:
-        supported_prefixes.extend(prefixes)
-
-    candidate_flow = None
-
-    for flow in flows:
-        # If exact match, use it
-        if flow["id"] == flow_id:
-            candidate_flow = flow
-            break
-
-        # If no exact match, check if both the provided flow_id and this flow's id share a special prefix
-        for prefix in supported_prefixes:
-            if flow_id.startswith(prefix) and flow["id"].startswith(prefix):
-                candidate_flow = flow
-                # We don't break immediately here because an exact match would have been preferred,
-                # but since we're in the else branch it's fine to choose the first matching candidate.
-                # TODO:we should avoid having multiple matchin prefixes
-                break
-
-        if candidate_flow is not None:
-            break
-
-    if candidate_flow is None:
-        raise ValueError(f"No action found for flow_id: {flow_id}")
-
-    # we have identified a candidate, look for the run_action element.
-    for element in candidate_flow["elements"]:
-        if (
-            element["_type"] == "run_action"
-            and element["_source_mapping"]["filename"].endswith(".co")
-            and "execute" in element["_source_mapping"]["line_text"]
-            and "action_name" in element
-        ):
-            return element["action_name"], element["action_params"]
-
-    raise ValueError(f"No run_action element found for flow_id: {flow_id}")

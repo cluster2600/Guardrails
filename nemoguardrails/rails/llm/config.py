@@ -358,6 +358,11 @@ class LogAdapterConfig(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
+class SpanFormat(str, Enum):
+    legacy = "legacy"
+    opentelemetry = "opentelemetry"
+
+
 class TracingConfig(BaseModel):
     enabled: bool = False
     adapters: List[LogAdapterConfig] = Field(
@@ -365,8 +370,8 @@ class TracingConfig(BaseModel):
         description="The list of tracing adapters to use. If not specified, the default adapters are used.",
     )
     span_format: str = Field(
-        default="opentelemetry",
-        description="The span format to use. Options are 'flat' (simple metrics) or 'opentelemetry' (OpenTelemetry semantic conventions).",
+        default=SpanFormat.opentelemetry,
+        description="The span format to use. Options are 'legacy' (simple metrics) or 'opentelemetry' (OpenTelemetry semantic conventions).",
     )
     enable_content_capture: bool = Field(
         default=False,
@@ -769,6 +774,28 @@ class ClavataRailConfig(BaseModel):
     )
 
 
+class PangeaRailOptions(BaseModel):
+    """Configuration data for the Pangea AI Guard API"""
+
+    recipe: str = Field(
+        description="""Recipe key of a configuration of data types and settings defined in the Pangea User Console. It
+        specifies the rules that are to be applied to the text, such as defang malicious URLs."""
+    )
+
+
+class PangeaRailConfig(BaseModel):
+    """Configuration data for the Pangea AI Guard API"""
+
+    input: Optional[PangeaRailOptions] = Field(
+        default=None,
+        description="Pangea configuration for an Input Guardrail",
+    )
+    output: Optional[PangeaRailOptions] = Field(
+        default=None,
+        description="Pangea configuration for an Output Guardrail",
+    )
+
+
 class RailsConfigData(BaseModel):
     """Configuration data for specific rails that are supported out-of-the-box."""
 
@@ -815,6 +842,11 @@ class RailsConfigData(BaseModel):
     clavata: Optional[ClavataRailConfig] = Field(
         default_factory=ClavataRailConfig,
         description="Configuration for Clavata.",
+    )
+
+    pangea: Optional[PangeaRailConfig] = Field(
+        default_factory=PangeaRailConfig,
+        description="Configuration for Pangea.",
     )
 
 
