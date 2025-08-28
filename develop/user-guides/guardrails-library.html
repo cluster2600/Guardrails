@@ -546,6 +546,7 @@
 <li><p><a class="reference internal" href="#clavata">Clavata.ai</a></p></li>
 <li><p><a class="reference internal" href="#cleanlab">Cleanlab Trustworthiness Score</a></p></li>
 <li><p><a class="reference internal" href="#gcp-text-moderation">GCP Text Moderation</a></p></li>
+<li><p><a class="reference internal" href="#guardrailsai-integration">GuardrailsAI Integration</a></p></li>
 <li><p><a class="reference internal" href="#private-ai-pii-detection">Private AI PII detection</a></p></li>
 <li><p><a class="reference internal" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a></p></li>
 <li><p><a class="reference internal" href="#prompt-security-protection">Prompt Security Protection</a></p></li>
@@ -1251,6 +1252,32 @@
 <p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/gcp-text-moderations.md" rel="noreferer noopener" target="_blank">GCP Text Moderation</a> page.</p>
 </section>
 </section>
+<section id="guardrailsai-integration">
+<h3>GuardrailsAI Integration<a class="headerlink" href="#guardrailsai-integration" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://github.com/guardrails-ai/guardrails" rel="noreferer noopener" target="_blank">GuardrailsAI validators</a> for comprehensive input and output validation. GuardrailsAI provides a wide range of validators for content safety, PII detection, toxic language filtering, jailbreak detection, and more.</p>
+<section id="id18">
+<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">validators</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">toxic_language</span>
+<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrails_pii</span>
+<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">entities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;phone_number&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;email&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ssn&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;guardrails_pii&quot;</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;toxic_language&quot;</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference internal" href="community/guardrails-ai.html"><span class="std std-doc">GuardrailsAI Integration</span></a> page.</p>
+</section>
+</section>
 <section id="private-ai-pii-detection">
 <h3>Private AI PII Detection<a class="headerlink" href="#private-ai-pii-detection" title="Link to this heading">#</a></h3>
 <p>NeMo Guardrails supports using <a class="reference external" href="https://docs.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Private AI API</a> for PII detection and masking input, output and retrieval flows.</p>
@@ -1271,8 +1298,8 @@
 <span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
-<section id="id18">
-<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<section id="id19">
+<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
 <p><strong>PII detection</strong></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
@@ -1299,8 +1326,8 @@
 <span class="w">      </span><span class="nt">server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://testfiddler.ai</span><span class="w"> </span><span class="c1"># Replace this with your fiddler environment</span>
 </pre></div>
 </div>
-<section id="id19">
-<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<section id="id20">
+<h4>Example usage<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">fiddler</span><span class="p">:</span>
@@ -1321,8 +1348,8 @@
 <h3>Prompt Security Protection<a class="headerlink" href="#prompt-security-protection" title="Link to this heading">#</a></h3>
 <p>NeMo Guardrails supports using <a class="reference external" href="https://prompt.security/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Prompt Security API</a> for protecting input and output retrieval flows.</p>
 <p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">PS_PROTECT_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">PS_APP_ID</span></code> environment variables.</p>
-<section id="id20">
-<h4>Example usage<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<section id="id21">
+<h4>Example usage<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1339,8 +1366,8 @@
 <h3>Pangea AI Guard<a class="headerlink" href="#pangea-ai-guard" title="Link to this heading">#</a></h3>
 <p>NeMo Guardrails supports using <a class="reference external" href="https://pangea.cloud/services/ai-guard/" rel="noreferer noopener" target="_blank">Pangea AI Guard</a> for protecting data and
 interactions with LLMs within AI-powered applications.</p>
-<section id="id21">
-<h4>Example usage<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<section id="id22">
+<h4>Example usage<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1779,20 +1806,24 @@ The rules use the string data type.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai-pii-detection">Private AI PII Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailsai-integration">GuardrailsAI Integration</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai-pii-detection">Private AI PII Detection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Example usage</a></li>
 </ul>
 </li>
 </ul>
