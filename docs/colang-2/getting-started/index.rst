@@ -41,6 +41,7 @@ Guides
   dialog-rails.rst
   multimodal-rails.rst
   input-rails.rst
+  nemoguard-integration.rst
   interaction-loop.rst
   llm-flows.rst
   recommended-next-steps.rst
