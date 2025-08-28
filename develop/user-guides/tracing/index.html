@@ -527,6 +527,71 @@
 <li><p>Debug flow execution and identify bottlenecks.</p></li>
 <li><p>Analyze conversation patterns and errors.</p></li>
 </ul>
+<section id="span-formats">
+<h2>Span Formats<a class="headerlink" href="#span-formats" title="Link to this heading">#</a></h2>
+<p>Starting with NeMo Guardrails v0.16.0, the tracing system has transitioned to OpenTelemetry semantic conventions for Generative AI (GenAI), moving away from the legacy span format. This change enhances observability standardization and improves monitoring capabilities for AI workloads.</p>
+<p><strong>Reference Documentation:</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">OpenTelemetry Semantic Conventions for GenAI</a> - Overview of GenAI semantic conventions</p></li>
+<li><p><a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-events/" rel="noreferer noopener" target="_blank">GenAI Events Specification</a> - Details on capturing user inputs and model outputs</p></li>
+<li><p><a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/" rel="noreferer noopener" target="_blank">GenAI Spans Specification</a> - Span naming and attribute conventions</p></li>
+</ul>
+<section id="supported-formats">
+<h3>Supported Formats<a class="headerlink" href="#supported-formats" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails support the following formats.</p>
+<ul class="simple">
+<li><p><strong>OpenTelemetry</strong> (<code class="docutils literal notranslate"><span class="pre">opentelemetry</span></code>) - <strong>Recommended default format</strong> following OpenTelemetry semantic conventions for GenAI</p></li>
+<li><p><strong>Legacy</strong> (<code class="docutils literal notranslate"><span class="pre">legacy</span></code>) - Previous format with simple metrics dictionary (deprecated)</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h3>
+<p>You can control the span format through the tracing configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">span_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;opentelemetry&quot;</span><span class="w">  </span><span class="c1"># default</span>
+<span class="w">  </span><span class="nt">enable_content_capture</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># default, see privacy considerations below</span>
+</pre></div>
+</div>
+</section>
+<section id="key-differences">
+<h3>Key Differences<a class="headerlink" href="#key-differences" title="Link to this heading">#</a></h3>
+<p>The following are the key differences between the supported span formats.</p>
+<p><strong>OpenTelemetry Format:</strong></p>
+<ul class="simple">
+<li><p>Follows the standardized <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">semantic conventions</a></p></li>
+<li><p>Rich-structured attributes and events (e.g., <code class="docutils literal notranslate"><span class="pre">gen_ai.request.model</span></code>, <code class="docutils literal notranslate"><span class="pre">gen_ai.usage.input_tokens</span></code>)</p></li>
+<li><p>Enhanced LLM call tracking with provider and model information</p></li>
+<li><p>Support for span events and error tracking</p></li>
+<li><p>Compatible with OpenTelemetry ecosystem tools</p></li>
+</ul>
+<p><strong>Legacy Format:</strong></p>
+<ul class="simple">
+<li><p>Simple metrics dictionary</p></li>
+<li><p>Minimal overhead with limited observability</p></li>
+<li><p><strong>Deprecated</strong> - maintained for backward compatibility only</p></li>
+</ul>
+</section>
+<section id="important-considerations">
+<h3>Important Considerations<a class="headerlink" href="#important-considerations" title="Link to this heading">#</a></h3>
+<p><strong>Development Status</strong>: The <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">OpenTelemetry semantic conventions for GenAI</a> are currently in development and may undergo changes. Consider the following risks:</p>
+<ul class="simple">
+<li><p><strong>Evolving Standards</strong>: Conventions may change as they mature, potentially affecting existing implementations</p></li>
+<li><p><strong>Data Privacy</strong>: The <code class="docutils literal notranslate"><span class="pre">enable_content_capture</span></code> option captures user inputs and model outputs, which may include sensitive information (PII). Only enable when necessary and ensure compliance with data protection regulations. See <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-events/" rel="noreferer noopener" target="_blank">GenAI Events documentation</a> for details</p></li>
+<li><p><strong>Performance Impact</strong>: Extensive telemetry collection may impact system performance, especially with large inputs/outputs</p></li>
+</ul>
+</section>
+<section id="migration-path">
+<h3>Migration Path<a class="headerlink" href="#migration-path" title="Link to this heading">#</a></h3>
+<p>Existing configurations will continue to work. However, it is strongly recommended to migrate to the OpenTelemetry format. Migration steps are:</p>
+<ol class="arabic simple">
+<li><p>Update your configuration to use <code class="docutils literal notranslate"><span class="pre">span_format:</span> <span class="pre">&quot;opentelemetry&quot;</span></code></p></li>
+<li><p>Review your telemetry backends for compatibility with OpenTelemetry conventions</p></li>
+<li><p>Test thoroughly, as span structures and attribute names have changed</p></li>
+<li><p>Consider privacy implications if enabling content capture</p></li>
+</ol>
+</section>
+</section>
 <section id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -597,6 +662,14 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-formats">Span Formats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-formats">Supported Formats</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">Key Differences</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-considerations">Important Considerations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#migration-path">Migration Path</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jupyter-notebooks">Jupyter Notebooks</a></li>
 </ul>
