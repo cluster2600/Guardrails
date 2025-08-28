@@ -536,8 +536,9 @@
 <li><p><a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-events/" rel="noreferer noopener" target="_blank">GenAI Events Specification</a> - Details on capturing user inputs and model outputs</p></li>
 <li><p><a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/" rel="noreferer noopener" target="_blank">GenAI Spans Specification</a> - Span naming and attribute conventions</p></li>
 </ul>
-<section id="current-formats">
-<h3>Current Formats<a class="headerlink" href="#current-formats" title="Link to this heading">#</a></h3>
+<section id="supported-formats">
+<h3>Supported Formats<a class="headerlink" href="#supported-formats" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails support the following formats.</p>
 <ul class="simple">
 <li><p><strong>OpenTelemetry</strong> (<code class="docutils literal notranslate"><span class="pre">opentelemetry</span></code>) - <strong>Recommended default format</strong> following OpenTelemetry semantic conventions for GenAI</p></li>
 <li><p><strong>Legacy</strong> (<code class="docutils literal notranslate"><span class="pre">legacy</span></code>) - Previous format with simple metrics dictionary (deprecated)</p></li>
@@ -545,7 +546,7 @@
 </section>
 <section id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h3>
-<p>The span format is controlled through the tracing configuration:</p>
+<p>You can control the span format through the tracing configuration:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">span_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;opentelemetry&quot;</span><span class="w">  </span><span class="c1"># default</span>
@@ -555,10 +556,11 @@
 </section>
 <section id="key-differences">
 <h3>Key Differences<a class="headerlink" href="#key-differences" title="Link to this heading">#</a></h3>
+<p>The following are the key differences between the supported span formats.</p>
 <p><strong>OpenTelemetry Format:</strong></p>
 <ul class="simple">
-<li><p>Follows standardized <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">semantic conventions</a></p></li>
-<li><p>Rich structured attributes and events (e.g., <code class="docutils literal notranslate"><span class="pre">gen_ai.request.model</span></code>, <code class="docutils literal notranslate"><span class="pre">gen_ai.usage.input_tokens</span></code>)</p></li>
+<li><p>Follows the standardized <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">semantic conventions</a></p></li>
+<li><p>Rich-structured attributes and events (e.g., <code class="docutils literal notranslate"><span class="pre">gen_ai.request.model</span></code>, <code class="docutils literal notranslate"><span class="pre">gen_ai.usage.input_tokens</span></code>)</p></li>
 <li><p>Enhanced LLM call tracking with provider and model information</p></li>
 <li><p>Support for span events and error tracking</p></li>
 <li><p>Compatible with OpenTelemetry ecosystem tools</p></li>
@@ -566,7 +568,7 @@
 <p><strong>Legacy Format:</strong></p>
 <ul class="simple">
 <li><p>Simple metrics dictionary</p></li>
-<li><p>Minimal overhead but limited observability</p></li>
+<li><p>Minimal overhead with limited observability</p></li>
 <li><p><strong>Deprecated</strong> - maintained for backward compatibility only</p></li>
 </ul>
 </section>
@@ -581,7 +583,7 @@
 </section>
 <section id="migration-path">
 <h3>Migration Path<a class="headerlink" href="#migration-path" title="Link to this heading">#</a></h3>
-<p>Existing configurations will continue to work, but we strongly recommend migrating to the OpenTelemetry format:</p>
+<p>Existing configurations will continue to work. However, it is strongly recommended to migrate to the OpenTelemetry format. Migration steps are:</p>
 <ol class="arabic simple">
 <li><p>Update your configuration to use <code class="docutils literal notranslate"><span class="pre">span_format:</span> <span class="pre">&quot;opentelemetry&quot;</span></code></p></li>
 <li><p>Review your telemetry backends for compatibility with OpenTelemetry conventions</p></li>
@@ -598,6 +600,13 @@
 <li><p><a class="reference internal" href="opentelemetry-integration.html"><span class="std std-doc">Advanced OpenTelemetry Integration</span></a> - Production-ready OpenTelemetry setup and ecosystem compatibility</p></li>
 <li><p><a class="reference internal" href="#common-integrations.md"><code class="xref myst docutils literal notranslate"><span class="pre">common-integrations.md</span></code></a> - Setup examples for Jaeger, Zipkin, and OpenTelemetry Collector</p></li>
 <li><p><a class="reference internal" href="troubleshooting.html"><span class="std std-doc">Troubleshooting</span></a> - Common issues and solutions</p></li>
+</ul>
+</section>
+<section id="jupyter-notebooks">
+<h2>Jupyter Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a> - A quickstart guide to tracing Guardrails requests in sequential and parallel modes.</p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a> - A guide to visualize Guardrails traces in Jaeger.</p></li>
 </ul>
 <div class="toctree-wrapper compound">
 </div>
@@ -654,7 +663,7 @@
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#span-formats">Span Formats</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#current-formats">Current Formats</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-formats">Supported Formats</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">Key Differences</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-considerations">Important Considerations</a></li>
@@ -662,6 +671,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jupyter-notebooks">Jupyter Notebooks</a></li>
 </ul>
   </nav></div>
 
