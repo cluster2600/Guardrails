@@ -550,12 +550,13 @@ You can specify more services to use the key for additional purposes.</p>
 Refer to the <a class="reference external" href="https://docs.docker.com/engine/install/" rel="noreferer noopener" target="_blank">instructions from Docker</a>.</p></li>
 <li><p>NVIDIA Container Toolkit installed and configured.
 Refer to <span class="xref std std-doc">installation</span> in the toolkit documentation.</p></li>
-<li><p>You <a class="reference internal" href="#./getting-started/installation-guide.md"><span class="xref myst">installed NeMo Guardrails</span></a>.</p></li>
+<li><p>You <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">installed NeMo Guardrails</span></a>.</p></li>
 <li><p>You installed LangChain NVIDIA AI Foundation Model Playground Integration:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>langchain-nvidia-ai-endpoints
 </pre></div>
 </div>
 </li>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-multilingual-8b-v1/latest/support-matrix.html" rel="noreferer noopener" target="_blank">support matrix</a> in the content safety NIM documentation for software requirements, hardware requirements, and model profiles.</p></li>
 </ul>
 </section>
 <section id="starting-the-content-safety-container">
@@ -640,6 +641,9 @@ Guardrails uses this environment variable to send requests that pass the input r
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=multilingual_content_safety</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=multilingual_content_safety</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file configures the application LLM model and the content safety model.</p>
@@ -789,6 +793,18 @@ Guardrails uses this environment variable to send requests that pass the input r
 <span class="go">3. **पालक पनीर**: पालक पनीर एक लोकप्रिय उत्तर भारतीय सब्जी है, जो पनीर (भारतीय चीज) और पालक के प्यूरी से बनाई जाती है। इसमें विभिन्न मसाले जैसे कि जीरा, धनिया, और लहसुन भी मिलाए जाते हैं। यह व्यंजन अपने स्वादिष्ट और पौष्टिक मूल्य के लिए बहुत पसंद किया जाता है। पालक पनीर को अक्सर रोटी, पराठे, या चावल के साथ परोसा जाता है।</span>
 
 <span class="go">इन व्यंजनों के अलावा, भारत में विभिन्न अन्य स्वादिष्ट खाद्य पदार्थ भी प्रचलित हैं, जैसे कि समोसे, गुलाब जामुन, और जलेबी। प्रत्येक क्षेत्र में अपनी विशिष्ट खाद्य संस्कृति और पारंपरिक व्यंजन हैं, जो भारतीय खाद्य विविधता को और भी समृद्ध बनाते हैं।</span>
+</pre></div>
+</div>
+<p>Refer to the English translation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A variety of delicious and varied foods are popular in India, and each region has its own specialties and traditional dishes. Here is information about three major foods:
+
+1. **Biryani**: Biryani is a popular Indian dish made from rice, spices, and meat or vegetables. It is very famous in South India, especially Hyderabad and Lucknow. There are different types of biryani, such as Hyderabadi biryani, Lucknowi biryani, and vegetable biryani.
+
+2. **Tandoori Chicken**: Tandoori chicken is a famous North Indian dish, which is chicken meat marinated in yogurt and various spices and cooked in a tandoor. This dish is known for its delicious and tender taste. Tandoori chicken is often served with naan or roti.
+
+3. **Palak Paneer**: Palak paneer is a popular North Indian dish, which is made from paneer (Indian cheese) and spinach puree. Various spices such as cumin, coriander, and garlic are also added to it. This dish is much loved for its delicious and nutritional value. Palak paneer is often served with roti, paratha, or rice.
+
+Apart from these dishes, various other delicious foods are also popular in India, such as samosas, gulab jamun, and jalebi. Each region has its own distinct food culture and traditional cuisine, which makes the Indian food diversity even richer.
 </pre></div>
 </div>
 </li>
