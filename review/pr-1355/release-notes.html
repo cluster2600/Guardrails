@@ -397,6 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
@@ -526,10 +527,31 @@
 <p>The following sections summarize and highlight the changes for each release.
 For a complete record of changes in a release, refer to the
 <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md" rel="noreferer noopener" target="_blank">CHANGELOG.md</a> in the GitHub repository.</p>
-<section id="v0-15-0">
-<span id="id1"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
+<section id="v0-16-0">
+<span id="id1"></span><h2>0.16.0<a class="headerlink" href="#v0-16-0" title="Link to this heading">#</a></h2>
 <section id="key-features">
-<span id="v0-15-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
+<span id="v0-16-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Enhanced tracing system with <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">OpenTelemetry semantic conventions</a>. To learn more, refer to <a class="reference internal" href="user-guides/tracing/index.html#tracing"><span class="std std-ref">Tracing</span></a>. For usage examples, refer to the following notebooks</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a></p></li>
+</ul>
+</li>
+<li><p>Community integration with <a class="reference external" href="https://www.guardrailsai.com/" rel="noreferer noopener" target="_blank">GuardrailsAI</a> and <a class="reference external" href="https://pangea.cloud/services/ai-guard" rel="noreferer noopener" target="_blank">Pangea AI Guard</a>.</p></li>
+</ul>
+</section>
+<section id="other-changes">
+<span id="v0-16-0-other-changes"></span><h3>Other Changes<a class="headerlink" href="#other-changes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added documentation about using KV cache reuse for LLM-based NemoGuard NIMs. By using KV cache reuse, you can improve the performance of LLM-based NemoGuard NIMs where the system prompt is the same for all calls up to the point where user query and LLM response are injected. To learn more, refer to <a class="reference internal" href="user-guides/advanced/kv-cache-reuse.html#kv-cache-reuse"><span class="std std-ref">KV Cache Reuse for NemoGuard NIM</span></a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-15-0">
+<span id="id2"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
+<section id="v0-15-0-features">
+<span id="id3"></span><h3>Key Features<a class="headerlink" href="#v0-15-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">Parallel Execution of Input and Output Rails</span></a>.</p></li>
 <li><p>Implemented a new way of configuring tracing. You can now use the OpenTelemetry SDK and the OpenTelemetry Protocol (OTLP) exporter while configuring the NeMo Guardrails clients in your application code directly. To learn more, refer to the <a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html#tracing-configuration"><span class="std std-ref">basic tracing configuration guide</span></a> and the <a class="reference internal" href="user-guides/tracing/index.html#tracing"><span class="std std-ref">advanced tracing configuration guide</span></a>.</p></li>
@@ -559,7 +581,7 @@ For a complete record of changes in a release, refer to the
 </section>
 </section>
 <section id="v0-14-1">
-<span id="id2"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
+<span id="id4"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
 <section id="features">
 <span id="v0-14-1-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -578,9 +600,9 @@ For a complete record of changes in a release, refer to the
 </section>
 </section>
 <section id="v0-14-0">
-<span id="id3"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
+<span id="id5"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
 <section id="v0-14-0-features">
-<span id="id4"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
+<span id="id6"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Python 3.13.</p></li>
 <li><p>Enhanced working with advanced reasoning models.</p>
@@ -606,7 +628,7 @@ For more information, refer to <a class="reference internal" href="user-guides/c
 </ul>
 </section>
 <section id="v0-14-0-breaking-changes">
-<span id="id5"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
+<span id="id7"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Removed support for the NeMo LLM Service, <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>.
 This provider reached end-of-life on February 5, 2025.</p></li>
@@ -616,7 +638,7 @@ In this release, the class is moved to the <code class="docutils literal notrans
 </ul>
 </section>
 <section id="v0-14-0-fixed-issues">
-<span id="id6"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
+<span id="id8"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue when tracing is enabled.
 Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
@@ -684,6 +706,7 @@ For more information, refer to <a class="reference external" href="https://githu
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-16-0">0.16.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-15-0">0.15.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-14-1">0.14.1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-14-0">0.14.0</a></li>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Llama 3.1 NemoGuard 8B ContentSafety Deployment &#8212; NVIDIA NeMo Guardrails</title>
+    <title>Nemotron Content Safety Multilingual Deployment &#8212; NVIDIA NeMo Guardrails</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/nemoguard-contentsafety-deployment';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/nemotron-content-safety-multilingual-deployment';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -54,11 +54,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/nemoguard-contentsafety-deployment.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/nemotron-content-safety-multilingual-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Nemotron Content Safety Multilingual Deployment" href="nemotron-content-safety-multilingual-deployment.html" />
-    <link rel="prev" title="Vertex AI Setup" href="vertexai-setup.html" />
+    <link rel="next" title="Llama 3.1 NemoGuard 8B Topic Control Deployment" href="nemoguard-topiccontrol-deployment.html" />
+    <link rel="prev" title="Llama 3.1 NemoGuard 8B ContentSafety Deployment" href="nemoguard-contentsafety-deployment.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -396,8 +396,8 @@
 <li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
@@ -501,7 +501,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Llama 3.1 NemoGuard 8B ContentSafety Deployment</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Nemotron Content Safety Multilingual Deployment</span></li>
   </ul>
 </nav>
 </div>
@@ -518,92 +518,303 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="llama-3-1-nemoguard-8b-contentsafety-deployment">
-<h1>Llama 3.1 NemoGuard 8B ContentSafety Deployment<a class="headerlink" href="#llama-3-1-nemoguard-8b-contentsafety-deployment" title="Link to this heading">#</a></h1>
-<p>The Llama 3.1 NemoGuard 8B ContentSafety model will be available to download as a LoRA adapter module through HuggingFace, and as an <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">NVIDIA NIM</a> for low latency optimized inference with <a class="reference external" href="https://docs.nvidia.com/tensorrt-llm/index.html" rel="noreferer noopener" target="_blank">NVIDIA TensorRT-LLM</a>.</p>
-<p>This guide covers how to deploy <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">NemoGuard NIMs</a>, and how to then use the deployed NIM in a NeMo Guardrails configuration.</p>
-<section id="nim-deployment">
-<h2>NIM Deployment<a class="headerlink" href="#nim-deployment" title="Link to this heading">#</a></h2>
-<section id="access">
-<h3>Access<a class="headerlink" href="#access" title="Link to this heading">#</a></h3>
-<p>The first step is to ensure access to NVIDIA NIM assets through NGC using an NVAIE license.
-Once you have the NGC API key with the necessary permissions, set the following environment variables:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
-docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>-u<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>-p<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
+  <!--
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+-->
+<section class="tex2jax_ignore mathjax_ignore" id="nemotron-content-safety-multilingual-deployment">
+<h1>Nemotron Content Safety Multilingual Deployment<a class="headerlink" href="#nemotron-content-safety-multilingual-deployment" title="Link to this heading">#</a></h1>
+<section id="adding-multilingual-content-safety-guardrails">
+<h2>Adding Multilingual Content Safety Guardrails<a class="headerlink" href="#adding-multilingual-content-safety-guardrails" title="Link to this heading">#</a></h2>
+<p>The following procedure adds a guardrail to check user input against a multilingual content safety model.</p>
+<p>To simplify configuration, the sample code uses the <a class="reference external" href="https://build.nvidia.com/meta/llama-3_3-70b-instruct" rel="noreferer noopener" target="_blank">Llama 3.3 70B Instruct model</a> on build.nvidia.com as the application LLM.
+This avoids deploying a NIM for LLMs instance locally for inference.</p>
+<p>The sample code relies on starting a local instance of the
+<a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/llama-3.1-nemotron-safety-guard-multilingual-8b-v1" rel="noreferer noopener" target="_blank">Llama 3.1 Nemotron Content Safety Multilingual 8B V1</a>
+container that is available from NVIDIA NGC.</p>
+<p>The steps guide you to start the content safety container, configure a content safety input raile, and then use NeMo Guardrails interactively to send safe and unsafe requests.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul>
+<li><p>You must be a member of the NVIDIA Developer Program and you must have an NVIDIA API key.
+For information about the program and getting a key, refer to <a class="reference external" href="https://forums.developer.nvidia.com/t/nvidia-nim-faq/300317/1" rel="noreferer noopener" target="_blank">NVIDIA NIM FAQ</a> in the NVIDIA NIM developer forum.
+The NVIDIA API key enables you to send inference requests to build.nvidia.com.</p></li>
+<li><p>You have an NGC API key.
+This API key enables you to download the content safety container and model from NVIDIA NGC.
+Refer to <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ngc-user-guide/index.html#generating-api-key" rel="noreferer noopener" target="_blank">Generating Your NGC API Key</a> in the <em>NVIDIA NGC User Guide</em> for more information.</p>
+<p>When you create an NGC API personal key, select at least <strong>NGC Catalog</strong> from the <strong>Services Included</strong> menu.
+You can specify more services to use the key for additional purposes.</p>
+</li>
+<li><p>A host with Docker Engine.
+Refer to the <a class="reference external" href="https://docs.docker.com/engine/install/" rel="noreferer noopener" target="_blank">instructions from Docker</a>.</p></li>
+<li><p>NVIDIA Container Toolkit installed and configured.
+Refer to <span class="xref std std-doc">installation</span> in the toolkit documentation.</p></li>
+<li><p>You <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">installed NeMo Guardrails</span></a>.</p></li>
+<li><p>You installed LangChain NVIDIA AI Foundation Model Playground Integration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>langchain-nvidia-ai-endpoints
 </pre></div>
 </div>
-<p>Test that you are able to use the NVIDIA NIM assets through by pulling the latest NemoGuard container.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span>&lt;Path<span class="w"> </span>to<span class="w"> </span>latest<span class="w"> </span>NIM<span class="w"> </span>docker<span class="w"> </span>container&gt;
-<span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;llama-3.1-nemoguard-8b-content-safety&quot;</span>
-docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_IMAGE</span>
+</li>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-multilingual-8b-v1/latest/support-matrix.html" rel="noreferer noopener" target="_blank">support matrix</a> in the content safety NIM documentation for software requirements, hardware requirements, and model profiles.</p></li>
+</ul>
+</section>
+<section id="starting-the-content-safety-container">
+<h2>Starting the Content Safety Container<a class="headerlink" href="#starting-the-content-safety-container" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Log in to NVIDIA NGC so you can pull the container.</p>
+<ol class="arabic">
+<li><p>Export your NGC API key as an environment variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;&lt;nvapi-...&gt;&quot;</span>
 </pre></div>
 </div>
-<p>And go!</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NGC_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_SERVED_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_CUSTOM_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">8123</span>:8000<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="nv">$NIM_IMAGE</span>
+</li>
+<li><p>Log in to the registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>--username<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>--password-stdin<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span><span class="nv">$NGC_API_KEY</span>
 </pre></div>
 </div>
-<section id="use-the-running-nim-in-your-guardrails-app">
-<h4>Use the running NIM in your Guardrails App<a class="headerlink" href="#use-the-running-nim-in-your-guardrails-app" title="Link to this heading">#</a></h4>
-<p>Any locally running NIM exposes the standard OpenAI interface on the <code class="docutils literal notranslate"><span class="pre">v1/completions</span></code> and <code class="docutils literal notranslate"><span class="pre">v1/chat/completions</span></code> endpoints. NeMo Guardrails provides out of the box support engines that support the standard LLM interfaces. One such engine is LangChain’s <code class="docutils literal notranslate"><span class="pre">vllm_openai</span></code>.</p>
-<p>Thus, your Guardrails configuration file can look like:</p>
+</li>
+</ol>
+</li>
+<li><p>Download the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>pull<span class="w"> </span>nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-multilingual-8b-v1:1.10.1
+</pre></div>
+</div>
+</li>
+<li><p>Create a model cache directory on the host machine:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>~/.cache/safetyguardmultilingual
+<span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">$ </span>chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the container with the cache directory as a volume mount:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--name<span class="w"> </span>safetyguardmultilingual<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--shm-size<span class="o">=</span>64GB<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span>NGC_API_KEY<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">NIM_ENABLE_KV_CACHE_REUSE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">:/opt/nim/.cache/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-multilingual-8b-v1:1.10.1
+</pre></div>
+</div>
+<p>The container requires several minutes to start and download the model from NGC.
+You can monitor the progress by running the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">safetyguardmultilingual</span></code> command.</p>
+</li>
+<li><p>Confirm the service is ready to respond to inference requests:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://localhost:8000/v1/models<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.data[].id&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;nvidia/llama-3.1-nemotron-safety-guard-multilingual-8b-v1&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="configuring-guardrails-and-running-inference">
+<h2>Configuring Guardrails and Running Inference<a class="headerlink" href="#configuring-guardrails-and-running-inference" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Set your NVIDIA API key as an environment variable.
+Guardrails uses this environment variable to send requests that pass the input rail to build.nvidia.com.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span>&lt;nvapi-...&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Create a <em>configuration store</em> directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code>.</p></li>
+<li><p>Copy the following configuration code and save as <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> in the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo-instruct</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.3-70b-instruct</span>
 
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;content_safety&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;multilingual_content_safety&quot;</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8123/v1&quot;</span>
-<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llama-3.1-nemoguard-8b-content-safety&quot;</span>
+<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8000/v1&quot;</span>
+<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvidia/llama-3.1-nemotron-safety-guard-multilingual-8b-v1&quot;</span>
 
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=content_safety</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=multilingual_content_safety</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=multilingual_content_safety</span>
 </pre></div>
 </div>
-<p>A few things to note:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file configures the application LLM model and the content safety model.</p>
+</li>
+<li><p>Copy the following prompts code and save as <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> in the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_input $model=multilingual_content_safety</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a &#39;safe&#39; or &#39;unsafe&#39; rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN UNSAFE CONTENT CATEGORIES&gt;</span>
+<span class="w">      </span><span class="no">S1: Violence.</span>
+<span class="w">      </span><span class="no">S2: Sexual.</span>
+<span class="w">      </span><span class="no">S3: Criminal Planning/Confessions.</span>
+<span class="w">      </span><span class="no">S4: Guns and Illegal Weapons.</span>
+<span class="w">      </span><span class="no">S5: Controlled/Regulated Substances.</span>
+<span class="w">      </span><span class="no">S6: Suicide and Self Harm.</span>
+<span class="w">      </span><span class="no">S7: Sexual (minor).</span>
+<span class="w">      </span><span class="no">S8: Hate/Identity Hate.</span>
+<span class="w">      </span><span class="no">S9: PII/Privacy.</span>
+<span class="w">      </span><span class="no">S10: Harassment.</span>
+<span class="w">      </span><span class="no">S11: Threat.</span>
+<span class="w">      </span><span class="no">S12: Profanity.</span>
+<span class="w">      </span><span class="no">S13: Needs Caution.</span>
+<span class="w">      </span><span class="no">S14: Other.</span>
+<span class="w">      </span><span class="no">S15: Manipulation.</span>
+<span class="w">      </span><span class="no">S16: Fraud/Deception.</span>
+<span class="w">      </span><span class="no">S17: Malware.</span>
+<span class="w">      </span><span class="no">S18: High Risk Gov Decision Making.</span>
+<span class="w">      </span><span class="no">S19: Political/Misinformation/Conspiracy.</span>
+<span class="w">      </span><span class="no">S20: Copyright/Trademark/Plagiarism.</span>
+<span class="w">      </span><span class="no">S21: Unauthorized Advice.</span>
+<span class="w">      </span><span class="no">S22: Illegal Activity.</span>
+<span class="w">      </span><span class="no">S23: Immoral/Unethical.</span>
+<span class="w">      </span><span class="no">&lt;END UNSAFE CONTENT CATEGORIES&gt;</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">user: {{ user_input }}</span>
+
+<span class="w">      </span><span class="no">&lt;END CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
+<span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
+
+<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
+<span class="w">      </span><span class="no">Output JSON:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_prompt_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_output $model=multilingual_content_safety</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a &#39;safe&#39; or &#39;unsafe&#39; rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN UNSAFE CONTENT CATEGORIES&gt;</span>
+<span class="w">      </span><span class="no">S1: Violence.</span>
+<span class="w">      </span><span class="no">S2: Sexual.</span>
+<span class="w">      </span><span class="no">S3: Criminal Planning/Confessions.</span>
+<span class="w">      </span><span class="no">S4: Guns and Illegal Weapons.</span>
+<span class="w">      </span><span class="no">S5: Controlled/Regulated Substances.</span>
+<span class="w">      </span><span class="no">S6: Suicide and Self Harm.</span>
+<span class="w">      </span><span class="no">S7: Sexual (minor).</span>
+<span class="w">      </span><span class="no">S8: Hate/Identity Hate.</span>
+<span class="w">      </span><span class="no">S9: PII/Privacy.</span>
+<span class="w">      </span><span class="no">S10: Harassment.</span>
+<span class="w">      </span><span class="no">S11: Threat.</span>
+<span class="w">      </span><span class="no">S12: Profanity.</span>
+<span class="w">      </span><span class="no">S13: Needs Caution.</span>
+<span class="w">      </span><span class="no">S14: Other.</span>
+<span class="w">      </span><span class="no">S15: Manipulation.</span>
+<span class="w">      </span><span class="no">S16: Fraud/Deception.</span>
+<span class="w">      </span><span class="no">S17: Malware.</span>
+<span class="w">      </span><span class="no">S18: High Risk Gov Decision Making.</span>
+<span class="w">      </span><span class="no">S19: Political/Misinformation/Conspiracy.</span>
+<span class="w">      </span><span class="no">S20: Copyright/Trademark/Plagiarism.</span>
+<span class="w">      </span><span class="no">S21: Unauthorized Advice.</span>
+<span class="w">      </span><span class="no">S22: Illegal Activity.</span>
+<span class="w">      </span><span class="no">S23: Immoral/Unethical.</span>
+<span class="w">      </span><span class="no">&lt;END UNSAFE CONTENT CATEGORIES&gt;</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">user: {{ user_input }}</span>
+
+<span class="w">      </span><span class="no">response: agent: {{ bot_response }}</span>
+
+<span class="w">      </span><span class="no">&lt;END CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
+<span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
+
+<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
+<span class="w">      </span><span class="no">Output JSON:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_response_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+</pre></div>
+</div>
+</li>
+<li><p>Load the guardrails configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Generate an unsafe response in French:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">rails</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Tell me a five-step plan to rob a bank.</span>
+<span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Dites-moi un plan en cinq étapes pour braquer une banque.&quot;</span>
+<span class="p">}]</span>
+
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">I&#39;m sorry, I can&#39;t respond to that.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Send a safe request in Hindi:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tell me about three common foods in India.</span>
+<span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;मुझे भारत में प्रचलित तीन खाद्य पदार्थों के बारे में बताइये।&quot;</span>
+<span class="p">}]</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">भारत में विभिन्न प्रकार के स्वादिष्ट और विविध खाद्य पदार्थ प्रचलित हैं, और प्रत्येक क्षेत्र में अपनी विशिष्ट विशेषताएं और पारंपरिक व्यंजन हैं। यहाँ तीन प्रमुख खाद्य पदार्थों के बारे में जानकारी दी गई है:</span>
+
+<span class="go">1. **बिरयानी**: बिरयानी एक लोकप्रिय भारतीय व्यंजन है, जो चावल, मसालों, और मांस या सब्जियों से बनाया जाता है। यह दक्षिण भारत, खासकर हैदराबाद और लखनऊ में बहुत प्रसिद्ध है। बिरयानी के विभिन्न प्रकार होते हैं, जैसे कि हैदराबादी बिरयानी, लखनवी बिरयानी, और वेजिटेबल बिरयानी।</span>
+
+<span class="go">2. **तंदूरी चिकन**: तंदूरी चिकन एक प्रसिद्ध उत्तर भारतीय व्यंजन है, जो मुर्गे के मांस को दही और विभिन्न मसालों में मैरिनेट करके तंदूर में पकाया जाता है। यह व्यंजन अपने स्वादिष्ट और कोमल स्वाद के लिए जाना जाता है। तंदूरी चिकन को अक्सर नान या रोटी के साथ परोसा जाता है।</span>
+
+<span class="go">3. **पालक पनीर**: पालक पनीर एक लोकप्रिय उत्तर भारतीय सब्जी है, जो पनीर (भारतीय चीज) और पालक के प्यूरी से बनाई जाती है। इसमें विभिन्न मसाले जैसे कि जीरा, धनिया, और लहसुन भी मिलाए जाते हैं। यह व्यंजन अपने स्वादिष्ट और पौष्टिक मूल्य के लिए बहुत पसंद किया जाता है। पालक पनीर को अक्सर रोटी, पराठे, या चावल के साथ परोसा जाता है।</span>
+
+<span class="go">इन व्यंजनों के अलावा, भारत में विभिन्न अन्य स्वादिष्ट खाद्य पदार्थ भी प्रचलित हैं, जैसे कि समोसे, गुलाब जामुन, और जलेबी। प्रत्येक क्षेत्र में अपनी विशिष्ट खाद्य संस्कृति और पारंपरिक व्यंजन हैं, जो भारतीय खाद्य विविधता को और भी समृद्ध बनाते हैं।</span>
+</pre></div>
+</div>
+<p>Refer to the English translation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A variety of delicious and varied foods are popular in India, and each region has its own specialties and traditional dishes. Here is information about three major foods:
+
+1. **Biryani**: Biryani is a popular Indian dish made from rice, spices, and meat or vegetables. It is very famous in South India, especially Hyderabad and Lucknow. There are different types of biryani, such as Hyderabadi biryani, Lucknowi biryani, and vegetable biryani.
+
+2. **Tandoori Chicken**: Tandoori chicken is a famous North Indian dish, which is chicken meat marinated in yogurt and various spices and cooked in a tandoor. This dish is known for its delicious and tender taste. Tandoori chicken is often served with naan or roti.
+
+3. **Palak Paneer**: Palak paneer is a popular North Indian dish, which is made from paneer (Indian cheese) and spinach puree. Various spices such as cumin, coriander, and garlic are also added to it. This dish is much loved for its delicious and nutritional value. Palak paneer is often served with roti, paratha, or rice.
+
+Apart from these dishes, various other delicious foods are also popular in India, such as samosas, gulab jamun, and jalebi. Each region has its own distinct food culture and traditional cuisine, which makes the Indian food diversity even richer.
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">parameters.base_url</span></code> should contain the IP address of the machine the NIM was hosted on, the port should match the tunnel forwarding port specified in the docker run command.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">parameters.model_name</span></code> in the Guardrails configuration needs to match the <code class="docutils literal notranslate"><span class="pre">$MODEL_NAME</span></code> used when running the NIM container.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">rails</span></code> definitions should list <code class="docutils literal notranslate"><span class="pre">llama-3.1-nemoguard-8b-content-safety</span></code> as the model.</p></li>
+<li><p>Refer to the Llama 3.1 Nemotron Content Safety Multilingual 8B V1 <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-multilingual-8b-v1/latest" rel="noreferer noopener" target="_blank">documentation</a>.</p></li>
 </ul>
-</section>
-<section id="bonus-caching-the-optimized-trtllm-inference-engines">
-<h4>Bonus: Caching the optimized TRTLLM inference engines<a class="headerlink" href="#bonus-caching-the-optimized-trtllm-inference-engines" title="Link to this heading">#</a></h4>
-<p>If you’d like to not build TRTLLM engines from scratch every time you run the NIM container, you can cache it in the first run by just adding a flag to mount a local directory inside the docker to store the model cache.</p>
-<p>To achieve this, you simply need to mount the folder containing the cached TRTLLM assets onto the docker container while running it using <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">$LOCAL_NIM_CACHE:/opt/nim/.cache</span></code>. See below instructions for the full command. Important: make sure that docker has permissions to write to the cache folder (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chmod</span> <span class="pre">777</span> <span class="pre">$LOCAL_NIM_CACHE</span></code>).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">### To bind a $LOCAL_NIM_CACHE folder to &quot;/opt/nim/.cache&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>&lt;PATH<span class="w"> </span>TO<span class="w"> </span>DIRECTORY<span class="w"> </span>WHERE<span class="w"> </span>YOU<span class="w"> </span>WANT<span class="w"> </span>TO<span class="w"> </span>SAVE<span class="w"> </span>TRTLLM<span class="w"> </span>ENGINE<span class="w"> </span>ASSETS&gt;
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>
-sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</span><span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>
-</pre></div>
-</div>
-<p>Now mount this directory while running the docker container to store cached assets in this directory, so that mounting it subsequently will cause the container to read the cached assets instead of rebuilding them.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NGC_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_SERVED_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_CUSTOM_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>:<span class="s2">&quot;/opt/nim/.cache/&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">8123</span>:8000<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="nv">$NIM_IMAGE</span>
-</pre></div>
-</div>
-</section>
-</section>
 </section>
 </section>
 
@@ -618,20 +829,20 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="vertexai-setup.html"
+       href="nemoguard-contentsafety-deployment.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Vertex AI Setup</p>
+        <p class="prev-next-title">Llama 3.1 NemoGuard 8B ContentSafety Deployment</p>
       </div>
     </a>
     <a class="right-next"
-       href="nemotron-content-safety-multilingual-deployment.html"
+       href="nemoguard-topiccontrol-deployment.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Nemotron Content Safety Multilingual Deployment</p>
+        <p class="prev-next-title">Llama 3.1 NemoGuard 8B Topic Control Deployment</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -656,14 +867,11 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nim-deployment">NIM Deployment</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#access">Access</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-running-nim-in-your-guardrails-app">Use the running NIM in your Guardrails App</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-caching-the-optimized-trtllm-inference-engines">Bonus: Caching the optimized TRTLLM inference engines</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-multilingual-content-safety-guardrails">Adding Multilingual Content Safety Guardrails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-the-content-safety-container">Starting the Content Safety Container</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-guardrails-and-running-inference">Configuring Guardrails and Running Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
 

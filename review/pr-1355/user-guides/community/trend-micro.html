@@ -395,6 +395,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
@@ -523,21 +524,20 @@
 <li><p>Toxicity, violent, and other harmful content</p></li>
 <li><p>Sensitive Data</p></li>
 </ul>
-<p>The following environment variable is required to use the integration:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">V1_API_KEY</span></code>: A Vision One API Token with AI Guard Permissions</p></li>
-</ul>
-<p>You can optionally set:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">V1_URL</span></code>: The URL for which instances of AI Guard should be invoked
-Defaults to <code class="docutils literal notranslate"><span class="pre">https://api.xdr.trendmicro.com/beta/aiSecurity/guard</span></code> for Vision One’s hosted US SaaS deployment</p></li>
-</ul>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Create a new <a class="reference external" href="https://docs.trendmicro.com/en-us/documentation/article/trend-vision-one-platform-api-keys" rel="noreferer noopener" target="_blank">Vision One API Key</a> with permissions to Call Detection API</p></li>
+<li><p>See the <a class="reference external" href="https://docs.trendmicro.com/en-us/documentation/article/trend-vision-one-platform-api-keys" rel="noreferer noopener" target="_blank">AI Guard Integration Guide</a> for details around creating your policy</p></li>
+</ol>
 <p><a class="reference internal" href="#../../../examples/configs/trend_micro/"><span class="xref myst">Colang v1</span></a>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># config.yml</span>
 
 <span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">trend_micro</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">v1_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.xdr.trendmicro.com/beta/aiSecurity/guard&quot;</span><span class="w"> </span><span class="c1"># Replace this with your AI Guard URL</span>
+<span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;V1_API_KEY&quot;</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trend ai guard input</span>
@@ -550,6 +550,11 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">https:/
 <p><a class="reference internal" href="#../../../examples/configs/trend_micro_v2/"><span class="xref myst">Colang v2</span></a>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># config.yml</span>
 <span class="nt">colang_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2.x&quot;</span>
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">trend_micro</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">v1_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.xdr.trendmicro.com/beta/aiSecurity/guard&quot;</span><span class="w"> </span><span class="c1"># Replace this with your AI Guard URL</span>
+<span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;V1_API_KEY&quot;</span>
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>rails.co
