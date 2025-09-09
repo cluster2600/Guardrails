@@ -86,11 +86,14 @@ def get_numbered_lines(content: str):
     current_comment = None
     multiline_string = False
     current_string = None
+    multiline_indentation = 0
     while i < len(raw_lines):
         raw_line = raw_lines[i].strip()
 
         # handle multiline string
         if multiline_string:
+            if current_string is None:
+                current_string = ""
             current_string += "\n" + raw_line
             if raw_line.endswith('"'):
                 multiline_string = False
@@ -139,6 +142,8 @@ def get_numbered_lines(content: str):
             continue
 
         if multiline_comment:
+            if current_comment is None:
+                current_comment = ""
             if raw_line.endswith('"""'):
                 current_comment += "\n" + raw_line[0:-3]
                 multiline_comment = False

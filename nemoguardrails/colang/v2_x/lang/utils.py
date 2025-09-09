@@ -18,7 +18,7 @@ from typing import Any
 
 
 def dataclass_to_dict(obj: Any) -> Any:
-    if is_dataclass(obj):
+    if is_dataclass(obj) and not isinstance(obj, type):
         return {k: dataclass_to_dict(v) for k, v in asdict(obj).items()}
     elif isinstance(obj, list):
         return [dataclass_to_dict(v) for v in obj]

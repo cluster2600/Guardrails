@@ -168,15 +168,17 @@ class ColangTransformer(Transformer):
 
                 assert member_name_el["_type"] == "var_name"
                 member_name = member_name_el["elements"][0][1:]
-                member_def = FlowReturnMemberDef(name=member_name)
+                return_member_def_obj = FlowReturnMemberDef(name=member_name)
 
                 # If we have a default value, we also use that
                 if len(return_member_def["elements"]) == 2:
                     default_value_el = return_member_def["elements"][1]
                     assert default_value_el["_type"] == "expr"
-                    member_def.default_value_expr = default_value_el["elements"][0]
+                    return_member_def_obj.default_value_expr = default_value_el[
+                        "elements"
+                    ][0]
 
-                return_member_defs.append(member_def)
+                return_member_defs.append(return_member_def_obj)
 
         elements[0:0] = [
             SpecOp(
@@ -546,7 +548,7 @@ class ColangTransformer(Transformer):
             val["_source"] = self.__source(meta)
         return val
 
-    def __default__(self, data, children: list, meta: Meta) -> dict:
+    def __default__(self, data, children: list, meta: Meta) -> Any:
         """Default function that is called if there is no attribute matching ``data``
 
         Can be overridden. Defaults to creating

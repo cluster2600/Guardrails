@@ -202,7 +202,8 @@ def _regex_findall(pattern: str, string: str) -> List[str]:
 def _pretty_str(data: Any) -> str:
     if isinstance(data, (dict, list, set)):
         string = json.dumps(data, indent=4)
-        return SimplifyFormatter().format(string)
+        # SimplifyFormatter.format() accepts string as well as LogRecord
+        return str(SimplifyFormatter().format(string))  # type: ignore
     return str(data)
 
 
@@ -245,27 +246,27 @@ def _get_type(val: Any) -> str:
 
 def _less_than_operator(v_ref: Any) -> ComparisonExpression:
     """Create less then comparison expression."""
-    return ComparisonExpression(lambda val, v_ref=v_ref: val < v_ref, v_ref)
+    return ComparisonExpression(lambda val: val < v_ref, v_ref)
 
 
 def _equal_or_less_than_operator(v_ref: Any) -> ComparisonExpression:
     """Create equal or less than comparison expression."""
-    return ComparisonExpression(lambda val, val_ref=v_ref: val <= val_ref, v_ref)
+    return ComparisonExpression(lambda val: val <= v_ref, v_ref)
 
 
 def _greater_than_operator(v_ref: Any) -> ComparisonExpression:
     """Create less then comparison expression."""
-    return ComparisonExpression(lambda val, val_ref=v_ref: val > val_ref, v_ref)
+    return ComparisonExpression(lambda val: val > v_ref, v_ref)
 
 
 def _equal_or_greater_than_operator(v_ref: Any) -> ComparisonExpression:
     """Create equal or less than comparison expression."""
-    return ComparisonExpression(lambda val, val_ref=v_ref: val >= val_ref, v_ref)
+    return ComparisonExpression(lambda val: val >= v_ref, v_ref)
 
 
 def _not_equal_to_operator(v_ref: Any) -> ComparisonExpression:
     """Create a not equal comparison expression."""
-    return ComparisonExpression(lambda val, val_ref=v_ref: val != val_ref, v_ref)
+    return ComparisonExpression(lambda val: val != v_ref, v_ref)
 
 
 def _flows_info(state: State, flow_instance_uid: Optional[str] = None) -> dict:

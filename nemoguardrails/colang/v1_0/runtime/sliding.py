@@ -14,7 +14,10 @@
 # limitations under the License.
 
 import logging
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from nemoguardrails.colang.v1_0.runtime.flows import FlowConfig, State
 
 from nemoguardrails.colang.v1_0.runtime.eval import eval_expression
 

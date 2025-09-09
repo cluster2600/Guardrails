@@ -23,7 +23,20 @@ from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Callable, Deque, Dict, List, Optional, Tuple, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Deque,
+    Dict,
+    List,
+    Optional,
+    Tuple,
+    Union,
+)
+
+if TYPE_CHECKING:
+    from nemoguardrails.rails.llm.config import RailsConfig
 
 from dataclasses_json import dataclass_json
 

@@ -77,12 +77,16 @@ class Element:
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return self.__hash__() == other.__hash__()
+            return self.hash() == other.hash()
         return NotImplemented
 
     def hash(self):
         """Return the hash for the current object."""
         return hash(_make_hashable(self))
+
+    def __hash__(self):
+        """Return the hash for the current object."""
+        return self.hash()
 
 
 ElementType = Union[Element, dict]

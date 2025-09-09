@@ -106,7 +106,12 @@ def expand_elements(
                 if e.args[0]:
                     error = e.args[0]
 
-                if hasattr(element, "_source") and element._source:
+                if (
+                    not isinstance(element, dict)
+                    and hasattr(element, "_source")
+                    and element._source is not None
+                    and hasattr(element._source, "line")
+                ):
                     # TODO: Resolve source line to Colang file level
                     raise ColangSyntaxError(error + f" on source line {element._source.line}")
                 else:
@@ -413,10 +418,15 @@ def _expand_match_element(
 
                 for idx, element in enumerate(and_group["elements"]):
                     new_elements.append(event_label_elements[idx])
+                    # Ensure element is valid for SpecOp
+                    if isinstance(element, (dict, Spec)):
+                        spec_element: Union[dict, Spec] = element
+                    else:
+                        spec_element = {}
                     new_elements.append(
                         SpecOp(
                             op="match",
-                            spec=element,
+                            spec=spec_element,
                         )
                     )
                     new_elements.append(goto_end_element)
@@ -433,8 +443,8 @@ def _expand_match_element(
 
         else:
             # Multiple and-groups combined by or
-            fork_uid: str = new_var_uuid()
-            fork_element = ForkHead(fork_uid=fork_uid)
+            or_fork_uid: str = new_var_uuid()
+            fork_element = ForkHead(fork_uid=or_fork_uid)
             group_label_elements: List[Label] = []
             failure_label_name = f"failure_label_{new_var_uuid()}"
             failure_label_element = Label(name=failure_label_name)
@@ -463,12 +473,12 @@ def _expand_match_element(
 
             new_elements.append(failure_label_element)
             new_elements.append(WaitForHeads(number=len(or_group)))
-            new_elements.append(MergeHeads(fork_uid=fork_uid))
+            new_elements.append(MergeHeads(fork_uid=or_fork_uid))
             new_elements.append(CatchPatternFailure(label=None))
             new_elements.append(Abort())
 
             new_elements.append(end_label_element)
-            new_elements.append(MergeHeads(fork_uid=fork_uid))
+            new_elements.append(MergeHeads(fork_uid=or_fork_uid))
             new_elements.append(CatchPatternFailure(label=None))
 
     else:
