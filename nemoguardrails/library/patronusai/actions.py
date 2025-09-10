@@ -82,6 +82,11 @@ async def patronus_lynx_check_output_hallucination(
     Check the bot response for hallucinations based on the given chunks
     using the configured Patronus Lynx model.
     """
+    if context is None:
+        raise ValueError("Context is required")
+    if patronus_lynx_llm is None:
+        raise ValueError("patronus_lynx_llm is required")
+
     user_input = context.get("user_message")
     bot_response = context.get("bot_message")
     provided_context = context.get("relevant_chunks")
@@ -232,11 +237,19 @@ async def patronus_api_check_output(
     Check the user message, bot response, and/or provided context
     for issues based on the Patronus Evaluate API
     """
+    if context is None:
+        raise ValueError("Context is required")
+
     user_input = context.get("user_message")
     bot_response = context.get("bot_message")
     provided_context = context.get("relevant_chunks")
 
-    patronus_config = llm_task_manager.config.rails.config.patronus.output
+    patronus = llm_task_manager.config.rails.config.patronus
+    if patronus is None:
+        raise ValueError("Patronus config is not configured")
+    patronus_config = patronus.output
+    if patronus_config is None:
+        raise ValueError("Patronus output config is not configured")
     evaluate_config = getattr(patronus_config, "evaluate_config", {})
     success_strategy: Literal["all_pass", "any_pass"] = getattr(evaluate_config, "success_strategy", "all_pass")
     api_params = getattr(evaluate_config, "params", {})

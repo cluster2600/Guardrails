@@ -21,10 +21,10 @@ from functools import lru_cache
 from typing import Any, Dict, Optional, Type
 
 try:
-    from guardrails import Guard
+    from guardrails import Guard  # type: ignore
 except ImportError:
     # Mock Guard class for when guardrails is not available
-    class Guard:
+    class Guard:  # type: ignore
         def __init__(self):
             pass
 
@@ -110,11 +110,18 @@ def validate_guardrails_ai_input(
         Dict with validation_result
     """
 
-    text = text or context.get("user_message", "")
+    text = text or (context.get("user_message", "") if context else "")
     if not text:
         raise ValueError("Either 'text' or 'context' must be provided.")
 
-    validator_config = config.rails.config.guardrails_ai.get_validator_config(validator)
+    guardrails_ai_config = config.rails.config.guardrails_ai
+    if guardrails_ai_config is None:
+        raise ValueError("Guardrails AI config is not configured")
+
+    validator_config = guardrails_ai_config.get_validator_config(validator)
+    if validator_config is None:
+        raise ValueError(f"Validator config for '{validator}' not found")
+
     parameters = validator_config.parameters or {}
     metadata = validator_config.metadata or {}
 
@@ -149,11 +156,20 @@ def validate_guardrails_ai_output(
         Dict with validation_result
     """
 
-    text = text or context.get("bot_message", "")
+    text = text or (context.get("bot_message", "") if context else "")
     if not text:
         raise ValueError("Either 'text' or 'context' must be provided.")
+    if config is None:
+        raise ValueError("Config is required")
 
-    validator_config = config.rails.config.guardrails_ai.get_validator_config(validator)
+    guardrails_ai_config = config.rails.config.guardrails_ai
+    if guardrails_ai_config is None:
+        raise ValueError("Guardrails AI config is not configured")
+
+    validator_config = guardrails_ai_config.get_validator_config(validator)
+    if validator_config is None:
+        raise ValueError(f"Validator config for '{validator}' not found")
+
     parameters = validator_config.parameters or {}
     metadata = validator_config.metadata or {}
 

@@ -17,7 +17,15 @@ import logging
 import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Union
+from typing import TYPE_CHECKING, Union
+
+if TYPE_CHECKING:
+    from .models import JailbreakClassifier
+else:
+    try:
+        from .models import JailbreakClassifier
+    except ImportError:
+        JailbreakClassifier = None
 
 logger = logging.getLogger(__name__)
 

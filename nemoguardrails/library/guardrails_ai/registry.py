@@ -104,7 +104,9 @@ def get_validator_info(validator_path: str) -> Dict[str, str]:
     # not in registry, try to fetch from hub
     try:
         try:
-            from guardrails.hub.validator_package_service import get_validator_manifest
+            from guardrails.hub.validator_package_service import (  # type: ignore
+                get_validator_manifest,
+            )
         except ImportError:
             raise GuardrailsAIConfigError(
                 "Could not import get_validator_manifest. Make sure guardrails-ai is properly installed."

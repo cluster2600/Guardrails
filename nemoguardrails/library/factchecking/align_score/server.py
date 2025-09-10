@@ -17,15 +17,24 @@ import os
 from functools import lru_cache
 from typing import List
 
-import nltk
+try:
+    import nltk  # type: ignore
+except ImportError:
+    nltk = None
+
+try:
+    from alignscore import AlignScore  # type: ignore
+except ImportError:
+    AlignScore = None
+
 import typer
 import uvicorn
-from alignscore import AlignScore
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 # Make sure we have the punkt tokenizer downloaded.
-nltk.download("punkt")
+if nltk is not None:
+    nltk.download("punkt")
 
 models_path = os.environ.get("ALIGN_SCORE_PATH")
 
@@ -46,6 +55,11 @@ def get_model(model: str):
     Args
         model: The type of the model to be loaded, i.e. "base", "large".
     """
+    if models_path is None:
+        raise ValueError("ALIGN_SCORE_PATH environment variable not set")
+    if AlignScore is None:
+        raise ImportError("alignscore package not available")
+
     return AlignScore(
         model="roberta-base",
         batch_size=32,

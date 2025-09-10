@@ -17,13 +17,15 @@ import logging
 from functools import lru_cache
 
 try:
-    from presidio_analyzer import PatternRecognizer
-    from presidio_analyzer.nlp_engine import NlpEngineProvider
-    from presidio_anonymizer import AnonymizerEngine
-    from presidio_anonymizer.entities import OperatorConfig
+    from presidio_analyzer import PatternRecognizer  # type: ignore
+    from presidio_analyzer.nlp_engine import NlpEngineProvider  # type: ignore
+    from presidio_anonymizer import AnonymizerEngine  # type: ignore
+    from presidio_anonymizer.entities import OperatorConfig  # type: ignore
 except ImportError:
-    # The exception about installing presidio will be on the first call to the analyzer
-    pass
+    PatternRecognizer = None
+    NlpEngineProvider = None
+    AnonymizerEngine = None
+    OperatorConfig = None
 
 from nemoguardrails import RailsConfig
 from nemoguardrails.actions import action
@@ -40,7 +42,7 @@ def _get_analyzer(score_threshold: float = 0.4):
     if not 0.0 <= score_threshold <= 1.0:
         raise ValueError("score_threshold must be a float between 0 and 1 (inclusive).")
     try:
-        from presidio_analyzer import AnalyzerEngine
+        from presidio_analyzer import AnalyzerEngine  # type: ignore
 
     except ImportError:
         raise ImportError(
@@ -48,7 +50,7 @@ def _get_analyzer(score_threshold: float = 0.4):
         )
 
     try:
-        import spacy
+        import spacy  # type: ignore
     except ImportError:
         raise RuntimeError("The spacy module is not installed. Please install it using pip: pip install spacy.")
 
@@ -65,6 +67,8 @@ def _get_analyzer(score_threshold: float = 0.4):
     }
 
     # Create NLP engine based on configuration
+    if NlpEngineProvider is None:
+        raise ImportError("NlpEngineProvider not available")
     provider = NlpEngineProvider(nlp_configuration=configuration)
     nlp_engine = provider.create_engine()
 
@@ -74,6 +78,8 @@ def _get_analyzer(score_threshold: float = 0.4):
 
 def _get_ad_hoc_recognizers(sdd_config: SensitiveDataDetection):
     """Helper to compute the ad hoc recognizers for a config."""
+    if PatternRecognizer is None:
+        return []
     ad_hoc_recognizers = []
     for recognizer in sdd_config.recognizers:
         ad_hoc_recognizers.append(PatternRecognizer.from_dict(recognizer))
@@ -109,6 +115,8 @@ async def detect_sensitive_data(
     """
     # Based on the source of the data, we use the right options
     sdd_config = config.rails.config.sensitive_data_detection
+    if sdd_config is None:
+        return False
     if source not in ["input", "output", "retrieval"]:
         raise ValueError("source must be one of 'input', 'output', or 'retrieval'")
     options: SensitiveDataDetectionOptions = getattr(sdd_config, source)
@@ -147,11 +155,16 @@ async def mask_sensitive_data(source: str, text: str, config: RailsConfig):
     """
     # Based on the source of the data, we use the right options
     sdd_config = config.rails.config.sensitive_data_detection
+    if sdd_config is None:
+        return text
     assert source in ["input", "output", "retrieval"]
     options: SensitiveDataDetectionOptions = getattr(sdd_config, source)
 
     # If we don't have any entities specified, we stop
     if len(options.entities) == 0:
+        return text
+
+    if OperatorConfig is None:
         return text
 
     analyzer = _get_analyzer()
@@ -165,6 +178,9 @@ async def mask_sensitive_data(source: str, text: str, config: RailsConfig):
         entities=options.entities,
         ad_hoc_recognizers=_get_ad_hoc_recognizers(sdd_config),
     )
+    if AnonymizerEngine is None:
+        return text
+
     anonymizer = AnonymizerEngine()
     masked_results = anonymizer.anonymize(text=text, analyzer_results=results, operators=operators)
 

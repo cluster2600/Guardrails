@@ -130,10 +130,11 @@ def get_policy_id(
         pass
 
     # Not a valid UUID, try to match the provided alias to a policy ID and return that
+    policy_id = config.policies.get(policy)
+    if policy_id is None:
+        raise ClavataPluginValueError(f"Policy with alias '{policy}' not found.")
+
     try:
-        policy_id = config.policies.get(policy)
-        if policy_id is None:
-            raise ClavataPluginValueError(f"Policy with alias '{policy}' not found.")
         return uuid.UUID(policy_id)
     except ValueError as e:
         # Specifically catch the ValueError for badly formed UUIDs so we can provide a more helpful error message

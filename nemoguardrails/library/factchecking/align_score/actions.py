@@ -47,6 +47,9 @@ async def alignscore_check_facts(
     **kwargs,
 ):
     """Checks the facts for the bot response using an information alignment score."""
+    if context is None:
+        raise ValueError("Context is required")
+
     fact_checking_config = llm_task_manager.config.rails.config.fact_checking
     fallback_to_self_check = fact_checking_config.fallback_to_self_check
 

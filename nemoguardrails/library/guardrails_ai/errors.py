@@ -14,7 +14,7 @@
 # limitations under the License.
 
 try:
-    from guardrails.errors import ValidationError
+    from guardrails.errors import ValidationError  # type: ignore
 
     GuardrailsAIValidationError = ValidationError
 except ImportError:

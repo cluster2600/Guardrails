@@ -48,6 +48,7 @@ async def topic_safety_check_input(
 ) -> dict:
     _MAX_TOKENS = 10
     user_input: str = ""
+    conversation_history = []
 
     if context is not None:
         user_input = context.get("user_message", "")
@@ -57,7 +58,11 @@ async def topic_safety_check_input(
         # convert InternalEvent objects to dictionary format for compatibility with to_chat_messages
         dict_events = []
         for event in events:
-            if hasattr(event, "name") and hasattr(event, "arguments"):
+            if (
+                not isinstance(event, dict)
+                and hasattr(event, "name")
+                and hasattr(event, "arguments")
+            ):
                 dict_event = {"type": event.name}
                 dict_event.update(event.arguments)
                 dict_events.append(dict_event)
@@ -85,9 +90,15 @@ async def topic_safety_check_input(
 
     task = f"topic_safety_check_input $model={model_name}"
 
-    system_prompt = llm_task_manager.render_task_prompt(
+    system_prompt_result = llm_task_manager.render_task_prompt(
         task=task,
     )
+
+    # Ensure we have a string
+    if isinstance(system_prompt_result, list):
+        system_prompt = "\n".join(str(item) for item in system_prompt_result)
+    else:
+        system_prompt = str(system_prompt_result)
 
     TOPIC_SAFETY_OUTPUT_RESTRICTION = (
         'If any of the above conditions are violated, please respond with "off-topic". '

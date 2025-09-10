@@ -20,8 +20,8 @@ import numpy as np
 
 class SnowflakeEmbed:
     def __init__(self):
-        import torch
-        from transformers import AutoModel, AutoTokenizer
+        import torch  # type: ignore
+        from transformers import AutoModel, AutoTokenizer  # type: ignore
 
         self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
         self.tokenizer = AutoTokenizer.from_pretrained("Snowflake/snowflake-arctic-embed-m-long")

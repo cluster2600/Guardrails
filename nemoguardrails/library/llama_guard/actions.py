@@ -63,6 +63,11 @@ async def llama_guard_check_input(
     Checks user messages using the configured Llama Guard model
     and the configured prompt containing the safety guidelines.
     """
+    if context is None:
+        raise ValueError("Context is required")
+    if llama_guard_llm is None:
+        raise ValueError("llama_guard_llm is required")
+
     user_input = context.get("user_message")
     check_input_prompt = llm_task_manager.render_task_prompt(
         task=Task.LLAMA_GUARD_CHECK_INPUT,
@@ -107,6 +112,11 @@ async def llama_guard_check_output(
     Check the bot response using the configured Llama Guard model
     and the configured prompt containing the safety guidelines.
     """
+    if context is None:
+        raise ValueError("Context is required")
+    if llama_guard_llm is None:
+        raise ValueError("llama_guard_llm is required")
+
     user_input = context.get("user_message")
     bot_response = context.get("bot_message")
 

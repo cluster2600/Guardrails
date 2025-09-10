@@ -15,13 +15,20 @@
 
 import os
 
-import torch
-from transformers import GPT2LMHeadModel, GPT2TokenizerFast
+try:
+    import torch  # type: ignore
+    from transformers import GPT2LMHeadModel, GPT2TokenizerFast  # type: ignore
 
-device = os.environ.get("JAILBREAK_CHECK_DEVICE", "cpu")
-model_id = "gpt2-large"
-model = GPT2LMHeadModel.from_pretrained(model_id).to(device)
-tokenizer = GPT2TokenizerFast.from_pretrained(model_id)
+    device = os.environ.get("JAILBREAK_CHECK_DEVICE", "cpu")
+    model_id = "gpt2-large"
+    model = GPT2LMHeadModel.from_pretrained(model_id).to(device)
+    tokenizer = GPT2TokenizerFast.from_pretrained(model_id)
+except ImportError:
+    torch = None
+    GPT2LMHeadModel = None
+    GPT2TokenizerFast = None
+    model = None
+    tokenizer = None
 
 
 def get_perplexity(input_string: str) -> bool:
@@ -31,6 +38,9 @@ def get_perplexity(input_string: str) -> bool:
     Args
         input_string: The prompt to be sent to the model
     """
+    if tokenizer is None or model is None or torch is None:
+        return False
+
     encodings = tokenizer(input_string, return_tensors="pt")
 
     max_length = model.config.n_positions
