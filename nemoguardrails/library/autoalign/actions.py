@@ -284,10 +284,10 @@ async def autoalign_input_api(
     **kwargs,
 ):
     """Calls AutoAlign API for the user message and guardrail configuration provided"""
-    if context is None:
+    if not context:
         raise ValueError("Context is required")
     user_message = context.get("user_message")
-    if user_message is None:
+    if not user_message:
         raise ValueError("user_message is required in context")
 
     autoalign_config = llm_task_manager.config.rails.config.autoalign
