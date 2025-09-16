@@ -1,0 +1,147 @@
+# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""
+Cache interface for NeMo Guardrails caching system.
+
+This module defines the abstract base class for cache implementations
+that can be used interchangeably throughout the guardrails system.
+
+Cache implementations may optionally support persistence by overriding
+the persist_now() method and supports_persistence() method. Persistence
+allows cache state to be saved to and loaded from external storage.
+"""
+
+from abc import ABC, abstractmethod
+from typing import Any, Optional
+
+
+class CacheInterface(ABC):
+    """
+    Abstract base class defining the interface for cache implementations.
+
+    All cache implementations must inherit from this class and implement
+    the required methods to ensure compatibility with the caching system.
+    """
+
+    @abstractmethod
+    def get(self, key: Any, default: Any = None) -> Any:
+        """
+        Retrieve an item from the cache.
+
+        Args:
+            key: The key to look up in the cache.
+            default: Value to return if key is not found (default: None).
+
+        Returns:
+            The value associated with the key, or default if not found.
+        """
+        pass
+
+    @abstractmethod
+    def put(self, key: Any, value: Any) -> None:
+        """
+        Store an item in the cache.
+
+        If the cache is at capacity, this method should evict an item
+        according to the cache's eviction policy (e.g., LFU, LRU, etc.).
+
+        Args:
+            key: The key to store.
+            value: The value to associate with the key.
+        """
+        pass
+
+    @abstractmethod
+    def size(self) -> int:
+        """
+        Get the current number of items in the cache.
+
+        Returns:
+            The number of items currently stored in the cache.
+        """
+        pass
+
+    @abstractmethod
+    def is_empty(self) -> bool:
+        """
+        Check if the cache is empty.
+
+        Returns:
+            True if the cache contains no items, False otherwise.
+        """
+        pass
+
+    @abstractmethod
+    def clear(self) -> None:
+        """
+        Remove all items from the cache.
+
+        After calling this method, the cache should be empty.
+        """
+        pass
+
+    def contains(self, key: Any) -> bool:
+        """
+        Check if a key exists in the cache.
+
+        This is an optional method that can be overridden for efficiency.
+        The default implementation uses get() to check existence.
+
+        Args:
+            key: The key to check.
+
+        Returns:
+            True if the key exists in the cache, False otherwise.
+        """
+        # Default implementation - can be overridden for efficiency
+        sentinel = object()
+        return self.get(key, sentinel) is not sentinel
+
+    @property
+    @abstractmethod
+    def capacity(self) -> int:
+        """
+        Get the maximum capacity of the cache.
+
+        Returns:
+            The maximum number of items the cache can hold.
+        """
+        pass
+
+    def persist_now(self) -> None:
+        """
+        Force immediate persistence of cache to storage.
+
+        This is an optional method that cache implementations can override
+        if they support persistence. The default implementation does nothing.
+
+        Implementations that support persistence should save the current
+        cache state to their configured storage backend.
+        """
+        # Default no-op implementation
+        pass
+
+    def supports_persistence(self) -> bool:
+        """
+        Check if this cache implementation supports persistence.
+
+        Returns:
+            True if the cache supports persistence, False otherwise.
+
+        The default implementation returns False. Cache implementations
+        that support persistence should override this to return True.
+        """
+        return False
