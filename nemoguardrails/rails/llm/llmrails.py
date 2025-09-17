@@ -114,6 +114,7 @@ class LLMRails:
         self.config = config
         self.llm = llm
         self.verbose = verbose
+        self._content_safety_manager = None
 
         if self.verbose:
             set_verbose(True, llm_calls=True)
@@ -508,6 +509,23 @@ class LLMRails:
                 raise
 
         self.runtime.register_action_param("llms", llms)
+
+        # Register content safety manager if content safety features are used
+        if self._has_content_safety_rails():
+            from nemoguardrails.library.content_safety.manager import (
+                ContentSafetyManager,
+            )
+
+            content_safety_config = self.config.rails.config.content_safety
+            self._content_safety_manager = ContentSafetyManager(content_safety_config)
+            self.runtime.register_action_param(
+                "content_safety_manager", self._content_safety_manager
+            )
+
+            log.info(
+                "Initialized ContentSafetyManager with cache %s",
+                "enabled" if content_safety_config.cache.enabled else "disabled",
+            )
 
     def _create_isolated_llms_for_actions(self):
         """Create isolated LLM copies for all actions that accept 'llm' parameter."""
@@ -1507,6 +1525,16 @@ class LLMRails:
         register_embedding_provider(engine_name=name, model=cls)
         return self
 
+    def _has_content_safety_rails(self) -> bool:
+        """Check if any content safety rails are configured in flows.
+        At the moment, we only support content safety manager in input flows.
+        """
+        flows = self.config.rails.input.flows
+        for flow in flows:
+            if "content safety check input" in flow:
+                return True
+        return False
+
     def explain(self) -> ExplainInfo:
         """Helper function to return the latest ExplainInfo object."""
         return self.explain_info
@@ -1787,3 +1815,26 @@ class LLMRails:
                 # yield the individual chunks directly from the buffer strategy
                 for chunk in user_output_chunks:
                     yield chunk
+
+    def close(self):
+        """Properly close and clean up resources, including persisting caches."""
+        if self._content_safety_manager:
+            log.info("Persisting content safety caches on close")
+            self._content_safety_manager.persist_all_caches()
+
+    def __del__(self):
+        """Ensure caches are persisted when the object is garbage collected."""
+        try:
+            self.close()
+        except Exception as e:
+            # Silently fail in destructor to avoid issues during shutdown
+            log.debug(f"Error during LLMRails cleanup: {e}")
+
+    def __enter__(self):
+        """Context manager entry."""
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit - ensure cleanup."""
+        self.close()
+        return False

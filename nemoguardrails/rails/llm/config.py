@@ -830,6 +830,60 @@ class GuardrailsAIRailConfig(BaseModel):
         return None
 
 
+class CachePersistenceConfig(BaseModel):
+    """Configuration for cache persistence to disk."""
+
+    enabled: bool = Field(
+        default=True,
+        description="Whether cache persistence is enabled (persistence requires both enabled=True and a valid interval)",
+    )
+    interval: Optional[float] = Field(
+        default=None,
+        description="Seconds between periodic cache persistence to disk (None disables persistence)",
+    )
+    path: Optional[str] = Field(
+        default=None,
+        description="Path to persistence file for cache data (defaults to 'cache_{model_name}.json' if persistence is enabled)",
+    )
+
+
+class ModelCacheConfig(BaseModel):
+    """Configuration for model caching."""
+
+    enabled: bool = Field(
+        default=False,
+        description="Whether caching is enabled for content safety checks",
+    )
+    capacity_per_model: int = Field(
+        default=50000, description="Maximum number of entries in the cache per model"
+    )
+    store: str = Field(
+        default="memory", description="Cache store: 'memory', 'filesystem', 'redis'"
+    )
+    store_config: Dict[str, Any] = Field(
+        default_factory=dict, description="Backend-specific configuration"
+    )
+    persistence: CachePersistenceConfig = Field(
+        default_factory=CachePersistenceConfig,
+        description="Configuration for cache persistence",
+    )
+
+
+class ModelConfig(BaseModel):
+    """Configuration for content safety features."""
+
+    cache: ModelCacheConfig = Field(
+        default_factory=ModelCacheConfig,
+        description="Configuration for content safety caching",
+    )
+
+    # Model mapping for backward compatibility
+    model_mapping: Dict[str, str] = Field(
+        default_factory=dict,
+        description="Mapping of model aliases to actual model types (e.g., 'content_safety' -> 'llama_guard')",
+    )
+
+
 class RailsConfigData(BaseModel):
     """Configuration data for specific rails that are supported out-of-the-box."""
 
@@ -886,6 +940,11 @@ class RailsConfigData(BaseModel):
     guardrails_ai: Optional[GuardrailsAIRailConfig] = Field(
         default_factory=GuardrailsAIRailConfig,
         description="Configuration for Guardrails AI validators.",
+    )
+
+    content_safety: ModelConfig = Field(
+        default_factory=ModelConfig,
+        description="Configuration for content safety features.",
     )
 
 
