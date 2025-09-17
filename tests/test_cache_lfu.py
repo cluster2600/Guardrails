@@ -287,18 +287,6 @@ class TestLFUCache(unittest.TestCase):
             self.cache.put(f"key{i}", f"value{i}")
             self.assertEqual(self.cache.size(), 3)
 
-    def test_eviction_updates_size(self):
-        """Test that eviction properly updates cache size."""
-        # Fill cache
-        self.cache.put("a", 1)
-        self.cache.put("b", 2)
-        self.cache.put("c", 3)
-        self.assertEqual(self.cache.size(), 3)
-
-        # Cause eviction
-        self.cache.put("d", 4)
-        self.assertEqual(self.cache.size(), 3)  # Size should remain at capacity
-
     def test_is_empty(self):
         """Test is_empty method in various states."""
         # Initially empty
