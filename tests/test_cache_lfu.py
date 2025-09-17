@@ -701,5 +701,508 @@ class TestLFUCachePersistence(unittest.TestCase):
         self.assertEqual(new_cache.size(), 2)
 
 
+class TestLFUCacheStatsLogging(unittest.TestCase):
+    """Test cases for LFU Cache statistics logging functionality."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.test_file = tempfile.mktemp()
+
+    def tearDown(self):
+        """Clean up test files."""
+        if os.path.exists(self.test_file):
+            os.remove(self.test_file)
+
+    def test_stats_logging_disabled_by_default(self):
+        """Test that stats logging is disabled when not configured."""
+        cache = LFUCache(5, track_stats=True)
+        self.assertFalse(cache.supports_stats_logging())
+
+    def test_stats_logging_requires_tracking(self):
+        """Test that stats logging requires stats tracking to be enabled."""
+        # Logging without tracking
+        cache = LFUCache(5, track_stats=False, stats_logging_interval=1.0)
+        self.assertFalse(cache.supports_stats_logging())
+
+        # Both enabled
+        cache = LFUCache(5, track_stats=True, stats_logging_interval=1.0)
+        self.assertTrue(cache.supports_stats_logging())
+
+    def test_log_stats_now(self):
+        """Test immediate stats logging."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(5, track_stats=True, stats_logging_interval=60.0)
+
+        # Add some data
+        cache.put("key1", "value1")
+        cache.put("key2", "value2")
+        cache.get("key1")
+        cache.get("nonexistent")
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            cache.log_stats_now()
+
+            # Verify log was called
+            self.assertEqual(mock_log.call_count, 1)
+            log_message = mock_log.call_args[0][0]
+
+            # Check log format
+            self.assertIn("LFU Cache Statistics", log_message)
+            self.assertIn("Size: 2/5", log_message)
+            self.assertIn("Hits: 1", log_message)
+            self.assertIn("Misses: 1", log_message)
+            self.assertIn("Hit Rate: 50.00%", log_message)
+            self.assertIn("Evictions: 0", log_message)
+            self.assertIn("Puts: 2", log_message)
+            self.assertIn("Updates: 0", log_message)
+
+    def test_periodic_stats_logging(self):
+        """Test automatic periodic stats logging."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(5, track_stats=True, stats_logging_interval=0.5)
+
+        # Add some data
+        cache.put("key1", "value1")
+        cache.put("key2", "value2")
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            # Initial operations shouldn't trigger logging
+            cache.get("key1")
+            self.assertEqual(mock_log.call_count, 0)
+
+            # Wait for interval to pass
+            time.sleep(0.6)
+
+            # Next operation should trigger logging
+            cache.get("key1")
+            self.assertEqual(mock_log.call_count, 1)
+
+            # Another operation without waiting shouldn't trigger
+            cache.get("key2")
+            self.assertEqual(mock_log.call_count, 1)
+
+            # Wait again
+            time.sleep(0.6)
+            cache.put("key3", "value3")
+            self.assertEqual(mock_log.call_count, 2)
+
+    def test_stats_logging_with_empty_cache(self):
+        """Test stats logging with empty cache."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(5, track_stats=True, stats_logging_interval=0.1)
+
+        # Generate a miss first
+        cache.get("nonexistent")
+
+        # Wait for interval to pass
+        time.sleep(0.2)
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            # This will trigger stats logging with the previous miss already counted
+            cache.get("another_nonexistent")  # Trigger check
+
+            self.assertEqual(mock_log.call_count, 1)
+            log_message = mock_log.call_args[0][0]
+
+            self.assertIn("Size: 0/5", log_message)
+            self.assertIn("Hits: 0", log_message)
+            self.assertIn("Misses: 1", log_message)  # The first miss is logged
+            self.assertIn("Hit Rate: 0.00%", log_message)
+
+    def test_stats_logging_with_full_cache(self):
+        """Test stats logging when cache is at capacity."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(3, track_stats=True, stats_logging_interval=0.1)
+
+        # Fill cache
+        cache.put("key1", "value1")
+        cache.put("key2", "value2")
+        cache.put("key3", "value3")
+
+        # Cause eviction
+        cache.put("key4", "value4")
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            time.sleep(0.2)
+            cache.get("key4")  # Trigger check
+
+            log_message = mock_log.call_args[0][0]
+            self.assertIn("Size: 3/3", log_message)
+            self.assertIn("Evictions: 1", log_message)
+            self.assertIn("Puts: 4", log_message)
+
+    def test_stats_logging_high_hit_rate(self):
+        """Test stats logging with high hit rate."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(5, track_stats=True, stats_logging_interval=0.1)
+
+        cache.put("key1", "value1")
+
+        # Many hits
+        for _ in range(99):
+            cache.get("key1")
+
+        # One miss
+        cache.get("nonexistent")
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            cache.log_stats_now()
+
+            log_message = mock_log.call_args[0][0]
+            self.assertIn("Hit Rate: 99.00%", log_message)
+            self.assertIn("Hits: 99", log_message)
+            self.assertIn("Misses: 1", log_message)
+
+    def test_stats_logging_without_tracking(self):
+        """Test that log_stats_now does nothing when tracking is disabled."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(5, track_stats=False)
+
+        cache.put("key1", "value1")
+        cache.get("key1")
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            cache.log_stats_now()
+
+            # Should not log anything
+            self.assertEqual(mock_log.call_count, 0)
+
+    def test_stats_logging_interval_timing(self):
+        """Test that stats logging respects the interval timing."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(5, track_stats=True, stats_logging_interval=1.0)
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            # Multiple operations within interval
+            for i in range(10):
+                cache.put(f"key{i}", f"value{i}")
+                cache.get(f"key{i}")
+                time.sleep(0.05)  # Total time < 1.0
+
+            # Should not have logged yet
+            self.assertEqual(mock_log.call_count, 0)
+
+            # Wait for interval to pass
+            time.sleep(0.6)
+            cache.get("key1")  # Trigger check
+
+            # Now should have logged once
+            self.assertEqual(mock_log.call_count, 1)
+
+    def test_stats_logging_with_updates(self):
+        """Test stats logging includes update counts."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(5, track_stats=True, stats_logging_interval=0.1)
+
+        cache.put("key1", "value1")
+        cache.put("key1", "updated_value1")  # Update
+        cache.put("key1", "updated_again")  # Another update
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            cache.log_stats_now()
+
+            log_message = mock_log.call_args[0][0]
+            self.assertIn("Updates: 2", log_message)
+            self.assertIn("Puts: 1", log_message)
+
+    def test_stats_logging_combined_with_persistence(self):
+        """Test that stats logging and persistence work together."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(
+            5,
+            track_stats=True,
+            persistence_interval=1.0,
+            persistence_path=self.test_file,
+            stats_logging_interval=0.5,
+        )
+
+        cache.put("key1", "value1")
+
+        with patch.object(
+            logging.getLogger("nemoguardrails.cache.lfu"), "info"
+        ) as mock_log:
+            # Wait for stats logging interval
+            time.sleep(0.6)
+            cache.get("key1")  # Trigger stats log
+
+            self.assertEqual(mock_log.call_count, 1)
+            self.assertFalse(os.path.exists(self.test_file))  # Not persisted yet
+
+            # Wait for persistence interval
+            time.sleep(0.5)
+            cache.get("key1")  # Trigger persistence
+
+            self.assertTrue(os.path.exists(self.test_file))  # Now persisted
+            # Stats log might trigger again if interval passed
+            self.assertGreaterEqual(mock_log.call_count, 1)
+
+    def test_stats_log_format_percentages(self):
+        """Test that percentages in stats log are formatted correctly."""
+        import logging
+        from unittest.mock import patch
+
+        cache = LFUCache(5, track_stats=True, stats_logging_interval=0.1)
+
+        # Test various hit rates
+        test_cases = [
+            (0, 0, "0.00%"),  # No requests
+            (1, 0, "100.00%"),  # All hits
+            (0, 1, "0.00%"),  # All misses
+            (1, 1, "50.00%"),  # 50/50
+            (2, 1, "66.67%"),  # 2/3
+            (99, 1, "99.00%"),  # High hit rate
+        ]
+
+        for hits, misses, expected_rate in test_cases:
+            cache.reset_stats()
+
+            # Generate hits
+            if hits > 0:
+                cache.put("hit_key", "value")
+                for _ in range(hits):
+                    cache.get("hit_key")
+
+            # Generate misses
+            for i in range(misses):
+                cache.get(f"miss_key_{i}")
+
+            with patch.object(
+                logging.getLogger("nemoguardrails.cache.lfu"), "info"
+            ) as mock_log:
+                cache.log_stats_now()
+
+                if hits > 0 or misses > 0:
+                    log_message = mock_log.call_args[0][0]
+                    self.assertIn(f"Hit Rate: {expected_rate}", log_message)
+
+
+class TestContentSafetyCacheStatsConfig(unittest.TestCase):
+    """Test cache stats configuration in content safety context."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.test_file = tempfile.mktemp()
+
+    def tearDown(self):
+        """Clean up test files."""
+        if os.path.exists(self.test_file):
+            os.remove(self.test_file)
+
+    def test_cache_config_with_stats_disabled(self):
+        """Test cache configuration with stats disabled."""
+        from nemoguardrails.library.content_safety.manager import ContentSafetyManager
+        from nemoguardrails.rails.llm.config import (
+            CacheStatsConfig,
+            ModelCacheConfig,
+            ModelConfig,
+        )
+
+        cache_config = ModelCacheConfig(
+            enabled=True, capacity_per_model=1000, stats=CacheStatsConfig(enabled=False)
+        )
+
+        model_config = ModelConfig(cache=cache_config)
+        manager = ContentSafetyManager(model_config)
+
+        cache = manager.get_cache_for_model("test_model")
+        self.assertIsNotNone(cache)
+        self.assertFalse(cache.track_stats)
+        self.assertFalse(cache.supports_stats_logging())
+
+    def test_cache_config_with_stats_tracking_only(self):
+        """Test cache configuration with stats tracking but no logging."""
+        from nemoguardrails.library.content_safety.manager import ContentSafetyManager
+        from nemoguardrails.rails.llm.config import (
+            CacheStatsConfig,
+            ModelCacheConfig,
+            ModelConfig,
+        )
+
+        cache_config = ModelCacheConfig(
+            enabled=True,
+            capacity_per_model=1000,
+            stats=CacheStatsConfig(enabled=True, log_interval=None),
+        )
+
+        model_config = ModelConfig(cache=cache_config)
+        manager = ContentSafetyManager(model_config)
+
+        cache = manager.get_cache_for_model("test_model")
+        self.assertIsNotNone(cache)
+        self.assertTrue(cache.track_stats)
+        self.assertFalse(cache.supports_stats_logging())
+        self.assertIsNone(cache.stats_logging_interval)
+
+    def test_cache_config_with_stats_logging(self):
+        """Test cache configuration with stats tracking and logging."""
+        from nemoguardrails.library.content_safety.manager import ContentSafetyManager
+        from nemoguardrails.rails.llm.config import (
+            CacheStatsConfig,
+            ModelCacheConfig,
+            ModelConfig,
+        )
+
+        cache_config = ModelCacheConfig(
+            enabled=True,
+            capacity_per_model=1000,
+            stats=CacheStatsConfig(enabled=True, log_interval=60.0),
+        )
+
+        model_config = ModelConfig(cache=cache_config)
+        manager = ContentSafetyManager(model_config)
+
+        cache = manager.get_cache_for_model("test_model")
+        self.assertIsNotNone(cache)
+        self.assertTrue(cache.track_stats)
+        self.assertTrue(cache.supports_stats_logging())
+        self.assertEqual(cache.stats_logging_interval, 60.0)
+
+    def test_cache_config_default_stats(self):
+        """Test cache configuration with default stats settings."""
+        from nemoguardrails.library.content_safety.manager import ContentSafetyManager
+        from nemoguardrails.rails.llm.config import ModelCacheConfig, ModelConfig
+
+        cache_config = ModelCacheConfig(enabled=True)
+
+        model_config = ModelConfig(cache=cache_config)
+        manager = ContentSafetyManager(model_config)
+
+        cache = manager.get_cache_for_model("test_model")
+        self.assertIsNotNone(cache)
+        self.assertFalse(cache.track_stats)  # Default is disabled
+        self.assertFalse(cache.supports_stats_logging())
+
+    def test_cache_config_stats_with_persistence(self):
+        """Test cache configuration with both stats and persistence."""
+        from nemoguardrails.library.content_safety.manager import ContentSafetyManager
+        from nemoguardrails.rails.llm.config import (
+            CachePersistenceConfig,
+            CacheStatsConfig,
+            ModelCacheConfig,
+            ModelConfig,
+        )
+
+        cache_config = ModelCacheConfig(
+            enabled=True,
+            capacity_per_model=1000,
+            stats=CacheStatsConfig(enabled=True, log_interval=30.0),
+            persistence=CachePersistenceConfig(
+                enabled=True, interval=60.0, path=self.test_file
+            ),
+        )
+
+        model_config = ModelConfig(cache=cache_config)
+        manager = ContentSafetyManager(model_config)
+
+        cache = manager.get_cache_for_model("test_model")
+        self.assertIsNotNone(cache)
+        self.assertTrue(cache.track_stats)
+        self.assertTrue(cache.supports_stats_logging())
+        self.assertEqual(cache.stats_logging_interval, 30.0)
+        self.assertTrue(cache.supports_persistence())
+        self.assertEqual(cache.persistence_interval, 60.0)
+
+    def test_cache_config_from_dict(self):
+        """Test cache configuration creation from dictionary."""
+        from nemoguardrails.rails.llm.config import ModelCacheConfig
+
+        config_dict = {
+            "enabled": True,
+            "capacity_per_model": 5000,
+            "stats": {"enabled": True, "log_interval": 120.0},
+        }
+
+        cache_config = ModelCacheConfig(**config_dict)
+        self.assertTrue(cache_config.enabled)
+        self.assertEqual(cache_config.capacity_per_model, 5000)
+        self.assertTrue(cache_config.stats.enabled)
+        self.assertEqual(cache_config.stats.log_interval, 120.0)
+
+    def test_cache_config_stats_validation(self):
+        """Test cache configuration validation for stats settings."""
+        from nemoguardrails.rails.llm.config import CacheStatsConfig
+
+        # Valid configurations
+        stats1 = CacheStatsConfig(enabled=True, log_interval=60.0)
+        self.assertTrue(stats1.enabled)
+        self.assertEqual(stats1.log_interval, 60.0)
+
+        stats2 = CacheStatsConfig(enabled=True, log_interval=None)
+        self.assertTrue(stats2.enabled)
+        self.assertIsNone(stats2.log_interval)
+
+        stats3 = CacheStatsConfig(enabled=False, log_interval=60.0)
+        self.assertFalse(stats3.enabled)
+        self.assertEqual(stats3.log_interval, 60.0)
+
+    def test_multiple_model_caches_with_stats(self):
+        """Test multiple model caches each with their own stats configuration."""
+        from nemoguardrails.library.content_safety.manager import ContentSafetyManager
+        from nemoguardrails.rails.llm.config import (
+            CacheStatsConfig,
+            ModelCacheConfig,
+            ModelConfig,
+        )
+
+        cache_config = ModelCacheConfig(
+            enabled=True,
+            capacity_per_model=1000,
+            stats=CacheStatsConfig(enabled=True, log_interval=30.0),
+        )
+
+        model_config = ModelConfig(
+            cache=cache_config, model_mapping={"model_alias": "actual_model"}
+        )
+        manager = ContentSafetyManager(model_config)
+
+        # Get caches for different models
+        cache1 = manager.get_cache_for_model("model1")
+        cache2 = manager.get_cache_for_model("model2")
+        cache_alias = manager.get_cache_for_model("model_alias")
+        cache_actual = manager.get_cache_for_model("actual_model")
+
+        # All should have stats enabled
+        self.assertTrue(cache1.track_stats)
+        self.assertTrue(cache2.track_stats)
+        self.assertTrue(cache_alias.track_stats)
+
+        # Alias should resolve to same cache as actual
+        self.assertIs(cache_alias, cache_actual)
+
+
 if __name__ == "__main__":
     unittest.main()

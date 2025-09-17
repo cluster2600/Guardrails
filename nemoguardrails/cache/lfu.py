@@ -16,11 +16,14 @@
 """Least Frequently Used (LFU) cache implementation."""
 
 import json
+import logging
 import os
 import time
 from typing import Any, Optional
 
 from nemoguardrails.cache.interface import CacheInterface
+
+log = logging.getLogger(__name__)
 
 
 class LFUNode:
@@ -85,6 +88,7 @@ class LFUCache(CacheInterface):
         track_stats: bool = False,
         persistence_interval: Optional[float] = None,
         persistence_path: Optional[str] = None,
+        stats_logging_interval: Optional[float] = None,
     ) -> None:
         """
         Initialize the LFU cache.
@@ -94,6 +98,7 @@ class LFUCache(CacheInterface):
             track_stats: Enable tracking of cache statistics
             persistence_interval: Seconds between periodic dumps to disk (None disables persistence)
             persistence_path: Path to persistence file (defaults to 'lfu_cache.json' if persistence enabled)
+            stats_logging_interval: Seconds between periodic stats logging (None disables logging)
         """
         if capacity < 0:
             raise ValueError("Capacity must be non-negative")
@@ -109,6 +114,10 @@ class LFUCache(CacheInterface):
         self.persistence_interval = persistence_interval
         self.persistence_path = persistence_path or "lfu_cache.json"
         self.last_persist_time = time.time()
+
+        # Stats logging configuration
+        self.stats_logging_interval = stats_logging_interval
+        self.last_stats_log_time = time.time()
 
         # Statistics tracking
         if self.track_stats:
@@ -162,6 +171,9 @@ class LFUCache(CacheInterface):
         # Check if we should persist
         self._check_and_persist()
 
+        # Check if we should log stats
+        self._check_and_log_stats()
+
         if key not in self.key_map:
             if self.track_stats:
                 self.stats["misses"] += 1
@@ -185,6 +197,9 @@ class LFUCache(CacheInterface):
         """
         # Check if we should persist
         self._check_and_persist()
+
+        # Check if we should log stats
+        self._check_and_log_stats()
 
         if self._capacity == 0:
             return
@@ -379,6 +394,44 @@ class LFUCache(CacheInterface):
     def supports_persistence(self) -> bool:
         """Check if this cache instance supports persistence."""
         return self.persistence_interval is not None
+
+    def _check_and_log_stats(self) -> None:
+        """Check if enough time has passed and log stats if needed."""
+        if not self.track_stats or self.stats_logging_interval is None:
+            return
+
+        current_time = time.time()
+        if current_time - self.last_stats_log_time >= self.stats_logging_interval:
+            self._log_stats()
+            self.last_stats_log_time = current_time
+
+    def _log_stats(self) -> None:
+        """Log current cache statistics."""
+        stats = self.get_stats()
+
+        # Format the log message
+        log_msg = (
+            f"LFU Cache Statistics - "
+            f"Size: {stats['current_size']}/{stats['capacity']} | "
+            f"Hits: {stats['hits']} | "
+            f"Misses: {stats['misses']} | "
+            f"Hit Rate: {stats['hit_rate']:.2%} | "
+            f"Evictions: {stats['evictions']} | "
+            f"Puts: {stats['puts']} | "
+            f"Updates: {stats['updates']}"
+        )
+
+        log.info(log_msg)
+
+    def log_stats_now(self) -> None:
+        """Force immediate logging of cache statistics."""
+        if self.track_stats:
+            self._log_stats()
+            self.last_stats_log_time = time.time()
+
+    def supports_stats_logging(self) -> bool:
+        """Check if this cache instance supports stats logging."""
+        return self.track_stats and self.stats_logging_interval is not None
 
     @property
     def capacity(self) -> int:

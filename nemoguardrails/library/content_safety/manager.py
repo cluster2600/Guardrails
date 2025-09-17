@@ -70,11 +70,20 @@ class ContentSafetyManager:
                         # Default path if persistence is enabled but no path specified
                         persistence_path = f"cache_{actual_model}.json"
 
+                # Determine stats logging settings
+                stats_logging_interval = None
+                if (
+                    self._cache_config.stats.enabled
+                    and self._cache_config.stats.log_interval is not None
+                ):
+                    stats_logging_interval = self._cache_config.stats.log_interval
+
                 self._caches[actual_model] = LFUCache(
                     capacity=self._cache_config.capacity_per_model,
-                    track_stats=True,
+                    track_stats=self._cache_config.stats.enabled,
                     persistence_interval=persistence_interval,
                     persistence_path=persistence_path,
+                    stats_logging_interval=stats_logging_interval,
                 )
             # elif self._cache_config.store == "filesystem":
             #     self._caches[actual_model] = FilesystemCache(...)

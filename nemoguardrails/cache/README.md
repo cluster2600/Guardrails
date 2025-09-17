@@ -106,6 +106,70 @@ This is useful for graceful shutdown scenarios.
 - Set `persistence.interval` to None to disable persistence
 - The cache automatically persists on each check if the interval has passed
 
+### Statistics and Monitoring
+
+The cache supports detailed statistics tracking and periodic logging for monitoring cache performance:
+
+```yaml
+rails:
+  config:
+    content_safety:
+      cache:
+        enabled: true
+        capacity_per_model: 10000
+        stats:
+          enabled: true      # Enable stats tracking
+          log_interval: 60.0 # Log stats every minute
+```
+
+**Statistics Features:**
+
+1. **Tracking Only**: Set `stats.enabled: true` with no `log_interval` to track stats without logging
+2. **Automatic Logging**: Set both `stats.enabled: true` and `log_interval` for periodic logging
+3. **Manual Logging**: Force immediate stats logging with `cache.log_stats_now()`
+
+**Statistics Tracked:**
+
+- **Hits**: Number of cache hits (successful lookups)
+- **Misses**: Number of cache misses (failed lookups)
+- **Hit Rate**: Percentage of requests served from cache
+- **Evictions**: Number of items removed due to capacity
+- **Puts**: Number of new items added to cache
+- **Updates**: Number of existing items updated
+- **Current Size**: Number of items currently in cache
+
+**Log Format:**
+
+```
+LFU Cache Statistics - Size: 2456/10000 | Hits: 15234 | Misses: 2456 | Hit Rate: 86.11% | Evictions: 0 | Puts: 2456 | Updates: 0
+```
+
+**Usage Examples:**
+
+```python
+# Programmatically access stats
+if "safety_model" in _MODEL_CACHES:
+    cache = _MODEL_CACHES["safety_model"]
+    stats = cache.get_stats()
+    print(f"Cache hit rate: {stats['hit_rate']:.2%}")
+
+    # Force immediate stats logging
+    if cache.supports_stats_logging():
+        cache.log_stats_now()
+```
+
+**Configuration Options:**
+
+- `stats.enabled`: Enable/disable statistics tracking (default: false)
+- `stats.log_interval`: Seconds between automatic stats logs (None = no logging)
+
+**Notes:**
+
+- Stats logging requires stats tracking to be enabled
+- Logs appear at INFO level in the `nemoguardrails.cache.lfu` logger
+- Stats are reset when cache is cleared or when `reset_stats()` is called
+- Each model maintains independent statistics
+
 ### Example Configuration Usage
 
 ```python

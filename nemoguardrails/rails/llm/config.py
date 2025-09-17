@@ -847,6 +847,19 @@ class CachePersistenceConfig(BaseModel):
     )
 
 
+class CacheStatsConfig(BaseModel):
+    """Configuration for cache statistics tracking and logging."""
+
+    enabled: bool = Field(
+        default=False,
+        description="Whether cache statistics tracking is enabled",
+    )
+    log_interval: Optional[float] = Field(
+        default=None,
+        description="Seconds between periodic cache stats logging to logs (None disables logging)",
+    )
+
+
 class ModelCacheConfig(BaseModel):
     """Configuration for model caching."""
 
@@ -866,6 +879,10 @@ class ModelCacheConfig(BaseModel):
     persistence: CachePersistenceConfig = Field(
         default_factory=CachePersistenceConfig,
         description="Configuration for cache persistence",
+    )
+    stats: CacheStatsConfig = Field(
+        default_factory=CacheStatsConfig,
+        description="Configuration for cache statistics tracking and logging",
     )
 
 
