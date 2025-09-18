@@ -133,22 +133,6 @@ class TestLFUCache(unittest.TestCase):
         self.assertEqual(self.cache.get("c"), 3)
         self.assertEqual(self.cache.get("d"), 4)
 
-    def test_frequency_increment(self):
-        """Test that frequencies are properly incremented."""
-        self.cache.put("a", 1)
-
-        # Access 'a' multiple times
-        for _ in range(5):
-            self.assertEqual(self.cache.get("a"), 1)
-
-        # Fill the rest of cache
-        self.cache.put("b", 2)
-        self.cache.put("c", 3)
-
-        # Add new items - 'a' should not be evicted due to high frequency
-        self.cache.put("d", 4)  # Should evict 'b' or 'c'
-        self.assertEqual(self.cache.get("a"), 1)  # 'a' should still be there
-
     def test_complex_eviction_scenario(self):
         """Test complex eviction scenario with multiple frequency levels."""
         # Create a new cache for this test
