@@ -20,14 +20,19 @@ Tests all functionality including basic operations, eviction policies,
 capacity management, edge cases, and persistence functionality.
 """
 
+import asyncio
 import json
 import os
 import tempfile
+import threading
 import time
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
+from unittest.mock import MagicMock, patch
 
 from nemoguardrails.cache.lfu import LFUCache
+from nemoguardrails.library.content_safety.manager import ContentSafetyManager
 
 
 class TestLFUCache(unittest.TestCase):
@@ -1190,6 +1195,488 @@ class TestContentSafetyCacheStatsConfig(unittest.TestCase):
 
         # Alias should resolve to same cache as actual
         self.assertIs(cache_alias, cache_actual)
+
+
+class TestLFUCacheThreadSafety(unittest.TestCase):
+    """Test thread safety of LFU Cache implementation."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.cache = LFUCache(100, track_stats=True)
+
+    def test_concurrent_reads_writes(self):
+        """Test that concurrent reads and writes don't corrupt the cache."""
+        num_threads = 10
+        operations_per_thread = 100
+
+        def worker(thread_id):
+            """Worker function that performs cache operations."""
+            for i in range(operations_per_thread):
+                key = f"thread_{thread_id}_key_{i}"
+                value = f"thread_{thread_id}_value_{i}"
+
+                # Put operation
+                self.cache.put(key, value)
+
+                # Get operation
+                retrieved = self.cache.get(key)
+
+                # Verify data integrity
+                self.assertEqual(
+                    retrieved, value, f"Data corruption detected for {key}"
+                )
+
+                # Access some shared keys
+                shared_key = f"shared_key_{i % 10}"
+                self.cache.put(shared_key, f"shared_value_{thread_id}_{i}")
+                self.cache.get(shared_key)
+
+        # Run threads
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            futures = [executor.submit(worker, i) for i in range(num_threads)]
+            for future in futures:
+                future.result()  # Wait for completion and raise any exceptions
+
+        # Verify cache is still functional
+        test_key = "test_after_concurrent"
+        test_value = "test_value"
+        self.cache.put(test_key, test_value)
+        self.assertEqual(self.cache.get(test_key), test_value)
+
+        # Check statistics are reasonable
+        stats = self.cache.get_stats()
+        self.assertGreater(stats["hits"], 0)
+        self.assertGreater(stats["puts"], 0)
+
+    def test_concurrent_evictions(self):
+        """Test that concurrent operations during evictions don't corrupt the cache."""
+        # Use a small cache to trigger frequent evictions
+        small_cache = LFUCache(10)
+        num_threads = 5
+        operations_per_thread = 50
+
+        def worker(thread_id):
+            """Worker that adds many items to trigger evictions."""
+            for i in range(operations_per_thread):
+                key = f"t{thread_id}_k{i}"
+                value = f"t{thread_id}_v{i}"
+                small_cache.put(key, value)
+
+                # Try to get recently added items
+                if i > 0:
+                    prev_key = f"t{thread_id}_k{i-1}"
+                    small_cache.get(prev_key)  # May or may not exist
+
+        # Run threads
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            futures = [executor.submit(worker, i) for i in range(num_threads)]
+            for future in futures:
+                future.result()
+
+        # Cache should still be at capacity
+        self.assertEqual(small_cache.size(), 10)
+
+    def test_concurrent_clear_operations(self):
+        """Test concurrent clear operations with other operations."""
+
+        def writer():
+            """Continuously write to cache."""
+            for i in range(100):
+                self.cache.put(f"key_{i}", f"value_{i}")
+                time.sleep(0.001)  # Small delay
+
+        def clearer():
+            """Periodically clear the cache."""
+            for _ in range(5):
+                time.sleep(0.01)
+                self.cache.clear()
+
+        def reader():
+            """Continuously read from cache."""
+            for i in range(100):
+                self.cache.get(f"key_{i}")
+                time.sleep(0.001)
+
+        # Run operations concurrently
+        threads = [
+            threading.Thread(target=writer),
+            threading.Thread(target=clearer),
+            threading.Thread(target=reader),
+        ]
+
+        for thread in threads:
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+        # Cache should still be functional
+        self.cache.put("final_key", "final_value")
+        self.assertEqual(self.cache.get("final_key"), "final_value")
+
+    def test_concurrent_stats_operations(self):
+        """Test that concurrent operations don't corrupt statistics."""
+
+        def worker(thread_id):
+            """Worker that performs operations and checks stats."""
+            for i in range(50):
+                key = f"stats_key_{thread_id}_{i}"
+                self.cache.put(key, i)
+                self.cache.get(key)  # Hit
+                self.cache.get(f"nonexistent_{thread_id}_{i}")  # Miss
+
+                # Periodically check stats
+                if i % 10 == 0:
+                    stats = self.cache.get_stats()
+                    # Just verify we can get stats without error
+                    self.assertIsInstance(stats, dict)
+                    self.assertIn("hits", stats)
+                    self.assertIn("misses", stats)
+
+        # Run threads
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            futures = [executor.submit(worker, i) for i in range(5)]
+            for future in futures:
+                future.result()
+
+        # Final stats check
+        final_stats = self.cache.get_stats()
+        self.assertGreater(final_stats["hits"], 0)
+        self.assertGreater(final_stats["misses"], 0)
+        self.assertGreater(final_stats["puts"], 0)
+
+    def test_get_or_compute_thread_safety(self):
+        """Test thread safety of get_or_compute method."""
+        compute_count = threading.local()
+        compute_count.value = 0
+        total_computes = []
+        lock = threading.Lock()
+
+        async def expensive_compute():
+            """Simulate expensive computation that should only run once."""
+            # Track how many times this is called
+            if not hasattr(compute_count, "value"):
+                compute_count.value = 0
+            compute_count.value += 1
+
+            with lock:
+                total_computes.append(1)
+
+            # Simulate expensive operation
+            await asyncio.sleep(0.1)
+            return f"computed_value_{len(total_computes)}"
+
+        async def worker(thread_id):
+            """Worker that tries to get or compute the same key."""
+            result = await self.cache.get_or_compute(
+                "shared_compute_key", expensive_compute, default="default"
+            )
+            return result
+
+        async def run_test():
+            """Run the async test."""
+            # Run multiple workers concurrently
+            tasks = [worker(i) for i in range(10)]
+            results = await asyncio.gather(*tasks)
+
+            # All should get the same value
+            self.assertTrue(
+                all(r == results[0] for r in results),
+                f"All threads should get same value, got: {results}",
+            )
+
+            # Compute should have been called only once
+            self.assertEqual(
+                len(total_computes),
+                1,
+                f"Compute should be called once, called {len(total_computes)} times",
+            )
+
+            return results[0]
+
+        # Run the async test
+        result = asyncio.run(run_test())
+        self.assertEqual(result, "computed_value_1")
+
+    def test_get_or_compute_exception_handling(self):
+        """Test get_or_compute handles exceptions properly."""
+        call_count = [0]
+
+        async def failing_compute():
+            """Compute function that fails."""
+            call_count[0] += 1
+            raise ValueError("Computation failed")
+
+        async def worker():
+            """Worker that tries to compute."""
+            result = await self.cache.get_or_compute(
+                "failing_key", failing_compute, default="fallback"
+            )
+            return result
+
+        async def run_test():
+            """Run the async test."""
+            # Multiple workers should all get the default value
+            tasks = [worker() for _ in range(5)]
+            results = await asyncio.gather(*tasks)
+
+            # All should get the default value
+            self.assertTrue(all(r == "fallback" for r in results))
+
+            # The compute function might be called multiple times
+            # since failed computations aren't cached
+            self.assertGreaterEqual(call_count[0], 1)
+
+        asyncio.run(run_test())
+
+    def test_concurrent_persistence(self):
+        """Test thread safety of persistence operations."""
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
+            cache_file = f.name
+
+        try:
+            # Create cache with persistence
+            cache = LFUCache(
+                capacity=50,
+                track_stats=True,
+                persistence_interval=0.1,  # Short interval for testing
+                persistence_path=cache_file,
+            )
+
+            def worker(thread_id):
+                """Worker that performs operations."""
+                for i in range(20):
+                    cache.put(f"persist_key_{thread_id}_{i}", f"value_{thread_id}_{i}")
+                    cache.get(f"persist_key_{thread_id}_{i}")
+
+                    # Force persistence sometimes
+                    if i % 5 == 0:
+                        cache.persist_now()
+
+            # Run workers
+            with ThreadPoolExecutor(max_workers=5) as executor:
+                futures = [executor.submit(worker, i) for i in range(5)]
+                for future in futures:
+                    future.result()
+
+            # Final persist
+            cache.persist_now()
+
+            # Load the persisted data
+            new_cache = LFUCache(
+                capacity=50, persistence_interval=1.0, persistence_path=cache_file
+            )
+
+            # Verify some data was persisted correctly
+            # (Due to capacity limits, not all items will be present)
+            self.assertGreater(new_cache.size(), 0)
+            self.assertLessEqual(new_cache.size(), 50)
+
+        finally:
+            # Clean up
+            if os.path.exists(cache_file):
+                os.unlink(cache_file)
+
+    def test_thread_safe_size_operations(self):
+        """Test that size-related operations are thread-safe."""
+        results = []
+
+        def worker(thread_id):
+            """Worker that checks size consistency."""
+            for i in range(100):
+                # Add item
+                self.cache.put(f"size_key_{thread_id}_{i}", i)
+
+                # Check size
+                size = self.cache.size()
+                is_empty = self.cache.is_empty()
+
+                # Size should never be negative or exceed capacity
+                if size < 0 or size > 100:
+                    results.append(f"Invalid size: {size}")
+
+                # is_empty should match size
+                if (size == 0) != is_empty:
+                    results.append(f"Size {size} but is_empty={is_empty}")
+
+        # Run workers
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(worker, i) for i in range(10)]
+            for future in futures:
+                future.result()
+
+        # Check for any inconsistencies
+        self.assertEqual(len(results), 0, f"Inconsistencies found: {results}")
+
+
+class TestContentSafetyManagerThreadSafety(unittest.TestCase):
+    """Test thread safety of ContentSafetyManager."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        # Create mock cache config
+        self.cache_config = MagicMock()
+        self.cache_config.enabled = True
+        self.cache_config.store = "memory"
+        self.cache_config.capacity_per_model = 100
+        self.cache_config.stats.enabled = True
+        self.cache_config.stats.log_interval = None
+        self.cache_config.persistence.enabled = False
+        self.cache_config.persistence.interval = None
+        self.cache_config.persistence.path = None
+
+        # Create mock model config
+        self.model_config = MagicMock()
+        self.model_config.cache = self.cache_config
+        self.model_config.model_mapping = {"alias_model": "actual_model"}
+
+    def test_concurrent_cache_creation(self):
+        """Test that concurrent cache creation returns the same instance."""
+        manager = ContentSafetyManager(self.model_config)
+        caches = []
+
+        def worker(thread_id):
+            """Worker that gets cache for model."""
+            cache = manager.get_cache_for_model("test_model")
+            caches.append((thread_id, cache))
+            return cache
+
+        # Run many threads to increase chance of race condition
+        with ThreadPoolExecutor(max_workers=20) as executor:
+            futures = [executor.submit(worker, i) for i in range(20)]
+            for future in futures:
+                future.result()
+
+        # All caches should be the same instance
+        first_cache = caches[0][1]
+        for thread_id, cache in caches:
+            self.assertIs(
+                cache, first_cache, f"Thread {thread_id} got different cache instance"
+            )
+
+    def test_concurrent_multi_model_caches(self):
+        """Test concurrent access to caches for different models."""
+        manager = ContentSafetyManager(self.model_config)
+        results = []
+
+        def worker(thread_id):
+            """Worker that accesses multiple model caches."""
+            model_names = [f"model_{i}" for i in range(5)]
+
+            for model_name in model_names:
+                cache = manager.get_cache_for_model(model_name)
+
+                # Perform operations
+                key = f"thread_{thread_id}_key"
+                value = f"thread_{thread_id}_value"
+                cache.put(key, value)
+                retrieved = cache.get(key)
+
+                if retrieved != value:
+                    results.append(f"Mismatch for {model_name}: {retrieved} != {value}")
+
+        # Run workers
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(worker, i) for i in range(10)]
+            for future in futures:
+                future.result()
+
+        # Check for errors
+        self.assertEqual(len(results), 0, f"Errors found: {results}")
+
+    def test_concurrent_persist_all_caches(self):
+        """Test thread safety of persist_all_caches method."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Create mock config with persistence
+            cache_config = MagicMock()
+            cache_config.enabled = True
+            cache_config.store = "memory"
+            cache_config.capacity_per_model = 50
+            cache_config.persistence.enabled = True
+            cache_config.persistence.interval = 1.0
+            cache_config.persistence.path = f"{temp_dir}/cache_{{model_name}}.json"
+            cache_config.stats.enabled = True
+            cache_config.stats.log_interval = None
+
+            model_config = MagicMock()
+            model_config.cache = cache_config
+            model_config.model_mapping = {}
+
+            manager = ContentSafetyManager(model_config)
+
+            # Create caches for multiple models
+            for i in range(5):
+                cache = manager.get_cache_for_model(f"model_{i}")
+                for j in range(10):
+                    cache.put(f"key_{j}", f"value_{j}")
+
+            persist_count = [0]
+
+            def persist_worker():
+                """Worker that calls persist_all_caches."""
+                manager.persist_all_caches()
+                persist_count[0] += 1
+
+            def modify_worker():
+                """Worker that modifies caches while persistence happens."""
+                for i in range(20):
+                    model_name = f"model_{i % 5}"
+                    cache = manager.get_cache_for_model(model_name)
+                    cache.put(f"new_key_{i}", f"new_value_{i}")
+                    time.sleep(0.001)
+
+            # Run persistence and modifications concurrently
+            threads = []
+
+            # Multiple persist threads
+            for _ in range(3):
+                t = threading.Thread(target=persist_worker)
+                threads.append(t)
+                t.start()
+
+            # Modification thread
+            t = threading.Thread(target=modify_worker)
+            threads.append(t)
+            t.start()
+
+            # Wait for all threads
+            for t in threads:
+                t.join()
+
+            # Verify persistence was called
+            self.assertEqual(persist_count[0], 3)
+
+    def test_model_alias_thread_safety(self):
+        """Test thread safety when using model aliases."""
+        manager = ContentSafetyManager(self.model_config)
+        caches = []
+
+        def worker(use_alias):
+            """Worker that gets cache using alias or actual name."""
+            if use_alias:
+                cache = manager.get_cache_for_model("alias_model")
+            else:
+                cache = manager.get_cache_for_model("actual_model")
+            caches.append(cache)
+
+        # Mix of threads using alias and actual name
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = []
+            for i in range(10):
+                use_alias = i % 2 == 0
+                futures.append(executor.submit(worker, use_alias))
+
+            for future in futures:
+                future.result()
+
+        # All should get the same cache instance
+        first_cache = caches[0]
+        for cache in caches:
+            self.assertIs(
+                cache,
+                first_cache,
+                "Alias and actual model should resolve to same cache",
+            )
 
 
 if __name__ == "__main__":

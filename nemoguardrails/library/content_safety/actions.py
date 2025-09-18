@@ -47,6 +47,16 @@ def _create_cache_key(prompt: Union[str, List[str]]) -> str:
     return PROMPT_PATTERN_WHITESPACES.sub(" ", prompt_str).strip()
 
 
+# Thread Safety Note:
+# The content safety caching mechanism is thread-safe for single-node deployments.
+# The underlying LFUCache uses threading.RLock to ensure atomic operations.
+# ContentSafetyManager uses double-checked locking for efficient cache creation.
+#
+# However, this implementation is NOT suitable for distributed environments.
+# For multi-node deployments, consider using distributed caching solutions
+# like Redis or a shared database.
+
+
 @action()
 async def content_safety_check_input(
     llms: Dict[str, BaseLLM],

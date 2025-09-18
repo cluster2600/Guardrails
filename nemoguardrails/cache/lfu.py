@@ -15,11 +15,13 @@
 
 """Least Frequently Used (LFU) cache implementation."""
 
+import asyncio
 import json
 import logging
 import os
+import threading
 import time
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 from nemoguardrails.cache.interface import CacheInterface
 
@@ -105,6 +107,8 @@ class LFUCache(CacheInterface):
 
         self._capacity = capacity
         self.track_stats = track_stats
+        self._lock = threading.RLock()  # Thread-safe access
+        self._computing: dict[Any, asyncio.Future] = {}  # Track keys being computed
 
         self.key_map: dict[Any, LFUNode] = {}  # key -> node mapping
         self.freq_map: dict[int, DoublyLinkedList] = {}  # frequency -> list of nodes
@@ -168,24 +172,25 @@ class LFUCache(CacheInterface):
         Returns:
             The value associated with the key, or default if not found
         """
-        # Check if we should persist
-        self._check_and_persist()
+        with self._lock:
+            # Check if we should persist
+            self._check_and_persist()
 
-        # Check if we should log stats
-        self._check_and_log_stats()
+            # Check if we should log stats
+            self._check_and_log_stats()
 
-        if key not in self.key_map:
+            if key not in self.key_map:
+                if self.track_stats:
+                    self.stats["misses"] += 1
+                return default
+
+            node = self.key_map[key]
+
             if self.track_stats:
-                self.stats["misses"] += 1
-            return default
+                self.stats["hits"] += 1
 
-        node = self.key_map[key]
-
-        if self.track_stats:
-            self.stats["hits"] += 1
-
-        self._update_node_freq(node)
-        return node.value
+            self._update_node_freq(node)
+            return node.value
 
     def put(self, key: Any, value: Any) -> None:
         """
@@ -195,42 +200,43 @@ class LFUCache(CacheInterface):
             key: The key to store
             value: The value to associate with the key
         """
-        # Check if we should persist
-        self._check_and_persist()
+        with self._lock:
+            # Check if we should persist
+            self._check_and_persist()
 
-        # Check if we should log stats
-        self._check_and_log_stats()
+            # Check if we should log stats
+            self._check_and_log_stats()
 
-        if self._capacity == 0:
-            return
+            if self._capacity == 0:
+                return
 
-        if key in self.key_map:
-            # Update existing key
-            node = self.key_map[key]
-            node.value = value
-            node.created_at = time.time()  # Reset creation time on update
-            self._update_node_freq(node)
-            if self.track_stats:
-                self.stats["updates"] += 1
-        else:
-            # Add new key
-            if len(self.key_map) >= self._capacity:
-                # Need to evict least frequently used item
-                self._evict_lfu()
+            if key in self.key_map:
+                # Update existing key
+                node = self.key_map[key]
+                node.value = value
+                node.created_at = time.time()  # Reset creation time on update
+                self._update_node_freq(node)
+                if self.track_stats:
+                    self.stats["updates"] += 1
+            else:
+                # Add new key
+                if len(self.key_map) >= self._capacity:
+                    # Need to evict least frequently used item
+                    self._evict_lfu()
 
-            # Create new node and add to cache
-            new_node = LFUNode(key, value)
-            self.key_map[key] = new_node
+                # Create new node and add to cache
+                new_node = LFUNode(key, value)
+                self.key_map[key] = new_node
 
-            # Add to frequency 1 list
-            if 1 not in self.freq_map:
-                self.freq_map[1] = DoublyLinkedList()
+                # Add to frequency 1 list
+                if 1 not in self.freq_map:
+                    self.freq_map[1] = DoublyLinkedList()
 
-            self.freq_map[1].append(new_node)
-            self.min_freq = 1
+                self.freq_map[1].append(new_node)
+                self.min_freq = 1
 
-            if self.track_stats:
-                self.stats["puts"] += 1
+                if self.track_stats:
+                    self.stats["puts"] += 1
 
     def _evict_lfu(self) -> None:
         """Evict the least frequently used item from the cache."""
@@ -250,21 +256,24 @@ class LFUCache(CacheInterface):
 
     def size(self) -> int:
         """Return the current size of the cache."""
-        return len(self.key_map)
+        with self._lock:
+            return len(self.key_map)
 
     def is_empty(self) -> bool:
         """Check if the cache is empty."""
-        return len(self.key_map) == 0
+        with self._lock:
+            return len(self.key_map) == 0
 
     def clear(self) -> None:
         """Clear all items from the cache."""
-        if self.track_stats:
-            # Track number of items evicted
-            self.stats["evictions"] += len(self.key_map)
+        with self._lock:
+            if self.track_stats:
+                # Track number of items evicted
+                self.stats["evictions"] += len(self.key_map)
 
-        self.key_map.clear()
-        self.freq_map.clear()
-        self.min_freq = 0
+            self.key_map.clear()
+            self.freq_map.clear()
+            self.min_freq = 0
 
     def get_stats(self) -> dict:
         """
@@ -273,31 +282,33 @@ class LFUCache(CacheInterface):
         Returns:
             Dictionary with cache statistics (if tracking is enabled)
         """
-        if not self.track_stats:
-            return {"message": "Statistics tracking is disabled"}
+        with self._lock:
+            if not self.track_stats:
+                return {"message": "Statistics tracking is disabled"}
 
-        stats = self.stats.copy()
-        stats["current_size"] = self.size()
-        stats["capacity"] = self._capacity
+            stats = self.stats.copy()
+            stats["current_size"] = len(self.key_map)  # Direct access within lock
+            stats["capacity"] = self._capacity
 
-        # Calculate hit rate
-        total_requests = stats["hits"] + stats["misses"]
-        stats["hit_rate"] = (
-            stats["hits"] / total_requests if total_requests > 0 else 0.0
-        )
+            # Calculate hit rate
+            total_requests = stats["hits"] + stats["misses"]
+            stats["hit_rate"] = (
+                stats["hits"] / total_requests if total_requests > 0 else 0.0
+            )
 
-        return stats
+            return stats
 
     def reset_stats(self) -> None:
         """Reset cache statistics."""
-        if self.track_stats:
-            self.stats = {
-                "hits": 0,
-                "misses": 0,
-                "evictions": 0,
-                "puts": 0,
-                "updates": 0,
-            }
+        with self._lock:
+            if self.track_stats:
+                self.stats = {
+                    "hits": 0,
+                    "misses": 0,
+                    "evictions": 0,
+                    "puts": 0,
+                    "updates": 0,
+                }
 
     def _check_and_persist(self) -> None:
         """Check if enough time has passed and persist to disk if needed."""
@@ -387,9 +398,10 @@ class LFUCache(CacheInterface):
 
     def persist_now(self) -> None:
         """Force immediate persistence to disk (useful for shutdown)."""
-        if self.persistence_interval is not None:
-            self._persist_to_disk()
-            self.last_persist_time = time.time()
+        with self._lock:
+            if self.persistence_interval is not None:
+                self._persist_to_disk()
+                self.last_persist_time = time.time()
 
     def supports_persistence(self) -> bool:
         """Check if this cache instance supports persistence."""
@@ -432,6 +444,120 @@ class LFUCache(CacheInterface):
     def supports_stats_logging(self) -> bool:
         """Check if this cache instance supports stats logging."""
         return self.track_stats and self.stats_logging_interval is not None
+
+    async def get_or_compute(
+        self, key: Any, compute_fn: Callable[[], Any], default: Any = None
+    ) -> Any:
+        """
+        Atomically get a value from the cache or compute it if not present.
+
+        This method ensures that the compute function is called at most once
+        even in the presence of concurrent requests for the same key.
+
+        Args:
+            key: The key to look up
+            compute_fn: Async function to compute the value if key is not found
+            default: Value to return if compute_fn raises an exception
+
+        Returns:
+            The cached value or the computed value
+        """
+        # First check if the value is already in cache
+        future = None
+        with self._lock:
+            if key in self.key_map:
+                node = self.key_map[key]
+                if self.track_stats:
+                    self.stats["hits"] += 1
+                self._update_node_freq(node)
+                return node.value
+
+            # Check if this key is already being computed
+            if key in self._computing:
+                future = self._computing[key]
+
+        # If the key is being computed, wait for it outside the lock
+        if future is not None:
+            try:
+                return await future
+            except Exception:
+                return default
+
+        # Create a future for this computation
+        future = asyncio.Future()
+        with self._lock:
+            # Double-check the cache and computing dict
+            if key in self.key_map:
+                node = self.key_map[key]
+                if self.track_stats:
+                    self.stats["hits"] += 1
+                self._update_node_freq(node)
+                return node.value
+
+            if key in self._computing:
+                # Another thread started computing while we were waiting
+                future = self._computing[key]
+            else:
+                # We'll be the ones computing
+                self._computing[key] = future
+
+        # If another thread is computing, wait for it
+        if not future.done() and self._computing.get(key) is not future:
+            try:
+                return await self._computing[key]
+            except Exception:
+                return default
+
+        # We're responsible for computing the value
+        try:
+            computed_value = await compute_fn()
+
+            # Store the computed value in cache
+            with self._lock:
+                # Remove from computing dict
+                self._computing.pop(key, None)
+
+                # Check one more time if someone else added it
+                if key in self.key_map:
+                    node = self.key_map[key]
+                    if self.track_stats:
+                        self.stats["hits"] += 1
+                    self._update_node_freq(node)
+                    future.set_result(node.value)
+                    return node.value
+
+                # Now add to cache using internal logic
+                if self._capacity == 0:
+                    future.set_result(computed_value)
+                    return computed_value
+
+                # Add new key
+                if len(self.key_map) >= self._capacity:
+                    self._evict_lfu()
+
+                # Create new node and add to cache
+                new_node = LFUNode(key, computed_value)
+                self.key_map[key] = new_node
+
+                # Add to frequency 1 list
+                if 1 not in self.freq_map:
+                    self.freq_map[1] = DoublyLinkedList()
+
+                self.freq_map[1].append(new_node)
+                self.min_freq = 1
+
+                if self.track_stats:
+                    self.stats["puts"] += 1
+
+                # Set the result in the future
+                future.set_result(computed_value)
+                return computed_value
+
+        except Exception as e:
+            with self._lock:
+                self._computing.pop(key, None)
+            future.set_exception(e)
+            return default
 
     @property
     def capacity(self) -> int:

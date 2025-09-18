@@ -25,7 +25,7 @@ allows cache state to be saved to and loaded from external storage.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 
 class CacheInterface(ABC):
@@ -145,3 +145,35 @@ class CacheInterface(ABC):
         that support persistence should override this to return True.
         """
         return False
+
+    async def get_or_compute(
+        self, key: Any, compute_fn: Callable[[], Any], default: Any = None
+    ) -> Any:
+        """
+        Atomically get a value from the cache or compute it if not present.
+
+        This method ensures that the compute function is called at most once
+        even in the presence of concurrent requests for the same key.
+
+        Args:
+            key: The key to look up
+            compute_fn: Async function to compute the value if key is not found
+            default: Value to return if compute_fn raises an exception
+
+        Returns:
+            The cached value or the computed value
+
+        This is an optional method with a default implementation. Cache
+        implementations should override this for better thread-safety guarantees.
+        """
+        # Default implementation - not thread-safe for computation
+        value = self.get(key)
+        if value is not None:
+            return value
+
+        try:
+            computed_value = await compute_fn()
+            self.put(key, computed_value)
+            return computed_value
+        except Exception:
+            return default

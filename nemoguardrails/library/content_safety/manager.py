@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import logging
+import threading
 from typing import Dict, Optional
 
 from nemoguardrails.cache.interface import CacheInterface
@@ -29,6 +30,7 @@ class ContentSafetyManager:
     def __init__(self, config: ModelConfig):
         self.config = config
         self._caches: Dict[str, CacheInterface] = {}
+        self._lock = threading.RLock()  # Thread-safe cache creation
         self._initialize_caches()
 
     def _initialize_caches(self):
@@ -47,54 +49,72 @@ class ContentSafetyManager:
         # Resolve model alias if configured
         actual_model = self.config.model_mapping.get(model_name, model_name)
 
+        # Double-checked locking pattern for efficiency
         if actual_model not in self._caches:
-            # Create cache based on store type
-            if self._cache_config.store == "memory":
-                # Determine persistence settings for this model
-                persistence_path = None
-                persistence_interval = None
+            with self._lock:
+                # Check again inside the lock
+                if actual_model not in self._caches:
+                    # Create cache based on store type
+                    if self._cache_config.store == "memory":
+                        # Determine persistence settings for this model
+                        persistence_path = None
+                        persistence_interval = None
 
-                # Check if persistence is enabled and has a valid interval
-                if (
-                    self._cache_config.persistence.enabled
-                    and self._cache_config.persistence.interval is not None
-                ):
-                    persistence_interval = self._cache_config.persistence.interval
+                        # Check if persistence is enabled and has a valid interval
+                        if (
+                            self._cache_config.persistence.enabled
+                            and self._cache_config.persistence.interval is not None
+                        ):
+                            persistence_interval = (
+                                self._cache_config.persistence.interval
+                            )
 
-                    if self._cache_config.persistence.path:
-                        # Use configured path, replacing {model_name} if present
-                        persistence_path = self._cache_config.persistence.path.replace(
-                            "{model_name}", actual_model
+                            if self._cache_config.persistence.path:
+                                # Use configured path, replacing {model_name} if present
+                                persistence_path = (
+                                    self._cache_config.persistence.path.replace(
+                                        "{model_name}", actual_model
+                                    )
+                                )
+                            else:
+                                # Default path if persistence is enabled but no path specified
+                                persistence_path = f"cache_{actual_model}.json"
+
+                        # Determine stats logging settings
+                        stats_logging_interval = None
+                        if (
+                            self._cache_config.stats.enabled
+                            and self._cache_config.stats.log_interval is not None
+                        ):
+                            stats_logging_interval = (
+                                self._cache_config.stats.log_interval
+                            )
+
+                        self._caches[actual_model] = LFUCache(
+                            capacity=self._cache_config.capacity_per_model,
+                            track_stats=self._cache_config.stats.enabled,
+                            persistence_interval=persistence_interval,
+                            persistence_path=persistence_path,
+                            stats_logging_interval=stats_logging_interval,
                         )
-                    else:
-                        # Default path if persistence is enabled but no path specified
-                        persistence_path = f"cache_{actual_model}.json"
-
-                # Determine stats logging settings
-                stats_logging_interval = None
-                if (
-                    self._cache_config.stats.enabled
-                    and self._cache_config.stats.log_interval is not None
-                ):
-                    stats_logging_interval = self._cache_config.stats.log_interval
-
-                self._caches[actual_model] = LFUCache(
-                    capacity=self._cache_config.capacity_per_model,
-                    track_stats=self._cache_config.stats.enabled,
-                    persistence_interval=persistence_interval,
-                    persistence_path=persistence_path,
-                    stats_logging_interval=stats_logging_interval,
-                )
-            # elif self._cache_config.store == "filesystem":
-            #     self._caches[actual_model] = FilesystemCache(...)
-            # elif self._cache_config.store == "redis":
-            #     self._caches[actual_model] = RedisCache(...)
+                    # elif self._cache_config.store == "filesystem":
+                    #     self._caches[actual_model] = FilesystemCache(...)
+                    # elif self._cache_config.store == "redis":
+                    #     self._caches[actual_model] = RedisCache(...)
 
         return self._caches[actual_model]
 
     def persist_all_caches(self):
         """Force immediate persistence of all caches that support it."""
-        for model_name, cache in self._caches.items():
-            if cache.supports_persistence():
-                cache.persist_now()
-                log.info(f"Persisted cache for model: {model_name}")
+        with self._lock:
+            # Create a list of caches to persist to avoid holding lock during I/O
+            caches_to_persist = [
+                (model_name, cache)
+                for model_name, cache in self._caches.items()
+                if cache.supports_persistence()
+            ]
+
+        # Persist outside the lock to avoid blocking other operations
+        for model_name, cache in caches_to_persist:
+            cache.persist_now()
+            log.info(f"Persisted cache for model: {model_name}")
