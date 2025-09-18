@@ -146,6 +146,63 @@ class CacheInterface(ABC):
         """
         return False
 
+    def get_stats(self) -> dict:
+        """
+        Get cache statistics.
+
+        Returns:
+            Dictionary with cache statistics. The format and contents
+            may vary by implementation. Common fields include:
+            - hits: Number of cache hits
+            - misses: Number of cache misses
+            - evictions: Number of items evicted
+            - hit_rate: Percentage of requests that were hits
+            - current_size: Current number of items in cache
+            - capacity: Maximum capacity of the cache
+
+        The default implementation returns a message indicating that
+        statistics tracking is not supported.
+        """
+        return {
+            "message": "Statistics tracking is not supported by this cache implementation"
+        }
+
+    def reset_stats(self) -> None:
+        """
+        Reset cache statistics.
+
+        This is an optional method that cache implementations can override
+        if they support statistics tracking. The default implementation does nothing.
+        """
+        # Default no-op implementation
+        pass
+
+    def log_stats_now(self) -> None:
+        """
+        Force immediate logging of cache statistics.
+
+        This is an optional method that cache implementations can override
+        if they support statistics logging. The default implementation does nothing.
+
+        Implementations that support statistics logging should output the
+        current cache statistics to their configured logging backend.
+        """
+        # Default no-op implementation
+        pass
+
+    def supports_stats_logging(self) -> bool:
+        """
+        Check if this cache implementation supports statistics logging.
+
+        Returns:
+            True if the cache supports statistics logging, False otherwise.
+
+        The default implementation returns False. Cache implementations
+        that support statistics logging should override this to return True
+        when logging is enabled.
+        """
+        return False
+
     async def get_or_compute(
         self, key: Any, compute_fn: Callable[[], Any], default: Any = None
     ) -> Any:
