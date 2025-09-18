@@ -573,6 +573,22 @@ class LFUCache(CacheInterface):
             future.set_exception(e)
             return default
 
+    def contains(self, key: Any) -> bool:
+        """
+        Check if a key exists in the cache without updating its frequency.
+
+        This is more efficient than the default implementation which uses get()
+        and has the side effect of updating frequency counts.
+
+        Args:
+            key: The key to check
+
+        Returns:
+            True if the key exists in the cache, False otherwise
+        """
+        with self._lock:
+            return key in self.key_map
+
     @property
     def capacity(self) -> int:
         """Get the maximum capacity of the cache."""
