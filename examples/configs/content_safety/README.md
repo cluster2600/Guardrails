@@ -8,6 +8,7 @@ This example demonstrates how to configure content safety rails with NeMo Guardr
 - **Output Safety Checks**: Ensures bot responses are appropriate
 - **Caching**: Reduces redundant API calls with LFU cache
 - **Persistence**: Optional cache persistence for resilience across restarts
+- **Thread Safety**: Fully thread-safe for use in multi-threaded web servers
 
 ## Configuration Overview
 
@@ -43,6 +44,21 @@ To disable persistence, you can either:
 3. Set `interval` to `null` or remove it
 
 Note: Persistence requires both `enabled: true` and a valid `interval` value to be active.
+
+## Thread Safety
+
+The content safety implementation is fully thread-safe:
+
+- **Concurrent Requests**: Safely handles multiple simultaneous safety checks
+- **No Data Corruption**: Thread-safe cache operations prevent data corruption
+- **Efficient Locking**: Uses RLock for minimal performance impact
+- **Atomic Operations**: Prevents duplicate LLM calls for the same content
+
+This makes it suitable for:
+
+- Multi-threaded web servers (FastAPI, Flask, Django)
+- Concurrent request processing
+- High-traffic applications
 
 ### Proper Shutdown
 

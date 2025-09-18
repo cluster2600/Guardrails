@@ -195,6 +195,33 @@ rails.close()  # Manually persist caches
 # when the object is garbage collected (__del__)
 ```
 
+### Thread Safety
+
+The content safety caching system is **thread-safe** for single-node deployments:
+
+1. **LFUCache Implementation**:
+   - Uses `threading.RLock` for all operations
+   - All public methods (`get`, `put`, `size`, `clear`, etc.) are protected by locks
+   - Supports atomic `get_or_compute()` operations that prevent duplicate computations
+
+2. **ContentSafetyManager**:
+   - Thread-safe cache creation using double-checked locking pattern
+   - Ensures only one cache instance per model across all threads
+   - Thread-safe persistence operations
+
+3. **Key Features**:
+   - **No Data Corruption**: Concurrent operations maintain data integrity
+   - **No Race Conditions**: Proper locking prevents race conditions
+   - **Atomic Operations**: `get_or_compute()` ensures expensive computations happen only once
+   - **Minimal Lock Contention**: Efficient locking patterns minimize performance impact
+
+4. **Usage in Web Servers**:
+   - Safe for use in multi-threaded web servers (FastAPI, Flask, etc.)
+   - Handles concurrent requests without issues
+   - Each thread sees consistent cache state
+
+**Note**: This implementation is designed for single-node deployments. For distributed systems, consider using external caching solutions like Redis.
+
 ### Benefits
 
 1. **Performance**: Eliminates redundant LLM calls for identical inputs
@@ -206,6 +233,7 @@ rails.close()  # Manually persist caches
 7. **Timestamp Tracking**: Track when entries were created and last accessed
 8. **Resilience**: Cache survives process restarts without losing data when persistence is enabled
 9. **Efficiency**: LFU eviction algorithm ensures the most useful entries remain in cache
+10. **Thread Safety**: Safe for concurrent access in multi-threaded environments
 
 ### Example Usage Pattern
 
