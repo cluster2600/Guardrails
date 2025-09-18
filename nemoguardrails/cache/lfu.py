@@ -117,11 +117,13 @@ class LFUCache(CacheInterface):
         # Persistence configuration
         self.persistence_interval = persistence_interval
         self.persistence_path = persistence_path or "lfu_cache.json"
-        self.last_persist_time = time.time()
+        # Initialize to None to ensure first check doesn't trigger immediately
+        self.last_persist_time = None
 
         # Stats logging configuration
         self.stats_logging_interval = stats_logging_interval
-        self.last_stats_log_time = time.time()
+        # Initialize to None to ensure first check doesn't trigger immediately
+        self.last_stats_log_time = None
 
         # Statistics tracking
         if self.track_stats:
@@ -316,6 +318,12 @@ class LFUCache(CacheInterface):
             return
 
         current_time = time.time()
+
+        # Initialize timestamp on first check
+        if self.last_persist_time is None:
+            self.last_persist_time = current_time
+            return
+
         if current_time - self.last_persist_time >= self.persistence_interval:
             self._persist_to_disk()
             self.last_persist_time = current_time
@@ -413,6 +421,12 @@ class LFUCache(CacheInterface):
             return
 
         current_time = time.time()
+
+        # Initialize timestamp on first check
+        if self.last_stats_log_time is None:
+            self.last_stats_log_time = current_time
+            return
+
         if current_time - self.last_stats_log_time >= self.stats_logging_interval:
             self._log_stats()
             self.last_stats_log_time = current_time
