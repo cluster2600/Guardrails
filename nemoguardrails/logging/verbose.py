@@ -54,9 +54,7 @@ class VerboseHandler(logging.StreamHandler):
                 skip_print = True
                 if verbose_llm_calls:
                     console.print("")
-                    id_str = getattr(record, "id", None)
-                    id_display = f"({id_str[:5]}..)" if id_str else ""
-                    console.print(f"[cyan]LLM {title} {id_display}[/]")
+                    console.print(f"[cyan]LLM {title} ({record.id[:5]}..)[/]")
                     for line in body.split("\n"):
                         text = Text(line, style="black on #006600", end="\n")
                         text.pad_right(console.width)
@@ -68,10 +66,9 @@ class VerboseHandler(logging.StreamHandler):
                 if verbose_llm_calls:
                     skip_print = True
                     console.print("")
-                    id_str = getattr(record, "id", None)
-                    id_display = f"({id_str[:5]}..)" if id_str else ""
-                    task_str = getattr(record, "task", "unknown")
-                    console.print(f"[cyan]LLM Prompt {id_display} - {task_str}[/]")
+                    console.print(
+                        f"[cyan]LLM Prompt ({record.id[:5]}..) - {record.task}[/]"
+                    )
 
                     for line in body.split("\n"):
                         if line.strip() == "[/]":

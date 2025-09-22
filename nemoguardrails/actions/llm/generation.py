@@ -582,21 +582,7 @@ class LLMGenerationActions:
             if streaming_handler:
                 await streaming_handler.push_chunk(text)
 
-            if self.config.passthrough:
-                from nemoguardrails.actions.llm.utils import (
-                    get_and_clear_tool_calls_contextvar,
-                )
-
-                tool_calls = get_and_clear_tool_calls_contextvar()
-
-                if tool_calls:
-                    output_events.append(
-                        new_event_dict("BotToolCalls", tool_calls=tool_calls)
-                    )
-                else:
-                    output_events.append(new_event_dict("BotMessage", text=text))
-            else:
-                output_events.append(new_event_dict("BotMessage", text=text))
+            output_events.append(new_event_dict("BotMessage", text=text))
 
             return ActionResult(events=output_events)
 
@@ -905,23 +891,9 @@ class LLMGenerationActions:
                         LLMCallInfo(task=Task.GENERATE_BOT_MESSAGE.value)
                     )
 
-                    # In passthrough mode, we should use the full conversation history
-                    # instead of just the last user message to preserve tool message context
-                    raw_prompt = raw_llm_request.get()
-
-                    if raw_prompt is not None and isinstance(raw_prompt, list):
-                        # Use the full conversation including tool messages
-                        prompt = raw_prompt.copy()
-
-                        # Update the last user message if it was altered by input rails
-                        user_message = context.get("user_message")
-                        if user_message and prompt:
-                            for i in reversed(range(len(prompt))):
-                                if prompt[i]["role"] == "user":
-                                    prompt[i]["content"] = user_message
-                                    break
-                    else:
-                        prompt = context.get("user_message")
+                    # We use the potentially updated $user_message. This means that even
+                    # in passthrough mode, input rails can still alter the input.
+                    prompt = context.get("user_message")
 
                     generation_options: GenerationOptions = generation_options_var.get()
                     with llm_params(

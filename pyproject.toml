@@ -4,7 +4,7 @@ description = "NeMo Guardrails is an open-source toolkit for easily adding progr
 authors = ["NVIDIA <nemoguardrails@nvidia.com>"]
 license = "LICENSE.md"
 readme = "README.md"
-version = "0.16.0"
+version = "0.15.0"
 packages = [{ include = "nemoguardrails" }]
 
 
@@ -151,12 +151,7 @@ pytest-profiling = "^1.7.0"
 yara-python = "^4.5.1"
 opentelemetry-api = "^1.34.1"
 opentelemetry-sdk = "^1.34.1"
-pyright = "^1.1.405"
 
-
-# Directories in which to run Pyright type-checking
-[tool.pyright]
-include = []
 
 [tool.poetry.group.docs]
 optional = true

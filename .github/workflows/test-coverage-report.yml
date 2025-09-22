@@ -2,9 +2,9 @@ name: Coverage Report
 
 on:
   push:
-    branches: ["**"]
+    branches: [develop]
   pull_request:
-    branches: ["**"]
+    branches: [develop]
 
 jobs:
   test:

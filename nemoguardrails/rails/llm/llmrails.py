@@ -32,9 +32,7 @@ from typing_extensions import Self
 
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.actions.llm.utils import (
-    extract_tool_calls_from_events,
     get_and_clear_reasoning_trace_contextvar,
-    get_and_clear_response_metadata_contextvar,
     get_colang_history,
 )
 from nemoguardrails.actions.output_mapping import is_output_blocked
@@ -747,24 +745,19 @@ class LLMRails:
                         )
 
                 elif msg["role"] == "assistant":
-                    if msg.get("tool_calls"):
-                        events.append(
-                            {"type": "BotToolCalls", "tool_calls": msg["tool_calls"]}
-                        )
-                    else:
-                        action_uid = new_uuid()
-                        start_event = new_event_dict(
-                            "StartUtteranceBotAction",
-                            script=msg["content"],
-                            action_uid=action_uid,
-                        )
-                        finished_event = new_event_dict(
-                            "UtteranceBotActionFinished",
-                            final_script=msg["content"],
-                            is_success=True,
-                            action_uid=action_uid,
-                        )
-                        events.extend([start_event, finished_event])
+                    action_uid = new_uuid()
+                    start_event = new_event_dict(
+                        "StartUtteranceBotAction",
+                        script=msg["content"],
+                        action_uid=action_uid,
+                    )
+                    finished_event = new_event_dict(
+                        "UtteranceBotActionFinished",
+                        final_script=msg["content"],
+                        is_success=True,
+                        action_uid=action_uid,
+                    )
+                    events.extend([start_event, finished_event])
                 elif msg["role"] == "context":
                     events.append({"type": "ContextUpdate", "data": msg["content"]})
                 elif msg["role"] == "event":
@@ -772,49 +765,6 @@ class LLMRails:
                 elif msg["role"] == "system":
                     # Handle system messages - convert them to SystemMessage events
                     events.append({"type": "SystemMessage", "content": msg["content"]})
-                elif msg["role"] == "tool":
-                    # For the last tool message, create grouped tool event and synthetic UserMessage
-                    if idx == len(messages) - 1:
-                        # Find the original user message for response generation
-                        user_message = None
-                        for prev_msg in reversed(messages[:idx]):
-                            if prev_msg["role"] == "user":
-                                user_message = prev_msg["content"]
-                                break
-
-                        if user_message:
-                            # If tool input rails are configured, group all tool messages
-                            if self.config.rails.tool_input.flows:
-                                # Collect all tool messages for grouped processing
-                                tool_messages = []
-                                for tool_idx in range(len(messages)):
-                                    if messages[tool_idx]["role"] == "tool":
-                                        tool_messages.append(
-                                            {
-                                                "content": messages[tool_idx][
-                                                    "content"
-                                                ],
-                                                "name": messages[tool_idx].get(
-                                                    "name", "unknown"
-                                                ),
-                                                "tool_call_id": messages[tool_idx].get(
-                                                    "tool_call_id", ""
-                                                ),
-                                            }
-                                        )
-
-                                events.append(
-                                    {
-                                        "type": "UserToolMessages",
-                                        "tool_messages": tool_messages,
-                                    }
-                                )
-
-                            else:
-                                events.append(
-                                    {"type": "UserMessage", "text": user_message}
-                                )
-
         else:
             for idx in range(len(messages)):
                 msg = messages[idx]
@@ -1134,9 +1084,6 @@ class LLMRails:
                 options.log.llm_calls = True
                 options.log.internal_events = True
 
-        tool_calls = extract_tool_calls_from_events(new_events)
-        llm_metadata = get_and_clear_response_metadata_contextvar()
-
         # If we have generation options, we prepare a GenerationResponse instance.
         if options:
             # If a prompt was used, we only need to return the content of the message.
@@ -1152,12 +1099,6 @@ class LLMRails:
                     res.response[0]["content"] = (
                         reasoning_trace + res.response[0]["content"]
                     )
-
-            if tool_calls:
-                res.tool_calls = tool_calls
-
-            if llm_metadata:
-                res.llm_metadata = llm_metadata
 
             if self.config.colang_version == "1.0":
                 # If output variables are specified, we extract their values
@@ -1287,8 +1228,6 @@ class LLMRails:
             if prompt:
                 return new_message["content"]
             else:
-                if tool_calls:
-                    new_message["tool_calls"] = tool_calls
                 return new_message
 
     def stream_async(

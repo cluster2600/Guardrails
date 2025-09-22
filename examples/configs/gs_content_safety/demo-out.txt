@@ -1,6 +1,6 @@
-# start-unsafe-response
+# start-generate-response
 I'm sorry, I can't respond to that.
-# end-unsafe-response
+# end-generate-response
 
 
 # start-safe-response

@@ -16,7 +16,7 @@
 import logging
 from typing import Dict, Optional
 
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
 from nemoguardrails.actions.action_dispatcher import ActionDispatcher
@@ -34,12 +34,7 @@ app = FastAPI(
 
 
 # Create action dispatcher object to communicate with actions
-_action_dispatcher = ActionDispatcher(load_all_actions=True)
-
-
-def get_action_dispatcher() -> ActionDispatcher:
-    """Dependency to provide the action dispatcher instance."""
-    return _action_dispatcher
+app.action_dispatcher = ActionDispatcher(load_all_actions=True)
 
 
 class RequestBody(BaseModel):
@@ -63,26 +58,22 @@ class ResponseBody(BaseModel):
     summary="Execute action",
     response_model=ResponseBody,
 )
-async def run_action(
-    body: RequestBody,
-    action_dispatcher: ActionDispatcher = Depends(get_action_dispatcher),
-):
+async def run_action(body: RequestBody):
     """Execute the specified action and return the result.
 
     Args:
         body (RequestBody): The request body containing action_name and action_parameters.
-        action_dispatcher (ActionDispatcher): The action dispatcher dependency.
 
     Returns:
         dict: The response containing the execution status and result.
     """
 
-    log.info("Request body: %s", body)
-    result, status = await action_dispatcher.execute_action(
+    log.info(f"Request body: {body}")
+    result, status = await app.action_dispatcher.execute_action(
         body.action_name, body.action_parameters
     )
     resp = {"status": status, "result": result}
-    log.info("Response: %s", resp)
+    log.info(f"Response: {resp}")
     return resp
 
 
@@ -90,9 +81,7 @@ async def run_action(
     "/v1/actions/list",
     summary="List available actions",
 )
-async def get_actions_list(
-    action_dispatcher: ActionDispatcher = Depends(get_action_dispatcher),
-):
+async def get_actions_list():
     """Returns the list of available actions."""
 
-    return action_dispatcher.get_registered_actions()
+    return app.action_dispatcher.get_registered_actions()
