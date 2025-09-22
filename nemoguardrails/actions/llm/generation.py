@@ -130,7 +130,7 @@ class LLMGenerationActions:
             self._init_flows_index(),
         )
 
-    def _extract_user_message_example(self, flow: Flow) -> None:
+    def _extract_user_message_example(self, flow: Flow):
         """Heuristic to extract user message examples from a flow."""
         elements = [item for item in flow.elements if item["_type"] != "doc_string_stmt" and item["_type"] != "stmt"]
         if len(elements) != 2:
