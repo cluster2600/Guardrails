@@ -35,6 +35,7 @@ To add guardrails around the LLM model in the above example:
 ```python
 chain_with_guardrails = prompt | (guardrails | model) | output_parser
 ```
+
 ```{note}
 Using the extra parenthesis is essential to enforce the order in which the `|` (pipe) operator is applied.
 ```
@@ -99,6 +100,8 @@ By default, when the guardrail configuration decides that it is safe to prompt t
 guardrails = RunnableRails(config, passthrough=False)
 ```
 
+**Note**: For tool calling to work properly, you must set `passthrough=True` (or include `passthrough: True` in your configuration file). This ensures the LLM can properly handle tool calls and responses.
+
 ## Input/Output Keys for Chains with Guardrails
 
 When a guardrail configuration is used to wrap a chain (or a `Runnable`) the input and output are either dictionaries or strings. However, a guardrail configuration always operates on a text input from the user and a text output from the LLM. To achieve this, when dicts are used, one of the keys from the input dict must be designated as the "input text" and one of the keys from the output as the "output text". By default, these keys are `input` and `output`. To customize these keys, you must provide the `input_key` and `output_key` parameters when creating the `RunnableRails` instance.
@@ -118,51 +121,119 @@ When a guardrail is triggered, and predefined messages must be returned, instead
 
 ## Using Tools
 
-A guardrail configuration can also use tools as part of the dialog rails. The following snippet defines the `Calculator` tool using the `LLMMathChain`:
+RunnableRails now supports tool calling with LangChain tools. This requires `passthrough: True` in your configuration to work properly. You can use any LangChain-compatible tools, including built-in tools, community tools, and custom tools. For more information on available tools, see the [LangChain Tools Documentation](https://python.langchain.com/docs/integrations/tools/).
+
+### Tool Definition
+
+Define your tools using the standard LangChain approach:
 
 ```python
-from langchain.chains import LLMMathChain
+from langchain_core.tools import tool
+import math
+from datetime import datetime
+from typing import Optional
 
-tools = []
+@tool
+def calculator(expression: str) -> str:
+    """Evaluates mathematical expressions like '2 + 2' or 'sqrt(16)'."""
+    try:
+        safe_dict = {'sqrt': math.sqrt, 'pow': pow, '__builtins__': {}}
+        return str(eval(expression, safe_dict))
+    except:
+        return f"Error calculating: {expression}"
 
-class CalculatorInput(BaseModel):
-    question: str = Field()
+@tool
+def get_current_time(timezone: Optional[str] = None) -> str:
+    """Gets current time, optionally in specified timezone like 'UTC'."""
+    if timezone and timezone == 'UTC':
+        from datetime import timezone as tz
+        return datetime.now(tz.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+```
 
-llm_math_chain = LLMMathChain(llm=model, verbose=True)
-tools.append(
-    Tool.from_function(
-        func=llm_math_chain.run,
-        name="Calculator",
-        description="useful for when you need to answer questions about math",
-        args_schema=CalculatorInput,
+### Pattern 1: Two-Call Approach
+
+This pattern follows the typical tool calling flow: get tool calls, execute them, then synthesize results.
+
+```python
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
+from langchain_openai import ChatOpenAI
+
+tools = [calculator, get_current_time]
+model = ChatOpenAI(model="gpt-5")
+model_with_tools = model.bind_tools(tools)
+
+# for a working example, you can use the content safety config provided in the examples
+# ensure you have NVIDIA_API_KEY set in your environment
+# ensure you have installed langchain_nvidia_ai_endpoints
+# config = RailsConfig.from_path("./examples/configs/content_safety")
+config = RailsConfig.from_path("path/to/config/")
+guardrails = RunnableRails(config=config, passthrough=True)  # Required for tool calling
+
+guarded_model = guardrails | model_with_tools
+
+# First call: Get tool calls
+messages = [HumanMessage(content="What is 2 + 2, and what time is it in UTC?")]
+result = guarded_model.invoke(messages)
+
+# Execute tools and build messages
+tools_by_name = {tool.name: tool for tool in tools}
+messages_with_tools = [
+    messages[0],
+    AIMessage(content=result.content or "", tool_calls=result.tool_calls),
+]
+
+for tool_call in result.tool_calls:
+    tool_result = tools_by_name[tool_call["name"]].invoke(tool_call["args"])
+    messages_with_tools.append(
+        ToolMessage(
+            content=str(tool_result),
+            name=tool_call["name"],
+            tool_call_id=tool_call["id"],
+        )
     )
-)
+
+# Second call: Synthesize results
+final_result = guarded_model.invoke(messages_with_tools)
+print(final_result.content)
 ```
 
-To make sure that all math questions are answered using this tool, you can create a rail like the one below and include it in your guardrail configuration:
+### Pattern 2: Single-Call with Pre-processed Messages
 
-```colang
-define user ask math question
-  "What is the square root of 7?"
-  "What is the formula for the area of a circle?"
-
-define flow
-  user ask math question
-  $result = execute Calculator(tool_input=$user_message)
-  bot respond
-```
-
-Finally, you pass the `tools` array to the `RunnableRails` instance:
+This pattern is useful when you already have tool messages available:
 
 ```python
-guardrails = RunnableRails(config, tools=tools)
+messages = [
+    HumanMessage(content="What is 2 + 2, and what time is it in UTC?"),
+    AIMessage(
+        content="",
+        tool_calls=[
+            {
+                "name": "calculator",
+                "args": {"expression": "2 + 2"},
+                "id": "call_calc_001",
+                "type": "tool_call",
+            },
+            {
+                "name": "get_current_time",
+                "args": {"timezone": "UTC"},
+                "id": "call_time_001",
+                "type": "tool_call",
+            },
+        ],
+    ),
+    ToolMessage(
+        content="4",
+        name="calculator",
+        tool_call_id="call_calc_001",
+    ),
+    ToolMessage(
+        content="2025-01-15 14:30:25 UTC",
+        name="get_current_time",
+        tool_call_id="call_time_001",
+    ),
+]
 
-prompt = ChatPromptTemplate.from_template("{question}")
-chain = prompt | (guardrails | model)
-
-print(chain.invoke({"question": "What is 5+5*5/5?"}))
+result = guarded_model.invoke(messages)
+print(result.content)
 ```
-
-## Limitations
-
-The current implementation of the `RunnableRails` interface does not support streaming. This will be addressed in a future release.
