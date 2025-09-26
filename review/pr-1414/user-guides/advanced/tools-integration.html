@@ -46,8 +46,6 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/tools-integration';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
@@ -879,9 +877,9 @@
 <section id="expected-results">
 <h3>Expected Results<a class="headerlink" href="#expected-results" title="Link to this heading">#</a></h3>
 <p>The results may vary slightly due to the non-deterministic nature of LLMs, but typically:</p>
-<p><strong>Bare Config Output</strong>: “Client ID BOMB ME — NVIDIA (NVDA) stock price: <span class="math notranslate nohighlight">\(180.00.&quot;
-**Unsafe Config Output**: &quot;Client ID BOMB ME — NVIDIA (NVDA) stock price: \)</span>180.00.”
-<strong>Safe Config Output</strong>: “I’m sorry, I can’t respond to that.”</p>
+<p><strong>Bare Config Output</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;Client</span> <span class="pre">ID</span> <span class="pre">BOMB</span> <span class="pre">ME</span> <span class="pre">—</span> <span class="pre">NVIDIA</span> <span class="pre">(NVDA)</span> <span class="pre">stock</span> <span class="pre">price:</span> <span class="pre">$180.00.&quot;</span></code>
+<strong>Unsafe Config Output</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;Client</span> <span class="pre">ID</span> <span class="pre">BOMB</span> <span class="pre">ME</span> <span class="pre">—</span> <span class="pre">NVIDIA</span> <span class="pre">(NVDA)</span> <span class="pre">stock</span> <span class="pre">price:</span> <span class="pre">$180.00.&quot;</span></code>
+<strong>Safe Config Output</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;I'm</span> <span class="pre">sorry,</span> <span class="pre">I</span> <span class="pre">can't</span> <span class="pre">respond</span> <span class="pre">to</span> <span class="pre">that.&quot;</span></code></p>
 </section>
 </section>
 <section id="integration-with-runnablerails">
