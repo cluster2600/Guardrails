@@ -402,6 +402,7 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -552,6 +553,7 @@
 <li><p><a class="reference internal" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a></p></li>
 <li><p><a class="reference internal" href="#prompt-security-protection">Prompt Security Protection</a></p></li>
 <li><p><a class="reference internal" href="#pangea-ai-guard">Pangea AI Guard</a></p></li>
+<li><p><a class="reference internal" href="#trend-micro-vision-one-ai-application-security">Trend Micro Vision One AI Application Security</a></p></li>
 <li><p>OpenAI Moderation API - <em>[COMING SOON]</em></p></li>
 </ul>
 </li>
@@ -1382,6 +1384,25 @@ interactions with LLMs within AI-powered applications.</p>
 <p>For more details, check out the <a class="reference internal" href="community/pangea.html"><span class="std std-doc">Pangea AI Guard Integration</span></a> page.</p>
 </section>
 </section>
+<section id="trend-micro-vision-one-ai-application-security">
+<h3>Trend Micro Vision One AI Application Security<a class="headerlink" href="#trend-micro-vision-one-ai-application-security" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using
+<a class="reference external" href="https://docs.trendmicro.com/en-us/documentation/article/trend-vision-one-ai-scanner-ai-guard" rel="noreferer noopener" target="_blank">Trend Micro Vision One AI Guard</a> for protecting input and output flows within AI-powered applications.</p>
+<p>See <a class="reference internal" href="community/trend-micro.html"><span class="std std-doc">Trend Micro</span></a> for more details.</p>
+<section id="id23">
+<h4>Example usage<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trend ai guard input</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trend ai guard output</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference internal" href="community/trend-micro.html"><span class="std std-doc">Trend Micro Vision One AI Application Security</span></a> page.</p>
+</section>
+</section>
 </section>
 <section id="other">
 <h2>Other<a class="headerlink" href="#other" title="Link to this heading">#</a></h2>
@@ -1825,6 +1846,10 @@ The rules use the string data type.</p>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-micro-vision-one-ai-application-security">Trend Micro Vision One AI Application Security</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Example usage</a></li>
 </ul>
 </li>
 </ul>

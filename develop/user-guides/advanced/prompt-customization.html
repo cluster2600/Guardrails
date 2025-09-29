@@ -402,6 +402,7 @@
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -728,8 +729,7 @@
     <span class="p">},</span>
 <span class="p">)</span>
 
-<span class="k">with</span> <span class="n">llm_params</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-    <span class="n">check</span> <span class="o">=</span> <span class="k">await</span> <span class="n">llm_call</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+<span class="n">check</span> <span class="o">=</span> <span class="k">await</span> <span class="n">llm_call</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">llm_params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
 <span class="o">...</span>
 </pre></div>
 </div>
