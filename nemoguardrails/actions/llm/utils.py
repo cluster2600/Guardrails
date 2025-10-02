@@ -30,6 +30,7 @@ from nemoguardrails.context import (
     tool_calls_var,
 )
 from nemoguardrails.integrations.langchain.message_utils import dicts_to_messages
+from nemoguardrails.llm.parameter_mapping import get_llm_provider, transform_llm_params
 from nemoguardrails.logging.callbacks import logging_callbacks
 from nemoguardrails.logging.explain import LLMCallInfo
 
@@ -97,9 +98,23 @@ async def llm_call(
     _setup_llm_call_info(llm, model_name, model_provider)
     all_callbacks = _prepare_callbacks(custom_callback_handlers)
 
-    generation_llm: Union[BaseLanguageModel, Runnable] = (
-        llm.bind(stop=stop, **llm_params) if llm_params and llm is not None else llm
-    )
+    if llm_params or stop:
+        params_to_transform = llm_params.copy() if llm_params else {}
+        if stop is not None:
+            params_to_transform["stop"] = stop
+
+        inferred_model_name = model_name or _infer_model_name(llm)
+        inferred_provider = model_provider or get_llm_provider(llm)
+        transformed_params = transform_llm_params(
+            params_to_transform,
+            provider=inferred_provider,
+            model_name=inferred_model_name,
+        )
+        generation_llm: Union[BaseLanguageModel, Runnable] = llm.bind(
+            **transformed_params
+        )
+    else:
+        generation_llm: Union[BaseLanguageModel, Runnable] = llm
 
     if isinstance(prompt, str):
         response = await _invoke_with_string_prompt(

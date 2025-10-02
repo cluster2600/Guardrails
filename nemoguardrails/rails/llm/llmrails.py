@@ -74,6 +74,7 @@ from nemoguardrails.llm.models.initializer import (
     ModelInitializationError,
     init_llm_model,
 )
+from nemoguardrails.llm.parameter_mapping import register_llm_parameter_mapping
 from nemoguardrails.logging.explain import ExplainInfo
 from nemoguardrails.logging.processing_log import compute_generation_log
 from nemoguardrails.logging.stats import LLMStats
@@ -443,11 +444,21 @@ class LLMRails:
         if self.llm:
             # If an LLM was provided via constructor, use it as the main LLM
             # Log a warning if a main LLM is also specified in the config
-            if any(model.type == "main" for model in self.config.models):
+            main_model = next(
+                (model for model in self.config.models if model.type == "main"), None
+            )
+            if main_model:
                 log.warning(
                     "Both an LLM was provided via constructor and a main LLM is specified in the config. "
                     "The LLM provided via constructor will be used and the main LLM from config will be ignored."
                 )
+                # Still register parameter mapping from config if available
+                if main_model.parameter_mapping and main_model.model:
+                    register_llm_parameter_mapping(
+                        main_model.engine,
+                        main_model.model,
+                        main_model.parameter_mapping,
+                    )
             self.runtime.register_action_param("llm", self.llm)
 
             self._configure_main_llm_streaming(self.llm)
@@ -465,6 +476,12 @@ class LLMRails:
                     mode="chat",
                     kwargs=kwargs,
                 )
+                if main_model.parameter_mapping and main_model.model:
+                    register_llm_parameter_mapping(
+                        main_model.engine,
+                        main_model.model,
+                        main_model.parameter_mapping,
+                    )
                 self.runtime.register_action_param("llm", self.llm)
 
                 self._configure_main_llm_streaming(
@@ -500,6 +517,12 @@ class LLMRails:
                     kwargs=kwargs,
                 )
 
+                if llm_config.parameter_mapping and llm_config.model:
+                    register_llm_parameter_mapping(
+                        llm_config.engine,
+                        llm_config.model,
+                        llm_config.parameter_mapping,
+                    )
                 if llm_config.type == "main":
                     # If a main LLM was already injected, skip creating another
                     # one. Otherwise, create and register it.

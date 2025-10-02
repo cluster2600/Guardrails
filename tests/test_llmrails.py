@@ -14,16 +14,15 @@
 # limitations under the License.
 
 import os
-from typing import Any, Dict, List, Optional, Union
-from unittest.mock import MagicMock, patch
+from typing import Optional
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 from langchain_core.language_models import BaseChatModel
 
 from nemoguardrails import LLMRails, RailsConfig
+from nemoguardrails.llm.parameter_mapping import get_llm_parameter_mapping
 from nemoguardrails.logging.explain import ExplainInfo
-from nemoguardrails.rails.llm.config import Model
-from nemoguardrails.rails.llm.llmrails import get_action_details_from_flow_id
 from tests.utils import FakeLLM, clean_events, event_sequence_conforms
 
 
@@ -1187,3 +1186,85 @@ def test_explain_calls_ensure_explain_info():
     info = rails.explain()
     assert info == ExplainInfo()
     assert rails.explain_info == ExplainInfo()
+
+
+class MockHuggingFaceLLM:
+    """Mock HuggingFace LLM for testing."""
+
+    def __init__(self):
+        self.bind = Mock(return_value=self)
+        self.ainvoke = AsyncMock(return_value=Mock(content="Test response"))
+
+
+@patch("nemoguardrails.rails.llm.llmrails.init_llm_model")
+def test_parameter_mapping_registered_during_rails_initialization(mock_init_llm):
+    """Test that parameter mapping is registered when LLMRails is initialized."""
+    mock_llm = MockHuggingFaceLLM()
+    mock_init_llm.return_value = mock_llm
+
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {
+                    "type": "main",
+                    "engine": "huggingface",
+                    "model": "test-model",
+                    "parameter_mapping": {
+                        "max_tokens": "max_new_tokens",
+                        "temperature": "temp",
+                        "unsupported_param": None,
+                    },
+                }
+            ]
+        }
+    )
+
+    rails = LLMRails(config=config)
+
+    registered_mapping = get_llm_parameter_mapping("huggingface", "test-model")
+    expected_mapping = {
+        "max_tokens": "max_new_tokens",
+        "temperature": "temp",
+        "unsupported_param": None,
+    }
+    assert registered_mapping == expected_mapping
+
+
+@patch("nemoguardrails.llm.models.initializer.init_llm_model")
+def test_parameter_mapping_with_provided_llm(mock_init_llm):
+    """Test parameter mapping when LLM is provided via constructor."""
+    mock_llm = MockHuggingFaceLLM()
+
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {
+                    "type": "main",
+                    "engine": "huggingface",
+                    "model": "test-model",
+                    "parameter_mapping": {"max_tokens": "max_new_tokens"},
+                }
+            ]
+        }
+    )
+
+    rails = LLMRails(config=config, llm=mock_llm)
+
+    registered_mapping = get_llm_parameter_mapping("huggingface", "test-model")
+    assert registered_mapping == {"max_tokens": "max_new_tokens"}
+
+
+def test_no_parameter_mapping_in_config():
+    """Test behavior when no parameter mapping is specified."""
+    mock_llm = MockHuggingFaceLLM()
+
+    config = RailsConfig.from_content(
+        config={
+            "models": [{"type": "main", "engine": "openai", "model": "gpt-3.5-turbo"}]
+        }
+    )
+
+    rails = LLMRails(config=config, llm=mock_llm)
+
+    registered_mapping = get_llm_parameter_mapping("openai", "gpt-3.5-turbo")
+    assert registered_mapping is None

@@ -123,6 +123,12 @@ class Model(BaseModel):
         description="Configuration parameters for reasoning LLMs.",
     )
     parameters: Dict[str, Any] = Field(default_factory=dict)
+    parameter_mapping: Optional[Dict[str, Optional[str]]] = Field(
+        default=None,
+        description="Optional parameter mapping to transform parameter names for provider-specific requirements. "
+        "Keys are internal parameter names, values are provider parameter names. "
+        "Set value to null to drop a parameter.",
+    )
 
     mode: Literal["chat", "text"] = Field(
         default="chat",
