@@ -533,6 +533,11 @@
 <li><p>Enable Cisco AI Defense flows in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
 </ol>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ai_defense</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0</span>
+<span class="w">      </span><span class="nt">fail_open</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ai defense inspect prompt</span>
@@ -543,6 +548,20 @@
 </pre></div>
 </div>
 <p>Don’t forget to set the <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_ENDPOINT</span></code> and <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_KEY</span></code> environment variables.</p>
+<section id="configuration-options">
+<h3>Configuration Options<a class="headerlink" href="#configuration-options" title="Link to this heading">#</a></h3>
+<p>The AI Defense integration supports the following configuration options under <code class="docutils literal notranslate"><span class="pre">rails.config.ai_defense</span></code>:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">timeout</span></code></strong> (float, default: 30.0): Timeout in seconds for API requests to the AI Defense service.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">fail_open</span></code></strong> (boolean, default: false): Determines the behavior when AI Defense API calls fail:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code> (fail closed): Block content when API calls fail or return malformed responses</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code> (fail open): Allow content when API calls fail or return malformed responses</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Note</strong>: Configuration validation failures (missing API key or endpoint) will always block content regardless of the <code class="docutils literal notranslate"><span class="pre">fail_open</span></code> setting.</p>
+</section>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
@@ -555,7 +574,20 @@
 </section>
 <section id="error-handling">
 <h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">#</a></h2>
-<p>If the Cisco AI Defense API request fails, it will operate in a fail-open mode (not blocking the prompt/response).</p>
+<p>The AI Defense integration provides configurable error handling through the <code class="docutils literal notranslate"><span class="pre">fail_open</span></code> setting:</p>
+<ul class="simple">
+<li><p><strong>Fail Closed (default)</strong>: When <code class="docutils literal notranslate"><span class="pre">fail_open:</span> <span class="pre">false</span></code>, API failures and malformed responses will block the content (conservative approach)</p></li>
+<li><p><strong>Fail Open</strong>: When <code class="docutils literal notranslate"><span class="pre">fail_open:</span> <span class="pre">true</span></code>, API failures and malformed responses will allow the content to proceed</p></li>
+</ul>
+<p>This allows you to choose between security (fail closed) and availability (fail open) based on your requirements.</p>
+<section id="error-scenarios">
+<h3>Error Scenarios<a class="headerlink" href="#error-scenarios" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>API Failures</strong> (network errors, timeouts, HTTP errors): Behavior determined by <code class="docutils literal notranslate"><span class="pre">fail_open</span></code> setting</p></li>
+<li><p><strong>Malformed Responses</strong> (missing required fields): Behavior determined by <code class="docutils literal notranslate"><span class="pre">fail_open</span></code> setting</p></li>
+<li><p><strong>Configuration Errors</strong> (missing API key/endpoint): Always fail closed regardless of <code class="docutils literal notranslate"><span class="pre">fail_open</span></code> setting</p></li>
+</ol>
+</section>
 </section>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
@@ -594,9 +626,15 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-options">Configuration Options</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling">Error Handling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling">Error Handling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-scenarios">Error Scenarios</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
