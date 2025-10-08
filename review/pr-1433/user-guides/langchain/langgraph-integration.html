@@ -669,9 +669,9 @@
 <p>To enhance the functionality of your LangGraph agents, you can combine tool calling with guardrails. This ensures that both the decision to call tools and the tool results are safely validated.</p>
 <section id="tool-definition">
 <h3>Tool Definition<a class="headerlink" href="#tool-definition" title="Link to this heading">#</a></h3>
-<p>Define the following tools.</p>
+<p>Define the following simplified example tools that demonstrate the integration pattern with NeMo Guardrails.</p>
 <p>The first tool, <code class="docutils literal notranslate"><span class="pre">search_knowledge</span></code>, searches a predefined knowledge base for information matching the user’s query. It performs matching against keywords like <code class="docutils literal notranslate"><span class="pre">&quot;capital&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;weather&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;python&quot;</span></code>, returning relevant information or a generic response if no match is found.</p>
-<p>The second tool, <code class="docutils literal notranslate"><span class="pre">calculate_math</span></code>, safely evaluates mathematical expressions by first validating that only allowed characters such as digits, operators, parentheses, and spaces are present. Then, it uses the <code class="docutils literal notranslate"><span class="pre">eval()</span></code> function from Python to calculate the result. It includes error handling to catch and report any calculation errors.</p>
+<p>The second tool, <code class="docutils literal notranslate"><span class="pre">multiply</span></code>, performs multiplication of two integers.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
 
 <span class="nd">@tool</span>
@@ -691,17 +691,9 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;General information about: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <span class="nd">@tool</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">calculate_math</span><span class="p">(</span><span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a mathematical expression safely.&quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">allowed_chars</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s2">&quot;0123456789+-*/(). &quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="n">allowed_chars</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">expression</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;Expression contains invalid characters&quot;</span>
-
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;The result of </span><span class="si">{</span><span class="n">expression</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Could not calculate: </span><span class="si">{</span><span class="n">expression</span><span class="si">}</span><span class="s2">. Error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">multiply</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multiply a and b.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
 </pre></div>
 </div>
 </section>
@@ -712,7 +704,7 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">create_tool_calling_agent</span><span class="p">():</span>
     <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">)</span>
-    <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">search_knowledge</span><span class="p">,</span> <span class="n">calculate_math</span><span class="p">]</span>
+    <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">search_knowledge</span><span class="p">,</span> <span class="n">multiply</span><span class="p">]</span>
     <span class="n">llm_with_tools</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">(</span><span class="n">tools</span><span class="p">)</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>

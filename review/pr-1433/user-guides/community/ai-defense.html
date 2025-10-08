@@ -530,8 +530,11 @@
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>Ensure that you have access to the Cisco AI Defense endpoints (SaaS or in your private deployment)</p></li>
-<li><p>Enable Cisco AI Defense flows in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
+<li><p>Set the required environment variables: <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_ENDPOINT</span></code> and <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_KEY</span></code></p></li>
 </ol>
+<section id="for-colang-1-0">
+<h3>For Colang 1.0<a class="headerlink" href="#for-colang-1-0" title="Link to this heading">#</a></h3>
+<p>Enable Cisco AI Defense flows in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ai_defense</span><span class="p">:</span>
@@ -547,7 +550,35 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ai defense inspect response</span>
 </pre></div>
 </div>
-<p>Don’t forget to set the <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_ENDPOINT</span></code> and <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_KEY</span></code> environment variables.</p>
+</section>
+<section id="for-colang-2-x">
+<h3>For Colang 2.x<a class="headerlink" href="#for-colang-2-x" title="Link to this heading">#</a></h3>
+<p>You can set configuration options in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># config.yml</span>
+<span class="nt">colang_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2.x&quot;</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ai_defense</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0</span>
+<span class="w">      </span><span class="nt">fail_open</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>Example <code class="docutils literal notranslate"><span class="pre">rails.co</span></code> file:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># rails.co
+import guardrails
+import nemoguardrails.library.ai_defense
+
+flow input rails $input_text
+  &quot;&quot;&quot;Check user utterances before they get further processed.&quot;&quot;&quot;
+  ai defense inspect prompt $input_text
+
+flow output rails $output_text
+  &quot;&quot;&quot;Check bot responses before sending them to the user.&quot;&quot;&quot;
+  ai defense inspect response $output_text
+</pre></div>
+</div>
+</section>
 <section id="configuration-options">
 <h3>Configuration Options<a class="headerlink" href="#configuration-options" title="Link to this heading">#</a></h3>
 <p>The AI Defense integration supports the following configuration options under <code class="docutils literal notranslate"><span class="pre">rails.config.ai_defense</span></code>:</p>
@@ -627,6 +658,8 @@
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-colang-1-0">For Colang 1.0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-colang-2-x">For Colang 2.x</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-options">Configuration Options</a></li>
 </ul>
 </li>
