@@ -534,9 +534,15 @@ For a complete record of changes in a release, refer to the
 <section id="key-features">
 <span id="v0-17-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Added support for <a class="reference internal" href="user-guides/langchain/langgraph-integration.html"><span class="std std-doc">integrating with LangGraph and tool calling</span></a>.</p></li>
+<li><p>Added support for <a class="reference internal" href="user-guides/langchain/langgraph-integration.html"><span class="std std-doc">integrating with LangGraph and tool calling</span></a>.
+This integration enables building safe and controlled multi-agent workflows.
+LangGraph enables you to create sophisticated agent architectures with state management, conditional routing, and tool calling, while NeMo Guardrails provides the safety layer to ensure responsible AI behavior.
+You can intercept, store, and forward LLM tool invocations with backward compatibility.</p></li>
 <li><p>Enhanced support for <a class="reference internal" href="user-guides/langchain/runnable-rails.html"><span class="std std-doc">integrating with LangChain <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code></span></a>.
-This release supports synchronous and asynchronous operations, streaming, and batch processing.</p></li>
+This release supports the LangChain Runnable interface, such as synchronous and asynchronous operations, streaming, and batch processing while preserving metadata during LangChain operation.
+This enhancement enables NeMo Guardrails to plug into LangChain pipelines seamlessly.</p></li>
+<li><p>Trend Micro contributed support for Trend Micro Vision One AI Application Security AI Guard.
+Refer to <a class="reference internal" href="user-guides/community/trend-micro.html"><span class="std std-doc">configuration documentation</span></a> for more information.</p></li>
 </ul>
 </section>
 <section id="other-changes">
