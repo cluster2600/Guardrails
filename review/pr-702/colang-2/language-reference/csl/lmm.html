@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -331,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../user-guides/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../user-guides/langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../user-guides/langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../user-guides/langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -343,6 +353,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../user-guides/detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -381,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -516,20 +535,6 @@
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">say</span> <span class="pre">something</span> <span class="pre">like</span> <span class="pre">$text</span></span></dt>
 <dd><p>Trigger a bot utterance similar to given text</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import llm
-
-flow main
-    user said something
-    bot say something like &quot;How are you&quot;
-
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hi
-Hi there, how are you today?
-</pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -540,27 +545,6 @@ Hi there, how are you today?
 <span class="sig-name descname"><span class="pre">polling</span> <span class="pre">llm</span> <span class="pre">request</span> <span class="pre">response</span> <span class="pre">$interval=1.0</span></span></dt>
 <dd><p>Start response polling for all LLM related calls to receive the LLM responses and act on that</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import llm
-
-flow main
-    # Normally you don&#39;t need to activate this flow, as it is activated by LLM based flows where needed.
-    activate polling llm request response
-
-    user said something
-
-    # While the response is generated the polling mechanism ensures that
-    # the Colang runtime is getting polled.
-    $value = ...&quot;ten minus one&quot;
-    bot say $value
-
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; compute the value
-nine
-</pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -572,32 +556,6 @@ nine
 <span class="sig-name descname"><span class="pre">llm</span> <span class="pre">continuation</span></span></dt>
 <dd><p>Activate all LLM based interaction continuations</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import llm
-
-flow user expressed greeting
-    user said &quot;hi&quot; or user said &quot;hello&quot;
-
-flow bot express greeting
-    bot say &quot;Hello and welcome&quot;
-
-flow handling greeting
-    user expressed greeting
-    bot express greeting
-
-flow main
-    activate llm continuation
-    activate handling greeting
-
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hi there how are you
-Hello and welcome
-&gt; what is the difference between lemons and limes
-Limes are green and lemons are yellow
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -605,32 +563,6 @@ Limes are green and lemons are yellow
 <span class="sig-name descname"><span class="pre">generating</span> <span class="pre">user</span> <span class="pre">intent</span> <span class="pre">for</span> <span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">utterance</span></span></dt>
 <dd><p>Generate a user intent event (finish flow event) for unhandled user utterance</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import llm
-
-flow user expressed goodbye
-    user said &quot;bye&quot; or user said &quot;i will go now&quot;
-
-flow bot express goodbye
-    bot say &quot;hope to see you again soon&quot;
-
-flow handling goodbye
-    user expressed goodbye
-    bot express goodbye
-
-flow main
-    activate automating intent detection
-    activate generating user intent for unhandled user utterance
-    activate handling goodbye
-
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; what can you do for me
-&gt; ok I&#39;ll leave
-hope to see you again soon
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -638,37 +570,6 @@ hope to see you again soon
 <span class="sig-name descname"><span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">intent</span> <span class="pre">-&gt;</span> <span class="pre">$intent</span></span></dt>
 <dd><p>Wait for the end of an user intent flow</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import llm
-
-flow user expressed greeting
-    user said &quot;hi&quot; or user said &quot;hello&quot;
-
-flow bot express greeting
-    bot say &quot;Hello and welcome&quot;
-
-flow handling greeting
-    user expressed greeting
-    bot express greeting
-
-flow main
-    activate automating intent detection
-    activate generating user intent for unhandled user utterance
-    activate handling greeting
-
-    while True:
-        unhandled user intent as $ref
-        bot say &quot;got intent: {$ref.intent}&quot;
-
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hi there how are you
-Hello and welcome
-&gt; what is the difference between lemons and limes
-got intent: user asked fruit question
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -676,36 +577,6 @@ got intent: user asked fruit question
 <span class="sig-name descname"><span class="pre">continuation</span> <span class="pre">on</span> <span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">intent</span></span></dt>
 <dd><p>Generate and start new flow to continue the interaction for an unhandled user intent</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import llm
-
-flow user asked political question
-    user said &quot;who is the best president&quot;
-
-flow user insulted bot
-    user said &quot;you are stupid&quot;
-
-flow safeguarding conversation
-    user asked political question or user insulted bot
-    bot say &quot;Sorry but I will not respond to that&quot;
-
-flow main
-    activate automating intent detection
-    activate generating user intent for unhandled user utterance
-    activate continuation on unhandled user intent
-    activate safeguarding conversation
-
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; i hate you
-Sorry but I will not respond to that
-&gt; what party should I vote for
-Sorry but I will not respond to that
-&gt; tell me a joke
-Why don&#39;t scientists trust atoms? Because they make up everything!
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -713,22 +584,6 @@ Why don&#39;t scientists trust atoms? Because they make up everything!
 <span class="sig-name descname"><span class="pre">continuation</span> <span class="pre">on</span> <span class="pre">undefined</span> <span class="pre">flow</span></span></dt>
 <dd><p>Generate and start a new flow to continue the interaction for the start of an undefined flow</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import llm
-
-flow main
-    activate continuation on undefined flow
-
-    user said something
-    # Await a flow that does not exist will create an LLM generated flow
-    bot ask about hobbies
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hi there
-What are your hobbies?
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -736,23 +591,6 @@ What are your hobbies?
 <span class="sig-name descname"><span class="pre">llm</span> <span class="pre">continue</span> <span class="pre">interaction</span></span></dt>
 <dd><p>Generate and continue with a suitable interaction</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import llm
-
-flow main
-    user said &quot;i have a question&quot;
-    bot say &quot;happy to help, what is it&quot;
-    user said &quot;do you know what the largest animal is on earth&quot;
-    llm continue interaction
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; i have a question
-happy to help, what is it
-&gt; do you know what the largest animal is on earth
-The largest animal on earth is the blue whale
-</pre></div>
-</div>
 </dd></dl>
 
 </section>

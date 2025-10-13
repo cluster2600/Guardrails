@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -331,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../user-guides/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../user-guides/langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../user-guides/langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../user-guides/langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -343,6 +353,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../user-guides/detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../user-guides/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../user-guides/jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -381,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guides/advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -517,19 +536,6 @@
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">$text</span> <span class="pre">-&gt;</span> <span class="pre">$transcript</span></span></dt>
 <dd><p>Wait for a user to have said the provided text using an exact match.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow main
-    # Only matches exactly &quot;hello&quot;
-    user said &quot;hello&quot;
-    bot say &quot;hi&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hi
-&gt; hello
-hi
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -537,17 +543,6 @@ hi
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">something</span> <span class="pre">-&gt;</span> <span class="pre">$transcript</span></span></dt>
 <dd><p>Wait for a user to have said something matching any transcript.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow main
-    $transcript = await user said something
-    bot say &quot;You said: {$transcript}&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; I can say whatever I want
-You said: I can say whatever I want
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -556,24 +551,6 @@ You said: I can say whatever I want
 <dd><p>Wait for a user to say the given text while talking (this matches the partial transcript of the user
 utterance even if the utterance is not finished yet).</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow main
-    # Provide verbal feedback while the user is writing / speaking
-    while True
-        when user saying &quot;sad&quot;
-            bot say &quot;oooh&quot;
-        or when user saying &quot;great&quot;
-            bot say &quot;nice!&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; /UtteranceUserAction.TranscriptUpdated(interim_transcript=&quot;this is a &quot;)
-&gt; /UtteranceUserAction.TranscriptUpdated(interim_transcript=&quot;this is a sad story&quot;)
-oooh
-&gt; /UtteranceUserAction.TranscriptUpdated(interim_transcript=&quot;this is a sad story that has a great ending&quot;)
-nice!
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -581,18 +558,6 @@ nice!
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">saying</span> <span class="pre">something</span> <span class="pre">-&gt;</span> <span class="pre">$transcript</span></span></dt>
 <dd><p>Wait for any ongoing user utterance (partial transcripts).</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import avatars
-
-flow main
-    user saying something
-    bot gesture &quot;nod&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; /UtteranceUserAction.TranscriptUpdated(interim_transcript=&quot;anything&quot;)
-Gesture: nod
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -600,26 +565,6 @@ Gesture: nod
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">started</span> <span class="pre">saying</span> <span class="pre">something</span></span></dt>
 <dd><p>Wait for start of user utterance</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import avatars
-
-flow main
-    # Start a bot posture as soon as the user starts talking
-    user started saying something
-    start bot posture &quot;listening&quot; as $ref
-
-    # Stop the posture when the user is done talking
-    user said something
-    send $ref.Stop()
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; /UtteranceUserAction.Started()
-Posture: listening
-&gt; /UtteranceUserAction.TranscriptUpdated(interim_transcript=&quot;I am starting to talk&quot;)
-&gt; /UtteranceUserAction.Finished(final_transcript=&quot;anything&quot;)
-bot posture (stop)
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -629,26 +574,6 @@ bot posture (stop)
 matches the incoming event). This is a rather technical flow. If you are looking for a way to react to a
 wide variety of user messages check out the flows in <code class="docutils literal notranslate"><span class="pre">llm.co</span></code>.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow handling welcome
-    user said &quot;hi&quot; or user said &quot;hello&quot;
-    bot say &quot;hello&quot;
-
-flow main
-    activate handling welcome
-
-    # If the user utterance is anything else except &quot;hi&quot; and &quot;hello&quot; this will advance
-    user said something unexpected
-    bot say &quot;you said something unexpected&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hi
-hello
-&gt; how are you
-you said something unexpected
-</pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -660,17 +585,6 @@ you said something unexpected
 <dd><p>Execute a bot utterance with the provided text and wait until the utterance is completed (e.g. for a voice bot this
 flow will finish once the bot audio has finished).</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow main
-    user said something
-    bot say &quot;Hello world!&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; anything
-Hello world!
-</pre></div>
-</div>
 <p><strong>Semantic variants</strong></p>
 <p>For more expressive interaction histories and more advance use cases the <code class="docutils literal notranslate"><span class="pre">core.co</span></code> library provides several
 semantic wrappers for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code>. You can use them anywhere instead of a <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code> to annotated the
@@ -704,24 +618,6 @@ flow bot suggest $text
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">started</span> <span class="pre">saying</span> <span class="pre">$text</span></span></dt>
 <dd><p>Wait for the bot starting with the given utterance</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow reacting to bot utterances
-    bot started saying &quot;hi&quot;
-    send CustomEvent()
-
-flow main
-    activate reacting to bot utterances
-
-    user said something
-    bot say &quot;hi&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hello
-hi
-Event: CustomEvent
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -729,27 +625,6 @@ Event: CustomEvent
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">started</span> <span class="pre">saying</span> <span class="pre">something</span></span></dt>
 <dd><p>Wait for the bot starting with any utterance</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import avatars
-
-flow handling talking posture
-    bot started saying something
-    bot posture &quot;talking&quot;
-    bot said something
-
-flow main
-    activate handling talking posture
-
-    user said something
-    bot say &quot;hi&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; something
-hi
-Posture: talking
-bot posture (stop)
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -757,37 +632,6 @@ bot posture (stop)
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">said</span> <span class="pre">$text</span></span></dt>
 <dd><p>Wait for the bot to finish saying given utterance</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import avatars
-
-flow creating gestures
-    when bot said &quot;yes&quot;
-        bot gesture &quot;thumbs up&quot;
-    or when bot said &quot;no&quot;
-        bot gesture &quot;shake head&quot;
-
-flow answering cat dog questions
-    when user said &quot;Do you like cats?&quot;
-        bot say &quot;yes&quot;
-    or when user said &quot;Do you like dogs?&quot;
-        bot say &quot;no&quot;
-
-flow main
-    activate creating gestures
-    activate answering cat dog questions
-
-    wait indefinitely
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; Do you like cats?
-yes
-Gesture: thumbs up
-&gt; Do you like dogs?
-no
-Gesture: shake head
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -795,27 +639,6 @@ Gesture: shake head
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">said</span> <span class="pre">something</span> <span class="pre">-&gt;</span> <span class="pre">$text</span></span></dt>
 <dd><p>Wait for the bot to finish with any utterance</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-import avatars
-
-flow handling talking posture
-    bot started saying something
-    bot posture &quot;talking&quot;
-    bot said something
-
-flow main
-    activate handling talking posture
-
-    user said something
-    bot say &quot;hi&quot;
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; something
-hi
-Posture: talking
-bot posture (stop)
-</pre></div>
-</div>
 <p><strong>Semantic variants</strong></p>
 <p>You may react to specific semantic wrappers for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code> that are defined in the <code class="docutils literal notranslate"><span class="pre">core.co</span></code> library</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Wait for the bot to finish informing about something
@@ -848,18 +671,6 @@ flow bot suggested something -&gt; $text
 <dd><p>Helper flow to wait indefinitely. This is often used at the end of the <code class="docutils literal notranslate"><span class="pre">main</span></code> flow to make sure the interaction
 is not restarted.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow main
-    bot say &quot;hello&quot;
-    wait indefinitely
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;
-hello
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -871,53 +682,6 @@ will also fail.</p>
 <p>Note: Actions can never fail, even if stopped, but will always finish. If an action was stopped, the ActionFinished
 event will have a <code class="docutils literal notranslate"><span class="pre">was_stopped=True</span></code> argument.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># import core
-
-# flow bot greet
-#   bot say &quot;hello&quot;
-
-# flow test0
-#   user said &quot;hi&quot;
-#   await UtteranceBotAction(script=&quot;hello&quot;) as $ref
-#   await it finished $ref
-
-# flow test1
-#   user said &quot;hi&quot;
-#   await bot greet as $ref
-#   await it finished $ref
-
-# flow test2
-#   user said &quot;hi&quot;
-#   start bot greet as $ref
-#   send $ref.Stop()
-#   await it finished $ref
-
-# flow main
-#   await test0
-#   bot say &quot;test0 success&quot;
-
-#   start test1 as $ref
-#   match $ref.Finished()
-#   bot say &quot;test1 success&quot;
-
-#   start test2 as $ref
-#   match $ref.Failed()
-#   bot say &quot;test2 success&quot;
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># &gt; hi
-# hello
-# test0 success
-# &gt; hi
-# hello
-# test1 success
-# &gt; hi
-# hello
-# Event: StopUtteranceBotAction
-# test2 success
-</pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -929,24 +693,6 @@ event will have a <code class="docutils literal notranslate"><span class="pre">w
 <span class="sig-name descname"><span class="pre">tracking</span> <span class="pre">bot</span> <span class="pre">talking</span> <span class="pre">state</span></span></dt>
 <dd><p>Track bot talking state in global variable <code class="docutils literal notranslate"><span class="pre">$bot_talking_state</span></code>, <code class="docutils literal notranslate"><span class="pre">$last_bot_script</span></code>.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow main
-    global $bot_talking_state
-    activate tracking bot talking state
-
-    user said something
-    if $bot_talking_state
-        bot gesture &quot;show ignorance to user speech&quot;
-    else
-        bot say &quot;responding to user question&quot;
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hello there
-responding to user question
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -954,21 +700,6 @@ responding to user question
 <span class="sig-name descname"><span class="pre">tracking</span> <span class="pre">user</span> <span class="pre">talking</span> <span class="pre">state</span></span></dt>
 <dd><p>Track user utterance state in global variables: <code class="docutils literal notranslate"><span class="pre">$user_talking_state</span></code>, <code class="docutils literal notranslate"><span class="pre">$last_user_transcript</span></code>.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow main
-    global $last_user_transcript
-    activate tracking user talking state
-
-    user said something
-    bot say &quot;I remembered {$last_user_transcript}&quot;
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; my favorite color is red
-I remembered my favorite color is red
-</pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -979,28 +710,6 @@ I remembered my favorite color is red
 <span class="sig-name descname"><span class="pre">notification</span> <span class="pre">of</span> <span class="pre">colang</span> <span class="pre">errors</span></span></dt>
 <dd><p>A flow to notify about any runtime Colang errors</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-# We need to create an artificial error.
-# We need to create this in a separate flow as otherwise the main flow will fail upon the error.
-flow creating an error
-    user said something
-    $number = 3
-    print $number.error
-
-flow main
-    activate notification of colang errors
-
-    creating an error
-    wait indefinitely
-
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; test
-Excuse me, there was an internal Colang error.
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -1008,21 +717,6 @@ Excuse me, there was an internal Colang error.
 <span class="sig-name descname"><span class="pre">notification</span> <span class="pre">of</span> <span class="pre">undefined</span> <span class="pre">flow</span> <span class="pre">start</span></span></dt>
 <dd><p>A flow to notify about the start of an undefined flow</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow main
-    activate notification of undefined flow start
-
-    # We are misspelling the `bot say` flow to trigger a undefined flow start.
-    user said something
-    bot sayy &quot;hello&quot;
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; test
-Failed to start an undefined flow!
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -1030,24 +724,6 @@ Failed to start an undefined flow!
 <span class="sig-name descname"><span class="pre">notification</span> <span class="pre">of</span> <span class="pre">unexpected</span> <span class="pre">user</span> <span class="pre">utterance</span></span></dt>
 <dd><p>A flow to notify about an unhandled user utterance</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
-
-flow reacting to user requests
-    user said &quot;hi&quot; or user said &quot;hello&quot;
-    bot say &quot;hi there&quot;
-
-flow main
-    activate notification of unexpected user utterance
-    activate reacting to user requests
-
-</pre></div>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hello
-hi there
-&gt; what is your name
-I don&#39;t know how to respond to that!
-</pre></div>
-</div>
 </dd></dl>
 
 </section>

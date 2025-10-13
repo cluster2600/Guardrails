@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=49218dbd"></script>
+    <script src="_static/documentation_options.js?v=1aa419d7"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -317,7 +317,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -329,6 +338,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="user-guides/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user-guides/langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="user-guides/langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="user-guides/langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -341,6 +351,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="user-guides/detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -379,14 +396,16 @@
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -511,27 +530,27 @@ For each category we present a list of relevant surveys, existing research paper
 <h2>Hallucination rails<a class="headerlink" href="#hallucination-rails" title="Link to this heading">#</a></h2>
 <p>Relevant surveys on hallucination detection and checking factuality for large language models.</p>
 <ul class="simple">
-<li><p>Ji, Z., Lee, N., Frieske, R., Yu, T., Su, D., Xu, Y., … &amp; Fung, P. (2023). Survey of hallucination in natural language generation. ACM Computing Surveys, 55(12), 1-38. <a class="reference external" href="https://dl.acm.org/doi/pdf/10.1145/3571730">paper</a></p></li>
-<li><p>Zhang, Y., Li, Y., Cui, L., Cai, D., Liu, L., Fu, T., … &amp; Shi, S. (2023). Siren’s song in the AI ocean: a survey on hallucination in large language models. arXiv preprint arXiv:2309.01219. <a class="reference external" href="https://arxiv.org/pdf/2309.01219.pdf">paper</a></p></li>
-<li><p>Huang, L., Yu, W., Ma, W., Zhong, W., Feng, Z., Wang, H., … &amp; Liu, T. (2023). A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions. arXiv preprint arXiv:2311.05232. <a class="reference external" href="https://arxiv.org/pdf/2311.05232.pdf">paper</a></p></li>
-<li><p>Wang, C., Liu, X., Yue, Y., Tang, X., Zhang, T., Jiayang, C., … &amp; Zhang, Y. (2023). Survey on factuality in large language models: Knowledge, retrieval and domain-specificity. arXiv preprint arXiv:2310.07521. <a class="reference external" href="https://arxiv.org/pdf/2310.07521.pdf">paper</a> | <a class="reference external" href="https://github.com/wangcunxiang/LLM-Factuality-Survey">repo</a></p></li>
+<li><p>Ji, Z., Lee, N., Frieske, R., Yu, T., Su, D., Xu, Y., … &amp; Fung, P. (2023). Survey of hallucination in natural language generation. ACM Computing Surveys, 55(12), 1-38. <a class="reference external" href="https://dl.acm.org/doi/pdf/10.1145/3571730" rel="noreferer noopener" target="_blank">paper</a></p></li>
+<li><p>Zhang, Y., Li, Y., Cui, L., Cai, D., Liu, L., Fu, T., … &amp; Shi, S. (2023). Siren’s song in the AI ocean: a survey on hallucination in large language models. arXiv preprint arXiv:2309.01219. <a class="reference external" href="https://arxiv.org/pdf/2309.01219.pdf" rel="noreferer noopener" target="_blank">paper</a></p></li>
+<li><p>Huang, L., Yu, W., Ma, W., Zhong, W., Feng, Z., Wang, H., … &amp; Liu, T. (2023). A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions. arXiv preprint arXiv:2311.05232. <a class="reference external" href="https://arxiv.org/pdf/2311.05232.pdf" rel="noreferer noopener" target="_blank">paper</a></p></li>
+<li><p>Wang, C., Liu, X., Yue, Y., Tang, X., Zhang, T., Jiayang, C., … &amp; Zhang, Y. (2023). Survey on factuality in large language models: Knowledge, retrieval and domain-specificity. arXiv preprint arXiv:2310.07521. <a class="reference external" href="https://arxiv.org/pdf/2310.07521.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/wangcunxiang/LLM-Factuality-Survey" rel="noreferer noopener" target="_blank">repo</a></p></li>
 </ul>
 <section id="fact-checking-implicit-hallucination-rails">
 <h3>Fact-checking (implicit hallucination) rails<a class="headerlink" href="#fact-checking-implicit-hallucination-rails" title="Link to this heading">#</a></h3>
 <p>Supported in NeMo Guardrails:</p>
 <ul class="simple">
-<li><p>Zha, Y., Yang, Y., Li, R., &amp; Hu, Z. (2023). AlignScore: Evaluating factual consistency with a unified alignment function. arXiv preprint arXiv:2305.16739. <a class="reference external" href="https://arxiv.org/pdf/2305.16739.pdf">paper</a> | <a class="reference external" href="https://github.com/yuh-zha/AlignScore">repo</a></p></li>
+<li><p>Zha, Y., Yang, Y., Li, R., &amp; Hu, Z. (2023). AlignScore: Evaluating factual consistency with a unified alignment function. arXiv preprint arXiv:2305.16739. <a class="reference external" href="https://arxiv.org/pdf/2305.16739.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/yuh-zha/AlignScore" rel="noreferer noopener" target="_blank">repo</a></p></li>
 </ul>
 <p>Relevant papers:</p>
 <ul class="simple">
-<li><p>Min, S., Krishna, K., Lyu, X., Lewis, M., Yih, W. T., Koh, P. W., … &amp; Hajishirzi, H. (2023). Factscore: Fine-grained atomic evaluation of factual precision in long form text generation. arXiv preprint arXiv:2305.14251. <a class="reference external" href="https://arxiv.org/pdf/2305.14251.pdf">paper</a> | <a class="reference external" href="https://github.com/shmsw25/FActScore">repo</a></p></li>
+<li><p>Min, S., Krishna, K., Lyu, X., Lewis, M., Yih, W. T., Koh, P. W., … &amp; Hajishirzi, H. (2023). Factscore: Fine-grained atomic evaluation of factual precision in long form text generation. arXiv preprint arXiv:2305.14251. <a class="reference external" href="https://arxiv.org/pdf/2305.14251.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/shmsw25/FActScore" rel="noreferer noopener" target="_blank">repo</a></p></li>
 </ul>
 </section>
 <section id="explicit-hallucination-rails">
 <h3>Explicit hallucination rails<a class="headerlink" href="#explicit-hallucination-rails" title="Link to this heading">#</a></h3>
 <p>Supported in NeMo Guardrails:</p>
 <ul class="simple">
-<li><p><em>(Similar to)</em> Manakul, P., Liusie, A., &amp; Gales, M. J. (2023). Selfcheckgpt: Zero-resource black-box hallucination detection for generative large language models. arXiv preprint arXiv:2303.08896. <a class="reference external" href="https://arxiv.org/pdf/2303.08896.pdf">paper</a> | <a class="reference external" href="https://github.com/potsawee/selfcheckgpt">repo</a></p></li>
+<li><p><em>(Similar to)</em> Manakul, P., Liusie, A., &amp; Gales, M. J. (2023). Selfcheckgpt: Zero-resource black-box hallucination detection for generative large language models. arXiv preprint arXiv:2303.08896. <a class="reference external" href="https://arxiv.org/pdf/2303.08896.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/potsawee/selfcheckgpt" rel="noreferer noopener" target="_blank">repo</a></p></li>
 </ul>
 </section>
 </section>
@@ -539,11 +558,11 @@ For each category we present a list of relevant surveys, existing research paper
 <h2>Moderation rails<a class="headerlink" href="#moderation-rails" title="Link to this heading">#</a></h2>
 <p>Supported in NeMo Guardrails:</p>
 <ul class="simple">
-<li><p>Inan, H., Upasani, K., Chi, J., Rungta, R., Iyer, K., Mao, Y., … &amp; Khabsa, M. (2023). Llama guard: Llm-based input-output safeguard for human-ai conversations. arXiv preprint arXiv:2312.06674. <a class="reference external" href="https://arxiv.org/pdf/2312.06674.pdf">paper</a> | <a class="reference external" href="https://github.com/meta-llama/PurpleLlama/tree/main/Llama-Guard">repo</a></p></li>
+<li><p>Inan, H., Upasani, K., Chi, J., Rungta, R., Iyer, K., Mao, Y., … &amp; Khabsa, M. (2023). Llama guard: Llm-based input-output safeguard for human-ai conversations. arXiv preprint arXiv:2312.06674. <a class="reference external" href="https://arxiv.org/pdf/2312.06674.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/meta-llama/PurpleLlama/tree/main/Llama-Guard" rel="noreferer noopener" target="_blank">repo</a></p></li>
 </ul>
 <p>Relevant papers:</p>
 <ul class="simple">
-<li><p>Markov, T., Zhang, C., Agarwal, S., Nekoul, F. E., Lee, T., Adler, S., … &amp; Weng, L. (2023, June). A holistic approach to undesired content detection in the real world. In Proceedings of the AAAI Conference on Artificial Intelligence (Vol. 37, No. 12, pp. 15009-15018). <a class="reference external" href="https://ojs.aaai.org/index.php/AAAI/article/download/26752/26524">paper</a> | <a class="reference external" href="https://github.com/openai/moderation-api-release">repo (dataset only)</a></p></li>
+<li><p>Markov, T., Zhang, C., Agarwal, S., Nekoul, F. E., Lee, T., Adler, S., … &amp; Weng, L. (2023, June). A holistic approach to undesired content detection in the real world. In Proceedings of the AAAI Conference on Artificial Intelligence (Vol. 37, No. 12, pp. 15009-15018). <a class="reference external" href="https://ojs.aaai.org/index.php/AAAI/article/download/26752/26524" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/openai/moderation-api-release" rel="noreferer noopener" target="_blank">repo (dataset only)</a></p></li>
 </ul>
 </section>
 <section id="jailbreaking-rails">
@@ -554,26 +573,26 @@ For each category we present a list of relevant surveys, existing research paper
 </ul>
 <p>Supported in NeMo Guardrails:</p>
 <ul class="simple">
-<li><p><em>(Similar to)</em> Alon, G., &amp; Kamfonas, M. (2023). Detecting language model attacks with perplexity. arXiv preprint arXiv:2308.14132. <a class="reference external" href="https://arxiv.org/pdf/2308.14132.pdf">paper</a> | repo</p></li>
+<li><p><em>(Similar to)</em> Alon, G., &amp; Kamfonas, M. (2023). Detecting language model attacks with perplexity. arXiv preprint arXiv:2308.14132. <a class="reference external" href="https://arxiv.org/pdf/2308.14132.pdf" rel="noreferer noopener" target="_blank">paper</a> | repo</p></li>
 </ul>
 <p>Relevant papers:</p>
 <ul class="simple">
-<li><p>Kumar, A., Agarwal, C., Srinivas, S., Feizi, S., &amp; Lakkaraju, H. (2023). Certifying llm safety against adversarial prompting. arXiv preprint arXiv:2309.02705. <a class="reference external" href="https://arxiv.org/pdf/2309.02705.pdf">paper</a> | <a class="reference external" href="https://github.com/aounon/certified-llm-safety">repo</a></p></li>
-<li><p>Wei, Z., Wang, Y., &amp; Wang, Y. (2023). Jailbreak and guard aligned language models with only few in-context demonstrations. arXiv preprint arXiv:2310.06387. <a class="reference external" href="https://arxiv.org/pdf/2310.06387.pdf">paper</a></p></li>
-<li><p>Zhang, Y., Ding, L., Zhang, L., &amp; Tao, D. (2024). Intention analysis prompting makes large language models a good jailbreak defender. arXiv preprint arXiv:2401.06561. <a class="reference external" href="https://arxiv.org/pdf/2401.06561.pdf">paper</a></p></li>
-<li><p>Xu, Z., Jiang, F., Niu, L., Jia, J., Lin, B. Y., &amp; Poovendran, R. (2024). SafeDecoding: Defending against Jailbreak Attacks via Safety-Aware Decoding. arXiv preprint arXiv:2402.08983. <a class="reference external" href="https://arxiv.org/pdf/2402.08983.pdf">paper</a> | <a class="reference external" href="https://github.com/uw-nsl/SafeDecoding">repo</a></p></li>
-<li><p>Ji, J., Hou, B., Robey, A., Pappas, G. J., Hassani, H., Zhang, Y., … &amp; Chang, S. (2024). Defending Large Language Models against Jailbreak Attacks via Semantic Smoothing. arXiv preprint arXiv:2402.16192. <a class="reference external" href="https://arxiv.org/pdf/2402.16192.pdf">paper</a> | <a class="reference external" href="https://github.com/UCSB-NLP-Chang/SemanticSmooth">code</a></p></li>
+<li><p>Kumar, A., Agarwal, C., Srinivas, S., Feizi, S., &amp; Lakkaraju, H. (2023). Certifying llm safety against adversarial prompting. arXiv preprint arXiv:2309.02705. <a class="reference external" href="https://arxiv.org/pdf/2309.02705.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/aounon/certified-llm-safety" rel="noreferer noopener" target="_blank">repo</a></p></li>
+<li><p>Wei, Z., Wang, Y., &amp; Wang, Y. (2023). Jailbreak and guard aligned language models with only few in-context demonstrations. arXiv preprint arXiv:2310.06387. <a class="reference external" href="https://arxiv.org/pdf/2310.06387.pdf" rel="noreferer noopener" target="_blank">paper</a></p></li>
+<li><p>Zhang, Y., Ding, L., Zhang, L., &amp; Tao, D. (2024). Intention analysis prompting makes large language models a good jailbreak defender. arXiv preprint arXiv:2401.06561. <a class="reference external" href="https://arxiv.org/pdf/2401.06561.pdf" rel="noreferer noopener" target="_blank">paper</a></p></li>
+<li><p>Xu, Z., Jiang, F., Niu, L., Jia, J., Lin, B. Y., &amp; Poovendran, R. (2024). SafeDecoding: Defending against Jailbreak Attacks via Safety-Aware Decoding. arXiv preprint arXiv:2402.08983. <a class="reference external" href="https://arxiv.org/pdf/2402.08983.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/uw-nsl/SafeDecoding" rel="noreferer noopener" target="_blank">repo</a></p></li>
+<li><p>Ji, J., Hou, B., Robey, A., Pappas, G. J., Hassani, H., Zhang, Y., … &amp; Chang, S. (2024). Defending Large Language Models against Jailbreak Attacks via Semantic Smoothing. arXiv preprint arXiv:2402.16192. <a class="reference external" href="https://arxiv.org/pdf/2402.16192.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/UCSB-NLP-Chang/SemanticSmooth" rel="noreferer noopener" target="_blank">code</a></p></li>
 </ul>
 </section>
 <section id="dialog-rails">
 <h2>Dialog rails<a class="headerlink" href="#dialog-rails" title="Link to this heading">#</a></h2>
 <p>Supported in NeMo Guardrails:</p>
 <ul class="simple">
-<li><p>Rebedea, T., Dinu, R., Sreedhar, M., Parisien, C., &amp; Cohen, J. (2023). Nemo guardrails: A toolkit for controllable and safe llm applications with programmable rails. arXiv preprint arXiv:2310.10501. <a class="reference external" href="https://arxiv.org/pdf/2310.10501.pdf">paper</a> | <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails">code</a></p></li>
+<li><p>Rebedea, T., Dinu, R., Sreedhar, M., Parisien, C., &amp; Cohen, J. (2023). Nemo guardrails: A toolkit for controllable and safe llm applications with programmable rails. arXiv preprint arXiv:2310.10501. <a class="reference external" href="https://arxiv.org/pdf/2310.10501.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails" rel="noreferer noopener" target="_blank">code</a></p></li>
 </ul>
 <p>Relevant papers:</p>
 <ul class="simple">
-<li><p>Sun, A. Y., Nair, V., Schumacher, E., &amp; Kannan, A. (2023). CONSCENDI: A Contrastive and Scenario-Guided Distillation Approach to Guardrail Models for Virtual Assistants. arXiv preprint arXiv:2304.14364. <a class="reference external" href="https://arxiv.org/pdf/2304.14364.pdf">paper</a> | <a class="reference external" href="https://github.com/curai/curai-research/tree/main/CONSCENDI">code</a></p></li>
+<li><p>Sun, A. Y., Nair, V., Schumacher, E., &amp; Kannan, A. (2023). CONSCENDI: A Contrastive and Scenario-Guided Distillation Approach to Guardrail Models for Virtual Assistants. arXiv preprint arXiv:2304.14364. <a class="reference external" href="https://arxiv.org/pdf/2304.14364.pdf" rel="noreferer noopener" target="_blank">paper</a> | <a class="reference external" href="https://github.com/curai/curai-research/tree/main/CONSCENDI" rel="noreferer noopener" target="_blank">code</a></p></li>
 </ul>
 </section>
 </section>

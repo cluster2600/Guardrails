@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -315,7 +315,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -327,6 +336,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -339,6 +349,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -377,14 +394,16 @@
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -502,11 +521,11 @@
 <p>This guide outlines how to get set up Vertex AI enabling calling of Vertex AI APIs from code.</p>
 <p>In order to use Vertex AI, you need to perform some initial setup with the Google Cloud Platform (GCP).</p>
 <ol class="arabic simple">
-<li><p>Create a GCP account: The following <a class="reference external" href="https://cloud.google.com/docs/get-started">page</a> provides more information about the Google Cloud Platform and how to get started. In your account <a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating-managing-projects">create a project</a> and <a class="reference external" href="https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_an_existing_project">set up billing for it</a></p></li>
-<li><p>Install the <code class="docutils literal notranslate"><span class="pre">gcloud</span></code> CLI (<a class="reference external" href="https://cloud.google.com/sdk/docs/install">guide</a>). Note that although 3.8 - 3.12 are listed as supported, <a class="reference external" href="https://stackoverflow.com/questions/77316716/gcloud-modulenotfounderror-no-module-named-imp">this error</a> occurs on Python 3.12. This guide was tested using Python 3.10.2.</p></li>
-<li><p>Create a service account following <a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts-create">this guide</a> and grant it the role of <code class="docutils literal notranslate"><span class="pre">Vertex</span> <span class="pre">AI</span> <span class="pre">Service</span> <span class="pre">Agent</span></code>.</p></li>
-<li><p>Create and download a service account key for the service account (<a class="reference external" href="https://cloud.google.com/iam/docs/keys-create-delete">guide</a>).</p></li>
-<li><p>Enable the Vertex AI API (<a class="reference external" href="https://cloud.google.com/vertex-ai/docs/start/cloud-environment#:~:text=Enable%20Vertex%20AI%20APIs,-In%20the%20Google&amp;amp;text=Click%20Enable%20All%20Recommended%20APIs,the%20APIs%20are%20being%20enabled.">guide</a>)</p></li>
+<li><p>Create a GCP account: The following <a class="reference external" href="https://cloud.google.com/docs/get-started" rel="noreferer noopener" target="_blank">page</a> provides more information about the Google Cloud Platform and how to get started. In your account <a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating-managing-projects" rel="noreferer noopener" target="_blank">create a project</a> and <a class="reference external" href="https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_an_existing_project" rel="noreferer noopener" target="_blank">set up billing for it</a></p></li>
+<li><p>Install the <code class="docutils literal notranslate"><span class="pre">gcloud</span></code> CLI (<a class="reference external" href="https://cloud.google.com/sdk/docs/install" rel="noreferer noopener" target="_blank">guide</a>). Note that although 3.8 - 3.12 are listed as supported, <a class="reference external" href="https://stackoverflow.com/questions/77316716/gcloud-modulenotfounderror-no-module-named-imp" rel="noreferer noopener" target="_blank">this error</a> occurs on Python 3.12. This guide was tested using Python 3.10.2.</p></li>
+<li><p>Create a service account following <a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts-create" rel="noreferer noopener" target="_blank">this guide</a> and grant it the role of <code class="docutils literal notranslate"><span class="pre">Vertex</span> <span class="pre">AI</span> <span class="pre">Service</span> <span class="pre">Agent</span></code>.</p></li>
+<li><p>Create and download a service account key for the service account (<a class="reference external" href="https://cloud.google.com/iam/docs/keys-create-delete" rel="noreferer noopener" target="_blank">guide</a>).</p></li>
+<li><p>Enable the Vertex AI API (<a class="reference external" href="https://cloud.google.com/vertex-ai/docs/start/cloud-environment#:~:text=Enable%20Vertex%20AI%20APIs,-In%20the%20Google&amp;amp;text=Click%20Enable%20All%20Recommended%20APIs,the%20APIs%20are%20being%20enabled." rel="noreferer noopener" target="_blank">guide</a>)</p></li>
 <li><p>Install additional python libraries needed to call Vertex AI using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;google-cloud-aiplatform&gt;=1.38.0&quot;</span></code></p></li>
 </ol>
 <p>Test that you are successfully able to call VertexAI APIs using the following snippet:</p>

@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,15 +50,13 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/configuration-guide.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Guardrails Library" href="guardrails-library.html" />
-    <link rel="prev" title="Release Notes" href="../release-notes.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -318,8 +316,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Configuration Guide</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -331,6 +338,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -343,6 +351,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -381,14 +396,16 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -573,15 +590,15 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: the name of the model, such as <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: arguments to pass to the LangChain class used by the LLM provider.
 For example, when <code class="docutils literal notranslate"><span class="pre">engine</span></code> is set to <code class="docutils literal notranslate"><span class="pre">openai</span></code>, the toolkit loads the <code class="docutils literal notranslate"><span class="pre">ChatOpenAI</span></code> class.
-The <a class="reference external" href="https://python.langchain.com/api_reference/openai/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html">ChatOpenAI class</a>
+The <a class="reference external" href="https://python.langchain.com/api_reference/openai/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html" rel="noreferer noopener" target="_blank">ChatOpenAI class</a>
 supports <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">max_tokens</span></code>, and other class-specific arguments.</p></li>
 </ul>
 <section id="supported-llm-providers">
 <h4>Supported LLM Providers<a class="headerlink" href="#supported-llm-providers" title="Link to this heading">#</a></h4>
 <p>You can use any LLM provider that is supported by LangChain, such as <code class="docutils literal notranslate"><span class="pre">ai21</span></code>, <code class="docutils literal notranslate"><span class="pre">aleph_alpha</span></code>, <code class="docutils literal notranslate"><span class="pre">anthropic</span></code>, <code class="docutils literal notranslate"><span class="pre">anyscale</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code>, <code class="docutils literal notranslate"><span class="pre">cohere</span></code>, <code class="docutils literal notranslate"><span class="pre">huggingface_endpoint</span></code>, <code class="docutils literal notranslate"><span class="pre">huggingface_hub</span></code>, <code class="docutils literal notranslate"><span class="pre">openai</span></code>, <code class="docutils literal notranslate"><span class="pre">self_hosted</span></code>, <code class="docutils literal notranslate"><span class="pre">self_hosted_hugging_face</span></code>. Check out the LangChain official documentation for the full list.</p>
-<p>In addition to the above LangChain providers, connecting to <a class="reference external" href="https://docs.nvidia.com/nim/index.html">NVIDIA NIM microservices</a> is supported using the <code class="docutils literal notranslate"><span class="pre">nim</span></code> engine.
+<p>In addition to the above LangChain providers, connecting to <a class="reference external" href="https://docs.nvidia.com/nim/index.html" rel="noreferer noopener" target="_blank">NVIDIA NIM microservices</a> is supported using the <code class="docutils literal notranslate"><span class="pre">nim</span></code> engine.
 The <code class="docutils literal notranslate"><span class="pre">nvidia_ai_endpoints</span></code> engine is an alias for the <code class="docutils literal notranslate"><span class="pre">nim</span></code> engine.
-The engine provides access to locally-deployed NIM microservices or NVIDIA hosted models that you can view from <a class="reference external" href="https://build.nvidia.com/models">https://build.nvidia.com/models</a>.</p>
+The engine provides access to locally-deployed NIM microservices or NVIDIA hosted models that you can view from <a class="reference external" href="https://build.nvidia.com/models" rel="noreferer noopener" target="_blank">https://build.nvidia.com/models</a>.</p>
 <p>To use any of the LLM providers, you must install the LangChain package for the provider.
 When you first try to use a configuration with a new provider, you typically receive an error from LangChain that instructs which packages you should install.</p>
 <div class="admonition important">
@@ -607,7 +624,7 @@ For others, you can optimize the prompts yourself following the information in t
 </section>
 <section id="using-llms-with-reasoning-traces">
 <h4>Using LLMs with Reasoning Traces<a class="headerlink" href="#using-llms-with-reasoning-traces" title="Link to this heading">#</a></h4>
-<p>By default, reasoning models, such as <a class="reference external" href="https://huggingface.co/collections/deepseek-ai/deepseek-r1-678e1e131c0169c0bc89728d">DeepSeek-R1</a> and <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-ultra-253b-v1">NVIDIA Llama 3.1 Nemotron Ultra 253B V1</a>, can include the reasoning traces in the model response.
+<p>By default, reasoning models, such as <a class="reference external" href="https://huggingface.co/collections/deepseek-ai/deepseek-r1-678e1e131c0169c0bc89728d" rel="noreferer noopener" target="_blank">DeepSeek-R1</a> and <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-ultra-253b-v1" rel="noreferer noopener" target="_blank">NVIDIA Llama 3.1 Nemotron Ultra 253B V1</a>, can include the reasoning traces in the model response.
 DeepSeek and the Nemotron family of models use <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code> as tokens to identify the traces.</p>
 <p>The reasoning traces and the tokens can interfere with NeMo Guardrails and result in falsely triggering output guardrails for safe responses.
 To use these reasoning models, you can remove the traces and tokens from the model response with a configuration like the following example.</p>
@@ -765,8 +782,8 @@ Refer to the preceding example.</p></li>
 </section>
 <section id="nim-for-llms">
 <h4>NIM for LLMs<a class="headerlink" href="#nim-for-llms" title="Link to this heading">#</a></h4>
-<p><a class="reference external" href="https://docs.nvidia.com/nim/index.html">NVIDIA NIM</a> is a set of easy-to-use microservices designed to accelerate the deployment of generative AI models across the cloud, data center, and workstations.
-<a class="reference external" href="https://docs.nvidia.com/nim/large-language-models/latest/introduction.html">NVIDIA NIM for LLMs</a> brings the power of state-of-the-art LLMs to enterprise applications, providing unmatched natural language processing and understanding capabilities. <a class="reference external" href="https://developer.nvidia.com/blog/nvidia-nim-offers-optimized-inference-microservices-for-deploying-ai-models-at-scale/">Learn more about NIMs</a>.</p>
+<p><a class="reference external" href="https://docs.nvidia.com/nim/index.html" rel="noreferer noopener" target="_blank">NVIDIA NIM</a> is a set of easy-to-use microservices designed to accelerate the deployment of generative AI models across the cloud, data center, and workstations.
+<a class="reference external" href="https://docs.nvidia.com/nim/large-language-models/latest/introduction.html" rel="noreferer noopener" target="_blank">NVIDIA NIM for LLMs</a> brings the power of state-of-the-art LLMs to enterprise applications, providing unmatched natural language processing and understanding capabilities. <a class="reference external" href="https://developer.nvidia.com/blog/nvidia-nim-offers-optimized-inference-microservices-for-deploying-ai-models-at-scale/" rel="noreferer noopener" target="_blank">Learn more about NIMs</a>.</p>
 <p>NIMs can be self hosted, using downloadable containers, or Nvidia hosted and accessible through an Nvidia AI Enterprise (NVAIE) licesnse.</p>
 <p>NeMo Guardrails supports connecting to NIMs as follows:</p>
 <section id="self-hosted-nims">
@@ -792,8 +809,8 @@ Refer to the preceding example.</p></li>
 </section>
 <section id="nvidia-ai-endpoints">
 <h5>NVIDIA AI Endpoints<a class="headerlink" href="#nvidia-ai-endpoints" title="Link to this heading">#</a></h5>
-<p><a class="reference external" href="https://www.nvidia.com/en-us/ai-data-science/foundation-models/">NVIDIA AI Endpoints</a> give users easy access to NVIDIA hosted API endpoints for NVIDIA AI Foundation Models such as Llama 3, Mixtral 8x7B, and Stable Diffusion.
-These models, hosted on the <a class="reference external" href="https://build.nvidia.com/">NVIDIA API catalog</a>, are optimized, tested, and hosted on the NVIDIA AI platform, making them fast and easy to evaluate, further customize, and seamlessly run at peak performance on any accelerated stack.</p>
+<p><a class="reference external" href="https://www.nvidia.com/en-us/ai-data-science/foundation-models/" rel="noreferer noopener" target="_blank">NVIDIA AI Endpoints</a> give users easy access to NVIDIA hosted API endpoints for NVIDIA AI Foundation Models such as Llama 3, Mixtral 8x7B, and Stable Diffusion.
+These models, hosted on the <a class="reference external" href="https://build.nvidia.com/" rel="noreferer noopener" target="_blank">NVIDIA API catalog</a>, are optimized, tested, and hosted on the NVIDIA AI platform, making them fast and easy to evaluate, further customize, and seamlessly run at peak performance on any accelerated stack.</p>
 <p>To use an LLM model through the NVIDIA AI Endpoints, use the following model configuration:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
@@ -813,7 +830,7 @@ These models, hosted on the <a class="reference external" href="https://build.nv
 <p>To use the <code class="docutils literal notranslate"><span class="pre">nvidia_ai_endpoints</span></code> or <code class="docutils literal notranslate"><span class="pre">nim</span></code> LLM provider, you must install the <code class="docutils literal notranslate"><span class="pre">langchain-nvidia-ai-endpoints</span></code> package using the command <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">langchain-nvidia-ai-endpoints</span></code>, and configure a valid <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code>.</p>
 </div>
 <p>For further information, see the <a class="reference internal" href="llm/nvidia-ai-endpoints/README.html"><span class="std std-doc">user guide</span></a>.</p>
-<p>Here’s an example configuration for using <code class="docutils literal notranslate"><span class="pre">llama3</span></code> model with <a class="reference external" href="https://ollama.com/">Ollama</a>:</p>
+<p>Here’s an example configuration for using <code class="docutils literal notranslate"><span class="pre">llama3</span></code> model with <a class="reference external" href="https://ollama.com/" rel="noreferer noopener" target="_blank">Ollama</a>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama</span>
@@ -931,7 +948,7 @@ These models, hosted on the <a class="reference external" href="https://build.nv
 <li><p><code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code>: This task decides the exact bot message to be returned.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">general</span></code>: This task generates the next bot message based on the history of user and bot messages. It is used when there are no dialog rails defined (i.e., no user message canonical forms).</p></li>
 </ol>
-<p>For a comprehensive list of tasks, refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/llm/types.py">Task type</a>.</p>
+<p>For a comprehensive list of tasks, refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/llm/types.py" rel="noreferer noopener" target="_blank">Task type</a>.</p>
 <p>You can use different LLM models for specific tasks. For example, you can use a different model for the <code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> and <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> tasks from various providers. Here’s an example configuration:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
@@ -1082,7 +1099,7 @@ create a class that inherits from <code class="docutils literal notranslate"><sp
 </section>
 <section id="embedding-search-provider">
 <h3>Embedding Search Provider<a class="headerlink" href="#embedding-search-provider" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails uses embedding search, also called vector databases, for implementing the <a class="reference internal" href="../architecture/README.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a> and for the <a class="reference internal" href="#knowledge-base-documents">knowledge base</a> functionality. The default embedding search uses FastEmbed for computing the embeddings (the <code class="docutils literal notranslate"><span class="pre">all-MiniLM-L6-v2</span></code> model) and <a class="reference external" href="https://github.com/spotify/annoy">Annoy</a> for performing the search. As shown in the previous section, the embeddings model supports both FastEmbed and OpenAI. SentenceTransformers is also supported.</p>
+<p>NeMo Guardrails uses embedding search, also called vector databases, for implementing the <a class="reference internal" href="../architecture/README.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a> and for the <a class="reference internal" href="#knowledge-base-documents">knowledge base</a> functionality. The default embedding search uses FastEmbed for computing the embeddings (the <code class="docutils literal notranslate"><span class="pre">all-MiniLM-L6-v2</span></code> model) and <a class="reference external" href="https://github.com/spotify/annoy" rel="noreferer noopener" target="_blank">Annoy</a> for performing the search. As shown in the previous section, the embeddings model supports both FastEmbed and OpenAI. SentenceTransformers is also supported.</p>
 <p>For advanced use cases or integrations with existing knowledge bases, you can <a class="reference internal" href="advanced/embedding-search-providers.html"><span class="std std-doc">provide a custom embedding search provider</span></a>.</p>
 </section>
 <section id="general-instructions">
@@ -1158,7 +1175,7 @@ create a class that inherits from <code class="docutils literal notranslate"><sp
 <li><p><code class="docutils literal notranslate"><span class="pre">self_check_output</span></code>: check if bot response should be allowed;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">self_check_hallucination</span></code>: check if the bot response is a hallucination.</p></li>
 </ul>
-<p>You can check the default prompts in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/llm/prompts">prompts</a> folder.</p>
+<p>You can check the default prompts in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/llm/prompts" rel="noreferer noopener" target="_blank">prompts</a> folder.</p>
 </section>
 <section id="multi-step-generation">
 <h3>Multi-step Generation<a class="headerlink" href="#multi-step-generation" title="Link to this heading">#</a></h3>
@@ -1399,7 +1416,7 @@ If you set this field to <code class="docutils literal notranslate"><span class=
 </section>
 <section id="dialog-rails">
 <h3>Dialog Rails<a class="headerlink" href="#dialog-rails" title="Link to this heading">#</a></h3>
-<p>Dialog rails enforce specific predefined conversational paths. To use dialog rails, you must define canonical form forms for various user messages and use them to trigger the dialog flows. Check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/bots/hello_world/README.md">Hello World</a> bot for a quick example. For a slightly more advanced example, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/bots/abc/README.md">ABC bot</a>, where dialog rails are used to ensure the bot does not talk about specific topics.</p>
+<p>Dialog rails enforce specific predefined conversational paths. To use dialog rails, you must define canonical form forms for various user messages and use them to trigger the dialog flows. Check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/bots/hello_world/README.md" rel="noreferer noopener" target="_blank">Hello World</a> bot for a quick example. For a slightly more advanced example, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/bots/abc/README.md" rel="noreferer noopener" target="_blank">ABC bot</a>, where dialog rails are used to ensure the bot does not talk about specific topics.</p>
 <p>The use of dialog rails requires a three-step process:</p>
 <ol class="arabic simple">
 <li><p>Generate canonical user message</p></li>
@@ -1507,196 +1524,65 @@ To understand better what is happening under the hood, here’s how the <code cl
 </section>
 <section id="tracing">
 <h2>Tracing<a class="headerlink" href="#tracing" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails includes a tracing feature that allows you to monitor and log interactions for better observability and debugging. Tracing can be easily configured via the existing <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. Below are the steps to enable and configure tracing in your project.</p>
-<section id="enabling-tracing">
-<h3>Enabling Tracing<a class="headerlink" href="#enabling-tracing" title="Link to this heading">#</a></h3>
-<p>To enable tracing, set the enabled flag to true under the tracing section in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
+<p>NeMo Guardrails includes tracing capabilities to monitor and debug your guardrails interactions. Tracing helps you understand:</p>
+<ul class="simple">
+<li><p>Which rails are activated during conversations</p></li>
+<li><p>LLM call patterns and performance</p></li>
+<li><p>Flow execution paths and timing</p></li>
+<li><p>Error conditions and debugging information</p></li>
+</ul>
+<section id="basic-configuration">
+<h3>Basic Configuration<a class="headerlink" href="#basic-configuration" title="Link to this heading">#</a></h3>
+<p>Enable tracing in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FileSystem</span>
+<span class="w">      </span><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;./logs/traces.jsonl&quot;</span>
+</pre></div>
+</div>
+<p>This configuration logs traces to local JSON files, which is suitable for development and debugging.</p>
+</section>
+<section id="opentelemetry-integration">
+<h3>OpenTelemetry Integration<a class="headerlink" href="#opentelemetry-integration" title="Link to this heading">#</a></h3>
+<p>For production environments and integration with observability platforms:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
 </pre></div>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>You must install the necessary dependencies to use tracing adapters.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="w">  </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;opentelemetry-api opentelemetry-sdk aiofiles&quot;</span>
-</pre></div>
+<p>Install tracing dependencies: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nemoguardrails[tracing]</span></code></p>
 </div>
-</div>
-</section>
-<section id="configuring-tracing-adapters">
-<h3>Configuring Tracing Adapters<a class="headerlink" href="#configuring-tracing-adapters" title="Link to this heading">#</a></h3>
-<p>Tracing supports multiple adapters that determine how and where the interaction logs are exported. You can configure one or more adapters by specifying them under the adapters list. Below are examples of configuring the built-in <code class="docutils literal notranslate"><span class="pre">OpenTelemetry</span></code> and <code class="docutils literal notranslate"><span class="pre">FileSystem</span></code> adapters:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
-<span class="w">      </span><span class="nt">service_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nemo_guardrails_service&quot;</span>
-<span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;console&quot;</span><span class="w">  </span><span class="c1"># Options: &quot;console&quot;, &quot;zipkin&quot;, etc.</span>
-<span class="w">      </span><span class="nt">resource_attributes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;production&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FileSystem</span>
-<span class="w">      </span><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;./traces/traces.jsonl&#39;</span>
-</pre></div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The “console” is intended for debugging and demonstration purposes only and should not be used in production environments. Using this exporter will output tracing information directly to the console, which can interfere with application output, distort the user interface, degrade performance, and potentially expose sensitive information. For production use, please configure a suitable exporter that sends tracing data to a dedicated backend or monitoring system.</p>
-</div>
-<section id="opentelemetry-adapter">
-<h4>OpenTelemetry Adapter<a class="headerlink" href="#opentelemetry-adapter" title="Link to this heading">#</a></h4>
-<p>The <code class="docutils literal notranslate"><span class="pre">OpenTelemetry</span></code> adapter integrates with the OpenTelemetry framework, allowing you to export traces to various backends. Key configuration options include:</p>
-<p>• <code class="docutils literal notranslate"><span class="pre">service_name</span></code>: The name of your service.
-• <code class="docutils literal notranslate"><span class="pre">exporter</span></code>: The type of exporter to use (e.g., console, zipkin).
-• <code class="docutils literal notranslate"><span class="pre">resource_attributes</span></code>: Additional attributes to include in the trace resource (e.g., environment).</p>
-</section>
-<section id="filesystem-adapter">
-<h4>FileSystem Adapter<a class="headerlink" href="#filesystem-adapter" title="Link to this heading">#</a></h4>
-<p>The  <code class="docutils literal notranslate"><span class="pre">FileSystem</span></code>  adapter exports interaction logs to a local JSON Lines file. Key configuration options include:</p>
-<p>• <code class="docutils literal notranslate"><span class="pre">filepath</span></code>: The path to the file where traces will be stored. If not specified, it defaults to <code class="docutils literal notranslate"><span class="pre">./.traces/trace.jsonl</span></code>.</p>
-</section>
-</section>
-<section id="example-configuration">
-<h3>Example Configuration<a class="headerlink" href="#example-configuration" title="Link to this heading">#</a></h3>
-<p>Below is a comprehensive example of a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file with both <code class="docutils literal notranslate"><span class="pre">OpenTelemetry</span></code> and <code class="docutils literal notranslate"><span class="pre">FileSystem</span></code> adapters enabled:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
-<span class="w">      </span><span class="nt">service_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nemo_guardrails_service&quot;</span>
-<span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;zipkin&quot;</span>
-<span class="w">      </span><span class="nt">resource_attributes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;production&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FileSystem</span>
-<span class="w">      </span><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;./traces/traces.jsonl&#39;</span>
-</pre></div>
-</div>
-<p>To use this configuration, you must ensure that Zipkin is running locally or is accessible via the network.</p>
-<section id="using-zipkin-as-an-exporter">
-<h4>Using Zipkin as an Exporter<a class="headerlink" href="#using-zipkin-as-an-exporter" title="Link to this heading">#</a></h4>
-<p>To use <code class="docutils literal notranslate"><span class="pre">Zipkin</span></code> as an exporter, follow these steps:</p>
-<ol class="arabic">
-<li><p>Install the Zipkin exporter for OpenTelemetry:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>opentelemetry-exporter-zipkin
-</pre></div>
-</div>
-</li>
-<li><p>Run the <code class="docutils literal notranslate"><span class="pre">Zipkin</span></code> server using Docker:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">9411</span>:9411<span class="w"> </span>openzipkin/zipkin
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-</section>
-<section id="registering-opentelemetry-exporters">
-<h3>Registering OpenTelemetry Exporters<a class="headerlink" href="#registering-opentelemetry-exporters" title="Link to this heading">#</a></h3>
-<p>You can also use other <a class="reference external" href="https://opentelemetry.io/ecosystem/registry/?component=exporter&amp;amp;language=python">OpenTelemetry exporters</a> by registering them in the <code class="docutils literal notranslate"><span class="pre">config.py</span></code> file. To do so you need to use <code class="docutils literal notranslate"><span class="pre">register_otel_exporter</span></code> and register the exporter class.Below is an example of registering the <code class="docutils literal notranslate"><span class="pre">Jaeger</span></code> exporter:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This assumes that Jaeger exporter is installed</span>
-<span class="c1"># pip install opentelemetry-exporter-jaeger</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry.exporter.jaeger.thrift</span><span class="w"> </span><span class="kn">import</span> <span class="n">JaegerExporter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing.adapters.opentelemetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_otel_exporter</span>
-
-<span class="n">register_otel_exporter</span><span class="p">(</span><span class="n">JaegerExporter</span><span class="p">,</span> <span class="s2">&quot;jaeger&quot;</span><span class="p">)</span>
-
-</pre></div>
-</div>
-<p>Then you can use it in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file as follows:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
-<span class="w">      </span><span class="nt">service_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nemo_guardrails_service&quot;</span>
-<span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;jaeger&quot;</span>
-<span class="w">      </span><span class="nt">resource_attributes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;production&quot;</span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OpenTelemetry integration requires configuring the OpenTelemetry SDK in your application code. NeMo Guardrails follows OpenTelemetry best practices where libraries use only the API and applications configure the SDK. See the <a class="reference internal" href="#tracing.md"><span class="xref myst">Tracing Guide</span></a> for detailed setup instructions and examples.</p>
 </div>
 </section>
-<section id="custom-interactionlogadapters">
-<h3>Custom InteractionLogAdapters<a class="headerlink" href="#custom-interactionlogadapters" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails allows you to extend its tracing capabilities by creating custom <code class="docutils literal notranslate"><span class="pre">InteractionLogAdapter</span></code> classes. This flexibility enables you to transform and export interaction logs to any backend or format that suits your needs.</p>
-<section id="implementing-a-custom-adapter">
-<h4>Implementing a Custom Adapter<a class="headerlink" href="#implementing-a-custom-adapter" title="Link to this heading">#</a></h4>
-<p>To create a custom adapter, you need to implement the <code class="docutils literal notranslate"><span class="pre">InteractionLogAdapter</span></code> abstract base class. Below is the interface you must follow:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractionLog</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">InteractionLogAdapter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">transform_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_log</span><span class="p">:</span> <span class="n">InteractionLog</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transforms the InteractionLog into the backend-specific format asynchronously.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Placeholder for any cleanup actions if needed.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Enter the runtime context related to this object.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exit the runtime context related to this object.&quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-</pre></div>
+<section id="configuration-options">
+<h3>Configuration Options<a class="headerlink" href="#configuration-options" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Adapter</p></th>
+<th class="head"><p>Use Case</p></th>
+<th class="head"><p>Configuration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FileSystem</p></td>
+<td><p>Development, debugging, simple logging</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">filepath:</span> <span class="pre">&quot;./logs/traces.jsonl&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>OpenTelemetry</p></td>
+<td><p>Production, monitoring platforms, distributed systems</p></td>
+<td><p>Requires application-level SDK configuration</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-</section>
-<section id="registering-your-custom-adapter">
-<h4>Registering Your Custom Adapter<a class="headerlink" href="#registering-your-custom-adapter" title="Link to this heading">#</a></h4>
-<p>After implementing your custom adapter, you need to register it so that NemoGuardrails can recognize and utilize it. This is done by adding a registration call in your <code class="docutils literal notranslate"><span class="pre">config.py:</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing.adapters.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_log_adapter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">path.to.your.adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">YourCustomAdapter</span>
-
-<span class="n">register_log_adapter</span><span class="p">(</span><span class="n">YourCustomAdapter</span><span class="p">,</span> <span class="s2">&quot;CustomLogAdapter&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="example-creating-a-custom-adapter">
-<h4>Example: Creating a Custom Adapter<a class="headerlink" href="#example-creating-a-custom-adapter" title="Link to this heading">#</a></h4>
-<p>Here’s a simple example of a custom adapter that logs interaction logs to a custom backend:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing.adapters.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractionLogAdapter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">InteractionLog</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomLogAdapter</span><span class="p">(</span><span class="n">InteractionLogAdapter</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MyCustomLogAdapter&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">custom_option1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_option2</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">custom_option1</span> <span class="o">=</span> <span class="n">custom_option1</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">custom_option2</span> <span class="o">=</span> <span class="n">custom</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_log</span><span class="p">:</span> <span class="n">InteractionLog</span><span class="p">):</span>
-        <span class="c1"># Implement your transformation logic here</span>
-        <span class="n">custom_format</span> <span class="o">=</span> <span class="n">convert_to_custom_format</span><span class="p">(</span><span class="n">interaction_log</span><span class="p">)</span>
-        <span class="n">send_to_custom_backend</span><span class="p">(</span><span class="n">custom_format</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">transform_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interaction_log</span><span class="p">:</span> <span class="n">InteractionLog</span><span class="p">):</span>
-        <span class="c1"># Implement your asynchronous transformation logic here</span>
-        <span class="n">custom_format</span> <span class="o">=</span> <span class="n">convert_to_custom_format</span><span class="p">(</span><span class="n">interaction_log</span><span class="p">)</span>
-        <span class="k">await</span> <span class="n">send_to_custom_backend_async</span><span class="p">(</span><span class="n">custom_format</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Implement any necessary cleanup here</span>
-        <span class="k">await</span> <span class="n">cleanup_custom_resources</span><span class="p">()</span>
-
-</pre></div>
-</div>
-<p>Updating <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> with Your <code class="docutils literal notranslate"><span class="pre">CustomLogAdapter</span></code></p>
-<p>Once registered, you can configure your custom adapter in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> like any other adapter:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyCustomLogAdapter</span>
-<span class="w">      </span><span class="nt">custom_option1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value1&quot;</span>
-<span class="w">      </span><span class="nt">custom_option2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value2&quot;</span>
-</pre></div>
-</div>
-<p>By following these steps, you can leverage the built-in tracing adapters or create and integrate your own custom adapters to enhance the observability of your NeMo Guardrails powered applications. Whether you choose to export logs to the filesystem, integrate with OpenTelemetry, or implement a bespoke logging solution, tracing provides the flexibility to meet your requirements.</p>
-</section>
+<p>For advanced configuration, custom adapters, and production deployment examples, see the <a class="reference internal" href="#tracing.md"><span class="xref myst">detailed tracing guide</span></a>.</p>
 </section>
 </section>
 <section id="knowledge-base-documents">
@@ -1724,24 +1610,6 @@ To understand better what is happening under the hood, here’s how the <code cl
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="../release-notes.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Release Notes</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="guardrails-library.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Guardrails Library</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -1814,23 +1682,9 @@ To understand better what is happening under the hood, here’s how the <code cl
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tracing">Tracing</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-tracing">Enabling Tracing</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-tracing-adapters">Configuring Tracing Adapters</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry-adapter">OpenTelemetry Adapter</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#filesystem-adapter">FileSystem Adapter</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-configuration">Example Configuration</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-zipkin-as-an-exporter">Using Zipkin as an Exporter</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-opentelemetry-exporters">Registering OpenTelemetry Exporters</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-interactionlogadapters">Custom InteractionLogAdapters</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-a-custom-adapter">Implementing a Custom Adapter</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#registering-your-custom-adapter">Registering Your Custom Adapter</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-creating-a-custom-adapter">Example: Creating a Custom Adapter</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-configuration">Basic Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry-integration">OpenTelemetry Integration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-options">Configuration Options</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-base-documents">Knowledge base Documents</a></li>

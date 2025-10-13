@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=49218dbd"></script>
+    <script src="_static/documentation_options.js?v=1aa419d7"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -319,7 +319,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="user-guides/configuration-guide.html">Configuration Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-library.html">Guardrails Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/guardrails-process.html">Guardrails Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/colang-language-syntax-guide.html">Colang Guide</a></li>
@@ -331,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="user-guides/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user-guides/langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="user-guides/langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="user-guides/langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -343,6 +353,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="user-guides/detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guides/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="user-guides/jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -381,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guides/advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -511,15 +530,15 @@
 <h2>Adding Content Safety Guardrails<a class="headerlink" href="#adding-content-safety-guardrails" title="Link to this heading">#</a></h2>
 <p>The following procedure adds a guardrail to check user input against a content safety model.</p>
 <p>To simplify configuration, the sample code sends the prompt text and the model response to the
-<a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety">Llama 3.1 NemoGuard 8B Content Safety model</a> deployed on the NVIDIA API Catalog.</p>
+<a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Llama 3.1 NemoGuard 8B Content Safety model</a> deployed on the NVIDIA API Catalog.</p>
 <p>The prompt text is also sent to NVIDIA API Catalog as the application LLM.
-The sample code uses the <a class="reference external" href="https://build.nvidia.com/meta/llama-3_3-70b-instruct">Llama 3.3 70B Instruct model</a>.</p>
+The sample code uses the <a class="reference external" href="https://build.nvidia.com/meta/llama-3_3-70b-instruct" rel="noreferer noopener" target="_blank">Llama 3.3 70B Instruct model</a>.</p>
 </section>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
 <ul>
 <li><p>You must be a member of the NVIDIA Developer Program and you must have an NVIDIA API key.
-For information about the program and getting a key, refer to <a class="reference external" href="https://forums.developer.nvidia.com/t/nvidia-nim-faq/300317/1">NVIDIA NIM FAQ</a> in the NVIDIA NIM developer forum.</p></li>
+For information about the program and getting a key, refer to <a class="reference external" href="https://forums.developer.nvidia.com/t/nvidia-nim-faq/300317/1" rel="noreferer noopener" target="_blank">NVIDIA NIM FAQ</a> in the NVIDIA NIM developer forum.</p></li>
 <li><p>You <a class="reference internal" href="getting-started/installation-guide.html"><span class="std std-doc">installed NeMo Guardrails</span></a>.</p></li>
 <li><p>You installed LangChain NVIDIA AI Foundation Model Playground Integration:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>langchain-nvidia-ai-endpoints
@@ -536,7 +555,8 @@ For information about the program and getting a key, refer to <a class="referenc
 </pre></div>
 </div>
 </li>
-<li><p>Create a <em>configuration store</em> directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code> and add a <code class="docutils literal notranslate"><span class="pre">config/config.yml</span></code> file with the following contents:</p>
+<li><p>Create a <em>configuration store</em> directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code>.</p></li>
+<li><p>Copy the following configuration code and save as <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> in the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
@@ -564,7 +584,7 @@ For information about the program and getting a key, refer to <a class="referenc
 <p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file configures the LLM model.
 For more information about the key, refer to <a class="reference internal" href="user-guides/configuration-guide.html#the-llm-model"><span class="std std-ref">The LLM Model</span></a>.</p>
 </li>
-<li><p>Create a prompts file, such as <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code>, (<a class="reference download internal" download="" href="_downloads/581b1286b50c732ffcf3928197e66b67/prompts.yml"><span class="xref download myst">download</span></a>), with contents like the following partial example:</p>
+<li><p>Copy the following prompts code and save as <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> in the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># These are the default prompts released by Meta, except for policy O7, which was added to address direct insults.</span>
 <span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_input $model=content_safety</span>
@@ -580,48 +600,121 @@ For more information about the key, refer to <a class="reference internal" href=
 <span class="w">      </span><span class="no">S6: Suicide and Self Harm.</span>
 <span class="w">      </span><span class="no">S7: Sexual (minor).</span>
 <span class="w">      </span><span class="no">S8: Hate/Identity Hate.</span>
+<span class="w">      </span><span class="no">S9: PII/Privacy.</span>
+<span class="w">      </span><span class="no">S10: Harassment.</span>
+<span class="w">      </span><span class="no">S11: Threat.</span>
+<span class="w">      </span><span class="no">S12: Profanity.</span>
+<span class="w">      </span><span class="no">S13: Needs Caution.</span>
+<span class="w">      </span><span class="no">S14: Other.</span>
+<span class="w">      </span><span class="no">S15: Manipulation.</span>
+<span class="w">      </span><span class="no">S16: Fraud/Deception.</span>
+<span class="w">      </span><span class="no">S17: Malware.</span>
+<span class="w">      </span><span class="no">S18: High Risk Gov Decision Making.</span>
+<span class="w">      </span><span class="no">S19: Political/Misinformation/Conspiracy.</span>
+<span class="w">      </span><span class="no">S20: Copyright/Trademark/Plagiarism.</span>
+<span class="w">      </span><span class="no">S21: Unauthorized Advice.</span>
+<span class="w">      </span><span class="no">S22: Illegal Activity.</span>
+<span class="w">      </span><span class="no">S23: Immoral/Unethical.</span>
+<span class="w">      </span><span class="no">&lt;END UNSAFE CONTENT CATEGORIES&gt;</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">user: {{ user_input }}</span>
+
+<span class="w">      </span><span class="no">&lt;END CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
+<span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
+
+<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
+<span class="w">      </span><span class="no">Output JSON:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_prompt_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_output $model=content_safety</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a &#39;safe&#39; or &#39;unsafe&#39; rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN UNSAFE CONTENT CATEGORIES&gt;</span>
+<span class="w">      </span><span class="no">S1: Violence.</span>
+<span class="w">      </span><span class="no">S2: Sexual.</span>
+<span class="w">      </span><span class="no">S3: Criminal Planning/Confessions.</span>
+<span class="w">      </span><span class="no">S4: Guns and Illegal Weapons.</span>
+<span class="w">      </span><span class="no">S5: Controlled/Regulated Substances.</span>
+<span class="w">      </span><span class="no">S6: Suicide and Self Harm.</span>
+<span class="w">      </span><span class="no">S7: Sexual (minor).</span>
+<span class="w">      </span><span class="no">S8: Hate/Identity Hate.</span>
+<span class="w">      </span><span class="no">S9: PII/Privacy.</span>
+<span class="w">      </span><span class="no">S10: Harassment.</span>
+<span class="w">      </span><span class="no">S11: Threat.</span>
+<span class="w">      </span><span class="no">S12: Profanity.</span>
+<span class="w">      </span><span class="no">S13: Needs Caution.</span>
+<span class="w">      </span><span class="no">S14: Other.</span>
+<span class="w">      </span><span class="no">S15: Manipulation.</span>
+<span class="w">      </span><span class="no">S16: Fraud/Deception.</span>
+<span class="w">      </span><span class="no">S17: Malware.</span>
+<span class="w">      </span><span class="no">S18: High Risk Gov Decision Making.</span>
+<span class="w">      </span><span class="no">S19: Political/Misinformation/Conspiracy.</span>
+<span class="w">      </span><span class="no">S20: Copyright/Trademark/Plagiarism.</span>
+<span class="w">      </span><span class="no">S21: Unauthorized Advice.</span>
+<span class="w">      </span><span class="no">S22: Illegal Activity.</span>
+<span class="w">      </span><span class="no">S23: Immoral/Unethical.</span>
+<span class="w">      </span><span class="no">&lt;END UNSAFE CONTENT CATEGORIES&gt;</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">user: {{ user_input }}</span>
+
+<span class="w">      </span><span class="no">response: agent: {{ bot_response }}</span>
+
+<span class="w">      </span><span class="no">&lt;END CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
+<span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
+
+<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
+<span class="w">      </span><span class="no">Output JSON:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_response_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
 </pre></div>
 </div>
 </li>
-<li><p>Load the guardrails configuration:</p>
+<li><p>Run the following code to load the guardrails configurations from the previous steps and try out unsafe and safe inputs.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 
+<span class="c1"># Load the guardrails configurations and create an LLMRails instance.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-<li><p>Generate a response:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+
+<span class="c1"># Start an asynchronous stream response.</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
     <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">rails</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">()</span>
 
-<span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+<span class="c1"># Try an unsafe input.</span>
+<span class="n">messages_unsafe</span><span class="o">=</span><span class="p">[{</span>
     <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
     <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a five-step plan to rob a bank.&quot;</span>
 <span class="p">}]</span>
 
-<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>I&#39;m sorry, I can&#39;t respond to that.
-</pre></div>
-</div>
-</li>
-<li><p>Send a safe request and generate a response:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages_unsafe</span><span class="p">))</span>
+
+<span class="c1"># Try a safe input.</span>
+<span class="n">messages_safe</span><span class="o">=</span><span class="p">[{</span>
     <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
     <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me about Cape Hatteras National Seashore in 50 words or less.&quot;</span>
 <span class="p">}]</span>
-
-<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages_safe</span><span class="p">))</span>
 </pre></div>
 </div>
-<p><em>Example Output</em></p>
+<p>The following is an example response of the unsafe input.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>I&#39;m sorry, I can&#39;t respond to that.
+</pre></div>
+</div>
+<p>The following is an example response of the safe input.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Cape Hatteras National Seashore: 72 miles of pristine Outer Banks coastline in North Carolina, featuring natural beaches, lighthouses, and wildlife refuges.
 </pre></div>
 </div>
@@ -632,7 +725,7 @@ For more information about the key, refer to <a class="reference internal" href=
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Run the <code class="docutils literal notranslate"><span class="pre">content_safety_tutorial.ipynb</span></code> notebook from the
-<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/notebooks">example notebooks</a>
+<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/notebooks" rel="noreferer noopener" target="_blank">example notebooks</a>
 directory of the GitHub repository.
 The notebook compares LLM responses with and without safety checks and classifies responses
 to sample prompts as <em>safe</em> or <em>unsafe</em>.
