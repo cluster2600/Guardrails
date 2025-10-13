@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=086225cd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.16.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -521,15 +521,20 @@
   <section class="tex2jax_ignore mathjax_ignore" id="cisco-ai-defense-integration">
 <h1>Cisco AI Defense Integration<a class="headerlink" href="#cisco-ai-defense-integration" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://www.cisco.com/site/us/en/products/security/ai-defense/index.html?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Cisco AI Defense</a> allows you to protect LLM interactions. This integration enables NeMo Guardrails to use Cisco AI Defense to protect input and output flows.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>The diagram below shows how Cisco AI Defense integrates with the NeMo Guardrails flow to provide comprehensive protection at both input and output stages:</p>
+<img alt="High-level flow through programmable guardrails including AI Defense integration, showing how Cisco AI Defense provides privacy, safety, and security inspection for both input and output rails" class="align-center" src="../../_images/guardrails_flow_ai_defense.png" />
 <p>You’ll need to set the following environment variables to work with  Cisco AI Defense:</p>
 <ol class="arabic simple">
 <li><p>AI_DEFENSE_API_ENDPOINT - This is the URL for the Cisco AI Defense inspection API endpoint. This will look like https://[REGION].api.inspect.aidefense.security.cisco.com/api/v1/inspect/chat where REGION is us, ap, eu, etc.</p></li>
 <li><p>AI_DEFENSE_API_KEY - This is the API key for Cisco AI Defense. It is used to authenticate the API request. It can be generated from the <a class="reference external" href="https://security.cisco.com" rel="noreferer noopener" target="_blank">Cisco Security Cloud Control UI</a></p></li>
 </ol>
+</section>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Ensure that you have access to the Cisco AI Defense endpoints (SaaS or in your private deployment)</p></li>
+<li><p>Ensure that you have access to the <a class="reference external" href="https://developer.cisco.com/docs/ai-defense/" rel="noreferer noopener" target="_blank">Cisco AI Defense endpoints</a> (SaaS or in your private deployment)</p></li>
 <li><p>Set the required environment variables: <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_ENDPOINT</span></code> and <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_KEY</span></code></p></li>
 </ol>
 <section id="for-colang-1-0">
@@ -656,6 +661,7 @@ flow output rails $output_text
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-colang-1-0">For Colang 1.0</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-colang-2-x">For Colang 2.x</a></li>
