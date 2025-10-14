@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -338,6 +338,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -395,14 +396,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -517,11 +520,11 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="private-ai-integration">
 <h1>Private AI Integration<a class="headerlink" href="#private-ai-integration" title="Link to this heading">#</a></h1>
-<p><a class="reference external" href="https://docs.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">Private AI</a> allows you to detect and mask Personally Identifiable Information (PII) in your data. This integration enables NeMo Guardrails to use Private AI for PII detection and masking in input, output, and retrieval flows.</p>
+<p><a class="reference external" href="https://docs.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Private AI</a> allows you to detect and mask Personally Identifiable Information (PII) in your data. This integration enables NeMo Guardrails to use Private AI for PII detection and masking in input, output, and retrieval flows.</p>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Ensure that you have access to Private AI API server running locally or in the cloud. To get started with the cloud version, you can use the <a class="reference external" href="https://portal.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">Private AI Portal</a>. For containerized deployments, check out this <a class="reference external" href="https://docs.private-ai.com/quickstart/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">Quickstart Guide</a>.</p></li>
+<li><p>Ensure that you have access to Private AI API server running locally or in the cloud. To get started with the cloud version, you can use the <a class="reference external" href="https://portal.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Private AI Portal</a>. For containerized deployments, check out this <a class="reference external" href="https://docs.private-ai.com/quickstart/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Quickstart Guide</a>.</p></li>
 <li><p>Update your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file to include the Private AI settings:</p></li>
 </ol>
 <p><strong>PII detection config</strong></p>
@@ -574,7 +577,7 @@
 <p>The masking flow will mask the PII in the input/output/retrieval text before they are sent to the LLM/user. For example, <code class="docutils literal notranslate"><span class="pre">Hi</span> <span class="pre">John</span> <span class="pre">Doe,</span> <span class="pre">my</span> <span class="pre">email</span> <span class="pre">is</span> <span class="pre">john.doe&#64;example.com</span></code> will be converted to <code class="docutils literal notranslate"><span class="pre">Hi</span> <span class="pre">[NAME],</span> <span class="pre">my</span> <span class="pre">email</span> <span class="pre">is</span> <span class="pre">[EMAIL_ADDRESS]</span></code>.</p>
 <p>Replace <code class="docutils literal notranslate"><span class="pre">http://your-privateai-api-endpoint/process/text</span></code> with your actual Private AI process text endpoint and set the <code class="docutils literal notranslate"><span class="pre">PAI_API_KEY</span></code> environment variable if you’re using the Private AI cloud API.</p>
 <ol class="arabic simple" start="3">
-<li><p>You can customize the <code class="docutils literal notranslate"><span class="pre">entities</span></code> list under both <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> to include the PII types you want to detect. A full list of supported entities can be found <a class="reference external" href="https://docs.private-ai.com/entities/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">here</a>.</p></li>
+<li><p>You can customize the <code class="docutils literal notranslate"><span class="pre">entities</span></code> list under both <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> to include the PII types you want to detect. A full list of supported entities can be found <a class="reference external" href="https://docs.private-ai.com/entities/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">here</a>.</p></li>
 </ol>
 </section>
 <section id="usage">
@@ -589,7 +592,7 @@
 </section>
 <section id="customization">
 <h2>Customization<a class="headerlink" href="#customization" title="Link to this heading">#</a></h2>
-<p>You can customize the PII detection behavior by modifying the <code class="docutils literal notranslate"><span class="pre">entities</span></code> lists in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. Refer to the Private AI documentation for a complete list of <a class="reference external" href="https://docs.private-ai.com/entities/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">supported entity types</a>.</p>
+<p>You can customize the PII detection behavior by modifying the <code class="docutils literal notranslate"><span class="pre">entities</span></code> lists in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. Refer to the Private AI documentation for a complete list of <a class="reference external" href="https://docs.private-ai.com/entities/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">supported entity types</a>.</p>
 </section>
 <section id="error-handling">
 <h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">#</a></h2>
@@ -601,7 +604,7 @@
 <li><p>Ensure that your Private AI process text endpoint is properly set up and accessible from your NeMo Guardrails environment.</p></li>
 <li><p>The integration currently supports PII detection and masking.</p></li>
 </ul>
-<p>For more information on Private AI and its capabilities, please refer to the <a class="reference external" href="https://docs.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails">Private AI documentation</a>.</p>
+<p>For more information on Private AI and its capabilities, please refer to the <a class="reference external" href="https://docs.private-ai.com/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Private AI documentation</a>.</p>
 </section>
 </section>
 

@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -340,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -397,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -529,11 +532,11 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code>: decide the exact bot message that should be returned.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">general</span></code>: generate the next bot message based on the history of user and bot messages; this task is used when there are no dialog rails defined (i.e., no user message canonical forms).</p></li>
 </ol>
-<p>Check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/llm/types.py">Task type</a> for the complete list of tasks.</p>
+<p>Check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/llm/types.py" rel="noreferer noopener" target="_blank">Task type</a> for the complete list of tasks.</p>
 </section>
 <section id="prompt-configuration">
 <h2>Prompt Configuration<a class="headerlink" href="#prompt-configuration" title="Link to this heading">#</a></h2>
-<p>The toolkit provides predefined prompts for each task and for certain LLM models. They are located in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/llm/prompts">nemoguardrails/llm/prompts</a> folder. You can customize the prompts further by including a <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file in a guardrails configuration (technically, the file name is not essential, and you can also include the <code class="docutils literal notranslate"><span class="pre">prompts</span></code> key in the general <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file).</p>
+<p>The toolkit provides predefined prompts for each task and for certain LLM models. They are located in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/llm/prompts" rel="noreferer noopener" target="_blank">nemoguardrails/llm/prompts</a> folder. You can customize the prompts further by including a <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file in a guardrails configuration (technically, the file name is not essential, and you can also include the <code class="docutils literal notranslate"><span class="pre">prompts</span></code> key in the general <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file).</p>
 <p>Additionally, if the environment variable <code class="docutils literal notranslate"><span class="pre">PROMPTS_DIR</span></code> is set, the toolkit will also load any prompts defined in the specified directory. The loading is performed once, when the python module is loaded. The folder must contain one or more <code class="docutils literal notranslate"><span class="pre">.yml</span></code> files which contain prompt definitions (inside the <code class="docutils literal notranslate"><span class="pre">prompts</span></code> key).</p>
 <p>To override the prompt for a specific model, you need to specify the <code class="docutils literal notranslate"><span class="pre">models</span></code> key:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
@@ -632,7 +635,7 @@
 </section>
 <section id="content-template">
 <h3>Content Template<a class="headerlink" href="#content-template" title="Link to this heading">#</a></h3>
-<p>The content for a completion prompt or the body for a message in a chat prompt is a string that can also include variables and potentially other types of constructs. NeMo Guardrails uses <a class="reference external" href="https://jinja.palletsprojects.com/">Jinja2</a> as the templating engine. Check out the <a class="reference external" href="https://jinja.palletsprojects.com/en/3.1.x/templates/#synopsis">Jinja Synopsis</a> for a quick introduction.</p>
+<p>The content for a completion prompt or the body for a message in a chat prompt is a string that can also include variables and potentially other types of constructs. NeMo Guardrails uses <a class="reference external" href="https://jinja.palletsprojects.com/" rel="noreferer noopener" target="_blank">Jinja2</a> as the templating engine. Check out the <a class="reference external" href="https://jinja.palletsprojects.com/en/3.1.x/templates/#synopsis" rel="noreferer noopener" target="_blank">Jinja Synopsis</a> for a quick introduction.</p>
 <p>As an example, the default template for the <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code> task is the following:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;&quot;&quot;</span>
 <span class="go">{{ general_instructions }}</span>
@@ -679,7 +682,7 @@
 </section>
 <section id="filters">
 <h4>Filters<a class="headerlink" href="#filters" title="Link to this heading">#</a></h4>
-<p>The concept of filters is the same as in Jinja (see <a class="reference external" href="https://jinja.palletsprojects.com/en/3.1.x/templates/#filters">Jinja filters</a>). Filters can modify the content of a variable, and you can apply multiple filters using the pipe symbol (<code class="docutils literal notranslate"><span class="pre">|</span></code>).</p>
+<p>The concept of filters is the same as in Jinja (see <a class="reference external" href="https://jinja.palletsprojects.com/en/3.1.x/templates/#filters" rel="noreferer noopener" target="_blank">Jinja filters</a>). Filters can modify the content of a variable, and you can apply multiple filters using the pipe symbol (<code class="docutils literal notranslate"><span class="pre">|</span></code>).</p>
 <p>The list of predefined filters is the following:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">colang</span></code>: transforms an array of events into the equivalent colang representation;</p></li>
@@ -710,7 +713,7 @@
 <section id="custom-tasks-and-prompts">
 <h2>Custom Tasks and Prompts<a class="headerlink" href="#custom-tasks-and-prompts" title="Link to this heading">#</a></h2>
 <p>In the scenario where you would like to create a custom task beyond those included in
-<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/llm/types.py">the default tasks</a>, you can include the task and associated prompt as provided in the example below:</p>
+<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/llm/types.py" rel="noreferer noopener" target="_blank">the default tasks</a>, you can include the task and associated prompt as provided in the example below:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">summarize_text</span>
 <span class="w">  </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
@@ -727,8 +730,7 @@
     <span class="p">},</span>
 <span class="p">)</span>
 
-<span class="k">with</span> <span class="n">llm_params</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-    <span class="n">check</span> <span class="o">=</span> <span class="k">await</span> <span class="n">llm_call</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+<span class="n">check</span> <span class="o">=</span> <span class="k">await</span> <span class="n">llm_call</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">llm_params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
 <span class="o">...</span>
 </pre></div>
 </div>

@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -340,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -397,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -584,8 +587,8 @@
 </pre></div>
 </div>
 </section>
-<section id="using-external-token-generators">
-<h3>Using External Token Generators<a class="headerlink" href="#using-external-token-generators" title="Link to this heading">#</a></h3>
+<section id="using-external-async-token-generators">
+<span id="external-async-token-generators"></span><h3>Using External Async Token Generators<a class="headerlink" href="#using-external-async-token-generators" title="Link to this heading">#</a></h3>
 <p>You can also provide your own async generator that yields tokens, which is useful when:</p>
 <ul class="simple">
 <li><p>You want to use a different LLM provider that has its own streaming API</p></li>
@@ -694,7 +697,7 @@
 <span class="n">info</span><span class="o">.</span><span class="n">print_llm_calls_summary</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>For more information about streaming token usage support across different providers, refer to the <a class="reference external" href="https://python.langchain.com/docs/how_to/chat_token_usage_tracking/#streaming">LangChain documentation on token usage tracking</a>. For detailed information about accessing generation logs and token usage, see the <a class="reference internal" href="generation-options.html#detailed-logging-information"><span class="std std-ref">Generation Options</span></a> and <a class="reference internal" href="../detailed-logging/README.html"><span class="std std-doc">Detailed Logging</span></a> documentation.</p>
+<p>For more information about streaming token usage support across different providers, refer to the <a class="reference external" href="https://python.langchain.com/docs/how_to/chat_token_usage_tracking/#streaming" rel="noreferer noopener" target="_blank">LangChain documentation on token usage tracking</a>. For detailed information about accessing generation logs and token usage, see the <a class="reference internal" href="generation-options.html#detailed-logging-information"><span class="std std-ref">Generation Options</span></a> and <a class="reference internal" href="../detailed-logging/README.html"><span class="std std-doc">Detailed Logging</span></a> documentation.</p>
 </section>
 <section id="server-api">
 <h3>Server API<a class="headerlink" href="#server-api" title="Link to this heading">#</a></h3>
@@ -716,7 +719,7 @@
 <section id="streaming-for-llms-deployed-using-huggingfacepipeline">
 <h3>Streaming for LLMs deployed using HuggingFacePipeline<a class="headerlink" href="#streaming-for-llms-deployed-using-huggingfacepipeline" title="Link to this heading">#</a></h3>
 <p>We also support streaming for LLMs deployed using <code class="docutils literal notranslate"><span class="pre">HuggingFacePipeline</span></code>.
-One example is provided in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/llm/hf_pipeline_dolly/README.md">HF Pipeline Dolly</a> configuration.</p>
+One example is provided in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/llm/hf_pipeline_dolly/README.md" rel="noreferer noopener" target="_blank">HF Pipeline Dolly</a> configuration.</p>
 <p>To use streaming for HF Pipeline LLMs, you first need to set the streaming flag in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </pre></div>
@@ -794,7 +797,7 @@ add it to the <code class="docutils literal notranslate"><span class="pre">kwarg
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-cli">Chat CLI</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api">Python API</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-external-token-generators">Using External Token Generators</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-external-async-token-generators">Using External Async Token Generators</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a><ul class="nav section-nav flex-column">

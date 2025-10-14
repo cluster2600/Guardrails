@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -338,6 +338,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -395,14 +396,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -517,10 +520,10 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="cleanlab-integration">
 <h1>Cleanlab Integration<a class="headerlink" href="#cleanlab-integration" title="Link to this heading">#</a></h1>
-<p>Cleanlab’s state-of-the-art <a class="reference external" href="https://cleanlab.ai/blog/trustworthy-language-model/">LLM uncertainty estimator</a> scores the <em>trustworthiness</em> of any LLM response, to detect incorrect outputs and hallucinations in real-time.</p>
+<p>Cleanlab’s state-of-the-art <a class="reference external" href="https://cleanlab.ai/blog/trustworthy-language-model/" rel="noreferer noopener" target="_blank">LLM uncertainty estimator</a> scores the <em>trustworthiness</em> of any LLM response, to detect incorrect outputs and hallucinations in real-time.</p>
 <p>In question-answering or RAG applications: high trustworthiness is indicative of a correct response. In open-ended chat applications, a high score corresponds to the response being helpful and informative. Low trustworthiness scores indicate outputs that are likely bad or incorrect, or complex prompts where the LLM might have output the right response this time but might output the wrong response when run on the same prompt again (so it cannot be trusted).</p>
-<p>The trustworthiness score is further explained and comprehensively benchmarked in <a class="reference external" href="https://help.cleanlab.ai/tlm/">Cleanlab’s documentation</a>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">cleanlab</span> <span class="pre">trustworthiness</span></code> guardrail flow uses a default trustworthiness score threshold of 0.6 to determine if your LLM output should be allowed or not. When the trustworthiness score falls below the threshold, the corresponding LLM response is flagged as <em>unstrustworthy</em>. You can easily change the cutoff value for the trustworthiness score by adjusting the threshold in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/cleanlab/flows.co">config</a>. For example, to change the threshold to 0.7, add the following flow to your config:</p>
+<p>The trustworthiness score is further explained and comprehensively benchmarked in <a class="reference external" href="https://help.cleanlab.ai/tlm/" rel="noreferer noopener" target="_blank">Cleanlab’s documentation</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cleanlab</span> <span class="pre">trustworthiness</span></code> guardrail flow uses a default trustworthiness score threshold of 0.6 to determine if your LLM output should be allowed or not. When the trustworthiness score falls below the threshold, the corresponding LLM response is flagged as <em>unstrustworthy</em>. You can easily change the cutoff value for the trustworthiness score by adjusting the threshold in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/cleanlab/flows.co" rel="noreferer noopener" target="_blank">config</a>. For example, to change the threshold to 0.7, add the following flow to your config:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow cleanlab trustworthiness
   &quot;&quot;&quot;Guardrail based on trustworthiness score.&quot;&quot;&quot;
   $result = execute call cleanlab api
@@ -536,10 +539,10 @@ define bot response untrustworthy
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>Install the Python client to use Cleanlab’s trustworthiness score:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install cleanlab-studio</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install --upgrade cleanlab-tlm</span>
 </pre></div>
 </div>
-<p>You can get an API key for free by <a class="reference external" href="https://tlm.cleanlab.ai/">creating a Cleanlab account</a> or experiment with the trustworthiness scores in the <a class="reference external" href="https://chat.cleanlab.ai/chat">playground</a>. Feel free to <a class="reference internal" href="#mailto:suport&#64;cleanlab.ai"><span class="xref myst">email Cleanlab</span></a> with any questions.</p>
+<p>You can get an API key for free by <a class="reference external" href="https://tlm.cleanlab.ai/" rel="noreferer noopener" target="_blank">creating a Cleanlab account</a> or experiment with the trustworthiness scores in the <a class="reference external" href="https://chat.cleanlab.ai/chat" rel="noreferer noopener" target="_blank">playground</a>. Feel free to <a class="reference internal" href="#mailto:suport&#64;cleanlab.ai"><span class="xref myst">email Cleanlab</span></a> with any questions.</p>
 <p>Lastly, set the <code class="docutils literal notranslate"><span class="pre">CLEANLAB_API_KEY</span></code> environment variable with the API key.</p>
 </section>
 </section>

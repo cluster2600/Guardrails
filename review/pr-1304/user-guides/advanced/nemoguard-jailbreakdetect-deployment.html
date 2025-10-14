@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,14 +50,14 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/nemoguard-jailbreakdetect-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Blueprint with NemoGuard NIMs" href="safeguarding-ai-virtual-assistant-blueprint.html" />
+    <link rel="next" title="KV Cache Reuse for NemoGuard NIM" href="kv-cache-reuse.html" />
     <link rel="prev" title="Llama 3.1 NemoGuard 8B Topic Control Deployment" href="nemoguard-topiccontrol-deployment.html" />
 
 
@@ -340,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -397,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -519,7 +522,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="nemoguard-jailbreakdetect-deployment">
 <h1>NemoGuard JailbreakDetect Deployment<a class="headerlink" href="#nemoguard-jailbreakdetect-deployment" title="Link to this heading">#</a></h1>
-<p>The NemoGuard Jailbreak Detect model is available via the <a class="reference internal" href="jailbreak-detection-deployment.html"><span class="std std-doc">Jailbreak Detection Container</span></a> or as an <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard">NVIDIA NIM</a>.</p>
+<p>The NemoGuard Jailbreak Detect model is available via the <a class="reference internal" href="jailbreak-detection-deployment.html"><span class="std std-doc">Jailbreak Detection Container</span></a> or as an <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">NVIDIA NIM</a>.</p>
 <section id="nim-deployment">
 <h2>NIM Deployment<a class="headerlink" href="#nim-deployment" title="Link to this heading">#</a></h2>
 <p>The first step is to ensure access to NVIDIA NIM assets through NGC using an NVAIE license.
@@ -559,7 +562,7 @@ An example configuration is shown below.</p>
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">jailbreak_detection</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">nim_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8000/v1&quot;</span>
+<span class="w">      </span><span class="nt">nim_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8000/v1/&quot;</span>
 <span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;JAILBREAK_KEY&quot;</span>
 <span class="w">      </span><span class="nt">nim_server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;classify&quot;</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
@@ -590,11 +593,11 @@ An example configuration is shown below.</p>
       </div>
     </a>
     <a class="right-next"
-       href="safeguarding-ai-virtual-assistant-blueprint.html"
+       href="kv-cache-reuse.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Blueprint with NemoGuard NIMs</p>
+        <p class="prev-next-title">KV Cache Reuse for NemoGuard NIM</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
