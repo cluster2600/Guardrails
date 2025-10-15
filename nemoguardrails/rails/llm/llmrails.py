@@ -86,9 +86,11 @@ from nemoguardrails.rails.llm.config import (
     RailsConfig,
 )
 from nemoguardrails.rails.llm.options import (
+    ActivatedRail,
     GenerationLog,
     GenerationOptions,
     GenerationResponse,
+    RailsStatus,
 )
 from nemoguardrails.rails.llm.utils import (
     get_action_details_from_flow_id,
@@ -565,6 +567,48 @@ class LLMRails:
             else:
                 kwargs = esp_config.parameters
                 return self.embedding_search_providers[esp_config.name](**kwargs)
+
+    def _extract_rails_status(
+        self, activated_rails: List[ActivatedRail]
+    ) -> RailsStatus:
+        """Extract rails status from activated rails log.
+
+        Args:
+            activated_rails: List of activated rails from the generation log
+
+        Returns:
+            RailsStatus object with results for input and output rails
+        """
+        from nemoguardrails.rails.llm.options import RailResult, RailsStatus
+
+        status = RailsStatus()
+
+        for rail in activated_rails:
+            passed = not rail.stop
+
+            if not passed:
+                message = (
+                    " → ".join(rail.decisions) if rail.decisions else "Rail stopped"
+                )
+            else:
+                message = None
+
+            result = RailResult(
+                rail_type=rail.type,
+                rail_name=rail.name,
+                passed=passed,
+                stopped=rail.stop,
+                message=message,
+                decisions=rail.decisions,
+                executed_actions=[a.action_name for a in rail.executed_actions],
+            )
+
+            if rail.type == "input":
+                status.input_rails.append(result)
+            elif rail.type == "output":
+                status.output_rails.append(result)
+
+        return status
 
     def _get_events_for_messages(self, messages: List[dict], state: Any):
         """Return the list of events corresponding to the provided messages.
@@ -1068,6 +1112,12 @@ class LLMRails:
                         res.output_data = context
 
                 _log = compute_generation_log(processing_log)
+
+                # Populate rails_status when in rails-only mode (dialog disabled with input/output rails)
+                if gen_options.rails.dialog is False and (
+                    gen_options.rails.input or gen_options.rails.output
+                ):
+                    res.rails_status = self._extract_rails_status(_log.activated_rails)
 
                 # Include information about activated rails and LLM calls if requested
                 log_options = gen_options.log if gen_options else None

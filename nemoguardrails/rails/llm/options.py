@@ -405,6 +405,48 @@ class GenerationLog(BaseModel):
         print("\n")
 
 
+class RailResult(BaseModel):
+    """Result of a single rail check."""
+
+    rail_type: str = Field(description="The type of rail (input, output, etc.)")
+    rail_name: str = Field(description="The name of the rail flow")
+    passed: bool = Field(description="Whether the rail check passed")
+    stopped: bool = Field(
+        default=False, description="Whether the rail stopped further processing"
+    )
+    message: Optional[str] = Field(
+        default=None, description="Message or reason for the result"
+    )
+    decisions: List[str] = Field(
+        default_factory=list,
+        description="List of decisions made by the rail (e.g., 'bot refuse to respond', 'stop')",
+    )
+    executed_actions: List[str] = Field(
+        default_factory=list, description="Names of actions executed by the rail"
+    )
+
+
+class RailsStatus(BaseModel):
+    """Status of rails execution in rails-only mode."""
+
+    input_rails: List[RailResult] = Field(
+        default_factory=list, description="Results of input rails checks"
+    )
+    output_rails: List[RailResult] = Field(
+        default_factory=list, description="Results of output rails checks"
+    )
+
+    @property
+    def all_passed(self) -> bool:
+        """Check if all rails passed."""
+        return all(r.passed for r in (self.input_rails + self.output_rails))
+
+    @property
+    def failed_rails(self) -> List[RailResult]:
+        """Get all failed rails."""
+        return [r for r in (self.input_rails + self.output_rails) if not r.passed]
+
+
 class GenerationResponse(BaseModel):
     # TODO: add typing for the list of messages
     response: Union[str, List[dict]] = Field(
@@ -431,6 +473,11 @@ class GenerationResponse(BaseModel):
     llm_metadata: Optional[dict] = Field(
         default=None,
         description="Metadata from the LLM response (additional_kwargs, response_metadata, usage_metadata, etc.)",
+    )
+    rails_status: Optional[RailsStatus] = Field(
+        default=None,
+        description="Status of input/output rails execution. "
+        "Populated automatically when rails are run with dialog disabled (rails-only mode).",
     )
 
 
