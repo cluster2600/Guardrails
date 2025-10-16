@@ -126,7 +126,6 @@ async def content_safety_check_input(
     )
 
     result = llm_task_manager.parse_task_output(task, output=result)
-    result = result.text
 
     is_safe, *violated_policies = result
 
@@ -215,7 +214,6 @@ async def content_safety_check_output(
 
     result = llm_task_manager.parse_task_output(task, output=result)
 
-    result = result.text
     is_safe, *violated_policies = result
 
     return {"allowed": is_safe, "policy_violations": violated_policies}
