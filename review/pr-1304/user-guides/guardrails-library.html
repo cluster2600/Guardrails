@@ -556,6 +556,7 @@
 <li><p><a class="reference internal" href="#pangea-ai-guard">Pangea AI Guard</a></p></li>
 <li><p><a class="reference internal" href="#trend-micro-vision-one-ai-application-security">Trend Micro Vision One AI Application Security</a></p></li>
 <li><p>OpenAI Moderation API - <em>[COMING SOON]</em></p></li>
+<li><p><a class="reference internal" href="#cisco-ai-defense">Cisco AI Defense</a></p></li>
 </ul>
 </li>
 <li><p>Other</p>
@@ -1404,6 +1405,25 @@ interactions with LLMs within AI-powered applications.</p>
 <p>For more details, check out the <a class="reference internal" href="community/trend-micro.html"><span class="std std-doc">Trend Micro Vision One AI Application Security</span></a> page.</p>
 </section>
 </section>
+<section id="cisco-ai-defense">
+<h3>Cisco AI Defense<a class="headerlink" href="#cisco-ai-defense" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports using <a class="reference external" href="https://www.cisco.com/site/us/en/products/security/ai-defense/index.html?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Cisco AI Defense Inspection</a> for protecting input and output flows.</p>
+<p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_KEY</span></code> and <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_ENDPOINT</span></code> environment variables.</p>
+<section id="id24">
+<h4>Example usage<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ai defense inspect prompt</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ai defense inspect response</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference internal" href="community/ai-defense.html"><span class="std std-doc">Cisco AI Defense Integration</span></a> page.</p>
+</section>
+</section>
 </section>
 <section id="other">
 <h2>Other<a class="headerlink" href="#other" title="Link to this heading">#</a></h2>
@@ -1851,6 +1871,10 @@ The rules use the string data type.</p>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-micro-vision-one-ai-application-security">Trend Micro Vision One AI Application Security</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cisco-ai-defense">Cisco AI Defense</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Example usage</a></li>
 </ul>
 </li>
 </ul>
