@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -336,6 +336,7 @@
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">LangChain</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -393,14 +394,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -525,11 +528,26 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="runnable-rails.html">RunnableRails</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#streaming-support">Streaming Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#batch-processing">Batch Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#input-output-formats">Input/Output Formats</a></li>
-<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#prompt-passthrough">Prompt Passthrough</a></li>
-<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#input-output-keys-for-chains-with-guardrails">Input/Output Keys for Chains with Guardrails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#using-tools">Using Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#metadata-preservation">Metadata Preservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#tool-calling">Tool Calling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runnable-rails.html#composition-and-chaining">Composition and Chaining</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="langgraph-integration.html">LangGraph Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#basic-integration-pattern">Basic Integration Pattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#tool-calling-integration">Tool Calling Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#stateful-conversations">Stateful Conversations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#multi-agent-workflows">Multi-Agent Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#debugging-and-troubleshooting">Debugging and Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html#streaming-support">Streaming Support</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="chain-with-guardrails/index.html">Chain-With-Guardrails</a><ul>

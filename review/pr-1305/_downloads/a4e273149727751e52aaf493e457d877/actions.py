@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +21,15 @@ from langchain_core.language_models.llms import BaseLLM
 from nemoguardrails.actions.actions import action
 from nemoguardrails.actions.llm.utils import llm_call
 from nemoguardrails.context import llm_call_info_var
+from nemoguardrails.llm.cache import CacheInterface
+from nemoguardrails.llm.cache.utils import (
+    CacheEntry,
+    create_normalized_cache_key,
+    extract_llm_metadata_for_cache,
+    extract_llm_stats_for_cache,
+    get_from_cache_and_restore_stats,
+)
 from nemoguardrails.llm.filters import to_chat_messages
-from nemoguardrails.llm.params import llm_params
 from nemoguardrails.llm.taskmanager import LLMTaskManager
 from nemoguardrails.logging.explain import LLMCallInfo
 
@@ -36,6 +43,7 @@ async def topic_safety_check_input(
     model_name: Optional[str] = None,
     context: Optional[dict] = None,
     events: Optional[List[dict]] = None,
+    model_caches: Optional[Dict[str, CacheInterface]] = None,
     **kwargs,
 ) -> dict:
     _MAX_TOKENS = 10
@@ -46,7 +54,17 @@ async def topic_safety_check_input(
         model_name = model_name or context.get("model", None)
 
     if events is not None:
-        conversation_history = to_chat_messages(events)
+        # convert InternalEvent objects to dictionary format for compatibility with to_chat_messages
+        dict_events = []
+        for event in events:
+            if hasattr(event, "name") and hasattr(event, "arguments"):
+                dict_event = {"type": event.name}
+                dict_event.update(event.arguments)
+                dict_events.append(dict_event)
+            else:
+                dict_events.append(event)
+
+        conversation_history = to_chat_messages(dict_events)
 
     if model_name is None:
         error_msg = (
@@ -93,12 +111,32 @@ async def topic_safety_check_input(
     messages.extend(conversation_history)
     messages.append({"type": "user", "content": user_input})
 
-    with llm_params(llm, temperature=0.01):
-        result = await llm_call(llm, messages, stop=stop)
+    cache = model_caches.get(model_name) if model_caches else None
+
+    if cache:
+        cache_key = create_normalized_cache_key(messages)
+        cached_result = get_from_cache_and_restore_stats(cache, cache_key)
+        if cached_result is not None:
+            log.debug(f"Topic safety cache hit for model '{model_name}'")
+            return cached_result
+
+    result = await llm_call(llm, messages, stop=stop, llm_params={"temperature": 0.01})
 
     if result.lower().strip() == "off-topic":
         on_topic = False
     else:
         on_topic = True
 
-    return {"on_topic": on_topic}
+    final_result = {"on_topic": on_topic}
+
+    if cache:
+        cache_key = create_normalized_cache_key(messages)
+        cache_entry: CacheEntry = {
+            "result": final_result,
+            "llm_stats": extract_llm_stats_for_cache(),
+            "llm_metadata": extract_llm_metadata_for_cache(),
+        }
+        cache.put(cache_key, cache_entry)
+        log.debug(f"Topic safety result cached for model '{model_name}'")
+
+    return final_result

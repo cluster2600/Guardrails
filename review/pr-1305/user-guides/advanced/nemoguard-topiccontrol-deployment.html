@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -58,7 +58,7 @@
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="NemoGuard JailbreakDetect Deployment" href="nemoguard-jailbreakdetect-deployment.html" />
-    <link rel="prev" title="Llama 3.1 NemoGuard 8B ContentSafety Deployment" href="nemoguard-contentsafety-deployment.html" />
+    <link rel="prev" title="Nemotron Content Safety Multilingual Deployment" href="nemotron-content-safety-multilingual-deployment.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -340,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -397,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -519,7 +522,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="llama-3-1-nemoguard-8b-topic-control-deployment">
 <h1>Llama 3.1 NemoGuard 8B Topic Control Deployment<a class="headerlink" href="#llama-3-1-nemoguard-8b-topic-control-deployment" title="Link to this heading">#</a></h1>
-<p>The TopicControl model is available to download as a LoRA adapter module through Hugging Face or as an <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/index.html">NVIDIA TopicControl NIM microservice</a> for low-latency optimized inference with <a class="reference external" href="https://docs.nvidia.com/tensorrt-llm/index.html">NVIDIA TensorRT-LLM</a>.</p>
+<p>The TopicControl model is available to download as a LoRA adapter module through Hugging Face or as an <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/index.html" rel="noreferer noopener" target="_blank">NVIDIA TopicControl NIM microservice</a> for low-latency optimized inference with <a class="reference external" href="https://docs.nvidia.com/tensorrt-llm/index.html" rel="noreferer noopener" target="_blank">NVIDIA TensorRT-LLM</a>.</p>
 <p>This guide covers how to deploy the TopicControl model as a NIM microservice and use it in a NeMo Guardrails configuration.</p>
 <section id="nim-deployment">
 <h2>NIM Deployment<a class="headerlink" href="#nim-deployment" title="Link to this heading">#</a></h2>
@@ -606,8 +609,8 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
 <p>For more details on the TopicControl model, check out the other resources:</p>
 <ul class="simple">
 <li><p>NeMo Guardrails library for <a class="reference internal" href="../guardrails-library.html#nvidia-models"><span class="std std-ref">NVIDIA NemoGuard models</span></a></p></li>
-<li><p>TopicControl topic safety example <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/topic_safety">configuration and prompts</a></p></li>
-<li><p><a class="reference external" href="https://arxiv.org/abs/2404.03820">Paper at EMNLP 2024</a></p></li>
+<li><p>TopicControl topic safety example <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/topic_safety" rel="noreferer noopener" target="_blank">configuration and prompts</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2404.03820" rel="noreferer noopener" target="_blank">Paper at EMNLP 2024</a></p></li>
 </ul>
 </section>
 </section>
@@ -623,12 +626,12 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="nemoguard-contentsafety-deployment.html"
+       href="nemotron-content-safety-multilingual-deployment.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Llama 3.1 NemoGuard 8B ContentSafety Deployment</p>
+        <p class="prev-next-title">Nemotron Content Safety Multilingual Deployment</p>
       </div>
     </a>
     <a class="right-next"

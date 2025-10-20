@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -340,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -397,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -522,7 +525,7 @@
 <p>The NeMo Guardrails toolkit enables you to create guardrails configurations and deploy them scalable and securely using a <strong>guardrails server</strong> and an <strong>actions server</strong>.</p>
 <section id="guardrails-server">
 <h2>Guardrails Server<a class="headerlink" href="#guardrails-server" title="Link to this heading">#</a></h2>
-<p>The Guardrails Server loads a predefined set of guardrails configurations at startup and exposes an HTTP API to use them. The server uses <a class="reference external" href="https://fastapi.tiangolo.com/">FastAPI</a>, and the interface is based on the <a class="reference external" href="https://github.com/mckaywrigley/chatbot-ui">chatbot-ui</a> project. This server is best suited to provide a visual interface/ playground to interact with the bot and try out the rails.</p>
+<p>The Guardrails Server loads a predefined set of guardrails configurations at startup and exposes an HTTP API to use them. The server uses <a class="reference external" href="https://fastapi.tiangolo.com/" rel="noreferer noopener" target="_blank">FastAPI</a>, and the interface is based on the <a class="reference external" href="https://github.com/mckaywrigley/chatbot-ui" rel="noreferer noopener" target="_blank">chatbot-ui</a> project. This server is best suited to provide a visual interface/ playground to interact with the bot and try out the rails.</p>
 <p>To launch the server:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span><span class="o">[</span>--config<span class="w"> </span>PATH/TO/CONFIGS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--port<span class="w"> </span>PORT<span class="o">]</span><span class="w"> </span><span class="o">[</span>--prefix<span class="w"> </span>PREFIX<span class="o">]</span><span class="w"> </span><span class="o">[</span>--disable-chat-ui<span class="o">]</span><span class="w"> </span><span class="o">[</span>--auto-reload<span class="o">]</span><span class="w"> </span><span class="o">[</span>--default-config-id<span class="w"> </span>DEFAULT_CONFIG_ID<span class="o">]</span>
 </pre></div>
@@ -634,7 +637,7 @@ This configuration is used when no <code class="docutils literal notranslate"><s
 <section id="configuration">
 <h4>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h4>
 <p>To use server-side threads, you have to register a datastore. To do this, you must create a <code class="docutils literal notranslate"><span class="pre">config.py</span></code> file in the root of the configurations folder (i.e., the folder containing all the guardrails configurations the server must load). Inside <code class="docutils literal notranslate"><span class="pre">config.py</span></code> use the <code class="docutils literal notranslate"><span class="pre">register_datastore</span></code> function to register the datastore you want to use.</p>
-<p>Out-of-the-box, NeMo Guardrails has support for <code class="docutils literal notranslate"><span class="pre">MemoryStore</span></code> (useful for quick testing) and <code class="docutils literal notranslate"><span class="pre">RedisStore</span></code>. If you want to use a different backend, you can implement the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/server/datastore/datastore.py"><code class="docutils literal notranslate"><span class="pre">DataStore</span></code></a> interface and register a different instance in <code class="docutils literal notranslate"><span class="pre">config.py</span></code>.</p>
+<p>Out-of-the-box, NeMo Guardrails has support for <code class="docutils literal notranslate"><span class="pre">MemoryStore</span></code> (useful for quick testing) and <code class="docutils literal notranslate"><span class="pre">RedisStore</span></code>. If you want to use a different backend, you can implement the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/server/datastore/datastore.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">DataStore</span></code></a> interface and register a different instance in <code class="docutils literal notranslate"><span class="pre">config.py</span></code>.</p>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
 <p>to use <code class="docutils literal notranslate"><span class="pre">RedisStore</span></code> you must install <code class="docutils literal notranslate"><span class="pre">aioredis</span> <span class="pre">&gt;=</span> <span class="pre">2.0.1</span></code>.</p>
@@ -657,7 +660,7 @@ This configuration is used when no <code class="docutils literal notranslate"><s
 <p class="admonition-title">Note</p>
 <p>for security reasons, the <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> must have a minimum length of 16 characters.</p>
 </div>
-<p>As an example, check out this <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/threads/README.md">configuration</a>.</p>
+<p>As an example, check out this <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/threads/README.md" rel="noreferer noopener" target="_blank">configuration</a>.</p>
 </section>
 <section id="limitations">
 <h4>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h4>

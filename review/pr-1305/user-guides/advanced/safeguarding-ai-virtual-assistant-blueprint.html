@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=49218dbd"></script>
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,15 +50,15 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.14.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Security Guidelines" href="../../security/guidelines.html" />
-    <link rel="prev" title="NemoGuard JailbreakDetect Deployment" href="nemoguard-jailbreakdetect-deployment.html" />
+    <link rel="next" title="Tools Integration with NeMo Guardrails" href="tools-integration.html" />
+    <link rel="prev" title="KV Cache Reuse for NemoGuard NIM" href="kv-cache-reuse.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -340,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -397,14 +398,16 @@
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/red-teaming.html">Red Teaming</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -521,16 +524,16 @@
 <h1>Blueprint with NemoGuard NIMs<a class="headerlink" href="#blueprint-with-nemoguard-nims" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This documentation is intended for developers that want to integrate NeMo Guardrails into <a class="reference external" href="https://build.nvidia.com/blueprints">NVIDIA Blueprints</a></p>
+<p>This documentation is intended for developers that want to integrate NeMo Guardrails into <a class="reference external" href="https://build.nvidia.com/blueprints" rel="noreferer noopener" target="_blank">NVIDIA Blueprints</a></p>
 </div>
-<p>NVIDIA Blueprints are comprehensive reference workflows that accelerate AI application development and deployment. They make it easy to start building and setting up virtual assistants, offering ready-made workflows and tools. Whether you need a simple AI-powered chatbot or a fully animated digital human interface, NVIDIA provides resources to help you create an AI assistant that’s scalable and aligned with your brand. For example, developers can use the <strong><a class="reference external" href="https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service">NVIDIA AI Blueprint for AI virtual assistants</a></strong> to build an AI assistant for customer service for delivering a responsive, efficient customer support experience.</p>
+<p>NVIDIA Blueprints are comprehensive reference workflows that accelerate AI application development and deployment. They make it easy to start building and setting up virtual assistants, offering ready-made workflows and tools. Whether you need a simple AI-powered chatbot or a fully animated digital human interface, NVIDIA provides resources to help you create an AI assistant that’s scalable and aligned with your brand. For example, developers can use the <strong><a class="reference external" href="https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service" rel="noreferer noopener" target="_blank">NVIDIA AI Blueprint for AI virtual assistants</a></strong> to build an AI assistant for customer service for delivering a responsive, efficient customer support experience.</p>
 <section id="prerequisites-and-setup">
 <h2>Prerequisites and Setup<a class="headerlink" href="#prerequisites-and-setup" title="Link to this heading">#</a></h2>
 <section id="nvidia-blueprint">
 <h3>NVIDIA Blueprint<a class="headerlink" href="#nvidia-blueprint" title="Link to this heading">#</a></h3>
 <p>The NVIDIA Blueprint for AI virtual assistants can be deployed either with the NVIDIA-hosted endpoints or with locally hosted NIM microservices. To get started with the deployment:</p>
 <ul class="simple">
-<li><p><strong><a class="reference external" href="https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service">Using the NVIDIA-hosted endpoint</a></strong>: The launchable opens to a jupyter notebook - <code class="docutils literal notranslate"><span class="pre">ai-virtual-assitant-notebook.ipynb</span></code>. Make sure that the <a class="reference external" href="https://github.com/NVIDIA-AI-Blueprints/ai-virtual-assistant?tab=readme-ov-file#hardware-requirements">compute requirements</a> are satisfied</p></li>
+<li><p><strong><a class="reference external" href="https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service" rel="noreferer noopener" target="_blank">Using the NVIDIA-hosted endpoint</a></strong>: The launchable opens to a jupyter notebook - <code class="docutils literal notranslate"><span class="pre">ai-virtual-assitant-notebook.ipynb</span></code>. Make sure that the <a class="reference external" href="https://github.com/NVIDIA-AI-Blueprints/ai-virtual-assistant?tab=readme-ov-file#hardware-requirements" rel="noreferer noopener" target="_blank">compute requirements</a> are satisfied</p></li>
 </ul>
 </section>
 <section id="integrating-nemoguard">
@@ -584,20 +587,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="nemoguard-jailbreakdetect-deployment.html"
+       href="kv-cache-reuse.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NemoGuard JailbreakDetect Deployment</p>
+        <p class="prev-next-title">KV Cache Reuse for NemoGuard NIM</p>
       </div>
     </a>
     <a class="right-next"
-       href="../../security/guidelines.html"
+       href="tools-integration.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Security Guidelines</p>
+        <p class="prev-next-title">Tools Integration with NeMo Guardrails</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
