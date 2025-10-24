@@ -360,22 +360,24 @@ def parse_md_file(file_name, content=None):
                 continue
 
             # Make sure we have the type of the symbol in the name of the symbol
-            if sym is not None:
-                sym = _get_typed_symbol_name(sym, symbol_type)
+            if not sym or not isinstance(sym, str):
+                raise ValueError(f"sym must be a non-empty string, found {sym}")
 
-                # For objects, we translate the "string" type to "kb:Object:prop|partial"
-                param_type = _get_param_type(parts[1])
-                if symbol_type == "object" and param_type in ["string", "text"]:
-                    object_name = split_max(sym, ":", 1)[1]
-                    param_type = f"kb:{object_name}:{parts[0]}|partial"
+            sym = _get_typed_symbol_name(sym, symbol_type)
 
-                # TODO: figure out a cleaner way to deal with this
-                # For the "type:time" type, we transform it into "lookup:time"
-                if param_type == "type:time":
-                    param_type = "lookup:time"
+            # For objects, we translate the "string" type to "kb:Object:prop|partial"
+            param_type = _get_param_type(parts[1])
+            if symbol_type == "object" and param_type in ["string", "text"]:
+                object_name = split_max(sym, ":", 1)[1]
+                param_type = f"kb:{object_name}:{parts[0]}|partial"
 
-                result["mappings"].append((f"{sym}:{parts[0]}", param_type))
-                symbol_params.append(parts[0])
+            # TODO: figure out a cleaner way to deal with this
+            # For the "type:time" type, we transform it into "lookup:time"
+            if param_type == "type:time":
+                param_type = "lookup:time"
+
+            result["mappings"].append((f"{sym}:{parts[0]}", param_type))
+            symbol_params.append(parts[0])
 
         elif line.startswith("-") or line.startswith("*"):
             if sym is None:
