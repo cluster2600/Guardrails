@@ -523,20 +523,20 @@
 <p>Modern reasoning-capable LLMs expose their internal thought process as reasoning traces. These traces reveal how the model arrives at its conclusions, which can be valuable for transparency but may also contain sensitive information or problematic reasoning patterns.</p>
 <p>NeMo Guardrails allows you to inspect and control these reasoning traces by extracting them and making them available throughout your guardrails configuration. This enables you to write guardrails that can block responses based on the model’s reasoning process, enhance moderation decisions with reasoning context, or monitor reasoning patterns.</p>
 <p>This guide shows you how to access and guardrail reasoning content using the three main mechanisms NeMo Guardrails provides.</p>
-<section id="about-the-examples-in-this-guide">
-<h2>About the Examples in This Guide<a class="headerlink" href="#about-the-examples-in-this-guide" title="Link to this heading">#</a></h2>
-<p><strong>Important</strong>: The examples in this guide range from minimal toy examples (for understanding concepts) to complete reference implementations. They are designed to teach you how to access and work with <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> in different contexts, not as production-ready code to copy-paste.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The examples in this guide range from minimal toy examples (for understanding concepts) to complete reference implementations. They are designed to teach you how to access and work with <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> in different contexts, not as production-ready code to copy-paste.</p>
 <ul class="simple">
 <li><p><strong>Toy examples</strong> demonstrate basic variable access and simple pattern matching for learning purposes</p></li>
-<li><p><strong>Reference implementations</strong> show complete working configurations from the repository (<code class="docutils literal notranslate"><span class="pre">examples/configs/self_check_thinking/</span></code>)</p></li>
+<li><p><strong>Reference implementations</strong> show complete working configurations from the repository (<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/bc799fbb05e1f12f1ba79461f7f7378b3af50c22/examples/configs/self_check_thinking" rel="noreferer noopener" target="_blank">examples/configs/self_check_thinking/</a>)</p></li>
 </ul>
 <p>You should adapt these patterns to your specific use case with appropriate validation, error handling, and business logic for your application.</p>
-</section>
+</div>
 <section id="how-reasoning-content-is-made-available">
 <h2>How Reasoning Content is Made Available<a class="headerlink" href="#how-reasoning-content-is-made-available" title="Link to this heading">#</a></h2>
 <p>When an LLM generates a response with reasoning traces, NeMo Guardrails automatically extracts the reasoning and makes it available through:</p>
-<section id="in-output-rails-bot-thinking-variable">
-<h3>1. In Output Rails: <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> Variable<a class="headerlink" href="#in-output-rails-bot-thinking-variable" title="Link to this heading">#</a></h3>
+<section id="in-colang-flows-bot-thinking-variable">
+<h3>In Colang Flows: <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> Variable<a class="headerlink" href="#in-colang-flows-bot-thinking-variable" title="Link to this heading">#</a></h3>
 <p>The reasoning content is available as a context variable in Colang output rails:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow check_reasoning
   if $bot_thinking
@@ -544,10 +544,13 @@
     $captured_reasoning = $bot_thinking
 </pre></div>
 </div>
-<p><em>Note: This is a minimal example to demonstrate variable access. See the “Using Reasoning in Self-Check Output” section for a complete reference implementation.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is a minimal example to demonstrate variable access. See the “Using Reasoning in Self-Check Output” section for a complete reference implementation.</p>
+</div>
 </section>
-<section id="in-custom-actions-context-get-bot-thinking">
-<h3>2. In Custom Actions: <code class="docutils literal notranslate"><span class="pre">context.get(&quot;bot_thinking&quot;)</span></code><a class="headerlink" href="#in-custom-actions-context-get-bot-thinking" title="Link to this heading">#</a></h3>
+<section id="in-actions-context-get-bot-thinking">
+<h3>In Actions: <code class="docutils literal notranslate"><span class="pre">context.get(&quot;bot_thinking&quot;)</span></code><a class="headerlink" href="#in-actions-context-get-bot-thinking" title="Link to this heading">#</a></h3>
 <p>When writing custom Python actions, you can access the reasoning via the context dictionary:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@action</span><span class="p">(</span><span class="n">is_system_action</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_custom_check</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -560,7 +563,7 @@
 <p>This is the same pattern used in the built-in <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> action, which accesses <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> from context and passes it to the prompt template.</p>
 </section>
 <section id="in-prompt-templates-bot-thinking">
-<h3>3. In Prompt Templates: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">bot_thinking</span> <span class="pre">}}</span></code><a class="headerlink" href="#in-prompt-templates-bot-thinking" title="Link to this heading">#</a></h3>
+<h3>In Prompt Templates: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">bot_thinking</span> <span class="pre">}}</span></code><a class="headerlink" href="#in-prompt-templates-bot-thinking" title="Link to this heading">#</a></h3>
 <p>When rendering prompts for LLM tasks (like self-check output), the reasoning is available as a Jinja2 template variable:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
@@ -589,7 +592,10 @@
     $has_reasoning = False
 </pre></div>
 </div>
-<p><em>Note: This is a toy example for learning purposes. For production use, see the “Using Reasoning in Self-Check Output” section below.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is a toy example for learning purposes. For production use, see the “Using Reasoning in Self-Check Output” section below.</p>
+</div>
 </section>
 <section id="blocking-based-on-reasoning-patterns">
 <h3>Blocking Based on Reasoning Patterns<a class="headerlink" href="#blocking-based-on-reasoning-patterns" title="Link to this heading">#</a></h3>
@@ -610,7 +616,10 @@ define flow block_sensitive_reasoning
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block_sensitive_reasoning</span>
 </pre></div>
 </div>
-<p><em>Note: This demonstrates basic pattern matching for learning purposes. Real implementations should use more comprehensive validation and consider edge cases.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This demonstrates basic pattern matching for learning purposes. Real implementations should use more comprehensive validation and consider edge cases.</p>
+</div>
 </section>
 </section>
 <section id="guardrailing-with-custom-actions">
@@ -659,21 +668,24 @@ define flow quality_check_reasoning
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quality_check_reasoning</span>
 </pre></div>
 </div>
-<p><em>Note: This example shows how to structure a custom action that accesses <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code>. Adapt the validation logic to your specific requirements.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This example shows how to structure a custom action that accesses <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code>. Adapt the validation logic to your specific requirements.</p>
+</div>
 </section>
 <section id="using-reasoning-in-self-check-output">
 <h2>Using Reasoning in Self-Check Output<a class="headerlink" href="#using-reasoning-in-self-check-output" title="Link to this heading">#</a></h2>
-<p>This is the <strong>complete reference implementation</strong> from <code class="docutils literal notranslate"><span class="pre">examples/configs/self_check_thinking/</span></code> showing how <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> is actually used in the codebase. This pattern provides reasoning traces to your self-check output rail, allowing the moderation LLM to make more informed decisions by considering both the response and the reasoning process.</p>
+<p>This is the <strong>complete reference implementation</strong> from <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/bc799fbb05e1f12f1ba79461f7f7378b3af50c22/examples/configs/self_check_thinking" rel="noreferer noopener" target="_blank">examples/configs/self_check_thinking/</a> showing how <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> is actually used in the codebase. This pattern provides reasoning traces to your self-check output rail, allowing the moderation LLM to make more informed decisions by considering both the response and the reasoning process.</p>
 <section id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h3>
 <p><strong>config.yml</strong>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-ai/deepseek-r1</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_engine&gt;</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_reasoning_model&gt;</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_moderation_model&gt;</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_engine&gt;</span>
 
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
@@ -705,7 +717,7 @@ define flow quality_check_reasoning
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">if</span> <span class="pre">bot_thinking</span> <span class="pre">%}</span></code> conditional ensures the prompt works with both reasoning and non-reasoning models. When reasoning is available, the self-check LLM can evaluate both the final response and the reasoning process.</p>
-<p><strong>Explore the complete implementation</strong>: You can find the full working configuration in <code class="docutils literal notranslate"><span class="pre">examples/configs/self_check_thinking/</span></code> with all files (config.yml, prompts.yml) ready to use as a reference for your own implementation.</p>
+<p><strong>Explore the complete implementation</strong>: You can find the full working configuration in <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/bc799fbb05e1f12f1ba79461f7f7378b3af50c22/examples/configs/self_check_thinking" rel="noreferer noopener" target="_blank">examples/configs/self_check_thinking/</a> with all files (config.yml, prompts.yml) ready to use as a reference for your own implementation.</p>
 </section>
 </section>
 <section id="managing-reasoning-in-api-responses">
@@ -766,15 +778,16 @@ define flow quality_check_reasoning
 </pre></div>
 </div>
 </section>
-<section id="config-yml">
-<h3>config.yml<a class="headerlink" href="#config-yml" title="Link to this heading">#</a></h3>
+<section id="model-and-rails-configuration">
+<h3>Model and Rails Configuration<a class="headerlink" href="#model-and-rails-configuration" title="Link to this heading">#</a></h3>
+<p><strong>config.yml</strong>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-ai/deepseek-r1</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_engine&gt;</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_reasoning_model&gt;</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_moderation_model&gt;</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_engine&gt;</span>
 
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
@@ -785,8 +798,9 @@ define flow quality_check_reasoning
 </pre></div>
 </div>
 </section>
-<section id="prompts-yml">
-<h3>prompts.yml<a class="headerlink" href="#prompts-yml" title="Link to this heading">#</a></h3>
+<section id="self-check-output-prompt">
+<h3>Self-Check Output Prompt<a class="headerlink" href="#self-check-output-prompt" title="Link to this heading">#</a></h3>
+<p><strong>prompts.yml</strong>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -808,8 +822,9 @@ define flow quality_check_reasoning
 </pre></div>
 </div>
 </section>
-<section id="actions-py">
-<h3>actions.py<a class="headerlink" href="#actions-py" title="Link to this heading">#</a></h3>
+<section id="custom-reasoning-validation">
+<h3>Custom Reasoning Validation<a class="headerlink" href="#custom-reasoning-validation" title="Link to this heading">#</a></h3>
+<p><strong>actions.py</strong>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">action</span>
 
@@ -830,8 +845,9 @@ define flow quality_check_reasoning
 </pre></div>
 </div>
 </section>
-<section id="rails-reasoning-checks-co">
-<h3>rails/reasoning_checks.co<a class="headerlink" href="#rails-reasoning-checks-co" title="Link to this heading">#</a></h3>
+<section id="reasoning-guard-flows">
+<h3>Reasoning Guard Flows<a class="headerlink" href="#reasoning-guard-flows" title="Link to this heading">#</a></h3>
+<p><strong>rails/reasoning_checks.co</strong>:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot refuse to respond
   &quot;I&#39;m sorry, I can&#39;t respond to that.&quot;
 
@@ -892,8 +908,8 @@ define flow custom_reasoning_check
 <p>Ensure you’re using a reasoning-capable model as your main model:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-ai/deepseek-r1</span><span class="w">  </span><span class="c1"># or other reasoning models</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_engine&gt;</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your_reasoning_model&gt;</span>
 </pre></div>
 </div>
 </section>
@@ -903,7 +919,7 @@ define flow custom_reasoning_check
 <ul class="simple">
 <li><p><a class="reference internal" href="../../getting-started/5-output-rails/README.html"><span class="std std-doc">Output Rails</span></a> - General guide on output rails</p></li>
 <li><p><a class="reference internal" href="generation-options.html"><span class="std std-doc">Generation Options</span></a> - Using generation options for structured API responses</p></li>
-<li><p><a class="reference internal" href="#../../../examples/configs/self_check_thinking"><span class="xref myst">Self-Check Output Example</span></a> - Complete working configuration</p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/bc799fbb05e1f12f1ba79461f7f7378b3af50c22/examples/configs/self_check_thinking" rel="noreferer noopener" target="_blank">Self-Check Output Example</a> - Complete working configuration</p></li>
 <li><p><a class="reference internal" href="#../../colang-language-syntax-guide.md#actions"><span class="xref myst">Custom Actions</span></a> - Guide on writing custom actions</p></li>
 </ul>
 </section>
@@ -940,11 +956,10 @@ define flow custom_reasoning_check
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-examples-in-this-guide">About the Examples in This Guide</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-reasoning-content-is-made-available">How Reasoning Content is Made Available</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-output-rails-bot-thinking-variable">1. In Output Rails: <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> Variable</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-custom-actions-context-get-bot-thinking">2. In Custom Actions: <code class="docutils literal notranslate"><span class="pre">context.get("bot_thinking")</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-prompt-templates-bot-thinking">3. In Prompt Templates: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">bot_thinking</span> <span class="pre">}}</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-colang-flows-bot-thinking-variable">In Colang Flows: <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> Variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-actions-context-get-bot-thinking">In Actions: <code class="docutils literal notranslate"><span class="pre">context.get("bot_thinking")</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-prompt-templates-bot-thinking">In Prompt Templates: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">bot_thinking</span> <span class="pre">}}</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailing-with-output-rails">Guardrailing with Output Rails</a><ul class="nav section-nav flex-column">
@@ -965,10 +980,10 @@ define flow custom_reasoning_check
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-working-example">Complete Working Example</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#directory-structure">Directory Structure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#config-yml">config.yml</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-yml">prompts.yml</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actions-py">actions.py</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rails-reasoning-checks-co">rails/reasoning_checks.co</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-rails-configuration">Model and Rails Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-output-prompt">Self-Check Output Prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-reasoning-validation">Custom Reasoning Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-guard-flows">Reasoning Guard Flows</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
