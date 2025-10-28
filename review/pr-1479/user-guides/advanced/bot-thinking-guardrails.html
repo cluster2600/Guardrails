@@ -1,0 +1,1084 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Guardrailing Bot Reasoning Content &#8212; NVIDIA NeMo Guardrails</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=1aa419d7"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/bot-thinking-guardrails';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.17.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/bot-thinking-guardrails.html" />
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="search" title="Search" href="../../search.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+
+
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA NeMo Guardrails</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA NeMo Guardrails</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA NeMo Guardrails</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">About NeMo Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes.html">Release Notes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../colang-language-syntax-guide.html">Colang Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../llm-support.html">LLM Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multimodal.html">Multimodal Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server-guide.html">Server Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../langchain/langgraph-integration.html">LangGraph Integration</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../langchain/runnable-as-action/index.html">Runnable-As-Action</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../langchain/runnable-as-action/README.html">Runnable as Action</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../detailed-logging/index.html">Detailed Logging</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../detailed-logging/README.html">Output Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracing/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../jailbreak-detection-heuristics/README.html">Using Jailbreak Detection Heuristics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../llm/index.html">LLMs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../llm/nvidia-ai-endpoints/index.html">NVIDIA AI Endpoints</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../llm/nvidia-ai-endpoints/README.html">Using LLMs hosted on NVIDIA API Catalog</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../llm/vertexai/index.html">Vertex AI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../llm/vertexai/README.html">Using LLMs hosted on Vertex AI</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multi-config-api/index.html">Multi Config API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multi-config-api/README.html">Multi-config API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../migration-guide.html">Migrating from Colang 1 to Colang 2</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Uses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generation-options.html">Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prompt-customization.html">Prompt Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding-search-providers.html">Embedding Search Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-docker.html">NeMo Guardrails with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="align-score-deployment.html">AlignScore Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extract-user-provided-values.html">Extract User-provided Values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bot-message-instructions.html">Bot Message Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event-based-api.html">Event-based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Guardrails with Colang</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/1-hello-world/README.html">Hello World</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/3-demo-use-case/README.html">Demo Use Case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/4-input-rails/README.html">Input Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/5-output-rails/README.html">Output Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/6-topical-rails/README.html">Topical Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/7-rag/README.html">Retrieval-Augmented Generation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Colang 2.0</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../colang-2/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../colang-2/whats-changed.html">What’s Changed</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../colang-2/getting-started/index.html">Getting Started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/getting-started/hello-world.html">Hello World</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/getting-started/dialog-rails.html">Dialog Rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/getting-started/multimodal-rails.html">Multimodal Rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/getting-started/input-rails.html">Input Rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/getting-started/interaction-loop.html">Interaction Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/getting-started/llm-flows.html">LLM Flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/getting-started/recommended-next-steps.html">Recommended Next Steps</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../colang-2/language-reference/index.html">Language Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/event-generation-and-matching.html">Event Generation &amp; Matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/working-with-actions.html">Working with Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/defining-flows.html">Defining Flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/working-with-variables-and-expressions.html">Working with Variables &amp; Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/flow-control.html">Flow control</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../colang-2/language-reference/the-standard-library.html">Colang Standard Library (CSL)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../colang-2/language-reference/csl/core.html">Fundamental Core Flows (core.co)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../colang-2/language-reference/csl/timing.html">Timing Flows (timing.co)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../colang-2/language-reference/csl/lmm.html">LLM Flows (llm.co)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../colang-2/language-reference/csl/avatars.html">Interactive Avatar Modality Flows (avatars.co)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../colang-2/language-reference/csl/guardrails.html">Guardrail Flows (guardrails.co)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../colang-2/language-reference/csl/attention.html">User Attention Flows (attention.co)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/make-use-of-llms.html">Make use of Large Language Models (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/more-on-flows.html">More on Flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/python-actions.html">Python Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../colang-2/language-reference/development-and-debugging.html">Development and Debugging</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../architecture/index.html">Architecture</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture/README.html">Architecture Guide</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Guardrailing Bot Reasoning Content</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="guardrailing-bot-reasoning-content">
+<h1>Guardrailing Bot Reasoning Content<a class="headerlink" href="#guardrailing-bot-reasoning-content" title="Link to this heading">#</a></h1>
+<p>Modern reasoning-capable LLMs expose their internal thought process as reasoning traces. These traces reveal how the model arrives at its conclusions, which can be valuable for transparency but may also contain sensitive information or problematic reasoning patterns.</p>
+<p>NeMo Guardrails allows you to inspect and control these reasoning traces by extracting them and making them available throughout your guardrails configuration. This enables you to write guardrails that can block responses based on the model’s reasoning process, enhance moderation decisions with reasoning context, or monitor reasoning patterns.</p>
+<p>This guide shows you how to access and guardrail reasoning content using the three main mechanisms NeMo Guardrails provides.</p>
+<section id="about-the-examples-in-this-guide">
+<h2>About the Examples in This Guide<a class="headerlink" href="#about-the-examples-in-this-guide" title="Link to this heading">#</a></h2>
+<p><strong>Important</strong>: The examples in this guide range from minimal toy examples (for understanding concepts) to complete reference implementations. They are designed to teach you how to access and work with <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> in different contexts, not as production-ready code to copy-paste.</p>
+<ul class="simple">
+<li><p><strong>Toy examples</strong> demonstrate basic variable access and simple pattern matching for learning purposes</p></li>
+<li><p><strong>Reference implementations</strong> show complete working configurations from the repository (<code class="docutils literal notranslate"><span class="pre">examples/configs/self_check_thinking/</span></code>)</p></li>
+</ul>
+<p>You should adapt these patterns to your specific use case with appropriate validation, error handling, and business logic for your application.</p>
+</section>
+<section id="how-reasoning-content-is-made-available">
+<h2>How Reasoning Content is Made Available<a class="headerlink" href="#how-reasoning-content-is-made-available" title="Link to this heading">#</a></h2>
+<p>When an LLM generates a response with reasoning traces, NeMo Guardrails automatically extracts the reasoning and makes it available through:</p>
+<section id="in-output-rails-bot-thinking-variable">
+<h3>1. In Output Rails: <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> Variable<a class="headerlink" href="#in-output-rails-bot-thinking-variable" title="Link to this heading">#</a></h3>
+<p>The reasoning content is available as a context variable in Colang output rails:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow check_reasoning
+  if $bot_thinking
+    # Access reasoning content
+    $captured_reasoning = $bot_thinking
+</pre></div>
+</div>
+<p><em>Note: This is a minimal example to demonstrate variable access. See the “Using Reasoning in Self-Check Output” section for a complete reference implementation.</em></p>
+</section>
+<section id="in-custom-actions-context-get-bot-thinking">
+<h3>2. In Custom Actions: <code class="docutils literal notranslate"><span class="pre">context.get(&quot;bot_thinking&quot;)</span></code><a class="headerlink" href="#in-custom-actions-context-get-bot-thinking" title="Link to this heading">#</a></h3>
+<p>When writing custom Python actions, you can access the reasoning via the context dictionary:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@action</span><span class="p">(</span><span class="n">is_system_action</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_custom_check</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">bot_thinking</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bot_thinking&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bot_thinking</span> <span class="ow">and</span> <span class="s2">&quot;sensitive&quot;</span> <span class="ow">in</span> <span class="n">bot_thinking</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>This is the same pattern used in the built-in <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> action, which accesses <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> from context and passes it to the prompt template.</p>
+</section>
+<section id="in-prompt-templates-bot-thinking">
+<h3>3. In Prompt Templates: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">bot_thinking</span> <span class="pre">}}</span></code><a class="headerlink" href="#in-prompt-templates-bot-thinking" title="Link to this heading">#</a></h3>
+<p>When rendering prompts for LLM tasks (like self-check output), the reasoning is available as a Jinja2 template variable:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Bot message: &quot;{{ bot_response }}&quot;</span>
+
+<span class="w">      </span><span class="no">{% if bot_thinking %}</span>
+<span class="w">      </span><span class="no">Bot reasoning: &quot;{{ bot_thinking }}&quot;</span>
+<span class="w">      </span><span class="no">{% endif %}</span>
+
+<span class="w">      </span><span class="no">Should this be blocked (Yes or No)?</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="guardrailing-with-output-rails">
+<h2>Guardrailing with Output Rails<a class="headerlink" href="#guardrailing-with-output-rails" title="Link to this heading">#</a></h2>
+<p>Output rails can use the <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> variable to inspect and control responses based on reasoning content.</p>
+<section id="basic-example-checking-for-reasoning">
+<h3>Basic Example: Checking for Reasoning<a class="headerlink" href="#basic-example-checking-for-reasoning" title="Link to this heading">#</a></h3>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow log_reasoning_presence
+  if $bot_thinking
+    $has_reasoning = True
+    log &quot;Reasoning detected: {$bot_thinking}&quot;
+  else
+    $has_reasoning = False
+</pre></div>
+</div>
+<p><em>Note: This is a toy example for learning purposes. For production use, see the “Using Reasoning in Self-Check Output” section below.</em></p>
+</section>
+<section id="blocking-based-on-reasoning-patterns">
+<h3>Blocking Based on Reasoning Patterns<a class="headerlink" href="#blocking-based-on-reasoning-patterns" title="Link to this heading">#</a></h3>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot refuse to respond
+  &quot;I&#39;m sorry, I can&#39;t respond to that.&quot;
+
+define flow block_sensitive_reasoning
+  if $bot_thinking
+    if &quot;confidential&quot; in $bot_thinking or &quot;internal only&quot; in $bot_thinking
+      bot refuse to respond
+      stop
+</pre></div>
+</div>
+<p>Add this flow to your output rails in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block_sensitive_reasoning</span>
+</pre></div>
+</div>
+<p><em>Note: This demonstrates basic pattern matching for learning purposes. Real implementations should use more comprehensive validation and consider edge cases.</em></p>
+</section>
+</section>
+<section id="guardrailing-with-custom-actions">
+<h2>Guardrailing with Custom Actions<a class="headerlink" href="#guardrailing-with-custom-actions" title="Link to this heading">#</a></h2>
+<p>You can write custom Python actions that access reasoning content through the context dictionary.</p>
+<p>Create a file <code class="docutils literal notranslate"><span class="pre">config/actions.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">action</span>
+
+<span class="nd">@action</span><span class="p">(</span><span class="n">is_system_action</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_reasoning_quality</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">bot_thinking</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bot_thinking&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bot_thinking</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">forbidden_patterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;proprietary information&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;trade secret&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;confidential data&quot;</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">forbidden_patterns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">bot_thinking</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Create a flow that uses this action in <code class="docutils literal notranslate"><span class="pre">config/rails/reasoning_check.co</span></code>:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot refuse to respond
+  &quot;I&#39;m sorry, I can&#39;t respond to that.&quot;
+
+define flow quality_check_reasoning
+  $is_safe = execute check_reasoning_quality
+
+  if not $is_safe
+    bot refuse to respond
+    stop
+</pre></div>
+</div>
+<p>Add to your output rails:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quality_check_reasoning</span>
+</pre></div>
+</div>
+<p><em>Note: This example shows how to structure a custom action that accesses <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code>. Adapt the validation logic to your specific requirements.</em></p>
+</section>
+<section id="using-reasoning-in-self-check-output">
+<h2>Using Reasoning in Self-Check Output<a class="headerlink" href="#using-reasoning-in-self-check-output" title="Link to this heading">#</a></h2>
+<p>This is the <strong>complete reference implementation</strong> from <code class="docutils literal notranslate"><span class="pre">examples/configs/self_check_thinking/</span></code> showing how <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> is actually used in the codebase. This pattern provides reasoning traces to your self-check output rail, allowing the moderation LLM to make more informed decisions by considering both the response and the reasoning process.</p>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h3>
+<p><strong>config.yml</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-ai/deepseek-r1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
+</pre></div>
+</div>
+<p><strong>prompts.yml</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Your task is to check if the bot message below complies with the company policy.</span>
+
+<span class="w">      </span><span class="no">Company policy for the bot:</span>
+<span class="w">      </span><span class="no">- messages should not contain any explicit content</span>
+<span class="w">      </span><span class="no">- messages should not contain abusive language or offensive content</span>
+<span class="w">      </span><span class="no">- messages should not contain any harmful content</span>
+<span class="w">      </span><span class="no">- messages should not contain racially insensitive content</span>
+<span class="w">      </span><span class="no">- if a message is a refusal, should be polite</span>
+
+<span class="w">      </span><span class="no">Bot message: &quot;{{ bot_response }}&quot;</span>
+
+<span class="w">      </span><span class="no">{% if bot_thinking %}</span>
+<span class="w">      </span><span class="no">Bot thinking/reasoning: &quot;{{ bot_thinking }}&quot;</span>
+<span class="w">      </span><span class="no">{% endif %}</span>
+
+<span class="w">      </span><span class="no">Question: Should the message be blocked (Yes or No)?</span>
+<span class="w">      </span><span class="no">Answer:</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">if</span> <span class="pre">bot_thinking</span> <span class="pre">%}</span></code> conditional ensures the prompt works with both reasoning and non-reasoning models. When reasoning is available, the self-check LLM can evaluate both the final response and the reasoning process.</p>
+<p><strong>Explore the complete implementation</strong>: You can find the full working configuration in <code class="docutils literal notranslate"><span class="pre">examples/configs/self_check_thinking/</span></code> with all files (config.yml, prompts.yml) ready to use as a reference for your own implementation.</p>
+</section>
+</section>
+<section id="managing-reasoning-in-api-responses">
+<h2>Managing Reasoning in API Responses<a class="headerlink" href="#managing-reasoning-in-api-responses" title="Link to this heading">#</a></h2>
+<section id="breaking-change-in-v0-18-0">
+<h3>Breaking Change in v0.18.0<a class="headerlink" href="#breaking-change-in-v0-18-0" title="Link to this heading">#</a></h3>
+<p>Prior to v0.18.0, reasoning traces were prepended directly to the response content. Starting from v0.18.0, reasoning is handled separately:</p>
+</section>
+<section id="with-generationoptions-structured-access">
+<h3>With <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> (Structured Access)<a class="headerlink" href="#with-generationoptions-structured-access" title="Link to this heading">#</a></h3>
+<p>When using the Python API with <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code>, reasoning is available in the separate <code class="docutils literal notranslate"><span class="pre">reasoning_content</span></code> field:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span><span class="p">,</span> <span class="n">LLMRails</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 2+2?&quot;</span><span class="p">}]</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reasoning:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Response:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This is the recommended approach as it provides clean separation between reasoning and response content.</p>
+</section>
+<section id="without-generationoptions-tagged-string">
+<h3>Without <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> (Tagged String)<a class="headerlink" href="#without-generationoptions-tagged-string" title="Link to this heading">#</a></h3>
+<p>When calling without <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> (e.g., via dict/string response), reasoning is wrapped in <code class="docutils literal notranslate"><span class="pre">&lt;thinking&gt;</span></code> tags:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 2+2?&quot;</span><span class="p">}]</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&lt;think&gt;Let me calculate: 2 plus 2 equals 4.&lt;/think&gt;</span>
+<span class="go">The answer is 4.</span>
+</pre></div>
+</div>
+<p>This maintains backward compatibility while still separating reasoning from the actual response.</p>
+</section>
+</section>
+<section id="complete-working-example">
+<h2>Complete Working Example<a class="headerlink" href="#complete-working-example" title="Link to this heading">#</a></h2>
+<p>This example combines multiple patterns for demonstration purposes. Use it as a reference to understand how different access methods can work together, but adapt each component to your specific needs.</p>
+<section id="directory-structure">
+<h3>Directory Structure<a class="headerlink" href="#directory-structure" title="Link to this heading">#</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">config/</span>
+<span class="go">├── config.yml</span>
+<span class="go">├── prompts.yml</span>
+<span class="go">├── actions.py</span>
+<span class="go">└── rails/</span>
+<span class="go">    └── reasoning_checks.co</span>
+</pre></div>
+</div>
+</section>
+<section id="config-yml">
+<h3>config.yml<a class="headerlink" href="#config-yml" title="Link to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-ai/deepseek-r1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block_sensitive_reasoning</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_reasoning_check</span>
+</pre></div>
+</div>
+</section>
+<section id="prompts-yml">
+<h3>prompts.yml<a class="headerlink" href="#prompts-yml" title="Link to this heading">#</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Your task is to check if the bot message complies with company policy.</span>
+
+<span class="w">      </span><span class="no">Company policy:</span>
+<span class="w">      </span><span class="no">- No explicit content</span>
+<span class="w">      </span><span class="no">- No abusive language</span>
+<span class="w">      </span><span class="no">- No harmful content</span>
+
+<span class="w">      </span><span class="no">Bot message: &quot;{{ bot_response }}&quot;</span>
+
+<span class="w">      </span><span class="no">{% if bot_thinking %}</span>
+<span class="w">      </span><span class="no">Bot reasoning: &quot;{{ bot_thinking }}&quot;</span>
+<span class="w">      </span><span class="no">{% endif %}</span>
+
+<span class="w">      </span><span class="no">Should this be blocked (Yes or No)?</span>
+<span class="w">      </span><span class="no">Answer:</span>
+</pre></div>
+</div>
+</section>
+<section id="actions-py">
+<h3>actions.py<a class="headerlink" href="#actions-py" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">action</span>
+
+<span class="nd">@action</span><span class="p">(</span><span class="n">is_system_action</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_reasoning_patterns</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">bot_thinking</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bot_thinking&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bot_thinking</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">blocked_terms</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;proprietary&quot;</span><span class="p">,</span> <span class="s2">&quot;confidential&quot;</span><span class="p">,</span> <span class="s2">&quot;trade secret&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">blocked_terms</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">bot_thinking</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="rails-reasoning-checks-co">
+<h3>rails/reasoning_checks.co<a class="headerlink" href="#rails-reasoning-checks-co" title="Link to this heading">#</a></h3>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot refuse to respond
+  &quot;I&#39;m sorry, I can&#39;t respond to that.&quot;
+
+define flow block_sensitive_reasoning
+  if $bot_thinking
+    if &quot;internal only&quot; in $bot_thinking
+      bot refuse to respond
+      stop
+
+define flow custom_reasoning_check
+  $is_allowed = execute check_reasoning_patterns
+
+  if not $is_allowed
+    bot refuse to respond
+    stop
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">#</a></h2>
+<section id="always-use-conditional-checks">
+<h3>Always Use Conditional Checks<a class="headerlink" href="#always-use-conditional-checks" title="Link to this heading">#</a></h3>
+<p>Always check if reasoning exists before using it, as not all models provide reasoning traces:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>if $bot_thinking
+  # Your logic here
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bot_thinking</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bot_thinking&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">bot_thinking</span><span class="p">:</span>
+    <span class="c1"># Your logic here</span>
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span><span class="err">%</span><span class="w"> </span><span class="nv">if bot_thinking %</span><span class="p p-Indicator">}</span>
+<span class="nt">Bot reasoning</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">bot_thinking</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="p p-Indicator">{</span><span class="err">%</span><span class="w"> </span><span class="nv">endif %</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="when-to-use-rails-vs-custom-actions">
+<h3>When to Use Rails vs Custom Actions<a class="headerlink" href="#when-to-use-rails-vs-custom-actions" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Use Colang Rails</strong> for simple pattern matching and logic directly in your flow definitions</p></li>
+<li><p><strong>Use Custom Actions</strong> for complex logic, external API calls, or when you need reusable validation logic across multiple flows</p></li>
+</ul>
+</section>
+<section id="privacy-considerations">
+<h3>Privacy Considerations<a class="headerlink" href="#privacy-considerations" title="Link to this heading">#</a></h3>
+<p>Reasoning traces may contain sensitive information about the model’s decision-making process. Consider:</p>
+<ul class="simple">
+<li><p>Filtering or redacting sensitive content before logging reasoning traces</p></li>
+<li><p>Applying guardrails to prevent reasoning from revealing proprietary information</p></li>
+<li><p>Being mindful of what reasoning content is included in API responses</p></li>
+</ul>
+</section>
+<section id="model-configuration">
+<h3>Model Configuration<a class="headerlink" href="#model-configuration" title="Link to this heading">#</a></h3>
+<p>Ensure you’re using a reasoning-capable model as your main model:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek-ai/deepseek-r1</span><span class="w">  </span><span class="c1"># or other reasoning models</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../getting-started/5-output-rails/README.html"><span class="std std-doc">Output Rails</span></a> - General guide on output rails</p></li>
+<li><p><a class="reference internal" href="generation-options.html"><span class="std std-doc">Generation Options</span></a> - Using generation options for structured API responses</p></li>
+<li><p><a class="reference internal" href="#../../../examples/configs/self_check_thinking"><span class="xref myst">Self-Check Output Example</span></a> - Complete working configuration</p></li>
+<li><p><a class="reference internal" href="#../../colang-language-syntax-guide.md#actions"><span class="xref myst">Custom Actions</span></a> - Guide on writing custom actions</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-examples-in-this-guide">About the Examples in This Guide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-reasoning-content-is-made-available">How Reasoning Content is Made Available</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-output-rails-bot-thinking-variable">1. In Output Rails: <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> Variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-custom-actions-context-get-bot-thinking">2. In Custom Actions: <code class="docutils literal notranslate"><span class="pre">context.get("bot_thinking")</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-prompt-templates-bot-thinking">3. In Prompt Templates: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">bot_thinking</span> <span class="pre">}}</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailing-with-output-rails">Guardrailing with Output Rails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-example-checking-for-reasoning">Basic Example: Checking for Reasoning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocking-based-on-reasoning-patterns">Blocking Based on Reasoning Patterns</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailing-with-custom-actions">Guardrailing with Custom Actions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-reasoning-in-self-check-output">Using Reasoning in Self-Check Output</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-reasoning-in-api-responses">Managing Reasoning in API Responses</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breaking-change-in-v0-18-0">Breaking Change in v0.18.0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-generationoptions-structured-access">With <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> (Structured Access)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#without-generationoptions-tagged-string">Without <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> (Tagged String)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-working-example">Complete Working Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#directory-structure">Directory Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#config-yml">config.yml</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-yml">prompts.yml</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actions-py">actions.py</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rails-reasoning-checks-co">rails/reasoning_checks.co</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#always-use-conditional-checks">Always Use Conditional Checks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-rails-vs-custom-actions">When to Use Rails vs Custom Actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#privacy-considerations">Privacy Considerations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-configuration">Model Configuration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2023-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+<script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+
+  </body>
+</html>
