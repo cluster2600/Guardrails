@@ -522,6 +522,10 @@
 <h1>Guardrailing Bot Reasoning Content<a class="headerlink" href="#guardrailing-bot-reasoning-content" title="Link to this heading">#</a></h1>
 <p>Modern reasoning-capable LLMs expose their internal thought process as reasoning traces. These traces reveal how the model arrives at its conclusions, which can be valuable for transparency but may also contain sensitive information or problematic reasoning patterns.</p>
 <p>NeMo Guardrails allows you to inspect and control these reasoning traces by extracting them and making them available throughout your guardrails configuration. This enables you to write guardrails that can block responses based on the model’s reasoning process, enhance moderation decisions with reasoning context, or monitor reasoning patterns.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This guide uses Colang 1.0 syntax. Bot reasoning guardrails are currently supported in Colang 1.0 only.</p>
+</div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>The examples in this guide range from minimal toy examples (for understanding concepts) to complete reference implementations. They are designed to teach you how to access and work with <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> in different contexts, not as production-ready code to copy-paste. Adapt these patterns to your specific use case with appropriate validation, error handling, and business logic for your application.</p>
@@ -623,7 +627,7 @@ define flow block_sensitive_reasoning
     <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
 </div>
-<p><strong>config/rails/reasoning_check.co</strong>:</p>
+<p><strong>config/rails.co</strong>:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot refuse to respond
   &quot;I&#39;m sorry, I can&#39;t respond to that.&quot;
 
