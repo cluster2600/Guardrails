@@ -625,14 +625,17 @@ For others, you can optimize the prompts yourself following the information in t
 <h4>Accessing Reasoning Traces in API Responses<a class="headerlink" href="#accessing-reasoning-traces-in-api-responses" title="Link to this heading">#</a></h4>
 <section id="with-generationoptions-structured-access">
 <h5>With GenerationOptions (Structured Access)<a class="headerlink" href="#with-generationoptions-structured-access" title="Link to this heading">#</a></h5>
-<p>When using the Python API with <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code>, reasoning is available in the separate <code class="docutils literal notranslate"><span class="pre">reasoning_content</span></code> field:</p>
+<p>When you pass <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> to the API, the function returns a <code class="docutils literal notranslate"><span class="pre">GenerationResponse</span></code> object with structured fields, including <code class="docutils literal notranslate"><span class="pre">reasoning_content</span></code> for accessing reasoning traces separately from the main response:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span><span class="p">,</span> <span class="n">LLMRails</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.rails.llm.options</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenerationOptions</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span>
-    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 2+2?&quot;</span><span class="p">}]</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">GenerationOptions</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 2+2?&quot;</span><span class="p">}],</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">options</span>
 <span class="p">)</span>
 
 <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">:</span>
@@ -657,6 +660,19 @@ For others, you can optimize the prompts yourself following the information in t
 <span class="go">The answer is 4.</span>
 </pre></div>
 </div>
+<p><strong>Which pattern should you use?</strong></p>
+<p>Use <strong>Pattern 1 (With GenerationOptions)</strong> when:</p>
+<ul class="simple">
+<li><p>You need structured access to reasoning and response separately</p></li>
+<li><p>You’re building a new application</p></li>
+<li><p>You need access to other structured fields (state, output_data, llm_metadata, etc.)</p></li>
+</ul>
+<p>Use <strong>Pattern 2 (Without GenerationOptions)</strong> when:</p>
+<ul class="simple">
+<li><p>You need backward compatibility with existing code</p></li>
+<li><p>You want the raw response with inline reasoning tags</p></li>
+<li><p>You’re integrating with systems that expect tagged strings</p></li>
+</ul>
 </section>
 </section>
 </section>
