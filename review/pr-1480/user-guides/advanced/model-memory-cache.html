@@ -521,15 +521,15 @@
   <section class="tex2jax_ignore mathjax_ignore" id="in-memory-model-cache">
 <span id="model-memory-cache"></span><h1>In-Memory Model Cache<a class="headerlink" href="#in-memory-model-cache" title="Link to this heading">#</a></h1>
 <p>Guardrails supports an in-memory cache which avoids making LLM calls for repeated prompts. It stores user-prompts and the corresponding LLM response. Prior to making an LLM call, Guardrails first checks if the prompt matches one already in the cache. If the prompt is found in the cache, the stored response is returned from the cache, rather than prompting the LLM. This improves latency.
-In-memory caches are supported for the Main LLM, and all Nemoguard models (<a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Content-Safety</a>, <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-topic-control" rel="noreferer noopener" target="_blank">Topic-Control</a>, and <a class="reference external" href="https://build.nvidia.com/nvidia/nemoguard-jailbreak-detect" rel="noreferer noopener" target="_blank">Jailbreak Detection</a>). Each model can be configured independently.
+In-memory caches are supported for all Nemoguard models (<a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Content-Safety</a>, <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-topic-control" rel="noreferer noopener" target="_blank">Topic-Control</a>, and <a class="reference external" href="https://build.nvidia.com/nvidia/nemoguard-jailbreak-detect" rel="noreferer noopener" target="_blank">Jailbreak Detection</a>). Each model can be configured independently.
 The cache uses exact-matching (after removing whitespace) on LLM prompts with a Least-Frequently-Used (LFU) algorithm for cache evictions.
 For observability, cache hits and misses are visible in OTEL telemetry, and stored in logs on a configurable cadence.
 To get started with caching, an example configuration is shown below. The rest of the page has a deep-dive into how the cache works, telemetry, and considerations when enabling caching in a horizontally-scalable service.</p>
 <section id="example-configuration">
 <h2>Example Configuration<a class="headerlink" href="#example-configuration" title="Link to this heading">#</a></h2>
 <p>Let’s walk through an example of adding caching to a Content-Safety Guardrails application. The initial <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> without caching is shown below.
-We are using a <a class="reference external" href="https://build.nvidia.com/meta/llama-3_3-70b-instruct" rel="noreferer noopener" target="_blank">Llama 3.3 70B-Instruct</a> main LLM to generate responses, and checking user-input and LLM-response using the <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Llama 3.1 Nemoguard 8B Content Safety</a> model.
-The input rail checks the safety of the user prompt before sending it to the main LLM. The output rail checks both the user input and Main LLM response to make sure the response is safe.</p>
+We are using a <a class="reference external" href="https://build.nvidia.com/meta/llama-3_3-70b-instruct" rel="noreferer noopener" target="_blank">Llama 3.3 70B-Instruct</a> main LLM to generate responses. Inputs are checked by <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Content-Safety</a>, <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-topic-control" rel="noreferer noopener" target="_blank">Topic-Control</a> and <a class="reference external" href="https://build.nvidia.com/nvidia/nemoguard-jailbreak-detect" rel="noreferer noopener" target="_blank">Jailbreak detection</a> models. The LLM response is also checked by the <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Content-Safety</a> model.
+The input rails check the user prompt before sending it to the Main LLM to generate a response. The output rail checks both the user input and Main LLM response to make sure the response is safe.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Content-Safety config.yml (without caching)</span>
 <span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
@@ -540,29 +540,38 @@ The input rail checks the safety of the user prompt before sending it to the mai
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/llama-3.1-nemoguard-8b-content-safety</span>
 
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic_control</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/llama-3.1-nemoguard-8b-topic-control</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak_detection</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak_detect</span>
+
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak detection model</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=content_safety</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic safety check input $model=topic_control</span>
+
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">jailbreak_detection</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">nim_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://ai.api.nvidia.com&quot;</span>
+<span class="w">      </span><span class="nt">nim_server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/v1/security/nvidia/nemoguard-jailbreak-detect&quot;</span>
+<span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA_API_KEY</span>
 </pre></div>
 </div>
-<p>The yaml file below shows the same configuration, with caching enabled on the Main and Content-Safety Nemoguard models.
-The Main LLM and Nemoguard Content-Safety caches have maximum sizes of 1,000 and 10,000 respectively.
-Both caches are configured to log cache statistics. The Main LLM cache statistics are logged every 60 seconds (or 1 minute), while the Content-Safety cache statistics are logged every 360 seconds (or 5 minutes).</p>
+<p>The yaml file below shows the same configuration, with caching enabled on the Content-Safety, Topic-Control, and Jailbreak detection Nemoguard NIMs. All three caches have a size of 10,000 records. The caches log their statistics every 60 seconds.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Content-Safety config.yml (with caching)</span>
 <span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.3-70b-instruct</span>
-<span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="nt">maxsize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">      </span><span class="nt">stats</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">        </span><span class="nt">log_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
 
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -572,21 +581,50 @@ Both caches are configured to log cache statistics. The Main LLM cache statistic
 <span class="w">      </span><span class="nt">maxsize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
 <span class="w">      </span><span class="nt">stats</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">        </span><span class="nt">log_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">360</span>
+<span class="w">        </span><span class="nt">log_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic_control</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/llama-3.1-nemoguard-8b-topic-control</span>
+<span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">maxsize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+<span class="w">      </span><span class="nt">stats</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">log_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak_detection</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak_detect</span>
+<span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">maxsize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+<span class="w">      </span><span class="nt">stats</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">log_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
 
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak detection model</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=content_safety</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic safety check input $model=topic_control</span>
+
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">jailbreak_detection</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">nim_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://ai.api.nvidia.com&quot;</span>
+<span class="w">      </span><span class="nt">nim_server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/v1/security/nvidia/nemoguard-jailbreak-detect&quot;</span>
+<span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA_API_KEY</span>
 </pre></div>
 </div>
 </section>
 <section id="how-does-the-cache-work">
 <h2>How does the Cache work?<a class="headerlink" href="#how-does-the-cache-work" title="Link to this heading">#</a></h2>
-<p>When the cache is enabled, prior to each LLM call we first check to see if we sent the same prompt to the same LLM. This uses an exact-match lookup, after removing whitespace.
+<p>When the cache is enabled, prior to each LLM call we first check to see if we already sent the same prompt to the LLM, and return the response if so. This uses an exact-match lookup, after removing whitespace.
 If there’s a cache hit (i.e. the same prompt was sent to the same LLM earlier and the response was stored in the cache), then the response can be returned without calling the LLM.
 If there’s a cache miss (i.e. we don’t have a stored LLM response for this prompt in the cache), then the LLM is called as usual. When the response is received, this is stored in the cache.</p>
 <p>For security reasons, user prompts are not stored directly. After removing whitespace, the user-prompt is hashed using SHA256 and then used as a cache key.</p>
