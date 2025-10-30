@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>In-Memory Model Cache &#8212; NVIDIA NeMo Guardrails</title>
+    <title>Memory Model Cache &#8212; NVIDIA NeMo Guardrails</title>
   
   
   
@@ -501,7 +501,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">In-Memory Model Cache</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Memory Model Cache</span></li>
   </ul>
 </nav>
 </div>
@@ -518,8 +518,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="in-memory-model-cache">
-<span id="model-memory-cache"></span><h1>In-Memory Model Cache<a class="headerlink" href="#in-memory-model-cache" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="memory-model-cache">
+<span id="model-memory-cache"></span><h1>Memory Model Cache<a class="headerlink" href="#memory-model-cache" title="Link to this heading">#</a></h1>
 <p>Guardrails supports an in-memory cache which avoids making LLM calls for repeated prompts. It stores user-prompts and the corresponding LLM response. Prior to making an LLM call, Guardrails first checks if the prompt matches one already in the cache. If the prompt is found in the cache, the stored response is returned from the cache, rather than prompting the LLM. This improves latency.
 In-memory caches are supported for all Nemoguard models (<a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Content-Safety</a>, <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-topic-control" rel="noreferer noopener" target="_blank">Topic-Control</a>, and <a class="reference external" href="https://build.nvidia.com/nvidia/nemoguard-jailbreak-detect" rel="noreferer noopener" target="_blank">Jailbreak Detection</a>). Each model can be configured independently.
 The cache uses exact-matching (after removing whitespace) on LLM prompts with a Least-Frequently-Used (LFU) algorithm for cache evictions.
@@ -636,16 +636,15 @@ The LFU algorithm ensures that the most frequently accessed cache entries remain
 <p>Guardrails supports OTEL telemetry to trace client requests through Guardrails and any calls to LLMs or APIs. The cache operation is reflected in these traces, with cache hits having a far shorter duration and no LLM call and cache misses having an LLM call. This OTEL telemetry is a good fit for operational dashboards.
 The cache statistics are also logged on a configurable cadence if <code class="docutils literal notranslate"><span class="pre">cache.stats.enabled</span></code> is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>. Every <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> seconds, the cache statistics are logged with the format below.
 The most important metric below is the “Hit Rate”, which is the proportion of LLM calls returned from the cache. If this value remains low, the exact-match may not be a good fit for your usecase.
-<strong>TODO! Do these reset on every measurement period, or increment forever (rollover concerns?)</strong></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>TODO!<span class="w"> </span>Replace<span class="w"> </span>with<span class="w"> </span>measured<span class="w"> </span>values
-<span class="go">&quot;LFU Cache Statistics - &quot;</span>
-<span class="go">&quot;Size: {stats[&#39;current_size&#39;]}/{stats[&#39;maxsize&#39;]} | &quot;</span>
-<span class="go">&quot;Hits: {stats[&#39;hits&#39;]} | &quot;</span>
-<span class="go">&quot;Misses: {stats[&#39;misses&#39;]} | &quot;</span>
-<span class="go">&quot;Hit Rate: {stats[&#39;hit_rate&#39;]:.2%} | &quot;</span>
-<span class="go">&quot;Evictions: {stats[&#39;evictions&#39;]} | &quot;</span>
-<span class="go">&quot;Puts: {stats[&#39;puts&#39;]} | &quot;</span>
-<span class="go">&quot;Updates: {stats[&#39;updates&#39;]}&quot;</span>
+These statistics accumulate for the time Guardrails is running.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;LFU Cache Statistics - &quot;</span>
+<span class="go">&quot;Size: 0.23453 | &quot;</span>
+<span class="go">&quot;Hits: 20 | &quot;</span>
+<span class="go">&quot;Misses: 3 | &quot;</span>
+<span class="go">&quot;Hit Rate: 87% | &quot;</span>
+<span class="go">&quot;Evictions: 0 | &quot;</span>
+<span class="go">&quot;Puts: 20 | &quot;</span>
+<span class="go">&quot;Updates: 0&quot;</span>
 </pre></div>
 </div>
 <p>These metrics are detailed below:</p>
