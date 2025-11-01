@@ -404,6 +404,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/model-memory-cache.html">Memory Model Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -575,20 +577,28 @@ For others, you can optimize the prompts yourself following the information in t
 </section>
 <section id="using-llms-with-reasoning-traces">
 <h3>Using LLMs with Reasoning Traces<a class="headerlink" href="#using-llms-with-reasoning-traces" title="Link to this heading">#</a></h3>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><strong>Breaking Change in v0.18.0</strong>: The <code class="docutils literal notranslate"><span class="pre">reasoning_config</span></code> field and its options (<code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code>, <code class="docutils literal notranslate"><span class="pre">start_token</span></code>, <code class="docutils literal notranslate"><span class="pre">end_token</span></code>) have been removed. The <code class="docutils literal notranslate"><span class="pre">rails.output.apply_to_reasoning_traces</span></code> field has also been removed. Use output rails to guardrail reasoning traces instead.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.18.0: </span>The <code class="docutils literal notranslate"><span class="pre">reasoning_config</span></code> field and its options <code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code>, <code class="docutils literal notranslate"><span class="pre">start_token</span></code>, and <code class="docutils literal notranslate"><span class="pre">end_token</span></code> are deprecated. The <code class="docutils literal notranslate"><span class="pre">rails.output.apply_to_reasoning_traces</span></code> field has also been deprecated. Instead, use output rails to guardrail reasoning traces, as introduced in this section.</p>
 </div>
-<p>Reasoning-capable LLMs such as <a class="reference external" href="https://huggingface.co/collections/deepseek-ai/deepseek-r1-678e1e131c0169c0bc89728d" rel="noreferer noopener" target="_blank">DeepSeek-R1</a> and <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-ultra-253b-v1" rel="noreferer noopener" target="_blank">NVIDIA Llama 3.1 Nemotron Ultra 253B V1</a> include reasoning traces in their responses, typically wrapped in tokens like <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code>. NeMo Guardrails automatically extracts these traces and makes them available throughout your guardrails configuration via the <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> variable in Colang flows and <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> in Python contexts.</p>
+<p>Reasoning-capable LLMs such as <a class="reference external" href="https://huggingface.co/collections/deepseek-ai/deepseek-r1-678e1e131c0169c0bc89728d" rel="noreferer noopener" target="_blank">DeepSeek-R1</a> and <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-ultra-253b-v1" rel="noreferer noopener" target="_blank">NVIDIA Llama 3.1 Nemotron Ultra 253B V1</a> include reasoning traces in their responses, typically wrapped in tokens such as <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;/think&gt;</span></code>.</p>
+<p>The NeMo Guardrails toolkit automatically extracts these traces and makes them available to set up in your guardrails configuration through the following variables:</p>
+<ul class="simple">
+<li><p>In Colang flows, use the <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code> variable.</p></li>
+<li><p>In Python contexts, use the <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> variable.</p></li>
+</ul>
 <section id="guardrailing-reasoning-traces-with-output-rails">
 <h4>Guardrailing Reasoning Traces with Output Rails<a class="headerlink" href="#guardrailing-reasoning-traces-with-output-rails" title="Link to this heading">#</a></h4>
-<p>The primary approach is to use output rails to inspect and control reasoning traces. This allows you to:</p>
+<p>Use output rails to inspect and control reasoning traces. This allows you to:</p>
 <ul class="simple">
-<li><p>Block responses based on problematic reasoning patterns</p></li>
-<li><p>Enhance moderation decisions with reasoning context</p></li>
-<li><p>Monitor and filter sensitive information in reasoning</p></li>
+<li><p>Block responses based on problematic reasoning patterns.</p></li>
+<li><p>Enhance moderation decisions with reasoning context.</p></li>
+<li><p>Monitor and filter sensitive information in reasoning.</p></li>
 </ul>
-<p>Here’s a minimal example:</p>
+<section id="prepare-configuration-files">
+<h5>Prepare Configuration Files<a class="headerlink" href="#prepare-configuration-files" title="Link to this heading">#</a></h5>
+<p>The following configuration files show a minimal configuration for guardrailing reasoning traces with output rails.</p>
+<ol class="arabic">
+<li><p>Configure output rails in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -603,7 +613,8 @@ For others, you can optimize the prompts yourself following the information in t
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
 </pre></div>
 </div>
-<p><strong>prompts.yml</strong>:</p>
+</li>
+<li><p>Configure the prompt to access the reasoning traces in <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_output</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -619,35 +630,65 @@ For others, you can optimize the prompts yourself following the information in t
 <span class="w">      </span><span class="no">Answer:</span>
 </pre></div>
 </div>
-<p>For more detailed examples of guardrailing reasoning traces, see <a class="reference internal" href="#../../advanced/bot-thinking-guardrails.md"><span class="xref myst">Guardrailing Bot Reasoning Content</span></a>.</p>
+</li>
+</ol>
+<p>For more detailed examples of guardrailing reasoning traces, refer to <a class="reference internal" href="#../../advanced/bot-thinking-guardrails.md"><span class="xref myst">Guardrailing Bot Reasoning Content</span></a>.</p>
+</section>
 </section>
 <section id="accessing-reasoning-traces-in-api-responses">
 <h4>Accessing Reasoning Traces in API Responses<a class="headerlink" href="#accessing-reasoning-traces-in-api-responses" title="Link to this heading">#</a></h4>
-<section id="with-generationoptions-structured-access">
-<h5>With GenerationOptions (Structured Access)<a class="headerlink" href="#with-generationoptions-structured-access" title="Link to this heading">#</a></h5>
-<p>When you pass <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> to the API, the function returns a <code class="docutils literal notranslate"><span class="pre">GenerationResponse</span></code> object with structured fields, including <code class="docutils literal notranslate"><span class="pre">reasoning_content</span></code> for accessing reasoning traces separately from the main response:</p>
+<p>There are two ways to access reasoning traces in API responses: with generation options and without generation options.</p>
+<p>Read the option <strong>With GenerationOptions</strong> when you:</p>
+<ul class="simple">
+<li><p>Need structured access to reasoning and response separately.</p></li>
+<li><p>Are building a new application.</p></li>
+<li><p>Need access to other structured fields such as state, output_data, or llm_metadata.</p></li>
+</ul>
+<p>Read the option <strong>Without GenerationOptions</strong> when you:</p>
+<ul class="simple">
+<li><p>Need backward compatibility with existing code.</p></li>
+<li><p>Want the raw response with inline reasoning tags.</p></li>
+<li><p>Are integrating with systems that expect tagged strings.</p></li>
+</ul>
+<section id="with-generationoptions-for-structured-access">
+<h5>With GenerationOptions for Structured Access<a class="headerlink" href="#with-generationoptions-for-structured-access" title="Link to this heading">#</a></h5>
+<p>When you pass <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> to the API, the function returns a <code class="docutils literal notranslate"><span class="pre">GenerationResponse</span></code> object with structured fields. This approach provides clean separation between the reasoning traces and the final response content, making it easier to process each component independently.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">reasoning_content</span></code> field contains the extracted reasoning traces, while <code class="docutils literal notranslate"><span class="pre">response</span></code> contains the main LLM response. This structured access pattern is recommended for new applications as it provides type safety and clear access to all response metadata.</p>
+<p>The following example demonstrates how to use <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> in an guardrails async generation call <code class="docutils literal notranslate"><span class="pre">rails.generate_async</span></code> to access reasoning traces.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span><span class="p">,</span> <span class="n">LLMRails</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.rails.llm.options</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenerationOptions</span>
 
+<span class="c1"># Load the guardrails configuration</span>
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
+<span class="c1"># Create a GenerationOptions object to enable structured responses</span>
 <span class="n">options</span> <span class="o">=</span> <span class="n">GenerationOptions</span><span class="p">()</span>
+
+<span class="c1"># Make an async call with GenerationOptions</span>
 <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span>
     <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 2+2?&quot;</span><span class="p">}],</span>
     <span class="n">options</span><span class="o">=</span><span class="n">options</span>
 <span class="p">)</span>
 
+<span class="c1"># Access reasoning traces separately from the response</span>
 <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reasoning:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">reasoning_content</span><span class="p">)</span>
 
+<span class="c1"># Access the main response content</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Response:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>The following example output shows the reasoning traces and the main response content from the guardrailed generation result.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Reasoning: Let me calculate: 2 plus 2 equals 4.</span>
+<span class="go">Response: The answer is 4.</span>
+</pre></div>
+</div>
 </section>
-<section id="without-generationoptions-tagged-string">
-<h5>Without GenerationOptions (Tagged String)<a class="headerlink" href="#without-generationoptions-tagged-string" title="Link to this heading">#</a></h5>
-<p>When calling without <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code> (e.g., via dict/string response), reasoning is wrapped in <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> tags:</p>
+<section id="without-generationoptions-for-tagged-string">
+<h5>Without GenerationOptions for Tagged String<a class="headerlink" href="#without-generationoptions-for-tagged-string" title="Link to this heading">#</a></h5>
+<p>When calling without <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code>, such as by using a dict or string response, reasoning is wrapped in <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> tags.</p>
+<p>The following example demonstrates how to access reasoning traces without using <code class="docutils literal notranslate"><span class="pre">GenerationOptions</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
     <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 2+2?&quot;</span><span class="p">}]</span>
 <span class="p">)</span>
@@ -655,24 +696,11 @@ For others, you can optimize the prompts yourself following the information in t
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Output:</p>
+<p>The response is wrapped in <code class="docutils literal notranslate"><span class="pre">&lt;think&gt;</span></code> tags as shown in the following example output.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&lt;think&gt;Let me calculate: 2 plus 2 equals 4.&lt;/think&gt;</span>
 <span class="go">The answer is 4.</span>
 </pre></div>
 </div>
-<p><strong>Which pattern should you use?</strong></p>
-<p>Use <strong>Pattern 1 (With GenerationOptions)</strong> when:</p>
-<ul class="simple">
-<li><p>You need structured access to reasoning and response separately</p></li>
-<li><p>You’re building a new application</p></li>
-<li><p>You need access to other structured fields (state, output_data, llm_metadata, etc.)</p></li>
-</ul>
-<p>Use <strong>Pattern 2 (Without GenerationOptions)</strong> when:</p>
-<ul class="simple">
-<li><p>You need backward compatibility with existing code</p></li>
-<li><p>You want the raw response with inline reasoning tags</p></li>
-<li><p>You’re integrating with systems that expect tagged strings</p></li>
-</ul>
 </section>
 </section>
 </section>
@@ -923,10 +951,13 @@ The previous table includes an example of a model that can be used.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-llm-providers">Supported LLM Providers</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-available-providers">Exploring Available Providers</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-llms-with-reasoning-traces">Using LLMs with Reasoning Traces</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailing-reasoning-traces-with-output-rails">Guardrailing Reasoning Traces with Output Rails</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailing-reasoning-traces-with-output-rails">Guardrailing Reasoning Traces with Output Rails</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-configuration-files">Prepare Configuration Files</a></li>
+</ul>
+</li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-reasoning-traces-in-api-responses">Accessing Reasoning Traces in API Responses</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#with-generationoptions-structured-access">With GenerationOptions (Structured Access)</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#without-generationoptions-tagged-string">Without GenerationOptions (Tagged String)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#with-generationoptions-for-structured-access">With GenerationOptions for Structured Access</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#without-generationoptions-for-tagged-string">Without GenerationOptions for Tagged String</a></li>
 </ul>
 </li>
 </ul>
