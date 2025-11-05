@@ -397,8 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemotron-content-safety-multilingual-deployment.html">Nemotron Content Safety Multilingual Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Nemotron Safety Guard Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
@@ -523,7 +522,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="guardrailing-bot-reasoning-content">
-<h1>Guardrailing Bot Reasoning Content<a class="headerlink" href="#guardrailing-bot-reasoning-content" title="Link to this heading">#</a></h1>
+<span id="bot-thinking-guardrails"></span><h1>Guardrailing Bot Reasoning Content<a class="headerlink" href="#guardrailing-bot-reasoning-content" title="Link to this heading">#</a></h1>
 <p>Reasoning-capable large language models (LLMs) expose their internal thought process as reasoning traces. These traces reveal how the model arrives at its conclusions, providing transparency into the decision-making process. However, they may also contain sensitive information or problematic reasoning patterns that need to be monitored and controlled.</p>
 <p>The NeMo Guardrails toolkit helps you set up guardrails to inspect and control these reasoning traces by extracting them. With this feature, you can configure guardrails that can block responses based on the model’s reasoning process, enhance moderation decisions with reasoning context, or monitor reasoning patterns.</p>
 <div class="admonition note">

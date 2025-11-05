@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Streaming &#8212; NVIDIA NeMo Guardrails</title>
+    <title>Nemotron Safety Guard Deployment &#8212; NVIDIA NeMo Guardrails</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/streaming';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/nemotron-safety-guard-deployment';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -54,11 +54,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/streaming.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/nemotron-safety-guard-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="AlignScore Deployment" href="align-score-deployment.html" />
-    <link rel="prev" title="NeMo Guardrails with Docker" href="using-docker.html" />
+    <link rel="next" title="Llama 3.1 NemoGuard 8B Topic Control Deployment" href="nemoguard-topiccontrol-deployment.html" />
+    <link rel="prev" title="Vertex AI Setup" href="vertexai-setup.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -389,7 +389,7 @@
 <li class="toctree-l1"><a class="reference internal" href="prompt-customization.html">Prompt Customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="embedding-search-providers.html">Embedding Search Providers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using-docker.html">NeMo Guardrails with Docker</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="align-score-deployment.html">AlignScore Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extract-user-provided-values.html">Extract User-provided Values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bot-message-instructions.html">Bot Message Instructions</a></li>
@@ -397,7 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Nemotron Safety Guard Deployment</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Nemotron Safety Guard Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
@@ -504,7 +504,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Streaming</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Nemotron Safety Guard Deployment</span></li>
   </ul>
 </nav>
 </div>
@@ -521,227 +521,304 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="streaming">
-<h1>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h1>
-<p>If the application LLM supports streaming, you can configure NeMo Guardrails to stream tokens as well.</p>
-<p>For information about configuring streaming with output guardrails, refer to the following:</p>
-<ul class="simple">
-<li><p>For configuration, refer to <a class="reference internal" href="../configuration-guide.html#streaming-output-configuration"><span class="std std-ref">streaming output configuration</span></a>.</p></li>
-<li><p>For sample Python client code, refer to <a class="reference internal" href="../../getting-started/5-output-rails/README.html#streaming-output"><span class="std std-ref">streaming output</span></a>.</p></li>
+  <!--
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+-->
+<section class="tex2jax_ignore mathjax_ignore" id="nemotron-safety-guard-deployment">
+<h1>Nemotron Safety Guard Deployment<a class="headerlink" href="#nemotron-safety-guard-deployment" title="Link to this heading">#</a></h1>
+<section id="adding-multilingual-content-safety-guardrails">
+<h2>Adding Multilingual Content Safety Guardrails<a class="headerlink" href="#adding-multilingual-content-safety-guardrails" title="Link to this heading">#</a></h2>
+<p>The following procedure adds a guardrail to check user input against a GPU-accelerated content safety model that can detect harmful content in several languages.</p>
+<p>To simplify configuration, the sample code uses the <a class="reference external" href="https://build.nvidia.com/meta/llama-3_3-70b-instruct" rel="noreferer noopener" target="_blank">Llama 3.3 70B Instruct model</a> on build.nvidia.com as the application LLM.
+This avoids deploying a NIM for LLMs instance locally for inference.</p>
+<p>The sample code relies on starting a local instance of the
+<a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/llama-3.1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">Llama 3.1 Nemotron Safety Guard 8B V3</a>
+container that is available from NVIDIA NGC.</p>
+<p>The steps guide you to start the content safety container, configure input and output content safety rails, and then use NeMo Guardrails interactively to send safe and unsafe requests.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul>
+<li><p>You have an NGC API key.
+This API key enables you to download the content safety container and model from NVIDIA NGC and to access models on build.nvidia.com.
+Refer to <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ngc-user-guide/index.html#generating-api-key" rel="noreferer noopener" target="_blank">Generating Your NGC API Key</a> in the <em>NVIDIA NGC User Guide</em> for more information.</p>
+<p>When you create a personal API key, select at least <strong>NGC Catalog</strong> and <strong>Public API Endpoints</strong> from the <strong>Services Included</strong> menu.
+You can specify more services to use the key for additional purposes.</p>
+</li>
+<li><p>A host with Docker Engine.
+Refer to the <a class="reference external" href="https://docs.docker.com/engine/install/" rel="noreferer noopener" target="_blank">instructions from Docker</a>.</p></li>
+<li><p>NVIDIA Container Toolkit installed and configured.
+Refer to <span class="xref std std-doc">installation</span> in the toolkit documentation.</p></li>
+<li><p>You <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">installed NeMo Guardrails</span></a>.</p></li>
+<li><p>You installed LangChain NVIDIA AI Foundation Model Playground Integration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>langchain-nvidia-ai-endpoints
+</pre></div>
+</div>
+</li>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/support-matrix.html" rel="noreferer noopener" target="_blank">support matrix</a> in the content safety NIM documentation for software requirements, hardware requirements, and model profiles.</p></li>
 </ul>
-<section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
-<p>To activate streaming on a guardrails configuration, add the following to your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</section>
+<section id="starting-the-content-safety-container">
+<h2>Starting the Content Safety Container<a class="headerlink" href="#starting-the-content-safety-container" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Log in to NVIDIA NGC so you can pull the container.</p>
+<ol class="arabic">
+<li><p>Export your NGC API key as an environment variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;&lt;nvapi-...&gt;&quot;</span>
 </pre></div>
 </div>
-</section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
-<section id="chat-cli">
-<h3>Chat CLI<a class="headerlink" href="#chat-cli" title="Link to this heading">#</a></h3>
-<p>You can enable streaming when launching the NeMo Guardrails chat CLI by using the <code class="docutils literal notranslate"><span class="pre">--streaming</span></code> option:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span>--config<span class="o">=</span>examples/configs/streaming<span class="w"> </span>--streaming
+</li>
+<li><p>Log in to the registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>--username<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>--password-stdin<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span><span class="nv">$NGC_API_KEY</span>
 </pre></div>
 </div>
-</section>
-<section id="python-api">
-<h3>Python API<a class="headerlink" href="#python-api" title="Link to this heading">#</a></h3>
-<p>You can use the streaming directly from the python API in two ways:</p>
-<ol class="arabic simple">
-<li><p>Simple: receive just the chunks (tokens).</p></li>
-<li><p>Full: receive both the chunks as they are generated and the full response at the end.</p></li>
+</li>
 </ol>
-<p>For the simple usage, you need to call the <code class="docutils literal notranslate"><span class="pre">stream_async</span></code> method on the <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code> instance:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">history</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">}]</span>
-
-<span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">app</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">history</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHUNK: </span><span class="si">{</span><span class="n">chunk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="c1"># Or do something else with the token</span>
+</li>
+<li><p>Download the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>pull<span class="w"> </span>nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-8b-v3:1.14.0
 </pre></div>
 </div>
-<p>For the full usage, you need to provide a <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code> instance to the <code class="docutils literal notranslate"><span class="pre">generate_async</span></code> method on the <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code> instance:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.streaming</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamingHandler</span>
+</li>
+<li><p>Create a model cache directory on the host machine:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>~/.cache/safetyguard
+<span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">$ </span>chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the container with the cache directory as a volume mount:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--name<span class="w"> </span>safetyguard<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--shm-size<span class="o">=</span>64GB<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span>NGC_API_KEY<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">NIM_ENABLE_KV_CACHE_REUSE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">:/opt/nim/.cache/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-8b-v3:1.14.0
+</pre></div>
+</div>
+<p>The container requires several minutes to start and download the model from NGC.
+You can monitor the progress by running the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">safetyguard</span></code> command.</p>
+</li>
+<li><p>Confirm the service is ready to respond to inference requests:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://localhost:8000/v1/models<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.data[].id&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;nvidia/llama-3.1-nemotron-safety-guard-8b-v3&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="configuring-guardrails-and-running-inference">
+<h2>Configuring Guardrails and Running Inference<a class="headerlink" href="#configuring-guardrails-and-running-inference" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Set your NGC API key as an environment variable.
+Guardrails uses this environment variable to send requests that pass the input rail to build.nvidia.com.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span>&lt;nvapi-...&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Create a <em>configuration store</em> directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code>.</p></li>
+<li><p>Copy the following configuration code and save as <code class="docutils literal notranslate"><span class="pre">config/config.yml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.3-70b-instruct</span>
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;content_safety&quot;</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8000/v1&quot;</span>
+<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvidia/llama-3.1-nemotron-safety-guard-8b-v3&quot;</span>
 
-<span class="n">history</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">}]</span>
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=content_safety</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file configures the application LLM model and the content safety model.</p>
+</li>
+<li><p>Copy the following prompts code and save as <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_input $model=content_safety</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a &#39;safe&#39; or &#39;unsafe&#39; rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.</span>
 
-<span class="n">streaming_handler</span> <span class="o">=</span> <span class="n">StreamingHandler</span><span class="p">()</span>
+<span class="w">      </span><span class="no">&lt;BEGIN UNSAFE CONTENT CATEGORIES&gt;</span>
+<span class="w">      </span><span class="no">S1: Violence.</span>
+<span class="w">      </span><span class="no">S2: Sexual.</span>
+<span class="w">      </span><span class="no">S3: Criminal Planning/Confessions.</span>
+<span class="w">      </span><span class="no">S4: Guns and Illegal Weapons.</span>
+<span class="w">      </span><span class="no">S5: Controlled/Regulated Substances.</span>
+<span class="w">      </span><span class="no">S6: Suicide and Self Harm.</span>
+<span class="w">      </span><span class="no">S7: Sexual (minor).</span>
+<span class="w">      </span><span class="no">S8: Hate/Identity Hate.</span>
+<span class="w">      </span><span class="no">S9: PII/Privacy.</span>
+<span class="w">      </span><span class="no">S10: Harassment.</span>
+<span class="w">      </span><span class="no">S11: Threat.</span>
+<span class="w">      </span><span class="no">S12: Profanity.</span>
+<span class="w">      </span><span class="no">S13: Needs Caution.</span>
+<span class="w">      </span><span class="no">S14: Other.</span>
+<span class="w">      </span><span class="no">S15: Manipulation.</span>
+<span class="w">      </span><span class="no">S16: Fraud/Deception.</span>
+<span class="w">      </span><span class="no">S17: Malware.</span>
+<span class="w">      </span><span class="no">S18: High Risk Gov Decision Making.</span>
+<span class="w">      </span><span class="no">S19: Political/Misinformation/Conspiracy.</span>
+<span class="w">      </span><span class="no">S20: Copyright/Trademark/Plagiarism.</span>
+<span class="w">      </span><span class="no">S21: Unauthorized Advice.</span>
+<span class="w">      </span><span class="no">S22: Illegal Activity.</span>
+<span class="w">      </span><span class="no">S23: Immoral/Unethical.</span>
+<span class="w">      </span><span class="no">&lt;END UNSAFE CONTENT CATEGORIES&gt;</span>
 
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_tokens</span><span class="p">():</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">streaming_handler</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHUNK: </span><span class="si">{</span><span class="n">chunk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="c1"># Or do something else with the token</span>
+<span class="w">      </span><span class="no">&lt;BEGIN CONVERSATION&gt;</span>
 
-<span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">process_tokens</span><span class="p">())</span>
+<span class="w">      </span><span class="no">user: {{ user_input }}</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span>
-    <span class="n">messages</span><span class="o">=</span><span class="n">history</span><span class="p">,</span> <span class="n">streaming_handler</span><span class="o">=</span><span class="n">streaming_handler</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="w">      </span><span class="no">&lt;END CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
+<span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
+
+<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
+<span class="w">      </span><span class="no">Output JSON:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_prompt_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_output $model=content_safety</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a &#39;safe&#39; or &#39;unsafe&#39; rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN UNSAFE CONTENT CATEGORIES&gt;</span>
+<span class="w">      </span><span class="no">S1: Violence.</span>
+<span class="w">      </span><span class="no">S2: Sexual.</span>
+<span class="w">      </span><span class="no">S3: Criminal Planning/Confessions.</span>
+<span class="w">      </span><span class="no">S4: Guns and Illegal Weapons.</span>
+<span class="w">      </span><span class="no">S5: Controlled/Regulated Substances.</span>
+<span class="w">      </span><span class="no">S6: Suicide and Self Harm.</span>
+<span class="w">      </span><span class="no">S7: Sexual (minor).</span>
+<span class="w">      </span><span class="no">S8: Hate/Identity Hate.</span>
+<span class="w">      </span><span class="no">S9: PII/Privacy.</span>
+<span class="w">      </span><span class="no">S10: Harassment.</span>
+<span class="w">      </span><span class="no">S11: Threat.</span>
+<span class="w">      </span><span class="no">S12: Profanity.</span>
+<span class="w">      </span><span class="no">S13: Needs Caution.</span>
+<span class="w">      </span><span class="no">S14: Other.</span>
+<span class="w">      </span><span class="no">S15: Manipulation.</span>
+<span class="w">      </span><span class="no">S16: Fraud/Deception.</span>
+<span class="w">      </span><span class="no">S17: Malware.</span>
+<span class="w">      </span><span class="no">S18: High Risk Gov Decision Making.</span>
+<span class="w">      </span><span class="no">S19: Political/Misinformation/Conspiracy.</span>
+<span class="w">      </span><span class="no">S20: Copyright/Trademark/Plagiarism.</span>
+<span class="w">      </span><span class="no">S21: Unauthorized Advice.</span>
+<span class="w">      </span><span class="no">S22: Illegal Activity.</span>
+<span class="w">      </span><span class="no">S23: Immoral/Unethical.</span>
+<span class="w">      </span><span class="no">&lt;END UNSAFE CONTENT CATEGORIES&gt;</span>
+
+<span class="w">      </span><span class="no">&lt;BEGIN CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">user: {{ user_input }}</span>
+
+<span class="w">      </span><span class="no">response: agent: {{ bot_response }}</span>
+
+<span class="w">      </span><span class="no">&lt;END CONVERSATION&gt;</span>
+
+<span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
+<span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
+
+<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
+<span class="w">      </span><span class="no">Output JSON:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_response_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+</pre></div>
+</div>
+</li>
+<li><p>Load the guardrails configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Generate an unsafe response in French:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">rails</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Tell me a five-step plan to rob a bank.</span>
+<span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Dites-moi un plan en cinq étapes pour braquer une banque.&quot;</span>
+<span class="p">}]</span>
+
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">I&#39;m sorry, I can&#39;t respond to that.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Send a safe request in Hindi:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tell me about three common foods in India.</span>
+<span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
+    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;मुझे भारत में प्रचलित तीन खाद्य पदार्थों के बारे में बताइये।&quot;</span>
+<span class="p">}]</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">भारत में विभिन्न प्रकार के खाद्य पदार्थ प्रचलित हैं, जिनमें से तीन प्रमुख खाद्य पदार्थ हैं:</span>
+
+<span class="go">1. **चावल**: चावल भारत में एक मुख्य खाद्य पदार्थ है, जो लगभग हर घर में खाया जाता है। यह एक प्रमुख अनाज है जो कार्बोहाइ रेट से भरपूर होता है और इसे विभिन्न प्रकार के  यंज ों में उपयोग किय</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>जाता है, जैसे कि बिरयानी, पुलाव, और सादा चावल।</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>रोटी</strong>: रोटी भारतीय आहार का एक अन्य महत्वपूर्ण हिस्सा है। यह गेहूं के आटे से बनाई जाती है और इसे विभिन्न प्रकार की सब्जि ों और दा ों के साथ परोसा जाता है। रोटी को तंदूर में या तवे प
+पकाया जा सकता है, और यह पूरे भारत में विभिन्न रू ों में पाई जाती है, जैसे कि नान, पराठा, और पूरी。</p></li>
+<li><p><strong>दाल</strong>: दाल भारतीय  यंज ों में एक महत्वपूर्ण स्थान रखती है। यह मुख्य रूप से दा ों जैसे कि मूंग, चना, और तूर दाल से बनाई जाती है। दाल प्रोटीन से भरपूर होती है और इसे विभिन्न प्रकार के मस
+ों और सब्जि ों के साथ पकाया जाता है। दाल को चावल या रोटी के साथ परोसा जाता है और यह एक स्वस्थ और पौष्टिक विकल्प है।</p></li>
+</ol>
+<p>इन ती ों खाद्य पदा ों का महत्व भारतीय सं कृति और खान-पान में बहुत अधिक है, और वे लगभग हर भारतीय घर में नियमित रूप से खाए जाते हैं।</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Refer to the English translation:</span>
+
+<span class="go">```text</span>
+<span class="go">India has a wide variety of foods, three of which are primarily:</span>
+
+<span class="go">1. Rice: Rice is a staple food in India, eaten in almost every household. It is a staple grain that is rich in carbohydrates and is used in a variety of dishes, such as biryani, pulao, and plain rice.</span>
+
+<span class="go">2. Roti: Roti is another important part of the Indian diet. It is made from wheat flour and served with a variety of vegetables and lentils. Roti can be cooked in a tandoor or on a griddle, and is found in various forms throughout India, such as naan, paratha, and puri.</span>
+
+<span class="go">3. Dal: Dal plays an important role in Indian cuisine. It is made primarily from pulses such as moong, chana, and toor dal. Lentils are rich in protein and are cooked with a variety of spices and vegetables. Served with rice or roti, lentils are a healthy and nutritious option.</span>
+
+<span class="go">These three foods hold immense significance in Indian culture and cuisine, and are eaten regularly in almost every Indian household.</span>
 </pre></div>
 </div>
 </section>
-<section id="using-external-async-token-generators">
-<span id="external-async-token-generators"></span><h3>Using External Async Token Generators<a class="headerlink" href="#using-external-async-token-generators" title="Link to this heading">#</a></h3>
-<p>You can also provide your own async generator that yields tokens, which is useful when:</p>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>You want to use a different LLM provider that has its own streaming API</p></li>
-<li><p>You have pre-generated responses that you want to stream through guardrails</p></li>
-<li><p>You want to implement custom token generation logic</p></li>
-<li><p>You want to test your output rails or its config in streaming mode on predefined responses without actually relying on an actual LLM generation.</p></li>
+<li><p>Refer to the Llama 3.1 Nemotron Safety Guard 8B <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest" rel="noreferer noopener" target="_blank">documentation</a>.</p></li>
 </ul>
-<p>To use an external generator, pass it to the <code class="docutils literal notranslate"><span class="pre">generator</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">stream_async</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncIterator</span>
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_token_generator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="c1"># This could be from OpenAI API, Anthropic API, or any other LLM API that already has a streaming token generator. Mocking the stream here, for a simple example.</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;world&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
-        <span class="k">yield</span> <span class="n">token</span>
-
-<span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;The most famous program ever written is&quot;</span><span class="p">}]</span><span class="s2">&quot;}]</span>
-
-<span class="c1"># use the external generator with guardrails</span>
-<span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">app</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span>
-    <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
-    <span class="n">generator</span><span class="o">=</span><span class="n">my_token_generator</span><span class="p">()</span>
-<span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CHUNK: </span><span class="si">{</span><span class="n">chunk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>When using an external generator:</p>
-<ul class="simple">
-<li><p>The internal LLM generation is completely bypassed</p></li>
-<li><p>Output rails are still applied to the LLM responses returned by the external generator, if configured</p></li>
-<li><p>The generator should yield string tokens</p></li>
-</ul>
-<p>Example with a real LLM API:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">openai_streaming_generator</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Example using OpenAI&#39;s streaming API.&quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
-
-    <span class="n">stream</span> <span class="o">=</span> <span class="k">await</span> <span class="n">openai</span><span class="o">.</span><span class="n">ChatCompletion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
-        <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
-        <span class="n">stream</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
-
-    <span class="c1"># Yield tokens as they arrive</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;config/with_output_rails&quot;</span><span class="p">)</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-
-<span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">app</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span>
-    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a story&quot;</span><span class="p">}],</span>
-    <span class="n">generator</span><span class="o">=</span><span class="n">openai_streaming_generator</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
-<span class="p">):</span>
-    <span class="c1"># output rails will be applied to these chunks</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>This feature enables seamless integration of NeMo Guardrails with any streaming LLM or token source while maintaining all the safety features of output rails.</p>
-</section>
-</section>
-<section id="token-usage-tracking">
-<h2>Token Usage Tracking<a class="headerlink" href="#token-usage-tracking" title="Link to this heading">#</a></h2>
-<p>When streaming is enabled, NeMo Guardrails automatically enables token usage tracking by setting the <code class="docutils literal notranslate"><span class="pre">stream_usage</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code> for the underlying LLM model. This feature:</p>
-<ul class="simple">
-<li><p>Provides token usage statistics even when streaming responses.</p></li>
-<li><p>Is primarily supported by OpenAI, AzureOpenAI, and other providers. The NVIDIA NIM provider supports it by default.</p></li>
-<li><p>Allows to safely pass token usage statistics to LLM providers. If the LLM provider you use don’t support it, the parameter is ignored.</p></li>
-</ul>
-<section id="version-requirements">
-<h3>Version Requirements<a class="headerlink" href="#version-requirements" title="Link to this heading">#</a></h3>
-<p>For optimal token usage tracking with streaming, ensure you’re using recent versions of LangChain packages:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.1.0</span></code> for basic streaming token support (minimum requirement)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.2.0</span></code> for enhanced features and stability</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">langchain</span> <span class="pre">&gt;=</span> <span class="pre">0.2.14</span></code> and <code class="docutils literal notranslate"><span class="pre">langchain-core</span> <span class="pre">&gt;=</span> <span class="pre">0.2.14</span></code> for universal token counting support</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The NeMo Guardrails toolkit requires <code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.1.0</span></code> as an optional dependency, which provides basic streaming token usage support. For enhanced features and stability, consider upgrading to <code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.2.0</span></code> in your environment.</p>
-</div>
-</section>
-<section id="accessing-token-usage-information">
-<h3>Accessing Token Usage Information<a class="headerlink" href="#accessing-token-usage-information" title="Link to this heading">#</a></h3>
-<p>You can access token usage statistics through the detailed logging capabilities of the NeMo Guardrails toolkit. Use the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option to capture comprehensive information about LLM calls, including token usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;llm_calls&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;activated_rails&quot;</span><span class="p">:</span> <span class="kc">True</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-
-<span class="k">for</span> <span class="n">llm_call</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">llm_calls</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">task</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total tokens: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">total_tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prompt tokens: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">prompt_tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completion tokens: </span><span class="si">{</span><span class="n">llm_call</span><span class="o">.</span><span class="n">completion_tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">explain()</span></code> method to get a summary of token usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">explain</span><span class="p">()</span>
-<span class="n">info</span><span class="o">.</span><span class="n">print_llm_calls_summary</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>For more information about streaming token usage support across different providers, refer to the <a class="reference external" href="https://python.langchain.com/docs/how_to/chat_token_usage_tracking/#streaming" rel="noreferer noopener" target="_blank">LangChain documentation on token usage tracking</a>. For detailed information about accessing generation logs and token usage, see the <a class="reference internal" href="generation-options.html#detailed-logging-information"><span class="std std-ref">Generation Options</span></a> and <a class="reference internal" href="../detailed-logging/README.html"><span class="std std-doc">Detailed Logging</span></a> documentation.</p>
-</section>
-<section id="server-api">
-<h3>Server API<a class="headerlink" href="#server-api" title="Link to this heading">#</a></h3>
-<p>To make a call to the NeMo Guardrails Server in streaming mode, you have to set the <code class="docutils literal notranslate"><span class="pre">stream</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code> inside the JSON body. For example, to get the completion for a chat session using the <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">POST /v1/chat/completions</span>
-</pre></div>
-</div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;config_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;some_config_id&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;Hello! What can you do for me?&quot;</span>
-<span class="w">    </span><span class="p">}],</span>
-<span class="w">    </span><span class="nt">&quot;stream&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="streaming-for-llms-deployed-using-huggingfacepipeline">
-<h3>Streaming for LLMs deployed using HuggingFacePipeline<a class="headerlink" href="#streaming-for-llms-deployed-using-huggingfacepipeline" title="Link to this heading">#</a></h3>
-<p>We also support streaming for LLMs deployed using <code class="docutils literal notranslate"><span class="pre">HuggingFacePipeline</span></code>.
-One example is provided in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/llm/hf_pipeline_dolly/README.md" rel="noreferer noopener" target="_blank">HF Pipeline Dolly</a> configuration.</p>
-<p>To use streaming for HF Pipeline LLMs, you first need to set the streaming flag in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-</pre></div>
-</div>
-<p>Then you need to create an <code class="docutils literal notranslate"><span class="pre">nemoguardrails.llm.providers.huggingface.AsyncTextIteratorStreamer</span></code> streamer object,
-add it to the <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> of the pipeline and to the <code class="docutils literal notranslate"><span class="pre">model_kwargs</span></code> of the <code class="docutils literal notranslate"><span class="pre">HuggingFacePipelineCompatible</span></code> object.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.llm.providers.huggingface</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncTextIteratorStreamer</span>
-
-<span class="c1"># instantiate tokenizer object required by LLM</span>
-<span class="n">streamer</span> <span class="o">=</span> <span class="n">AsyncTextIteratorStreamer</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">skip_prompt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;streamer&quot;</span><span class="p">:</span> <span class="n">streamer</span><span class="p">}</span>
-
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span>
-    <span class="c1"># all other parameters</span>
-    <span class="o">**</span><span class="n">params</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">HuggingFacePipelineCompatible</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="n">pipe</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
 </section>
 </section>
 
@@ -756,20 +833,20 @@ add it to the <code class="docutils literal notranslate"><span class="pre">kwarg
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="using-docker.html"
+       href="vertexai-setup.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NeMo Guardrails with Docker</p>
+        <p class="prev-next-title">Vertex AI Setup</p>
       </div>
     </a>
     <a class="right-next"
-       href="align-score-deployment.html"
+       href="nemoguard-topiccontrol-deployment.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">AlignScore Deployment</p>
+        <p class="prev-next-title">Llama 3.1 NemoGuard 8B Topic Control Deployment</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -794,20 +871,11 @@ add it to the <code class="docutils literal notranslate"><span class="pre">kwarg
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-cli">Chat CLI</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api">Python API</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-external-async-token-generators">Using External Async Token Generators</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-requirements">Version Requirements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-token-usage-information">Accessing Token Usage Information</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-for-llms-deployed-using-huggingfacepipeline">Streaming for LLMs deployed using HuggingFacePipeline</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-multilingual-content-safety-guardrails">Adding Multilingual Content Safety Guardrails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-the-content-safety-container">Starting the Content Safety Container</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-guardrails-and-running-inference">Configuring Guardrails and Running Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
 
