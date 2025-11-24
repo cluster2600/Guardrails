@@ -556,52 +556,66 @@
 </section>
 <section id="custom-llm-provider-registration">
 <h2>Custom LLM Provider Registration<a class="headerlink" href="#custom-llm-provider-registration" title="Link to this heading">#</a></h2>
-<p>To register a custom LLM provider, you need to create a class that inherits from <code class="docutils literal notranslate"><span class="pre">BaseLanguageModel</span></code> and register it using <code class="docutils literal notranslate"><span class="pre">register_llm_provider</span></code>.</p>
-<p>It is important to implement the following methods:</p>
-<p><strong>Required</strong>:</p>
+<p>NeMo Guardrails supports two types of custom LLM providers:</p>
+<ol class="arabic simple">
+<li><p><strong>Text Completion Models</strong> (<code class="docutils literal notranslate"><span class="pre">BaseLLM</span></code>) - For models that work with string prompts</p></li>
+<li><p><strong>Chat Models</strong> (<code class="docutils literal notranslate"><span class="pre">BaseChatModel</span></code>) - For models that work with message-based conversations</p></li>
+</ol>
+<section id="custom-text-completion-llm-basellm">
+<h3>Custom Text Completion LLM (BaseLLM)<a class="headerlink" href="#custom-text-completion-llm-basellm" title="Link to this heading">#</a></h3>
+<p>To register a custom text completion LLM provider, create a class that inherits from <code class="docutils literal notranslate"><span class="pre">BaseLLM</span></code> and register it using <code class="docutils literal notranslate"><span class="pre">register_llm_provider</span></code>.</p>
+<p><strong>Required methods:</strong></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">_call</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">_llm_type</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_call</span></code> - Synchronous text completion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_llm_type</span></code> - Returns the LLM type identifier</p></li>
 </ul>
-<p><strong>Optional</strong>:</p>
+<p><strong>Optional methods:</strong></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">_acall</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">_astream</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">_stream</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">_identifying_params</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_acall</span></code> - Asynchronous text completion (recommended)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_stream</span></code> - Streaming text completion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_astream</span></code> - Async streaming text completion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_identifying_params</span></code> - Returns parameters for model identification</p></li>
 </ul>
-<p>In other words, to create your custom LLM provider, you need to implement the following interface methods: <code class="docutils literal notranslate"><span class="pre">_call</span></code>, <code class="docutils literal notranslate"><span class="pre">_llm_type</span></code>, and optionally <code class="docutils literal notranslate"><span class="pre">_acall</span></code>, <code class="docutils literal notranslate"><span class="pre">_astream</span></code>, <code class="docutils literal notranslate"><span class="pre">_stream</span></code>, and <code class="docutils literal notranslate"><span class="pre">_identifying_params</span></code>. Here’s how you can do it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.base_language</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLanguageModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks.manager</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">CallbackManagerForLLMRun</span><span class="p">,</span>
     <span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">,</span>
+    <span class="n">CallbackManagerForLLMRun</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.language_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLLM</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.outputs</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenerationChunk</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.llm.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_llm_provider</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomLLM</span><span class="p">(</span><span class="n">BaseLanguageModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomTextLLM</span><span class="p">(</span><span class="n">BaseLLM</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom text completion LLM.&quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_llm_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;custom_text_llm&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_call</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">pass</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Synchronous text completion.&quot;&quot;&quot;</span>
+        <span class="c1"># Your implementation here</span>
+        <span class="k">return</span> <span class="s2">&quot;Generated text response&quot;</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_acall</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">pass</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Asynchronous text completion (recommended).&quot;&quot;&quot;</span>
+        <span class="c1"># Your async implementation here</span>
+        <span class="k">return</span> <span class="s2">&quot;Generated text response&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_stream</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -610,20 +624,129 @@
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">GenerationChunk</span><span class="p">]:</span>
-        <span class="k">pass</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional: Streaming text completion.&quot;&quot;&quot;</span>
+        <span class="c1"># Yield chunks of text</span>
+        <span class="k">yield</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;chunk1&quot;</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;chunk2&quot;</span><span class="p">)</span>
 
-    <span class="c1"># rest of the implementation</span>
-    <span class="o">...</span>
 
-<span class="n">register_llm_provider</span><span class="p">(</span><span class="s2">&quot;custom_llm&quot;</span><span class="p">,</span> <span class="n">MyCustomLLM</span><span class="p">)</span>
+<span class="n">register_llm_provider</span><span class="p">(</span><span class="s2">&quot;custom_text_llm&quot;</span><span class="p">,</span> <span class="n">MyCustomTextLLM</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can then use the custom LLM provider in your configuration:</p>
+</section>
+<section id="custom-chat-model-basechatmodel">
+<h3>Custom Chat Model (BaseChatModel)<a class="headerlink" href="#custom-chat-model-basechatmodel" title="Link to this heading">#</a></h3>
+<p>To register a custom chat model, create a class that inherits from <code class="docutils literal notranslate"><span class="pre">BaseChatModel</span></code> and register it using <code class="docutils literal notranslate"><span class="pre">register_chat_provider</span></code>.</p>
+<p><strong>Required methods:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_generate</span></code> - Synchronous chat completion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_llm_type</span></code> - Returns the LLM type identifier</p></li>
+</ul>
+<p><strong>Optional methods:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_agenerate</span></code> - Asynchronous chat completion (recommended)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_stream</span></code> - Streaming chat completion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_astream</span></code> - Async streaming chat completion</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks.manager</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">,</span>
+    <span class="n">CallbackManagerForLLMRun</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.language_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseChatModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">AIMessageChunk</span><span class="p">,</span> <span class="n">BaseMessage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.outputs</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatGeneration</span><span class="p">,</span> <span class="n">ChatGenerationChunk</span><span class="p">,</span> <span class="n">ChatResult</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.llm.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_chat_provider</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomChatModel</span><span class="p">(</span><span class="n">BaseChatModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom chat model.&quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_llm_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;custom_chat_model&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Synchronous chat completion.&quot;&quot;&quot;</span>
+        <span class="c1"># Convert messages to your model&#39;s format and generate response</span>
+        <span class="n">response_text</span> <span class="o">=</span> <span class="s2">&quot;Generated chat response&quot;</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">response_text</span><span class="p">)</span>
+        <span class="n">generation</span> <span class="o">=</span> <span class="n">ChatGeneration</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ChatResult</span><span class="p">(</span><span class="n">generations</span><span class="o">=</span><span class="p">[</span><span class="n">generation</span><span class="p">])</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_agenerate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Asynchronous chat completion (recommended).&quot;&quot;&quot;</span>
+        <span class="c1"># Your async implementation</span>
+        <span class="n">response_text</span> <span class="o">=</span> <span class="s2">&quot;Generated chat response&quot;</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">response_text</span><span class="p">)</span>
+        <span class="n">generation</span> <span class="o">=</span> <span class="n">ChatGeneration</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ChatResult</span><span class="p">(</span><span class="n">generations</span><span class="o">=</span><span class="p">[</span><span class="n">generation</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stream</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ChatGenerationChunk</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional: Streaming chat completion.&quot;&quot;&quot;</span>
+        <span class="c1"># Yield chunks</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">AIMessageChunk</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;chunk1&quot;</span><span class="p">))</span>
+        <span class="k">yield</span> <span class="n">chunk</span>
+
+
+<span class="n">register_chat_provider</span><span class="p">(</span><span class="s2">&quot;custom_chat_model&quot;</span><span class="p">,</span> <span class="n">MyCustomChatModel</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-custom-llm-providers">
+<h3>Using Custom LLM Providers<a class="headerlink" href="#using-custom-llm-providers" title="Link to this heading">#</a></h3>
+<p>After registering your custom provider, you can use it in your configuration:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_llm</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_text_llm</span><span class="w">  </span><span class="c1"># or custom_chat_model</span>
 </pre></div>
 </div>
+</section>
+<section id="important-notes">
+<h3>Important Notes<a class="headerlink" href="#important-notes" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Import from langchain-core:</strong> Always import base classes from <code class="docutils literal notranslate"><span class="pre">langchain_core.language_models</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.language_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLLM</span><span class="p">,</span> <span class="n">BaseChatModel</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Implement async methods:</strong> For better performance, always implement <code class="docutils literal notranslate"><span class="pre">_acall</span></code> (for BaseLLM) or <code class="docutils literal notranslate"><span class="pre">_agenerate</span></code> (for BaseChatModel).</p></li>
+<li><p><strong>Choose the right base class:</strong></p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">BaseLLM</span></code> for text completion models (prompt → text)</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">BaseChatModel</span></code> for chat models (messages → message)</p></li>
+</ul>
+</li>
+<li><p><strong>Registration functions:</strong></p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">register_llm_provider()</span></code> for <code class="docutils literal notranslate"><span class="pre">BaseLLM</span></code> subclasses</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">register_chat_provider()</span></code> for <code class="docutils literal notranslate"><span class="pre">BaseChatModel</span></code> subclasses</p></li>
+</ul>
+</li>
+</ol>
+</section>
 </section>
 <section id="custom-embedding-provider-registration">
 <h2>Custom Embedding Provider Registration<a class="headerlink" href="#custom-embedding-provider-registration" title="Link to this heading">#</a></h2>
@@ -731,7 +854,13 @@
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-data-access">Custom Data Access</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-llm-provider-registration">Custom LLM Provider Registration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-llm-provider-registration">Custom LLM Provider Registration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-text-completion-llm-basellm">Custom Text Completion LLM (BaseLLM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-chat-model-basechatmodel">Custom Chat Model (BaseChatModel)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-custom-llm-providers">Using Custom LLM Providers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-notes">Important Notes</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-embedding-provider-registration">Custom Embedding Provider Registration</a></li>
 </ul>
   </nav></div>
