@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=3f2861e3"></script>
+    <script src="../../_static/documentation_options.js?v=f0c74d41"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,14 +50,14 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.15.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.18.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/langchain/runnable-rails.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Chain-With-Guardrails" href="chain-with-guardrails/index.html" />
+    <link rel="next" title="LangGraph Integration" href="langgraph-integration.html" />
     <link rel="prev" title="LangChain Integration" href="langchain-integration.html" />
 
 
@@ -340,6 +340,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">LangChain</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -396,11 +397,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced/llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/nemotron-safety-guard-deployment.html">Nemotron Safety Guard Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/model-memory-cache.html">Memory Model Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -522,10 +526,16 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="runnablerails">
 <h1>RunnableRails<a class="headerlink" href="#runnablerails" title="Link to this heading">#</a></h1>
-<p>This guide will teach you how to integrate guardrail configurations built with NeMo Guardrails into your LangChain applications. The examples in this guide will focus on using the <a class="reference external" href="https://python.langchain.com/docs/expression_language/" rel="noreferer noopener" target="_blank">LangChain Expression Language</a> (LCEL).</p>
+<p>This guide demonstrates how to integrate NeMo Guardrails into LangChain applications using the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> class. The class implements the full <a class="reference external" href="https://python.langchain.com/docs/concepts/runnables/" rel="noreferer noopener" target="_blank">Runnable Protocol</a> with comprehensive support for synchronous and asynchronous operations, streaming, and batch processing.</p>
+<hr class="docutils" />
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails provides a LangChain native interface that implements the <a class="reference external" href="https://python.langchain.com/docs/expression_language/interface" rel="noreferer noopener" target="_blank">Runnable Protocol</a>, through the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> class. To get started, you must first load a guardrail configuration and create a <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance:</p>
+<p><code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> provides a complete LangChain-native interface that wraps guardrail configurations around LLMs or entire chains. It supports all Runnable methods including <code class="docutils literal notranslate"><span class="pre">invoke()</span></code>, <code class="docutils literal notranslate"><span class="pre">ainvoke()</span></code>, <code class="docutils literal notranslate"><span class="pre">stream()</span></code>, <code class="docutils literal notranslate"><span class="pre">astream()</span></code>, <code class="docutils literal notranslate"><span class="pre">batch()</span></code>, and <code class="docutils literal notranslate"><span class="pre">abatch()</span></code> with full metadata preservation.</p>
+</section>
+<hr class="docutils" />
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h2>
+<p>To get started, load a guardrail configuration and create a <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.integrations.langchain.runnable_rails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableRails</span>
 
@@ -533,9 +543,9 @@
 <span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>To add guardrails around an LLM model inside a chain, you have to “wrap” the LLM model with a <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance, i.e., <code class="docutils literal notranslate"><span class="pre">(guardrails</span> <span class="pre">|</span> <span class="pre">...)</span></code>.</p>
-<p>Let’s take a typical example using a prompt, a model, and an output parser:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.chat_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<p>To add guardrails around an LLM model inside a chain, wrap the LLM model with a <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance. For example, <code class="docutils literal notranslate"><span class="pre">(guardrails</span> <span class="pre">|</span> <span class="pre">...)</span></code>.</p>
+<p>The following is an example of using a prompt, model, and output parser:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
 
@@ -546,7 +556,7 @@
 <span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">model</span> <span class="o">|</span> <span class="n">output_parser</span>
 </pre></div>
 </div>
-<p>To add guardrails around the LLM model in the above example:</p>
+<p>Add guardrails around the LLM model in the example above with the following code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain_with_guardrails</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="p">(</span><span class="n">guardrails</span> <span class="o">|</span> <span class="n">model</span><span class="p">)</span> <span class="o">|</span> <span class="n">output_parser</span>
 </pre></div>
 </div>
@@ -554,7 +564,7 @@
 <p class="admonition-title">Note</p>
 <p>Using the extra parenthesis is essential to enforce the order in which the <code class="docutils literal notranslate"><span class="pre">|</span></code> (pipe) operator is applied.</p>
 </div>
-<p>To add guardrails to an existing chain (or any <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>) you must wrap it similarly:</p>
+<p>To add guardrails to an existing chain or any <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>, wrap it similarly.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rag_chain</span> <span class="o">=</span> <span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span> <span class="o">|</span> <span class="n">format_docs</span><span class="p">,</span> <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">RunnablePassthrough</span><span class="p">()}</span>
     <span class="o">|</span> <span class="n">prompt</span>
@@ -565,7 +575,7 @@
 <span class="n">rag_chain_with_guardrails</span> <span class="o">=</span> <span class="n">guardrails</span> <span class="o">|</span> <span class="n">rag_chain</span>
 </pre></div>
 </div>
-<p>You can also use the same approach to add guardrails only around certain parts of your chain. The example below (extracted from the <a class="reference external" href="https://python.langchain.com/docs/expression_language/how_to/routing" rel="noreferer noopener" target="_blank">RunnableBranch Documentation</a>), adds guardrails around the “anthropic” and “general” branches inside a <code class="docutils literal notranslate"><span class="pre">RunnableBranch</span></code>:</p>
+<p>You can also use the same approach to add guardrails only around certain parts of your chain. The following example from the <a class="reference external" href="https://python.langchain.com/docs/expression_language/how_to/routing" rel="noreferer noopener" target="_blank">RunnableBranch Documentation</a> adds guardrails around the <code class="docutils literal notranslate"><span class="pre">&quot;anthropic&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;general&quot;</span></code> branches inside a <code class="docutils literal notranslate"><span class="pre">RunnableBranch</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableBranch</span>
 
 <span class="n">branch</span> <span class="o">=</span> <span class="n">RunnableBranch</span><span class="p">(</span>
@@ -575,122 +585,309 @@
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>In general, you can wrap any part of a runnable chain with guardrails:</p>
+<p>In general, you can wrap any part of a runnable chain with guardrails.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="n">runnable_1</span> <span class="o">|</span> <span class="n">runnable_2</span> <span class="o">|</span> <span class="n">runnable_3</span> <span class="o">|</span> <span class="n">runnable_4</span> <span class="o">|</span> <span class="o">...</span>
 <span class="n">chain_with_guardrails</span> <span class="o">=</span> <span class="n">runnable_1</span> <span class="o">|</span> <span class="p">(</span><span class="n">guardrails</span> <span class="o">|</span> <span class="p">(</span><span class="n">runnable_2</span> <span class="o">|</span> <span class="n">runnable_3</span><span class="p">))</span> <span class="o">|</span> <span class="n">runnable_4</span> <span class="o">|</span> <span class="o">...</span>
 </pre></div>
 </div>
 </section>
-<section id="input-output-formats">
-<h2>Input/Output Formats<a class="headerlink" href="#input-output-formats" title="Link to this heading">#</a></h2>
-<p>The supported input/output formats when wrapping an LLM model are:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Input Format</p></th>
-<th class="head"><p>Output Format</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Prompt (i.e., <code class="docutils literal notranslate"><span class="pre">StringPromptValue</span></code>)</p></td>
-<td><p>Completion string</p></td>
-</tr>
-<tr class="row-odd"><td><p>Chat history (i.e., <code class="docutils literal notranslate"><span class="pre">ChatPromptValue</span></code>)</p></td>
-<td><p>New message (i.e., <code class="docutils literal notranslate"><span class="pre">AIMessage</span></code>)</p></td>
-</tr>
-</tbody>
-</table>
+<hr class="docutils" />
+<section id="streaming-support">
+<h2>Streaming Support<a class="headerlink" href="#streaming-support" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> provides full streaming support with both synchronous and asynchronous methods. This enables responsive applications that stream LLM outputs as they are generated.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Synchronous streaming</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">guardrails</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="s2">&quot;What is machine learning?&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Asynchronous streaming</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_example</span><span class="p">():</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">guardrails</span><span class="o">.</span><span class="n">astream</span><span class="p">(</span><span class="s2">&quot;What is machine learning?&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
 </div>
-<p>The supported input/output formats when wrapping a chain (or a <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>) are:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Input Format</p></th>
-<th class="head"><p>Output Format</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Dictionary with <code class="docutils literal notranslate"><span class="pre">input</span></code> key</p></td>
-<td><p>Dictionary with <code class="docutils literal notranslate"><span class="pre">output</span></code> key</p></td>
-</tr>
-<tr class="row-odd"><td><p>Dictionary with <code class="docutils literal notranslate"><span class="pre">input</span></code> key</p></td>
-<td><p>String output</p></td>
-</tr>
-<tr class="row-even"><td><p>String input</p></td>
-<td><p>Dictionary with <code class="docutils literal notranslate"><span class="pre">output</span></code> key</p></td>
-</tr>
-<tr class="row-odd"><td><p>String input</p></td>
-<td><p>String output</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<p><strong>Metadata in Streaming</strong>: <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> preserves all metadata during streaming, including <code class="docutils literal notranslate"><span class="pre">response_metadata</span></code>, <code class="docutils literal notranslate"><span class="pre">usage_metadata</span></code>, and <code class="docutils literal notranslate"><span class="pre">additional_kwargs</span></code> in <code class="docutils literal notranslate"><span class="pre">AIMessageChunk</span></code> objects.</p>
 </section>
-<section id="prompt-passthrough">
-<h2>Prompt Passthrough<a class="headerlink" href="#prompt-passthrough" title="Link to this heading">#</a></h2>
-<p>The role of a guardrail configuration is to validate the user input, check the LLM output, guide the LLM model on how to respond, etc. (see <a class="reference internal" href="../configuration-guide.html#guardrails-definitions"><span class="std std-ref">Configuration Guide</span></a> for more details on the different types of rails). To achieve this, the guardrail configuration might make additional calls to the LLM or other models/APIs (e.g., for fact-checking and content moderation).</p>
-<p>By default, when the guardrail configuration decides that it is safe to prompt the LLM, <strong>it will use the exact prompt that was provided as the input</strong> (i.e., string, <code class="docutils literal notranslate"><span class="pre">StringPromptValue</span></code> or <code class="docutils literal notranslate"><span class="pre">ChatPromptValue</span></code>). However, to enforce specific rails (e.g., dialog rails, general instructions), the guardrails configuration needs to alter the prompt used to generate the response. To enable this behavior, which provides more robust rails, you must set the <code class="docutils literal notranslate"><span class="pre">passthrough</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code> when creating the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<hr class="docutils" />
+<section id="batch-processing">
+<h2>Batch Processing<a class="headerlink" href="#batch-processing" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> supports efficient batch processing for multiple inputs. The following example shows how to use the <code class="docutils literal notranslate"><span class="pre">batch</span></code> and <code class="docutils literal notranslate"><span class="pre">abatch</span></code> methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;What is Python?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Explain machine learning&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;How does AI work?&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># Synchronous batch processing</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">guardrails</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
+<span class="c1"># Asynchronous batch processing</span>
+<span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">guardrails</span><span class="o">.</span><span class="n">abatch</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
+<span class="c1"># Control concurrency</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableConfig</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">RunnableConfig</span><span class="p">(</span><span class="n">max_concurrency</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">guardrails</span><span class="o">.</span><span class="n">abatch</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="input-output-keys-for-chains-with-guardrails">
-<h2>Input/Output Keys for Chains with Guardrails<a class="headerlink" href="#input-output-keys-for-chains-with-guardrails" title="Link to this heading">#</a></h2>
-<p>When a guardrail configuration is used to wrap a chain (or a <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>) the input and output are either dictionaries or strings. However, a guardrail configuration always operates on a text input from the user and a text output from the LLM. To achieve this, when dicts are used, one of the keys from the input dict must be designated as the “input text” and one of the keys from the output as the “output text”. By default, these keys are <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code>. To customize these keys, you must provide the <code class="docutils literal notranslate"><span class="pre">input_key</span></code> and <code class="docutils literal notranslate"><span class="pre">output_key</span></code> parameters when creating the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">input_key</span><span class="o">=</span><span class="s2">&quot;question&quot;</span><span class="p">,</span> <span class="n">output_key</span><span class="o">=</span><span class="s2">&quot;answer&quot;</span><span class="p">)</span>
+<hr class="docutils" />
+<section id="input-output-formats">
+<h2>Input/Output Formats<a class="headerlink" href="#input-output-formats" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> intelligently handles various input and output formats with automatic transformation.</p>
+<section id="llm-wrapping-formats">
+<h3>LLM Wrapping Formats<a class="headerlink" href="#llm-wrapping-formats" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Input Format</p></th>
+<th class="head"><p>Output Format</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AIMessage</span></code></p></td>
+<td><p>String prompts → AI messages with full metadata</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">StringPromptValue</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AIMessage</span></code></p></td>
+<td><p>Prompt values → AI messages</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ChatPromptValue</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AIMessage</span></code></p></td>
+<td><p>Chat prompts → AI messages</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">List[BaseMessage]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AIMessage</span></code></p></td>
+<td><p>Message lists → AI messages</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">HumanMessage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AIMessage</span></code></p></td>
+<td><p>Human messages → AI messages</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="chain-wrapping-formats">
+<h3>Chain Wrapping Formats<a class="headerlink" href="#chain-wrapping-formats" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Input Format</p></th>
+<th class="head"><p>Output Format</p></th>
+<th class="head"><p>Behavior</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> with <code class="docutils literal notranslate"><span class="pre">input</span></code> key</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> with <code class="docutils literal notranslate"><span class="pre">output</span></code> key</p></td>
+<td><p>Dictionary passthrough</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> with custom key</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> with custom key</p></td>
+<td><p>Configurable via <code class="docutils literal notranslate"><span class="pre">input_key</span></code>/<code class="docutils literal notranslate"><span class="pre">output_key</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>String passthrough</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mixed formats</p></td>
+<td><p>Intelligently detected</p></td>
+<td><p>Automatic format detection</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="metadata-preservation">
+<h2>Metadata Preservation<a class="headerlink" href="#metadata-preservation" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> maintains complete metadata compatibility with LangChain components. All <code class="docutils literal notranslate"><span class="pre">AIMessage</span></code> responses include the following:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">response_metadata</span></code></strong>: Token usage, model info, finish reasons.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">usage_metadata</span></code></strong>: Input/output token counts, total tokens.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">additional_kwargs</span></code></strong>: Custom fields from the LLM provider.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">id</span></code></strong>: Unique message identifiers.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">tool_calls</span></code></strong>: Tool call information when applicable.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">guardrails</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;Hello world&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">response_metadata</span><span class="p">)</span>  <span class="c1"># {&#39;token_usage&#39;: {...}, &#39;model_name&#39;: &#39;...&#39;, ...}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">usage_metadata</span><span class="p">)</span>     <span class="c1"># {&#39;input_tokens&#39;: 10, &#39;output_tokens&#39;: 5, ...}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">)</span>  <span class="c1"># Provider-specific fields</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>                 <span class="c1"># &#39;msg_abc123...&#39;</span>
+</pre></div>
+</div>
+<p>This ensures seamless integration with LangChain components that depend on message metadata.</p>
+</section>
+<hr class="docutils" />
+<section id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Link to this heading">#</a></h2>
+<section id="passthrough-mode">
+<h3>Passthrough Mode<a class="headerlink" href="#passthrough-mode" title="Link to this heading">#</a></h3>
+<p>The role of a guardrail configuration is to validate user input, check LLM output, and guide the LLM model on how to respond. See the <a class="reference internal" href="../configuration-guide.html#guardrails-definitions"><span class="std std-ref">Configuration Guide</span></a> for more details on the different types of rails.</p>
+<p>To achieve this, the guardrail configuration might make additional calls to the LLM or other models/APIs (for example, for fact-checking and content moderation).</p>
+<p>By default, when the guardrail configuration decides that it is safe to prompt the LLM, it uses the exact prompt that was provided as the input, such as a string, <code class="docutils literal notranslate"><span class="pre">StringPromptValue</span></code> or <code class="docutils literal notranslate"><span class="pre">ChatPromptValue</span></code>. However, to enforce specific rails, for example, dialog rails, general instructions, the guardrails configuration needs to alter the prompt used to generate the response.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">passthrough</span></code> parameter controls this behavior.</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">passthrough=True</span></code></strong> (default): Uses the exact input prompt with minimal guardrail intervention.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">passthrough=False</span></code></strong>: Allows guardrails to modify prompts for enhanced protection.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Minimal intervention (required for tool calling)</span>
+<span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Enhanced guardrails (modifies prompts as needed)</span>
+<span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Tool Calling Requirement</strong>: Set <code class="docutils literal notranslate"><span class="pre">passthrough=True</span></code> for proper tool call handling.</p>
+</section>
+<section id="custom-input-output-keys">
+<h3>Custom Input/Output Keys<a class="headerlink" href="#custom-input-output-keys" title="Link to this heading">#</a></h3>
+<p>When you use a guardrail configuration to wrap a chain or a <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>, the input and output are either dictionaries or strings. However, a guardrail configuration always operates on a text input from the user and a text output from the LLM. To achieve this, when dictionaries are used, one of the keys from the input dictionary must be designated as the <code class="docutils literal notranslate"><span class="pre">&quot;input</span> <span class="pre">text&quot;</span></code> and one of the keys from the output as the <code class="docutils literal notranslate"><span class="pre">&quot;output</span> <span class="pre">text&quot;</span></code>.</p>
+<p>By default, these keys are <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code>. To customize these keys, provide the <code class="docutils literal notranslate"><span class="pre">input_key</span></code> and <code class="docutils literal notranslate"><span class="pre">output_key</span></code> parameters when creating the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance.</p>
+<p>The following examples show how to customize the input and output keys with “question” and “answer” keys.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custom keys for specialized chains</span>
+<span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span>
+    <span class="n">config</span><span class="p">,</span>
+    <span class="n">input_key</span><span class="o">=</span><span class="s2">&quot;question&quot;</span><span class="p">,</span>    <span class="c1"># Default: &quot;input&quot;</span>
+    <span class="n">output_key</span><span class="o">=</span><span class="s2">&quot;answer&quot;</span>      <span class="c1"># Default: &quot;output&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Usage with RAG chain</span>
 <span class="n">rag_chain_with_guardrails</span> <span class="o">=</span> <span class="n">guardrails</span> <span class="o">|</span> <span class="n">rag_chain</span>
 </pre></div>
 </div>
-<p>When a guardrail is triggered, and predefined messages must be returned, instead of the output from the LLM, only a dict with the output key is returned:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;answer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I&#39;m sorry, I can&#39;t assist with that&quot;</span>
-<span class="p">}</span>
+<p>When a guardrail is triggered and predefined messages must be returned instead of the output from the LLM, only a dictionary with the output key is returned.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;answer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I can&#39;t assist with that request.&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="using-tools">
-<h2>Using Tools<a class="headerlink" href="#using-tools" title="Link to this heading">#</a></h2>
-<p>A guardrail configuration can also use tools as part of the dialog rails. The following snippet defines the <code class="docutils literal notranslate"><span class="pre">Calculator</span></code> tool using the <code class="docutils literal notranslate"><span class="pre">LLMMathChain</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.chains</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMMathChain</span>
+</section>
+<hr class="docutils" />
+<section id="tool-calling">
+<h2>Tool Calling<a class="headerlink" href="#tool-calling" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> supports LangChain tool calling with full metadata preservation and streaming. Tool calling requires <code class="docutils literal notranslate"><span class="pre">passthrough=True</span></code> to work properly.</p>
+<p>The following steps are required to use tool calling with <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code>:</p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">passthrough=True</span></code> when creating <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">bind_tools()</span></code> to attach tools to your model.</p></li>
+<li><p>Handle tool execution in your application logic.</p></li>
+</ul>
+<section id="basic-tool-setup">
+<h3>Basic Tool Setup<a class="headerlink" href="#basic-tool-setup" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.integrations.langchain.runnable_rails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableRails</span>
 
-<span class="n">tools</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculator</span><span class="p">(</span><span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluates mathematical expressions like &#39;2 + 2&#39; or &#39;sqrt(16)&#39;.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">safe_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sqrt&#39;</span><span class="p">:</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;math&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">,</span> <span class="s1">&#39;pow&#39;</span><span class="p">:</span> <span class="nb">pow</span><span class="p">,</span> <span class="s1">&#39;__builtins__&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="n">safe_dict</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CalculatorInput</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">question</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">()</span>
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">calculator</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">(</span><span class="n">tools</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
+<span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">passthrough</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">guarded_model</span> <span class="o">=</span> <span class="n">guardrails</span> <span class="o">|</span> <span class="n">model</span>
+</pre></div>
+</div>
+</section>
+<section id="two-call-tool-pattern">
+<h3>Two-Call Tool Pattern<a class="headerlink" href="#two-call-tool-pattern" title="Link to this heading">#</a></h3>
+<p>The standard flow for two-call tool calling is to get tool calls, execute them, and synthesize results.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">ToolMessage</span>
 
-<span class="n">llm_math_chain</span> <span class="o">=</span> <span class="n">LLMMathChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">tools</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-    <span class="n">Tool</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span>
-        <span class="n">func</span><span class="o">=</span><span class="n">llm_math_chain</span><span class="o">.</span><span class="n">run</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Calculator&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;useful for when you need to answer questions about math&quot;</span><span class="p">,</span>
-        <span class="n">args_schema</span><span class="o">=</span><span class="n">CalculatorInput</span><span class="p">,</span>
+<span class="c1"># First call: Get tool calls</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;What is 2 + 2?&quot;</span><span class="p">)]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">guarded_model</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+
+<span class="c1"># Execute tools</span>
+<span class="n">tools_by_name</span> <span class="o">=</span> <span class="p">{</span><span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">tool</span> <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">}</span>
+<span class="n">messages_with_tools</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">content</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tool_calls</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
+    <span class="n">tool_result</span> <span class="o">=</span> <span class="n">tools_by_name</span><span class="p">[</span><span class="n">tool_call</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">tool_call</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">])</span>
+    <span class="n">messages_with_tools</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">ToolMessage</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">tool_result</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">tool_call</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="n">tool_call_id</span><span class="o">=</span><span class="n">tool_call</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
     <span class="p">)</span>
+
+<span class="c1"># Second call: Synthesize results</span>
+<span class="n">final_result</span> <span class="o">=</span> <span class="n">guarded_model</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages_with_tools</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">final_result</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="single-call-with-pre-processed-messages">
+<h3>Single-Call with Pre-processed Messages<a class="headerlink" href="#single-call-with-pre-processed-messages" title="Link to this heading">#</a></h3>
+<p>Use single-call tool calling when you already have a complete message history with tool results.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;What is 2 + 2?&quot;</span><span class="p">),</span>
+    <span class="n">AIMessage</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">tool_calls</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;calculator&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;expression&quot;</span><span class="p">:</span> <span class="s2">&quot;2 + 2&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;call_001&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tool_call&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+    <span class="p">),</span>
+    <span class="n">ToolMessage</span><span class="p">(</span>
+        <span class="n">content</span><span class="o">=</span><span class="s2">&quot;4&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;calculator&quot;</span><span class="p">,</span>
+        <span class="n">tool_call_id</span><span class="o">=</span><span class="s2">&quot;call_001&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">guarded_model</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>  <span class="c1"># &quot;2 + 2 equals 4.&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="composition-and-chaining">
+<h2>Composition and Chaining<a class="headerlink" href="#composition-and-chaining" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> integrates with complex LangChain compositions. The following example shows how to use <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> with a conditional branching chain.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnablePassthrough</span><span class="p">,</span> <span class="n">RunnableBranch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
+
+<span class="c1"># Complex chain with guardrails</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span> <span class="o">|</span> <span class="n">format_docs</span><span class="p">,</span> <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">RunnablePassthrough</span><span class="p">()}</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="p">(</span><span class="n">guardrails</span> <span class="o">|</span> <span class="n">llm</span><span class="p">)</span>
+    <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="c1"># Conditional branching with guardrails</span>
+<span class="n">branch</span> <span class="o">=</span> <span class="n">RunnableBranch</span><span class="p">(</span>
+    <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;technical&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">],</span> <span class="n">guardrails</span> <span class="o">|</span> <span class="n">technical_chain</span><span class="p">),</span>
+    <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;creative&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">],</span> <span class="n">creative_chain</span><span class="p">),</span>
+    <span class="n">guardrails</span> <span class="o">|</span> <span class="n">general_chain</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>To make sure that all math questions are answered using this tool, you can create a rail like the one below and include it in your guardrail configuration:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define user ask math question
-  &quot;What is the square root of 7?&quot;
-  &quot;What is the formula for the area of a circle?&quot;
-
-define flow
-  user ask math question
-  $result = execute Calculator(tool_input=$user_message)
-  bot respond
-</pre></div>
-</div>
-<p>Finally, you pass the <code class="docutils literal notranslate"><span class="pre">tools</span></code> array to the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> instance:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
-
-<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="p">(</span><span class="n">guardrails</span> <span class="o">|</span> <span class="n">model</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 5+5*5/5?&quot;</span><span class="p">}))</span>
-</pre></div>
-</div>
-</section>
-<section id="limitations">
-<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h2>
-<p>The current implementation of the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> interface does not support streaming. This will be addressed in a future release.</p>
+<p><strong>Key Benefits of <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code>:</strong></p>
+<ul class="simple">
+<li><p>Maintains full Runnable protocol compatibility.</p></li>
+<li><p>Preserves metadata throughout the chain.</p></li>
+<li><p>Supports all async/sync operations.</p></li>
+<li><p>Works with streaming and batch processing.</p></li>
+</ul>
 </section>
 </section>
 
@@ -714,11 +911,11 @@ define flow
       </div>
     </a>
     <a class="right-next"
-       href="chain-with-guardrails/index.html"
+       href="langgraph-integration.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Chain-With-Guardrails</p>
+        <p class="prev-next-title">LangGraph Integration</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -744,11 +941,27 @@ define flow
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-formats">Input/Output Formats</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-passthrough">Prompt Passthrough</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-keys-for-chains-with-guardrails">Input/Output Keys for Chains with Guardrails</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-tools">Using Tools</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-support">Streaming Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-processing">Batch Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-output-formats">Input/Output Formats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-wrapping-formats">LLM Wrapping Formats</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-wrapping-formats">Chain Wrapping Formats</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-preservation">Metadata Preservation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-options">Configuration Options</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#passthrough-mode">Passthrough Mode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-input-output-keys">Custom Input/Output Keys</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling">Tool Calling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-tool-setup">Basic Tool Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-call-tool-pattern">Two-Call Tool Pattern</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-call-with-pre-processed-messages">Single-Call with Pre-processed Messages</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-and-chaining">Composition and Chaining</a></li>
 </ul>
   </nav></div>
 

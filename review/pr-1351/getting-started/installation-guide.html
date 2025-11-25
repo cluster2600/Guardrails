@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=3f2861e3"></script>
+    <script src="../_static/documentation_options.js?v=f0c74d41"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.15.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.18.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -340,6 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user-guides/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../user-guides/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-guides/langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guides/langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../user-guides/langchain/chain-with-guardrails/index.html">Chain-With-Guardrails</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../user-guides/langchain/chain-with-guardrails/README.html">Chain with Guardrails</a></li>
 </ul>
@@ -396,11 +397,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nested-async-loop.html">Nested AsyncIO Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-contentsafety-deployment.html">Llama 3.1 NemoGuard 8B ContentSafety Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemotron-safety-guard-deployment.html">Nemotron Safety Guard Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/model-memory-cache.html">Memory Model Cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guides/advanced/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -519,7 +523,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="installation-guide">
 <h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading">#</a></h1>
-<p>This guide walks you through the following steps to install NeMo Guardrails:</p>
+<p>This guide walks you through the following steps to install the NeMo Guardrails SDK:</p>
 <ol class="arabic simple">
 <li><p>Setting up a fresh virtual environment.</p></li>
 <li><p>Installing using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p></li>
@@ -527,18 +531,25 @@
 <li><p>Optional dependencies.</p></li>
 <li><p>Using Docker.</p></li>
 </ol>
-<section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
+<p>Review the following requirements to install the NeMo Guardrails SDK.</p>
+<section id="hardware-requirements">
+<h3>Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Link to this heading">#</a></h3>
+<p>The NeMo Guardrails SDK runs on CPUs. This SDK adds a layer to manage processes between your application front-end and the backend LLM and does not require any GPUs.</p>
+</section>
+<section id="software-requirements">
+<h3>Software Requirements<a class="headerlink" href="#software-requirements" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Python 3.9, 3.10, or 3.11</p></li>
+<li><p>Python 3.10, 3.11, 3.12 or 3.13</p></li>
 </ul>
 </section>
 <section id="additional-dependencies">
-<h2>Additional dependencies<a class="headerlink" href="#additional-dependencies" title="Link to this heading">#</a></h2>
+<h3>Additional Dependencies<a class="headerlink" href="#additional-dependencies" title="Link to this heading">#</a></h3>
 <p>NeMo Guardrails uses <a class="reference external" href="https://github.com/spotify/annoy" rel="noreferer noopener" target="_blank">annoy</a>, which is a C++ library with Python bindings. To install it, you need to have a valid C++ runtime on your computer.
 Most systems already have installed a C++ runtime. If the <strong>annoy</strong> installation fails due to a missing C++ runtime, you can install a C++ runtime as follows:</p>
 <section id="installing-a-c-runtime-on-linux-mac-or-unix-based-os">
-<h3>Installing a C++ runtime on Linux, Mac, or Unix-based OS<a class="headerlink" href="#installing-a-c-runtime-on-linux-mac-or-unix-based-os" title="Link to this heading">#</a></h3>
+<h4>Installing a C++ runtime on Linux, Mac, or Unix-based OS<a class="headerlink" href="#installing-a-c-runtime-on-linux-mac-or-unix-based-os" title="Link to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>Install <code class="docutils literal notranslate"><span class="pre">gcc</span></code> and <code class="docutils literal notranslate"><span class="pre">g++</span></code> using <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">gcc</span> <span class="pre">g++</span></code>.</p></li>
 <li><p>Update the following environment variables: <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">CC=</span></code><em>path_to_clang</em> and <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">CXX=</span></code><em>path_to_clang</em> (usually, <em>path_to_clang</em> is <em>/usr/bin/clang</em>).</p></li>
@@ -546,8 +557,9 @@ Most systems already have installed a C++ runtime. If the <strong>annoy</strong>
 </ol>
 </section>
 <section id="installing-a-c-runtime-on-windows">
-<h3>Installing a C++ runtime on Windows<a class="headerlink" href="#installing-a-c-runtime-on-windows" title="Link to this heading">#</a></h3>
+<h4>Installing a C++ runtime on Windows<a class="headerlink" href="#installing-a-c-runtime-on-windows" title="Link to this heading">#</a></h4>
 <p>Install the <a class="reference external" href="https://visualstudio.microsoft.com/visual-cpp-build-tools/" rel="noreferer noopener" target="_blank">Microsoft C++ Build Tools</a>. This installs Microsoft Visual C++ (version 14.0 or greater is required by the latest version of <strong>annoy</strong>).</p>
+</section>
 </section>
 </section>
 <section id="setting-up-a-virtual-environment">
@@ -708,10 +720,14 @@ For each feature or LLM example, check the readme file associated with it.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-dependencies">Additional dependencies</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-a-c-runtime-on-linux-mac-or-unix-based-os">Installing a C++ runtime on Linux, Mac, or Unix-based OS</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-a-c-runtime-on-windows">Installing a C++ runtime on Windows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware-requirements">Hardware Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software-requirements">Software Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-dependencies">Additional Dependencies</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-a-c-runtime-on-linux-mac-or-unix-based-os">Installing a C++ runtime on Linux, Mac, or Unix-based OS</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-a-c-runtime-on-windows">Installing a C++ runtime on Windows</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-virtual-environment">Setting up a virtual environment</a><ul class="nav section-nav flex-column">
