@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 from typing import cast
+from unittest.mock import AsyncMock
+
+import pytest
 from langchain_core.language_models import BaseLanguageModel
 from langchain_core.messages import AIMessage
-from unittest.mock import AsyncMock
 
 from nemoguardrails.actions.llm.utils import (
     _extract_reasoning_from_additional_kwargs,
@@ -27,6 +28,7 @@ from nemoguardrails.actions.llm.utils import (
     _infer_provider_from_module,
     _store_reasoning_traces,
     _store_tool_calls,
+    llm_call,
 )
 from nemoguardrails.context import reasoning_trace_var, tool_calls_var
 from nemoguardrails.exceptions import LLMCallException
@@ -572,6 +574,7 @@ def test_store_tool_calls_with_real_aimessage_multiple_tool_calls():
     assert len(tool_calls) == 2
     assert tool_calls[0]["name"] == "foo"
     assert tool_calls[1]["name"] == "bar"
+
 
 @pytest.mark.asyncio
 async def test_llm_call_exception_enrichment_with_model_and_endpoint():
