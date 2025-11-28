@@ -540,7 +540,6 @@
 <li><p><a class="reference internal" href="#llama-guard-based-content-moderation">LlamaGuard-based Content Moderation</a></p></li>
 <li><p><a class="reference internal" href="#patronus-lynx-based-rag-hallucination-detection">Patronus Lynx-based RAG Hallucination Detection</a></p></li>
 <li><p><a class="reference internal" href="#presidio-based-sensitive-data-detection">Presidio-based Sensitive data detection</a></p></li>
-<li><p>BERT-score Hallucination Checking - <em>[COMING SOON]</em></p></li>
 </ul>
 </li>
 <li><p>Third-Party APIs</p>
@@ -556,7 +555,6 @@
 <li><p><a class="reference internal" href="#prompt-security-protection">Prompt Security Protection</a></p></li>
 <li><p><a class="reference internal" href="#pangea-ai-guard">Pangea AI Guard</a></p></li>
 <li><p><a class="reference internal" href="#trend-micro-vision-one-ai-application-security">Trend Micro Vision One AI Application Security</a></p></li>
-<li><p>OpenAI Moderation API - <em>[COMING SOON]</em></p></li>
 <li><p><a class="reference internal" href="#cisco-ai-defense">Cisco AI Defense</a></p></li>
 </ul>
 </li>
@@ -926,7 +924,7 @@
 </section>
 <section id="nvidia-models">
 <h2>NVIDIA Models<a class="headerlink" href="#nvidia-models" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails provides out of the box connectivity for safety models trained by the NVIDIA for specialized use cases. These models shall be provided as both as HuggingFace checkpoints, and as NVIDIA NIM containers that will provide out of the box TRTLLM support with lower latency.</p>
+<p>NeMo Guardrails provides out of the box connectivity for safety models trained by NVIDIA for specialized use cases. These models are provided as both HuggingFace checkpoints and as NVIDIA NIM containers that provide out of the box TRTLLM support with lower latency.</p>
 <section id="content-safety">
 <h3>Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h3>
 <p>The content safety checks in Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as Nvidia’s <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">NemoGuard ContentSafety</a> model, Meta’s <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/" rel="noreferer noopener" target="_blank">Llama Guard 3</a>, Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma" rel="noreferer noopener" target="_blank">ShieldGemma</a>, etc.</p>
@@ -1520,7 +1518,6 @@ Using the default value allows for detection of 49/50 GCG-style attacks with a 0
 <section id="perplexity-computation">
 <h4>Perplexity Computation<a class="headerlink" href="#perplexity-computation" title="Link to this heading">#</a></h4>
 <p>To compute the perplexity of a string, the current implementation uses the <code class="docutils literal notranslate"><span class="pre">gpt2-large</span></code> model.</p>
-<p><strong>NOTE</strong>: in future versions, multiple options will be supported.</p>
 </section>
 <section id="model-based-jailbreak-detections">
 <h4>Model-based Jailbreak Detections<a class="headerlink" href="#model-based-jailbreak-detections" title="Link to this heading">#</a></h4>
