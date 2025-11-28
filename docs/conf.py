@@ -26,7 +26,7 @@ author = "NVIDIA Corporation"
 release = "0.0.0"
 with open("../pyproject.toml") as f:
     t = load(f)
-    release = t.get("tool").get("poetry").get("version")
+    release = t.get("project").get("version")
 
 extensions = [
     "myst_parser",
