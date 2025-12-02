@@ -649,6 +649,9 @@
 </section>
 <section id="chains-as-actions">
 <h3>Chains as Actions<a class="headerlink" href="#chains-as-actions" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>⚠️ DEPRECATED</strong>: Chain support is deprecated and will be removed in a future release. Please use <a class="reference external" href="https://python.langchain.com/docs/expression_language/" rel="noreferer noopener" target="_blank">Runnable</a> instead. See the <a class="reference internal" href="langchain/runnable-as-action/README.html"><span class="std std-doc">Runnable as Action Guide</span></a> for examples.</p>
+</div></blockquote>
 <p>You can register a Langchain chain as an action using the <a class="reference internal" href="../api/nemoguardrails.rails.llm.llmrails.html#method-llmrails-register-action"><span class="std std-ref">LLMRails.register_action</span></a> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">register_action</span><span class="p">(</span><span class="n">some_chain</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;some_chain&quot;</span><span class="p">)</span>
 </pre></div>
