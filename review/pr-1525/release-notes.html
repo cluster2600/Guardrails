@@ -536,15 +536,14 @@ For a complete record of changes in a release, refer to the
 <section id="key-features">
 <span id="v0-19-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Added support for LangChain 1.x.
-NeMo Guardrails now supports LangChain version 1.x, including the new content blocks API for reasoning traces and tool calls.</p></li>
+<li><p>Added support for LangChain 1.x, including the content blocks API for reasoning traces and tool calls.</p></li>
 </ul>
 </section>
 <section id="fixed-issues">
 <span id="v0-19-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Fixed TypeError in Colang 2.x chat due to incorrect State/dict conversion.</p></li>
-<li><p>Fixed async streaming support for ChatNVIDIA provider patch.</p></li>
+<li><p>Fixed TypeError in Colang 2.x chat caused by incorrect type conversion between <code class="docutils literal notranslate"><span class="pre">State</span></code> and <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></li>
+<li><p>Fixed async streaming support for the ChatNVIDIA provider patch by adding a new <code class="docutils literal notranslate"><span class="pre">async_stream_decorator</span></code>.</p></li>
 </ul>
 <hr class="docutils" />
 </section>
