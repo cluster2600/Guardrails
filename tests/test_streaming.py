@@ -815,3 +815,62 @@ def test_main_llm_supports_streaming_flag_disabled_when_no_streaming():
     assert rails.main_llm_supports_streaming is False, (
         "main_llm_supports_streaming should be False when streaming is disabled"
     )
+
+
+def test_main_llm_supports_streaming_with_multiple_model_types(
+    custom_streaming_providers,
+):
+    """Test that streaming is properly configured when config has multiple model types."""
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {
+                    "type": "main",
+                    "engine": "custom_streaming",
+                    "model": "test-model",
+                },
+                {
+                    "type": "content_safety",
+                    "engine": "custom_streaming",
+                    "model": "safety-model",
+                },
+            ],
+            "streaming": True,
+        }
+    )
+
+    rails = LLMRails(config)
+
+    assert rails.main_llm_supports_streaming is True, (
+        "main_llm_supports_streaming should be True when streaming is enabled "
+        "and config has multiple model types including a streaming-capable main LLM"
+    )
+    # Verify the main LLM's streaming attribute was set
+    assert hasattr(rails.llm, "streaming") and rails.llm.streaming is True, (
+        "Main LLM's streaming attribute should be set to True"
+    )
+
+
+def test_main_llm_supports_streaming_with_specialized_models_only(
+    custom_streaming_providers,
+):
+    """Test streaming config when only specialized models are defined (no main)."""
+    config = RailsConfig.from_content(
+        config={
+            "models": [
+                {
+                    "type": "content_safety",
+                    "engine": "custom_streaming",
+                    "model": "safety-model",
+                },
+            ],
+            "streaming": True,
+        }
+    )
+
+    rails = LLMRails(config)
+
+    # Verify that main_llm_supports_streaming is False when no main LLM is configured
+    assert rails.main_llm_supports_streaming is False, (
+        "main_llm_supports_streaming should be False when no main LLM is configured"
+    )
