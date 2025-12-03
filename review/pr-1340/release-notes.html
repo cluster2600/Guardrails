@@ -531,10 +531,27 @@
 For a complete record of changes in a release, refer to the
 <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md" rel="noreferer noopener" target="_blank">CHANGELOG.md</a> in the GitHub repository.</p>
 <hr class="docutils" />
-<section id="v0-18-0">
-<span id="id1"></span><h2>0.18.0<a class="headerlink" href="#v0-18-0" title="Link to this heading">#</a></h2>
+<section id="v0-19-0">
+<span id="id1"></span><h2>0.19.0<a class="headerlink" href="#v0-19-0" title="Link to this heading">#</a></h2>
 <section id="key-features">
-<span id="v0-18-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
+<span id="v0-19-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added support for LangChain 1.x, including the content blocks API for reasoning traces and tool calls.</p></li>
+</ul>
+</section>
+<section id="fixed-issues">
+<span id="v0-19-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fixed TypeError in Colang 2.x chat caused by incorrect type conversion between <code class="docutils literal notranslate"><span class="pre">State</span></code> and <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></li>
+<li><p>Fixed async streaming support for the ChatNVIDIA provider patch by adding a new <code class="docutils literal notranslate"><span class="pre">async_stream_decorator</span></code>.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="v0-18-0">
+<span id="id2"></span><h2>0.18.0<a class="headerlink" href="#v0-18-0" title="Link to this heading">#</a></h2>
+<section id="v0-18-0-features">
+<span id="id3"></span><h3>Key Features<a class="headerlink" href="#v0-18-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>In-memory caching of guardrail model calls for reduced latency and cost savings.
 NeMo Guardrails now supports per-model caching of guardrail responses using an LFU (Least Frequently Used) cache.
@@ -546,8 +563,8 @@ For more information, refer to <a class="reference internal" href="user-guides/a
 <li><p>New embedding integrations with Azure OpenAI, Google, and Cohere.</p></li>
 </ul>
 </section>
-<section id="fixed-issues">
-<span id="v0-18-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Link to this heading">#</a></h3>
+<section id="v0-18-0-fixed-issues">
+<span id="id4"></span><h3>Fixed Issues<a class="headerlink" href="#v0-18-0-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Implemented validation of content safety and topic control guardrail configurations at creation time, providing prompt error reporting if required prompt templates or parameters are missing.</p></li>
 </ul>
@@ -555,9 +572,9 @@ For more information, refer to <a class="reference internal" href="user-guides/a
 </section>
 </section>
 <section id="v0-17-0">
-<span id="id2"></span><h2>0.17.0<a class="headerlink" href="#v0-17-0" title="Link to this heading">#</a></h2>
+<span id="id5"></span><h2>0.17.0<a class="headerlink" href="#v0-17-0" title="Link to this heading">#</a></h2>
 <section id="v0-17-0-features">
-<span id="id3"></span><h3>Key Features<a class="headerlink" href="#v0-17-0-features" title="Link to this heading">#</a></h3>
+<span id="id6"></span><h3>Key Features<a class="headerlink" href="#v0-17-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for <a class="reference internal" href="user-guides/langchain/langgraph-integration.html"><span class="std std-doc">integrating with LangGraph and tool calling</span></a>.
 This integration enables building safe and controlled multi-agent workflows.
@@ -580,9 +597,9 @@ Refer to <a class="reference internal" href="user-guides/advanced/nemoguard-jail
 </section>
 </section>
 <section id="v0-16-0">
-<span id="id4"></span><h2>0.16.0<a class="headerlink" href="#v0-16-0" title="Link to this heading">#</a></h2>
+<span id="id7"></span><h2>0.16.0<a class="headerlink" href="#v0-16-0" title="Link to this heading">#</a></h2>
 <section id="v0-16-0-features">
-<span id="id5"></span><h3>Key Features<a class="headerlink" href="#v0-16-0-features" title="Link to this heading">#</a></h3>
+<span id="id8"></span><h3>Key Features<a class="headerlink" href="#v0-16-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Enhanced tracing system with <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">OpenTelemetry semantic conventions</a>. To learn more, refer to <a class="reference internal" href="user-guides/tracing/index.html#tracing"><span class="std std-ref">Tracing</span></a>. For usage examples, refer to the following notebooks</p>
 <ul>
@@ -594,16 +611,16 @@ Refer to <a class="reference internal" href="user-guides/advanced/nemoguard-jail
 </ul>
 </section>
 <section id="v0-16-0-other-changes">
-<span id="id6"></span><h3>Other Changes<a class="headerlink" href="#v0-16-0-other-changes" title="Link to this heading">#</a></h3>
+<span id="id9"></span><h3>Other Changes<a class="headerlink" href="#v0-16-0-other-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added documentation about using KV cache reuse for LLM-based NemoGuard NIMs. By using KV cache reuse, you can improve the performance of LLM-based NemoGuard NIMs where the system prompt is the same for all calls up to the point where user query and LLM response are injected. To learn more, refer to <a class="reference internal" href="user-guides/advanced/kv-cache-reuse.html#kv-cache-reuse"><span class="std std-ref">KV Cache Reuse for NemoGuard NIM</span></a>.</p></li>
 </ul>
 </section>
 </section>
 <section id="v0-15-0">
-<span id="id7"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
+<span id="id10"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
 <section id="v0-15-0-features">
-<span id="id8"></span><h3>Key Features<a class="headerlink" href="#v0-15-0-features" title="Link to this heading">#</a></h3>
+<span id="id11"></span><h3>Key Features<a class="headerlink" href="#v0-15-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="user-guides/configuration-guide/guardrails-configuration.html#parallel-rails"><span class="std std-ref">Parallel Execution of Input and Output Rails</span></a>.</p></li>
 <li><p>Implemented a new way of configuring tracing. You can now use the OpenTelemetry SDK and the OpenTelemetry Protocol (OTLP) exporter while configuring the NeMo Guardrails clients in your application code directly. To learn more, refer to the <a class="reference internal" href="user-guides/configuration-guide/tracing-configuration.html#tracing-configuration"><span class="std std-ref">basic tracing configuration guide</span></a> and the <a class="reference internal" href="user-guides/tracing/index.html#tracing"><span class="std std-ref">advanced tracing configuration guide</span></a>.</p></li>
@@ -633,7 +650,7 @@ Refer to <a class="reference internal" href="user-guides/advanced/nemoguard-jail
 </section>
 </section>
 <section id="v0-14-1">
-<span id="id9"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
+<span id="id12"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
 <section id="features">
 <span id="v0-14-1-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -641,7 +658,7 @@ Refer to <a class="reference internal" href="user-guides/advanced/nemoguard-jail
 </ul>
 </section>
 <section id="v0-14-1-fixed-issues">
-<span id="id10"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-1-fixed-issues" title="Link to this heading">#</a></h3>
+<span id="id13"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-1-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed lazy loading of jailbreak detection dependencies. Before, jailbreak detection imported unnecessary dependencies when using NIM, which led to installation of those dependencies even when not using the local model-based jailbreak detection.</p></li>
 <li><p>Fixed constructor LLM configuration to properly load other config models.</p></li>
@@ -652,9 +669,9 @@ Refer to <a class="reference internal" href="user-guides/advanced/nemoguard-jail
 </section>
 </section>
 <section id="v0-14-0">
-<span id="id11"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
+<span id="id14"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
 <section id="v0-14-0-features">
-<span id="id12"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
+<span id="id15"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Python 3.13.</p></li>
 <li><p>Enhanced working with advanced reasoning models.</p>
@@ -680,7 +697,7 @@ For more information, refer to <a class="reference internal" href="user-guides/c
 </ul>
 </section>
 <section id="v0-14-0-breaking-changes">
-<span id="id13"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
+<span id="id16"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Removed support for the NeMo LLM Service, <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>.
 This provider reached end-of-life on February 5, 2025.</p></li>
@@ -690,7 +707,7 @@ In this release, the class is moved to the <code class="docutils literal notrans
 </ul>
 </section>
 <section id="v0-14-0-fixed-issues">
-<span id="id14"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
+<span id="id17"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue when tracing is enabled.
 Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
@@ -758,6 +775,7 @@ For more information, refer to <a class="reference external" href="https://githu
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-19-0">0.19.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-18-0">0.18.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-17-0">0.17.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-16-0">0.16.0</a></li>
