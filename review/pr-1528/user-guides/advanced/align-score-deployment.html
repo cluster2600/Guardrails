@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>AlignScore Deployment &#8212; NVIDIA NeMo Guardrails Toolkit</title>
+    <title>AlignScore Deployment &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=f0c74d41"></script>
+    <script src="../../_static/documentation_options.js?v=e201715b"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -52,15 +52,13 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.19.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/align-score-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Event-based API" href="event-based-api.html" />
-    <link rel="prev" title="Streaming" href="streaming.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -135,11 +133,11 @@
       
     
     
-    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Toolkit - Home"/>
-    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Toolkit - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Toolkit Developer Guide - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Toolkit Developer Guide - Home"/>
   
   
-    <p class="title logo__title">NVIDIA NeMo Guardrails Toolkit</p>
+    <p class="title logo__title">NVIDIA NeMo Guardrails Toolkit Developer Guide</p>
   
 </a></div>
     
@@ -242,11 +240,11 @@
       
     
     
-    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Toolkit - Home"/>
-    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Toolkit - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Toolkit Developer Guide - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Toolkit Developer Guide - Home"/>
   
   
-    <p class="title logo__title">NVIDIA NeMo Guardrails Toolkit</p>
+    <p class="title logo__title">NVIDIA NeMo Guardrails Toolkit Developer Guide</p>
   
 </a>
 
@@ -308,7 +306,7 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA NeMo Guardrails Toolkit</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -318,7 +316,7 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-notes.html">Release Notes</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -329,12 +327,15 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration Guide</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../configuration-guide/index.html">Configuration Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configuration-guide/yaml-schema/index.html">Configuration YAML Schema</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configuration-guide/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configuration-guide/yaml-schema/model-configuration.html">Model Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configuration-guide/yaml-schema/guardrails-configuration.html">Guardrails Configuration</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configuration-guide/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration-guide/yaml-schema/guardrails-configuration/guardrails-library.html">Guardrails Library</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configuration-guide/yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configuration-guide/yaml-schema/tracing-configuration.html">Tracing Configuration</a></li>
 </ul>
@@ -376,7 +377,20 @@
 <li class="toctree-l3"><a class="reference internal" href="../../configuration-guide/colang/colang-2/migration-guide.html">Migrating from Colang 1 to Colang 2</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configuration-guide/colang/colang-language-syntax-guide.html">Colang 1.0 Guide</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configuration-guide/colang/colang-1/index.html">Colang 1.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration-guide/colang/colang-1/colang-language-syntax-guide.html">Colang 1.0 Guide</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../configuration-guide/colang/colang-1/tutorials/index.html">Colang 1.0 Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../configuration-guide/colang/colang-1/tutorials/1-hello-world/README.html">Hello World</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configuration-guide/colang/colang-1/tutorials/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configuration-guide/colang/colang-1/tutorials/3-demo-use-case/README.html">Demo Use Case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configuration-guide/colang/colang-1/tutorials/4-input-rails/README.html">Input Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configuration-guide/colang/colang-1/tutorials/5-output-rails/README.html">Output Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configuration-guide/colang/colang-1/tutorials/6-topical-rails/README.html">Topical Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configuration-guide/colang/colang-1/tutorials/7-rag/README.html">Retrieval-Augmented Generation</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configuration-guide/colang/usage-examples/index.html">Colang Usage Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../configuration-guide/colang/usage-examples/bot-message-instructions.html">Bot Message Instructions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../configuration-guide/colang/usage-examples/extract-user-provided-values.html">Extract User-provided Values</a></li>
@@ -410,7 +424,12 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
@@ -422,79 +441,12 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Common Tasks</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/index.html">Configuration Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/custom-initialization.html">Custom Initialization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/general-options.html">General Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/llm-configuration.html">LLM Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/guardrails-configuration.html">Guardrails Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/tracing-configuration.html">Tracing Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configuration-guide/knowledge-base.html">Knowledge Base</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1"><a class="reference internal" href="../guardrails-library.html">Guardrails Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../llm-support.html">LLM Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../multimodal.html">Multimodal Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../server-guide.html">Server Guide</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../jailbreak-detection-heuristics/index.html">Jailbreak Detection Heuristics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../jailbreak-detection-heuristics/README.html">Using Jailbreak Detection Heuristics</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../multi-config-api/index.html">Multi Config API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../multi-config-api/README.html">Multi-config API</a></li>
-</ul>
-</details></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Uses</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="prompt-customization.html">Prompt Customization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using-docker.html">NeMo Guardrails with Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">AlignScore Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Self-hosting Llama Guard using vLLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nested-async-loop.html">Nested AsyncIO Loop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Nemotron Safety Guard Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration with NeMo Guardrails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Guardrails Evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Guardrails with Colang</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/1-hello-world/README.html">Hello World</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/3-demo-use-case/README.html">Demo Use Case</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/4-input-rails/README.html">Input Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/5-output-rails/README.html">Output Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/6-topical-rails/README.html">Topical Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/7-rag/README.html">Retrieval-Augmented Generation</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../architecture/index.html">Architecture</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../architecture/README.html">Architecture Guide</a></li>
-</ul>
-</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
@@ -613,24 +565,6 @@ pip<span class="w"> </span>install<span class="w"> </span>.
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="streaming.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Streaming</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="event-based-api.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Event-based API</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
