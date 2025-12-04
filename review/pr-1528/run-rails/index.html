@@ -340,7 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configuration-guide/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configuration-guide/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../configuration-guide/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../configuration-guide/yaml-schema/guardrails-configuration/guardrails-library.html">Guardrails Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration-guide/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../configuration-guide/yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
@@ -532,12 +532,13 @@
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code></strong>: Loads and manages guardrails configuration from files or content.</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">LLMRails</span></code></strong>: The main interface for generating responses with guardrails applied.</p></li>
 </ul>
+<p>Upon initializing the core classes (<code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> and <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code>) or starting the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI chat or server, the toolkit loads the configuration files you created in the previous chapter <a class="reference internal" href="../configuration-guide/index.html"><span class="std std-doc">Configure Rails</span></a>.</p>
 </section>
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
-<span class="c1"># Load configuration from a directory</span>
+<span class="c1"># Load configuration from the config directory</span>
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
 
 <span class="c1"># Create the LLMRails instance</span>

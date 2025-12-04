@@ -340,7 +340,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="yaml-schema/guardrails-configuration/guardrails-library.html">Guardrails Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
@@ -524,7 +524,8 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="configuration-overview">
 <h1>Configuration Overview<a class="headerlink" href="#configuration-overview" title="Link to this heading">#</a></h1>
-<p>A guardrails configuration includes the following components:</p>
+<p>Before using the NeMo Guardrails toolkit, you need to prepare configuration files that define your guardrails behavior. This section provides a complete instructions on preparing your configuration files and executable scripts.</p>
+<p>A guardrails configuration includes the following components. You can start with a basic configuration and add more components as needed.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Component</p></th>
@@ -552,51 +553,50 @@
 <tr class="row-odd"><td><p><strong>Initialization Code</strong></p></td>
 <td><p>Optional</p></td>
 <td><p>Custom Python code performing additional initialization, e.g. registering a new type of LLM.</p></td>
-<td><p>Usually <code class="docutils literal notranslate"><span class="pre">actions.py</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">actions.py</span></code> or <code class="docutils literal notranslate"><span class="pre">actions</span></code> folder</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>These files are typically included in a <code class="docutils literal notranslate"><span class="pre">config</span></code> folder, which is referenced when initializing a <code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> instance or when starting the CLI Chat or Server.</p>
 <section id="example-configuration-folder-structures">
 <h2>Example Configuration Folder Structures<a class="headerlink" href="#example-configuration-folder-structures" title="Link to this heading">#</a></h2>
 <p>The following are example configuration folder structures.</p>
 <ul>
 <li><p>Basic configuration</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">.</span>
-<span class="go">├── config</span>
-<span class="go">│   └── config.yml</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.
+├── config
+│   └── config.yml
 </pre></div>
 </div>
 </li>
 <li><p>Configuration with Colang Rails and a custom initialization code file <code class="docutils literal notranslate"><span class="pre">actions.py</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">.</span>
-<span class="go">├── config</span>
-<span class="go">│   ├── config.yml</span>
-<span class="go">│   ├── rails</span>
-<span class="go">│   │   ├── file_1.co</span>
-<span class="go">│   │   ├── file_2.co</span>
-<span class="go">│   │   └── ...</span>
-<span class="go">│   └── actions.py</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.
+├── config
+│   ├── config.yml
+│   ├── rails
+│   │   ├── file_1.co
+│   │   ├── file_2.co
+│   │   └── ...
+│   └── actions.py
 </pre></div>
 </div>
 </li>
 <li><p>A complete configuration with all components: core configuration, Colang Rails, a collection of custom initialization code files in an <code class="docutils literal notranslate"><span class="pre">actions</span></code> sub-package, and a knowledge base folder</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">.</span>
-<span class="go">├── config</span>
-<span class="go">│   ├── config.yml</span>
-<span class="go">│   ├── rails</span>
-<span class="go">│   │   ├── file_1.co</span>
-<span class="go">│   │   ├── file_2.co</span>
-<span class="go">│   │   └── ...</span>
-<span class="go">│   ├── actions</span>
-<span class="go">│   │   ├── file_1.py</span>
-<span class="go">│   │   ├── file_2.py</span>
-<span class="go">│   │   └── ...</span>
-<span class="go">│   └── kb</span>
-<span class="go">│       ├── file_1.md</span>
-<span class="go">│       ├── file_2.md</span>
-<span class="go">│       └── ...</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.
+├── config
+│   ├── config.yml
+│   ├── rails
+│   │   ├── file_1.co
+│   │   ├── file_2.co
+│   │   └── ...
+│   ├── actions
+│   │   ├── file_1.py
+│   │   ├── file_2.py
+│   │   └── ...
+│   └── kb
+│       ├── file_1.md
+│       ├── file_2.md
+│       └── ...
 </pre></div>
 </div>
 </li>
