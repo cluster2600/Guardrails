@@ -315,7 +315,9 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/guardrails-process.html">Guardrails Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Architecture Guide</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
@@ -530,7 +532,7 @@
 <section id="aim-and-usage">
 <h3>Aim and Usage<a class="headerlink" href="#aim-and-usage" title="Link to this heading">#</a></h3>
 <p>Dialog rails evaluation focuses on NeMo Guardrails’s core mechanism to guide conversations using canonical forms and dialogue flows.
-More details about this core functionality are explained <a class="reference internal" href="../architecture/README.html"><span class="std std-doc">here</span></a>.</p>
+More details about this core functionality are explained <a class="reference internal" href="#./../../docs/architecture/README.md"><span class="xref myst">here</span></a>.</p>
 <p>Thus, when using dialog rails evaluation, we are assessing the performance for:</p>
 <ol class="arabic simple">
 <li><p>User canonical form (intent) generation.</p></li>
@@ -567,7 +569,7 @@ The two datasets have a large number of user intents, thus dialog rails. One of 
 More details about running the dialog rails evaluation experiments and the evaluation datasets are available <span class="xref myst">here</span>.</p>
 <p>Preliminary evaluation results follow next. In all experiments, we have chosen to have a balanced test set with at most 3 samples per intent.
 For both datasets, we have assessed the performance for various LLMs and also for the number of samples (<code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">all,</span> <span class="pre">3,</span> <span class="pre">1</span></code>) per intent that are indexed in the vector database.</p>
-<p>Take into account that the performance of an LLM is heavily dependent on the prompt, especially due to the more complex <a class="reference internal" href="../architecture/README.html#example-prompt"><span class="std std-ref">prompt used by Guardrails</span></a>.
+<p>Take into account that the performance of an LLM is heavily dependent on the prompt, especially due to the more complex <a class="reference internal" href="#./../../docs/architecture/README.md#example-prompt"><span class="xref myst">prompt used by Guardrails</span></a>.
 Therefore, currently, we only release the results for OpenAI models, but more results will follow in the next releases. All results are preliminary, as better prompting can improve them.</p>
 <p>Important lessons to be learned from the evaluation results:</p>
 <ul class="simple">

@@ -313,7 +313,9 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/guardrails-process.html">Guardrails Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Architecture Guide</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
@@ -524,7 +526,7 @@
 <p><strong>NOTE</strong>: this documentation is intended for developers that want to extend/improve the support for different LLM engines.</p>
 <section id="task-oriented-prompting">
 <h2>Task-oriented Prompting<a class="headerlink" href="#task-oriented-prompting" title="Link to this heading">#</a></h2>
-<p>The interaction with the LLM is designed in a task-oriented way, i.e., each time the LLM is called, it must perform a specific task. The most important tasks, which are part of the <a class="reference internal" href="../../architecture/README.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a>, are:</p>
+<p>The interaction with the LLM is designed in a task-oriented way, i.e., each time the LLM is called, it must perform a specific task. The most important tasks, which are part of the <a class="reference internal" href="#../../architecture/README.md#the-guardrails-process"><span class="xref myst">guardrails process</span></a>, are:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code>: generate the canonical user message from the raw utterance (e.g., “Hello there” -&gt; <code class="docutils literal notranslate"><span class="pre">express</span> <span class="pre">greeting</span></code>);</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">generate_next_steps</span></code>: decide what the bot should say or what action should be executed (e.g., <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">respond</span> <span class="pre">to</span> <span class="pre">question</span></code>);</p></li>
@@ -666,7 +668,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">general_instructions</span></code>: the content corresponds to the <a class="reference internal" href="../configuration-guide.html#general-instructions"><span class="std std-ref">general instructions</span></a> specified in the configuration;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sample_conversation</span></code>: the content corresponds to the <a class="reference internal" href="../configuration-guide.html#sample-conversation"><span class="std std-ref">sample conversation</span></a> specified in the configuration;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">examples</span></code>: depending on the task, this variable will contain the few-shot examples that the LLM should take into account;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">history</span></code>: contains the history of events (see the <a class="reference internal" href="../../architecture/README.html#complete-example"><span class="std std-ref">complete example</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">history</span></code>: contains the history of events (see the <a class="reference internal" href="#../../architecture/README.md#complete-example"><span class="xref myst">complete example</span></a>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">relevant_chunks</span></code>: (only available for the <code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code> task) if a knowledge base is used, this variable will contain the most relevant chunks of text based on the user query.</p></li>
 </ul>
 </section>

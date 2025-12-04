@@ -313,7 +313,9 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/guardrails-process.html">Guardrails Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Architecture Guide</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
@@ -986,7 +988,7 @@ These models, hosted on the <a class="reference external" href="https://build.nv
 </section>
 <section id="the-embeddings-model">
 <h3>The Embeddings Model<a class="headerlink" href="#the-embeddings-model" title="Link to this heading">#</a></h3>
-<p>To configure the embedding model used for the various steps in the <a class="reference internal" href="../architecture/README.html"><span class="std std-doc">guardrails process</span></a>, such as canonical form generation and next step generation, add a model configuration in the <code class="docutils literal notranslate"><span class="pre">models</span></code> key as shown in the following configuration file:</p>
+<p>To configure the embedding model used for the various steps in the <a class="reference internal" href="#../architecture/README.md"><span class="xref myst">guardrails process</span></a>, such as canonical form generation and next step generation, add a model configuration in the <code class="docutils literal notranslate"><span class="pre">models</span></code> key as shown in the following configuration file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">embeddings</span>
@@ -1108,7 +1110,7 @@ create a class that inherits from <code class="docutils literal notranslate"><sp
 </section>
 <section id="embedding-search-provider">
 <h3>Embedding Search Provider<a class="headerlink" href="#embedding-search-provider" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails uses embedding search, also called vector databases, for implementing the <a class="reference internal" href="../architecture/README.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a> and for the <a class="reference internal" href="#knowledge-base-documents">knowledge base</a> functionality. The default embedding search uses FastEmbed for computing the embeddings (the <code class="docutils literal notranslate"><span class="pre">all-MiniLM-L6-v2</span></code> model) and <a class="reference external" href="https://github.com/spotify/annoy" rel="noreferer noopener" target="_blank">Annoy</a> for performing the search. As shown in the previous section, the embeddings model supports both FastEmbed and OpenAI. SentenceTransformers is also supported.</p>
+<p>NeMo Guardrails uses embedding search, also called vector databases, for implementing the <a class="reference internal" href="#../architecture/README.md#the-guardrails-process"><span class="xref myst">guardrails process</span></a> and for the <a class="reference internal" href="#knowledge-base-documents">knowledge base</a> functionality. The default embedding search uses FastEmbed for computing the embeddings (the <code class="docutils literal notranslate"><span class="pre">all-MiniLM-L6-v2</span></code> model) and <a class="reference external" href="https://github.com/spotify/annoy" rel="noreferer noopener" target="_blank">Annoy</a> for performing the search. As shown in the previous section, the embeddings model supports both FastEmbed and OpenAI. SentenceTransformers is also supported.</p>
 <p>For advanced use cases or integrations with existing knowledge bases, you can <a class="reference internal" href="advanced/embedding-search-providers.html"><span class="std std-doc">provide a custom embedding search provider</span></a>.</p>
 </section>
 <section id="general-instructions">
@@ -1432,7 +1434,7 @@ If you set this field to <code class="docutils literal notranslate"><span class=
 <li><p>Decide next step(s) and execute them</p></li>
 <li><p>Generate bot utterance(s)</p></li>
 </ol>
-<p>For a detailed description, check out <a class="reference internal" href="../architecture/README.html#the-guardrails-process"><span class="std std-ref">The Guardrails Process</span></a>.</p>
+<p>For a detailed description, check out <a class="reference internal" href="#../architecture/README.md#the-guardrails-process"><span class="xref myst">The Guardrails Process</span></a>.</p>
 <p>Each of the above steps may require an LLM call.</p>
 <section id="single-call-mode">
 <h4>Single Call Mode<a class="headerlink" href="#single-call-mode" title="Link to this heading">#</a></h4>
