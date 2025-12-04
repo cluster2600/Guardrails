@@ -48,7 +48,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/nemotron-safety-guard-deployment';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started/tutorials/nemotron-safety-guard-deployment';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,11 +56,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/nemotron-safety-guard-deployment.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/getting-started/tutorials/nemotron-safety-guard-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Llama 3.1 NemoGuard 8B Topic Control Deployment" href="nemoguard-topiccontrol-deployment.html" />
-    <link rel="prev" title="Tutorials" href="../../getting-started/tutorials/index.html" />
+    <link rel="prev" title="Tutorials" href="index.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -314,23 +314,22 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../architecture/README.html">Architecture Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../supported-llms.html">Supported LLMs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation Guide</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Nemotron Safety Guard Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../multimodal.html">Multimodal Data with NeMo Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Content Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Jailbreak Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
 </ul>
@@ -467,8 +466,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../python-api.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guides/python-api.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guides/cli.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
@@ -506,7 +505,7 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../../getting-started/tutorials/index.html" class="nav-link">Tutorials</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
     
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Nemotron Safety Guard Deployment</span></li>
   </ul>
@@ -554,7 +553,7 @@ You can specify more services to use the key for additional purposes.</p>
 Refer to the <a class="reference external" href="https://docs.docker.com/engine/install/" rel="noreferer noopener" target="_blank">instructions from Docker</a>.</p></li>
 <li><p>NVIDIA Container Toolkit installed and configured.
 Refer to <span class="xref std std-doc">installation</span> in the toolkit documentation.</p></li>
-<li><p>You <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">installed NeMo Guardrails</span></a>.</p></li>
+<li><p>You <a class="reference internal" href="../installation-guide.html"><span class="std std-doc">installed NeMo Guardrails</span></a>.</p></li>
 <li><p>You installed LangChain NVIDIA AI Foundation Model Playground Integration:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>langchain-nvidia-ai-endpoints
 </pre></div>
@@ -837,7 +836,7 @@ These three foods hold immense significance in Indian culture and cuisine, and a
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../getting-started/tutorials/index.html"
+       href="index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">

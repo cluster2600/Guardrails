@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Llama 3.1 NemoGuard 8B Topic Control Deployment &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
+    <title>Multimodal Data with NeMo Guardrails &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/nemoguard-topiccontrol-deployment';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started/tutorials/multimodal';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,11 +56,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/nemoguard-topiccontrol-deployment.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/getting-started/tutorials/multimodal.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="NemoGuard JailbreakDetect Deployment" href="nemoguard-jailbreakdetect-deployment.html" />
-    <link rel="prev" title="Nemotron Safety Guard Deployment" href="nemotron-safety-guard-deployment.html" />
+    <link rel="next" title="Configuration Overview" href="../../configuration-guide/index.html" />
+    <link rel="prev" title="NemoGuard JailbreakDetect Deployment" href="nemoguard-jailbreakdetect-deployment.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -314,23 +314,22 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../guardrails-process.html">Guardrails Process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../architecture/README.html">Architecture Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../supported-llms.html">Supported LLMs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation Guide</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Nemotron Safety Guard Deployment</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Llama 3.1 NemoGuard 8B Topic Control Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">NemoGuard JailbreakDetect Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../multimodal.html">Multimodal Data with NeMo Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Content Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Jailbreak Detection</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Multimodal Data</a></li>
 </ul>
 </details></li>
 </ul>
@@ -467,8 +466,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../python-api.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guides/python-api.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guides/cli.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
@@ -506,9 +505,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../../getting-started/tutorials/index.html" class="nav-link">Tutorials</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Llama 3.1 NemoGuard 8B Topic Control Deployment</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Multimodal Data with NeMo Guardrails</span></li>
   </ul>
 </nav>
 </div>
@@ -525,98 +524,81 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="llama-3-1-nemoguard-8b-topic-control-deployment">
-<h1>Llama 3.1 NemoGuard 8B Topic Control Deployment<a class="headerlink" href="#llama-3-1-nemoguard-8b-topic-control-deployment" title="Link to this heading">#</a></h1>
-<p>The TopicControl model is available to download as a LoRA adapter module through Hugging Face or as an <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/index.html" rel="noreferer noopener" target="_blank">NVIDIA TopicControl NIM microservice</a> for low-latency optimized inference with <a class="reference external" href="https://docs.nvidia.com/tensorrt-llm/index.html" rel="noreferer noopener" target="_blank">NVIDIA TensorRT-LLM</a>.</p>
-<p>This guide covers how to deploy the TopicControl model as a NIM microservice and use it in a NeMo Guardrails configuration.</p>
-<section id="nim-deployment">
-<h2>NIM Deployment<a class="headerlink" href="#nim-deployment" title="Link to this heading">#</a></h2>
-<p>Follow the instructions below to deploy the TopicControl NIM microservice and configure it in a NeMo Guardrails application.</p>
-<section id="access">
-<h3>Access<a class="headerlink" href="#access" title="Link to this heading">#</a></h3>
-<p>The first step is to ensure access to NVIDIA NIM assets through NGC using an NVAIE license.
-Once you have the NGC API key with the necessary permissions, set the following environment variables:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
-docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>-u<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>-p<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
-</pre></div>
-</div>
-<p>Test that you are able to use the NVIDIA NIM assets through by pulling the latest TopicControl container.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span>&lt;Path<span class="w"> </span>to<span class="w"> </span>latest<span class="w"> </span>NIM<span class="w"> </span>docker<span class="w"> </span>container&gt;
-<span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;llama-3.1-nemoguard-8b-topic-control&quot;</span>
-docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_IMAGE</span>
-</pre></div>
-</div>
-<p>And go!</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NGC_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_SERVED_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_CUSTOM_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">8123</span>:8000<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="nv">$NIM_IMAGE</span>
-</pre></div>
-</div>
+  <!--
+  SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+-->
+<section class="tex2jax_ignore mathjax_ignore" id="multimodal-data-with-nemo-guardrails">
+<h1>Multimodal Data with NeMo Guardrails<a class="headerlink" href="#multimodal-data-with-nemo-guardrails" title="Link to this heading">#</a></h1>
+<section id="about-working-with-multimodal-data">
+<h2>About Working with Multimodal Data<a class="headerlink" href="#about-working-with-multimodal-data" title="Link to this heading">#</a></h2>
+<p>NeMo Guardrails toolkit supports adding safety checks to multimodal content—images and text.
+The support is for input and output guardrails only.
+Depending on the image reasoning model, you can specify the image to check as a base64 encoded data or as a URL.</p>
+<p>The safety check uses the image reasoning model as LLM as-a-judge to determine if the content is safe.
+The OpenAI, Llama Vision, and Llama Guard models can accept multimodal input and act as a judge model.</p>
+<p>You must ensure the image size and prompt length do not exceed the maximum context length of the model.</p>
 </section>
-<section id="use-topiccontrol-nim-microservice-in-nemo-guardrails-app">
-<h3>Use TopicControl NIM Microservice in NeMo Guardrails App<a class="headerlink" href="#use-topiccontrol-nim-microservice-in-nemo-guardrails-app" title="Link to this heading">#</a></h3>
-<p>A locally running TopicControl NIM microservice exposes the standard OpenAI interface on the <code class="docutils literal notranslate"><span class="pre">v1/chat/completions</span></code> endpoint. NeMo Guardrails provides out-of-the-box support for engines that support the standard LLM interfaces. In Guardrails configuration, use the engine <code class="docutils literal notranslate"><span class="pre">nim</span></code> for the TopicControl NIM microservice as follows.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo-instruct</span>
+<section id="sample-configuration">
+<h2>Sample Configuration<a class="headerlink" href="#sample-configuration" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Create a directory, such as <code class="docutils literal notranslate"><span class="pre">configs/content_safety_vision</span></code>, and add a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file with the following content:</p></li>
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">configs/content_safety_vision/prompts.yml</span></code> file with the following content:</p></li>
+</ol>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<p>The following sample code uses the preceding configuration and sends requests to OpenAI endpoints.
+The sample image is a handgun.</p>
+<ol class="arabic">
+<li><p>Set the OpenAI environment variable with your token:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export OPENAI_API_KEY=&lt;api-key&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Import required libraries:</p></li>
+<li><p>Load the vision content safety configuration:</p></li>
+<li><p>Send an image reasoning request:</p></li>
+<li><p>Send a potentially unsafe request:</p></li>
+</ol>
+</section>
+<section id="tips-for-base-64-encoded-images">
+<h2>Tips for Base 64 Encoded Images<a class="headerlink" href="#tips-for-base-64-encoded-images" title="Link to this heading">#</a></h2>
+<p>Some models, such as the Llama Vision models, do not read an image from a URL.
+For these models, encode the image in base 64 and provide the encoded image to the model.</p>
+<p>The following code sample shows the common Python statements.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;topic_control&quot;</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
-<span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8123/v1&quot;</span>
-<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llama-3.1-nemoguard-8b-topic-control&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.rails.llm.llmrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
 
-<span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic safety check input $model=topic_control</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./content_safety_vision&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;&lt;path-to-image&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="hll">  <span class="n">base64_image</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span>
+  <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;what is the surface color that the object is placed on?&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image_url&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;image_url&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="hll">          <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;data:image/jpeg;base64,</span><span class="si">{</span><span class="n">base64_image</span><span class="si">}</span><span class="s2">&quot;</span>
+</span>      <span class="p">},</span>
+    <span class="p">},</span>
+  <span class="p">],</span>
+<span class="p">}]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>A few things to note:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">parameters.base_url</span></code> should contain the IP address of the machine the NIM was hosted on, the port should match the tunnel forwarding port specified in the docker run command.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">parameters.model_name</span></code> in the Guardrails configuration needs to match the <code class="docutils literal notranslate"><span class="pre">$MODEL_NAME</span></code> used when running the NIM container.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">rails</span></code> definitions should list <code class="docutils literal notranslate"><span class="pre">topic_control</span></code> as the model.</p></li>
-</ul>
-</section>
-<section id="bonus-caching-the-optimized-trtllm-inference-engines">
-<h3>Bonus: Caching the optimized TRTLLM inference engines<a class="headerlink" href="#bonus-caching-the-optimized-trtllm-inference-engines" title="Link to this heading">#</a></h3>
-<p>If you’d like to not build TRTLLM engines from scratch every time you run the NIM container, you can cache it in the first run by just adding a flag to mount a local directory inside the docker to store the model cache.</p>
-<p>To achieve this, you simply need to mount the folder containing the cached TRTLLM assets onto the docker container while running it using <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">$LOCAL_NIM_CACHE:/opt/nim/.cache</span></code>. See below instructions for the full command. Important: make sure that docker has permissions to write to the cache folder (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chmod</span> <span class="pre">666</span> <span class="pre">$LOCAL_NIM_CACHE</span></code>).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">### To bind a $LOCAL_NIM_CACHE folder to &quot;/opt/nim/.cache&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>&lt;PATH<span class="w"> </span>TO<span class="w"> </span>DIRECTORY<span class="w"> </span>WHERE<span class="w"> </span>YOU<span class="w"> </span>WANT<span class="w"> </span>TO<span class="w"> </span>SAVE<span class="w"> </span>TRTLLM<span class="w"> </span>ENGINE<span class="w"> </span>ASSETS&gt;
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>
-sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</span><span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>
-</pre></div>
-</div>
-<p>Now mount this directory while running the docker container to store cached assets in this directory, so that mounting it subsequently will cause the container to read the cached assets instead of rebuilding them.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NGC_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_SERVED_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_CUSTOM_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>:<span class="s2">&quot;/opt/nim/.cache/&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">8123</span>:8000<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="nv">$NIM_IMAGE</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="more-details-on-topiccontrol-model">
-<h2>More details on TopicControl model<a class="headerlink" href="#more-details-on-topiccontrol-model" title="Link to this heading">#</a></h2>
-<p>For more details on the TopicControl model, check out the other resources:</p>
-<ul class="simple">
-<li><p>NeMo Guardrails library for <a class="reference internal" href="#../guardrails-library.md#nvidia-models"><span class="xref myst">NVIDIA NemoGuard models</span></a></p></li>
-<li><p>TopicControl topic safety example <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/topic_safety" rel="noreferer noopener" target="_blank">configuration and prompts</a></p></li>
-<li><p><a class="reference external" href="https://arxiv.org/abs/2404.03820" rel="noreferer noopener" target="_blank">Paper at EMNLP 2024</a></p></li>
-</ul>
 </section>
 </section>
 
@@ -631,20 +613,20 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="nemotron-safety-guard-deployment.html"
+       href="nemoguard-jailbreakdetect-deployment.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Nemotron Safety Guard Deployment</p>
+        <p class="prev-next-title">NemoGuard JailbreakDetect Deployment</p>
       </div>
     </a>
     <a class="right-next"
-       href="nemoguard-jailbreakdetect-deployment.html"
+       href="../../configuration-guide/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">NemoGuard JailbreakDetect Deployment</p>
+        <p class="prev-next-title">Configuration Overview</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -669,13 +651,10 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nim-deployment">NIM Deployment</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#access">Access</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-topiccontrol-nim-microservice-in-nemo-guardrails-app">Use TopicControl NIM Microservice in NeMo Guardrails App</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-caching-the-optimized-trtllm-inference-engines">Bonus: Caching the optimized TRTLLM inference engines</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-details-on-topiccontrol-model">More details on TopicControl model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-working-with-multimodal-data">About Working with Multimodal Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-configuration">Sample Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-base-64-encoded-images">Tips for Base 64 Encoded Images</a></li>
 </ul>
   </nav></div>
 

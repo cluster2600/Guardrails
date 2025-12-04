@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Event-based API &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
+    <title>Supported LLMs &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=6dbb43f8"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'run-rails/event-based-api';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'about/supported-llms';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,11 +56,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/run-rails/event-based-api.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/about/supported-llms.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Tools Integration with NeMo Guardrails" href="tools-integration.html" />
-    <link rel="prev" title="Streaming" href="streaming.html" />
+    <link rel="next" title="Release Notes" href="release-notes.html" />
+    <link rel="prev" title="Use Cases" href="use-cases.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -313,14 +313,14 @@
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../about/supported-llms.html">Supported LLMs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-cases.html">Use Cases</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Supported LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
@@ -411,13 +411,13 @@
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Rails</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -504,7 +504,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Event-based API</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Supported LLMs</span></li>
   </ul>
 </nav>
 </div>
@@ -521,219 +521,55 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="event-based-api">
-<h1>Event-based API<a class="headerlink" href="#event-based-api" title="Link to this heading">#</a></h1>
-<p>You can use a guardrails configuration through an event-based API using <a class="reference internal" href="../api/nemoguardrails.rails.llm.llmrails.html#method-llmrails-generate-events-async"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">LLMRails.generate_events_async</span></code></span></a> and <a class="reference internal" href="../api/nemoguardrails.rails.llm.llmrails.html#method-llmrails-generate-events"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">LLMRails.generate_events</span></code></span></a>.</p>
-<p>Example usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">new_events</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">generate_events</span><span class="p">(</span><span class="n">events</span><span class="o">=</span><span class="p">[{</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;UtteranceUserActionFinished&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;final_transcript&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello! What can you do for me?&quot;</span>
-<span class="p">}])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">new_events</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example output:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">[</span>
-<span class="w">  </span><span class="p p-Indicator">{</span>
-<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;StartInternalSystemAction&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;generate_user_intent&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_params&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
-<span class="w">    </span><span class="s">&quot;action_result_key&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;is_system_action&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
-<span class="w">  </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span>
-<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;InternalSystemActionFinished&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;generate_user_intent&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_params&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
-<span class="w">    </span><span class="s">&quot;action_result_key&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;status&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;success&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;return_value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;events&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;UserIntent&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;intent&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;express</span><span class="nv"> </span><span class="s">greeting&quot;</span><span class="w"> </span><span class="p p-Indicator">}],</span>
-<span class="w">    </span><span class="s">&quot;is_system_action&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
-<span class="w">  </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;UserIntent&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;intent&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;express</span><span class="nv"> </span><span class="s">greeting&quot;</span><span class="w"> </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;BotIntent&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;intent&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;express</span><span class="nv"> </span><span class="s">greeting&quot;</span><span class="w"> </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span>
-<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;StartInternalSystemAction&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;retrieve_relevant_chunks&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_params&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
-<span class="w">    </span><span class="s">&quot;action_result_key&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;is_system_action&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
-<span class="w">  </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;ContextUpdate&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;data&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;relevant_chunks&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span>
-<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;InternalSystemActionFinished&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;retrieve_relevant_chunks&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_params&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
-<span class="w">    </span><span class="s">&quot;action_result_key&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;status&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;success&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;return_value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;events&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;is_system_action&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
-<span class="w">  </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span>
-<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;StartInternalSystemAction&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;generate_bot_message&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_params&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
-<span class="w">    </span><span class="s">&quot;action_result_key&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;is_system_action&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
-<span class="w">  </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span>
-<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;ContextUpdate&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;data&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;_last_bot_prompt&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;&lt;&lt;REMOVED</span><span class="nv"> </span><span class="s">FOR</span><span class="nv"> </span><span class="s">READABILITY&gt;&gt;&gt;&quot;</span><span class="w"> </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span>
-<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;InternalSystemActionFinished&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;generate_bot_message&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;action_params&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
-<span class="w">    </span><span class="s">&quot;action_result_key&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;status&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;success&quot;</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;return_value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">null</span><span class="p p-Indicator">,</span>
-<span class="w">    </span><span class="s">&quot;events&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;StartUtteranceBotAction&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;script&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="w"> </span><span class="p p-Indicator">}],</span>
-<span class="w">    </span><span class="s">&quot;is_system_action&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
-<span class="w">  </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;StartUtteranceBotAction&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;script&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="w"> </span><span class="p p-Indicator">},</span>
-<span class="w">  </span><span class="p p-Indicator">{</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Listen&quot;</span><span class="w"> </span><span class="p p-Indicator">},</span>
-<span class="p p-Indicator">]</span>
-</pre></div>
-</div>
-<section id="event-types">
-<h2>Event Types<a class="headerlink" href="#event-types" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails supports multiple types of events. Some are meant for internal use (for example, <code class="docutils literal notranslate"><span class="pre">UserIntent</span></code>, <code class="docutils literal notranslate"><span class="pre">BotIntent</span></code>), while others represent the “public” interface (for example, <code class="docutils literal notranslate"><span class="pre">UtteranceUserActionFinished</span></code>, <code class="docutils literal notranslate"><span class="pre">StartUtteranceBotAction</span></code>).</p>
-<section id="utteranceuseractionfinished">
-<h3>UtteranceUserActionFinished<a class="headerlink" href="#utteranceuseractionfinished" title="Link to this heading">#</a></h3>
-<p>The raw message from the user.</p>
-<p>Example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UtteranceUserActionFinished&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;final_transcript&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello!&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="supported-llms">
+<h1>Supported LLMs<a class="headerlink" href="#supported-llms" title="Link to this heading">#</a></h1>
+<p>The NeMo Guardrails toolkit supports a wide range of LLM providers and their models.</p>
+<section id="llm-providers">
+<h2>LLM Providers<a class="headerlink" href="#llm-providers" title="Link to this heading">#</a></h2>
+<p>The toolkit supports the following LLM providers.</p>
+<section id="nvidia-nim">
+<h3>NVIDIA NIM<a class="headerlink" href="#nvidia-nim" title="Link to this heading">#</a></h3>
+<p>The toolkit supports NVIDIA NIM microservices for local deployment and NVIDIA API Catalog for hosted models.</p>
+<ul class="simple">
+<li><p><strong>Locally-deployed LLM NIM Microservices</strong>: LLMs deployed on your own infrastructure.</p></li>
+<li><p><strong>NVIDIA API Catalog</strong>: Hosted LLMs on <a class="reference external" href="https://build.nvidia.com/models" rel="noreferer noopener" target="_blank">build.nvidia.com</a>.</p></li>
+<li><p><strong>Specialized NIM Microservices</strong>: NemoGuard Content Safety, Topic Control, and Jailbreak Detection.</p></li>
+</ul>
 </section>
-<section id="userintent">
-<h3>UserIntent<a class="headerlink" href="#userintent" title="Link to this heading">#</a></h3>
-<p>The computed intent (a.k.a. canonical form) for what the user said.</p>
-<p>Example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UserIntent&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;intent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;express greeting&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<section id="external-llm-providers">
+<h3>External LLM Providers<a class="headerlink" href="#external-llm-providers" title="Link to this heading">#</a></h3>
+<p>The toolkit supports the following external LLM providers.</p>
+<ul class="simple">
+<li><p>OpenAI</p></li>
+<li><p>Azure OpenAI</p></li>
+<li><p>Anthropic</p></li>
+<li><p>Cohere</p></li>
+<li><p>Google Vertex AI</p></li>
+</ul>
 </section>
-<section id="botintent">
-<h3>BotIntent<a class="headerlink" href="#botintent" title="Link to this heading">#</a></h3>
-<p>The computed intent for what the bot should say.</p>
-<p>Example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BotIntent&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;intent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;express greeting&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<section id="self-hosted">
+<h3>Self-Hosted<a class="headerlink" href="#self-hosted" title="Link to this heading">#</a></h3>
+<p>The toolkit supports the following self-hosted LLM providers.</p>
+<ul class="simple">
+<li><p>HuggingFace Hub</p></li>
+<li><p>HuggingFace Endpoints</p></li>
+<li><p>vLLM</p></li>
+<li><p>Generic</p></li>
+</ul>
 </section>
-<section id="startutterancebotaction">
-<h3>StartUtteranceBotAction<a class="headerlink" href="#startutterancebotaction" title="Link to this heading">#</a></h3>
-<p>The final message from the bot.</p>
-<p>Example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;StartUtteranceBotAction&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;script&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello!&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="startinternalsystemaction">
-<h3>StartInternalSystemAction<a class="headerlink" href="#startinternalsystemaction" title="Link to this heading">#</a></h3>
-<p>An action needs to be started.</p>
-<p>Example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;StartInternalSystemAction&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;action_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;generate_user_intent&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;action_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
-<span class="w">  </span><span class="nt">&quot;action_result_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;is_system_action&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="internalsystemactionfinished">
-<h3>InternalSystemActionFinished<a class="headerlink" href="#internalsystemactionfinished" title="Link to this heading">#</a></h3>
-<p>An action has finished.</p>
-<p>Example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;InternalSystemActionFinished&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;action_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;generate_user_intent&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;action_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
-<span class="w">  </span><span class="nt">&quot;action_result_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;return_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UserIntent&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;intent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;express greeting&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;is_system_action&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="contextupdate">
-<h3>ContextUpdate<a class="headerlink" href="#contextupdate" title="Link to this heading">#</a></h3>
-<p>The context of the conversation has been updated.</p>
-<p>Example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ContextUpdate&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;user_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="listen">
-<h3>Listen<a class="headerlink" href="#listen" title="Link to this heading">#</a></h3>
-<p>The bot has finished processing the events and is waiting for new input.</p>
-<p>Example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Listen&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<section id="providers-from-langchain-community">
+<h3>Providers from LangChain Community<a class="headerlink" href="#providers-from-langchain-community" title="Link to this heading">#</a></h3>
+<p>The toolkit supports any LLM providers from the LangChain Community. Refer to <a class="reference external" href="https://docs.langchain.com/oss/python/integrations/providers/all_providers" rel="noreferer noopener" target="_blank">All integration providers</a> in the LangChain documentation.</p>
 </section>
 </section>
-<section id="custom-events">
-<h2>Custom Events<a class="headerlink" href="#custom-events" title="Link to this heading">#</a></h2>
-<p>You can also use custom events:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;some_other_type&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="err">...</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You need to make sure that the guardrails logic can handle the custom event. You do this by updating your flows to deal with the new events where needed. Otherwise, the custom event will just be ignored.</p>
-</div>
-</section>
-<section id="typical-usage">
-<h2>Typical Usage<a class="headerlink" href="#typical-usage" title="Link to this heading">#</a></h2>
-<p>Typically, you will need to:</p>
-<ol class="arabic simple">
-<li><p>Persist the events history for a particular user in a database.</p></li>
-<li><p>Whenever there is a new message or another event, you fetch the history and append the new event.</p></li>
-<li><p>Use the guardrails API to generate the next events.</p></li>
-<li><p>Filter the <code class="docutils literal notranslate"><span class="pre">StartUtteranceBotAction</span></code> events and return them to the user.</p></li>
-<li><p>Persist the history of events back into the database.</p></li>
-</ol>
+<section id="embedding-providers">
+<h2>Embedding Providers<a class="headerlink" href="#embedding-providers" title="Link to this heading">#</a></h2>
+<p>The toolkit supports the following embedding providers.</p>
+<ul class="simple">
+<li><p>NVIDIA NIM</p></li>
+<li><p>FastEmbed</p></li>
+<li><p>OpenAI</p></li>
+</ul>
 </section>
 </section>
 
@@ -748,20 +584,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="streaming.html"
+       href="use-cases.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Streaming</p>
+        <p class="prev-next-title">Use Cases</p>
       </div>
     </a>
     <a class="right-next"
-       href="tools-integration.html"
+       href="release-notes.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tools Integration with NeMo Guardrails</p>
+        <p class="prev-next-title">Release Notes</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -786,19 +622,14 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#event-types">Event Types</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utteranceuseractionfinished">UtteranceUserActionFinished</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#userintent">UserIntent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#botintent">BotIntent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startutterancebotaction">StartUtteranceBotAction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startinternalsystemaction">StartInternalSystemAction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#internalsystemactionfinished">InternalSystemActionFinished</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextupdate">ContextUpdate</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#listen">Listen</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-providers">LLM Providers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-nim">NVIDIA NIM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#external-llm-providers">External LLM Providers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-hosted">Self-Hosted</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#providers-from-langchain-community">Providers from LangChain Community</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-events">Custom Events</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typical-usage">Typical Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-providers">Embedding Providers</a></li>
 </ul>
   </nav></div>
 
