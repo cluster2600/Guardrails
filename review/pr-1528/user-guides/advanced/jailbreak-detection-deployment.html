@@ -318,6 +318,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../architecture/README.html">Architecture Guide</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
@@ -433,6 +434,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Guardrails Evaluation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deployment Options</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -444,6 +456,8 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/llama-guard-deployment.html">Llama Guard</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -451,6 +465,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python-api.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
@@ -507,7 +523,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="jailbreak-detection-deployment">
 <h1>Jailbreak Detection Deployment<a class="headerlink" href="#jailbreak-detection-deployment" title="Link to this heading">#</a></h1>
 <p>The recommended way to use Jailbreak Detection Heuristics and models with NeMo Guardrails is using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/jailbreak_detection/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>.
-For more details, check out how to <a class="reference internal" href="using-docker.html"><span class="std std-doc">build and use the image</span></a>.</p>
+For more details, check out how to <a class="reference internal" href="#using-docker.md"><span class="xref myst">build and use the image</span></a>.</p>
 <p>If you wish to use the NemoGuard JailbreakDetect NIM, please see the <a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html"><span class="std std-doc">related documentation</span></a>.</p>
 <p>In order to deploy the jailbreak detection server, follow these steps:</p>
 <ol class="arabic simple">

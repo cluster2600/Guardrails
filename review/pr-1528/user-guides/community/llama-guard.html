@@ -318,6 +318,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../architecture/README.html">Architecture Guide</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
@@ -433,6 +434,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Guardrails Evaluation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deployment Options</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -444,6 +456,8 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/llama-guard-deployment.html">Llama Guard</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -451,6 +465,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../python-api.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
@@ -507,7 +523,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="llama-guard-integration">
 <h1>Llama-Guard Integration<a class="headerlink" href="#llama-guard-integration" title="Link to this heading">#</a></h1>
 <p>NeMo Guardrails provides out-of-the-box support for content moderation using Meta’s <a class="reference external" href="https://ai.meta.com/research/publications/llama-guard-llm-based-input-output-safeguard-for-human-ai-conversations/" rel="noreferer noopener" target="_blank">Llama Guard</a> model.</p>
-<p>In our testing, we observe significantly improved input and output content moderation performance compared to the <a class="reference internal" href="#../guardrails-library.md#llm-self-checking"><span class="xref myst">self-check method</span></a>. Please see additional documentation for more details on the <a class="reference internal" href="../advanced/llama-guard-deployment.html"><span class="std std-doc">recommended deployment method</span></a> and the <a class="reference internal" href="../../evaluation/README.html#llamaguard-based-moderation-rails-performance"><span class="std std-ref">performance evaluation</span></a> numbers.</p>
+<p>In our testing, we observe significantly improved input and output content moderation performance compared to the <a class="reference internal" href="#../guardrails-library.md#llm-self-checking"><span class="xref myst">self-check method</span></a>. Please see additional documentation for more details on the <a class="reference internal" href="#../advanced/llama-guard-deployment.md"><span class="xref myst">recommended deployment method</span></a> and the <a class="reference internal" href="../../evaluation/README.html#llamaguard-based-moderation-rails-performance"><span class="std std-ref">performance evaluation</span></a> numbers.</p>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
 <p>To configure your bot to use Llama Guard for input/output checking, follow the below steps:</p>
