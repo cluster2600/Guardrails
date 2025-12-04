@@ -525,7 +525,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="configuration-overview">
 <h1>Configuration Overview<a class="headerlink" href="#configuration-overview" title="Link to this heading">#</a></h1>
 <p>Before using the NeMo Guardrails toolkit, you need to prepare configuration files that define your guardrails behavior. This section provides a complete instructions on preparing your configuration files and executable scripts.</p>
-<p>A guardrails configuration includes the following components. You can start with a basic configuration and add more components as needed.</p>
+<p>A guardrails configuration includes the following components. You can start with a basic configuration and add more components as needed. All the components should be placed in the <code class="docutils literal notranslate"><span class="pre">config</span></code> folder, and the locations in the table are relative to the <code class="docutils literal notranslate"><span class="pre">config</span></code> folder.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Component</p></th>
@@ -540,19 +540,19 @@
 <td><p>A <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file that contains the core configuration options such as which LLM(s) to use, general instructions (similar to system prompts), sample conversation, which rails are active, and specific rails configuration options.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">config.yml</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Colang Flows (Rails)</strong></p></td>
+<tr class="row-odd"><td><p><strong>Colang Flows</strong></p></td>
 <td><p>Optional</p></td>
-<td><p>A collection of Colang files implementing the rails.</p></td>
+<td><p>A collection of Colang files (<code class="docutils literal notranslate"><span class="pre">.co</span></code> files) implementing the rails.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">rails</span></code> folder</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Initialization Code (Actions)</strong></p></td>
 <td><p>Optional</p></td>
-<td><p>Custom Python code performing additional initialization, e.g. registering a new type of LLM.</p></td>
+<td><p>Custom Python code (<code class="docutils literal notranslate"><span class="pre">.py</span></code> files) performing additional initialization, e.g. registering a new type of LLM.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">actions.py</span></code> or <code class="docutils literal notranslate"><span class="pre">actions</span></code> folder</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Knowledge Base Documents</strong></p></td>
 <td><p>Optional</p></td>
-<td><p>Documents that can be used in a RAG (Retrieval-Augmented Generation) scenario using the built-in Knowledge Base support.</p></td>
+<td><p>Documents (<code class="docutils literal notranslate"><span class="pre">.md</span></code> files) that can be used in a RAG (Retrieval-Augmented Generation) scenario using the built-in Knowledge Base support.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">kb</span></code> folder</p></td>
 </tr>
 </tbody>
