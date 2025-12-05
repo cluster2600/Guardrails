@@ -539,9 +539,9 @@
 <h1>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h1>
 <p>The NeMo Guardrails toolkit is an open-source package for adding programmable guardrails to LLM-based conversational applications.
 Guardrails (or “rails” for short) are specific ways of controlling the output of a large language model, such as not talking about politics, responding in a particular way to specific user requests, following a predefined dialog path, using a particular language style, extracting structured data, and more.</p>
-<div align="center">
-  <img src="https://github.com/NVIDIA/NeMo-Guardrails/raw/develop/docs/_static/images/programmable_guardrails.png"  width="75%" alt="Programmable Guardrails">
-</div>
+<p>The following diagram is a simplified view of the programmable guardrails flow between the application, application user, and the guardrails system. Guardrails simply acts as a filter between the application and the user.</p>
+<a class="reference internal image-reference" href="../_images/programmable_guardrails.png"><img alt="Programmable Guardrails" class="align-center" src="../_images/programmable_guardrails.png" style="width: 800px;" />
+</a>
 <p>The toolkit supports five main categories of rails that work together to provide comprehensive protection.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -568,9 +568,9 @@ Guardrails (or “rails” for short) are specific ways of controlling the outpu
 </tbody>
 </table>
 </div>
-<div align="center">
-  <img src="https://github.com/NVIDIA/NeMo-Guardrails/raw/develop/docs/_static/images/programmable_guardrails_flow.png"  width="75%" alt="Programmable Guardrails Flow">
-</div>
+<p>The following diagram shows how the programmable guardrails fit into the overall guardrails system. It shows all the integratable components and their interactions, including knowledge base queries, custom actions, and LLM calls at various stages. To each rails, you can attach guardrail LLMs to perform the guardrail checks.</p>
+<a class="reference internal image-reference" href="../_images/programmable_guardrails_flow.png"><img alt="Programmable Guardrails Flow" class="align-center" src="../_images/programmable_guardrails_flow.png" style="width: 800px;" />
+</a>
 <hr class="docutils" />
 <section id="benefits">
 <h2>Benefits<a class="headerlink" href="#benefits" title="Link to this heading">#</a></h2>
