@@ -315,9 +315,10 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../about/guardrails-process.html">Guardrails Process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Architecture Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
@@ -580,8 +581,8 @@
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-The init() Function</div>
-<p class="sd-card-text">Define the init() function to initialize resources and register action parameters.</p>
+The Init Function</div>
+<p class="sd-card-text">Define the init() function to initialize resources and register action parameters at startup.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="init-function.html"><span class="doc">The Init Function</span></a></div>
 </div>
@@ -590,7 +591,7 @@ The init() Function</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Custom LLM Providers</div>
-<p class="sd-card-text">Register custom text completion (BaseLLM) and chat models (BaseChatModel).</p>
+<p class="sd-card-text">Register custom text completion (BaseLLM) and chat models (BaseChatModel) for use with NeMo Guardrails.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="custom-llm-providers.html"><span class="doc">Custom LLM Providers</span></a></div>
 </div>
@@ -599,7 +600,7 @@ Custom LLM Providers</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Custom Embedding Providers</div>
-<p class="sd-card-text">Register custom embedding providers for vector similarity search.</p>
+<p class="sd-card-text">Register custom embedding providers for vector similarity search in NeMo Guardrails.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="custom-embedding-providers.html"><span class="doc">Custom Embedding Providers</span></a></div>
 </div>
@@ -608,7 +609,7 @@ Custom Embedding Providers</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Custom Configuration Data</div>
-<p class="sd-card-text">Pass and access custom data from config.yml in your initialization code.</p>
+<p class="sd-card-text">Pass and access custom data from config.yml in your initialization code and actions.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="custom-data.html"><span class="doc">Custom Configuration Data</span></a></div>
 </div>
