@@ -344,10 +344,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">Guardrails Configuration</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="built-in-guardrails.html">Built-in Guardrails</a></li>
+<li class="toctree-l3"><a class="reference internal" href="parallel-rails.html">Rails in Parallel</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../prompt-configuration.html">Prompt Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../streaming/index.html">Streaming Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../streaming/global-streaming.html">Global Streaming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -406,6 +412,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../colang/colang-1/tutorials/7-rag/README.html">Retrieval-Augmented Generation</a></li>
 </ul>
 </details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../colang/colang-1/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../colang/usage-examples/index.html">Colang Usage Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -417,7 +424,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../other-configurations/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../caching/model-memory-cache.html">Caching Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../caching/kv-cache-reuse.html">KV Cache Reuse for LLM NIM</a></li>
 </ul>
 </details></li>
 </ul>
@@ -456,6 +469,7 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../deployment/using-docker.html">Using Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../integration/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -470,6 +484,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../integration/vertexai.html">Vertex AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../integration/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../integration/llama-guard-deployment.html">Llama Guard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -477,10 +492,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../python-api/index.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
 </div>
 </nav></div>

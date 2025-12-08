@@ -59,7 +59,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/configure-rails/other-configurations/knowledge-base.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Exceptions and Error Handling" href="exceptions.html" />
+    <link rel="next" title="Embedding Search Providers" href="embedding-search-providers.html" />
     <link rel="prev" title="Other Configurations" href="index.html" />
 
 
@@ -344,10 +344,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../yaml-schema/guardrails-configuration/parallel-rails.html">Rails in Parallel</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../yaml-schema/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../yaml-schema/streaming/index.html">Streaming Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../yaml-schema/streaming/global-streaming.html">Global Streaming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../yaml-schema/streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -406,6 +412,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../colang/colang-1/tutorials/7-rag/README.html">Retrieval-Augmented Generation</a></li>
 </ul>
 </details></li>
+<li class="toctree-l3"><a class="reference internal" href="../colang/colang-1/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../colang/usage-examples/index.html">Colang Usage Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -417,7 +424,13 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Other Configurations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="embedding-search-providers.html">Embedding Search Providers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../caching/model-memory-cache.html">Caching Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../caching/kv-cache-reuse.html">KV Cache Reuse for LLM NIM</a></li>
 </ul>
 </details></li>
 </ul>
@@ -456,6 +469,7 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Using Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -470,6 +484,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/llama-guard-deployment.html">Llama Guard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -477,10 +492,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
 </div>
 </nav></div>
@@ -693,7 +709,7 @@ Paid holidays include:
         <span class="k">pass</span>
 </pre></div>
 </div>
-<p>For more details, refer to <a class="reference internal" href="../../user-guides/advanced/embedding-search-providers.html"><span class="std std-doc">Embedding Search Providers</span></a>.</p>
+<p>For more details, refer to <a class="reference internal" href="#../../user-guides/advanced/embedding-search-providers.md"><span class="xref myst">Embedding Search Providers</span></a>.</p>
 </section>
 </section>
 <section id="passing-context-directly">
@@ -814,7 +830,7 @@ Unused sick days do not carry over to the next year.
 <h2>Related Resources<a class="headerlink" href="#related-resources" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="#../../getting-started/7-rag/README.md"><span class="xref myst">RAG Getting Started Guide</span></a></p></li>
-<li><p><a class="reference internal" href="../../user-guides/advanced/embedding-search-providers.html"><span class="std std-doc">Embedding Search Providers</span></a></p></li>
+<li><p><a class="reference internal" href="#../../user-guides/advanced/embedding-search-providers.md"><span class="xref myst">Embedding Search Providers</span></a></p></li>
 <li><p><a class="reference internal" href="../yaml-schema/model-configuration.html"><span class="std std-doc">Model Configuration</span></a></p></li>
 </ul>
 </section>
@@ -840,11 +856,11 @@ Unused sick days do not carry over to the next year.
       </div>
     </a>
     <a class="right-next"
-       href="exceptions.html"
+       href="embedding-search-providers.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Exceptions and Error Handling</p>
+        <p class="prev-next-title">Embedding Search Providers</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

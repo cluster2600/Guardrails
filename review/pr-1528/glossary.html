@@ -59,7 +59,6 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/glossary.html" />
     <link rel="icon" href="_static/favicon.png"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Frequently Asked Questions (FAQ)" href="faqs.html" />
     <link rel="prev" title="CLI" href="cli/index.html" />
 
 
@@ -344,10 +343,16 @@
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Rails in Parallel</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/yaml-schema/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="configure-rails/yaml-schema/streaming/index.html">Streaming Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="configure-rails/yaml-schema/streaming/global-streaming.html">Global Streaming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configure-rails/yaml-schema/streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -406,6 +411,7 @@
 <li class="toctree-l4"><a class="reference internal" href="configure-rails/colang/colang-1/tutorials/7-rag/README.html">Retrieval-Augmented Generation</a></li>
 </ul>
 </details></li>
+<li class="toctree-l3"><a class="reference internal" href="configure-rails/colang/colang-1/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="configure-rails/colang/usage-examples/index.html">Colang Usage Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -417,7 +423,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="configure-rails/other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/other-configurations/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="configure-rails/caching/model-memory-cache.html">Caching Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for LLM NIM</a></li>
 </ul>
 </details></li>
 </ul>
@@ -456,6 +468,7 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="deployment/using-docker.html">Using Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -470,6 +483,7 @@
 <li class="toctree-l1"><a class="reference internal" href="integration/vertexai.html">Vertex AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="integration/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="integration/llama-guard-deployment.html">Llama Guard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -477,10 +491,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faqs.html">Frequently Asked Questions (FAQ)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python-api/index.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
 </div>
 </nav></div>
@@ -575,15 +590,6 @@
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">CLI</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="faqs.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Frequently Asked Questions (FAQ)</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>

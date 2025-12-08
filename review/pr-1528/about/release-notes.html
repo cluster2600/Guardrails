@@ -344,10 +344,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Rails in Parallel</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/streaming/index.html">Streaming Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../configure-rails/yaml-schema/streaming/global-streaming.html">Global Streaming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configure-rails/yaml-schema/streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -406,6 +412,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../configure-rails/colang/colang-1/tutorials/7-rag/README.html">Retrieval-Augmented Generation</a></li>
 </ul>
 </details></li>
+<li class="toctree-l3"><a class="reference internal" href="../configure-rails/colang/colang-1/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../configure-rails/colang/usage-examples/index.html">Colang Usage Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -417,7 +424,13 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/model-memory-cache.html">Caching Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for LLM NIM</a></li>
 </ul>
 </details></li>
 </ul>
@@ -456,6 +469,7 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../deployment/using-docker.html">Using Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integration/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -470,6 +484,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../integration/vertexai.html">Vertex AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/llama-guard-deployment.html">Llama Guard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -477,10 +492,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 </ul>
 </div>
 </nav></div>
@@ -567,9 +583,9 @@ For a complete record of changes in a release, refer to the
 <li><p>In-memory caching of guardrail model calls for reduced latency and cost savings.
 NeMo Guardrails now supports per-model caching of guardrail responses using an LFU (Least Frequently Used) cache.
 This feature is particularly effective for safety models such as NVIDIA NemoGuard <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Content Safety</a>, <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-topic-control" rel="noreferer noopener" target="_blank">Topic Control</a>, and <a class="reference external" href="https://build.nvidia.com/nvidia/nemoguard-jailbreak-detect" rel="noreferer noopener" target="_blank">Jailbreak Detection</a> where identical inputs are common.
-For more information, refer to <a class="reference internal" href="../user-guides/advanced/model-memory-cache.html#model-memory-cache"><span class="std std-ref">Memory Model Cache</span></a>.</p></li>
+For more information, refer to <a class="reference internal" href="../configure-rails/caching/model-memory-cache.html#model-memory-cache"><span class="std std-ref">Memory Model Cache</span></a>.</p></li>
 <li><p>NeMo Guardrails extracts the reasoning traces from the LLM response and emits them as <code class="docutils literal notranslate"><span class="pre">BotThinking</span></code> events before the final <code class="docutils literal notranslate"><span class="pre">BotMessage</span></code> event.
-For more information, refer to <a class="reference internal" href="../user-guides/advanced/bot-thinking-guardrails.html#bot-thinking-guardrails"><span class="std std-ref">Guardrailing Bot Reasoning Content</span></a>.</p></li>
+For more information, refer to <a class="reference internal" href="../configure-rails/colang/colang-1/bot-thinking-guardrails.html#bot-thinking-guardrails"><span class="std std-ref">Guardrailing Bot Reasoning Content</span></a>.</p></li>
 <li><p>New community integration with <a class="reference external" href="https://www.cisco.com/site/ca/en/products/security/ai-defense/index.html" rel="noreferer noopener" target="_blank">Cisco AI Defense</a>.</p></li>
 <li><p>New embedding integrations with Azure OpenAI, Google, and Cohere.</p></li>
 </ul>
@@ -624,7 +640,7 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 <section id="v0-16-0-other-changes">
 <span id="id9"></span><h3>Other Changes<a class="headerlink" href="#v0-16-0-other-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Added documentation about using KV cache reuse for LLM-based NemoGuard NIMs. By using KV cache reuse, you can improve the performance of LLM-based NemoGuard NIMs where the system prompt is the same for all calls up to the point where user query and LLM response are injected. To learn more, refer to <a class="reference internal" href="../user-guides/advanced/kv-cache-reuse.html#kv-cache-reuse"><span class="std std-ref">KV Cache Reuse for NemoGuard NIM</span></a>.</p></li>
+<li><p>Added documentation about using KV cache reuse for LLM-based NemoGuard NIMs. By using KV cache reuse, you can improve the performance of LLM-based NemoGuard NIMs where the system prompt is the same for all calls up to the point where user query and LLM response are injected. To learn more, refer to <a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html#kv-cache-reuse"><span class="std std-ref">KV Cache Reuse for NemoGuard NIM</span></a>.</p></li>
 </ul>
 </section>
 </section>
@@ -636,7 +652,7 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 <li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="#parallel-rails"><code class="xref myst docutils literal notranslate"><span class="pre">parallel-rails</span></code></a>.</p></li>
 <li><p>Implemented a new way of configuring tracing. You can now use the OpenTelemetry SDK and the OpenTelemetry Protocol (OTLP) exporter while configuring the NeMo Guardrails clients in your application code directly. To learn more, refer to the <a class="reference internal" href="#tracing-configuration"><span class="xref myst">basic tracing configuration guide</span></a> and the <a class="reference internal" href="../observability/tracing/index.html#tracing"><span class="std std-ref">advanced tracing configuration guide</span></a>.</p></li>
 <li><p>Updated the streaming capability of output rails to support parallel execution.</p></li>
-<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="../user-guides/advanced/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
+<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="../run-rails/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
 </ul>
 </section>
 <section id="breaking-changes">
