@@ -478,6 +478,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/llama-guard-deployment.html">Llama Guard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
@@ -552,8 +553,8 @@
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Caching Instructions</div>
-<p class="sd-card-text">Configure model memory cache for LLM models in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p>
+Memory Model Cache</div>
+<p class="sd-card-text">Guardrails supports an in-memory cache that avoids making LLM calls for repeated prompts. The cache stores user prompts and their corresponding LLM responses. Prior to making an LLM call,…</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="model-memory-cache.html"><span class="doc">Memory Model Cache</span></a></div>
 </div>
@@ -561,8 +562,8 @@ Caching Instructions</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-KV Cache Reuse</div>
-<p class="sd-card-text">Guide for using KV cache reuse for the LLM NIM microservices while deploying them.</p>
+KV Cache Reuse for NemoGuard NIM</div>
+<p class="sd-card-text">When you configure NeMo Guardrails to call NemoGuard NIMs in response to a client request, every NIM call interjecting the input and response adds to the inference latency. The application LLM can…</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="kv-cache-reuse.html"><span class="doc">KV Cache Reuse for NemoGuard NIM</span></a></div>
 </div>
