@@ -63,19 +63,20 @@ This response embodies a common pattern:
 
 **Definition:** High-level modules should not depend on low-level modules. Both should depend on abstractions.
 
-```mermaid
-flowchart LR
-    subgraph "What We Have (Wrong)"
-        A1[LLMRails] -->|depends on| B1[LangChain]
-    end
+**What We Have (Wrong):**
+```
+┌─────────────┐         ┌─────────────┐
+│  LLMRails   │ ──────► │  LangChain  │
+│ (our code)  │         │ (external)  │
+└─────────────┘         └─────────────┘
 ```
 
-```mermaid
-flowchart LR
-    subgraph "What We Should Have (Right)"
-        A2[LLMRails] -->|depends on| I[LLMProvider Interface]
-        B2[LangChain Adapter] -->|implements| I
-    end
+**What We Should Have (Right):**
+```
+┌─────────────┐         ┌─────────────┐         ┌─────────────┐
+│  LLMRails   │ ──────► │ LLMProvider │ ◄────── │  LangChain  │
+│ (our code)  │         │ (interface) │         │  (adapter)  │
+└─────────────┘         └─────────────┘         └─────────────┘
 ```
 
 ---
