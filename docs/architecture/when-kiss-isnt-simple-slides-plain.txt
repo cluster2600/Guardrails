@@ -1,0 +1,385 @@
+SLIDE 1
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+When "Keep It Simple" Isn't Simple
+
+SUBTITLE:
+The Collapse of Abstractions
+
+FOOTER:
+NeMo Guardrails Architecture Analysis • December 2024
+
+
+SLIDE 2
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The Promise
+
+BODY:
+May 2023 — GitHub Issue #30
+
+"Is it possible to use this without langchain?"
+— Auto-GPT Team
+
+The Official Response:
+
+"The core nemoguardrails functionality only uses a limited set of features from langchain e.g. PromptTemplate, LLMChain and LLM implementations."
+
+
+SLIDE 3
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The Reality: 18 Months Later
+
+BODY:
+Create a table or 4 boxes:
+
+                    May 2023    Dec 2024    Change
+Files w/ LangChain     16          31       +94%
+Import statements      34          61       +79%
+LangChain packages      1           5       +400%
+Unique modules        ~13         ~25       +92%
+
+CALLOUT:
+"Limited set of features" became deep architectural dependency
+
+
+SLIDE 4
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+What Started as One Dependency
+
+BODY:
+1. langchain
+2. langchain-core
+3. langchain-community
+4. langchain-openai
+5. langchain-nvidia-ai-endpoints
+
+CALLOUT:
+Every LangChain breaking change = Our breaking change
+
+
+SLIDE 5
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+LangChain in Our Public API
+
+BODY:
+Code snippet (use monospace font):
+
+class LLMRails:
+    llm: Optional[Union[BaseLLM, BaseChatModel]]
+
+    def __init__(self, llm: Optional[Union[BaseLLM, BaseChatModel]] = None):
+
+CALLOUT:
+Want to use NeMo Guardrails without LangChain? You can't.
+
+
+SLIDE 6
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The Cost of Decoupling
+
+BODY:
+Two columns:
+
+MAY 2023                    DECEMBER 2024
+• Effort: 2-3 days          • Effort: 4-6 weeks
+• Risk: Low                 • Risk: High
+• Files: 16                 • Files: 31
+
+CALLOUT (make this big):
+6.5x Cost Multiplier
+
+
+SLIDE 7
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The God Classes
+
+BODY:
+Two boxes side by side:
+
+LLMRails                    RailsConfig
+• 1,756 lines               • 1,805 lines
+• 30+ methods               • 50+ config classes
+• 10+ responsibilities      • 6+ concerns
+
+Total: ~3,500 lines in 2 files
+
+CALLOUT:
+Single Responsibility Principle? What's that?
+
+
+SLIDE 8
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+One Class, Too Many Jobs
+
+BODY:
+LLMRails handles:
+
+• Configuration loading (file I/O!)
+• Model initialization
+• Knowledge base setup
+• Runtime management (v1 + v2)
+• Event translation
+• Generation logic
+• Streaming
+• Tracing
+• Registration APIs
+• Serialization
+
+CALLOUT:
+This is not "simple"
+
+
+SLIDE 9
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The Config Loading Leak
+
+BODY:
+RailsConfig should arrive complete.
+
+But LLMRails.__init__ does:
+
+1. Opens files from disk
+2. Walks entire library directory
+3. Parses more Colang files
+4. Executes arbitrary user code (config.py)
+5. MUTATES the config object
+
+CALLOUT:
+The consumer of config should not load more config.
+
+
+SLIDE 10
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+Config Changes After You Pass It
+
+BODY:
+Use monospace font:
+
+config = RailsConfig.from_path("/path")
+print(len(config.flows))   →  10
+
+rails = LLMRails(config)
+print(len(config.flows))   →  50   ← IT CHANGED!
+
+CALLOUT:
+The config you passed in is not the config being used.
+
+
+SLIDE 11
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The Testing Nightmare
+
+BODY:
+To test LLMRails.generate_async(), you must mock:
+
+1. LangChain LLM
+2. Colang Runtime (v1 or v2)
+3. Knowledge Base
+4. File System
+5. Threading
+6. Asyncio
+7. Context Variables
+8. Tracing Adapters
+9. Streaming Handler
+
+CALLOUT (make this big):
+9 mocks for 1 test. Is this "simple"?
+
+
+SLIDE 12
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+We Did It Right for Embeddings
+
+BODY:
+Use monospace font:
+
+class EmbeddingModel(ABC):
+    """Our own abstraction - no LangChain!"""
+
+    async def encode_async(self, documents: List[str]) -> List[List[float]]:
+        ...
+
+This enables:
+• Multiple implementations
+• Easy testing
+• User freedom
+• Version independence
+
+CALLOUT:
+Why didn't we do this for LLMs?
+
+
+SLIDE 13
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The Missing Abstraction
+
+BODY:
+Use monospace font:
+
+class LLMProvider(Protocol):
+    async def generate(self, prompt: str) -> str: ...
+
+class ChatProvider(Protocol):
+    async def chat(self, messages: List[Message]) -> Message: ...
+
+CALLOUT:
+30 lines of code. Would have prevented 18 months of coupling.
+
+
+SLIDE 14
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+LangChain Should Be One Adapter
+
+BODY:
+Three boxes:
+
+LangChainAdapter         OpenAIDirectAdapter       LiteLLMAdapter
+• Wraps BaseLLM          • Direct API calls        • Unified API
+• For LangChain users    • No LangChain needed     • Multiple providers
+
+CALLOUT:
+User choice. Our independence.
+
+
+SLIDE 15
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+Dead Code in Production
+
+BODY:
+Use monospace font:
+
+if True or check_sync_call_from_async_loop():
+    # This always runs
+    t = threading.Thread(...)
+else:
+    # THIS CAN NEVER EXECUTE
+    loop.run_until_complete(...)
+
+CALLOUT:
+"if True or ..." — The else branch is unreachable.
+
+
+SLIDE 16
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The KISS Misunderstanding
+
+BODY:
+Two columns:
+
+WRONG INTERPRETATION         RIGHT INTERPRETATION
+• "No abstractions"          • "Right abstractions"
+• "Use external types"       • "Stable interfaces"
+• "Interfaces are            • "Loose coupling"
+   over-engineering"
+
+CALLOUT:
+A 50-line interface that prevents 6.5x debt IS simple.
+
+
+SLIDE 17
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+The Refactoring Issues
+
+BODY:
+Issue #1150: Split out LLMRails
+• Proposed 7 focused components
+• Identified dead code, testing burden
+• Status: Closed — Not Planned
+
+Issue #1149: Split out LLMGenerationActions
+• Identified tangled architecture
+• Status: Closed — Not Planned
+
+CALLOUT:
+The problems are documented. The solutions are known.
+
+
+SLIDE 18
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+Key Takeaways
+
+BODY:
+1. "Limited features" grows — 34 → 61 imports
+
+2. Coupling compounds — 6.5x cost in 18 months
+
+3. God Classes emerge — 3,500 lines, 16+ responsibilities
+
+4. Config loading leaks — LLMRails mutates what it receives
+
+5. Testing becomes impossible — 9 mocks for one test
+
+6. We knew how to do it right — EmbeddingModel proves it
+
+7. KISS ≠ No Abstractions
+
+
+SLIDE 19
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+How Technical Debt Accumulates
+
+BODY:
+Use SmartArt or shapes - vertical flow downward:
+
+    "It's simpler this way for now"
+              ↓
+    Direct dependency on external types
+              ↓
+    More code uses those types
+              ↓
+    Decoupling becomes exponentially harder
+              ↓
+    "It's too risky to change now"
+
+
+SLIDE 20
+═══════════════════════════════════════════════════════════════
+
+TITLE:
+Questions?
+
+BODY:
+Resources:
+• docs/architecture/when-keep-it-simple-isnt-simple.md
+• docs/architecture/llmrails-railsconfig-analysis.md
+• GitHub Issue #30, #1149, #1150
+
+CALLOUT (centered, large):
+The cost of missing abstractions is paid in perpetuity.
