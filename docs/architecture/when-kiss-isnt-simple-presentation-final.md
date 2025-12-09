@@ -63,20 +63,24 @@ This response embodies a common pattern:
 
 **Definition:** High-level modules should not depend on low-level modules. Both should depend on abstractions.
 
-**What We Have (Wrong):**
-```
-┌─────────────┐         ┌─────────────┐
-│  LLMRails   │ ──────► │  LangChain  │
-│ (our code)  │         │ (external)  │
-└─────────────┘         └─────────────┘
+**What We Have - Wrong:**
+
+```mermaid
+flowchart LR
+    A[LLMRails] -->|depends on| B[LangChain]
+    style A fill:#ff6b6b,color:#fff
+    style B fill:#ff6b6b,color:#fff
 ```
 
-**What We Should Have (Right):**
-```
-┌─────────────┐         ┌─────────────┐         ┌─────────────┐
-│  LLMRails   │ ──────► │ LLMProvider │ ◄────── │  LangChain  │
-│ (our code)  │         │ (interface) │         │  (adapter)  │
-└─────────────┘         └─────────────┘         └─────────────┘
+**What We Should Have - Right:**
+
+```mermaid
+flowchart LR
+    A[LLMRails] -->|depends on| I[LLMProvider Interface]
+    B[LangChain Adapter] -->|implements| I
+    style A fill:#4ecdc4,color:#fff
+    style I fill:#4ecdc4,color:#fff
+    style B fill:#7f8c8d,color:#fff
 ```
 
 ---
@@ -512,13 +516,13 @@ for root, dirs, files in os.walk(library_path):
 
 ```mermaid
 flowchart TD
-    A[User: "I just want input rails"] --> B[RailsConfig.from_path]
-    B --> C["Load all 13 config classes"]
-    C --> D[LLMRails.__init__]
-    D --> E["Walk library directory"]
-    E --> F["Load 25+ action modules"]
-    F --> G["Mutate config with all flows"]
-    G --> H["Finally ready"]
+    A[User wants input rails] --> B[RailsConfig.from_path]
+    B --> C[Load all 13 config classes]
+    C --> D[LLMRails init]
+    D --> E[Walk library directory]
+    E --> F[Load 25+ action modules]
+    F --> G[Mutate config with all flows]
+    G --> H[Finally ready]
 
     style C fill:#ffcc00,color:#000
     style E fill:#ff6b6b,color:#fff
