@@ -547,10 +547,21 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="before-you-begin-configuring-rails">
 <h1>Before You Begin Configuring Rails<a class="headerlink" href="#before-you-begin-configuring-rails" title="Link to this heading">#</a></h1>
-<p>This chapter thoroughly describes how to prepare guardrails configuration files.
-This page covers the prerequisites and decisions to make before configuring the NeMo Guardrails toolkit.</p>
-<section id="llm-nim-microservices-for-the-main-llm">
-<h2>LLM NIM Microservices for the Main LLM<a class="headerlink" href="#llm-nim-microservices-for-the-main-llm" title="Link to this heading">#</a></h2>
+<p>This Configure Rails chapter thoroughly describes how to prepare guardrails configuration files.
+This page covers the prerequisites and decisions to make before you begin working on guardrails configurations.</p>
+<section id="checklist-summary">
+<h2>Checklist Summary<a class="headerlink" href="#checklist-summary" title="Link to this heading">#</a></h2>
+<p>Use the following checklist to ensure that you have all the necessary components ready before you begin configuring guardrails.</p>
+<ul class="simple">
+<li><p>[ ] (Required) Main LLM endpoint and credentials ready. Refer to <a class="reference internal" href="#hosted-llm-for-the-main-llm"><span class="std std-ref">Hosted LLM for the Main LLM</span></a> for more details.</p></li>
+<li><p>[ ] (Recommended) NemoGuard NIM endpoints deployed. Refer to <a class="reference internal" href="#nemoguard-nim-microservices"><span class="std std-ref">NemoGuard NIM Microservices</span></a> for more details.</p></li>
+<li><p>[ ] (Optional) Knowledge base documents prepared. Refer to <a class="reference internal" href="#knowledge-base-documents"><span class="std std-ref">Knowledge Base Documents</span></a> for more details.</p></li>
+<li><p>[ ] (Optional) Custom action requirements identified. Refer to <a class="reference internal" href="#advanced-components"><span class="std std-ref">Advanced Components</span></a> for more details.</p></li>
+</ul>
+<p>Each item in the checklist is described in detail in the following sections.</p>
+</section>
+<section id="hosted-llm-for-the-main-llm">
+<h2>Hosted LLM for the Main LLM<a class="headerlink" href="#hosted-llm-for-the-main-llm" title="Link to this heading">#</a></h2>
 <p>You need a main LLM hosted and accessible via API. This LLM handles the conversation by generating responses to user queries.</p>
 <p><strong>Options:</strong></p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -613,16 +624,16 @@ This page covers the prerequisites and decisions to make before configuring the 
 <p>If you use NVIDIA NIM for LLMs and LLM-based NemoGuard NIMs, KV cache helps reduce latency for sequential guardrail checks. To learn more about KV cache, see the <a class="reference external" href="https://docs.nvidia.com/nim/large-language-models/latest/kv-cache-reuse.html" rel="noreferer noopener" target="_blank">KV Cache Reuse</a> guide in the NVIDIA NIM documentation.</p>
 </div>
 </section>
-<section id="optional-knowledge-base-documents">
-<h2>Optional: Knowledge Base Documents<a class="headerlink" href="#optional-knowledge-base-documents" title="Link to this heading">#</a></h2>
+<section id="knowledge-base-documents">
+<h2>Knowledge Base Documents<a class="headerlink" href="#knowledge-base-documents" title="Link to this heading">#</a></h2>
 <p>If using RAG (Retrieval-Augmented Generation) for grounded responses:</p>
 <ul class="simple">
 <li><p>[ ] Prepare documents in markdown format (<code class="docutils literal notranslate"><span class="pre">.md</span></code> files)</p></li>
 <li><p>[ ] Organize documents in a <code class="docutils literal notranslate"><span class="pre">kb/</span></code> folder</p></li>
 </ul>
 </section>
-<section id="optional-advanced-components">
-<h2>Optional: Advanced Components<a class="headerlink" href="#optional-advanced-components" title="Link to this heading">#</a></h2>
+<section id="advanced-components">
+<h2>Advanced Components<a class="headerlink" href="#advanced-components" title="Link to this heading">#</a></h2>
 <p>For advanced use cases such as implementing your own custom scripts or guardrails, prepare the following as needed:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -648,19 +659,9 @@ This page covers the prerequisites and decisions to make before configuring the 
 </table>
 </div>
 </section>
-<section id="checklist-summary">
-<h2>Checklist Summary<a class="headerlink" href="#checklist-summary" title="Link to this heading">#</a></h2>
-<p><strong>Before starting configuration:</strong></p>
-<ul class="simple">
-<li><p>[ ] (Required) Main LLM endpoint and credentials ready</p></li>
-<li><p>[ ] (Recommended) NemoGuard NIM endpoints deployed</p></li>
-<li><p>[ ] (Optional) Knowledge base documents prepared</p></li>
-<li><p>[ ] (Optional) Custom action requirements identified</p></li>
-</ul>
-</section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
-<p>Once you have these components ready, proceed to the next section <a class="reference internal" href="#index.md"><span class="xref myst">Configuration Overview</span></a> to create guardrails configuration files.</p>
+<p>Once you have these components ready, proceed to the next section <a class="reference internal" href="#index.md"><span class="xref myst">Configuration Overview</span></a> to start organizing your guardrails configuration files.</p>
 <p>If you need tutorials to understand how to use the NeMo Guardrails toolkit, revisit the <a class="reference internal" href="#../getting-started/index.md"><span class="xref myst">Get Started</span></a> section.</p>
 </section>
 </section>
@@ -714,11 +715,11 @@ This page covers the prerequisites and decisions to make before configuring the 
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-nim-microservices-for-the-main-llm">LLM NIM Microservices for the Main LLM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nemoguard-nim-microservices">NemoGuard NIM Microservices</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-knowledge-base-documents">Optional: Knowledge Base Documents</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-advanced-components">Optional: Advanced Components</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checklist-summary">Checklist Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hosted-llm-for-the-main-llm">Hosted LLM for the Main LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nemoguard-nim-microservices">NemoGuard NIM Microservices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-base-documents">Knowledge Base Documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-components">Advanced Components</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
