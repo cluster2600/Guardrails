@@ -59,7 +59,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/getting-started/tutorials/index.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Nemotron Safety Guard Deployment" href="nemotron-safety-guard-deployment.html" />
+    <link rel="next" title="Text Content Safety with Nemotron Safety Guard NIM" href="nemotron-safety-guard-deployment.html" />
     <link rel="prev" title="Installation Guide" href="../installation-guide.html" />
 
 
@@ -311,13 +311,13 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
 </ul>
@@ -335,7 +335,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/index.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -437,7 +437,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -477,11 +476,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/llama-guard-deployment.html">Llama Guard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Integrate LangChain Tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -554,37 +550,37 @@
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Nemotron Safety Guard Deployment</div>
-<p class="sd-card-text">Deploy a GPU-accelerated multilingual content safety model using Llama 3.1 Nemotron Safety Guard 8B V3 to detect harmful content in multiple languages.</p>
+Text Content Safety</div>
+<p class="sd-card-text">Deploy Nemotron Safety Guard to detect harmful content in text inputs and outputs.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="nemotron-safety-guard-deployment.html"><span class="doc">Nemotron Safety Guard Deployment</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Llama 3.1 NemoGuard 8B Topic Control Deployment</div>
-<p class="sd-card-text">Deploy the TopicControl NIM microservice for low-latency optimized inference and integrate it into your NeMo Guardrails configuration.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="nemoguard-topiccontrol-deployment.html"><span class="doc">Llama 3.1 NemoGuard 8B Topic Control Deployment</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="nemotron-safety-guard-deployment.html"><span class="doc">Text Content Safety with Nemotron Safety Guard NIM</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-NemoGuard JailbreakDetect Deployment</div>
-<p class="sd-card-text">Deploy the NemoGuard Jailbreak Detection NIM microservice to protect your LLM applications from adversarial jailbreak attempts.</p>
+Topic Control</div>
+<p class="sd-card-text">Deploy NemoGuard Topic Control NIM to restrict conversations to allowed topics.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="nemoguard-jailbreakdetect-deployment.html"><span class="doc">NemoGuard JailbreakDetect Deployment</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="nemoguard-topiccontrol-deployment.html"><span class="doc">Topic Control with NemoGuard NIM</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Multimodal Data with NeMo Guardrails</div>
-<p class="sd-card-text">Add safety checks to multimodal content including images and text using image reasoning models as LLM-as-a-judge.</p>
+Jailbreak Detection</div>
+<p class="sd-card-text">Deploy NemoGuard Jailbreak Detection NIM to block adversarial prompts.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="multimodal.html"><span class="doc">Multimodal Data with NeMo Guardrails</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="nemoguard-jailbreakdetect-deployment.html"><span class="doc">Jailbreak Detection with NemoGuard NIM</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Multimodal Content Safety</div>
+<p class="sd-card-text">Add safety checks to images and text using vision models as LLM-as-a-judge.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="multimodal.html"><span class="doc">Multimodal Content Safety with Vision Models as LLM-as-a-judge</span></a></div>
 </div>
 </div>
 </div>
@@ -616,7 +612,7 @@ Multimodal Data with NeMo Guardrails</div>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Nemotron Safety Guard Deployment</p>
+        <p class="prev-next-title">Text Content Safety with Nemotron Safety Guard NIM</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

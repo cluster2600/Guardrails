@@ -59,8 +59,8 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/about/how-it-works/index.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="How Guardrails Work" href="how-rails-work.html" />
-    <link rel="prev" title="Overview" href="../overview.html" />
+    <link rel="next" title="Rails Overview" href="how-rails-work.html" />
+    <link rel="prev" title="Use Cases" href="../use-cases.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -311,13 +311,13 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">Use Cases</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">How It Works</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release Notes</a></li>
 </ul>
@@ -335,7 +335,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/index.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -437,7 +437,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -477,11 +476,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/llama-guard-deployment.html">Llama Guard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Integrate LangChain Tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -555,28 +551,28 @@
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-How Guardrails Work</div>
+Rails Overview</div>
 <p class="sd-card-text">Learn how the NeMo Guardrails toolkit applies guardrails at multiple stages of the LLM interaction.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="how-rails-work.html"><span class="doc">How Guardrails Work</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="how-rails-work.html"><span class="doc">Rails Overview</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Guardrails Process</div>
-<p class="sd-card-text">Learn about the five main categories of rails (input, dialog, output, retrieval, and execution) and how they work together to protect your LLM applications.</p>
+Guardrails Sequence Diagrams</div>
+<p class="sd-card-text">This guide provides an overview of the process of invoking guardrails.</p>
 </div>
-<span class="sd-stretched-link sd-hide-link-text">user-guides/guardrails-process</span></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="guardrails-process.html"><span class="doc">Guardrails Sequence Diagrams</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Architecture</div>
-<p class="sd-card-text">Explore the event-driven architecture, canonical forms, LLM interaction patterns, and server design that power NeMo Guardrails.</p>
+Architecture Guide</div>
+<p class="sd-card-text">This document provides more details on the architecture and the approach that the NeMo Guardrails toolkit takes for implementing guardrails.</p>
 </div>
-<span class="sd-stretched-link sd-hide-link-text">architecture/README</span></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="../architecture/README.html"><span class="doc">Architecture Guide</span></a></div>
 </div>
 </div>
 </div>
@@ -595,12 +591,12 @@ Architecture</div>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../overview.html"
+       href="../use-cases.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Overview</p>
+        <p class="prev-next-title">Use Cases</p>
       </div>
     </a>
     <a class="right-next"
@@ -608,7 +604,7 @@ Architecture</div>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">How Guardrails Work</p>
+        <p class="prev-next-title">Rails Overview</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

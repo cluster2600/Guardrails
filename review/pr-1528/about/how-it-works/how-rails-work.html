@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>How Guardrails Work &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
+    <title>Rails Overview &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
   
   
   
@@ -211,6 +211,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -311,13 +315,13 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">Use Cases</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">How It Works</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release Notes</a></li>
 </ul>
@@ -335,7 +339,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/index.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -437,7 +441,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -477,11 +480,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/llama-guard-deployment.html">Llama Guard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Integrate LangChain Tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -531,7 +531,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">How It Works</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">How Guardrails Work</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Rails Overview</span></li>
   </ul>
 </nav>
 </div>
@@ -548,8 +548,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="how-guardrails-work">
-<h1>How Guardrails Work<a class="headerlink" href="#how-guardrails-work" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="rails-overview">
+<h1>Rails Overview<a class="headerlink" href="#rails-overview" title="Link to this heading">#</a></h1>
 <p>The NeMo Guardrails toolkit applies guardrails at multiple stages of the LLM interaction.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -584,6 +584,73 @@
 </div>
 <a class="reference internal image-reference" href="../../_images/programmable_guardrails_flow.png"><img alt="Programmable Guardrails Flow" class="align-center" src="../../_images/programmable_guardrails_flow.png" style="width: 800px;" />
 </a>
+<section id="use-cases-and-applicable-rails">
+<h2>Use Cases and Applicable Rails<a class="headerlink" href="#use-cases-and-applicable-rails" title="Link to this heading">#</a></h2>
+<p>The following table summarizes which rail types apply to each use case.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Use Case</p></th>
+<th class="head text-center"><p>Input</p></th>
+<th class="head text-center"><p>Dialog</p></th>
+<th class="head text-center"><p>Retrieval</p></th>
+<th class="head text-center"><p>Execution</p></th>
+<th class="head text-center"><p>Output</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Content Safety</strong></p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Jailbreak Protection</strong></p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Topic Control</strong></p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>PII Detection</strong></p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Knowledge Base / RAG</strong></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Agentic Security</strong></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Custom Rails</strong></p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+<td class="text-center"><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 </section>
 
 
@@ -621,9 +688,25 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases-and-applicable-rails">Use Cases and Applicable Rails</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

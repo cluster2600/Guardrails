@@ -61,7 +61,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/index.html" />
     <link rel="icon" href="_static/favicon.png"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Overview" href="about/overview.html" />
+    <link rel="next" title="Overview of the NeMo Guardrails Toolkit" href="about/overview.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -316,13 +316,13 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/release-notes.html">Release Notes</a></li>
 </ul>
@@ -340,7 +340,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-rails/index.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-rails/overview.html">Configuration Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -442,7 +442,6 @@
 <li class="toctree-l1"><a class="reference internal" href="run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-rails/streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-rails/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -482,11 +481,8 @@
 <li class="toctree-l2"><a class="reference internal" href="integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="integration/vertexai.html">Vertex AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="integration/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="integration/align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="integration/llama-guard-deployment.html">Llama Guard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="integration/tools-integration.html">Tools Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration/tools-integration.html">Integrate LangChain Tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -532,50 +528,98 @@
 -->
 <section class="tex2jax_ignore mathjax_ignore" id="nvidia-nemo-guardrails-toolkit-developer-guide">
 <h1>NVIDIA NeMo Guardrails Toolkit Developer Guide<a class="headerlink" href="#nvidia-nemo-guardrails-toolkit-developer-guide" title="Link to this heading">#</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The NeMo Guardrails toolkit is an open-source Python package for adding programmable guardrails to LLM-based applications. It intercepts inputs and outputs, applies configurable safety checks, and blocks or modifies content based on defined policies.</p>
+<section id="about-the-nemo-guardrails-toolkit">
+<h2>About the NeMo Guardrails Toolkit<a class="headerlink" href="#about-the-nemo-guardrails-toolkit" title="Link to this heading">#</a></h2>
+<p>Learn about the toolkit and its capabilities in the following sections.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-About NeMo Guardrails Toolkit</div>
-<p class="sd-card-text">This section covers the basics of the NeMo Guardrails toolkit.</p>
+Overview</div>
+<p class="sd-card-text">Learn about the NeMo Guardrails toolkit and its capabilities.</p>
 </div>
-<span class="sd-stretched-link sd-hide-link-text">about/index</span></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="about/overview.html"><span class="doc">Overview of the NeMo Guardrails Toolkit</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Get Started</div>
-<p class="sd-card-text">Get started with the NeMo Guardrails toolkit.</p>
+Use Cases</div>
+<p class="sd-card-text">Browse the different use cases of the NeMo Guardrails toolkit.</p>
 </div>
-<span class="sd-stretched-link sd-hide-link-text">getting-started/index</span></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="about/use-cases.html"><span class="doc">Use Cases</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+How It Works</div>
+<p class="sd-card-text">Learn how the NeMo Guardrails toolkit works.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="about/how-it-works/index.html"><span class="doc">How It Works</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Supported LLMs and Providers</div>
+<p class="sd-card-text">Browse the LLMs and their providers supported by the toolkit.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="about/supported-llms.html"><span class="doc">Supported LLMs</span></a></div>
 </div>
 </div>
 </div>
 </section>
-<section id="using-the-nemo-guardrails-toolkit">
-<h2>Using the NeMo Guardrails Toolkit<a class="headerlink" href="#using-the-nemo-guardrails-toolkit" title="Link to this heading">#</a></h2>
+<section id="get-started">
+<h2>Get Started<a class="headerlink" href="#get-started" title="Link to this heading">#</a></h2>
+<p>Follow these steps to start using the NeMo Guardrails toolkit.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Configuration Overview</div>
-<p class="sd-card-text">Prepare configuration files including config.yml, Colang flows, actions.py, config.py, and knowledge base documents.</p>
+Install</div>
+<p class="sd-card-text">Install the toolkit with pip and set up your environment.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="configure-rails/index.html"><span class="doc">Configuration Overview</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting-started/installation-guide.html"><span class="doc">Installation Guide</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Tutorials</div>
+<p class="sd-card-text">Follow hands-on tutorials to build your first guardrails configuration.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting-started/tutorials/index.html"><span class="doc">Tutorials</span></a></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<p>Once you’ve completed the get-started tutorials, explore the following areas to deepen your understanding.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Configure Rails</div>
+<p class="sd-card-text">Learn to write config.yml, Colang flows, and custom actions.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="configure-rails/overview.html"><span class="doc">Configuration Overview</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Run Rails</div>
-<p class="sd-card-text">This section covers how to use the NeMo Guardrails toolkit programmatically through the Python API. Learn about the core classes, generation methods, and advanced features for integrating…</p>
+<p class="sd-card-text">Use the Python SDK and understand core classes like RailsConfig and LLMRails.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="run-rails/index.html"><span class="doc">Run Rails</span></a></div>
 </div>
@@ -583,8 +627,26 @@ Run Rails</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Deployment Options</div>
-<p class="sd-card-text">You can deploy the NeMo Guardrails toolkit in the following ways.</p>
+Evaluate</div>
+<p class="sd-card-text">Evaluate the performance of the rails.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="evaluation/README.html"><span class="doc">Guardrails Evaluation</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Observability</div>
+<p class="sd-card-text">Monitor and troubleshoot your guardrails applications.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="observability/logging/index.html"><span class="doc">Logging and Debugging</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Deploy</div>
+<p class="sd-card-text">Deploy your guardrails using the toolkit’s local server, Docker, or as a production microservice.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="deployment/index.html"><span class="doc">Deployment Options</span></a></div>
 </div>
@@ -592,16 +654,16 @@ Deployment Options</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Evaluation</div>
-<p class="sd-card-text">README llm-vulnerability-scanning</p>
+Integrate</div>
+<p class="sd-card-text">Connect with LangChain, LangGraph, and other frameworks.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="evaluation/index.html"><span class="doc">Evaluation</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="integration/langchain/index.html"><span class="doc">LangChain Integration</span></a></div>
 </div>
 </div>
 </div>
 <div class="toctree-wrapper compound" id="about-nemo-guardrails-toolkit">
 </div>
-<div class="toctree-wrapper compound" id="get-started">
+<div class="toctree-wrapper compound" id="id1">
 </div>
 <div class="toctree-wrapper compound" id="configure-rails">
 </div>
@@ -637,7 +699,7 @@ Evaluation</div>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Overview</p>
+        <p class="prev-next-title">Overview of the NeMo Guardrails Toolkit</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -662,8 +724,9 @@ Evaluation</div>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-nemo-guardrails-toolkit">Using the NeMo Guardrails Toolkit</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-nemo-guardrails-toolkit">About the NeMo Guardrails Toolkit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-started">Get Started</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a><ul class="nav section-nav flex-column">
 </ul>
 </li>
 </ul>

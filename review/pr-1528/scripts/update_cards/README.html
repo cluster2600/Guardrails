@@ -313,13 +313,13 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
 </ul>
@@ -337,7 +337,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/index.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -439,7 +439,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -479,11 +478,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai.html">Vertex AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/llama-guard-deployment.html">Llama Guard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Integrate LangChain Tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -632,16 +628,16 @@ poetry<span class="w"> </span>add<span class="w"> </span>watchdog<span class="w"
 <li><p>Includes debouncing to prevent excessive updates during rapid edits</p></li>
 </ul>
 <p><strong>Example output:</strong></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">👀 Watching for changes in: /path/to/docs</span>
-<span class="go">   Press Ctrl+C to stop.</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>👀 Watching for changes in: /path/to/docs
+   Press Ctrl+C to stop.
 
-<span class="go">Found 5 index file(s) with grid cards.</span>
+Found 5 index file(s) with grid cards.
 
-<span class="go">🔄 Watching for changes...</span>
+🔄 Watching for changes...
 
-<span class="go">📝 File changed: configuration-guide/yaml-schema/model-configuration.md</span>
-<span class="go">✅ Updated configuration-guide/yaml-schema/index.md:</span>
-<span class="go">  - &#39;Old Title&#39; → &#39;Model Configuration&#39; (from model-configuration.md)</span>
+📝 File changed: configuration-guide/yaml-schema/model-configuration.md
+✅ Updated configuration-guide/yaml-schema/index.md:
+  - &#39;Old Title&#39; → &#39;Model Configuration&#39; (from model-configuration.md)
 </pre></div>
 </div>
 </section>
@@ -778,16 +774,18 @@ make<span class="w"> </span>docs-serve
 <h2>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h2>
 <section id="title-extraction">
 <h3>Title Extraction<a class="headerlink" href="#title-extraction" title="Link to this heading">#</a></h3>
-<p>The script extracts titles from:</p>
+<p>The script extracts titles using the following priority:</p>
 <ol class="arabic simple">
+<li><p><strong>Frontmatter <code class="docutils literal notranslate"><span class="pre">title</span></code> field</strong> (highest priority)</p></li>
 <li><p>Markdown H1: <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Title</span></code></p></li>
 <li><p>RST H1: <code class="docutils literal notranslate"><span class="pre">Title</span></code> followed by <code class="docutils literal notranslate"><span class="pre">===</span></code> underline</p></li>
 </ol>
 </section>
 <section id="description-extraction">
 <h3>Description Extraction<a class="headerlink" href="#description-extraction" title="Link to this heading">#</a></h3>
-<p>The script extracts descriptions from:</p>
+<p>The script extracts descriptions using the following priority:</p>
 <ol class="arabic simple">
+<li><p><strong>Frontmatter <code class="docutils literal notranslate"><span class="pre">description</span></code> field</strong> (highest priority)</p></li>
 <li><p>First non-empty paragraph after the title</p></li>
 <li><p>Skips code blocks, directives, tables, and lists</p></li>
 <li><p>Truncates to ~200 characters if too long</p></li>
@@ -804,18 +802,37 @@ make<span class="w"> </span>docs-serve
 </ul>
 </section>
 </section>
-<section id="adding-description-metadata">
-<h2>Adding Description Metadata<a class="headerlink" href="#adding-description-metadata" title="Link to this heading">#</a></h2>
-<p>For more control over card descriptions, you can add frontmatter to your pages (future enhancement):</p>
+<section id="using-frontmatter-for-card-content">
+<h2>Using Frontmatter for Card Content<a class="headerlink" href="#using-frontmatter-for-card-content" title="Link to this heading">#</a></h2>
+<p>For precise control over card titles and descriptions, add frontmatter to your pages:</p>
 <div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>---
+title: Custom Card Title
 <span class="gu">description: Custom description for the grid card.</span>
 <span class="gu">---</span>
 
-<span class="gh"># Page Title</span>
+<span class="gh"># Page Heading (can be different from card title)</span>
 
 Page content...
 </pre></div>
 </div>
+<p><strong>Example:</strong></p>
+<p>If your page has this frontmatter:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>---
+title: Install
+<span class="gu">description: Install the toolkit with pip and set up your environment.</span>
+<span class="gu">---</span>
+
+<span class="gh"># Installation Guide</span>
+
+This guide walks you through installing NeMo Guardrails...
+</pre></div>
+</div>
+<p>The generated card will use:</p>
+<ul class="simple">
+<li><p><strong>Title</strong>: “Install” (from frontmatter, not “Installation Guide”)</p></li>
+<li><p><strong>Description</strong>: “Install the toolkit with pip and set up your environment.”</p></li>
+</ul>
+<p>This is useful when you want concise card titles that differ from the full page headings.</p>
 </section>
 </section>
 
@@ -870,7 +887,7 @@ Page content...
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#link-resolution">Link Resolution</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-description-metadata">Adding Description Metadata</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-frontmatter-for-card-content">Using Frontmatter for Card Content</a></li>
 </ul>
   </nav></div>
 

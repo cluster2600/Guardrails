@@ -315,13 +315,13 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
 </ul>
@@ -339,7 +339,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/index.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -441,7 +441,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -481,11 +480,8 @@
 <li class="toctree-l2"><a class="reference internal" href="runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../vertexai.html">Vertex AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../llama-guard-deployment.html">Llama Guard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tools-integration.html">Tools Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools-integration.html">Integrate LangChain Tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -578,7 +574,7 @@
 <span class="n">chain_with_guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">runnable</span><span class="o">=</span><span class="n">some_chain</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference internal" href="runnable-rails.html"><span class="std std-doc">RunnableRails Guide</span></a> and the <a class="reference internal" href="#chain-with-guardrails/README.md"><span class="xref myst">Chain with Guardrails Guide</span></a>.</p>
+<p>For more details, check out the <a class="reference internal" href="runnable-rails.html"><span class="std std-doc">RunnableRails Guide</span></a> and the <a class="reference internal" href="chain-with-guardrails/index.html"><span class="std std-doc">Chain with Guardrails Guide</span></a>.</p>
 </section>
 <section id="using-a-chain-inside-guardrails">
 <h2>Using a Chain inside Guardrails<a class="headerlink" href="#using-a-chain-inside-guardrails" title="Link to this heading">#</a></h2>
@@ -598,7 +594,7 @@
   ...
 </pre></div>
 </div>
-<p>For a complete example, check out the <a class="reference internal" href="#runnable-as-action/README.md"><span class="xref myst">Runnable as Action Guide</span></a>.</p>
+<p>For a complete example, check out the <a class="reference internal" href="runnable-as-action/index.html"><span class="std std-doc">Runnable as Action Guide</span></a>.</p>
 </section>
 <section id="langsmith-integration">
 <h2>LangSmith Integration<a class="headerlink" href="#langsmith-integration" title="Link to this heading">#</a></h2>

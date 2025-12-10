@@ -60,7 +60,7 @@
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Security Guidelines" href="../security/guidelines.html" />
-    <link rel="prev" title="Self-hosting Llama Guard using vLLM" href="llama-guard-deployment.html" />
+    <link rel="prev" title="AlignScore Deployment" href="align-score-deployment.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -315,13 +315,13 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
 </ul>
@@ -339,7 +339,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configure-rails/index.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/overview.html">Configuration Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -441,7 +441,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -481,11 +480,8 @@
 <li class="toctree-l2"><a class="reference internal" href="langchain/runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="vertexai.html">Vertex AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Llama Guard</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tools Integration</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Integrate LangChain Tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -918,8 +914,8 @@
 <h2>LangChain and LangGraph Integration<a class="headerlink" href="#langchain-and-langgraph-integration" title="Link to this heading">#</a></h2>
 <p>For integration with LangChain and LangGraph workflows, refer to:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#../langchain/langchain-integration.md"><span class="xref myst">LangChain Integration Guide</span></a> - Using RunnableRails to add guardrails to LangChain chains</p></li>
-<li><p><a class="reference internal" href="#../langchain/langgraph-integration.md"><span class="xref myst">LangGraph Integration Guide</span></a> - Tool calling with LangGraph stateful multi-agent workflows</p></li>
+<li><p><a class="reference internal" href="langchain/langchain-integration.html"><span class="std std-doc">LangChain Integration Guide</span></a> - Using RunnableRails to add guardrails to LangChain chains</p></li>
+<li><p><a class="reference internal" href="langchain/langgraph-integration.html"><span class="std std-doc">LangGraph Integration Guide</span></a> - Tool calling with LangGraph stateful multi-agent workflows</p></li>
 </ul>
 </section>
 </section>
@@ -935,12 +931,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="llama-guard-deployment.html"
+       href="align-score-deployment.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Self-hosting Llama Guard using vLLM</p>
+        <p class="prev-next-title">AlignScore Deployment</p>
       </div>
     </a>
     <a class="right-next"

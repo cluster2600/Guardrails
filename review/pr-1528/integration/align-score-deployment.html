@@ -59,8 +59,8 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/integration/align-score-deployment.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Self-hosting Llama Guard using vLLM" href="llama-guard-deployment.html" />
-    <link rel="prev" title="Vertex AI Setup" href="vertexai-setup.html" />
+    <link rel="next" title="Tools Integration with NeMo Guardrails" href="tools-integration.html" />
+    <link rel="prev" title="Runnable as Action" href="langchain/runnable-as-action/index.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -311,13 +311,13 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
 </ul>
@@ -335,7 +335,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configure-rails/index.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/overview.html">Configuration Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -437,7 +437,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-based API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -477,11 +476,8 @@
 <li class="toctree-l2"><a class="reference internal" href="langchain/runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="vertexai.html">Vertex AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vertexai-setup.html">Vertex AI Setup</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="llama-guard-deployment.html">Llama Guard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Tools Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-integration.html">Integrate LangChain Tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -549,7 +545,7 @@
 <h1>AlignScore Deployment<a class="headerlink" href="#alignscore-deployment" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The recommended way to use AlignScore with NeMo Guardrails is using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>. For more details, check out how to <a class="reference internal" href="#using-docker.md"><span class="xref myst">build and use the image</span></a>.</p>
+<p>The recommended way to use AlignScore with NeMo Guardrails is using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>. For more details, check out how to <a class="reference internal" href="../deployment/using-docker.html"><span class="std std-doc">build and use the image</span></a>.</p>
 </div>
 <p>In order to deploy an AlignScore server, follow these steps:</p>
 <div class="admonition important">
@@ -611,20 +607,20 @@ pip<span class="w"> </span>install<span class="w"> </span>.
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="vertexai-setup.html"
+       href="langchain/runnable-as-action/index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Vertex AI Setup</p>
+        <p class="prev-next-title">Runnable as Action</p>
       </div>
     </a>
     <a class="right-next"
-       href="llama-guard-deployment.html"
+       href="tools-integration.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Self-hosting Llama Guard using vLLM</p>
+        <p class="prev-next-title">Tools Integration with NeMo Guardrails</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
