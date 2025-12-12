@@ -174,9 +174,7 @@ class ColangTransformer(Transformer):
                 if len(return_member_def["elements"]) == 2:
                     default_value_el = return_member_def["elements"][1]
                     assert default_value_el["_type"] == "expr"
-                    return_member_def_obj.default_value_expr = default_value_el[
-                        "elements"
-                    ][0]
+                    return_member_def_obj.default_value_expr = default_value_el["elements"][0]
 
                 return_member_defs.append(return_member_def_obj)
 

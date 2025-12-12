@@ -420,12 +420,8 @@ def _extract_elements(items: List) -> List[dict]:
             # for `if` flow elements, we have to go recursively
             if element["_type"] == "if":
                 if_element = element
-                then_items = (
-                    if_element["then"] if isinstance(if_element["then"], list) else []
-                )
-                else_items = (
-                    if_element["else"] if isinstance(if_element["else"], list) else []
-                )
+                then_items = if_element["then"] if isinstance(if_element["then"], list) else []
+                else_items = if_element["else"] if isinstance(if_element["else"], list) else []
                 then_elements = _extract_elements(then_items)
                 else_elements = _extract_elements(else_items)
 
@@ -443,9 +439,7 @@ def _extract_elements(items: List) -> List[dict]:
 
                 # if we have "else" elements, we need to adjust also add a jump
                 if len(else_elements) > 0:
-                    elements.append(
-                        {"_type": "jump", "_next": str(len(else_elements) + 1)}
-                    )
+                    elements.append({"_type": "jump", "_next": str(len(else_elements) + 1)})
                     if_element["_next_else"] = str(int(if_element["_next_else"]) + 1)
 
                     # Add the "else" elements
@@ -454,9 +448,7 @@ def _extract_elements(items: List) -> List[dict]:
             # WHILE
             elif element["_type"] == "while":
                 while_element = element
-                do_items = (
-                    while_element["do"] if isinstance(while_element["do"], list) else []
-                )
+                do_items = while_element["do"] if isinstance(while_element["do"], list) else []
                 do_elements = _extract_elements(do_items)
                 n = len(do_elements)
 
