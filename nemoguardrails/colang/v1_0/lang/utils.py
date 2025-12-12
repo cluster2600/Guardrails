@@ -408,7 +408,7 @@ def parse_package_name(text):
     return package_name
 
 
-def string_hash(s):
+def string_hash(s: str) -> str:
     """A simple string hash with an equivalent implementation in javascript.
 
     module.exports.string_hash = function(s){
@@ -426,7 +426,7 @@ def string_hash(s):
     """
     _hash = 0
     if len(s) == 0:
-        return 0
+        return "0"
     for i in range(len(s)):
         _char = ord(s[i])
         _hash = ((_hash << 5) - _hash) + _char

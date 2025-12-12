@@ -32,28 +32,31 @@ class Runtime:
         self.verbose = verbose
 
         # Register the actions with the dispatcher.
+        imported_paths = config.imported_paths if config.imported_paths else {}
         self.action_dispatcher = ActionDispatcher(
             config_path=config.config_path,
-            import_paths=list(config.imported_paths.values()),
+            import_paths=list(imported_paths.values()),
         )
 
         if hasattr(self, "_run_output_rails_in_parallel_streaming"):
             self.action_dispatcher.register_action(
-                self._run_output_rails_in_parallel_streaming,
+                getattr(self, "_run_output_rails_in_parallel_streaming"),
                 name="run_output_rails_in_parallel_streaming",
             )
 
         if hasattr(self, "_run_flows_in_parallel"):
-            self.action_dispatcher.register_action(self._run_flows_in_parallel, name="run_flows_in_parallel")
+            self.action_dispatcher.register_action(
+                getattr(self, "_run_flows_in_parallel"), name="run_flows_in_parallel"
+            )
 
         if hasattr(self, "_run_input_rails_in_parallel"):
             self.action_dispatcher.register_action(
-                self._run_input_rails_in_parallel, name="run_input_rails_in_parallel"
+                getattr(self, "_run_input_rails_in_parallel"), name="run_input_rails_in_parallel"
             )
 
         if hasattr(self, "_run_output_rails_in_parallel"):
             self.action_dispatcher.register_action(
-                self._run_output_rails_in_parallel, name="run_output_rails_in_parallel"
+                getattr(self, "_run_output_rails_in_parallel"), name="run_output_rails_in_parallel"
             )
 
         # The list of additional parameters that can be passed to the actions.

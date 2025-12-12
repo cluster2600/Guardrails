@@ -18,11 +18,14 @@
 from dataclasses import dataclass, field
 from enum import Enum
 from time import time
-from typing import Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional
 
 from nemoguardrails.colang.v1_0.runtime.eval import eval_expression
 from nemoguardrails.colang.v1_0.runtime.sliding import slide
 from nemoguardrails.utils import new_event_dict, new_uuid
+
+if TYPE_CHECKING:
+    from nemoguardrails.rails.llm.config import RailsConfig
 
 
 @dataclass
@@ -91,7 +94,7 @@ class FlowState:
     status: FlowStatus = FlowStatus.ACTIVE
 
     # The UID of the flows that interrupted this one
-    interrupted_by = None
+    interrupted_by: Optional[str] = None
 
 
 @dataclass
@@ -240,11 +243,11 @@ def _call_subflow(new_state: State, flow_state: FlowState) -> Optional[FlowState
             Optional[FlowState]: The state of the subflow, if applicable.
     """
     flow_config = new_state.flow_configs[flow_state.flow_id]
-    subflow_id = flow_config.elements[flow_state.head]["flow_name"]
+    subflow_id: str = flow_config.elements[flow_state.head]["flow_name"]
 
     # Basic support for referring a subflow using a variable
     if subflow_id.startswith("$"):
-        subflow_id = eval_expression(subflow_id, new_state.context)
+        subflow_id = str(eval_expression(subflow_id, new_state.context))
 
     # parameter support
     if _flow_id_has_params(subflow_id):
@@ -300,7 +303,10 @@ def _slide_with_subflows(state: State, flow_state: FlowState) -> Optional[int]:
     should_continue = True
     while should_continue:
         should_continue = False
-        flow_state.head = slide(state, flow_config, flow_state.head)
+        slide_result = slide(state, flow_config, flow_state.head)
+        if slide_result is None:
+            break
+        flow_state.head = slide_result
 
         # We check if we reached a point where we need to call a subflow
         if flow_state.head >= 0:
@@ -441,7 +447,10 @@ def compute_next_state(state: State, event: dict) -> State:
             continue
 
         # We try to slide first, just in case a flow starts with sliding logic
-        start_head = slide(new_state, flow_config, 0)
+        slide_result = slide(new_state, flow_config, 0)
+        if slide_result is None:
+            continue
+        start_head: int = slide_result
 
         # If the first element matches the current event,
         # or, if the flow is explicitly started by a `start_flow` event,
@@ -488,7 +497,12 @@ def compute_next_state(state: State, event: dict) -> State:
 
     # If we have aborted flows, and the current flow is an extension, when we interrupt them.
     # We are only interested when the extension flow actually decided, not just started.
-    if decision_flow_config and decision_flow_config.is_extension and decision_flow_state.head > 1:
+    if (
+        decision_flow_config
+        and decision_flow_state
+        and decision_flow_config.is_extension
+        and decision_flow_state.head > 1
+    ):
         for flow_state in new_state.flow_states:
             if flow_state.status == FlowStatus.ABORTED and state.flow_configs[flow_state.flow_id].is_interruptible:
                 flow_state.status = FlowStatus.INTERRUPTED
@@ -665,7 +679,7 @@ def compute_context(history: List[dict]):
     Returns:
         dict: The computed context.
     """
-    context = {
+    context: dict = {
         "last_user_message": None,
         "last_bot_message": None,
     }

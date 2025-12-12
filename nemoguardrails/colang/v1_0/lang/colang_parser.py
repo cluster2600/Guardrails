@@ -295,6 +295,7 @@ class ColangParser:
         # Now, append the new one
         self.current_namespaces.append(namespace)
         self.current_namespace = ".".join(self.current_namespaces)
+        assert self.next_line is not None, "next_line must not be None when creating namespace"
         self.current_indentation = self.next_line["indentation"]
         self.current_indentations.append(self.next_line["indentation"])
 
@@ -318,7 +319,7 @@ class ColangParser:
         # Include the source mapping information if required
         if self.include_source_mapping:
             if self.current_element and "_source_mapping" not in self.current_element:
-                self.current_element["_source_mapping"] = {
+                self.current_element["_source_mapping"] = {  # type: ignore[assignment]
                     "filename": self.filename,
                     "line_number": self.current_line["number"],
                     "line_text": self.current_line["text"],
@@ -771,6 +772,10 @@ class ColangParser:
         # Finally, we parse the markdown content
         self._extract_markdown()
 
+    def _insert_topic_flow_definition(self) -> None:
+        """Insert a topic flow definition. Currently not implemented."""
+        raise NotImplementedError("Topic flow definitions are not yet implemented")
+
     def _extract_indentation_levels(self):
         """Helper to extract the indentation levels higher than the current line."""
         indentations = []
@@ -910,13 +915,14 @@ class ColangParser:
             yaml_value = {"$0": yaml_value}
 
         # self.current_element.update(yaml_value)
-        for k in yaml_value.keys():
-            # if the key tarts with $, we remove it
-            param_name = k
-            if param_name[0] == "$":
-                param_name = param_name[1:]
+        if self.current_element is not None and isinstance(self.current_element, dict):
+            for k in yaml_value.keys():
+                # if the key tarts with $, we remove it
+                param_name = k
+                if param_name[0] == "$":
+                    param_name = param_name[1:]
 
-            self.current_element[param_name] = yaml_value[k]
+                self.current_element[param_name] = yaml_value[k]  # type: ignore[assignment]
 
     def _is_test_flow(self):
         """Returns true if the current flow is a test one.
@@ -956,6 +962,7 @@ class ColangParser:
 
     def _parse_when(self):
         # TODO: deal with "when" after "else when"
+        assert self.next_line is not None, "Expected next line after 'when' statement."
         assert self.next_line["indentation"] > self.current_line["indentation"], (
             "Expected indented block after 'when' statement."
         )
@@ -1280,6 +1287,7 @@ class ColangParser:
 
                 # Finally, decide what to include in the element
                 if utterance_id is None:
+                    assert utterance_text is not None, "utterance_text must not be None when utterance_id is None"
                     self.current_element["bot"] = {
                         "_type": "element",
                         "text": utterance_text[1:-1],
@@ -1298,11 +1306,12 @@ class ColangParser:
         # If there was a bot message with a snippet, we also add an expect
         # TODO: can this be handled better?
         try:
-            if "snippet" in self.current_element["bot"]:
+            bot_element = self.current_element["bot"]
+            if isinstance(bot_element, dict) and "snippet" in bot_element:
                 self.branches[-1]["elements"].append(
                     {
                         "expect": "snippet",
-                        "snippet": self.current_element["bot"]["snippet"],
+                        "snippet": bot_element["snippet"],
                     }
                 )
         # noinspection PyBroadException
@@ -1374,7 +1383,7 @@ class ColangParser:
         if return_vars:
             return_vars = get_stripped_tokens(return_vars.split(","))
             return_vars = [_var[1:] if _var[0] == "$" else _var for _var in return_vars]
-            self.current_element["_return_vars"] = return_vars
+            self.current_element["_return_vars"] = return_vars  # type: ignore[assignment]
 
         # Add to current branch
         self.branches[-1]["elements"].append(self.current_element)
@@ -1477,6 +1486,7 @@ class ColangParser:
         self.current_element = {"if": if_condition, "then": []}
         self.branches[-1]["elements"].append(self.current_element)
 
+        assert self.next_line is not None, "next_line must not be None when parsing if branch"
         self.ifs.append(
             {
                 "element": self.current_element,
@@ -1519,6 +1529,7 @@ class ColangParser:
         self.current_element = {"while": while_condition, "do": []}
         self.branches[-1]["elements"].append(self.current_element)
 
+        assert self.next_line is not None, "next_line must not be None when parsing while"
         # Add a new branch for the then part
         self.branches.append(
             {
@@ -1533,6 +1544,7 @@ class ColangParser:
         }
         self.branches[-1]["elements"].append(self.current_element)
 
+        assert self.next_line is not None, "next_line must not be None when parsing any"
         # Add a new branch for the then part
         self.branches.append(
             {
@@ -1562,6 +1574,7 @@ class ColangParser:
         }
         self.branches[-1]["elements"].append(self.current_element)
 
+        assert self.next_line is not None, "next_line must not be None when parsing infer"
         # Add a new branch for the then part
         self.branches.append(
             {
@@ -1600,7 +1613,7 @@ class ColangParser:
         }
 
         if return_values:
-            self.current_element["_return_values"] = return_values
+            self.current_element["_return_values"] = return_values  # type: ignore[assignment]
 
         self.branches[-1]["elements"].append(self.current_element)
 
@@ -1697,15 +1710,15 @@ class ColangParser:
                 exception = Exception(error)
 
                 # Decorate the exception with where the parsing failed
-                exception.filename = self.filename
-                exception.line = self.current_line["number"]
-                exception.error = str(ex)
+                exception.filename = self.filename  # type: ignore[attr-defined]
+                exception.line = self.current_line["number"]  # type: ignore[attr-defined]
+                exception.error = str(ex)  # type: ignore[attr-defined]
 
                 raise exception
 
             self.current_line_idx += 1
 
-        result = {"flows": self.flows}
+        result: dict = {"flows": self.flows}
 
         if self.imports:
             result["imports"] = self.imports

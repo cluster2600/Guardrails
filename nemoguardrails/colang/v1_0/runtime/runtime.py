@@ -439,10 +439,15 @@ class RuntimeV1_0(Runtime):
 
     async def _run_input_rails_in_parallel(self, flows: List[str], events: List[dict]) -> ActionResult:
         """Run the input rails in parallel."""
-        pre_events = [(await create_event({"_type": "StartInputRail", "flow_id": flow})).events[0] for flow in flows]
-        post_events = [
-            (await create_event({"_type": "InputRailFinished", "flow_id": flow})).events[0] for flow in flows
-        ]
+        pre_events = []
+        post_events = []
+        for flow in flows:
+            pre_result = await create_event({"_type": "StartInputRail", "flow_id": flow})
+            post_result = await create_event({"_type": "InputRailFinished", "flow_id": flow})
+            if pre_result.events:
+                pre_events.append(pre_result.events[0])
+            if post_result.events:
+                post_events.append(post_result.events[0])
 
         return await self._run_flows_in_parallel(
             flows=flows, events=events, pre_events=pre_events, post_events=post_events
@@ -450,10 +455,15 @@ class RuntimeV1_0(Runtime):
 
     async def _run_output_rails_in_parallel(self, flows: List[str], events: List[dict]) -> ActionResult:
         """Run the output rails in parallel."""
-        pre_events = [(await create_event({"_type": "StartOutputRail", "flow_id": flow})).events[0] for flow in flows]
-        post_events = [
-            (await create_event({"_type": "OutputRailFinished", "flow_id": flow})).events[0] for flow in flows
-        ]
+        pre_events = []
+        post_events = []
+        for flow in flows:
+            pre_result = await create_event({"_type": "StartOutputRail", "flow_id": flow})
+            post_result = await create_event({"_type": "OutputRailFinished", "flow_id": flow})
+            if pre_result.events:
+                pre_events.append(pre_result.events[0])
+            if post_result.events:
+                post_events.append(post_result.events[0])
 
         return await self._run_flows_in_parallel(
             flows=flows, events=events, pre_events=pre_events, post_events=post_events

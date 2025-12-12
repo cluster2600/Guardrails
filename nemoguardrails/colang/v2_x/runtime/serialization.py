@@ -211,7 +211,10 @@ def state_to_json(state: State, indent: bool = False):
 def json_to_state(s: str) -> State:
     """Helper to decode a State object from a JSON string."""
     data = json.loads(s)
-    state = decode_from_dict(data, refs={})
+    decoded = decode_from_dict(data, refs={})
+    if not isinstance(decoded, State):
+        raise ValueError(f"Expected State object, got {type(decoded)}")
+    state: State = decoded
 
     # Redo the callbacks.
     for flow_uid, flow_state in state.flow_states.items():

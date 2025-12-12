@@ -29,6 +29,7 @@ from nemoguardrails.colang.v2_x.lang.colang_ast import (
     Break,
     CatchPatternFailure,
     Continue,
+    Element,
     ElementType,
     EndScope,
     ForkHead,
@@ -87,13 +88,17 @@ def initialize_state(state: State) -> None:
 
     state.flow_states = dict()
 
+    current_flow_config: Optional[FlowConfig] = None
     try:
         # TODO: Think about where to put this
         for flow_config in state.flow_configs.values():
+            current_flow_config = flow_config
             initialize_flow(state, flow_config)
     except Exception as e:
-        if e.args[0]:
-            raise ColangSyntaxError(e.args[0] + f" in flow `{flow_config.id}` ({flow_config.source_file})")
+        if e.args[0] and current_flow_config:
+            raise ColangSyntaxError(
+                e.args[0] + f" in flow `{current_flow_config.id}` ({current_flow_config.source_file})"
+            )
         else:
             raise ColangSyntaxError() from e
 
@@ -119,7 +124,7 @@ def initialize_flow(state: State, flow_config: FlowConfig) -> None:
     # Extract all the label elements
     for idx, element in enumerate(flow_config.elements):
         if isinstance(element, Label):
-            flow_config.element_labels.update({element["name"]: idx})
+            flow_config.element_labels.update({element.name: idx})
 
 
 def create_flow_instance(
@@ -872,7 +877,7 @@ def _advance_head_front(state: State, heads: List[FlowHead]) -> List[FlowHead]:
             # In case there were any runtime error the flow will be aborted (fail)
             source_line = "unknown"
             element = flow_config.elements[head.position]
-            if hasattr(element, "_source") and element._source:
+            if isinstance(element, Element) and element._source:
                 source_line = str(element._source.line)
             log.warning(
                 "Flow '%s' failed on line %s (%s) due to Colang runtime exception: %s",
@@ -1955,6 +1960,8 @@ def get_event_name_from_element(state: State, flow_state: FlowState, element: Sp
             if element_spec.members is None:
                 raise ColangValueError("Missing event attributes!")
             event_name = member["name"]
+            if event_name is None:
+                raise ColangValueError("Event name is required")
             event = obj.get_event(event_name, {})
             return event.name
         else:
@@ -1967,6 +1974,8 @@ def get_event_name_from_element(state: State, flow_state: FlowState, element: Sp
             flow_config = state.flow_configs[element_spec.name]
             temp_flow_state = create_flow_instance(flow_config, "", "", {})
             flow_event_name = element_spec.members[0]["name"]
+            if flow_event_name is None:
+                raise ColangValueError("Flow event name is required")
             flow_event: InternalEvent = temp_flow_state.get_event(flow_event_name, {})
             del flow_event.arguments["source_flow_instance_uid"]
             del flow_event.arguments["flow_instance_uid"]
@@ -1976,6 +1985,8 @@ def get_event_name_from_element(state: State, flow_state: FlowState, element: Sp
             assert element_spec.name
             action = Action(element_spec.name, {}, flow_state.flow_id)
             event_name = element_spec.members[0]["name"]
+            if event_name is None:
+                raise ColangValueError("Action event name is required")
             action_event: ActionEvent = action.get_event(event_name, {})
             return action_event.name
         else:
@@ -2029,7 +2040,9 @@ def get_event_from_element(state: State, flow_state: FlowState, element: SpecOp)
             if element_spec.members is None:
                 raise ColangValueError("Missing event attributes!")
             event_name = member["name"]
-            event_arguments = member["arguments"]
+            if event_name is None:
+                raise ColangValueError("Event name is required")
+            event_arguments = member["arguments"] or {}
             event_arguments = _evaluate_arguments(event_arguments, _get_eval_context(state, flow_state))
             event = obj.get_event(event_name, event_arguments)
 
@@ -2051,8 +2064,12 @@ def get_event_from_element(state: State, flow_state: FlowState, element: SpecOp)
             flow_config = state.flow_configs[element_spec.name]
             temp_flow_state = create_flow_instance(flow_config, "", "", {})
             flow_event_name = element_spec.members[0]["name"]
+            if flow_event_name is None:
+                raise ColangValueError("Flow event name is required")
             flow_event_arguments = element_spec.arguments
-            flow_event_arguments.update(element_spec.members[0]["arguments"])
+            member_arguments = element_spec.members[0]["arguments"]
+            if member_arguments:
+                flow_event_arguments.update(member_arguments)
             flow_event_arguments = _evaluate_arguments(flow_event_arguments, _get_eval_context(state, flow_state))
             flow_event: InternalEvent = temp_flow_state.get_event(flow_event_name, flow_event_arguments)
             del flow_event.arguments["source_flow_instance_uid"]
@@ -2067,7 +2084,9 @@ def get_event_from_element(state: State, flow_state: FlowState, element: SpecOp)
             action = Action(element_spec.name, action_arguments, flow_state.flow_id)
             # TODO: refactor the following repetition of code (see above)
             event_name = element_spec.members[0]["name"]
-            event_arguments = element_spec.members[0]["arguments"]
+            if event_name is None:
+                raise ColangValueError("Action event name is required")
+            event_arguments = element_spec.members[0]["arguments"] or {}
             event_arguments = _evaluate_arguments(event_arguments, _get_eval_context(state, flow_state))
             action_event: ActionEvent = action.get_event(event_name, event_arguments)
             if element["op"] == "match":

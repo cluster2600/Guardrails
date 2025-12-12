@@ -241,7 +241,7 @@ def _dict_to_element(d):
     elif d_type in ["break"]:
         element = {"_type": "break"}
     elif d_type in ["return"]:
-        element = {"_type": "jump", "_next": "-1", "_absolute": True}
+        element = {"_type": "jump", "_next": -1, "_absolute": True}
 
         # Include the return values information
         if "_return_values" in d:
@@ -429,7 +429,7 @@ def _extract_elements(items: List) -> List[dict]:
                 del if_element["then"]
                 del if_element["else"]
 
-                if_element["_next_else"] = str(len(then_elements) + 1)
+                if_element["_next_else"] = len(then_elements) + 1  # type: ignore[arg-type]
 
                 # Add the "if"
                 elements.append(if_element)
@@ -439,8 +439,8 @@ def _extract_elements(items: List) -> List[dict]:
 
                 # if we have "else" elements, we need to adjust also add a jump
                 if len(else_elements) > 0:
-                    elements.append({"_type": "jump", "_next": str(len(else_elements) + 1)})
-                    if_element["_next_else"] = str(int(if_element["_next_else"]) + 1)
+                    elements.append({"_type": "jump", "_next": len(else_elements) + 1})  # type: ignore[dict-item]
+                    if_element["_next_else"] += 1  # type: ignore[arg-type, operator]
 
                     # Add the "else" elements
                     elements.extend(else_elements)
@@ -456,14 +456,14 @@ def _extract_elements(items: List) -> List[dict]:
                 del while_element["do"]
 
                 # On break we have to skip n elements and 1 jump, hence we go to n+2
-                while_element["_next_on_break"] = str(n + 2)
+                while_element["_next_on_break"] = n + 2  # type: ignore[arg-type]
 
                 # We need to compute the jumps on break and on continue for each element
                 for j in range(n):
                     # however, we make sure we don't override an inner loop
                     if "_next_on_break" not in do_elements[j]:
-                        do_elements[j]["_next_on_break"] = str(n + 1 - j)
-                        do_elements[j]["_next_on_continue"] = str(-1 * j - 1)
+                        do_elements[j]["_next_on_break"] = n + 1 - j
+                        do_elements[j]["_next_on_continue"] = -1 * j - 1
 
                 # Add the "while"
                 elements.append(while_element)

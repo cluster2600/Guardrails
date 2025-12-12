@@ -24,7 +24,7 @@ import aiohttp
 from nemoguardrails.actions.actions import ActionResult
 from nemoguardrails.colang import parse_colang_file
 from nemoguardrails.colang.runtime import Runtime
-from nemoguardrails.colang.v2_x.lang.colang_ast import Decorator, Flow
+from nemoguardrails.colang.v2_x.lang.colang_ast import Decorator, ElementType, Flow
 from nemoguardrails.colang.v2_x.lang.utils import format_colang_parsing_error_message
 from nemoguardrails.colang.v2_x.runtime.errors import (
     ColangRuntimeError,
@@ -138,9 +138,13 @@ class RuntimeV2_x(Runtime):
 
     def _init_flow_configs(self) -> None:
         """Initializes the flow configs based on the config."""
-        self.flow_configs = create_flow_configs_from_flow_list(self.config.flows)
+        # Type assertion: config.flows contains Flow objects at runtime
+        from nemoguardrails.colang.v2_x.lang.colang_ast import Flow
 
-    async def generate_events(self, events: List[dict]) -> List[dict]:
+        flows = [f for f in self.config.flows if isinstance(f, Flow)]
+        self.flow_configs = create_flow_configs_from_flow_list(flows)
+
+    async def generate_events(self, events: List[dict], processing_log: Optional[List[dict]] = None) -> List[dict]:
         raise NotImplementedError("Stateless API not supported for Colang 2.x, yet.")
 
     @staticmethod
@@ -167,7 +171,7 @@ class RuntimeV2_x(Runtime):
         action_name: str,
         action_params: dict,
         context: dict,
-        events: List[dict],
+        events: List[Union[dict, Event]],
         state: "State",
     ) -> Tuple[Any, List[dict], dict]:
         """Starts the specified action, waits for it to finish and posts back the result."""
@@ -268,7 +272,9 @@ class RuntimeV2_x(Runtime):
             # Call the Actions Server if it is available.
             # But not for system actions, those should still run locally.
             if action_meta.get("is_system_action", False) or self.config.actions_server_url is None:
-                result, status = await self.action_dispatcher.execute_action(action_name, kwargs)
+                action_result, action_status = await self.action_dispatcher.execute_action(action_name, kwargs)
+                result = action_result if action_result is not None else result
+                status = action_status
             else:
                 url = urljoin(self.config.actions_server_url, "/v1/actions/run")  # action server execute action path
                 data = {"action_name": action_name, "action_parameters": kwargs}
@@ -280,11 +286,9 @@ class RuntimeV2_x(Runtime):
                                     f"Got status code {resp.status} while getting response from {action_name}"
                                 )
 
-                            resp = await resp.json()
-                            result, status = (
-                                resp.get("result", result),
-                                resp.get("status", status),
-                            )
+                            resp_json = await resp.json()
+                            result = resp_json.get("result") or result
+                            status = resp_json.get("status") or status
                     except Exception as e:
                         log.info("Exception %s while making request to %s", e, action_name)
                         return result, status
@@ -342,6 +346,8 @@ class RuntimeV2_x(Runtime):
                     "Local action finished with an exception!",
                     exc_info=True,
                 )
+                self.async_actions[main_flow_uid].remove(finished_task)
+                continue
 
             self.async_actions[main_flow_uid].remove(finished_task)
 
@@ -387,7 +393,7 @@ class RuntimeV2_x(Runtime):
         """
 
         output_events = []
-        input_events: List[Union[dict, InternalEvent]] = events.copy()
+        input_events: List[Union[dict, InternalEvent]] = list(events)
         local_running_actions: List[asyncio.Task[dict]] = []
 
         if state is None or state == {}:
@@ -668,9 +674,11 @@ def create_flow_configs_from_flow_list(flows: List[Flow]) -> Dict[str, FlowConfi
         ]:
             raise ColangSyntaxError(f"Flow '{flow.name}' starts with a keyword!")
 
+        # Cast elements to ElementType list for type compatibility
+        elements: List[ElementType] = list(flow.elements)
         config = FlowConfig(
             id=flow.name,
-            elements=flow.elements,
+            elements=elements,
             decorators=convert_decorator_list_to_dictionary(flow.decorators),
             parameters=flow.parameters,
             return_members=flow.return_members,
