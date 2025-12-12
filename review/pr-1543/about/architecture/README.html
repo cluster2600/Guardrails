@@ -550,12 +550,12 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="architecture-guide">
 <h1>Architecture Guide<a class="headerlink" href="#architecture-guide" title="Link to this heading">#</a></h1>
-<p>This document provides more details on the architecture and the approach that the NeMo Guardrails toolkit takes for implementing guardrails.</p>
+<p>This document provides more details on the architecture and the approach that the NeMo Guardrails Library takes for implementing guardrails.</p>
 <p><img alt="Overall Architecture" src="../../_images/overall-architecture.png" /></p>
 <section id="the-guardrails-process">
 <h2>The Guardrails Process<a class="headerlink" href="#the-guardrails-process" title="Link to this heading">#</a></h2>
 <p>This section explains in detail the process under the hood, from the utterance sent by the user to the bot utterance that is returned.</p>
-<p>The guardrails runtime uses an event-driven design (i.e., an event loop that processes events and generates back other events). Whenever the user says something to the bot, a <code class="docutils literal notranslate"><span class="pre">UtteranceUserActionFinished</span></code> event is created and sent to the runtime.</p>
+<p>The guardrails runtime uses an event-driven design (i.e., an event loop that processes events and generates back other events). Whenever the user says something to the bot, an <code class="docutils literal notranslate"><span class="pre">UtteranceUserActionFinished</span></code> event is created and sent to the runtime.</p>
 <p>The process has three main stages:</p>
 <ol class="arabic simple">
 <li><p>Generate canonical user message</p></li>
@@ -605,7 +605,7 @@
 <li><p>The bot should execute an action (<code class="docutils literal notranslate"><span class="pre">StartInternalSystemAction</span></code> events)</p></li>
 </ol>
 <p>When an action needs to be executed, the runtime will invoke the action and wait for the result. When the action finishes, an <code class="docutils literal notranslate"><span class="pre">InternalSystemActionFinished</span></code> event is created with the result of the action.</p>
-<p><strong>Note</strong>: the default implementation of the runtime is async, so the action execution is only blocking for a specific user.</p>
+<p><strong>Note</strong>: The default implementation of the runtime is async, so the action execution is only blocking for a specific user.</p>
 <p>When the bot should say something, the process will move to the next stage, i.e., generating the bot utterance.</p>
 <p>After an action is executed or a bot message is generated, the runtime will try again to generate another next step (e.g., a flow might instruct the bot to execute an action, say something, then execute another action). The processing will stop when there are no more next steps.</p>
 </section>
@@ -767,12 +767,12 @@
 </section>
 <section id="interaction-with-llms">
 <h2>Interaction with LLMs<a class="headerlink" href="#interaction-with-llms" title="Link to this heading">#</a></h2>
-<p>This toolkit relies on LangChain for the interaction with LLMs. Below is a high-level sequence diagram showing the interaction between the user’s code (the one using the guardrails), the <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code>, LangChain and the LLM API.</p>
+<p>This library relies on LangChain for the interaction with LLMs. Below is a high-level sequence diagram showing the interaction between the user’s code (the one using the guardrails), the <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code>, LangChain and the LLM API.</p>
 <p><img alt="Sequence Diagram LLMRails" src="../../_images/sequence-diagram-llmrails.png" /></p>
 </section>
 <section id="server-architecture">
 <h2>Server Architecture<a class="headerlink" href="#server-architecture" title="Link to this heading">#</a></h2>
-<p>This toolkit provides a guardrails server with an interface similar to publicly available LLM APIs. Using the server, integrating a guardrails configuration in your application can be as easy as replacing the initial LLM API URL with the Guardrails Server API URL.</p>
+<p>This library provides a guardrails server with an interface similar to publicly available LLM APIs. Using the server, integrating a guardrails configuration in your application can be as easy as replacing the initial LLM API URL with the Guardrails Server API URL.</p>
 <p><img alt="Guardrails Server" src="../../_images/guardrails-server.png" /></p>
 <p>The server is designed with high concurrency in mind, hence the async implementation using FastAPI.</p>
 </section>
