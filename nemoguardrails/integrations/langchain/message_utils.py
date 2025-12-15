@@ -263,7 +263,7 @@ def create_tool_message(
     status: Optional[str] = None,
 ) -> ToolMessage:
     """Create a ToolMessage with optional fields."""
-    kwargs = {"tool_call_id": tool_call_id}
+    kwargs: Dict[str, Any] = {"tool_call_id": tool_call_id}
     if name is not None:
         kwargs["name"] = name
     if additional_kwargs is not None:
