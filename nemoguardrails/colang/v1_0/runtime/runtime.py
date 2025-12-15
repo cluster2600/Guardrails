@@ -443,9 +443,10 @@ class RuntimeV1_0(Runtime):
         post_events = []
         for flow in flows:
             pre_result = await create_event({"_type": "StartInputRail", "flow_id": flow})
-            post_result = await create_event({"_type": "InputRailFinished", "flow_id": flow})
             if pre_result.events:
                 pre_events.append(pre_result.events[0])
+
+            post_result = await create_event({"_type": "InputRailFinished", "flow_id": flow})
             if post_result.events:
                 post_events.append(post_result.events[0])
 
@@ -741,17 +742,13 @@ class RuntimeV1_0(Runtime):
                             )
                     except Exception as e:
                         log.info(f"Exception {e} while making request to {action_name}")
-                        if not isinstance(result, dict):
-                            result = {"value": result}
                         return result, status
 
         except Exception as e:
             log.info(f"Failed to get response from {action_name} due to exception {e}")
 
-        # Ensure result is a dict as expected by the return type
         if not isinstance(result, dict):
-            result = {"value": result}
-
+            raise RuntimeError("Action response is not dictionary")
         return result, status
 
     async def _process_start_flow(self, events: List[dict], processing_log: List[dict]) -> List[dict]:

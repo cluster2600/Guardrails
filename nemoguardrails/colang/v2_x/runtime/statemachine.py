@@ -124,7 +124,8 @@ def initialize_flow(state: State, flow_config: FlowConfig) -> None:
     # Extract all the label elements
     for idx, element in enumerate(flow_config.elements):
         if isinstance(element, Label):
-            flow_config.element_labels.update({element.name: idx})
+            label_element = cast(Label, element)
+            flow_config.element_labels.update({label_element.name: idx})
 
 
 def create_flow_instance(

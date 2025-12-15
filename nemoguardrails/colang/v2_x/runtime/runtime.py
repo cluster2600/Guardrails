@@ -16,7 +16,7 @@ import asyncio
 import inspect
 import logging
 import re
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union, cast
 from urllib.parse import urljoin
 
 import aiohttp
@@ -138,11 +138,8 @@ class RuntimeV2_x(Runtime):
 
     def _init_flow_configs(self) -> None:
         """Initializes the flow configs based on the config."""
-        # Type assertion: config.flows contains Flow objects at runtime
-        from nemoguardrails.colang.v2_x.lang.colang_ast import Flow
-
-        flows = [f for f in self.config.flows if isinstance(f, Flow)]
-        self.flow_configs = create_flow_configs_from_flow_list(flows)
+        typed_flows = [Flow(**flow) if isinstance(flow, dict) else flow for flow in self.config.flows]
+        self.flow_configs = create_flow_configs_from_flow_list(typed_flows)
 
     async def generate_events(self, events: List[dict], processing_log: Optional[List[dict]] = None) -> List[dict]:
         raise NotImplementedError("Stateless API not supported for Colang 2.x, yet.")
@@ -287,8 +284,8 @@ class RuntimeV2_x(Runtime):
                                 )
 
                             resp_json = await resp.json()
-                            result = resp_json.get("result") or result
-                            status = resp_json.get("status") or status
+                            result = resp_json.get("result", result)
+                            status = resp_json.get("status", status)
                     except Exception as e:
                         log.info("Exception %s while making request to %s", e, action_name)
                         return result, status
@@ -674,11 +671,13 @@ def create_flow_configs_from_flow_list(flows: List[Flow]) -> Dict[str, FlowConfi
         ]:
             raise ColangSyntaxError(f"Flow '{flow.name}' starts with a keyword!")
 
-        # Cast elements to ElementType list for type compatibility
-        elements: List[ElementType] = list(flow.elements)
+        # Flow.elements is type List[Element]
+        # FlowConfig.elements is type List[ElementType], with ElementType = Union[Element, dict]
+        # So need to explicitly cast Flow.elements to ElementType before creating Flowconfig
+        flow_elements: List[ElementType] = [cast(ElementType, element) for element in flow.elements]
         config = FlowConfig(
             id=flow.name,
-            elements=elements,
+            elements=flow_elements,
             decorators=convert_decorator_list_to_dictionary(flow.decorators),
             parameters=flow.parameters,
             return_members=flow.return_members,

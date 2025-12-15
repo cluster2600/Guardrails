@@ -295,7 +295,8 @@ class ColangParser:
         # Now, append the new one
         self.current_namespaces.append(namespace)
         self.current_namespace = ".".join(self.current_namespaces)
-        assert self.next_line is not None, "next_line must not be None when creating namespace"
+        if self.next_line is None:
+            raise RuntimeError("next_line is None when creating namespace")
         self.current_indentation = self.next_line["indentation"]
         self.current_indentations.append(self.next_line["indentation"])
 
@@ -917,7 +918,7 @@ class ColangParser:
         # self.current_element.update(yaml_value)
         if self.current_element is not None and isinstance(self.current_element, dict):
             for k in yaml_value.keys():
-                # if the key tarts with $, we remove it
+                # if the key starts with $, we remove it
                 param_name = k
                 if param_name[0] == "$":
                     param_name = param_name[1:]
@@ -962,7 +963,8 @@ class ColangParser:
 
     def _parse_when(self):
         # TODO: deal with "when" after "else when"
-        assert self.next_line is not None, "Expected next line after 'when' statement."
+        if not self.next_line or not isinstance(self.next_line, dict):
+            raise RuntimeError("next_line is not a valid dictionary during parsing")
         assert self.next_line["indentation"] > self.current_line["indentation"], (
             "Expected indented block after 'when' statement."
         )
@@ -1287,7 +1289,8 @@ class ColangParser:
 
                 # Finally, decide what to include in the element
                 if utterance_id is None:
-                    assert utterance_text is not None, "utterance_text must not be None when utterance_id is None"
+                    if utterance_text is None:
+                        raise RuntimeError("utterance_id and utterance_text both None")
                     self.current_element["bot"] = {
                         "_type": "element",
                         "text": utterance_text[1:-1],
@@ -1486,7 +1489,8 @@ class ColangParser:
         self.current_element = {"if": if_condition, "then": []}
         self.branches[-1]["elements"].append(self.current_element)
 
-        assert self.next_line is not None, "next_line must not be None when parsing if branch"
+        if self.next_line is None:
+            raise RuntimeError("next_line must not be None when parsing if branch")
         self.ifs.append(
             {
                 "element": self.current_element,
@@ -1529,7 +1533,8 @@ class ColangParser:
         self.current_element = {"while": while_condition, "do": []}
         self.branches[-1]["elements"].append(self.current_element)
 
-        assert self.next_line is not None, "next_line must not be None when parsing while"
+        if self.next_line is None:
+            raise RuntimeError("next_line must not be None when parsing while")
         # Add a new branch for the then part
         self.branches.append(
             {
@@ -1544,7 +1549,8 @@ class ColangParser:
         }
         self.branches[-1]["elements"].append(self.current_element)
 
-        assert self.next_line is not None, "next_line must not be None when parsing any"
+        if self.next_line is None:
+            raise RuntimeError("next_line must not be None when parsing any")
         # Add a new branch for the then part
         self.branches.append(
             {
@@ -1574,7 +1580,8 @@ class ColangParser:
         }
         self.branches[-1]["elements"].append(self.current_element)
 
-        assert self.next_line is not None, "next_line must not be None when parsing infer"
+        if self.next_line is None:
+            raise RuntimeError("next_line must not be None when parsing infer")
         # Add a new branch for the then part
         self.branches.append(
             {

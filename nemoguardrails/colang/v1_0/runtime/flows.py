@@ -499,8 +499,8 @@ def compute_next_state(state: State, event: dict) -> State:
     # We are only interested when the extension flow actually decided, not just started.
     if (
         decision_flow_config
-        and decision_flow_state
         and decision_flow_config.is_extension
+        and decision_flow_state
         and decision_flow_state.head > 1
     ):
         for flow_state in new_state.flow_states:
