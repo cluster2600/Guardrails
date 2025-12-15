@@ -95,7 +95,7 @@ def initialize_state(state: State) -> None:
             current_flow_config = flow_config
             initialize_flow(state, flow_config)
     except Exception as e:
-        if e.args[0] and current_flow_config:
+        if e.args and current_flow_config:
             raise ColangSyntaxError(
                 e.args[0] + f" in flow `{current_flow_config.id}` ({current_flow_config.source_file})"
             )
