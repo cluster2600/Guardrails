@@ -316,8 +316,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../about/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/rail-types.html">Rail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
@@ -335,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="current nav bd-sidenav">
@@ -559,6 +560,7 @@
 <ul class="simple">
 <li><p><a class="reference internal" href="#self-check-input">Input Checking</a></p></li>
 <li><p><a class="reference internal" href="#self-check-output">Output Checking</a></p></li>
+<li><p><a class="reference internal" href="#dialog-rails"><span class="xref myst">Dialog Rails</span></a></p></li>
 <li><p><a class="reference internal" href="#fact-checking">Fact Checking</a></p></li>
 <li><p><a class="reference internal" href="#hallucination-detection">Hallucination Detection</a></p></li>
 <li><p><a class="reference internal" href="#content-safety">Content Safety</a></p></li>
@@ -794,6 +796,24 @@
 </pre></div>
 </div>
 </section>
+</section>
+</section>
+<section id="the-dialog-rails-flow">
+<h3>The Dialog Rails Flow<a class="headerlink" href="#the-dialog-rails-flow" title="Link to this heading">#</a></h3>
+<p>The diagram below depicts the dialog rails flow in detail:</p>
+<a class="reference internal image-reference" href="configure-rails/_static/puml/dialog_rails_flow.png"><img alt="Sequence diagram showing the detailed dialog rails flow in NeMo Guardrails: 1) User Intent Generation stage where the system first searches for similar canonical form examples in a vector database, then either uses the closest match if embeddings_only is enabled, or asks the LLM to generate the user's intent. 2) Next Step Prediction stage where the system either uses a matching flow if one exists, or searches for similar flow examples and asks the LLM to generate the next step. 3) Bot Message Generation stage where the system either uses a predefined message if one exists, or searches for similar bot message examples and asks the LLM to generate an appropriate response. The diagram shows all the interactions between the application code, LLM Rails system, vector database, and LLM, with clear branching paths based on configuration options and available predefined content." class="align-center" src="configure-rails/_static/puml/dialog_rails_flow.png" style="width: 500px;" />
+</a>
+<p>The dialog rails flow has multiple stages that a user message goes through:</p>
+<ol class="arabic simple">
+<li><p><strong>User Intent Generation</strong>: First, the user message has to be interpreted by computing the canonical form (a.k.a. user intent). This is done by searching the most similar examples from the defined user messages, and then asking LLM to generate the current canonical form.</p></li>
+<li><p><strong>Next Step Prediction</strong>: After the canonical form for the user message is computed, the next step needs to be predicted. If there is a Colang flow that matches the canonical form, then the flow will be used to decide. If not, the LLM will be asked to generate the next step using the most similar examples from the defined flows.</p></li>
+<li><p><strong>Bot Message Generation</strong>: Ultimately, a bot message needs to be generated based on a canonical form. If a pre-defined message exists, the message will be used. If not, the LLM will be asked to generate the bot message using the most similar examples.</p></li>
+</ol>
+<section id="single-llm-call">
+<h4>Single LLM Call<a class="headerlink" href="#single-llm-call" title="Link to this heading">#</a></h4>
+<p>When the <code class="docutils literal notranslate"><span class="pre">single_llm_call.enabled</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the dialog rails flow will be simplified to a single LLM call that predicts all the steps at once. While this helps reduce latency, it may result in lower quality. The diagram below depicts the simplified dialog rails flow:</p>
+<a class="reference internal image-reference" href="configure-rails/_static/puml/single_llm_call_flow.png"><img alt="Sequence diagram showing the simplified dialog rails flow in NeMo Guardrails when single LLM call is enabled: 1) The system first searches for similar examples in the vector database for canonical forms, flows, and bot messages. 2) A single LLM call is made using the generate_intent_steps_message task prompt to predict the user's canonical form, next step, and bot message all at once. 3) The system then either uses the next step from a matching flow if one exists, or uses the LLM-generated next step. 4) Finally, the system either uses a predefined bot message if available, uses the LLM-generated message if the next step came from the LLM, or makes one additional LLM call to generate the bot message. This simplified flow reduces the number of LLM calls needed to process a user message." class="align-center" src="configure-rails/_static/puml/single_llm_call_flow.png" style="width: 600px;" />
+</a>
 </section>
 </section>
 <section id="fact-checking">
@@ -1770,6 +1790,10 @@ The rules use the string data type.</p>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Complex</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-dialog-rails-flow">The Dialog Rails Flow</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#single-llm-call">Single LLM Call</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fact-checking">Fact-Checking</a></li>

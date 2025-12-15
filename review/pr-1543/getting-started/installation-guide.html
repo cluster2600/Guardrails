@@ -316,8 +316,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/rail-types.html">Rail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
@@ -335,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="integrate-into-application.html">Integrate Guardrails into an Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -567,7 +568,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Hardware</strong></p></td>
-<td><p>The library runs on CPUs (no GPUs required).<br>It acts as a process manager between your app front-end and the backend LLM.</p></td>
+<td><p>The Guardrails process runs on CPU. Guardrails models run on GPUs and can be deployed on a separate host or environment.</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Software</strong></p></td>
 <td><p>Python 3.10, 3.11, 3.12, or 3.13</p></td>
@@ -629,8 +630,8 @@ Most systems already have installed a C++ runtime. If the <strong>annoy</strong>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">mkvirtualenv</span></code> <em>name</em> command to activate a new virtual environment called <em>name</em>.</p>
 </section>
 </section>
-<section id="install-the-nemo-guardrails-toolkit">
-<h2>Install the NeMo Guardrails Toolkit<a class="headerlink" href="#install-the-nemo-guardrails-toolkit" title="Link to this heading">#</a></h2>
+<section id="install-the-nemo-guardrails-library">
+<h2>Install the NeMo Guardrails Library<a class="headerlink" href="#install-the-nemo-guardrails-library" title="Link to this heading">#</a></h2>
 <p>Install the NeMo Guardrails Library using <strong>pip</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails
 </pre></div>
@@ -764,7 +765,7 @@ For each feature or LLM example, check the readme file associated with it.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-virtual-environment-on-windows">Setting up a virtual environment on Windows</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nemo-guardrails-toolkit">Install the NeMo Guardrails Toolkit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nemo-guardrails-library">Install the NeMo Guardrails Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-from-source-code">Installing from source code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-dependencies">Extra dependencies</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-dependencies">Optional dependencies</a></li>

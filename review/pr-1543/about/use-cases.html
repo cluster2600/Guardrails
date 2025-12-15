@@ -59,7 +59,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/about/use-cases.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="How It Works" href="how-it-works/index.html" />
+    <link rel="next" title="Rail Types" href="rail-types.html" />
     <link rel="prev" title="Overview of the NeMo Guardrails Library" href="overview.html" />
 
 
@@ -316,8 +316,8 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rail-types.html">Rail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="architecture/README.html">Detailed Architecture</a></li>
 </ul>
@@ -335,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -622,21 +623,8 @@ This includes:</p>
 <p>The NeMo Guardrails Library provides extensive flexibility for creating custom guardrails tailored to your specific requirements.</p>
 <section id="add-custom-rails-into-guardrails">
 <h3>Add Custom Rails into Guardrails<a class="headerlink" href="#add-custom-rails-into-guardrails" title="Link to this heading">#</a></h3>
-<p>You can create custom rails using one or more of the following approaches:</p>
+<p>If you have a script or tool that runs a custom guardrail, you can use it in NeMo Guardrails by following one of these approaches:</p>
 <ol class="arabic">
-<li><p><strong>Colang flows</strong>: Define custom dialog flows, input rails, and output rails using the Colang language.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define user express greeting
-  &quot;Hello!&quot;
-  &quot;Good morning!&quot;
-
-define flow
-  user express greeting
-  bot express greeting
-  bot offer to help
-</pre></div>
-</div>
-<p>For more information, refer to the <a class="reference internal" href="#../user-guides/colang-language-syntax-guide.md"><span class="xref myst">Colang Language Syntax Guide</span></a>.</p>
-</li>
 <li><p><strong>Python actions</strong>: Create custom actions in Python for complex logic and external integrations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">action</span>
 
@@ -723,11 +711,11 @@ For more information, refer to the <a class="reference internal" href="../deploy
       </div>
     </a>
     <a class="right-next"
-       href="how-it-works/index.html"
+       href="rail-types.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">How It Works</p>
+        <p class="prev-next-title">Rail Types</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
