@@ -16,7 +16,17 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, AsyncIterator, Dict, Iterator, List, Optional, Union
+from typing import (
+    Any,
+    AsyncIterator,
+    Callable,
+    Dict,
+    Iterator,
+    List,
+    Optional,
+    Union,
+    cast,
+)
 
 from langchain_core.language_models import BaseLanguageModel
 from langchain_core.language_models.chat_models import BaseChatModel
@@ -106,7 +116,8 @@ class RunnableRails(Runnable[Input, Output]):
             self.passthrough = False
 
             for tool in tools:
-                self.rails.register_action(tool, tool.name)
+                # Tool is callable at runtime via __call__, cast for type checker
+                self.rails.register_action(cast(Callable[..., Any], tool), tool.name)
 
         # If we have a passthrough Runnable, we need to register a passthrough fn
         # that will call it
@@ -117,7 +128,8 @@ class RunnableRails(Runnable[Input, Output]):
         """Initialize the passthrough function for the LLM rails instance."""
         # Capture the runnable in the closure (we know it's not None when this is called)
         passthrough_runnable = self.passthrough_runnable
-        assert passthrough_runnable is not None
+        if not passthrough_runnable:
+            raise RuntimeError("Passthrough function could not be initialized")
 
         async def passthrough_fn(context: dict, events: List[dict]) -> tuple[str, Any]:
             # First, we fetch the input from the context
@@ -630,7 +642,7 @@ class RunnableRails(Runnable[Input, Output]):
         if isinstance(output, str):
             return output
         elif hasattr(output, "content"):  # LangChain AIMessage
-            return str(getattr(output, "content", ""))
+            return str(output.content)
         elif isinstance(output, dict):
             if "output" in output:
                 return str(output["output"])
@@ -656,8 +668,6 @@ class RunnableRails(Runnable[Input, Output]):
         # Generate response from rails
         res = self.rails.generate(messages=input_messages, options=GenerationOptions(output_vars=True))
 
-        # With options specified, we get a GenerationResponse
-        # Also handle mock objects for testing
         if isinstance(res, GenerationResponse):
             context = res.output_data or {}
             result = res.response
@@ -896,15 +906,15 @@ class RunnableRails(Runnable[Input, Output]):
             # When config is a list, pair each input with its config
             return await gather_with_concurrency(
                 max_concurrency,
-                *[self.ainvoke(inp, cfg, **kwargs) for inp, cfg in zip(inputs, config)],
+                *[self.ainvoke(input_item, cfg, **kwargs) for input_item, cfg in zip(inputs, config)],
             )
-        else:
-            if config and "max_concurrency" in config:
-                max_concurrency = config["max_concurrency"]
-            return await gather_with_concurrency(
-                max_concurrency,
-                *[self.ainvoke(input_item, config, **kwargs) for input_item in inputs],
-            )
+
+        if config and "max_concurrency" in config:
+            max_concurrency = config["max_concurrency"]
+        return await gather_with_concurrency(
+            max_concurrency,
+            *[self.ainvoke(input_item, config, **kwargs) for input_item in inputs],
+        )
 
     def transform(  # type: ignore[override]
         self,
