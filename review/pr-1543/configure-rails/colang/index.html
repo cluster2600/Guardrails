@@ -587,7 +587,7 @@ They need to trigger actions and follow complex business processes.</p>
 <li><p>Function calling and constrained output generation (for example, JSON mode) for models that support it.</p></li>
 </ol>
 <p>Retrieval Augmented Generation (RAG) plays a crucial role by integrating application-level and user-specific context into the generation.
-A comprehensive guardrails toolkit for LLMs should seamlessly accommodate all these interaction patterns.</p>
+A comprehensive guardrails library for LLMs should seamlessly accommodate all these interaction patterns.</p>
 </section>
 <section id="configuration-sections">
 <h2>Configuration Sections<a class="headerlink" href="#configuration-sections" title="Link to this heading">#</a></h2>
@@ -599,7 +599,7 @@ A comprehensive guardrails toolkit for LLMs should seamlessly accommodate all th
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Colang 2.0 Guide</div>
-<p class="sd-card-text">whats-changed getting-started/index language-reference/index migration-guide</p>
+<p class="sd-card-text">Reference for using Colang 2.0 in guardrails.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="colang-2/index.html"><span class="doc">Colang 2.0 Guide</span></a></div>
 </div>
@@ -610,7 +610,7 @@ Colang 2.0 Guide</div>
 Colang 1.0 Guide</div>
 <p class="sd-card-text">The original Colang syntax for defining user messages, bot messages, and dialog flows.</p>
 </div>
-<span class="sd-stretched-link sd-hide-link-text">colang-language-syntax-guide</span></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="colang-1/index.html"><span class="doc">Colang 1.0 Guide</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -630,7 +630,7 @@ Migrating from Colang 1 to Colang 2</div>
 The initial Colang 1.0 language and runtime have several limitations.</p>
 <p><strong>Language limitations:</strong></p>
 <ul class="simple">
-<li><p>Primarily supports text-based interactions with specialized constructs for user and bot messages.</p></li>
+<li><p>Primarily supports text-based interactions with specialized constructs for user and bot messages, rather than multi-modal interactions (e.g. using voice, gestures, posture, or images).</p></li>
 <li><p>Limited support for natural language instructions, such as extracting user-provided values or bot message instructions.</p></li>
 <li><p>Lack of support for executing multiple actions or initiating multiple interaction flows concurrently.</p></li>
 <li><p>Does not allow the modeling of parallel interaction streams, such as simultaneous chat and avatar posture adjustments in interactive avatar systems.</p></li>
@@ -677,24 +677,24 @@ The initial Colang 1.0 language and runtime have several limitations.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>convert<span class="w"> </span><span class="s2">&quot;path/to/2.0-alpha/version/bots&quot;</span><span class="w"> </span>--from-version<span class="w"> </span><span class="s2">&quot;2.0-alpha&quot;</span>
 </pre></div>
 </div>
-<p>Additionally, you can add the <code class="docutils literal notranslate"><span class="pre">--validate</span></code> flag to check if the migrated files do not raise any Colang syntax errors.</p>
+<p>Additionally, you can add the <code class="docutils literal notranslate"><span class="pre">--validate</span></code> flag to check if the migrated files raise any Colang syntax errors.</p>
 </section>
 </section>
 <section id="interaction-model">
 <h2>Interaction Model<a class="headerlink" href="#interaction-model" title="Link to this heading">#</a></h2>
 <p>While there are many changes in the syntax and the underlying mechanics between Colang 1.0 and Colang 2.0, one core element has remained the same: <em>interaction model</em>.</p>
 <p>In both Colang 1.0 and Colang 2.0, the interaction between the application (or user) and the LLM is an event-driven one.
-Examples of events include: user saying something, the LLM generating a response, triggering an action, the result of an action, the retrieval of additional info, the triggering of a guardrail, and more.
+Examples of events include: user saying something, the LLM generating a response, triggering an action, the result of an action, the retrieval of additional info, and the triggering of a guardrail.
 In other words, the evolution of a system is modeled as a series of events, with the guardrails layer responsible for recognizing and enforcing patterns within the stream.</p>
 <p>The diagram below depicts a simplified version of the role of the events stream (the boxes with yellow background represent events).</p>
 <a class="reference internal image-reference" href="../../_images/guardrails_events_stream.png"><img alt="Event-driven interaction model showing the flow of events between user, guardrails, and LLM" class="align-center" src="../../_images/guardrails_events_stream.png" style="width: 649px;" />
 </a>
-<p>This event-driven interaction model is part of what makes Colang a powerful modeling language, enabling the description of any type of interaction (text-based, voice-based, multi-modal, agent, multi-agent, and so on) and adding guardrails to it.</p>
+<p>This event-driven interaction model is part of what makes Colang a powerful modeling language, enabling the description of any type of interaction (text-based, voice-based, multi-modal, agent, multi-agent, etc) and adding guardrails to it.</p>
 </section>
 <section id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h2>
-<p>If you’ve used Colang 1.0 before, check out the <a class="reference internal" href="colang-2/whats-changed.html"><span class="doc std std-doc">What’s Changed</span></a> page.
-If not, you can get started with the <a class="reference internal" href="colang-2/getting-started/hello-world.html"><span class="doc std std-doc">Hello World</span></a> example.</p>
+<p>If you’ve used Colang 1.0 before, check out the <a class="reference internal" href="colang-2/whats-changed.html"><span class="doc std std-doc">What’s Changed with Colang 2.0</span></a> page.
+If not, you can get started with the Colang 2.0 <a class="reference internal" href="colang-2/getting-started/hello-world.html"><span class="doc std std-doc">Hello World</span></a> example.</p>
 <div class="toctree-wrapper compound">
 </div>
 </section>

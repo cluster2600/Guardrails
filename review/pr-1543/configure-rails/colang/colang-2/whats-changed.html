@@ -557,7 +557,7 @@
 <p>This guide provides a non-comprehensive overview of the most important changes in Colang 2.0.</p>
 <section id="terminology">
 <h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading">#</a></h2>
-<p>To limit the learning curve, Colang 2.0 borrows as much as possible the terminology from Python:</p>
+<p>To limit the learning curve, Colang 2.0 borrows as much terminology from Python as possible:</p>
 <ul class="simple">
 <li><p>Every bit of Colang code is called a <em>script</em>.</p></li>
 <li><p>A single <code class="docutils literal notranslate"><span class="pre">.co</span></code> file is called a <em>module</em>.</p></li>
@@ -599,7 +599,8 @@
 </section>
 <section id="flow-naming-conventions">
 <h2>Flow naming conventions<a class="headerlink" href="#flow-naming-conventions" title="Link to this heading">#</a></h2>
-<p>The flows modeling the events from “outside of the system” are named using the <strong>past tense</strong>, e.g., <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span></code>, <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">expressed</span> <span class="pre">greeting</span></code>, etc. On the bot side, they represent actions that need to be taken and the <strong>imperative form</strong> is used, e.g., <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">refuse</span> <span class="pre">to</span> <span class="pre">respond</span></code>, etc. For more details see <a class="reference internal" href="language-reference/defining-flows.html#flow-naming-conventions"><span class="std std-ref">Flow Naming Convention</span></a>.</p>
+<p>The flows modeling the events from “outside of the system” are named using the <strong>past tense</strong>, e.g., <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span></code>, <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">expressed</span> <span class="pre">greeting</span></code>, etc. On the bot side, they represent actions that need to be taken and the <strong>imperative form</strong> is used, e.g., <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">refuse</span> <span class="pre">to</span> <span class="pre">respond</span></code>, etc.</p>
+<p>For more details see <a class="reference internal" href="language-reference/defining-flows.html#flow-naming-conventions"><span class="std std-ref">Flow Naming Convention</span></a>.</p>
 </section>
 <section id="the-generation-operator">
 <h2>The Generation Operator<a class="headerlink" href="#the-generation-operator" title="Link to this heading">#</a></h2>
@@ -613,7 +614,7 @@ In Colang 2.0, flows must be activated explicitly. There is also now a <code cla
 </section>
 <section id="entry-point">
 <h2>Entry Point<a class="headerlink" href="#entry-point" title="Link to this heading">#</a></h2>
-<p>In Colang 1.0, there was no clear entry point for a Colang script. In Colang 2.0, the <code class="docutils literal notranslate"><span class="pre">main</span></code> flow is the entry point. The <code class="docutils literal notranslate"><span class="pre">main</span></code> flows triggers the activation of all other flows used in the Colang package.</p>
+<p>In Colang 1.0, there was no clear entry point for a Colang script. In Colang 2.0, the <code class="docutils literal notranslate"><span class="pre">main</span></code> flow is the entry point. The <code class="docutils literal notranslate"><span class="pre">main</span></code> flow triggers the activation of all other flows used in the Colang package.</p>
 </section>
 <section id="import-mechanism">
 <h2>Import Mechanism<a class="headerlink" href="#import-mechanism" title="Link to this heading">#</a></h2>
@@ -634,25 +635,27 @@ Any Colang module or package that is exists in the <code class="docutils literal
 </section>
 <section id="asynchronous-actions">
 <h2>Asynchronous Actions<a class="headerlink" href="#asynchronous-actions" title="Link to this heading">#</a></h2>
-<p>In Colang 1.0, actions could only be executed synchronously, blocking a flow. Also, there was no way to start two actions in parallel. This was particularly important, for example, if you wanted multiple input rails to run in parallel.</p>
+<p>In Colang 1.0, actions could only be executed synchronously, blocking a flow. Also, there was no way to start two actions in parallel. This was particularly troublesome, for example, if you wanted multiple input rails to run in parallel.</p>
 <p>In Colang 2.0, the <code class="docutils literal notranslate"><span class="pre">execute</span></code> keyword has been replaced with <code class="docutils literal notranslate"><span class="pre">await</span></code>, similar to Python. Also, you can use <code class="docutils literal notranslate"><span class="pre">start</span></code> to start an action without blocking the flow.</p>
 </section>
 <section id="naming-conventions">
 <h2>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Link to this heading">#</a></h2>
-<p>Colang 2.0 uses the following naming conventions:
-- Flow names: lower case, can have spaces, should read naturally.
-- Action names: camel case, must end with “Action”.
-- Event names: camel case.</p>
+<p>Colang 2.0 uses the following naming conventions:</p>
+<ul class="simple">
+<li><p>Flow names: lower case, can have spaces, should read naturally.</p></li>
+<li><p>Action names: camel case, must end with “Action”.</p></li>
+<li><p>Event names: camel case.</p></li>
+</ul>
 <p>There are certain conventions for the events that mark the start and finish of an action:
 <code class="docutils literal notranslate"><span class="pre">Start...Action</span></code>, <code class="docutils literal notranslate"><span class="pre">...ActionStarted</span></code>, <code class="docutils literal notranslate"><span class="pre">...ActionFinished</span></code>.</p>
 </section>
 <section id="multi-modal">
 <h2>Multi-modal<a class="headerlink" href="#multi-modal" title="Link to this heading">#</a></h2>
-<p>Colang 2.0 supports modeling multi-modal interaction not just text-based interaction (e.g., <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">gesture</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">gesture</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">posture</span></code>, etc.)</p>
+<p>Colang 2.0 supports modeling multi-modal interaction, not just text-based interaction (e.g., <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">gesture</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">gesture</span></code>, <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">posture</span></code>, etc.)</p>
 </section>
 <section id="variables">
 <h2>Variables<a class="headerlink" href="#variables" title="Link to this heading">#</a></h2>
-<p>In Colang 1.0 all variables are global by default. In Colang 2.0, all variables are local by default. To make a variable global, you can use the <code class="docutils literal notranslate"><span class="pre">global</span></code> keyword.</p>
+<p>In Colang 1.0, all variables are global by default. In Colang 2.0, all variables are local by default. To make a variable global, you can use the <code class="docutils literal notranslate"><span class="pre">global</span></code> keyword.</p>
 <p>There are no default global variables in Colang 2.0.</p>
 </section>
 <section id="string-formatting">
@@ -733,7 +736,7 @@ Any Colang module or package that is exists in the <code class="docutils literal
 </li>
 <li><dl class="simple">
 <dt>Bot specific copies of the Colang Core Library</dt><dd><ul>
-<li><p>ccl_*.co files are deprecated and should be removed from the bot folders. It is replaced by the Colang Standard Libraries that are included in NeMo Guardrails and can be imported (e.g. <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">core</span></code> or <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">llm</span></code> ). See next the new name mapping of standard library flows.</p></li>
+<li><p>ccl_*.co files are deprecated and should be removed from the bot folders. They are replaced by the Colang Standard Libraries that are included in NeMo Guardrails and can be imported (e.g. <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">core</span></code> or <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">llm</span></code> ). See next the new name mapping of standard library flows.</p></li>
 </ul>
 </dd>
 </dl>

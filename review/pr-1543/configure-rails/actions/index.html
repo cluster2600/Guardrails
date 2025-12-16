@@ -548,11 +548,11 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="custom-actions">
 <h1>Custom Actions<a class="headerlink" href="#custom-actions" title="Link to this heading">#</a></h1>
-<p>This section describes the <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file used to define custom Python actions for the NeMo Guardrails toolkit.
-Custom actions enable you to execute Python code within guardrails flows, extending the toolkit with custom logic, external API integrations, and complex validation.</p>
+<p>This section describes the <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file used to define custom Python actions for the NeMo Guardrails Library.
+Custom actions enable you to execute Python code within guardrails flows, extending the library with custom logic, external API integrations, and complex validation.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>A typical <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file contains custom action functions decorated with the <code class="docutils literal notranslate"><span class="pre">&#64;action</span></code> decorator:</p>
+<p>A typical <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file defines custom action functions using the <code class="docutils literal notranslate"><span class="pre">&#64;action</span></code> decorator. A decorator is a callable that takes a function and returns a new function, usually adding behavior or attaching metadata.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">action</span>
 
@@ -596,7 +596,7 @@ Creating Custom Actions</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Built-in Actions</div>
-<p class="sd-card-text">Reference for default actions included in the NeMo Guardrails toolkit for common operations.</p>
+<p class="sd-card-text">Reference for default actions included in the NeMo Guardrails Library for common operations.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="built-in-actions.html"><span class="doc">Built-in Actions</span></a></div>
 </div>

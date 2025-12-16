@@ -557,19 +557,19 @@
                   
   <section id="input-rails">
 <span id="colang-2-getting-started-input-rails"></span><h1>Input Rails<a class="headerlink" href="#input-rails" title="Link to this heading">#</a></h1>
-<p>This section explains how to create <em>input rails</em> in Colang 2.0</p>
+<p>This section explains how to create <em>input rails</em> in Colang 2.0.</p>
 <section id="definition">
 <h2>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h2>
-<p><strong>Input Rails</strong> are a type of rails that check the input from the user (i.e., what the user said), before any further processing.</p>
+<p><strong>Input Rails</strong> are a type of rail that checks the input from the user (i.e., what the user said) before any further processing.</p>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
-<p>To activate input rails in Colang 2.0, you have to:</p>
+<p>To activate input rails in Colang 2.0, you must:</p>
 <ol class="arabic simple">
 <li><p>Import the <cite>guardrails</cite> module from the <a class="reference internal" href="../language-reference/the-standard-library.html#the-standard-library"><span class="std std-ref">Colang Standard Library (CSL)</span></a>.</p></li>
 <li><p>Define a flow called <cite>input rails</cite>, which takes a single parameter called <cite>$input_text</cite>.</p></li>
 </ol>
-<p>In the example below, the <code class="docutils literal notranslate"><span class="pre">input</span> <span class="pre">rails</span></code> flow calls another flow called <code class="docutils literal notranslate"><span class="pre">check</span> <span class="pre">user</span> <span class="pre">message</span></code> which prompts the LLM to check the input.</p>
+<p>In the example below, the <code class="docutils literal notranslate"><span class="pre">input</span> <span class="pre">rails</span></code> flow calls another flow named <code class="docutils literal notranslate"><span class="pre">check</span> <span class="pre">user</span> <span class="pre">message</span></code> which prompts the LLM to check the input.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">examples/v2_x/tutorial/guardrails_1/main.co</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>import core
@@ -604,15 +604,15 @@
 </pre></div>
 </div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">input</span> <span class="pre">rails</span></code> flow above (lines 19-24) introduce some additional syntax elements:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">input</span> <span class="pre">rails</span></code> flow above (lines 19-24) introduces some additional syntax elements:</p>
 <ul class="simple">
-<li><p>Flow parameters and variables, start with a <code class="docutils literal notranslate"><span class="pre">$</span></code> sign, e.g. <code class="docutils literal notranslate"><span class="pre">$input_text</span></code>, <code class="docutils literal notranslate"><span class="pre">$input_safe</span></code>.</p></li>
+<li><p>Starting flow parameters and variables with a <code class="docutils literal notranslate"><span class="pre">$</span></code> symbol, e.g. <code class="docutils literal notranslate"><span class="pre">$input_text</span></code>, <code class="docutils literal notranslate"><span class="pre">$input_safe</span></code>.</p></li>
 <li><p>Using the <code class="docutils literal notranslate"><span class="pre">await</span></code> operator to wait for another flow.</p></li>
 <li><p>Capturing the return value of a flow using a local variable, e.g., <code class="docutils literal notranslate"><span class="pre">$input_safe</span> <span class="pre">=</span> <span class="pre">await</span> <span class="pre">check</span> <span class="pre">user</span> <span class="pre">utterance</span> <span class="pre">$input_text</span></code>.</p></li>
-<li><p>Using <code class="docutils literal notranslate"><span class="pre">if</span></code> similar to Python.</p></li>
-<li><p>Using the <code class="docutils literal notranslate"><span class="pre">abort</span></code> keyword to make a flow fail, as opposed to finishing successfully.</p></li>
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">if</span></code>, similar to Python.</p></li>
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">abort</span></code> keyword to make a flow fail.</p></li>
 </ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">check</span> <span class="pre">user</span> <span class="pre">utterance</span></code> flow above (line 26-28) introduces the <em>instruction operator</em> <code class="docutils literal notranslate"><span class="pre">i&quot;&lt;instruction&gt;&quot;&quot;</span></code> which will prompt the llm to generate the value <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> depending on the evaluated safety of the user utterance. In line 28 the generated value assigned to <code class="docutils literal notranslate"><span class="pre">$is_safe</span></code> will be returned.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">check</span> <span class="pre">user</span> <span class="pre">utterance</span></code> flow above (line 26-28) introduces the <em>instruction operator</em> <code class="docutils literal notranslate"><span class="pre">i&quot;&lt;instruction&gt;&quot;&quot;</span></code> which will prompt the LLM to generate the value <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> depending on the evaluated safety of the user utterance. In line 28, the generated value assigned to <code class="docutils literal notranslate"><span class="pre">$is_safe</span></code> will be returned.</p>
 </section>
 <section id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
