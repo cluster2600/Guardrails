@@ -548,7 +548,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="core-configuration">
 <h1>Core Configuration<a class="headerlink" href="#core-configuration" title="Link to this heading">#</a></h1>
-<p>This section describes the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file schema used to configure the NeMo Guardrails toolkit.
+<p>This section describes the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file schema used to configure the NeMo Guardrails Library.
 The <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file is the primary configuration file for defining LLM models, guardrails behavior, prompts, knowledge base settings, and tracing options.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
@@ -596,7 +596,7 @@ The <code class="docutils literal notranslate"><span class="pre">config.yml</spa
 </section>
 <section id="configuration-sections">
 <h2>Configuration Sections<a class="headerlink" href="#configuration-sections" title="Link to this heading">#</a></h2>
-<p>The following sections provide detailed documentation for each configuration area:</p>
+<p>The following guides provide detailed documentation for each configuration section of the overall <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">
@@ -654,18 +654,25 @@ Streaming Configuration</div>
 ├── config
 │   ├── config.yml        # Main configuration file
 │   ├── prompts.yml       # Custom prompts (optional)
-│   ├── rails/            # Colang flow definitions
+│   ├── rails/            # Colang flow definitions (optional)
 │   │   ├── input.co
 │   │   ├── output.co
 │   │   └── ...
-│   ├── kb/               # Knowledge base documents
+│   ├── kb/               # Knowledge base documents (optional)
 │   │   ├── doc1.md
 │   │   └── ...
 │   ├── actions.py        # Custom actions (optional)
 │   └── config.py         # Custom initialization (optional)
 </pre></div>
 </div>
-<p>For detailed information about each configuration section, refer to the individual pages linked above.</p>
+<p>Once you have finished crafting your overall <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file, refer to the following guides for detailed information each of the optional components as needed:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#yaml-schema/index.md"><span class="xref myst">Core Configuration</span></a> - A complete guide to writing your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file.</p></li>
+<li><p><a class="reference internal" href="#colang/index.md"><span class="xref myst">Colang Rails</span></a> - <code class="docutils literal notranslate"><span class="pre">.co</span></code> flow files.</p></li>
+<li><p><a class="reference internal" href="#actions/index.md"><span class="xref myst">Custom Actions</span></a> - <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> for callable actions.</p></li>
+<li><p><a class="reference internal" href="#custom-initialization/index.md"><span class="xref myst">Custom Initialization</span></a> - <code class="docutils literal notranslate"><span class="pre">config.py</span></code> for provider registration.</p></li>
+<li><p><a class="reference internal" href="#other-configurations/knowledge-base.md"><span class="xref myst">Knowledge Base Documents</span></a> - <code class="docutils literal notranslate"><span class="pre">kb/</span></code> folder for RAG.</p></li>
+</ul>
 <div class="toctree-wrapper compound">
 </div>
 </section>
