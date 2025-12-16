@@ -3,6 +3,8 @@ title: Configure Rails
 description: Learn to write config.yml, Colang flows, and custom actions.
 ---
 
+Test
+
 # Configuration Overview
 
 Before using the NeMo Guardrails toolkit, you need to prepare configuration files that define your guardrails behavior. When you initialize the toolkit's core classes or the `nemoguardrails` CLI chat or server, it will load the configuration files you'll create in the next chapter [Run Rails](../run-rails/index.md). This section provides complete instructions on preparing your configuration files and executable scripts.
