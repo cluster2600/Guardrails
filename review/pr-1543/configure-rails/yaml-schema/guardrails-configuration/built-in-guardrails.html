@@ -566,12 +566,18 @@
 <li><p><a class="reference internal" href="#content-safety">Content Safety</a></p></li>
 </ul>
 </li>
+<li><p>Threat Detection</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#jailbreak-detection">Jailbreak Detection</a></p></li>
+<li><p><a class="reference internal" href="#injection-detection">Injection Detection</a></p></li>
+</ul>
+</li>
 <li><p>Community Models and Libraries</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#alignscore-based-fact-checking">AlignScore-based Fact Checking</a></p></li>
 <li><p><a class="reference internal" href="#llama-guard-based-content-moderation">LlamaGuard-based Content Moderation</a></p></li>
 <li><p><a class="reference internal" href="#patronus-lynx-based-rag-hallucination-detection">Patronus Lynx-based RAG Hallucination Detection</a></p></li>
-<li><p><a class="reference internal" href="#presidio-based-sensitive-data-detection">Presidio-based Sensitive data detection</a></p></li>
+<li><p><a class="reference internal" href="#presidio-based-sensitive-data-detection">Presidio-based Sensitive Data Detection</a></p></li>
 </ul>
 </li>
 <li><p>Third-Party APIs</p>
@@ -590,12 +596,6 @@
 <li><p><a class="reference internal" href="#cisco-ai-defense">Cisco AI Defense</a></p></li>
 </ul>
 </li>
-<li><p>Other</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#jailbreak-detection">Jailbreak Detection</a></p></li>
-<li><p><a class="reference internal" href="#injection-detection">Injection Detection</a></p></li>
-</ul>
-</li>
 </ol>
 <section id="llm-self-checking">
 <h2>LLM Self-Checking<a class="headerlink" href="#llm-self-checking" title="Link to this heading">#</a></h2>
@@ -606,7 +606,7 @@
 </div>
 <section id="self-check-input">
 <h3>Self Check Input<a class="headerlink" href="#self-check-input" title="Link to this heading">#</a></h3>
-<p>The goal of the input self-checking rail is to determine if the input for the user should be allowed for further processing. This rail will prompt the LLM using a custom prompt. Common reasons for rejecting the input from the user include jailbreak attempts, harmful or abusive content, or other inappropriate instructions.</p>
+<p>The goal of the input self-checking rail is to determine if the input from the user should be allowed for further processing. This rail will prompt the LLM using a custom prompt. Common reasons for rejecting the input from the user include jailbreak attempts, harmful or abusive content, or other inappropriate instructions.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>The performance of this rail is strongly dependent on the capability of the LLM to follow the instructions in the <code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> prompt.</p>
@@ -861,7 +861,7 @@
       stop
 </pre></div>
 </div>
-<p>To trigger the fact-fact checking rail for a bot message, you must set the <code class="docutils literal notranslate"><span class="pre">$check_facts</span></code> context variable to <code class="docutils literal notranslate"><span class="pre">True</span></code> before a bot message requiring fact-checking. This enables you to explicitly enable fact-checking only when needed (e.g. when answering an important question vs. chitchat).</p>
+<p>To trigger the self-check fact-checking rail for a bot message, you must set the <code class="docutils literal notranslate"><span class="pre">$check_facts</span></code> context variable to <code class="docutils literal notranslate"><span class="pre">True</span></code> before a bot message requiring fact-checking. This enables you to explicitly enable fact-checking only when needed (e.g. when answering an important question vs. chitchat).</p>
 <p>The example below will trigger the fact-checking output rail every time the bot responds to a question about the report.</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow
   user ask about report
@@ -920,7 +920,7 @@
 </ol>
 <section id="blocking-mode">
 <h5>Blocking Mode<a class="headerlink" href="#blocking-mode" title="Link to this heading">#</a></h5>
-<p>Similar to self-check fact-checking, to trigger the self-check hallucination rail in blocking mode, you have to set the <code class="docutils literal notranslate"><span class="pre">$check_halucination</span></code> context variable to <code class="docutils literal notranslate"><span class="pre">True</span></code> to verify that a bot message is not prone to hallucination:</p>
+<p>Similar to self-check fact-checking, to trigger the self-check hallucination rail in blocking mode, you have to set the <code class="docutils literal notranslate"><span class="pre">$check_hallucination</span></code> context variable to <code class="docutils literal notranslate"><span class="pre">True</span></code> to verify that a bot message is not prone to hallucination:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow
   user ask about people
   $check_hallucination = True
@@ -929,7 +929,7 @@
 </div>
 <p>The above example will trigger the hallucination rail for every people-related question (matching the canonical form <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">ask</span> <span class="pre">about</span> <span class="pre">people</span></code>), which is usually more prone to contain incorrect statements. If the bot message contains hallucinations, the default <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">inform</span> <span class="pre">answer</span> <span class="pre">unknown</span></code> message is used. To override it, include the following in one of your Colang files:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot inform answer unknown
-  &quot;I don&#39;t know the answer that.&quot;
+  &quot;I don&#39;t know the answer to that.&quot;
 </pre></div>
 </div>
 </section>
@@ -977,7 +977,7 @@
 <p>NeMo Guardrails provides out of the box connectivity for safety models trained by NVIDIA for specialized use cases. These models are provided as both HuggingFace checkpoints and as NVIDIA NIM containers that provide out of the box TRTLLM support with lower latency.</p>
 <section id="content-safety">
 <h3>Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h3>
-<p>The content safety checks in Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as Nvidia’s <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">NemoGuard ContentSafety</a> model, Meta’s <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/" rel="noreferer noopener" target="_blank">Llama Guard 3</a>, Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma" rel="noreferer noopener" target="_blank">ShieldGemma</a>, etc.</p>
+<p>The content safety checks inside Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as Nvidia’s <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">Nemotron Content Safety</a> model, Meta’s <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/" rel="noreferer noopener" target="_blank">Llama Guard 3</a>, and Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma" rel="noreferer noopener" target="_blank">ShieldGemma</a>.</p>
 <p>To use the content safety check, you should:</p>
 <ol class="arabic simple">
 <li><p>Include the desired content safety models in the models section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
@@ -1016,7 +1016,7 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
 </pre></div>
 </div>
-<p>It is important to note that you must define the models in the <code class="docutils literal notranslate"><span class="pre">models</span></code> section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file before using them in the input and output flows. The <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">output</span></code> flows are used to check the input and output text, respectively. The <code class="docutils literal notranslate"><span class="pre">$model</span></code> parameter specifies the model to be used for content safety checking. The model must be defined in the <code class="docutils literal notranslate"><span class="pre">models</span></code> section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. The <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safetry</span> <span class="pre">check</span> <span class="pre">output</span></code> flows return a boolean value indicating whether the input or output text is safe. Depending on the model, it also returns set of policy violations. Please refer to the <a class="reference internal" href="#../../examples/configs/content_safety/README.md"><span class="xref myst">content safety example</span></a> for more details.</p>
+<p>It is important to note that you must define the models in the <code class="docutils literal notranslate"><span class="pre">models</span></code> section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file before using them in the input and output flows. The <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">output</span></code> flows are used to check the input and output text, respectively. The <code class="docutils literal notranslate"><span class="pre">$model</span></code> parameter specifies the model to be used for content safety checking. The model must be defined in the <code class="docutils literal notranslate"><span class="pre">models</span></code> section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. The <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">output</span></code> flows return a boolean value indicating whether the input or output text is safe. Depending on the model, it also returns set of policy violations. Please refer to the <a class="reference internal" href="#../../examples/configs/content_safety/README.md"><span class="xref myst">content safety example</span></a> for more details.</p>
 <ol class="arabic simple" start="3">
 <li><p>Specify the prompts for each content safety check flow in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file, here is the example prompt for the <code class="docutils literal notranslate"><span class="pre">shieldgemma</span></code> model:</p></li>
 </ol>
@@ -1135,6 +1135,255 @@
 <section id="id9">
 <h4>Implementation Details<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
 <p>The ‘topic safety check input’ flow uses the <a class="reference internal" href="#../../nemoguardrails/library/topic_safety/actions.py"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">topic_safety_check_input</span></code></span></a> action. The model returns a boolean value indicating whether the user input is on-topic or not. Please refer to the <a class="reference internal" href="#../../examples/configs/topic_safety/README.md"><span class="xref myst">topic safety example</span></a> for more details.</p>
+</section>
+</section>
+</section>
+<section id="threat-detection">
+<h2>Threat Detection<a class="headerlink" href="#threat-detection" title="Link to this heading">#</a></h2>
+<section id="jailbreak-detection">
+<h3>Jailbreak Detection<a class="headerlink" href="#jailbreak-detection" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails supports jailbreak detection using a set of heuristics. Currently, two heuristics are supported:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#length-per-perplexity"><span class="xref myst">Length per Perplexity</span></a></p></li>
+<li><p><a class="reference internal" href="#prefix-and-suffix-perplexity"><span class="xref myst">Prefix and Suffix Perplexity</span></a></p></li>
+</ol>
+<p>Perplexity is a metric that measures how well a language model predicts text. Lower is better, meaning less randomness or surprise. Typically jailbreak attempts result in higher perplexity.</p>
+<p>To activate the jailbreak detection heuristics, you first need include the <code class="docutils literal notranslate"><span class="pre">jailbreak</span> <span class="pre">detection</span> <span class="pre">heuristics</span></code> flow as an input rail:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
+  input:
+    flows:
+      - jailbreak detection heuristics
+</pre></div>
+</div>
+<p>Also, you need to configure the desired thresholds in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
+  config:
+    jailbreak_detection:
+      server_endpoint: &quot;http://0.0.0.0:1337/heuristics&quot;
+      length_per_perplexity_threshold: 89.79
+      prefix_suffix_perplexity_threshold: 1845.65
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">server_endpoint</span></code> parameter is not set, the checks will run in-process. This is useful for TESTING PURPOSES ONLY and <strong>IS NOT RECOMMENDED FOR PRODUCTION DEPLOYMENTS</strong>.</p>
+</div>
+<section id="heuristics">
+<h4>Heuristics<a class="headerlink" href="#heuristics" title="Link to this heading">#</a></h4>
+<section id="length-per-perplexity">
+<h5>Length per Perplexity<a class="headerlink" href="#length-per-perplexity" title="Link to this heading">#</a></h5>
+<p>The <em>length per perplexity</em> heuristic computes the length of the input divided by the perplexity of the input. If the value is above the specified threshold (default <code class="docutils literal notranslate"><span class="pre">89.79</span></code>) then the input is considered a jailbreak attempt.</p>
+<p>The default value represents the mean length/perplexity for a set of jailbreaks derived from a combination of datasets including <a class="reference external" href="https://github.com/llm-attacks/llm-attacks" rel="noreferer noopener" target="_blank">AdvBench</a>, <a class="reference external" href="https://huggingface.co/datasets/lmsys/toxic-chat/blob/main/README.md" rel="noreferer noopener" target="_blank">ToxicChat</a>, and <a class="reference external" href="https://github.com/verazuo/jailbreak_llms" rel="noreferer noopener" target="_blank">JailbreakChat</a>, with non-jailbreaks taken from the same datasets and incorporating 1000 examples from <a class="reference external" href="https://huggingface.co/datasets/databricks/databricks-dolly-15k" rel="noreferer noopener" target="_blank">Dolly-15k</a>.</p>
+<p>The statistics for this metric across jailbreak and non jailbreak datasets are as follows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Jailbreaks</p></th>
+<th class="head"><p>Non-Jailbreaks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mean</p></td>
+<td><p>89.79</p></td>
+<td><p>27.11</p></td>
+</tr>
+<tr class="row-odd"><td><p>min</p></td>
+<td><p>0.03</p></td>
+<td><p>0.00</p></td>
+</tr>
+<tr class="row-even"><td><p>25%</p></td>
+<td><p>12.90</p></td>
+<td><p>0.46</p></td>
+</tr>
+<tr class="row-odd"><td><p>50%</p></td>
+<td><p>47.32</p></td>
+<td><p>2.40</p></td>
+</tr>
+<tr class="row-even"><td><p>75%</p></td>
+<td><p>116.94</p></td>
+<td><p>18.78</p></td>
+</tr>
+<tr class="row-odd"><td><p>max</p></td>
+<td><p>1380.55</p></td>
+<td><p>3418.62</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Using the mean value of <code class="docutils literal notranslate"><span class="pre">89.79</span></code> yields 31.19% of jailbreaks being detected with a false positive rate of 7.44% on the dataset.
+Increasing this threshold will decrease the number of jailbreaks detected but will yield fewer false positives.</p>
+<p><strong>USAGE NOTES</strong>:</p>
+<ul class="simple">
+<li><p>Manual inspection of false positives uncovered a number of mislabeled examples in the dataset and a substantial number of system-like prompts. If your application is intended for simple question answering or retrieval-aided generation, this should be a generally safe heuristic.</p></li>
+<li><p>This heuristic in its current form is intended only for English language evaluation and will yield significantly more false positives on non-English text, including code.</p></li>
+</ul>
+</section>
+<section id="prefix-and-suffix-perplexity">
+<h5>Prefix and Suffix Perplexity<a class="headerlink" href="#prefix-and-suffix-perplexity" title="Link to this heading">#</a></h5>
+<p>The <em>prefix and suffix perplexity</em> heuristic takes the input and computes the perplexity for the prefix and suffix. If any of the is above the specified threshold (default <code class="docutils literal notranslate"><span class="pre">1845.65</span></code>), then the input is considered a jailbreak attempt.</p>
+<p>This heuristic examines strings of more than 20 “words” (strings separated by whitespace) to detect potential prefix/suffix attacks.</p>
+<p>The default threshold value of <code class="docutils literal notranslate"><span class="pre">1845.65</span></code> is the second-lowest perplexity value across 50 different prompts generated using <a class="reference external" href="https://github.com/llm-attacks/llm-attacks" rel="noreferer noopener" target="_blank">GCG</a> prefix/suffix attacks.
+Using the default value allows for detection of 49/50 GCG-style attacks with a 0.04% false positive rate on the “non-jailbreak” dataset derived above.</p>
+<p><strong>USAGE NOTES</strong>:</p>
+<ul class="simple">
+<li><p>This heuristic in its current form is intended only for English language evaluation and will yield significantly more false positives on non-English text, including code.</p></li>
+</ul>
+</section>
+</section>
+<section id="perplexity-computation">
+<h4>Perplexity Computation<a class="headerlink" href="#perplexity-computation" title="Link to this heading">#</a></h4>
+<p>To compute the perplexity of a string, the current implementation uses the <code class="docutils literal notranslate"><span class="pre">gpt2-large</span></code> model.</p>
+</section>
+<section id="model-based-jailbreak-detections">
+<h4>Model-based Jailbreak Detections<a class="headerlink" href="#model-based-jailbreak-detections" title="Link to this heading">#</a></h4>
+<p>There is currently one available model-based detection, using a random forest-based detector trained on <a class="reference external" href="https://huggingface.co/Snowflake/snowflake-arctic-embed-m-long" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">Snowflake/snowflake-arctic-embed-m-long</span></code></a> embeddings.</p>
+</section>
+<section id="setup">
+<h4>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h4>
+<p>The recommended way for using the jailbreak detection heuristics and models is to <a class="reference internal" href="#advanced/jailbreak-detection-deployment.md"><span class="xref myst">deploy the jailbreak detection server</span></a> separately.</p>
+<p>For quick testing, you can use the jailbreak detection heuristics rail locally by first installing <code class="docutils literal notranslate"><span class="pre">transformers</span></code> and <code class="docutils literal notranslate"><span class="pre">tourch</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>transformers<span class="w"> </span>torch
+</pre></div>
+</div>
+</section>
+<section id="latency">
+<h4>Latency<a class="headerlink" href="#latency" title="Link to this heading">#</a></h4>
+<p>Latency was tested in-process and via local Docker for both CPU and GPU configurations.
+For each configuration, we tested the response time for 10 prompts ranging in length from 5 to 2048 tokens.
+Inference times for sequences longer than the model’s maximum input length (1024 tokens for GPT-2) necessarily take longer.
+Times reported below in are <strong>averages</strong> and are reported in milliseconds.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>CPU</p></th>
+<th class="head"><p>GPU</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Docker</p></td>
+<td><p>2057</p></td>
+<td><p>115</p></td>
+</tr>
+<tr class="row-odd"><td><p>In-Process</p></td>
+<td><p>3227</p></td>
+<td><p>157</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="injection-detection">
+<h3>Injection Detection<a class="headerlink" href="#injection-detection" title="Link to this heading">#</a></h3>
+<p>NeMo Guardrails offers detection of potential exploitation attempts by using injection such as code injection, cross-site scripting, SQL injection, and template injection.
+Injection detection is primarily intended to be used in agentic systems to enhance other security controls as part of a defense-in-depth strategy.</p>
+<p>The first part of injection detection is <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html" rel="noreferer noopener" target="_blank">YARA rules</a>.
+A YARA rule specifies a set of strings (text or binary patterns) to match and a Boolean expression that specifies the logic of the rule.
+YARA rules are a technology that is familiar to many security teams.</p>
+<p>The second part of injection detection is specifying the action to take when a rule is triggered.
+You can specify to <em>reject</em> the text and return “I’m sorry, the desired output triggered rule(s) designed to mitigate exploitation of {detections}.”
+Rejecting the output is the safest action and most appropriate for production deployments.
+As an alternative to rejecting the output, you can specify to <em>omit</em> the triggering text from the response.</p>
+<section id="about-the-default-rules">
+<h4>About the Default Rules<a class="headerlink" href="#about-the-default-rules" title="Link to this heading">#</a></h4>
+<p>By default, NeMo Guardrails provides the following rules:</p>
+<ul class="simple">
+<li><p>Code injection (Python): Recommended if the LLM output is used as an argument to downstream functions or passed to a code interpreter.</p></li>
+<li><p>SQL injection: Recommended if the LLM output is used as part of a SQL query to a database.</p></li>
+<li><p>Template injection (Jinja): Recommended for use if LLM output is rendered using the Jinja templating language.
+This rule is usually paired with code injection rules.</p></li>
+<li><p>Cross-site scripting (Markdown and Javascript): Recommended if the LLM output is rendered directly in HTML or Markdown.</p></li>
+</ul>
+<p>You can view the default rules in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/injection_detection/yara_rules" rel="noreferer noopener" target="_blank">yara_rules directory</a> of the GitHub repository.</p>
+</section>
+<section id="configuring-injection-detection">
+<h4>Configuring Injection Detection<a class="headerlink" href="#configuring-injection-detection" title="Link to this heading">#</a></h4>
+<p>To activate injection detection, you must specify the rules to apply and the action to take as well as include the <code class="docutils literal notranslate"><span class="pre">injection</span> <span class="pre">detection</span></code> output flow.
+As an example config:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">injection_detection</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">injections</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">code</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqli</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">template</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xss</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">reject</span>
+
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">injection detection</span>
+</pre></div>
+</div>
+<p>Refer to the following table for the <code class="docutils literal notranslate"><span class="pre">rails.config.injection_detection</span></code> field syntax reference:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">injections</span></code></p></td>
+<td><p>Specifies the injection detection rules to use.
+The following injections are part of the library:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">code</span></code> for Python code injection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sqli</span></code> for SQL injection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">template</span></code> for Jinja template injection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xss</span></code> for cross-site scripting</p></li>
+</ul>
+</td>
+<td><p>None (required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">action</span></code></p></td>
+<td><p>Specifies the action to take when injection is detected.
+Refer to the following actions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reject</span></code> returns a message to the user indicating that the query could not be handled and they should try again.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">omit</span></code> returns the model response, removing the offending detected content.</p></li>
+</ul>
+</td>
+<td><p>None (required)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">yara_path</span></code></p></td>
+<td><p>Specifies the path to a directory that contains custom YARA rules.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">library/injection_detection/yara_rules</span></code> in the NeMo Guardrails package.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yara_rules</span></code></p></td>
+<td><p>Specifies inline YARA rules.
+The field is a dictionary that maps rule names to the rules.
+The rules use the string data type.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">yara_rules</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;inline-rule-name&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<span class="w">    </span><span class="no">&lt;inline-rule-content&gt;</span>
+</pre></div>
+</div>
+<p>If specified, these inline rules override the rules found in the <code class="docutils literal notranslate"><span class="pre">yara_path</span></code> field.</p>
+</td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For information about writing YARA rules, refer to the <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html" rel="noreferer noopener" target="_blank">YARA documentation</a>.</p>
+</section>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h4>
+<p>Before you begin, install the <code class="docutils literal notranslate"><span class="pre">yara-python</span></code> package or you can install the NeMo Guardrails package with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nemoguardrails[jailbreak]</span></code>.</p>
+<ol class="arabic">
+<li><p>Set your NVIDIA API key as an environment variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span>&lt;nvapi-...&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Create a configuration directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code>, and add a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file with contents like the following:</p></li>
+<li><p>Load the guardrails configuration:</p></li>
+<li><p>Send a possibly unsafe request:</p>
+<p><em>Example Output</em></p>
+</li>
+</ol>
 </section>
 </section>
 </section>
@@ -1474,254 +1723,6 @@ interactions with LLMs within AI-powered applications.</p>
 </section>
 </section>
 </section>
-<section id="other">
-<h2>Other<a class="headerlink" href="#other" title="Link to this heading">#</a></h2>
-<section id="jailbreak-detection">
-<h3>Jailbreak Detection<a class="headerlink" href="#jailbreak-detection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails supports jailbreak detection using a set of heuristics. Currently, two heuristics are supported:</p>
-<ol class="arabic simple">
-<li><p><a class="reference internal" href="#length-per-perplexity"><span class="xref myst">Length per Perplexity</span></a></p></li>
-<li><p><a class="reference internal" href="#prefix-and-suffix-perplexity"><span class="xref myst">Prefix and Suffix Perplexity</span></a></p></li>
-</ol>
-<p>To activate the jailbreak detection heuristics, you first need include the <code class="docutils literal notranslate"><span class="pre">jailbreak</span> <span class="pre">detection</span> <span class="pre">heuristics</span></code> flow as an input rail:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
-  input:
-    flows:
-      - jailbreak detection heuristics
-</pre></div>
-</div>
-<p>Also, you need to configure the desired thresholds in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
-  config:
-    jailbreak_detection:
-      server_endpoint: &quot;http://0.0.0.0:1337/heuristics&quot;
-      length_per_perplexity_threshold: 89.79
-      prefix_suffix_perplexity_threshold: 1845.65
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If the <code class="docutils literal notranslate"><span class="pre">server_endpoint</span></code> parameter is not set, the checks will run in-process. This is useful for TESTING PURPOSES ONLY and <strong>IS NOT RECOMMENDED FOR PRODUCTION DEPLOYMENTS</strong>.</p>
-</div>
-<section id="heuristics">
-<h4>Heuristics<a class="headerlink" href="#heuristics" title="Link to this heading">#</a></h4>
-<section id="length-per-perplexity">
-<h5>Length per Perplexity<a class="headerlink" href="#length-per-perplexity" title="Link to this heading">#</a></h5>
-<p>The <em>length per perplexity</em> heuristic computes the length of the input divided by the perplexity of the input. If the value is above the specified threshold (default <code class="docutils literal notranslate"><span class="pre">89.79</span></code>) then the input is considered a jailbreak attempt.</p>
-<p>The default value represents the mean length/perplexity for a set of jailbreaks derived from a combination of datasets including <a class="reference external" href="https://github.com/llm-attacks/llm-attacks" rel="noreferer noopener" target="_blank">AdvBench</a>, <a class="reference external" href="https://huggingface.co/datasets/lmsys/toxic-chat/blob/main/README.md" rel="noreferer noopener" target="_blank">ToxicChat</a>, and <a class="reference external" href="https://github.com/verazuo/jailbreak_llms" rel="noreferer noopener" target="_blank">JailbreakChat</a>, with non-jailbreaks taken from the same datasets and incorporating 1000 examples from <a class="reference external" href="https://huggingface.co/datasets/databricks/databricks-dolly-15k" rel="noreferer noopener" target="_blank">Dolly-15k</a>.</p>
-<p>The statistics for this metric across jailbreak and non jailbreak datasets are as follows:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p></p></th>
-<th class="head"><p>Jailbreaks</p></th>
-<th class="head"><p>Non-Jailbreaks</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>mean</p></td>
-<td><p>89.79</p></td>
-<td><p>27.11</p></td>
-</tr>
-<tr class="row-odd"><td><p>min</p></td>
-<td><p>0.03</p></td>
-<td><p>0.00</p></td>
-</tr>
-<tr class="row-even"><td><p>25%</p></td>
-<td><p>12.90</p></td>
-<td><p>0.46</p></td>
-</tr>
-<tr class="row-odd"><td><p>50%</p></td>
-<td><p>47.32</p></td>
-<td><p>2.40</p></td>
-</tr>
-<tr class="row-even"><td><p>75%</p></td>
-<td><p>116.94</p></td>
-<td><p>18.78</p></td>
-</tr>
-<tr class="row-odd"><td><p>max</p></td>
-<td><p>1380.55</p></td>
-<td><p>3418.62</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Using the mean value of <code class="docutils literal notranslate"><span class="pre">89.79</span></code> yields 31.19% of jailbreaks being detected with a false positive rate of 7.44% on the dataset.
-Increasing this threshold will decrease the number of jailbreaks detected but will yield fewer false positives.</p>
-<p><strong>USAGE NOTES</strong>:</p>
-<ul class="simple">
-<li><p>Manual inspection of false positives uncovered a number of mislabeled examples in the dataset and a substantial number of system-like prompts. If your application is intended for simple question answering or retrieval-aided generation, this should be a generally safe heuristic.</p></li>
-<li><p>This heuristic in its current form is intended only for English language evaluation and will yield significantly more false positives on non-English text, including code.</p></li>
-</ul>
-</section>
-<section id="prefix-and-suffix-perplexity">
-<h5>Prefix and Suffix Perplexity<a class="headerlink" href="#prefix-and-suffix-perplexity" title="Link to this heading">#</a></h5>
-<p>The <em>prefix and suffix perplexity</em> heuristic takes the input and computes the perplexity for the prefix and suffix. If any of the is above the specified threshold (default <code class="docutils literal notranslate"><span class="pre">1845.65</span></code>), then the input is considered a jailbreak attempt.</p>
-<p>This heuristic examines strings of more than 20 “words” (strings separated by whitespace) to detect potential prefix/suffix attacks.</p>
-<p>The default threshold value of <code class="docutils literal notranslate"><span class="pre">1845.65</span></code> is the second-lowest perplexity value across 50 different prompts generated using <a class="reference external" href="https://github.com/llm-attacks/llm-attacks" rel="noreferer noopener" target="_blank">GCG</a> prefix/suffix attacks.
-Using the default value allows for detection of 49/50 GCG-style attacks with a 0.04% false positive rate on the “non-jailbreak” dataset derived above.</p>
-<p><strong>USAGE NOTES</strong>:</p>
-<ul class="simple">
-<li><p>This heuristic in its current form is intended only for English language evaluation and will yield significantly more false positives on non-English text, including code.</p></li>
-</ul>
-</section>
-</section>
-<section id="perplexity-computation">
-<h4>Perplexity Computation<a class="headerlink" href="#perplexity-computation" title="Link to this heading">#</a></h4>
-<p>To compute the perplexity of a string, the current implementation uses the <code class="docutils literal notranslate"><span class="pre">gpt2-large</span></code> model.</p>
-</section>
-<section id="model-based-jailbreak-detections">
-<h4>Model-based Jailbreak Detections<a class="headerlink" href="#model-based-jailbreak-detections" title="Link to this heading">#</a></h4>
-<p>There is currently one available model-based detection, using a random forest-based detector trained on <a class="reference external" href="https://huggingface.co/Snowflake/snowflake-arctic-embed-m-long" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">Snowflake/snowflake-arctic-embed-m-long</span></code></a> embeddings.</p>
-</section>
-<section id="setup">
-<h4>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h4>
-<p>The recommended way for using the jailbreak detection heuristics and models is to <a class="reference internal" href="#advanced/jailbreak-detection-deployment.md"><span class="xref myst">deploy the jailbreak detection server</span></a> separately.</p>
-<p>For quick testing, you can use the jailbreak detection heuristics rail locally by first installing <code class="docutils literal notranslate"><span class="pre">transformers</span></code> and <code class="docutils literal notranslate"><span class="pre">tourch</span></code>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>transformers<span class="w"> </span>torch
-</pre></div>
-</div>
-</section>
-<section id="latency">
-<h4>Latency<a class="headerlink" href="#latency" title="Link to this heading">#</a></h4>
-<p>Latency was tested in-process and via local Docker for both CPU and GPU configurations.
-For each configuration, we tested the response time for 10 prompts ranging in length from 5 to 2048 tokens.
-Inference times for sequences longer than the model’s maximum input length (1024 tokens for GPT-2) necessarily take longer.
-Times reported below in are <strong>averages</strong> and are reported in milliseconds.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p></p></th>
-<th class="head"><p>CPU</p></th>
-<th class="head"><p>GPU</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Docker</p></td>
-<td><p>2057</p></td>
-<td><p>115</p></td>
-</tr>
-<tr class="row-odd"><td><p>In-Process</p></td>
-<td><p>3227</p></td>
-<td><p>157</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-</section>
-<section id="injection-detection">
-<h3>Injection Detection<a class="headerlink" href="#injection-detection" title="Link to this heading">#</a></h3>
-<p>NeMo Guardrails offers detection of potential exploitation attempts by using injection such as code injection, cross-site scripting, SQL injection, and template injection.
-Injection detection is primarily intended to be used in agentic systems to enhance other security controls as part of a defense-in-depth strategy.</p>
-<p>The first part of injection detection is <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html" rel="noreferer noopener" target="_blank">YARA rules</a>.
-A YARA rule specifies a set of strings–text or binary patterns–to match and a Boolean expression that specifies the logic of the rule.
-YARA rules are a technology that is familiar to many security teams.</p>
-<p>The second part of injection detection is specifying the action to take when a rule is triggered.
-You can specify to <em>reject</em> the text and return “I’m sorry, the desired output triggered rule(s) designed to mitigate exploitation of {detections}.”
-Rejecting the output is the safest action and most appropriate for production deployments.
-As an alternative to rejecting the output, you can specify to <em>omit</em> the triggering text from the response.</p>
-<section id="about-the-default-rules">
-<h4>About the Default Rules<a class="headerlink" href="#about-the-default-rules" title="Link to this heading">#</a></h4>
-<p>By default, NeMo Guardrails provides the following rules:</p>
-<ul class="simple">
-<li><p>Code injection (Python): Recommended if the LLM output is used as an argument to downstream functions or passed to a code interpreter.</p></li>
-<li><p>SQL injection: Recommended if the LLM output is used as part of a SQL query to a database.</p></li>
-<li><p>Template injection (Jinja): Recommended for use if LLM output is rendered using the Jinja templating language.
-This rule is usually paired with code injection rules.</p></li>
-<li><p>Cross-site scripting (Markdown and Javascript): Recommended if the LLM output is rendered directly in HTML or Markdown.</p></li>
-</ul>
-<p>You can view the default rules in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/injection_detection/yara_rules" rel="noreferer noopener" target="_blank">yara_rules directory</a> of the GitHub repository.</p>
-</section>
-<section id="configuring-injection-detection">
-<h4>Configuring Injection Detection<a class="headerlink" href="#configuring-injection-detection" title="Link to this heading">#</a></h4>
-<p>To activate injection detection, you must specify the rules to apply and the action to take as well as include the <code class="docutils literal notranslate"><span class="pre">injection</span> <span class="pre">detection</span></code> output flow.
-As an example config:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">injection_detection</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">injections</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">code</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqli</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">template</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xss</span>
-<span class="w">      </span><span class="nt">action</span><span class="p">:</span>
-<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">reject</span>
-
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">injection detection</span>
-</pre></div>
-</div>
-<p>Refer to the following table for the <code class="docutils literal notranslate"><span class="pre">rails.config.injection_detection</span></code> field syntax reference:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Field</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Default Value</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">injections</span></code></p></td>
-<td><p>Specifies the injection detection rules to use.
-The following injections are part of the library:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">code</span></code> for Python code injection</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sqli</span></code> for SQL injection</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">template</span></code> for Jinja template injection</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">xss</span></code> for cross-site scripting</p></li>
-</ul>
-</td>
-<td><p>None (required)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">action</span></code></p></td>
-<td><p>Specifies the action to take when injection is detected.
-Refer to the following actions:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">reject</span></code> returns a message to the user indicating that the query could not be handled and they should try again.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">omit</span></code> returns the model response, removing the offending detected content.</p></li>
-</ul>
-</td>
-<td><p>None (required)</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">yara_path</span></code></p></td>
-<td><p>Specifies the path to a directory that contains custom YARA rules.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">library/injection_detection/yara_rules</span></code> in the NeMo Guardrails package.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yara_rules</span></code></p></td>
-<td><p>Specifies inline YARA rules.
-The field is a dictionary that maps rule names to the rules.
-The rules use the string data type.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">yara_rules</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">&lt;inline-rule-name&gt;</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
-<span class="w">    </span><span class="no">&lt;inline-rule-content&gt;</span>
-</pre></div>
-</div>
-<p>If specified, these inline rules override the rules found in the <code class="docutils literal notranslate"><span class="pre">yara_path</span></code> field.</p>
-</td>
-<td><p>None</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>For information about writing YARA rules, refer to the <a class="reference external" href="https://yara.readthedocs.io/en/stable/index.html" rel="noreferer noopener" target="_blank">YARA documentation</a>.</p>
-</section>
-<section id="example">
-<h4>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h4>
-<p>Before you begin, install the <code class="docutils literal notranslate"><span class="pre">yara-python</span></code> package or you can install the NeMo Guardrails package with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nemoguardrails[jailbreak]</span></code>.</p>
-<ol class="arabic">
-<li><p>Set your NVIDIA API key as an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span>&lt;nvapi-...&gt;
-</pre></div>
-</div>
-</li>
-<li><p>Create a configuration directory, such as <code class="docutils literal notranslate"><span class="pre">config</span></code>, and add a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file with contents like the following:</p></li>
-<li><p>Load the guardrails configuration:</p></li>
-<li><p>Send a possibly unsafe request:</p>
-<p><em>Example Output</em></p>
-</li>
-</ol>
-</section>
-</section>
-</section>
 </section>
 
 
@@ -1823,6 +1824,27 @@ The rules use the string data type.</p>
 </li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#threat-detection">Threat Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jailbreak-detection">Jailbreak Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#heuristics">Heuristics</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#length-per-perplexity">Length per Perplexity</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#prefix-and-suffix-perplexity">Prefix and Suffix Perplexity</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#perplexity-computation">Perplexity Computation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-based-jailbreak-detections">Model-based Jailbreak Detections</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#latency">Latency</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#injection-detection">Injection Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-default-rules">About the Default Rules</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-injection-detection">Configuring Injection Detection</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#community-models-and-libraries">Community Models and Libraries</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alignscore-based-fact-checking">AlignScore-based Fact-Checking</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-usage">Example usage</a></li>
@@ -1889,27 +1911,6 @@ The rules use the string data type.</p>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cisco-ai-defense">Cisco AI Defense</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Example usage</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other">Other</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jailbreak-detection">Jailbreak Detection</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#heuristics">Heuristics</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#length-per-perplexity">Length per Perplexity</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#prefix-and-suffix-perplexity">Prefix and Suffix Perplexity</a></li>
-</ul>
-</li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#perplexity-computation">Perplexity Computation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-based-jailbreak-detections">Model-based Jailbreak Detections</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#latency">Latency</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#injection-detection">Injection Detection</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-default-rules">About the Default Rules</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-injection-detection">Configuring Injection Detection</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
 </ul>
 </li>
 </ul>

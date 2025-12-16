@@ -551,7 +551,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="guardrails-configuration">
 <h1>Guardrails Configuration<a class="headerlink" href="#guardrails-configuration" title="Link to this heading">#</a></h1>
-<p>This section describes how to configure guardrails (rails) in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file to control LLM behavior.</p>
+<p>This section describes how to configure guardrails in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file to control LLM behavior.</p>
 <section id="the-rails-key">
 <h2>The <code class="docutils literal notranslate"><span class="pre">rails</span></code> Key<a class="headerlink" href="#the-rails-key" title="Link to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rails</span></code> key defines which guardrails are active and their configuration options.
@@ -572,21 +572,21 @@ Rails are organized into five categories based on when they trigger during the g
 <td><p>When user input is received</p></td>
 <td><p>Validate, filter, or modify user input</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Output rails</strong></p></td>
-<td><p>When LLM generates output</p></td>
-<td><p>Validate, filter, or modify bot responses</p></td>
+<tr class="row-odd"><td><p><strong>Retrieval rails</strong></p></td>
+<td><p>After RAG retrieval completes</p></td>
+<td><p>Process retrieved chunks</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Dialog rails</strong></p></td>
 <td><p>After canonical form is computed</p></td>
 <td><p>Control conversation flow</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Retrieval rails</strong></p></td>
-<td><p>After RAG retrieval completes</p></td>
-<td><p>Process retrieved chunks</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Execution rails</strong></p></td>
+<tr class="row-odd"><td><p><strong>Execution rails</strong></p></td>
 <td><p>Before/after action execution</p></td>
 <td><p>Control tool and action calls</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Output rails</strong></p></td>
+<td><p>When LLM generates output</p></td>
+<td><p>Validate, filter, or modify bot responses</p></td>
 </tr>
 </tbody>
 </table>
@@ -659,6 +659,67 @@ Rails are organized into five categories based on when they trigger during the g
 </div>
 </section>
 </section>
+<section id="retrieval-rails">
+<h2>Retrieval Rails<a class="headerlink" href="#retrieval-rails" title="Link to this heading">#</a></h2>
+<p>Retrieval rails process chunks retrieved from the knowledge base:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">retrieval</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check retrieval sensitive data</span>
+</pre></div>
+</div>
+</section>
+<section id="dialog-rails">
+<h2>Dialog Rails<a class="headerlink" href="#dialog-rails" title="Link to this heading">#</a></h2>
+<p>Dialog rails control conversation flow after user intent is determined:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dialog</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">single_call</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">fallback_to_multiple_calls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">    </span><span class="nt">user_messages</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">embeddings_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<section id="dialog-configuration-options">
+<h3>Dialog Configuration Options<a class="headerlink" href="#dialog-configuration-options" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">single_call.enabled</span></code></p></td>
+<td><p>Use single LLM call for intent, next step, and message</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">single_call.fallback_to_multiple_calls</span></code></p></td>
+<td><p>Fall back to multiple calls if single call fails</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">user_messages.embeddings_only</span></code></p></td>
+<td><p>Use only embeddings for user intent matching</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="execution-rails">
+<h2>Execution Rails<a class="headerlink" href="#execution-rails" title="Link to this heading">#</a></h2>
+<p>Execution rails control custom action and tool invocations:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">execution</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check tool input</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check tool output</span>
+</pre></div>
+</div>
+</section>
 <section id="output-rails">
 <h2>Output Rails<a class="headerlink" href="#output-rails" title="Link to this heading">#</a></h2>
 <p>Output rails process LLM responses before returning to users:</p>
@@ -702,67 +763,6 @@ Rails are organized into five categories based on when they trigger during the g
 </table>
 </div>
 </section>
-</section>
-<section id="dialog-rails">
-<h2>Dialog Rails<a class="headerlink" href="#dialog-rails" title="Link to this heading">#</a></h2>
-<p>Dialog rails control conversation flow after user intent is determined:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">dialog</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">single_call</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">      </span><span class="nt">fallback_to_multiple_calls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-
-<span class="w">    </span><span class="nt">user_messages</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">embeddings_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</pre></div>
-</div>
-<section id="dialog-configuration-options">
-<h3>Dialog Configuration Options<a class="headerlink" href="#dialog-configuration-options" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Option</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Default</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">single_call.enabled</span></code></p></td>
-<td><p>Use single LLM call for intent, next step, and message</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">single_call.fallback_to_multiple_calls</span></code></p></td>
-<td><p>Fall back to multiple calls if single call fails</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">user_messages.embeddings_only</span></code></p></td>
-<td><p>Use only embeddings for user intent matching</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-</section>
-<section id="retrieval-rails">
-<h2>Retrieval Rails<a class="headerlink" href="#retrieval-rails" title="Link to this heading">#</a></h2>
-<p>Retrieval rails process chunks retrieved from the knowledge base:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">retrieval</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check retrieval sensitive data</span>
-</pre></div>
-</div>
-</section>
-<section id="execution-rails">
-<h2>Execution Rails<a class="headerlink" href="#execution-rails" title="Link to this heading">#</a></h2>
-<p>Execution rails control custom action and tool invocations:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">execution</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check tool input</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check tool output</span>
-</pre></div>
-</div>
 </section>
 <section id="rail-specific-configuration">
 <h2>Rail-Specific Configuration<a class="headerlink" href="#rail-specific-configuration" title="Link to this heading">#</a></h2>
@@ -838,8 +838,8 @@ Rails are organized into five categories based on when they trigger during the g
 <section id="related-topics">
 <h2>Related Topics<a class="headerlink" href="#related-topics" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="#guardrails-library.md"><span class="xref myst">Guardrails Library</span></a> - Complete list of built-in rails</p></li>
-<li><p><a class="reference internal" href="#../../../user-guides/guardrails-process"><span class="xref myst">Guardrails Process</span></a> - How rails are invoked</p></li>
+<li><p><a class="reference internal" href="built-in-guardrails.html"><span class="std std-doc">Built-in Guardrails</span></a> - Complete list of built-in rails</p></li>
+<li><p><a class="reference internal" href="parallel-rails.html"><span class="std std-doc">Parallel Rails</span></a> - How to invoke rails in parallel</p></li>
 </ul>
 <div class="toctree-wrapper compound">
 </div>
@@ -902,16 +902,16 @@ Rails are organized into five categories based on when they trigger during the g
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-flows-for-input-rails">Available Flows for Input Rails</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-rails">Output Rails</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-flows-for-output-rails">Available Flows for Output Rails</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-rails">Retrieval Rails</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dialog-rails">Dialog Rails</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dialog-configuration-options">Dialog Configuration Options</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-rails">Retrieval Rails</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#execution-rails">Execution Rails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-rails">Output Rails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-flows-for-output-rails">Available Flows for Output Rails</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rail-specific-configuration">Rail-Specific Configuration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-configuration">Example Configuration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>

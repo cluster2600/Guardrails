@@ -557,17 +557,19 @@
 <p>You can configure input and output rails to run in parallel. This can improve latency and throughput.</p>
 <section id="when-to-use-parallel-rails-execution">
 <h2>When to Use Parallel Rails Execution<a class="headerlink" href="#when-to-use-parallel-rails-execution" title="Link to this heading">#</a></h2>
+<p>Use parallel execution:</p>
 <ul class="simple">
-<li><p>Use parallel execution for I/O-bound rails such as external API calls to LLMs or third-party integrations.</p></li>
-<li><p>Enable parallel execution if you have two or more independent input or output rails without shared state dependencies.</p></li>
-<li><p>Use parallel execution in production environments where response latency affects user experience and business metrics.</p></li>
+<li><p>For I/O-bound rails such as external API calls to LLMs or third-party integrations.</p></li>
+<li><p>If you have two or more independent input or output rails without shared state dependencies.</p></li>
+<li><p>In production environments where response latency affects user experience and business metrics.</p></li>
 </ul>
 </section>
 <section id="when-not-to-use-parallel-rails-execution">
 <h2>When Not to Use Parallel Rails Execution<a class="headerlink" href="#when-not-to-use-parallel-rails-execution" title="Link to this heading">#</a></h2>
+<p>Avoid parallel execution:</p>
 <ul class="simple">
-<li><p>Avoid parallel execution for CPU-bound rails; it might not improve performance and can introduce overhead.</p></li>
-<li><p>Use sequential mode during development and testing for debugging and simpler workflows.</p></li>
+<li><p>For CPU-bound rails; it might not improve performance and can introduce overhead.</p></li>
+<li><p>During development and testing for debugging and simpler workflows.</p></li>
 </ul>
 </section>
 <section id="configuration-example">
