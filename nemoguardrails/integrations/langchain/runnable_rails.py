@@ -85,7 +85,7 @@ class RunnableRails(Runnable[Input, Output]):
         input_blocked_message: str = "I cannot process this request.",
         output_blocked_message: str = "I cannot provide this response.",
     ) -> None:
-        self.llm: Optional[Union[BaseLLM, BaseChatModel]] = llm
+        self.llm: Optional[Union[BaseLLM, BaseChatModel, Runnable[Any, Any]]] = llm
         self.passthrough = passthrough
         self.passthrough_runnable = runnable
         self.passthrough_user_input_key = input_key
@@ -181,8 +181,8 @@ class RunnableRails(Runnable[Input, Output]):
             # that wraps the original LLM but is no longer a BaseLanguageModel instance
             bound = getattr(other, "bound", None)
             if bound is not None and isinstance(bound, (BaseLLM, BaseChatModel)):
-                # This is an LLM with tools bound to it - treat it as an LLM, not passthrough
-                self.llm = bound
+                # This is an LLM with tools bound to it - store the binding, update rails with unwrapped LLM
+                self.llm = other
                 self.rails.update_llm(bound)
                 return self
 
