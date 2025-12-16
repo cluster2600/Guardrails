@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Global Streaming &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
+    <title>Streaming &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
   
   
   
@@ -351,7 +351,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../prompt-configuration.html">Prompt Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tracing-configuration.html">Tracing Configuration</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Streaming Configuration</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Global Streaming</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Streaming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="output-rail-streaming.html">Output Rail Streaming</a></li>
 </ul>
 </details></li>
@@ -535,7 +535,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Streaming Configuration</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Global Streaming</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Streaming</span></li>
   </ul>
 </nav>
 </div>
@@ -552,59 +552,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="global-streaming">
-<h1>Global Streaming<a class="headerlink" href="#global-streaming" title="Link to this heading">#</a></h1>
-<p>Enable streaming mode for the main LLM generation at the top level of <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p>
-<section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-</pre></div>
-</div>
-</section>
-<section id="what-it-does">
-<h2>What It Does<a class="headerlink" href="#what-it-does" title="Link to this heading">#</a></h2>
-<p>When enabled, global streaming:</p>
-<ul class="simple">
-<li><p>Sets <code class="docutils literal notranslate"><span class="pre">streaming</span> <span class="pre">=</span> <span class="pre">True</span></code> on the underlying LLM model</p></li>
-<li><p>Enables <code class="docutils literal notranslate"><span class="pre">stream_usage</span> <span class="pre">=</span> <span class="pre">True</span></code> for token usage tracking</p></li>
-<li><p>Allows using the <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> method on <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code></p></li>
-<li><p>Makes the LLM produce tokens incrementally instead of all at once</p></li>
-</ul>
-</section>
-<section id="default">
-<h2>Default<a class="headerlink" href="#default" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
-</section>
-<hr class="docutils" />
-<section id="when-to-use">
-<h2>When to Use<a class="headerlink" href="#when-to-use" title="Link to this heading">#</a></h2>
-<section id="streaming-without-output-rails">
-<h3>Streaming Without Output Rails<a class="headerlink" href="#streaming-without-output-rails" title="Link to this heading">#</a></h3>
-<p>If you do not have output rails configured, only global streaming is needed:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-</pre></div>
-</div>
-</section>
-<section id="streaming-with-output-rails">
-<h3>Streaming With Output Rails<a class="headerlink" href="#streaming-with-output-rails" title="Link to this heading">#</a></h3>
-<p>When using output rails with streaming, you must also configure <a class="reference internal" href="output-rail-streaming.html"><span class="std std-doc">output rail streaming</span></a>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-
-<span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
-<span class="w">    </span><span class="nt">streaming</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-</pre></div>
-</div>
-</section>
-</section>
-<hr class="docutils" />
-<section id="python-api-usage">
-<h2>Python API Usage<a class="headerlink" href="#python-api-usage" title="Link to this heading">#</a></h2>
-<section id="simple-streaming">
-<h3>Simple Streaming<a class="headerlink" href="#simple-streaming" title="Link to this heading">#</a></h3>
+  <section class="tex2jax_ignore mathjax_ignore" id="streaming">
+<h1>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h1>
+<p>NeMo Guardrails supports streaming LLM responses via the <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> method. No configuration is required to enable streaming—simply use <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">generate_async()</span></code>.</p>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
@@ -617,9 +569,27 @@
 </pre></div>
 </div>
 </section>
-<section id="streaming-with-handler">
-<h3>Streaming With Handler<a class="headerlink" href="#streaming-with-handler" title="Link to this heading">#</a></h3>
-<p>For more control, use a <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code>:</p>
+<hr class="docutils" />
+<section id="streaming-with-output-rails">
+<h2>Streaming With Output Rails<a class="headerlink" href="#streaming-with-output-rails" title="Link to this heading">#</a></h2>
+<p>When using output rails with streaming, you must configure <a class="reference internal" href="output-rail-streaming.html"><span class="std std-doc">output rail streaming</span></a>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
+<span class="w">    </span><span class="nt">streaming</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</pre></div>
+</div>
+<p>If output rails are configured but <code class="docutils literal notranslate"><span class="pre">rails.output.streaming.enabled</span></code> is not set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, calling <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> will raise an <code class="docutils literal notranslate"><span class="pre">StreamingNotSupportedError</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="streaming-with-handler-deprecated">
+<h2>Streaming With Handler (Deprecated)<a class="headerlink" href="#streaming-with-handler-deprecated" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><strong>Warning:</strong> Using <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code> directly is deprecated and will be removed in a future release. Use <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> instead.</p>
+</div></blockquote>
+<p>For advanced use cases requiring more control over token processing, you can use a <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code> with <code class="docutils literal notranslate"><span class="pre">generate_async()</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.streaming</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamingHandler</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
@@ -642,7 +612,6 @@
 </pre></div>
 </div>
 </section>
-</section>
 <hr class="docutils" />
 <section id="server-api">
 <h2>Server API<a class="headerlink" href="#server-api" title="Link to this heading">#</a></h2>
@@ -656,9 +625,17 @@
 </div>
 </section>
 <hr class="docutils" />
+<section id="cli-usage">
+<h2>CLI Usage<a class="headerlink" href="#cli-usage" title="Link to this heading">#</a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">--streaming</span></code> flag with the chat command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span>path/to/config<span class="w"> </span>--streaming
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
 <section id="token-usage-tracking">
 <h2>Token Usage Tracking<a class="headerlink" href="#token-usage-tracking" title="Link to this heading">#</a></h2>
-<p>When streaming is enabled, NeMo Guardrails automatically enables token usage tracking by setting <code class="docutils literal notranslate"><span class="pre">stream_usage</span> <span class="pre">=</span> <span class="pre">True</span></code> for the underlying LLM model.</p>
+<p>When using <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code>, NeMo Guardrails automatically enables token usage tracking by setting <code class="docutils literal notranslate"><span class="pre">stream_usage</span> <span class="pre">=</span> <span class="pre">True</span></code> on the underlying LLM model.</p>
 <p>Access token usage through the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -751,20 +728,11 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-it-does">What It Does</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#default">Default</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to Use</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-without-output-rails">Streaming Without Output Rails</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-output-rails">Streaming With Output Rails</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api-usage">Python API Usage</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-streaming">Simple Streaming</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-handler">Streaming With Handler</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-output-rails">Streaming With Output Rails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-handler-deprecated">Streaming With Handler (Deprecated)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-usage">CLI Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#huggingface-pipeline-streaming">HuggingFace Pipeline Streaming</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
