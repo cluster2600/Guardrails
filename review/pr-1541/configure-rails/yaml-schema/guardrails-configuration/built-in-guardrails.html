@@ -1168,47 +1168,6 @@
 <li><p>Language detection adds minimal latency (~12μs per request)</p></li>
 </ol>
 </section>
-<section id="advanced-configuration">
-<h5>Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Link to this heading">#</a></h5>
-<p>You can fine-tune language detection behavior with additional options:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">content_safety</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">multilingual</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">        </span><span class="nt">max_text_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span><span class="w">      </span><span class="c1"># Maximum characters for detection (default: 80)</span>
-<span class="w">        </span><span class="nt">normalize_text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># Lowercase uppercase text to prevent misdetection (default: true)</span>
-<span class="w">        </span><span class="nt">cache_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/cache&quot;</span><span class="w">  </span><span class="c1"># Custom model cache directory (optional)</span>
-</pre></div>
-</div>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Option</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_text_length</span></code></p></td>
-<td><p>int</p></td>
-<td><p>80</p></td>
-<td><p>Maximum text length for detection. Longer text is truncated. Set to <code class="docutils literal notranslate"><span class="pre">null</span></code> to disable truncation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">normalize_text</span></code></p></td>
-<td><p>bool</p></td>
-<td><p>true</p></td>
-<td><p>Lowercase uppercase text to prevent misdetection as Japanese.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cache_dir</span></code></p></td>
-<td><p>string</p></td>
-<td><p>null</p></td>
-<td><p>Custom directory for storing language detection models. If not set, uses system default.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
 <section id="cold-start-behavior">
 <h5>Cold Start Behavior<a class="headerlink" href="#cold-start-behavior" title="Link to this heading">#</a></h5>
 <p>The fast-langdetect library downloads a language detection model on first use:</p>
@@ -1241,7 +1200,7 @@
 <li><p><strong>Linux</strong>: The global temp directory <code class="docutils literal notranslate"><span class="pre">/tmp/fasttext-langdetect/</span></code></p></li>
 <li><p><strong>Windows</strong>: The user’s temporary directory, e.g., <code class="docutils literal notranslate"><span class="pre">C:\Users\&lt;User&gt;\AppData\Local\Temp\fasttext-langdetect\</span></code></p></li>
 </ul>
-<p>You can override this location via the <code class="docutils literal notranslate"><span class="pre">cache_dir</span></code> config option or the <code class="docutils literal notranslate"><span class="pre">FTLANG_CACHE</span></code> environment variable.</p>
+<p>You can override this location via the <code class="docutils literal notranslate"><span class="pre">FTLANG_CACHE</span></code> environment variable.</p>
 <p><strong>Production considerations:</strong></p>
 <ul class="simple">
 <li><p>First API call may take ~10-20 seconds to download and load the full model (network-dependent)</p></li>
@@ -1912,7 +1871,7 @@ The rules use the string data type.</p>
 <p>Before you begin, install the <code class="docutils literal notranslate"><span class="pre">yara-python</span></code> package or you can install the NeMo Guardrails package with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">nemoguardrails[jailbreak]</span></code>.</p>
 <ol class="arabic">
 <li><p>Set your NVIDIA API key as an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span>&lt;nvapi-...&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export NVIDIA_API_KEY=&lt;nvapi-...&gt;</span>
 </pre></div>
 </div>
 </li>
@@ -2020,7 +1979,6 @@ The rules use the string data type.</p>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Usage</a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-refusal-messages">Custom Refusal Messages</a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How It Works</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-configuration">Advanced Configuration</a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#cold-start-behavior">Cold Start Behavior</a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy">Accuracy</a></li>
 </ul>
