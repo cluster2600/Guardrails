@@ -151,8 +151,7 @@ def process_autoalign_output(responses: List[Any], show_toxic_phrases: bool = Fa
         response_dict["combined_response"] = ", ".join(prefixes) + " detected."
         if (
             "toxicity_detection" in response_dict.keys()
-            and isinstance(response_dict["toxicity_detection"], dict)
-            and response_dict["toxicity_detection"].get("guarded", False)
+            and response_dict["toxicity_detection"]["guarded"]
             and show_toxic_phrases
         ):
             response_dict["combined_response"] += suffix
@@ -174,12 +173,11 @@ async def autoalign_infer(
     headers = {"x-api-key": api_key}
     config = copy.deepcopy(DEFAULT_CONFIG)
     # enable the select guardrail
-    if task_config is not None:
-        for task in task_config.keys():
-            if task != "factcheck" and isinstance(config.get(task), dict):
-                config[task]["mode"] = "DETECT"
-            if task_config[task] and isinstance(config.get(task), dict):
-                config[task].update(task_config[task])
+    for task in task_config.keys():
+        if task != "factcheck":
+            config[task]["mode"] = "DETECT"
+        if task_config[task]:
+            config[task].update(task_config[task])
     request_body = {"prompt": text, "config": config, "multi_language": multi_language}
 
     guardrails_configured = []
@@ -284,12 +282,7 @@ async def autoalign_input_api(
     **kwargs,
 ):
     """Calls AutoAlign API for the user message and guardrail configuration provided"""
-    if not context:
-        raise ValueError("Context is required")
     user_message = context.get("user_message")
-    if not user_message:
-        raise ValueError("user_message is required in context")
-
     autoalign_config = llm_task_manager.config.rails.config.autoalign
     autoalign_api_url = autoalign_config.parameters.get("endpoint")
     multi_language = autoalign_config.parameters.get("multi_language", False)
@@ -329,12 +322,7 @@ async def autoalign_output_api(
     **kwargs,
 ):
     """Calls AutoAlign API for the bot message and guardrail configuration provided"""
-    if context is None:
-        raise ValueError("Context is required")
     bot_message = context.get("bot_message")
-    if bot_message is None:
-        raise ValueError("bot_message is required in context")
-
     autoalign_config = llm_task_manager.config.rails.config.autoalign
     autoalign_api_url = autoalign_config.parameters.get("endpoint")
     multi_language = autoalign_config.parameters.get("multi_language", False)
@@ -373,12 +361,8 @@ async def autoalign_groundedness_output_api(
 ):
     """Calls AutoAlign groundedness check API and checks whether the bot message is factually grounded according to given
     documents"""
-    if context is None:
-        raise ValueError("Context is required")
-    bot_message = context.get("bot_message")
-    if bot_message is None:
-        raise ValueError("bot_message is required in context")
 
+    bot_message = context.get("bot_message")
     documents = context.get("relevant_chunks_sep", [])
 
     autoalign_config = llm_task_manager.config.rails.config.autoalign
@@ -411,15 +395,9 @@ async def autoalign_factcheck_output_api(
     show_autoalign_message: bool = True,
 ):
     """Calls Autoalign Factchecker API and checks if the user message is factually answered by the bot message"""
-    if context is None:
-        raise ValueError("Context is required")
-    user_message = context.get("user_message")
-    if user_message is None:
-        raise ValueError("user_message is required in context")
-    bot_message = context.get("bot_message")
-    if bot_message is None:
-        raise ValueError("bot_message is required in context")
 
+    user_message = context.get("user_message")
+    bot_message = context.get("bot_message")
     autoalign_config = llm_task_manager.config.rails.config.autoalign
     autoalign_factcheck_api_url = autoalign_config.parameters.get("fact_check_endpoint")
     multi_language = autoalign_config.parameters.get("multi_language", False)

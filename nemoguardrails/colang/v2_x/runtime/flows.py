@@ -135,9 +135,6 @@ class ActionEvent(Event):
     # This needs to be consistent with the action_uid
     action: Optional[Action] = None
 
-    # Optional corrected datetime for attention tracking
-    corrected_datetime: Optional[datetime] = None
-
     @classmethod
     def from_umim_event(cls, event: dict) -> ActionEvent:
         """Creates an event from a flat dictionary."""

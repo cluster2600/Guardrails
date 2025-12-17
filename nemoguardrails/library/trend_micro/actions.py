@@ -109,20 +109,6 @@ async def trend_ai_guard(config: RailsConfig, text: Optional[str] = None):
             reason="Trend Micro Vision One API Key not found",
         )
 
-    if not text:
-        log.error("Text is required for Trend Micro AI Guard")
-        return GuardResult(
-            action="Block",
-            reason="Text is required for Trend Micro AI Guard",
-        )
-
-    if not v1_url:
-        log.error("Trend Micro Vision One URL not configured")
-        return GuardResult(
-            action="Block",
-            reason="Trend Micro Vision One URL not configured",
-        )
-
     async with httpx.AsyncClient() as client:
         data = Guard(guard=text).model_dump()
 
