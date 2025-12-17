@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Local Server Setup for NeMo Guardrails"
+  page: "Local Server Setup"
   nav: "Local Server"
 description: "Set up and run guardrails and actions servers locally for development and testing."
 topics: ["Deployment", "AI Safety"]
@@ -13,7 +13,7 @@ content:
 
 # Local Server Setup
 
-The NeMo Guardrails toolkit enables you to create a guardrails local server and deploy it using a **guardrails server** and an **actions server**.
+The NeMo Guardrails Library enables you to create a guardrails local server and deploy it using a **guardrails server** and an **actions server**.
 
 ## Overview
 

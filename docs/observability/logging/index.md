@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Logging and Debugging NeMo Guardrails"
+  page: "Logging and Debugging Guardrails Generated Responses"
   nav: "Logging"
 description: "Debug guardrails with verbose mode, explain method, and generation log options."
 topics: ["Observability", "AI Safety"]
@@ -11,13 +11,13 @@ content:
   audience: ["Developer", "AI Engineer"]
 ---
 
-# Logging and Debugging
+# Logging and Debugging Guardrails Generated Responses
 
 This guide covers the various methods for logging, debugging, and understanding what happens during guardrails generation.
 
 ## Overview
 
-The NeMo Guardrails toolkit provides multiple ways to inspect and debug guardrails generation:
+The NeMo Guardrails Library provides multiple ways to inspect and debug guardrails generation:
 
 | Method | Use Case |
 |--------|----------|

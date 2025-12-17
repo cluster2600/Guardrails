@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Run NeMo Guardrails with the Python SDK"
+  page: "Run the NeMo Guardrails Library with the Python APIs"
   nav: "Run Rails"
 description: "Use RailsConfig and LLMRails classes to load configurations and generate guarded responses."
 topics: ["AI Safety", "LLM Guardrails"]
@@ -11,13 +11,13 @@ content:
   audience: ["Developer", "AI Engineer"]
 ---
 
-# Run Rails
+# Run the NeMo Guardrails Library with the Python APIs
 
-This section covers how to use the NeMo Guardrails toolkit programmatically through the Python API. Learn about the core classes, generation methods, and advanced features for integrating guardrails into your applications.
+This section covers how to use the NeMo Guardrails Library programmatically through the Python API. Learn about the core classes, generation methods, and advanced features for integrating guardrails into your applications.
 
 ## Core Classes
 
-The NeMo Guardrails toolkit provides two core classes for running guardrails:
+The NeMo Guardrails Library provides two core classes for running guardrails:
 
 - **`RailsConfig`**: Loads and manages guardrails configuration from files or content.
 - **`LLMRails`**: The main interface for generating responses with guardrails applied.
@@ -96,7 +96,7 @@ This guide provides comprehensive instructions for integrating and using tools w
 
 ## Synchronous vs Asynchronous
 
-The NeMo Guardrails toolkit provides both synchronous and asynchronous methods:
+The NeMo Guardrails Library provides both synchronous and asynchronous methods:
 
 | Synchronous | Asynchronous | Description |
 |-------------|--------------|-------------|

@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Tracing Troubleshooting Guide"
+  page: "Troubleshooting"
   nav: "Troubleshooting"
 description: "Resolve common tracing issues with OpenTelemetry SDK configuration and connectivity."
 topics: ["Observability", "AI Safety"]

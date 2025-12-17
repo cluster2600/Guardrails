@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Custom Actions for NeMo Guardrails"
+  page: "Custom Actions"
   nav: "Actions"
 description: "Create Python actions to extend guardrails with external APIs and validation logic."
 topics: ["Configuration", "AI Safety"]

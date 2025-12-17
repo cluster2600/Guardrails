@@ -1,6 +1,6 @@
 ---
 title:
-  page: "NeMo Guardrails Generation Options"
+  page: "Generation Options"
   nav: "Generation Options"
 description: "Configure generation behavior with options for logging, LLM parameters, and rail selection."
 topics: ["AI Safety", "LLM Guardrails"]
@@ -13,7 +13,7 @@ content:
 
 # Generation Options
 
-NeMo Guardrails exposes a set of **generation options** that give you fine-grained control over how the LLM generation is performed (for example, what rails are enabled, additional parameters that should be passed to the LLM, what context data should be returned, what logging information should be returned).
+The NeMo Guardrails Library exposes a set of **generation options** that give you fine-grained control over how the LLM generation is performed (for example, what rails are enabled, additional parameters that should be passed to the LLM, what context data should be returned, what logging information should be returned).
 
 The **generation options** can be used both in the Python API and through the server API.
 
@@ -80,7 +80,7 @@ rails.generate(messages=messages, options={
 })
 ```
 
-The supported parameters depend on the underlying LLM engine. NeMo Guardrails passes them "as is".
+The supported parameters depend on the underlying LLM engine. The NeMo Guardrails Library passes them "as is".
 
 ## Additional LLM Output
 

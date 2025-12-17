@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Prerequisites for Configuring NeMo Guardrails"
+  page: "Prerequisites for Configuring the NeMo Guardrails Library"
   nav: "Before You Begin"
 description: "Prepare LLM endpoints, NemoGuard NIMs, and knowledge base documents before configuration."
 topics: ["Configuration", "AI Safety"]
@@ -11,7 +11,7 @@ content:
   audience: ["Developer", "AI Engineer"]
 ---
 
-# Before You Begin Configuring Rails
+# Prerequisites for Configuring the NeMo Guardrails Library
 
 This Configure Rails chapter thoroughly describes how to prepare guardrails configuration files.
 This page covers the prerequisites and decisions to make before you begin working on guardrails configurations.

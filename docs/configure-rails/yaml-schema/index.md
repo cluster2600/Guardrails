@@ -1,6 +1,6 @@
 ---
 title:
-  page: "NeMo Guardrails Core Configuration Reference"
+  page: "Core Configurations for Guardrails"
   nav: "Core Configuration"
 description: "Define models, guardrails, prompts, and tracing settings in the config.yml file."
 topics: ["Configuration", "AI Safety"]
@@ -11,7 +11,7 @@ content:
   audience: ["Developer", "AI Engineer"]
 ---
 
-# Core Configuration
+# Core Configurations for Guardrails
 
 This section describes the `config.yml` file schema used to configure the NeMo Guardrails Library.
 The `config.yml` file is the primary configuration file for defining LLM models, guardrails behavior, prompts, knowledge base settings, and tracing options.

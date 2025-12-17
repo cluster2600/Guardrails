@@ -13,7 +13,7 @@ content:
 
 # NeMo Guardrails Library Deployment Options
 
-You can deploy the NeMo Guardrails toolkit in the following ways.
+You can deploy the NeMo Guardrails Library in the following ways.
 
 ::::{grid} 1 1 2 2
 :gutter: 3

@@ -8,10 +8,10 @@ tags: ["Installation", "Python", "pip", "Docker", "Setup"]
 content:
   type: "Get Started"
   difficulty: "Beginner"
-  audience: ["Developer", "AI Engineer"]
+  audience: ["Developer", "AI Engineer"]gi
 ---
 
-# Installation Guide
+# Install the NeMo Guardrails Library
 
 This guide walks you through the following steps to install the NeMo Guardrails Library.
 

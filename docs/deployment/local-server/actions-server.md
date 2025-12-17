@@ -1,6 +1,6 @@
 ---
 title:
-  page: "NeMo Guardrails Actions Server"
+  page: "Actions Server"
   nav: "Actions Server"
 description: "Deploy actions in a secure, isolated environment separate from the guardrails server."
 topics: ["Deployment", "AI Safety"]

@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Advanced OpenTelemetry Integration"
+  page: "OpenTelemetry Integration"
   nav: "OpenTelemetry"
 description: "Configure OpenTelemetry SDK with OTLP exporters for production monitoring backends."
 topics: ["Observability", "AI Safety"]
@@ -11,15 +11,15 @@ content:
   audience: ["DevOps Engineer", "AI Engineer"]
 ---
 
-# Advanced OpenTelemetry Integration
+# OpenTelemetry Integration
 
-NeMo Guardrails follows OpenTelemetry best practices; libraries use only the API while applications configure the SDK. The following sections explain how to install and configure the OpenTelemetry SDK.
+The NeMo Guardrails Library follows OpenTelemetry best practices; libraries use only the API while applications configure the SDK. The following sections explain how to install and configure the OpenTelemetry SDK.
 
 ## Installation
 
-Choose one of the following options for installing the NeMo Guardrails toolkit with tracing support, the OpenTelemetry SDK, and the OpenTelemetry Protocol (OTLP) exporter.
+Choose one of the following options for installing the NeMo Guardrails Library with tracing support, the OpenTelemetry SDK, and the OpenTelemetry Protocol (OTLP) exporter.
 
-- For basic tracing support in the NeMo Guardrails toolkit:
+- For basic tracing support in the NeMo Guardrails Library:
 
   ```bash
   pip install nemoguardrails[tracing]
@@ -39,7 +39,7 @@ Choose one of the following options for installing the NeMo Guardrails toolkit w
 
 ## Configuration Examples
 
-The following examples show how to configure the NeMo Guardrails client with the OpenTelemetry SDK for development and production use cases.
+The following examples show how to configure the NeMo Guardrails Library with the OpenTelemetry SDK for development and production use cases.
 
 ### Console Output (Development)
 
@@ -98,7 +98,7 @@ tracer_provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
 
 ## OpenTelemetry Ecosystem Compatibility
 
-NeMo Guardrails works with the entire OpenTelemetry ecosystem including:
+The NeMo Guardrails Library works with the entire OpenTelemetry ecosystem including:
 
 - **Exporters**: Jaeger, Zipkin, Prometheus, New Relic, Datadog, AWS X-Ray, Google Cloud Trace
 - **Collectors**: OpenTelemetry Collector, vendor-specific collectors

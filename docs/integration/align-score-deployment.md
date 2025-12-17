@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Deploy AlignScore for Fact-Checking"
+  page: "AlignScore Deployment"
   nav: "AlignScore"
 description: "Deploy an AlignScore server for fact-checking rails with high-accuracy entailment predictions."
 topics: ["Integration", "AI Safety"]
@@ -14,7 +14,7 @@ content:
 # AlignScore Deployment
 
 ```{note}
-The recommended way to use AlignScore with NeMo Guardrails is using the provided [Dockerfile](https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile). For more details, check out how to [build and use the image](../deployment/using-docker.md).
+The recommended way to use AlignScore with the NeMo Guardrails Library is using the provided [Dockerfile](https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile). For more details, check out how to [build and use the image](../deployment/using-docker.md).
 ```
 
 In order to deploy an AlignScore server, follow these steps:

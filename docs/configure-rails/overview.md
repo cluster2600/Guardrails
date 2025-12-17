@@ -1,6 +1,6 @@
 ---
 title:
-  page: "NeMo Guardrails Configuration Overview"
+  page: "NeMo Guardrails Library Configuration Overview"
   nav: "Configure Rails"
 description: "Learn to write config.yml, Colang flows, and custom actions for guardrails."
 topics: ["Configuration", "AI Safety"]
@@ -11,7 +11,7 @@ content:
   audience: ["Developer", "AI Engineer"]
 ---
 
-# Configuration Overview
+# NeMo Guardrails Library Configuration Overview
 
 Before using the NeMo Guardrails Library, you need to prepare configuration files that define your guardrails behavior. When you initialize the library's core classes or the `nemoguardrails` CLI chat or server, it will load the configuration files you'll create in the next chapter [Run Rails](../run-rails/index.md). This section provides complete instructions on preparing your configuration files and executable scripts.
 
