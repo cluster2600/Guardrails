@@ -50,6 +50,10 @@ async def self_check_facts(
 ):
     """Checks the facts for the bot response by appropriately prompting the base llm."""
     _MAX_TOKENS = 3
+    if context is None:
+        # If there is no context, we can't check facts
+        return True
+
     evidence = context.get("relevant_chunks", [])
     response = context.get("bot_message")
 
@@ -71,11 +75,13 @@ async def self_check_facts(
     # Initialize the LLMCallInfo object
     llm_call_info_var.set(LLMCallInfo(task=task.value))
 
+    # Use a low temperature for deterministic fact checking
+    temperature = config.lowest_temperature if config else 0.001
     response = await llm_call(
         llm,
         prompt,
         stop=stop,
-        llm_params={"temperature": config.lowest_temperature, "max_tokens": max_tokens},
+        llm_params={"temperature": temperature, "max_tokens": max_tokens},
     )
 
     if llm_task_manager.has_output_parser(task):

@@ -60,12 +60,23 @@ async def jailbreak_detection_heuristics(
 ) -> bool:
     """Checks the user's prompt to determine if it is attempt to jailbreak the model."""
     jailbreak_config = llm_task_manager.config.rails.config.jailbreak_detection
+    if jailbreak_config is None:
+        log.warning("Jailbreak detection config not found.")
+        return False
 
     jailbreak_api_url = jailbreak_config.server_endpoint
     lp_threshold = jailbreak_config.length_per_perplexity_threshold
     ps_ppl_threshold = jailbreak_config.prefix_suffix_perplexity_threshold
 
-    prompt = context.get("user_message")
+    if context is None:
+        log.warning("Context is required for jailbreak detection")
+        return False
+
+    prompt = context.get("user_message", "")
+
+    if not prompt:
+        log.warning("User message is empty for jailbreak detection")
+        return False
 
     if not jailbreak_api_url:
         from nemoguardrails.library.jailbreak_detection.heuristics.checks import (
@@ -74,8 +85,8 @@ async def jailbreak_detection_heuristics(
         )
 
         log.warning("No jailbreak detection endpoint set. Running in-process, NOT RECOMMENDED FOR PRODUCTION.")
-        lp_check = check_jailbreak_length_per_perplexity(prompt, lp_threshold)
-        ps_ppl_check = check_jailbreak_prefix_suffix_perplexity(prompt, ps_ppl_threshold)
+        lp_check = check_jailbreak_length_per_perplexity(prompt, lp_threshold or 89.79)
+        ps_ppl_check = check_jailbreak_prefix_suffix_perplexity(prompt, ps_ppl_threshold or 1845.65)
         jailbreak = any([lp_check["jailbreak"], ps_ppl_check["jailbreak"]])
         return jailbreak
 
@@ -97,6 +108,9 @@ async def jailbreak_detection_model(
     """Uses a trained classifier to determine if a user input is a jailbreak attempt"""
     prompt: str = ""
     jailbreak_config = llm_task_manager.config.rails.config.jailbreak_detection
+    if jailbreak_config is None:
+        log.warning("Jailbreak detection config not found.")
+        return False
 
     jailbreak_api_url = jailbreak_config.server_endpoint
     nim_base_url = jailbreak_config.nim_base_url
@@ -127,7 +141,7 @@ async def jailbreak_detection_model(
             log.debug("Jailbreak detection cache hit")
             return cached_result["jailbreak"]
 
-    jailbreak_result = None
+    jailbreak_result: Optional[bool] = None
     api_start_time = time()
 
     if not jailbreak_api_url and not nim_base_url:
@@ -137,9 +151,9 @@ async def jailbreak_detection_model(
 
         log.warning("No jailbreak detection endpoint set. Running in-process, NOT RECOMMENDED FOR PRODUCTION.")
         try:
-            jailbreak = check_jailbreak(prompt=prompt)
-            log.info(f"Local model jailbreak detection result: {jailbreak}")
-            jailbreak_result = jailbreak["jailbreak"]
+            local_result = check_jailbreak(prompt=prompt)
+            log.info(f"Local model jailbreak detection result: {local_result}")
+            jailbreak_result = local_result["jailbreak"]
         except RuntimeError as e:
             log.error(f"Jailbreak detection model not available: {e}")
             jailbreak_result = False
@@ -150,12 +164,13 @@ async def jailbreak_detection_model(
             )
             jailbreak_result = False
     else:
+        jailbreak: Optional[bool] = None
         if nim_base_url:
             jailbreak = await jailbreak_nim_request(
                 prompt=prompt,
                 nim_url=nim_base_url,
                 nim_auth_token=nim_auth_token,
-                nim_classification_path=nim_classification_path,
+                nim_classification_path=nim_classification_path or "/v1/classify",
             )
         elif jailbreak_api_url:
             jailbreak = await jailbreak_detection_model_request(prompt=prompt, api_url=jailbreak_api_url)
@@ -197,4 +212,4 @@ async def jailbreak_detection_model(
         cache.put(cache_key, cache_entry)
         log.debug("Jailbreak detection result cached")
 
-    return jailbreak_result
+    return jailbreak_result if jailbreak_result is not None else False

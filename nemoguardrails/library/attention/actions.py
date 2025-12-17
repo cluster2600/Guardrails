@@ -156,21 +156,30 @@ class UserAttentionMaterializedView:
             log_p(f"Attention: Utterance boundaries unclear. Deciding based on most recent attention_level={level}")
             return 1.0 if level in attention_levels else 0.0
 
+        # Filter events with valid corrected_datetime that are before the utterance end
+        utterance_end_time = self.utterance_last_event.corrected_datetime
+        assert utterance_end_time is not None, "utterance_last_event must have corrected_datetime"
         events = [
-            e for e in self.attention_events if e.corrected_datetime < self.utterance_last_event.corrected_datetime
+            e
+            for e in self.attention_events
+            if e.corrected_datetime is not None and e.corrected_datetime < utterance_end_time
         ]
         log_p(f"filtered attention_events={events}")
 
         if len(events) == 0:
             return 1.0
 
+        utterance_start_time = self.utterance_started_event.corrected_datetime
+        assert utterance_start_time is not None, "utterance_started_event must have corrected_datetime"
+
         start_of_sentence_state = StateChange(
             events[0].arguments["attention_level"],
-            self.utterance_started_event.corrected_datetime,
+            utterance_start_time,
         )
-        end_of_sentence_state = StateChange("no_state", self.utterance_last_event.corrected_datetime)
+        end_of_sentence_state = StateChange("no_state", utterance_end_time)
         state_changes_during_sentence = [
-            StateChange(e.arguments["attention_level"], e.corrected_datetime) for e in events[1:]
+            StateChange(e.arguments["attention_level"], e.corrected_datetime)  # type: ignore[arg-type]
+            for e in events[1:]
         ]
 
         state_changes = [start_of_sentence_state] + state_changes_during_sentence + [end_of_sentence_state]

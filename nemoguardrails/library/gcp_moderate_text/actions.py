@@ -107,12 +107,15 @@ async def call_gcp_text_moderation_api(context: Optional[dict] = None, **kwargs)
     For more information check https://cloud.google.com/docs/authentication/application-default-credentials
     """
     try:
-        from google.cloud import language_v2
+        from google.cloud import language_v2  # type: ignore[attr-defined]
 
     except ImportError:
         raise ImportError(
             "Could not import google.cloud.language_v2, please install it with `pip install google-cloud-language`."
         )
+
+    if context is None:
+        raise ValueError("Context is required for GCP text moderation")
 
     user_message = context.get("user_message")
     client = language_v2.LanguageServiceAsyncClient()

@@ -31,6 +31,7 @@ from nemoguardrails.llm.cache.utils import (
 )
 from nemoguardrails.llm.taskmanager import LLMTaskManager
 from nemoguardrails.logging.explain import LLMCallInfo
+from nemoguardrails.rails.llm.config import RailsConfig
 
 log = logging.getLogger(__name__)
 
@@ -68,10 +69,10 @@ async def content_safety_check_input(
         )
         raise ValueError(error_msg)
 
-    task = f"content_safety_check_input $model={model_name}"
+    task: str = f"content_safety_check_input $model={model_name}"
 
     check_input_prompt = llm_task_manager.render_task_prompt(
-        task=task,
+        task=task,  # type: ignore[arg-type]
         context={
             "user_input": user_input,
         },
@@ -100,7 +101,7 @@ async def content_safety_check_input(
         llm_params={"temperature": 1e-20, "max_tokens": max_tokens},
     )
 
-    result = llm_task_manager.parse_task_output(task, output=result)
+    result = llm_task_manager.parse_task_output(task, output=result)  # type: ignore[arg-type]
 
     is_safe, *violated_policies = result
 
@@ -170,10 +171,10 @@ async def content_safety_check_output(
         )
         raise ValueError(error_msg)
 
-    task = f"content_safety_check_output $model={model_name}"
+    task: str = f"content_safety_check_output $model={model_name}"
 
     check_output_prompt = llm_task_manager.render_task_prompt(
-        task=task,
+        task=task,  # type: ignore[arg-type]
         context={
             "user_input": user_input,
             "bot_response": bot_response,
@@ -203,7 +204,7 @@ async def content_safety_check_output(
         llm_params={"temperature": 1e-20, "max_tokens": max_tokens},
     )
 
-    result = llm_task_manager.parse_task_output(task, output=result)
+    result = llm_task_manager.parse_task_output(task, output=result)  # type: ignore[arg-type]
 
     is_safe, *violated_policies = result
 
@@ -239,11 +240,13 @@ DEFAULT_REFUSAL_MESSAGES: Dict[str, str] = {
 
 def _detect_language(text: str) -> Optional[str]:
     try:
-        from fast_langdetect import detect
+        from fast_langdetect import detect  # type: ignore[import-not-found]
 
         result = detect(text, k=1)
         if result and len(result) > 0:
-            return result[0].get("lang")
+            lang = result[0].get("lang")
+            if isinstance(lang, str):
+                return lang
         return None
     except ImportError:
         log.warning("fast-langdetect not installed, skipping")
@@ -266,7 +269,7 @@ def _get_refusal_message(lang: str, custom_messages: Optional[Dict[str, str]]) -
 @action()
 async def detect_language(
     context: Optional[dict] = None,
-    config: Optional[dict] = None,
+    config: Optional[RailsConfig] = None,
 ) -> dict:
     user_message = ""
     if context is not None:
@@ -274,12 +277,10 @@ async def detect_language(
 
     custom_messages = None
     if config is not None:
+        content_safety_config = config.rails.config.content_safety
         multilingual_config = (
-            config.rails.config.content_safety.multilingual
-            if hasattr(config, "rails")
-            and hasattr(config.rails, "config")
-            and hasattr(config.rails.config, "content_safety")
-            and hasattr(config.rails.config.content_safety, "multilingual")
+            content_safety_config.multilingual
+            if content_safety_config is not None and hasattr(content_safety_config, "multilingual")
             else None
         )
         if multilingual_config:

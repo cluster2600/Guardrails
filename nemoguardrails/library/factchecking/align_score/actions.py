@@ -58,6 +58,13 @@ async def alignscore_check_facts(
     evidence = context.get("relevant_chunks", [])
     response = context.get("bot_message")
 
+    if not alignscore_api_url:
+        log.warning("AlignScore API URL not configured. Falling back to the ask_llm approach for fact-checking.")
+        if fallback_to_self_check:
+            return await self_check_facts(llm_task_manager, context, llm, config)
+        else:
+            return 1.0
+
     alignscore = await alignscore_request(alignscore_api_url, evidence, response)
     if alignscore is None:
         log.warning("AlignScore endpoint not set up properly. Falling back to the ask_llm approach for fact-checking.")

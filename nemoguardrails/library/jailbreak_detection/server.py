@@ -31,11 +31,11 @@
 import os
 from typing import Optional
 
-import heuristics.checks as hc
-import model_based.checks as mc
-import typer
-import uvicorn
-from fastapi import FastAPI
+import heuristics.checks as hc  # type: ignore[import-not-found]
+import model_based.checks as mc  # type: ignore[import-not-found]
+import typer  # type: ignore[import-not-found]
+import uvicorn  # type: ignore[import-not-found]
+from fastapi import FastAPI  # type: ignore[import-not-found]
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -79,19 +79,19 @@ def hello_world():
 
 @app.post("/jailbreak_lp_heuristic")
 def lp_heuristic_check(request: JailbreakHeuristicRequest):
-    return hc.check_jailbreak_length_per_perplexity(request.prompt, request.lp_threshold)
+    return hc.check_jailbreak_length_per_perplexity(request.prompt, request.lp_threshold or 89.79)
 
 
 @app.post("/jailbreak_ps_heuristic")
 def ps_ppl_heuristic_check(request: JailbreakHeuristicRequest):
-    return hc.check_jailbreak_prefix_suffix_perplexity(request.prompt, request.ps_ppl_threshold)
+    return hc.check_jailbreak_prefix_suffix_perplexity(request.prompt, request.ps_ppl_threshold or 1845.65)
 
 
 @app.post("/heuristics")
 def run_all_heuristics(request: JailbreakHeuristicRequest):
     # Will add other heuristics as they become available
-    lp_check = hc.check_jailbreak_length_per_perplexity(request.prompt, request.lp_threshold)
-    ps_ppl_check = hc.check_jailbreak_prefix_suffix_perplexity(request.prompt, request.ps_ppl_threshold)
+    lp_check = hc.check_jailbreak_length_per_perplexity(request.prompt, request.lp_threshold or 89.79)
+    ps_ppl_check = hc.check_jailbreak_prefix_suffix_perplexity(request.prompt, request.ps_ppl_threshold or 1845.65)
     jailbreak = any([lp_check["jailbreak"], ps_ppl_check["jailbreak"]])
     heuristic_checks = {
         "jailbreak": jailbreak,

@@ -33,7 +33,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, TypedDict, Union
 
 if TYPE_CHECKING:
-    import yara
+    import yara  # type: ignore[import-not-found]
 else:
     yara = None
     try:

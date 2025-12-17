@@ -58,11 +58,7 @@ async def topic_safety_check_input(
         # convert InternalEvent objects to dictionary format for compatibility with to_chat_messages
         dict_events = []
         for event in events:
-            if (
-                not isinstance(event, dict)
-                and hasattr(event, "name")
-                and hasattr(event, "arguments")
-            ):
+            if not isinstance(event, dict) and hasattr(event, "name") and hasattr(event, "arguments"):
                 dict_event = {"type": event.name}
                 dict_event.update(event.arguments)
                 dict_events.append(dict_event)

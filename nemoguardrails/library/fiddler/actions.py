@@ -89,6 +89,10 @@ async def call_fiddler_safety_user(config: RailsConfig, context: Optional[dict] 
         log.error("Fiddler endpoint not set in config")
         return False
 
+    if context is None:
+        log.error("Fiddler Jailbreak Guardrails could not be run. Context must be provided.")
+        return False
+
     user_message = context.get("user_message", "")
     if not user_message:
         log.error("Fiddler Jailbreak Guardrails could not be run. User message must be provided.")
@@ -115,6 +119,10 @@ async def call_fiddler_safety_bot(config: RailsConfig, context: Optional[dict] =
         log.error("Fiddler endpoint not set in config")
         return False
 
+    if context is None:
+        log.error("Fiddler Safety Guardrails could not be run. Context must be provided.")
+        return False
+
     bot_message = context.get("bot_message", "")
     if not bot_message:
         log.error("Fiddler Safety Guardrails could not be run. Bot message must be provided.")
@@ -139,6 +147,10 @@ async def call_fiddler_faithfulness(config: RailsConfig, context: Optional[dict]
 
     if base_url is None:
         log.error("Fiddler endpoint not set in config")
+        return False
+
+    if context is None:
+        log.error("Fiddler Faithfulness Guardrails could not be run. Context must be provided.")
         return False
 
     bot_message = context.get("bot_message", "")

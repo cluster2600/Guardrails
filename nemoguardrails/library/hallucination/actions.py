@@ -50,6 +50,10 @@ async def self_check_hallucination(
 
     :return: True if hallucination is detected, False otherwise.
     """
+    if context is None:
+        log.warning("Context is None in self_check_hallucination, returning False.")
+        return False
+
     bot_response = context.get("bot_message")
     last_bot_prompt_string = context.get("_last_bot_prompt")
 
@@ -80,7 +84,7 @@ async def self_check_hallucination(
         # Generate multiple responses with temperature 1.
         # Bind the config parameters to the LLM for this call
         llm_with_config = llm.bind(temperature=1.0, n=num_responses)
-        extra_llm_response = await llm_with_config.agenerate(
+        extra_llm_response = await llm_with_config.agenerate(  # type: ignore[union-attr]
             [formatted_prompt],
             callbacks=logging_callback_manager_for_chain.handlers,
         )
@@ -123,11 +127,13 @@ async def self_check_hallucination(
             llm_call_info_var.set(LLMCallInfo(task=Task.SELF_CHECK_HALLUCINATION.value))
             stop = llm_task_manager.get_stop_tokens(task=Task.SELF_CHECK_HALLUCINATION)
 
+            # Use a low temperature for deterministic hallucination checking
+            temperature = config.lowest_temperature if config else 0.001
             agreement = await llm_call(
                 llm,
                 prompt,
                 stop=stop,
-                llm_params={"temperature": config.lowest_temperature},
+                llm_params={"temperature": temperature},
             )
 
             agreement = agreement.lower().strip()

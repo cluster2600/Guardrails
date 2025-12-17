@@ -27,9 +27,9 @@ try:
 except ImportError:
     AlignScore = None
 
-import typer
-import uvicorn
-from fastapi import FastAPI
+import typer  # type: ignore[import-not-found]
+import uvicorn  # type: ignore[import-not-found]
+from fastapi import FastAPI  # type: ignore[import-not-found]
 from pydantic import BaseModel
 
 # Make sure we have the punkt tokenizer downloaded.

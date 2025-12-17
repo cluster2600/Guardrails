@@ -48,6 +48,9 @@ async def self_check_input(
     """
 
     _MAX_TOKENS = 3
+    if context is None:
+        return True
+
     user_input = context.get("user_message")
     task = Task.SELF_CHECK_INPUT
 
@@ -65,12 +68,14 @@ async def self_check_input(
         # Initialize the LLMCallInfo object
         llm_call_info_var.set(LLMCallInfo(task=task.value))
 
+        # Use a low temperature for deterministic input checking
+        temperature = config.lowest_temperature if config else 0.001
         response = await llm_call(
             llm,
             prompt,
             stop=stop,
             llm_params={
-                "temperature": config.lowest_temperature,
+                "temperature": temperature,
                 "max_tokens": max_tokens,
             },
         )

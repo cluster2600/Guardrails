@@ -50,6 +50,9 @@ async def self_check_output(
     """
 
     _MAX_TOKENS = 3
+    if context is None:
+        return True
+
     bot_response = context.get("bot_message")
     user_input = context.get("user_message")
     bot_thinking = context.get("bot_thinking")
@@ -72,12 +75,14 @@ async def self_check_output(
         # Initialize the LLMCallInfo object
         llm_call_info_var.set(LLMCallInfo(task=task.value))
 
+        # Use a low temperature for deterministic output checking
+        temperature = config.lowest_temperature if config else 0.001
         response = await llm_call(
             llm,
             prompt,
             stop=stop,
             llm_params={
-                "temperature": config.lowest_temperature,
+                "temperature": temperature,
                 "max_tokens": max_tokens,
             },
         )

@@ -15,7 +15,7 @@
 
 from typing import Tuple
 
-import numpy as np
+import numpy as np  # type: ignore[import-not-found]
 
 
 class SnowflakeEmbed:
