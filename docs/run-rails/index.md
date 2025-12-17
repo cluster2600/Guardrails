@@ -11,7 +11,7 @@ content:
   audience: ["Developer", "AI Engineer"]
 ---
 
-# Run the NeMo Guardrails library with the Python APIs
+# Run the NeMo Guardrails Library with the Python APIs
 
 This section covers how to use the NeMo Guardrails library programmatically through the Python API. Learn about the core classes, generation methods, and advanced features for integrating guardrails into your applications.
 
