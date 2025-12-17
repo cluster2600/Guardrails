@@ -111,7 +111,14 @@ html_extra_path = ["project.json", "versions1.json"]
 highlight_language = "console"
 
 html_theme_options = {
-    "icon_links": [],
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/NVIDIA-NeMo/Guardrails",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+    ],
     "switcher": {
         "json_url": "../versions1.json",
         "version_match": release,
