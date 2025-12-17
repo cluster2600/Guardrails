@@ -312,12 +312,12 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../../about/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/rail-types.html">Rail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
@@ -335,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="current nav bd-sidenav">
@@ -557,8 +558,8 @@
   <section id="llm-flows">
 <span id="colang-2-getting-started-llm-flows"></span><h1>LLM Flows<a class="headerlink" href="#llm-flows" title="Link to this heading">#</a></h1>
 <p>This section explains how to create LLM-driven flows in Colang 2.0.</p>
-<p>Using Colang, you can describe complex patterns of interaction. However, as a developer, you will never be able to describe all the potential paths an interaction can take. And this is where an LLM can help, by generating <em>LLM-driven continuations</em> at runtime.</p>
-<p>The <a class="reference internal" href="dialog-rails.html#colang-2-getting-started-dialog-rails"><span class="std std-ref">Dialog Rails</span></a> and the <a class="reference internal" href="input-rails.html#colang-2-getting-started-input-rails"><span class="std std-ref">Input Rails</span></a> examples, show how to use the LLM to generate continuations dynamically. The example below is similar to the dialog rails example, but it instructs the LLM to generate directly the bot response. Note, the quality of the response depends on the configured LLM model and can vary.</p>
+<p>Using Colang, you can describe complex patterns of interaction. However, as a developer, you will never be able to describe all the potential paths an interaction can take. This is where an LLM can help: by generating <em>LLM-driven continuations</em> at runtime.</p>
+<p>The <a class="reference internal" href="dialog-rails.html#colang-2-getting-started-dialog-rails"><span class="std std-ref">Dialog Rails</span></a> and the <a class="reference internal" href="input-rails.html#colang-2-getting-started-input-rails"><span class="std std-ref">Input Rails</span></a> examples show how to use the LLM to generate continuations dynamically. The example below is similar to the dialog rails example, but it instructs the LLM to generate the bot response directly. Note, the quality of the response depends on the configured LLM model and can vary.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">examples/v2_x/tutorial/llm_flows/main.co</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>import core
@@ -578,7 +579,7 @@
 </pre></div>
 </div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">main</span></code> flow above waits for the <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">something</span></code> to match a user utterance, stores the result in the <code class="docutils literal notranslate"><span class="pre">$question</span></code> local variable and then invokes the LLM, through the <code class="docutils literal notranslate"><span class="pre">...</span></code> (generation operator) to generate the continuation of the flow.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">main</span></code> flow above waits for the <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">something</span></code> to match a user utterance, stores the result in the <code class="docutils literal notranslate"><span class="pre">$question</span></code> local variable, and then invokes the LLM through the <code class="docutils literal notranslate"><span class="pre">...</span></code> (generation operator) to generate the continuation of the flow.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Context variables can be included in the NLD (Natural Language Description) of a flow (a.k.a., docstrings in Python) using double curly braces (the Jinja2 syntax).</p>
@@ -591,7 +592,7 @@
 
 Hello! How can I assist you with cars today?
 
-&gt; what can yo udo?
+&gt; what can you do?
 
 I am an assistant that can talk to you about cars. Is there anything specific you would like to know?
 </pre></div>

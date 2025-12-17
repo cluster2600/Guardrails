@@ -312,12 +312,12 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../about/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/rail-types.html">Rail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
@@ -335,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="current nav bd-sidenav">
@@ -556,17 +557,19 @@
 <p>You can configure input and output rails to run in parallel. This can improve latency and throughput.</p>
 <section id="when-to-use-parallel-rails-execution">
 <h2>When to Use Parallel Rails Execution<a class="headerlink" href="#when-to-use-parallel-rails-execution" title="Link to this heading">#</a></h2>
+<p>Use parallel execution:</p>
 <ul class="simple">
-<li><p>Use parallel execution for I/O-bound rails such as external API calls to LLMs or third-party integrations.</p></li>
-<li><p>Enable parallel execution if you have two or more independent input or output rails without shared state dependencies.</p></li>
-<li><p>Use parallel execution in production environments where response latency affects user experience and business metrics.</p></li>
+<li><p>For I/O-bound rails such as external API calls to LLMs or third-party integrations.</p></li>
+<li><p>If you have two or more independent input or output rails without shared state dependencies.</p></li>
+<li><p>In production environments where response latency affects user experience and business metrics.</p></li>
 </ul>
 </section>
 <section id="when-not-to-use-parallel-rails-execution">
 <h2>When Not to Use Parallel Rails Execution<a class="headerlink" href="#when-not-to-use-parallel-rails-execution" title="Link to this heading">#</a></h2>
+<p>Avoid parallel execution:</p>
 <ul class="simple">
-<li><p>Avoid parallel execution for CPU-bound rails; it might not improve performance and can introduce overhead.</p></li>
-<li><p>Use sequential mode during development and testing for debugging and simpler workflows.</p></li>
+<li><p>For CPU-bound rails; it might not improve performance and can introduce overhead.</p></li>
+<li><p>During development and testing for debugging and simpler workflows.</p></li>
 </ul>
 </section>
 <section id="configuration-example">

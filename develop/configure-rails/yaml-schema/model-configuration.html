@@ -312,12 +312,12 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Rail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
@@ -335,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="current nav bd-sidenav">
@@ -553,7 +554,7 @@
 <p>This section describes how to configure LLM models and embedding models in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file.</p>
 <section id="the-models-key">
 <h2>The <code class="docutils literal notranslate"><span class="pre">models</span></code> Key<a class="headerlink" href="#the-models-key" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key defines the LLM providers and models used by the NeMo Guardrails toolkit.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key defines the LLM providers and models used by the NeMo Guardrails Library.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
@@ -577,7 +578,7 @@
 <td><p>The model name (for example, <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code>, <code class="docutils literal notranslate"><span class="pre">meta/llama-3.1-8b-instruct</span></code>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code></p></td>
-<td><p>Optional parameters to pass to the LangChain class that is used by the LLM provider. For example, when engine is set to openai, the toolkit loads the ChatOpenAI class. The ChatOpenAI class supports temperature, max_tokens, and other class-specific arguments.</p></td>
+<td><p>Optional parameters to pass to the LangChain class that is used by the LLM provider. For example, when engine is set to <code class="docutils literal notranslate"><span class="pre">openai</span></code>, the library loads the ChatOpenAI class. The ChatOpenAI class supports <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">max_tokens</span></code>, and other class-specific arguments.</p></td>
 </tr>
 </tbody>
 </table>
@@ -650,8 +651,8 @@
 </section>
 <section id="auto-discovered-langchain-providers">
 <h3>Auto-Discovered LangChain Providers<a class="headerlink" href="#auto-discovered-langchain-providers" title="Link to this heading">#</a></h3>
-<p>The toolkit automatically discovers all LLM providers from LangChain Community at runtime. This includes 50+ additional providers. Use the provider name as the <code class="docutils literal notranslate"><span class="pre">engine</span></code> value in your configuration.</p>
-<p>To help you explore and select the right LLM provider, the toolkit CLI provides the <a class="reference internal" href="../../cli/index.html#find-providers-command"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">find-providers</span></code></span></a> command to discover available LLM providers:</p>
+<p>The library automatically discovers all LLM providers from LangChain Community at runtime. This includes 50+ additional providers. Use the provider name as the <code class="docutils literal notranslate"><span class="pre">engine</span></code> value in your configuration.</p>
+<p>To help you explore and select the right LLM provider, the library CLI provides the <a class="reference internal" href="../../cli/index.html#find-providers-command"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">find-providers</span></code></span></a> command to discover available LLM providers:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span><span class="o">[</span>--list<span class="o">]</span>
 </pre></div>
 </div>
@@ -696,7 +697,7 @@
 <hr class="docutils" />
 <section id="nvidia-nim-configuration">
 <h2>NVIDIA NIM Configuration<a class="headerlink" href="#nvidia-nim-configuration" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails toolkit provides seamless integration with NVIDIA NIM microservices:</p>
+<p>The NeMo Guardrails Library provides seamless integration with NVIDIA NIM microservices:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -707,7 +708,7 @@
 <ul class="simple">
 <li><p><strong>Locally-deployed NIMs</strong>: Run models on your own infrastructure with optimized inference.</p></li>
 <li><p><strong>NVIDIA API Catalog</strong>: Access hosted models on <a class="reference external" href="https://build.nvidia.com/models" rel="noreferer noopener" target="_blank">build.nvidia.com</a>.</p></li>
-<li><p><strong>Specialized NIMs</strong>: NemoGuard Content Safety, Topic Control, and Jailbreak Detection.</p></li>
+<li><p><strong>Specialized NIMs</strong>: Nemotron Content Safety, Topic Control, and Jailbreak Detect.</p></li>
 </ul>
 <section id="local-nim-deployment">
 <h3>Local NIM Deployment<a class="headerlink" href="#local-nim-deployment" title="Link to this heading">#</a></h3>
@@ -851,7 +852,7 @@
 </section>
 <section id="complete-example">
 <h3>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h3>
-<p>The following example shows how to configure the main application LLM, embeddings model, and a dedicated NemoGuard model for input and output checking:</p>
+<p>The following example shows how to configure the main application LLM, embeddings model, and a dedicated Nemotron model for input and output checking:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="c1"># Main application LLM</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>

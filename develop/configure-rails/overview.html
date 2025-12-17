@@ -312,12 +312,12 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/rail-types.html">Rail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
@@ -335,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="current nav bd-sidenav">
@@ -547,7 +548,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="configuration-overview">
 <h1>Configuration Overview<a class="headerlink" href="#configuration-overview" title="Link to this heading">#</a></h1>
-<p>Before using the NeMo Guardrails toolkit, you need to prepare configuration files that define your guardrails behavior. When you initialize the toolkit’s core classes or the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI chat or server, it will load the configuration files you’ll create in the next chapter <a class="reference internal" href="../run-rails/index.html"><span class="std std-doc">Run Rails</span></a>. This section provides complete instructions on preparing your configuration files and executable scripts.</p>
+<p>Before using the NeMo Guardrails Library, you need to prepare configuration files that define your guardrails behavior. When you initialize the library’s core classes or the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI chat or server, it will load the configuration files you’ll create in the next chapter <a class="reference internal" href="../run-rails/index.html"><span class="std std-doc">Run Rails</span></a>. This section provides complete instructions on preparing your configuration files and executable scripts.</p>
 <p>A guardrails configuration includes the following components. You can start with a basic configuration and add more components as needed. All the components should be placed in the <code class="docutils literal notranslate"><span class="pre">config</span></code> folder, and the locations in the following table are relative to the <code class="docutils literal notranslate"><span class="pre">config</span></code> folder.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -580,7 +581,7 @@
 </tr>
 <tr class="row-even"><td><p><strong>Knowledge Base Documents</strong></p></td>
 <td><p>Optional</p></td>
-<td><p>Documents (<code class="docutils literal notranslate"><span class="pre">.md</span></code> files) that can be used in a RAG (Retrieval-Augmented Generation) scenario using the built-in Knowledge Base support.</p></td>
+<td><p>Documents (<code class="docutils literal notranslate"><span class="pre">.md</span></code> files) that can be used in a RAG (Retrieval-Augmented Generation) scenario (i.e. Retrieval rail) using the built-in Knowledge Base support.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">kb</span></code> folder</p></td>
 </tr>
 </tbody>

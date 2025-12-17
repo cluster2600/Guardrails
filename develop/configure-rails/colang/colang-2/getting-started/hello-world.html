@@ -312,12 +312,12 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Toolkit</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../../about/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/rail-types.html">Rail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../about/how-it-works/how-rails-work.html">Rails Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../about/architecture/README.html">Detailed Architecture</a></li>
 </ul>
@@ -335,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="current nav bd-sidenav">
@@ -580,7 +581,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span></code>: this flow is triggered when the user said something.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code>: this flow instructs the bot to say a specific message.</p></li>
 </ul>
-<p>The two flows are located in the <code class="docutils literal notranslate"><span class="pre">core</span></code> module, included in the Colang Standard Library, which is available by default (similarly to the Python Standard Library). The <code class="docutils literal notranslate"><span class="pre">import</span></code> statement at the beginning, imports all the flows from the <code class="docutils literal notranslate"><span class="pre">core</span></code> module.</p>
+<p>The two flows are located in the <code class="docutils literal notranslate"><span class="pre">core</span></code> module, included in the Colang Standard Library, which is available by default (similar to the Python Standard Library). The <code class="docutils literal notranslate"><span class="pre">import</span></code> statement at the beginning imports all the flows from the <code class="docutils literal notranslate"><span class="pre">core</span></code> module.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For more details, check out the <a class="reference internal" href="../language-reference/the-standard-library.html#the-standard-library"><span class="std std-ref">Colang Standard Library (CSL)</span></a>.</p>
