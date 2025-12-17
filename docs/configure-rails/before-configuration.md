@@ -1,6 +1,14 @@
 ---
-title: Before You Begin
-description: Prerequisites and decisions to make before configuring the NeMo Guardrails Library.
+title:
+  page: "Prerequisites for Configuring NeMo Guardrails"
+  nav: "Before You Begin"
+description: "Prepare LLM endpoints, NemoGuard NIMs, and knowledge base documents before configuration."
+topics: ["Configuration", "AI Safety"]
+tags: ["Prerequisites", "Setup", "LLM", "NIM", "Planning"]
+content:
+  type: "Overview"
+  difficulty: "Beginner"
+  audience: ["Developer", "AI Engineer"]
 ---
 
 # Before You Begin Configuring Rails

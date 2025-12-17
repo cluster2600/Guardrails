@@ -1,6 +1,14 @@
 ---
-title: Colang Guide
-description: Learn Colang, the event-driven language for defining guardrails flows, user messages, and bot responses.
+title:
+  page: "Colang Language Guide for NeMo Guardrails"
+  nav: "Colang"
+description: "Learn Colang, the event-driven language for defining guardrails flows and bot behavior."
+topics: ["Configuration", "AI Safety"]
+tags: ["Colang", "Flows", "Events", "DSL", "Language"]
+content:
+  type: "Overview"
+  difficulty: "Intermediate"
+  audience: ["Developer", "AI Engineer"]
 ---
 
 # Colang Guide
@@ -49,14 +57,14 @@ The following sections provide detailed documentation for using Colang:
 :link: colang-2/index
 :link-type: doc
 
-Reference for using Colang 2.0 in guardrails.
+whats-changed getting-started/index language-reference/index migration-guide
 :::
 
 :::{grid-item-card} Colang 1.0 Guide
 :link: colang-1/index
 :link-type: doc
 
-The original Colang syntax for defining user messages, bot messages, and dialog flows.
+Reference and tutorials for Colang 1.0 syntax for defining dialog flows and guardrails.
 :::
 
 :::{grid-item-card} Migrating from Colang 1 to Colang 2

@@ -1,6 +1,14 @@
 ---
-title: Overview
-description: Learn about the NeMo Guardrails Library and its capabilities.
+title:
+  page: "Overview of the NeMo Guardrails Library"
+  nav: "Overview"
+description: "Add programmable guardrails to LLM applications with this open-source Python library."
+topics: ["AI"]
+tags: ["Python", "LLM", "Guardrails", "Safety", "Content Moderation"]
+content:
+  type: "Concept"
+  difficulty: "Beginner"
+  audience: ["Developer", "Machine Learning Engineer"]
 ---
 
 <!--

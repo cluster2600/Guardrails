@@ -1,3 +1,16 @@
+---
+title:
+  page: "Tools Integration with NeMo Guardrails"
+  nav: "Tools Integration"
+description: "Integrate LangChain tools with guardrails using passthrough mode and output rail validation."
+topics: ["Integration", "AI Safety"]
+tags: ["Tools", "LangChain", "Tool Calling", "Passthrough", "Security"]
+content:
+  type: "How-To"
+  difficulty: "Advanced"
+  audience: ["Developer", "AI Engineer"]
+---
+
 # Tools Integration with NeMo Guardrails
 
 This guide provides comprehensive instructions for integrating and using tools within NeMo Guardrails via the LLMRails interface. It covers supported tools, configuration settings, practical examples, and important security considerations for safe and effective implementation.

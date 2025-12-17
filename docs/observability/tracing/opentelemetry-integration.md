@@ -1,3 +1,16 @@
+---
+title:
+  page: "Advanced OpenTelemetry Integration"
+  nav: "OpenTelemetry"
+description: "Configure OpenTelemetry SDK with OTLP exporters for production monitoring backends."
+topics: ["Observability", "AI Safety"]
+tags: ["OpenTelemetry", "OTLP", "Production", "Jaeger", "Zipkin"]
+content:
+  type: "How-To"
+  difficulty: "Advanced"
+  audience: ["DevOps Engineer", "AI Engineer"]
+---
+
 # Advanced OpenTelemetry Integration
 
 NeMo Guardrails follows OpenTelemetry best practices; libraries use only the API while applications configure the SDK. The following sections explain how to install and configure the OpenTelemetry SDK.

@@ -1,11 +1,19 @@
 ---
-title: NeMo Guardrails Toolkit CLI
-description: This is the CLI reference for the NeMo Guardrails toolkit.
+title:
+  page: "NeMo Guardrails CLI Reference"
+  nav: "CLI"
+description: "Use the nemoguardrails command-line interface to chat, serve, evaluate, and convert configurations."
+topics: ["AI Safety", "LLM Guardrails"]
+tags: ["CLI", "Python", "Server", "Evaluation", "Colang"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "AI Engineer"]
 ---
 
 (nemoguardrails-cli)=
 
-# CLI
+# NeMo Guardrails CLI Reference
 
 **NOTE: THIS SECTION IS WORK IN PROGRESS.**
 

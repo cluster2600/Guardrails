@@ -1,6 +1,14 @@
 ---
-title: Custom Actions
-description: Define custom Python actions in actions.py to extend guardrails with external integrations and validation logic.
+title:
+  page: "Custom Actions for NeMo Guardrails"
+  nav: "Actions"
+description: "Create Python actions to extend guardrails with external APIs and validation logic."
+topics: ["Configuration", "AI Safety"]
+tags: ["Actions", "Python", "API", "Validation", "Customization"]
+content:
+  type: "How-To"
+  difficulty: "Intermediate"
+  audience: ["Developer", "AI Engineer"]
 ---
 
 # Custom Actions

@@ -1,4 +1,17 @@
-# NeMo Guardrails with Docker
+---
+title:
+  page: "Deploy NeMo Guardrails Library with Docker"
+  nav: "Docker"
+description: "Build and run NeMo Guardrails Docker images for rapid deployment and testing."
+topics: ["Deployment", "AI Safety"]
+tags: ["Docker", "Container", "Deployment", "AlignScore"]
+content:
+  type: "How-To"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Engineer"]
+---
+
+# Deploy NeMo Guardrails Library with Docker
 
 This guide provides step-by-step instructions for running NeMo Guardrails using Docker. Docker offers a seamless and rapid deployment method for getting started with NeMo Guardrails.
 

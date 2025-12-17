@@ -1,6 +1,14 @@
 ---
-title: Configure Rails
-description: Learn to write config.yml, Colang flows, and custom actions.
+title:
+  page: "NeMo Guardrails Configuration Overview"
+  nav: "Configure Rails"
+description: "Learn to write config.yml, Colang flows, and custom actions for guardrails."
+topics: ["Configuration", "AI Safety"]
+tags: ["Configuration", "YAML", "Colang", "Actions", "Setup"]
+content:
+  type: "Overview"
+  difficulty: "Beginner"
+  audience: ["Developer", "AI Engineer"]
 ---
 
 # Configuration Overview

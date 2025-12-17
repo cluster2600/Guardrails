@@ -1,3 +1,16 @@
+---
+title:
+  page: "NeMo Guardrails Streaming Responses"
+  nav: "Streaming"
+description: "Stream LLM responses in real-time with the stream_async method and output rails support."
+topics: ["AI Safety", "LLM Guardrails"]
+tags: ["Python", "Streaming", "Async", "Real-Time"]
+content:
+  type: "How-To"
+  difficulty: "Intermediate"
+  audience: ["Developer", "AI Engineer"]
+---
+
 # Streaming
 
 If the application LLM supports streaming, NeMo Guardrails can stream tokens as well. Streaming is automatically enabled when you use the `stream_async()` method - no configuration is required.

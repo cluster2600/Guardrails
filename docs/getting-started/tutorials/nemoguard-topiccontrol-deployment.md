@@ -1,6 +1,14 @@
 ---
-title: Topic Control
-description: Deploy NeMo Topic Control to restrict conversations to allowed topics.
+title:
+  page: "Deploy NeMo Topic Control"
+  nav: "Topic Control"
+description: "Deploy NeMo Topic Control NIM to restrict conversations to allowed topics."
+topics: ["AI Safety", "Content Moderation"]
+tags: ["Topic Control", "NIM", "Input Rails", "LoRA", "Docker"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "AI Engineer"]
 ---
 
 # Topic Control with NeMo Topic Control

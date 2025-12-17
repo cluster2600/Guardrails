@@ -1,6 +1,14 @@
 ---
-title: Rail Types
-description: Learn how the NeMo Guardrails Library applies guardrails at multiple stages of the LLM interaction.
+title:
+  page: "Rail Types"
+  nav: "Rail Types"
+description: "Apply input, retrieval, dialog, execution, and output rails to protect LLM applications."
+topics: ["AI"]
+tags: ["Guardrails", "Input Rails", "Output Rails", "RAG", "Agentic"]
+content:
+  type: "Concept"
+  difficulty: "Beginner"
+  audience: ["Developer", "Machine Learning Engineer"]
 ---
 
 # Rail Types

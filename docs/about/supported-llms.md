@@ -1,6 +1,14 @@
 ---
-title: Supported LLMs and Providers
-description: Browse the LLMs and their providers supported by the NeMo Guardrails Library.
+title:
+  page: "Supported LLMs"
+  nav: "Supported LLMs"
+description: "Connect to NVIDIA NIM, OpenAI, Azure, Anthropic, HuggingFace, and LangChain providers."
+topics: ["AI"]
+tags: ["LLM", "NVIDIA NIM", "OpenAI", "LangChain", "Embeddings"]
+content:
+  type: "Reference"
+  difficulty: "Beginner"
+  audience: ["Developer", "Machine Learning Engineer"]
 ---
 
 # Supported LLMs

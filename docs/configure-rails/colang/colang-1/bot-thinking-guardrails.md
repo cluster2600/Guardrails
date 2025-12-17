@@ -1,3 +1,8 @@
+---
+title: Guardrailing Bot Reasoning Content
+description: Inspect and control LLM reasoning traces to block problematic patterns or enhance moderation decisions.
+---
+
 (bot-thinking-guardrails)=
 
 # Guardrailing Bot Reasoning Content

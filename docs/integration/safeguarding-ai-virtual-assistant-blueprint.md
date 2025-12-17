@@ -1,3 +1,16 @@
+---
+title:
+  page: "Safeguard AI Virtual Assistant Blueprint with NeMo Guardrails"
+  nav: "Blueprint Integration"
+description: "Integrate NeMo Guardrails into NVIDIA AI Virtual Assistant Blueprint for customer service."
+topics: ["Integration", "AI Safety"]
+tags: ["Blueprint", "NIM", "Virtual Assistant", "Customer Service"]
+content:
+  type: "How-To"
+  difficulty: "Advanced"
+  audience: ["Developer", "AI Engineer"]
+---
+
 # Blueprint with NemoGuard NIMs
 
 ```{note}

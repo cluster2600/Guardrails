@@ -1,3 +1,16 @@
+---
+title:
+  page: "Tracing Quick Start"
+  nav: "Quick Start"
+description: "Set up tracing in minutes with the OpenTelemetry SDK and console output."
+topics: ["Observability", "AI Safety"]
+tags: ["Tracing", "OpenTelemetry", "Quick Start", "Setup"]
+content:
+  type: "Get Started"
+  difficulty: "Beginner"
+  audience: ["Developer", "AI Engineer"]
+---
+
 # Quick Start
 
 The following is a minimal setup to enable tracing using the OpenTelemetry SDK.

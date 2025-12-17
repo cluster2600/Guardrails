@@ -1,6 +1,14 @@
 ---
-title: Model Configuration
-description: Configure LLM providers, embedding models, and task-specific models in the config.yml file.
+title:
+  page: "Model Configuration for NeMo Guardrails"
+  nav: "Models"
+description: "Configure LLM engines, embedding models, and task-specific models in config.yml."
+topics: ["Configuration", "AI Safety"]
+tags: ["Models", "LLM", "Embeddings", "OpenAI", "NIM", "YAML"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "AI Engineer"]
 ---
 
 # Model Configuration

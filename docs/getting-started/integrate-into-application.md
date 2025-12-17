@@ -1,6 +1,14 @@
 ---
-title: Integrate Guardrails into an Application
-description: Learn how to call NeMo Guardrails from your system.
+title:
+  page: "Integrate NeMo Guardrails into Your Application"
+  nav: "Integrate"
+description: "Add guardrails to existing applications using the Python SDK, LangChain, or HTTP API."
+topics: ["Get Started", "AI Safety"]
+tags: ["Integration", "Python", "LangChain", "SDK", "API"]
+content:
+  type: "How-To"
+  difficulty: "Beginner"
+  audience: ["Developer", "AI Engineer"]
 ---
 
 # Integrate Guardrails into an Application

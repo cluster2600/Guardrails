@@ -1,3 +1,16 @@
+---
+title:
+  page: "Tracing Adapter Configurations"
+  nav: "Adapters"
+description: "Configure FileSystem, OpenTelemetry, or custom adapters for guardrails tracing."
+topics: ["Observability", "AI Safety"]
+tags: ["Tracing", "Adapters", "Configuration", "FileSystem", "OpenTelemetry"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Engineer"]
+---
+
 # Adapter Configurations
 
 You can set up the following adapters for tracing.

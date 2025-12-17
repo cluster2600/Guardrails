@@ -1,4 +1,17 @@
-# Python API
+---
+title:
+  page: "NeMo Guardrails Python API Reference"
+  nav: "Python API"
+description: "Use the Python SDK to integrate guardrails, generate responses, and register custom actions."
+topics: ["AI Safety", "LLM Guardrails"]
+tags: ["Python", "SDK", "API", "LangChain", "Actions"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "AI Engineer"]
+---
+
+# NeMo Guardrails Python API Reference
 
 The primary way for using guardrails in your project is:
 

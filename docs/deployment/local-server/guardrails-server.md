@@ -1,3 +1,16 @@
+---
+title:
+  page: "NeMo Guardrails Server Configuration"
+  nav: "Guardrails Server"
+description: "Configure and run the guardrails server with HTTP API endpoints and Chat UI."
+topics: ["Deployment", "AI Safety"]
+tags: ["Server", "FastAPI", "REST API", "Chat UI"]
+content:
+  type: "How-To"
+  difficulty: "Intermediate"
+  audience: ["Developer", "AI Engineer"]
+---
+
 # Guardrails Server
 
 The Guardrails server loads a predefined set of guardrails configurations at startup and exposes an HTTP API to use them. The server uses [FastAPI](https://fastapi.tiangolo.com/), and the interface is based on the [chatbot-ui](https://github.com/mckaywrigley/chatbot-ui) project. This server is best suited to provide a visual interface/ playground to interact with the bot and try out the rails.

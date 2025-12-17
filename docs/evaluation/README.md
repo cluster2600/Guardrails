@@ -1,6 +1,14 @@
 ---
-title: Evaluate
-description: Evaluate the performance of the rails.
+title:
+  page: "Evaluate NeMo Guardrails Performance"
+  nav: "Evaluate"
+description: "Measure accuracy and performance of dialog, fact-checking, moderation, and hallucination rails."
+topics: ["Evaluation", "AI Safety"]
+tags: ["Evaluation", "Benchmarking", "Accuracy", "LLM Testing"]
+content:
+  type: "How-To"
+  difficulty: "Advanced"
+  audience: ["Data Scientist", "AI Researcher", "AI Engineer"]
 ---
 
 # Guardrails Evaluation

@@ -1,3 +1,16 @@
+---
+title:
+  page: "Tracing NeMo Guardrails with OpenTelemetry"
+  nav: "Tracing"
+description: "Enable distributed tracing with OpenTelemetry to monitor guardrails execution and LLM calls."
+topics: ["Observability", "AI Safety"]
+tags: ["Tracing", "OpenTelemetry", "Monitoring", "Jaeger"]
+content:
+  type: "How-To"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Engineer", "AI Engineer"]
+---
+
 (tracing)=
 
 # Tracing
