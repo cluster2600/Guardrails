@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Blueprint with NemoGuard NIMs &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
+    <title>Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
   
   
   
@@ -60,7 +60,7 @@
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="LangChain Integration" href="langchain/index.html" />
-    <link rel="prev" title="Using NeMo Guardrails Microservice for Production Deployment" href="../deployment/using-microservice.html" />
+    <link rel="prev" title="NeMo Guardrails Microservice for Production" href="../deployment/using-microservice.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -327,7 +327,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Install the NeMo Guardrails Library</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
@@ -335,7 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -445,16 +445,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../observability/logging/index.html">Logging</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
@@ -492,8 +492,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">NeMo Guardrails Python API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">NeMo Guardrails CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 </div>
@@ -529,7 +529,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Blueprint with NemoGuard NIMs</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library</span></li>
   </ul>
 </nav>
 </div>
@@ -546,11 +546,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="blueprint-with-nemoguard-nims">
-<h1>Blueprint with NemoGuard NIMs<a class="headerlink" href="#blueprint-with-nemoguard-nims" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="safeguard-ai-virtual-assistant-blueprint-with-the-nemo-guardrails-library">
+<h1>Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library<a class="headerlink" href="#safeguard-ai-virtual-assistant-blueprint-with-the-nemo-guardrails-library" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This documentation is intended for developers that want to integrate NeMo Guardrails into <a class="reference external" href="https://build.nvidia.com/blueprints" rel="noreferer noopener" target="_blank">NVIDIA Blueprints</a></p>
+<p>This documentation is intended for developers that want to integrate the NeMo Guardrails library into <a class="reference external" href="https://build.nvidia.com/blueprints" rel="noreferer noopener" target="_blank">NVIDIA Blueprints</a></p>
 </div>
 <p>NVIDIA Blueprints are comprehensive reference workflows that accelerate AI application development and deployment. They make it easy to start building and setting up virtual assistants, offering ready-made workflows and tools. Whether you need a simple AI-powered chatbot or a fully animated digital human interface, NVIDIA provides resources to help you create an AI assistant that’s scalable and aligned with your brand. For example, developers can use the <strong><a class="reference external" href="https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service" rel="noreferer noopener" target="_blank">NVIDIA AI Blueprint for AI virtual assistants</a></strong> to build an AI assistant for customer service for delivering a responsive, efficient customer support experience.</p>
 <section id="prerequisites-and-setup">
@@ -564,7 +564,7 @@
 </section>
 <section id="integrating-nemoguard">
 <h3>Integrating NemoGuard<a class="headerlink" href="#integrating-nemoguard" title="Link to this heading">#</a></h3>
-<p>First create a <code class="docutils literal notranslate"><span class="pre">nemoguardrails.yaml</span></code> file at <code class="docutils literal notranslate"><span class="pre">ai-virtual-assistant/deploy/compose</span></code> directory to download and initialize NeMo Guardrails toolkit. Make sure it has the following content in it. You can change the port as per your requirement.</p>
+<p>First create a <code class="docutils literal notranslate"><span class="pre">nemoguardrails.yaml</span></code> file at <code class="docutils literal notranslate"><span class="pre">ai-virtual-assistant/deploy/compose</span></code> directory to download and initialize the NeMo Guardrails library. Make sure it has the following content in it. You can change the port as per your requirement.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">nemoguardrails</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">build</span><span class="p">:</span>
@@ -618,7 +618,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Using NeMo Guardrails Microservice for Production Deployment</p>
+        <p class="prev-next-title">NeMo Guardrails Microservice for Production</p>
       </div>
     </a>
     <a class="right-next"

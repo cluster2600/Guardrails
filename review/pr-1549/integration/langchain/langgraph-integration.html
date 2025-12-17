@@ -327,7 +327,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install the NeMo Guardrails Library</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
@@ -335,7 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -445,16 +445,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../observability/logging/index.html">Logging</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
@@ -492,8 +492,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">NeMo Guardrails Python API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">NeMo Guardrails CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 </ul>
 </div>
@@ -551,11 +551,11 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="langgraph-integration">
 <h1>LangGraph Integration<a class="headerlink" href="#langgraph-integration" title="Link to this heading">#</a></h1>
-<p>This guide demonstrates how to integrate NeMo Guardrails with LangGraph to build safe and controlled multi-agent workflows. LangGraph enables you to create sophisticated agent architectures with state management, conditional routing, and tool calling, while NeMo Guardrails provides the safety layer to ensure responsible AI behavior.</p>
+<p>This guide demonstrates how to integrate the NeMo Guardrails library with LangGraph to build safe and controlled multi-agent workflows. LangGraph enables you to create sophisticated agent architectures with state management, conditional routing, and tool calling, while NeMo Guardrails provides the safety layer to ensure responsible AI behavior.</p>
 <hr class="docutils" />
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>LangGraph is a library for building stateful, multi-actor applications with LLMs. When combined with NeMo Guardrails, you can create complex agent workflows that maintain safety and compliance throughout the entire conversation flow.</p>
+<p>LangGraph is a library for building stateful, multi-actor applications with LLMs. When combined with the NeMo Guardrails library, you can create complex agent workflows that maintain safety and compliance throughout the entire conversation flow.</p>
 <section id="key-benefits">
 <h3>Key Benefits<a class="headerlink" href="#key-benefits" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -587,7 +587,7 @@
 <hr class="docutils" />
 <section id="basic-integration-pattern">
 <h2>Basic Integration Pattern<a class="headerlink" href="#basic-integration-pattern" title="Link to this heading">#</a></h2>
-<p>The simplest integration involves wrapping your LangGraph nodes with NeMo Guardrails using the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> interface.</p>
+<p>The simplest integration involves wrapping your LangGraph nodes with the NeMo Guardrails library using the <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code> interface.</p>
 <section id="configuration-setup">
 <h3>Configuration Setup<a class="headerlink" href="#configuration-setup" title="Link to this heading">#</a></h3>
 <p>First, create a simple guardrails configuration for your LangGraph integration. You will use this configuration throughout this section. Create two files:</p>
@@ -695,7 +695,7 @@
 <p>To enhance the functionality of your LangGraph agents, you can combine tool calling with guardrails. This ensures that both the decision to call tools and the tool results are safely validated.</p>
 <section id="tool-definition">
 <h3>Tool Definition<a class="headerlink" href="#tool-definition" title="Link to this heading">#</a></h3>
-<p>Define the following simplified example tools that demonstrate the integration pattern with NeMo Guardrails.</p>
+<p>Define the following simplified example tools that demonstrate the integration pattern with the NeMo Guardrails library.</p>
 <p>The first tool, <code class="docutils literal notranslate"><span class="pre">search_knowledge</span></code>, searches a predefined knowledge base for information matching the user’s query. It performs matching against keywords like <code class="docutils literal notranslate"><span class="pre">&quot;capital&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;weather&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;python&quot;</span></code>, returning relevant information or a generic response if no match is found.</p>
 <p>The second tool, <code class="docutils literal notranslate"><span class="pre">multiply</span></code>, performs multiplication of two integers.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
