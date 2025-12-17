@@ -13,7 +13,7 @@ content:
 
 # RunnableRails
 
-This guide demonstrates how to integrate the NeMo Guardrails Library into LangChain applications using the `RunnableRails` class. The class implements the full [Runnable Protocol](https://python.langchain.com/docs/concepts/runnables/) with comprehensive support for synchronous and asynchronous operations, streaming, and batch processing.
+This guide demonstrates how to integrate the NeMo Guardrails library into LangChain applications using the `RunnableRails` class. The class implements the full [Runnable Protocol](https://python.langchain.com/docs/concepts/runnables/) with comprehensive support for synchronous and asynchronous operations, streaming, and batch processing.
 
 ---
 

@@ -13,15 +13,15 @@ content:
 
 # Supported LLMs
 
-The NeMo Guardrails Library supports a wide range of LLM providers and their models.
+The NeMo Guardrails library supports a wide range of LLM providers and their models.
 
 ## LLM Providers
 
-The NeMo Guardrails Library supports the following LLM providers:
+The NeMo Guardrails library supports the following LLM providers:
 
 ### NVIDIA NIM
 
-The NeMo Guardrails Library supports NVIDIA NIM microservices for local deployment and NVIDIA API Catalog for hosted models.
+The NeMo Guardrails library supports NVIDIA NIM microservices for local deployment and NVIDIA API Catalog for hosted models.
 
 - **Locally-deployed LLM NIM Microservices**: LLMs deployed on your own infrastructure.
 - **NVIDIA API Catalog**: Hosted LLMs on [build.nvidia.com](https://build.nvidia.com/models).
@@ -29,7 +29,7 @@ The NeMo Guardrails Library supports NVIDIA NIM microservices for local deployme
 
 ### External LLM Providers
 
-The NeMo Guardrails Library supports the following external LLM providers:
+The NeMo Guardrails library supports the following external LLM providers:
 
 - OpenAI
 - Azure OpenAI
@@ -39,7 +39,7 @@ The NeMo Guardrails Library supports the following external LLM providers:
 
 ### Self-Hosted
 
-The NeMo Guardrails Library supports the following self-hosted LLM providers:
+The NeMo Guardrails library supports the following self-hosted LLM providers:
 
 - HuggingFace Hub
 - HuggingFace Endpoints
@@ -48,11 +48,11 @@ The NeMo Guardrails Library supports the following self-hosted LLM providers:
 
 ### Providers from LangChain Community
 
-The NeMo Guardrails Library supports any LLM provider from the LangChain Community. Refer to [All integration providers](https://docs.langchain.com/oss/python/integrations/providers/all_providers) in the LangChain documentation.
+The NeMo Guardrails library supports any LLM provider from the LangChain Community. Refer to [All integration providers](https://docs.langchain.com/oss/python/integrations/providers/all_providers) in the LangChain documentation.
 
 ## Embedding Providers
 
-The NeMo Guardrails Library supports the following embedding providers:
+The NeMo Guardrails library supports the following embedding providers:
 
 - NVIDIA NIM
 - FastEmbed

@@ -13,13 +13,13 @@ content:
 
 # Integrate the NeMo Guardrails Library into Your Application
 
-If you have an existing application, you can integrate NeMo Guardrails into it using the NeMo Guardrails Library.
+If you have an existing application, you can integrate NeMo Guardrails into it using the NeMo Guardrails library.
 
 ---
 
 ## Integrate Guardrails into LLM-based Applications
 
-The NeMo Guardrails Library can be integrated into applications in multiple ways:
+The NeMo Guardrails library can be integrated into applications in multiple ways:
 
 1. **Python SDK integration**: Add guardrails directly into your Python application.
 

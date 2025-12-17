@@ -17,7 +17,7 @@ This section describes how to configure LLM models and embedding models in the `
 
 ## The `models` Key
 
-The `models` key defines the LLM providers and models used by the NeMo Guardrails Library.
+The `models` key defines the LLM providers and models used by the NeMo Guardrails library.
 
 ```yaml
 models:
@@ -96,7 +96,7 @@ models:
 
 ## NVIDIA NIM Configuration
 
-The NeMo Guardrails Library provides seamless integration with NVIDIA NIM microservices:
+The NeMo Guardrails library provides seamless integration with NVIDIA NIM microservices:
 
 ```yaml
 models:

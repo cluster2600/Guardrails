@@ -17,7 +17,7 @@ This guide covers the various methods for logging, debugging, and understanding 
 
 ## Overview
 
-The NeMo Guardrails Library provides multiple ways to inspect and debug guardrails generation:
+The NeMo Guardrails library provides multiple ways to inspect and debug guardrails generation:
 
 | Method | Use Case |
 |--------|----------|

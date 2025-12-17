@@ -13,7 +13,7 @@ content:
 
 # Tutorials
 
-This section contains tutorials that help you get started with the NeMo Guardrails Library.
+This section contains tutorials that help you get started with the NeMo Guardrails library.
 
 ::::{grid} 1 1 2 2
 :gutter: 3

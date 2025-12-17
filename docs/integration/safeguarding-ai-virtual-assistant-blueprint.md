@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails Library"
+  page: "Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library"
   nav: "Blueprint Integration"
 description: "Integrate NeMo Guardrails into NVIDIA AI Virtual Assistant Blueprint for customer service."
 topics: ["Integration", "AI Safety"]
@@ -11,10 +11,10 @@ content:
   audience: ["Developer", "AI Engineer"]
 ---
 
-# Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails Library
+# Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library
 
 ```{note}
-This documentation is intended for developers that want to integrate the NeMo Guardrails Library into [NVIDIA Blueprints](https://build.nvidia.com/blueprints)
+This documentation is intended for developers that want to integrate the NeMo Guardrails library into [NVIDIA Blueprints](https://build.nvidia.com/blueprints)
 ```
 
 NVIDIA Blueprints are comprehensive reference workflows that accelerate AI application development and deployment. They make it easy to start building and setting up virtual assistants, offering ready-made workflows and tools. Whether you need a simple AI-powered chatbot or a fully animated digital human interface, NVIDIA provides resources to help you create an AI assistant that’s scalable and aligned with your brand. For example, developers can use the **[NVIDIA AI Blueprint for AI virtual assistants](https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service)** to build an AI assistant for customer service for delivering a responsive, efficient customer support experience.
@@ -29,7 +29,7 @@ The NVIDIA Blueprint for AI virtual assistants can be deployed either with the N
 
 ### Integrating NemoGuard
 
-First create a `nemoguardrails.yaml` file at `ai-virtual-assistant/deploy/compose` directory to download and initialize the NeMo Guardrails Library. Make sure it has the following content in it. You can change the port as per your requirement.
+First create a `nemoguardrails.yaml` file at `ai-virtual-assistant/deploy/compose` directory to download and initialize the NeMo Guardrails library. Make sure it has the following content in it. You can change the port as per your requirement.
 
 ```yaml
 services:

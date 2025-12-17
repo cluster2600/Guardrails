@@ -15,7 +15,7 @@ content:
 
 You can set up the following adapters for tracing.
 
-The following table summarizes the list of adapters supported by the NeMo Guardrails Library and their use cases.
+The following table summarizes the list of adapters supported by the NeMo Guardrails library and their use cases.
 
 | Adapter Type | Use Case | Configuration |
 |---------|----------|---------------|

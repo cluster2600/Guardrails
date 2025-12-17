@@ -85,4 +85,4 @@ For advanced use cases such as implementing your own custom scripts or guardrail
 
 Once you have these components ready, proceed to the next section [Configuration Overview](index.md) to start organizing your guardrails configuration files.
 
-If you need tutorials to understand how to use the NeMo Guardrails Library, revisit the [Get Started](../getting-started/index.md) section.
+If you need tutorials to understand how to use the NeMo Guardrails library, revisit the [Get Started](../getting-started/index.md) section.

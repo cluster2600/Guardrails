@@ -1,6 +1,6 @@
 ---
 title:
-  page: "LangChain Integration with the NeMo Guardrails Library"
+  page: "LangChain Integration"
   nav: "LangChain"
 description: "Integrate NeMo Guardrails with LangChain chains, runnables, and LangGraph workflows."
 topics: ["Integration", "AI Safety"]
@@ -13,7 +13,7 @@ content:
 
 # LangChain Integration
 
-This section covers how to integrate the NeMo Guardrails Library with LangChain.
+This section covers how to integrate the NeMo Guardrails library with LangChain.
 
 ```{toctree}
 :maxdepth: 1

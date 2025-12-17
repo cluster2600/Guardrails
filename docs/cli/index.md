@@ -17,7 +17,7 @@ content:
 
 **NOTE: THIS SECTION IS WORK IN PROGRESS.**
 
-For testing purposes, the NeMo Guardrails Library provides a command line chat that can be used to interact with the LLM.
+For testing purposes, the NeMo Guardrails library provides a command line chat that can be used to interact with the LLM.
 
 ```sh
 nemoguardrails chat --config examples/ [--verbose] [--verbose-llm-calls]

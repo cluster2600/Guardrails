@@ -13,7 +13,7 @@ content:
 
 # NeMo Guardrails Library Core Classes
 
-This guide covers the two fundamental classes in the NeMo Guardrails Library: `RailsConfig` for loading configurations and `LLMRails` for generating responses with guardrails.
+This guide covers the two fundamental classes in the NeMo Guardrails library: `RailsConfig` for loading configurations and `LLMRails` for generating responses with guardrails.
 
 ## RailsConfig
 

@@ -13,7 +13,7 @@ content:
 
 # Custom Actions
 
-This section describes the `actions.py` file used to define custom Python actions for the NeMo Guardrails Library.
+This section describes the `actions.py` file used to define custom Python actions for the NeMo Guardrails library.
 Custom actions enable you to execute Python code within guardrails flows, extending the library with custom logic, external API integrations, and complex validation.
 
 ## Overview
@@ -62,7 +62,7 @@ Create custom actions using the @action decorator to integrate Python logic into
 :link: built-in-actions
 :link-type: doc
 
-Reference for default actions included in the NeMo Guardrails Library for common operations.
+Reference for default actions included in the NeMo Guardrails library for common operations.
 :::
 
 :::{grid-item-card} Action Parameters

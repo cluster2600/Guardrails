@@ -15,7 +15,7 @@ content:
 
 # Tracing Guardrails
 
-Tracing enhances the observability of guardrails execution. This section explains the configuration process for implementing tracing with the NeMo Guardrails Library.
+Tracing enhances the observability of guardrails execution. This section explains the configuration process for implementing tracing with the NeMo Guardrails library.
 
 With tracing, you can:
 
@@ -26,7 +26,7 @@ With tracing, you can:
 
 ## Span Formats
 
-Starting with NeMo Guardrails Library v0.16.0, the tracing system has transitioned to OpenTelemetry semantic conventions for Generative AI (GenAI), moving away from the legacy span format. This change enhances observability standardization and improves monitoring capabilities for AI workloads.
+Starting with the NeMo Guardrails library v0.16.0, the tracing system has transitioned to OpenTelemetry semantic conventions for Generative AI (GenAI), moving away from the legacy span format. This change enhances observability standardization and improves monitoring capabilities for AI workloads.
 
 **Reference Documentation:**
 
@@ -36,7 +36,7 @@ Starting with NeMo Guardrails Library v0.16.0, the tracing system has transition
 
 ### Supported Formats
 
-The NeMo Guardrails Library supports the following formats.
+The NeMo Guardrails library supports the following formats.
 
 - **OpenTelemetry** (`opentelemetry`) - **Recommended default format** following OpenTelemetry semantic conventions for GenAI
 - **Legacy** (`legacy`) - Previous format with simple metrics dictionary (deprecated)

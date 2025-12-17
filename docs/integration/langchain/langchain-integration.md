@@ -13,7 +13,7 @@ content:
 
 # LangChain Integration
 
-There are two main ways in which you can use the NeMo Guardrails Library with LangChain:
+There are two main ways in which you can use the NeMo Guardrails library with LangChain:
 
 1. Add guardrails to a LangChain chain (or `Runnable`).
 2. Use a LangChain chain (or `Runnable`) inside a guardrails configuration.
@@ -67,7 +67,7 @@ For a complete example, check out the [Runnable as Action Guide](runnable-as-act
 
 ## LangSmith Integration
 
-The NeMo Guardrails Library integrates out-of-the-box with [LangSmith](https://www.langchain.com/langsmith). To start sending trace information to LangSmith, you have to configure the following environment variables:
+The NeMo Guardrails library integrates out-of-the-box with [LangSmith](https://www.langchain.com/langsmith). To start sending trace information to LangSmith, you have to configure the following environment variables:
 
 ```bash
 export LANGCHAIN_TRACING_V2=true

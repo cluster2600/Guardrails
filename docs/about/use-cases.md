@@ -13,7 +13,7 @@ content:
 
 # Use Cases
 
-The NeMo Guardrails Library supports a wide range of use cases for protecting LLM-based applications.
+The NeMo Guardrails library supports a wide range of use cases for protecting LLM-based applications.
 The following sections describe the primary use cases.
 
 ---
@@ -21,7 +21,7 @@ The following sections describe the primary use cases.
 ## Content Safety
 
 Content safety guardrails help ensure that both user inputs and LLM outputs are safe and appropriate.
-The NeMo Guardrails Library provides multiple approaches to content safety:
+The NeMo Guardrails library provides multiple approaches to content safety:
 
 - **LLM self-checking**: Use the LLM itself to check inputs and outputs for harmful content.
 - **NVIDIA safety models**: Integrate with [Llama 3.1 NemoGuard 8B Content Safety](https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety) for robust content moderation.
@@ -33,7 +33,7 @@ For more information, refer to the [Content Safety section](../user-guides/guard
 ## Jailbreak Protection
 
 Jailbreak protection helps prevent adversarial attempts from bypassing safety measures and manipulating the LLM into generating harmful or unwanted content.
-The NeMo Guardrails Library provides multiple layers of jailbreak protection:
+The NeMo Guardrails library provides multiple layers of jailbreak protection:
 
 - **Self-check jailbreak detection**: Use the LLM to identify jailbreak attempts.
 - **Heuristic detection**: Use pattern-based detection for common jailbreak techniques.
@@ -56,7 +56,7 @@ For more information, refer to the [Topical Rails tutorial](../getting-started/6
 ## PII Detection
 
 Personally Identifiable Information (PII) detection helps protect user privacy by detecting and masking sensitive data in user inputs, LLM outputs, and retrieved content.
-The NeMo Guardrails Library supports PII detection through multiple integrations:
+The NeMo Guardrails library supports PII detection through multiple integrations:
 
 - **Presidio-based detection**: Use [Microsoft Presidio](../user-guides/community/presidio.md) for detecting entities such as names, email addresses, phone numbers, social security numbers, and more.
 - **Private AI**: Integrate with [Private AI](../user-guides/community/privateai.md) for advanced PII detection and masking.
@@ -88,7 +88,7 @@ For more information, refer to the [Tools Integration Guide](../integration/tool
 
 ## Custom Rails
 
-The NeMo Guardrails Library provides extensive flexibility for creating custom guardrails tailored to your specific requirements.
+The NeMo Guardrails library provides extensive flexibility for creating custom guardrails tailored to your specific requirements.
 
 ### Add Custom Rails into Guardrails
 
@@ -127,7 +127,7 @@ If you have a script or tool that runs a custom guardrail, you can use it in NeM
 
 ### Integrate Guardrails into LLM-based Applications
 
-The NeMo Guardrails Library can be integrated into applications in multiple ways:
+The NeMo Guardrails library can be integrated into applications in multiple ways:
 
 1. **Python SDK integration**: Add guardrails directly into your Python application.
 

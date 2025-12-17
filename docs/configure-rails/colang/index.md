@@ -16,8 +16,8 @@ content:
 Colang is an *event-driven interaction modeling language* that is interpreted by a Python runtime.
 This section describes how to use Colang to define guardrails flows in `.co` files.
 
-The initial releases of the NeMo Guardrails Library (versions 0.1 through 0.7) use Colang 1.0.
-Beginning with version 0.8, the NeMo Guardrails Library introduces support for Colang 2.0, while maintaining Colang 1.0 as the default until Colang completes its beta phase.
+The initial releases of the NeMo Guardrails library (versions 0.1 through 0.7) use Colang 1.0.
+Beginning with version 0.8, the NeMo Guardrails library introduces support for Colang 2.0, while maintaining Colang 1.0 as the default until Colang completes its beta phase.
 
 | NeMo Guardrails Library Version | Colang Version |
 |-------------------------|----------------|

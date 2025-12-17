@@ -13,7 +13,7 @@ content:
 
 # Architecture Guide
 
-This document provides more details on the architecture and the approach that the NeMo Guardrails Library takes for implementing guardrails.
+This document provides more details on the architecture and the approach that the NeMo Guardrails library takes for implementing guardrails.
 
 ![Overall Architecture](overall-architecture.png)
 

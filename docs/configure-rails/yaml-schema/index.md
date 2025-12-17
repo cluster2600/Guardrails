@@ -13,7 +13,7 @@ content:
 
 # Core Configurations for Guardrails
 
-This section describes the `config.yml` file schema used to configure the NeMo Guardrails Library.
+This section describes the `config.yml` file schema used to configure the NeMo Guardrails library.
 The `config.yml` file is the primary configuration file for defining LLM models, guardrails behavior, prompts, knowledge base settings, and tracing options.
 
 ## Overview

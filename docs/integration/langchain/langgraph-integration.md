@@ -13,13 +13,13 @@ content:
 
 # LangGraph Integration
 
-This guide demonstrates how to integrate the NeMo Guardrails Library with LangGraph to build safe and controlled multi-agent workflows. LangGraph enables you to create sophisticated agent architectures with state management, conditional routing, and tool calling, while NeMo Guardrails provides the safety layer to ensure responsible AI behavior.
+This guide demonstrates how to integrate the NeMo Guardrails library with LangGraph to build safe and controlled multi-agent workflows. LangGraph enables you to create sophisticated agent architectures with state management, conditional routing, and tool calling, while NeMo Guardrails provides the safety layer to ensure responsible AI behavior.
 
 ---
 
 ## Overview
 
-LangGraph is a library for building stateful, multi-actor applications with LLMs. When combined with the NeMo Guardrails Library, you can create complex agent workflows that maintain safety and compliance throughout the entire conversation flow.
+LangGraph is a library for building stateful, multi-actor applications with LLMs. When combined with the NeMo Guardrails library, you can create complex agent workflows that maintain safety and compliance throughout the entire conversation flow.
 
 ### Key Benefits
 
@@ -51,7 +51,7 @@ Install the required dependencies and set up your environment.
 
 ## Basic Integration Pattern
 
-The simplest integration involves wrapping your LangGraph nodes with the NeMo Guardrails Library using the `RunnableRails` interface.
+The simplest integration involves wrapping your LangGraph nodes with the NeMo Guardrails library using the `RunnableRails` interface.
 
 ### Configuration Setup
 
@@ -169,7 +169,7 @@ To enhance the functionality of your LangGraph agents, you can combine tool call
 
 ### Tool Definition
 
-Define the following simplified example tools that demonstrate the integration pattern with the NeMo Guardrails Library.
+Define the following simplified example tools that demonstrate the integration pattern with the NeMo Guardrails library.
 
 The first tool, `search_knowledge`, searches a predefined knowledge base for information matching the user's query. It performs matching against keywords like `"capital"`, `"weather"`, and `"python"`, returning relevant information or a generic response if no match is found.
 

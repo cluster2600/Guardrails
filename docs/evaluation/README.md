@@ -13,7 +13,7 @@ content:
 
 # Evaluate NeMo Guardrails Library Performance
 
-The NeMo Guardrails Library includes a set of tools that you can use to evaluate the different types of rails. In the current version, these tools test the performance of each type of rail individually. You can use the evaluation tools through the `nemoguardrails` CLI. Examples will be provided for each type of rail.
+The NeMo Guardrails library includes a set of tools that you can use to evaluate the different types of rails. In the current version, these tools test the performance of each type of rail individually. You can use the evaluation tools through the `nemoguardrails` CLI. Examples will be provided for each type of rail.
 
 At the same time, we provide preliminary results on the performance of the rails on a set of public datasets that are relevant to each task at hand.
 

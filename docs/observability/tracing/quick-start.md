@@ -15,7 +15,7 @@ content:
 
 The following is a minimal setup to enable tracing using the OpenTelemetry SDK.
 
-1. Install the NeMo Guardrails Library and the OpenTelemetry SDK.
+1. Install the NeMo Guardrails library and the OpenTelemetry SDK.
 
     ```bash
     pip install nemoguardrails[tracing] opentelemetry-sdk

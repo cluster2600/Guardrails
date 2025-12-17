@@ -13,7 +13,7 @@ content:
 
 # Local Server Setup
 
-The NeMo Guardrails Library enables you to create a guardrails local server and deploy it using a **guardrails server** and an **actions server**.
+The NeMo Guardrails library enables you to create a guardrails local server and deploy it using a **guardrails server** and an **actions server**.
 
 ## Overview
 
