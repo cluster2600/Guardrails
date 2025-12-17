@@ -173,7 +173,7 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
 
     async def _process(
         self,
-        chunk: Union[str, dict, object],
+        chunk: Union[str, object],
         generation_info: Optional[Dict[str, Any]] = None,
     ):
         """Process a chunk of text or dict.
@@ -275,7 +275,7 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         self,
         chunk: Union[
             str,
-            dict,
+            # dict,
             GenerationChunk,
             AIMessageChunk,
             ChatGenerationChunk,
@@ -319,7 +319,7 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
             # empty string is a valid chunk and should be processed normally
             pass
         elif isinstance(chunk, dict):
-            # plain dict chunks are allowed (e.g., for OpenAI-compatible streaming)
+            # plain dict chunks are allowed for OpenAI-compatible streaming
             pass
         else:
             raise Exception(f"Unsupported chunk type: {chunk.__class__.__name__}")

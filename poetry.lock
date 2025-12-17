@@ -6596,7 +6596,7 @@ files = [
 cffi = ["cffi (>=1.17)"]
 
 [extras]
-all = ["aiofiles", "fast-langdetect", "google-cloud-language", "langchain-nvidia-ai-endpoints", "langchain-openai", "numpy", "numpy", "numpy", "numpy", "opentelemetry-api", "presidio-analyzer", "presidio-anonymizer", "streamlit", "tqdm", "yara-python"]
+all = ["fast-langdetect", "google-cloud-language", "langchain-nvidia-ai-endpoints", "langchain-openai", "numpy", "numpy", "numpy", "numpy", "opentelemetry-api", "presidio-analyzer", "presidio-anonymizer", "streamlit", "tqdm", "yara-python"]
 eval = ["numpy", "numpy", "numpy", "numpy", "streamlit", "tornado", "tqdm"]
 gcp = ["google-cloud-language"]
 jailbreak = ["yara-python"]
@@ -6609,4 +6609,4 @@ tracing = ["opentelemetry-api"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.14"
-content-hash = "5f621add3bdfe92f78c38e14702f22cef7adb3a98b6ca6e494bb44ed834bdd97"
+content-hash = "d98bb73f1ab645044c8e92788a70518ae054ce8d53245beb65e07c532b6acfc0"
