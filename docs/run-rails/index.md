@@ -77,13 +77,6 @@ Stream LLM responses in real-time with the stream_async method and output rails 
 Use generate_events for low-level control over guardrails execution and event handling.
 :::
 
-:::{grid-item-card} Tools Integration with NeMo Guardrails
-:link: tools-integration
-:link-type: doc
-
-This guide provides comprehensive instructions for integrating and using tools within NeMo Guardrails via the LLMRails interface. It covers supported tools, configuration settings, practical...
-:::
-
 ::::
 
 ## When to Use Each API
