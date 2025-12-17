@@ -1,6 +1,6 @@
 ---
 title:
-  page: "Run the NeMo Guardrails library with the Python APIs"
+  page: "Run the NeMo Guardrails Library with the Python APIs"
   nav: "Run Rails"
 description: "Use RailsConfig and LLMRails classes to load configurations and generate guarded responses."
 topics: ["AI Safety", "LLM Guardrails"]
