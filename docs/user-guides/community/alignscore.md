@@ -1,3 +1,16 @@
+---
+title:
+  page: "AlignScore Integration for Fact Checking"
+  nav: "AlignScore"
+description: "Use AlignScore model for fact-checking and hallucination detection in RAG and knowledge-grounded applications."
+topics: ["AI Safety", "Guardrails"]
+tags: ["AlignScore", "Fact Checking", "Hallucination", "RAG"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # AlignScore Integration
 
 NeMo Guardrails provides out-of-the-box support for the [AlignScore metric (Zha et al.)](https://aclanthology.org/2023.acl-long.634.pdf), which uses a RoBERTa-based model for scoring factual consistency in model responses with respect to the knowledge base.

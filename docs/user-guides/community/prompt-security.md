@@ -1,3 +1,16 @@
+---
+title:
+  page: "Prompt Security Integration"
+  nav: "Prompt Security"
+description: "Integrate Prompt Security for detecting and blocking prompt injection attacks, jailbreaks, and adversarial inputs."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Prompt Security", "Jailbreak Detection", "Security", "Injection"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Prompt Security Integration
 
 [Prompt Security AI](https://prompt.security/?utm_medium=github&utm_campaign=nemo-guardrails) allows you to protect LLM interaction. This integration enables NeMo Guardrails to use Prompt Security to protect input and output flows.

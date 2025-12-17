@@ -1,3 +1,16 @@
+---
+title:
+  page: "Core Classes - RailsConfig and LLMRails"
+  nav: "Core Classes"
+description: "Reference for RailsConfig and LLMRails classes covering configuration loading, response generation, and action registration."
+topics: ["Guardrails"]
+tags: ["Python", "SDK", "API", "RailsConfig", "LLMRails"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Core Classes
 
 This guide covers the two fundamental classes in the NeMo Guardrails toolkit: `RailsConfig` for loading configurations and `LLMRails` for generating responses with guardrails.

@@ -1,3 +1,16 @@
+---
+title:
+  page: "Actions Server for Secure Execution"
+  nav: "Actions Server"
+description: "Deploy the NeMo Guardrails Actions Server to run custom actions securely in a separate isolated environment."
+topics: ["Guardrails"]
+tags: ["Server", "Actions", "Security", "Deployment"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Professional"]
+---
+
 # Actions Server
 
 The Actions Server enables you to run the actions invoked from the guardrails more securely (see [Security Guidelines](../../security/guidelines.md) for more details). The action server should be deployed in a separate environment.

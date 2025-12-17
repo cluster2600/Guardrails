@@ -1,3 +1,16 @@
+---
+title:
+  page: "LangChain Integration Guide"
+  nav: "Integration Guide"
+description: "Add guardrails to LangChain chains using RunnableRails or use LangChain chains inside guardrails configurations."
+topics: ["Guardrails"]
+tags: ["LangChain", "Integration", "RunnableRails", "Python"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # LangChain Integration
 
 There are two main ways in which you can use NeMo Guardrails with LangChain:

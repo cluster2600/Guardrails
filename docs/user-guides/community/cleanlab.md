@@ -1,3 +1,16 @@
+---
+title:
+  page: "Cleanlab Integration for Data Quality"
+  nav: "Cleanlab"
+description: "Use Cleanlab for detecting data quality issues, label errors, and problematic content in guardrails."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Cleanlab", "Data Quality", "Label Errors", "Content Safety"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "Data Scientist"]
+---
+
 # Cleanlab Integration
 
 Cleanlab's state-of-the-art [LLM uncertainty estimator](https://cleanlab.ai/blog/trustworthy-language-model/) scores the _trustworthiness_ of any LLM response, to detect incorrect outputs and hallucinations in real-time.

@@ -1,6 +1,14 @@
 ---
-title: Jailbreak Detection
-description: Deploy NemoGuard Jailbreak Detection NIM to block adversarial prompts.
+title:
+  page: "Jailbreak Detection with NemoGuard NIM"
+  nav: "Jailbreak Detection"
+description: "Deploy NemoGuard Jailbreak Detection NIM to detect and block adversarial prompts that attempt to bypass safety measures."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Tutorial", "NIM", "Jailbreak Detection", "Docker", "Security"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Jailbreak Detection with NemoGuard NIM

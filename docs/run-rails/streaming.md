@@ -1,3 +1,16 @@
+---
+title:
+  page: "Streaming Responses in NeMo Guardrails"
+  nav: "Streaming"
+description: "Configure and use token streaming with NeMo Guardrails including external generators, token usage tracking, and server API."
+topics: ["Guardrails"]
+tags: ["Streaming", "Python", "API", "Async"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Streaming
 
 If the application LLM supports streaming, NeMo Guardrails can stream tokens as well. Streaming is automatically enabled when you use the `stream_async()` method - no configuration is required.

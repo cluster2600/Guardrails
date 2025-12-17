@@ -1,6 +1,14 @@
 ---
-title: Text Content Safety
-description: Deploy Nemotron Safety Guard to detect harmful content in text inputs and outputs.
+title:
+  page: "Text Content Safety with Nemotron Safety Guard"
+  nav: "Text Content Safety"
+description: "Deploy Nemotron Safety Guard NIM to detect harmful content in text inputs and outputs with multilingual support."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Tutorial", "NIM", "Content Safety", "Docker", "Multilingual"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 <!--

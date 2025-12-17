@@ -1,6 +1,14 @@
 ---
-title: Multimodal Content Safety
-description: Add safety checks to images and text using vision models as LLM-as-a-judge.
+title:
+  page: "Multimodal Content Safety with Vision Models"
+  nav: "Multimodal Content Safety"
+description: "Add safety checks to images and text using vision models as LLM-as-a-judge for multimodal content moderation."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Tutorial", "Multimodal", "Vision", "Content Safety", "OpenAI"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 <!--

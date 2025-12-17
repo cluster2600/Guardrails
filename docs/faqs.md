@@ -1,3 +1,16 @@
+---
+title:
+  page: "NeMo Guardrails FAQ"
+  nav: "FAQ"
+description: "Frequently asked questions about NeMo Guardrails covering production deployment, supported LLMs, and knowledge base usage."
+topics: ["Guardrails"]
+tags: ["FAQ", "LLM", "Knowledge Base", "Production"]
+content:
+  type: "Reference"
+  difficulty: "Beginner"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Frequently Asked Questions (FAQ)
 
 This is an FAQ document. If your question isn't answered here, feel free to open a GitHub issue or ask a question using GitHub Discussions.

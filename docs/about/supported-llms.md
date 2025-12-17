@@ -1,6 +1,14 @@
 ---
-title: Supported LLMs and Providers
-description: Browse the LLMs and their providers supported by the toolkit.
+title:
+  page: "Supported LLMs and Providers"
+  nav: "Supported LLMs"
+description: "Browse LLM providers supported by NeMo Guardrails including NVIDIA NIM, OpenAI, Azure, Anthropic, and self-hosted options."
+topics: ["AI", "Guardrails"]
+tags: ["LLM", "NIM", "OpenAI", "Anthropic", "LangChain"]
+content:
+  type: "Reference"
+  difficulty: "Beginner"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Supported LLMs

@@ -1,3 +1,16 @@
+---
+title:
+  page: "GuardrailsAI Integration"
+  nav: "GuardrailsAI"
+description: "Use GuardrailsAI validators from the Guardrails Hub for content safety, PII detection, toxic language, and jailbreak detection."
+topics: ["AI Safety", "Guardrails"]
+tags: ["GuardrailsAI", "Validators", "Content Safety", "PII Detection"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # GuardrailsAI Integration
 
 NeMo Guardrails provides out-of-the-box support for [GuardrailsAI](https://github.com/guardrails-ai/guardrails) validators, enabling comprehensive input and output validation using a rich ecosystem of community-built validators. GuardrailsAI offers validators for content safety, PII detection, toxic language filtering, jailbreak detection, topic restriction, and much more.

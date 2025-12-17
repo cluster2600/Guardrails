@@ -1,3 +1,16 @@
+---
+title:
+  page: "AlignScore Deployment for Fact Checking"
+  nav: "AlignScore Deployment"
+description: "Deploy AlignScore server for fact-checking with Docker or manual installation including model setup and API configuration."
+topics: ["Guardrails"]
+tags: ["AlignScore", "Deployment", "Fact Checking", "Docker"]
+content:
+  type: "Tutorial"
+  difficulty: "Advanced"
+  audience: ["Developer", "DevOps Professional"]
+---
+
 # AlignScore Deployment
 
 ```{note}

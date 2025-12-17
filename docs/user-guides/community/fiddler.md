@@ -1,3 +1,16 @@
+---
+title:
+  page: "Fiddler Guardrails Integration"
+  nav: "Fiddler"
+description: "Integrate Fiddler AI for content moderation, safety checks, and LLM output monitoring in guardrails."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Fiddler", "Content Moderation", "Monitoring", "Safety"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Fiddler Guardrails Integration
 
 Fiddler Guardrails utilizes [Fiddler Trust Models](https://docs.fiddler.ai/product-guide/llm-monitoring/llm-based-metrics#fiddler-fast-trust-metrics) in a specialized low-latency, high-throughput configuration. Guardrails can be used to guard Large Language Model (LLM) applications against user threats, such as prompt injection or harmful and inappropriate content, and LLM hallucinations.

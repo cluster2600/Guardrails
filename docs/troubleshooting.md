@@ -1,3 +1,16 @@
+---
+title:
+  page: "NeMo Guardrails Troubleshooting"
+  nav: "Troubleshooting"
+description: "Solutions for common issues with NeMo Guardrails including nested AsyncIO loops and configuration problems."
+topics: ["Guardrails"]
+tags: ["Troubleshooting", "AsyncIO", "Python", "Debugging"]
+content:
+  type: "Troubleshooting"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Troubleshooting
 
 This page provides solutions to issues you may encounter while using NeMo Guardrails. If you encounter an issue that is not listed here, [open an issue](https://github.com/NVIDIA/NeMo-Guardrails/issues) on GitHub.

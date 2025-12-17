@@ -1,6 +1,14 @@
 ---
-title: Use Cases
-description: Browse the different use cases of the NeMo Guardrails toolkit.
+title:
+  page: "NeMo Guardrails Use Cases"
+  nav: "Use Cases"
+description: "Explore guardrails use cases including content safety, jailbreak protection, topic control, PII detection, and agentic security."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Python", "LLM", "Safety", "Content Moderation", "PII Detection"]
+content:
+  type: "Concept"
+  difficulty: "Beginner"
+  audience: ["Developer", "ML Engineer", "Data Scientist"]
 ---
 
 # Use Cases

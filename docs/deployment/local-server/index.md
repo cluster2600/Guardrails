@@ -1,3 +1,16 @@
+---
+title:
+  page: "Local Server Setup for NeMo Guardrails"
+  nav: "Local Server"
+description: "Set up NeMo Guardrails local server with FastAPI for chat completions and a separate actions server for secure execution."
+topics: ["Guardrails"]
+tags: ["Server", "FastAPI", "Deployment", "Local"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Professional"]
+---
+
 # Local Server Setup
 
 The NeMo Guardrails toolkit enables you to create a guardrails local server and deploy it using a **guardrails server** and an **actions server**.

@@ -1,6 +1,14 @@
 ---
-title: Deploy
-description: Deploy your guardrails using the toolkit's local server, Docker, or as a production microservice.
+title:
+  page: "Deploy NeMo Guardrails"
+  nav: "Deployment"
+description: "Deploy NeMo Guardrails using the local server, Docker containers, or as a production microservice on Kubernetes."
+topics: ["Guardrails"]
+tags: ["Deployment", "Docker", "Kubernetes", "Server"]
+content:
+  type: "Concept"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Professional"]
 ---
 
 # Deployment Options

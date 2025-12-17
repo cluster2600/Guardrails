@@ -1,3 +1,16 @@
+---
+title:
+  page: "AutoAlign Integration for Safety and PII"
+  nav: "AutoAlign"
+description: "Use AutoAlign for content safety, PII detection, and response quality improvement in guardrails."
+topics: ["AI Safety", "Guardrails"]
+tags: ["AutoAlign", "Safety", "PII Detection", "Content Quality"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # AutoAlign Integration
 
 This package implements the AutoAlign's guardrails API integration - a comprehensive guardrail library by [AutoAlign](https://autoalign.ai/).

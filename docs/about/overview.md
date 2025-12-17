@@ -1,6 +1,14 @@
 ---
-title: Overview
-description: Learn about the NeMo Guardrails toolkit and its capabilities.
+title:
+  page: "NeMo Guardrails Toolkit Overview"
+  nav: "Overview"
+description: "Learn about the NeMo Guardrails toolkit for adding programmable guardrails to LLM applications with configurable safety checks."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Python", "LLM", "NeMo", "Safety", "Open Source"]
+content:
+  type: "Concept"
+  difficulty: "Beginner"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 <!--

@@ -1,3 +1,16 @@
+---
+title:
+  page: "ActiveFence Integration for Content Safety"
+  nav: "ActiveFence"
+description: "Use ActiveFence Trust and Safety API for content moderation and harmful content detection in guardrails."
+topics: ["AI Safety", "Guardrails"]
+tags: ["ActiveFence", "Content Safety", "Trust Safety", "Moderation"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # ActiveFence Integration
 
 NeMo Guardrails supports using the [ActiveFence ActiveScore API](https://docs.activefence.com/index.html) as an input and output rail out-of-the-box (you need to have the `ACTIVEFENCE_API_KEY` environment variable set).

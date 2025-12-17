@@ -1,3 +1,16 @@
+---
+title:
+  page: "Pangea AI Guard Integration"
+  nav: "Pangea"
+description: "Integrate Pangea AI Guard for content moderation, PII detection, and prompt injection protection."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Pangea", "Content Moderation", "PII Detection", "Security"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Pangea AI Guard integration
 
 The Pangea guardrail uses configurable detection policies (called *recipes*) from the [AI Guard service](https://pangea.cloud/docs/ai-guard/) to identify and mitigate risks in AI application traffic, including:

@@ -1,3 +1,16 @@
+---
+title:
+  page: "LangGraph Integration for Multi-Agent Safety"
+  nav: "LangGraph"
+description: "Build safe multi-agent workflows with LangGraph and NeMo Guardrails including stateful safety, tool call protection, and routing."
+topics: ["AI Safety", "Guardrails"]
+tags: ["LangGraph", "Multi-Agent", "Integration", "Safety"]
+content:
+  type: "Tutorial"
+  difficulty: "Advanced"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # LangGraph Integration
 
 This guide demonstrates how to integrate NeMo Guardrails with LangGraph to build safe and controlled multi-agent workflows. LangGraph enables you to create sophisticated agent architectures with state management, conditional routing, and tool calling, while NeMo Guardrails provides the safety layer to ensure responsible AI behavior.

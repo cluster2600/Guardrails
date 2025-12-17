@@ -1,3 +1,16 @@
+---
+title:
+  page: "Tracing Troubleshooting"
+  nav: "Troubleshooting"
+description: "Common issues and solutions for tracing in NeMo Guardrails including missing traces, connection errors, and imports."
+topics: ["Guardrails"]
+tags: ["Troubleshooting", "Tracing", "Debugging"]
+content:
+  type: "Troubleshooting"
+  difficulty: "Intermediate"
+  audience: ["Developer"]
+---
+
 # Troubleshooting
 
 | Issue | Solution |

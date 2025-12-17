@@ -1,6 +1,14 @@
 ---
-title: Run Rails
-description: Use the Python SDK and understand core classes like RailsConfig and LLMRails.
+title:
+  page: "Run NeMo Guardrails"
+  nav: "Run Rails"
+description: "Use the Python SDK with RailsConfig and LLMRails classes to generate guarded responses, stream tokens, and handle events."
+topics: ["Guardrails"]
+tags: ["Python", "SDK", "API", "LLMRails"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Run Rails

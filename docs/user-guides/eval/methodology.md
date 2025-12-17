@@ -1,3 +1,16 @@
+---
+title:
+  page: "Guardrails Evaluation Methodology"
+  nav: "Methodology"
+description: "Policy-based methodology for evaluating guardrail configurations with compliance rate metrics and cost analysis."
+topics: ["Guardrails"]
+tags: ["Evaluation", "Methodology", "Compliance", "Testing"]
+content:
+  type: "Concept"
+  difficulty: "Advanced"
+  audience: ["Developer", "ML Engineer", "Data Scientist"]
+---
+
 # Evaluation Methodology
 
 As mentioned in the [evaluation tooling](./tooling.md), we propose a guardrail evaluation methodology based on policies.

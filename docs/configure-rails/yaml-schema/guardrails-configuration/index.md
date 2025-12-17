@@ -1,6 +1,14 @@
 ---
-title: Guardrails Configuration
-description: Configure input, output, dialog, retrieval, and execution rails in config.yml to control LLM behavior.
+title:
+  page: "Guardrails Configuration Reference"
+  nav: "Guardrails"
+description: "Configure input, output, dialog, retrieval, and execution rails in config.yml to control LLM behavior and safety."
+topics: ["Guardrails"]
+tags: ["Configuration", "Rails", "YAML", "Safety"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Guardrails Configuration

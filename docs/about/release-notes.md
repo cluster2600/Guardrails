@@ -1,4 +1,14 @@
 ---
+title:
+  page: "NeMo Guardrails Release Notes"
+  nav: "Release Notes"
+description: "Release notes summarizing key features, breaking changes, and fixed issues for each NeMo Guardrails version."
+topics: ["Guardrails"]
+tags: ["Release Notes", "Changelog", "NeMo"]
+content:
+  type: "Reference"
+  difficulty: "Beginner"
+  audience: ["Developer", "ML Engineer"]
 tocdepth: 2
 ---
 <!--

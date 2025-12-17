@@ -1,3 +1,16 @@
+---
+title:
+  page: "Generation Options Reference"
+  nav: "Generation Options"
+description: "Control LLM generation with options for output variables, LLM parameters, detailed logging, and selective rail activation."
+topics: ["Guardrails"]
+tags: ["Python", "API", "Configuration", "Logging"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Generation Options
 
 NeMo Guardrails exposes a set of **generation options** that give you fine-grained control over how the LLM generation is performed (for example, what rails are enabled, additional parameters that should be passed to the LLM, what context data should be returned, what logging information should be returned).

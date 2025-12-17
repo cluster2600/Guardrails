@@ -1,6 +1,14 @@
 ---
-title: Evaluate
-description: Evaluate the performance of the rails.
+title:
+  page: "Guardrails Evaluation Tools"
+  nav: "Evaluation"
+description: "Evaluate dialog, fact-checking, moderation, and hallucination rails using built-in CLI tools and benchmark datasets."
+topics: ["Guardrails", "AI Safety"]
+tags: ["Evaluation", "CLI", "Benchmarks", "Testing"]
+content:
+  type: "Reference"
+  difficulty: "Advanced"
+  audience: ["Developer", "ML Engineer", "Data Scientist"]
 ---
 
 # Guardrails Evaluation

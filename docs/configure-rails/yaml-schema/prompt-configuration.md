@@ -1,6 +1,14 @@
 ---
-title: Prompt Configuration
-description: Customize prompts for LLM tasks including self-check input/output, fact checking, and intent generation.
+title:
+  page: "Prompt Configuration Reference"
+  nav: "Prompts"
+description: "Customize prompts for LLM tasks including self-check input/output, fact checking, intent generation, and bot messages."
+topics: ["Guardrails"]
+tags: ["Configuration", "Prompts", "YAML", "LLM"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Prompt Configuration

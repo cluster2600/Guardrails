@@ -1,6 +1,14 @@
 ---
-title: Observability
-description: Monitor and troubleshoot your guardrails applications.
+title:
+  page: "Logging and Debugging NeMo Guardrails"
+  nav: "Logging"
+description: "Debug guardrails with verbose mode, explain method, generation log options, and output variables for comprehensive observability."
+topics: ["Guardrails"]
+tags: ["Logging", "Debugging", "Observability", "Python"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Logging and Debugging

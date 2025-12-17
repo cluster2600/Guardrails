@@ -1,6 +1,14 @@
 ---
-title: Colang Guide
-description: Learn Colang, the event-driven language for defining guardrails flows, user messages, and bot responses.
+title:
+  page: "Colang Language Guide"
+  nav: "Colang"
+description: "Learn Colang, the event-driven interaction modeling language for defining guardrails flows, user messages, and bot responses."
+topics: ["Guardrails"]
+tags: ["Colang", "Language", "Flows", "Events"]
+content:
+  type: "Concept"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Colang Guide

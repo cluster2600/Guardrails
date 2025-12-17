@@ -1,3 +1,16 @@
+---
+title:
+  page: "Guardrails Sequence Diagrams"
+  nav: "Sequence Diagrams"
+description: "Visual sequence diagrams showing the guardrails process flow from input validation through dialog and output validation stages."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Architecture", "Sequence Diagrams", "LLM", "Safety"]
+content:
+  type: "Concept"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Guardrails Sequence Diagrams
 
 This guide provides an overview of the process of invoking guardrails.

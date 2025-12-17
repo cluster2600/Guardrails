@@ -1,3 +1,16 @@
+---
+title:
+  page: "Prompt Customization for NeMo Guardrails"
+  nav: "Prompt Customization"
+description: "Customize task-oriented prompts for generate_user_intent, generate_next_steps, and generate_bot_message across different LLMs."
+topics: ["Guardrails"]
+tags: ["Prompts", "Customization", "LLM", "Configuration"]
+content:
+  type: "Reference"
+  difficulty: "Advanced"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Prompt Customization
 
 **NOTE**: this documentation is intended for developers that want to extend/improve the support for different LLM engines.

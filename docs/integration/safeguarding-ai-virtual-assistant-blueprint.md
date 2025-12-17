@@ -1,3 +1,16 @@
+---
+title:
+  page: "NVIDIA Blueprint with NemoGuard NIMs"
+  nav: "Blueprint Integration"
+description: "Integrate NeMo Guardrails with NVIDIA AI Blueprint for virtual assistants using NemoGuard NIMs for content safety."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Blueprint", "NVIDIA", "NIM", "Virtual Assistant"]
+content:
+  type: "Tutorial"
+  difficulty: "Advanced"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Blueprint with NemoGuard NIMs
 
 ```{note}

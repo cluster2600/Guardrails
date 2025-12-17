@@ -1,6 +1,14 @@
 ---
-title: Install
-description: Install the toolkit with pip and set up your environment.
+title:
+  page: "Install NeMo Guardrails Toolkit"
+  nav: "Install"
+description: "Install NeMo Guardrails with pip, set up your Python environment, and configure optional dependencies for LLM providers."
+topics: ["Guardrails"]
+tags: ["Python", "Installation", "pip", "Docker"]
+content:
+  type: "Get Started"
+  difficulty: "Beginner"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Installation Guide

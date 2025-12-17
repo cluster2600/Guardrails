@@ -1,3 +1,16 @@
+---
+title:
+  page: "Tracing Quick Start with OpenTelemetry"
+  nav: "Quick Start"
+description: "Minimal setup to enable tracing in NeMo Guardrails using the OpenTelemetry SDK with console export."
+topics: ["Guardrails"]
+tags: ["Tracing", "OpenTelemetry", "Quick Start", "Observability"]
+content:
+  type: "Tutorial"
+  difficulty: "Beginner"
+  audience: ["Developer"]
+---
+
 # Quick Start
 
 The following is a minimal setup to enable tracing using the OpenTelemetry SDK.

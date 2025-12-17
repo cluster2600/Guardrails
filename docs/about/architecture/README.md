@@ -1,3 +1,16 @@
+---
+title:
+  page: "NeMo Guardrails Architecture Guide"
+  nav: "Architecture"
+description: "Detailed architecture of the NeMo Guardrails toolkit including event-driven design, LLM interaction, and server architecture."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Architecture", "LLM", "Event-Driven", "Colang"]
+content:
+  type: "Concept"
+  difficulty: "Advanced"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Architecture Guide
 
 This document provides more details on the architecture and the approach that the NeMo Guardrails toolkit takes for implementing guardrails.

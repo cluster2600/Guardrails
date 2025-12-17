@@ -1,3 +1,16 @@
+---
+title:
+  page: "Private AI Integration for PII Detection"
+  nav: "Private AI"
+description: "Detect and redact PII using Private AI's advanced entity recognition for names, addresses, and sensitive information."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Private AI", "PII Detection", "Privacy", "Data Protection"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Private AI Integration
 
 [Private AI](https://docs.private-ai.com/?utm_medium=github&utm_campaign=nemo-guardrails) allows you to detect and mask Personally Identifiable Information (PII) in your data. This integration enables NeMo Guardrails to use Private AI for PII detection and masking in input, output, and retrieval flows.

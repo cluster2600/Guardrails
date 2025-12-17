@@ -1,6 +1,14 @@
 ---
-title: Model Configuration
-description: Configure LLM providers, embedding models, and task-specific models in the config.yml file.
+title:
+  page: "Model Configuration Reference"
+  nav: "Model Configuration"
+description: "Configure LLM providers like OpenAI, NVIDIA NIM, and Anthropic along with embedding models and task-specific models."
+topics: ["Guardrails"]
+tags: ["Configuration", "LLM", "Models", "YAML"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Model Configuration

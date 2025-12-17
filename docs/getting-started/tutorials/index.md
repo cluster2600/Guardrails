@@ -1,6 +1,14 @@
 ---
-title: Tutorials
-description: Follow hands-on tutorials to build your first guardrails configuration.
+title:
+  page: "NeMo Guardrails Tutorials"
+  nav: "Tutorials"
+description: "Hands-on tutorials for content safety, topic control, jailbreak detection, and multimodal guardrails with NeMo Guardrails."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Tutorial", "NIM", "Content Safety", "NeMo"]
+content:
+  type: "Tutorial"
+  difficulty: "Beginner"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Tutorials

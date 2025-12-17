@@ -1,6 +1,14 @@
 ---
-title: Custom Actions
-description: Define custom Python actions in actions.py to extend guardrails with external integrations and validation logic.
+title:
+  page: "Custom Actions Guide"
+  nav: "Custom Actions"
+description: "Define Python actions in actions.py to extend guardrails with external API integrations, validation logic, and custom tools."
+topics: ["Guardrails"]
+tags: ["Actions", "Python", "API", "Integration"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Custom Actions

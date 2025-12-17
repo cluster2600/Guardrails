@@ -1,3 +1,16 @@
+---
+title:
+  page: "Cisco AI Defense Integration"
+  nav: "Cisco AI Defense"
+description: "Integrate Cisco AI Defense for enterprise-grade content moderation, threat detection, and policy enforcement."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Cisco", "AI Defense", "Enterprise", "Security"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Professional"]
+---
+
 # Cisco AI Defense Integration
 
 [Cisco AI Defense](https://www.cisco.com/site/us/en/products/security/ai-defense/index.html?utm_medium=github&utm_campaign=nemo-guardrails) allows you to protect LLM interactions. This integration enables NeMo Guardrails to use Cisco AI Defense to protect input and output flows.

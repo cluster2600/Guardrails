@@ -1,6 +1,14 @@
 ---
-title: Rails Overview
-description: Learn how the NeMo Guardrails toolkit applies guardrails at multiple stages of the LLM interaction.
+title:
+  page: "Rails Overview - Input, Output, and Execution Rails"
+  nav: "Rails Overview"
+description: "Learn about input, output, retrieval, execution, and dialog rails and when each type applies to your use case."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Rails", "LLM", "Safety", "Architecture"]
+content:
+  type: "Concept"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Rails Overview

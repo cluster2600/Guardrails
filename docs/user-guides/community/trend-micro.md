@@ -1,3 +1,16 @@
+---
+title:
+  page: "Trend Micro AI Application Security Integration"
+  nav: "Trend Micro"
+description: "Integrate Trend Micro Vision One AI Application Security for enterprise-grade content moderation and threat detection."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Trend Micro", "Security", "Content Moderation", "Enterprise"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Professional"]
+---
+
 # Trend Micro Vision One AI Application Security
 
 Trend Micro Vision One [AI Application Security's](https://docs.trendmicro.com/en-us/documentation/article/trend-vision-one-ai-scanner-ai-guard) AI Guard feature uses a configurable policy to identify risks in AI Applications, such as:

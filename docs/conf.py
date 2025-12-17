@@ -15,9 +15,14 @@
 
 # Copyright (c) 2024, NVIDIA CORPORATION.
 
+import os
+import sys
 from datetime import date
 
 from toml import load
+
+# Add custom extensions directory to Python path
+sys.path.insert(0, os.path.abspath("_extensions"))
 
 project = "NVIDIA NeMo Guardrails Toolkit Developer Guide"
 this_year = date.today().year
@@ -35,6 +40,13 @@ extensions = [
     "sphinx_reredirects",
     "sphinx_design",
     "sphinxcontrib.mermaid",
+    # Custom extensions from _extensions/
+    "json_output",  # Generate JSON output for each page
+    "rich_metadata",  # SEO metadata injection from frontmatter
+    "search_assets",  # Enhanced search page functionality
+    "ai_assistant",  # AI-powered assistant integration
+    "content_gating",  # Conditional content rendering based on release tags
+    "myst_codeblock_substitutions",  # Enable MyST substitutions in code blocks
 ]
 
 redirects = {
@@ -46,7 +58,13 @@ redirects = {
 
 copybutton_exclude = ".linenos, .gp, .go"
 
+# -- Options for JSON Output -------------------------------------------------
+json_output_settings = {
+    "enabled": True,
+}
+
 exclude_patterns = [
+    "_build/**",
     "README.md",
 ]
 
@@ -64,10 +82,6 @@ myst_links_external_new_tab = True
 myst_substitutions = {
     "version": release,
 }
-
-exclude_patterns = [
-    "_build/**",
-]
 
 myst_url_schemes = {
     "http": None,

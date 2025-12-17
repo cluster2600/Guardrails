@@ -1,3 +1,16 @@
+---
+title:
+  page: "Tracing NeMo Guardrails with OpenTelemetry"
+  nav: "Tracing"
+description: "Configure tracing with OpenTelemetry to monitor rails activation, LLM calls, flow execution, and conversation patterns."
+topics: ["Guardrails"]
+tags: ["Tracing", "OpenTelemetry", "Observability", "Monitoring"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Professional"]
+---
+
 (tracing)=
 
 # Tracing

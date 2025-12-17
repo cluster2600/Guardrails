@@ -1,3 +1,16 @@
+---
+title:
+  page: "Evaluation Tooling for NeMo Guardrails"
+  nav: "Tooling"
+description: "Tools for evaluating guardrail configuration performance including compliance rate, resource usage, and latency analysis."
+topics: ["Guardrails"]
+tags: ["Evaluation", "Testing", "Compliance", "Metrics"]
+content:
+  type: "Reference"
+  difficulty: "Advanced"
+  audience: ["Developer", "ML Engineer", "Data Scientist"]
+---
+
 # Evaluation Tooling
 
 NeMo Guardrails provides a set of tools for evaluating the performance of a guardrail configuration.

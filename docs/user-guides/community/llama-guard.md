@@ -1,3 +1,16 @@
+---
+title:
+  page: "Llama Guard Integration for Content Moderation"
+  nav: "Llama Guard"
+description: "Configure Llama Guard for input and output content moderation with improved performance over LLM self-checking methods."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Llama Guard", "Content Moderation", "vLLM", "Safety"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Llama-Guard Integration
 
 NeMo Guardrails provides out-of-the-box support for content moderation using Meta's [Llama Guard](https://ai.meta.com/research/publications/llama-guard-llm-based-input-output-safeguard-for-human-ai-conversations/) model.

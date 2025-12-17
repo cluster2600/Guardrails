@@ -1,6 +1,14 @@
 ---
-title: How It Works
-description: Learn how the NeMo Guardrails toolkit works.
+title:
+  page: "How NeMo Guardrails Works"
+  nav: "How It Works"
+description: "Learn how the NeMo Guardrails toolkit applies guardrails at multiple stages of LLM interaction including input, output, and dialog rails."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Architecture", "LLM", "NeMo", "Safety"]
+content:
+  type: "Concept"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # How It Works

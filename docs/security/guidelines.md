@@ -1,3 +1,16 @@
+---
+title:
+  page: "Security Guidelines for LLM Applications"
+  nav: "Security Guidelines"
+description: "Security principles for safely integrating LLMs with external resources including authentication isolation, input validation, and API design."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Security", "Best Practices", "API", "Integration"]
+content:
+  type: "Concept"
+  difficulty: "Intermediate"
+  audience: ["Developer", "DevOps Professional"]
+---
+
 # Security Guidelines
 
 Allowing LLMs to access external resources – such as search interfaces, databases, or computing resources such as Wolfram Alpha – can dramatically improve their capabilities. However, the unpredictable nature of LLM completion generations means that – without careful integration – these external resources can potentially be manipulated by attackers, leading to a dramatic increase in the risk of deployment of these combined models.

@@ -1,3 +1,16 @@
+---
+title:
+  page: "Tools Integration with NeMo Guardrails"
+  nav: "Tools Integration"
+description: "Integrate LangChain tools with NeMo Guardrails including built-in, community, and custom tools with security best practices."
+topics: ["Guardrails"]
+tags: ["Tools", "LangChain", "Integration", "Security"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Tools Integration with NeMo Guardrails
 
 This guide provides comprehensive instructions for integrating and using tools within NeMo Guardrails via the LLMRails interface. It covers supported tools, configuration settings, practical examples, and important security considerations for safe and effective implementation.

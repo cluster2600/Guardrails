@@ -1,3 +1,25 @@
+---
+title:
+  page: "NeMo Guardrails Developer Guide"
+  nav: "Home"
+description: "Add programmable guardrails to LLM applications with configurable safety checks, content filtering, and policy enforcement."
+topics:
+  - "AI Safety"
+  - "Guardrails"
+tags:
+  - "Python"
+  - "LLM"
+  - "NeMo"
+  - "Safety"
+  - "Open Source"
+content:
+  type: "Get Started"
+  difficulty: "Beginner"
+  audience:
+    - "ML Engineer"
+    - "Developer"
+---
+
 <!--
   SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0

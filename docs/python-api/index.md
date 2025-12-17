@@ -1,3 +1,16 @@
+---
+title:
+  page: "NeMo Guardrails Python API Reference"
+  nav: "Python API"
+description: "Python API reference for RailsConfig, LLMRails, message generation, custom actions, and LangChain tool integrations."
+topics: ["Guardrails"]
+tags: ["Python", "API", "Reference", "Actions", "LangChain"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Python API
 
 The primary way for using guardrails in your project is:

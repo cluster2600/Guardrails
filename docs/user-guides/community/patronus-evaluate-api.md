@@ -1,3 +1,16 @@
+---
+title:
+  page: "Patronus Evaluate API Integration"
+  nav: "Patronus API"
+description: "Integrate Patronus Evaluate API for hallucination detection, toxicity scoring, and content quality evaluation."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Patronus", "API", "Evaluation", "Hallucination"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Patronus Evaluate API Integration
 
 NeMo Guardrails supports using [Patronus AI](www.patronus.ai)'s Evaluate API as an output rail. The Evaluate API gives you access to Patronus' powerful suite of fully-managed in-house evaluation models, including [Lynx](patronus-lynx.md), Judge (a hosted LLM-as-a-Judge model), Toxicity, PII, and PHI models, and a suite of specialized RAG evaluators with

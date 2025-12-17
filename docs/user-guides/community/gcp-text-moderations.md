@@ -1,3 +1,16 @@
+---
+title:
+  page: "Google Cloud Text Moderation Integration"
+  nav: "GCP Moderation"
+description: "Use Google Cloud's text moderation API for content safety and harmful content detection in guardrails."
+topics: ["AI Safety", "Guardrails"]
+tags: ["GCP", "Google Cloud", "Content Moderation", "Text Safety"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # GCP Text Moderation Integration
 
 NeMo Guardrails supports using the [GCP Text Modeation API](https://cloud.google.com/natural-language/docs/moderating-text) as an input rail out-of-the-box. There are many ways you can authentication on GCP, refer to this [link](https://cloud.google.com/docs/authentication/application-default-credentials) for more details .

@@ -1,6 +1,14 @@
 ---
-title: Integrate
-description: Connect with LangChain, LangGraph, and other frameworks.
+title:
+  page: "LangChain Integration with NeMo Guardrails"
+  nav: "LangChain"
+description: "Integrate NeMo Guardrails with LangChain, LangGraph, and other frameworks using RunnableRails and chain wrappers."
+topics: ["Guardrails"]
+tags: ["LangChain", "LangGraph", "Integration", "Python"]
+content:
+  type: "Concept"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # LangChain Integration

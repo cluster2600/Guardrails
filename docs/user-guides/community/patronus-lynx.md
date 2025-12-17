@@ -1,3 +1,16 @@
+---
+title:
+  page: "Patronus Lynx Integration for Hallucination Detection"
+  nav: "Patronus Lynx"
+description: "Use Patronus Lynx model for hallucination detection and fact-checking in RAG applications."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Patronus", "Hallucination Detection", "Fact Checking", "RAG"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Patronus Lynx Integration
 
 NeMo Guardrails supports hallucination detection in RAG systems using [Patronus AI](www.patronus.ai)'s Lynx model. The model is hosted on Hugging Face and comes in both a 70B parameters (see [here](https://huggingface.co/PatronusAI/Patronus-Lynx-70B-Instruct)) and 8B parameters (see [here](https://huggingface.co/PatronusAI/Patronus-Lynx-8B-Instruct)) variant.

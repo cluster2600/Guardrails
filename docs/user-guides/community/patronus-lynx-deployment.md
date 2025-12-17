@@ -1,3 +1,16 @@
+---
+title:
+  page: "Patronus Lynx Deployment Guide"
+  nav: "Lynx Deployment"
+description: "Deploy the Patronus Lynx hallucination detection model locally or on cloud infrastructure."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Patronus", "Deployment", "Hallucination Detection", "vLLM"]
+content:
+  type: "Tutorial"
+  difficulty: "Advanced"
+  audience: ["Developer", "DevOps Professional"]
+---
+
 # Patronus Lynx Deployment
 
 ## vLLM

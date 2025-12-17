@@ -1,3 +1,16 @@
+---
+title:
+  page: "Presidio Integration for PII Detection"
+  nav: "Presidio"
+description: "Detect and anonymize PII like credit cards, SSNs, and phone numbers using Microsoft Presidio on inputs, outputs, and RAG chunks."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Presidio", "PII Detection", "Privacy", "Anonymization"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Presidio Integration
 
 NeMo Guardrails supports detecting sensitive data out-of-the-box using [Presidio](https://github.com/Microsoft/presidio), which provides fast identification and anonymization modules for private entities in text such as credit card numbers, names, locations, social security numbers, bitcoin wallets, US phone numbers, financial data and more. You can detect sensitive data on user input, bot output, or the relevant chunks retrieved from the knowledge base.

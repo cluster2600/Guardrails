@@ -1,6 +1,14 @@
 ---
-title: Topic Control
-description: Deploy NemoGuard Topic Control NIM to restrict conversations to allowed topics.
+title:
+  page: "Topic Control with NemoGuard NIM"
+  nav: "Topic Control"
+description: "Deploy NemoGuard Topic Control NIM to restrict LLM conversations to allowed topics and prevent off-topic discussions."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Tutorial", "NIM", "Topic Control", "Docker", "Content Moderation"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Topic Control with NemoGuard NIM

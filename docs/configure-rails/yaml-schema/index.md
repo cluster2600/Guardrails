@@ -1,6 +1,14 @@
 ---
-title: Core Configuration
-description: Complete reference for config.yml structure including models, guardrails, prompts, and tracing settings.
+title:
+  page: "Core Configuration Reference"
+  nav: "Core Configuration"
+description: "Complete reference for config.yml structure including LLM models, guardrails, prompts, knowledge base, and tracing settings."
+topics: ["Guardrails"]
+tags: ["Configuration", "YAML", "Reference", "LLM"]
+content:
+  type: "Reference"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
 ---
 
 # Core Configuration

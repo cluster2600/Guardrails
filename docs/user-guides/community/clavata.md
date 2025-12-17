@@ -1,3 +1,16 @@
+---
+title:
+  page: "Clavata Integration for Content Moderation"
+  nav: "Clavata"
+description: "Integrate Clavata for advanced content moderation with customizable policies for toxicity and harmful content."
+topics: ["AI Safety", "Guardrails"]
+tags: ["Clavata", "Content Moderation", "Toxicity", "Policy"]
+content:
+  type: "Tutorial"
+  difficulty: "Intermediate"
+  audience: ["Developer", "ML Engineer"]
+---
+
 # Clavata Integration
 
 [Clavata](https://clavata.ai) provides real-time moderation capabilities allowing anyone to detect and filter content. The exact rules of what to filter are up to you, but we do provide a number of rulesets for common issues.
