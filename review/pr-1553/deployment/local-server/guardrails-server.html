@@ -1,0 +1,924 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Guardrails Server &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=e201715b"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deployment/local-server/guardrails-server';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.19.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/deployment/local-server/guardrails-server.html" />
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Actions Server" href="actions-server.html" />
+    <link rel="prev" title="Local Server Setup" href="index.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+
+
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Toolkit Developer Guide - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Toolkit Developer Guide - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA NeMo Guardrails Toolkit Developer Guide</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Toolkit Developer Guide - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Toolkit Developer Guide - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA NeMo Guardrails Toolkit Developer Guide</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/use-cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Rail Types</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install the NeMo Guardrails Library</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Jailbreak Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Rails in Parallel</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/tracing-configuration.html">Tracing Configuration</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/index.html">Streaming Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/global-streaming.html">Streaming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/registering-actions.html">Registering Actions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/custom-initialization/index.html">Custom Initialization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/init-function.html">The Init Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-llm-providers.html">Custom LLM Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-embedding-providers.html">Custom Embedding Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-data.html">Custom Configuration Data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/colang/index.html">Colang</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-2/index.html">Colang 2.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/colang-2/whats-changed.html">What’s Changed</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-2/getting-started/index.html">Getting Started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/getting-started/hello-world.html">Hello World</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/getting-started/dialog-rails.html">Dialog Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/getting-started/multimodal-rails.html">Multimodal Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/getting-started/input-rails.html">Input Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/getting-started/interaction-loop.html">Interaction Loop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/getting-started/llm-flows.html">LLM Flows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/getting-started/recommended-next-steps.html">Recommended Next Steps</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/index.html">Language Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/event-generation-and-matching.html">Event Generation &amp; Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/working-with-actions.html">Working with Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/defining-flows.html">Defining Flows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/working-with-variables-and-expressions.html">Working with Variables &amp; Expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/flow-control.html">Flow control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/the-standard-library.html">Colang Standard Library (CSL)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/make-use-of-llms.html">Make use of Large Language Models (LLM)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/more-on-flows.html">More on Flows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/python-actions.html">Python Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-2/language-reference/development-and-debugging.html">Development and Debugging</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/colang-2/migration-guide.html">Migrating from Colang 1 to Colang 2</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-1/index.html">Colang 1.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/colang-1/colang-language-syntax-guide.html">Colang 1.0 Guide</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/index.html">Colang 1.0 Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/1-hello-world/README.html">Hello World</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/3-demo-use-case/README.html">Demo Use Case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/4-input-rails/README.html">Input Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/5-output-rails/README.html">Output Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/6-topical-rails/README.html">Topical Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/7-rag/README.html">Retrieval-Augmented Generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/colang-1/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/colang/usage-examples/index.html">Colang Usage Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/usage-examples/bot-message-instructions.html">Bot Message Instructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/usage-examples/extract-user-provided-values.html">Extract User-provided Values</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Caching Instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for LLM NIM</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Rails</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/index.html">Run Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/core-classes.html">Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../observability/logging/index.html">Logging</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Deployment Options</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Local Server Setup</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Guardrails Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../using-docker.html">Using Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using-microservice.html">Using NeMo Guardrails Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langgraph-integration.html">LangGraph Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Integrate LangChain Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines for LLM Integrations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Local Server Setup</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Guardrails Server</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="guardrails-server">
+<h1>Guardrails Server<a class="headerlink" href="#guardrails-server" title="Link to this heading">#</a></h1>
+<p>The Guardrails server loads a predefined set of guardrails configurations at startup and exposes an HTTP API to use them. The server uses <a class="reference external" href="https://fastapi.tiangolo.com/" rel="noreferer noopener" target="_blank">FastAPI</a>, and the interface is based on the <a class="reference external" href="https://github.com/mckaywrigley/chatbot-ui" rel="noreferer noopener" target="_blank">chatbot-ui</a> project. This server is best suited to provide a visual interface/ playground to interact with the bot and try out the rails.</p>
+<p>To launch the server:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>--config<span class="w"> </span>PATH/TO/CONFIGS<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>--port<span class="w"> </span>PORT<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>--prefix<span class="w"> </span>PREFIX<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>--disable-chat-ui<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>--auto-reload<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>--default-config-id<span class="w"> </span>DEFAULT_CONFIG_ID<span class="o">]</span>
+</pre></div>
+</div>
+<p>If no <code class="docutils literal notranslate"><span class="pre">--config</span></code> option is specified, the server will try to load the configurations from the <code class="docutils literal notranslate"><span class="pre">config</span></code> folder in the current directory. If no configurations are found, it will load all the example guardrails configurations.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">--prefix</span></code> option is specified, the root path for the guardrails server will be at the specified prefix.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since the server is designed to server multiple guardrails configurations, the <code class="docutils literal notranslate"><span class="pre">path/to/configs</span></code> must be a folder with sub-folders for each individual config. For example:</p>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.
+├── config
+│   ├── config_1
+│   │   ├── file_1.co
+│   │   └── config.yml
+│   ├── config_2
+│       ├── ...
+│   ...
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the server is pointed to a folder with a single configuration, then only that configuration will be available.</p>
+</div>
+<p>If the <code class="docutils literal notranslate"><span class="pre">--auto-reload</span></code> option is specified, the server will monitor any changes to the files inside the folder holding the configurations and reload them automatically when they change. This allows you to iterate faster on your configurations, and even regenerate messages mid-conversation, after changes have been made. <strong>IMPORTANT</strong>: this option should only be used in development environments.</p>
+<section id="cors">
+<h2>CORS<a class="headerlink" href="#cors" title="Link to this heading">#</a></h2>
+<p>If you want to enable your guardrails server to receive requests directly from another browser-based UI, you need to enable the CORS configuration. You can do this by setting the following environment variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NEMO_GUARDRAILS_SERVER_ENABLE_CORS</span></code>: <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> (default <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NEMO_GUARDRAILS_SERVER_ALLOWED_ORIGINS</span></code>: The list of allowed origins (default <code class="docutils literal notranslate"><span class="pre">*</span></code>). You can separate multiple origins using commas.</p></li>
+</ul>
+</section>
+<section id="endpoints">
+<h2>Endpoints<a class="headerlink" href="#endpoints" title="Link to this heading">#</a></h2>
+<p>The OpenAPI specification for the server is available at <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/redoc</span></code> or <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/docs</span></code>.</p>
+<section id="v1-rails-configs">
+<h3><code class="docutils literal notranslate"><span class="pre">/v1/rails/configs</span></code><a class="headerlink" href="#v1-rails-configs" title="Link to this heading">#</a></h3>
+<p>To list the available guardrails configurations for the server, use the <code class="docutils literal notranslate"><span class="pre">/v1/rails/configs</span></code> endpoint.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /v1/rails/configs
+</pre></div>
+</div>
+<p>Sample response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;abc&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;xyz&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="err">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="v1-chat-completions">
+<h3><code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code><a class="headerlink" href="#v1-chat-completions" title="Link to this heading">#</a></h3>
+<p>To get the completion for a chat session, use the <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /v1/chat/completions
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;config_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;benefits_co&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;Hello! What can you do for me?&quot;</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Sample response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span>
+<span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I can help you with your benefits questions. What can I help you with?&quot;</span>
+<span class="p">}]</span>
+</pre></div>
+</div>
+<p>The completion endpoint also supports combining multiple configurations in a single request. To do this, you can use the <code class="docutils literal notranslate"><span class="pre">config_ids</span></code> field instead of <code class="docutils literal notranslate"><span class="pre">config_id</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /v1/chat/completions
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;config_ids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;config_1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;config_2&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;Hello! What can you do for me?&quot;</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The configurations will be combined in the order they are specified in the <code class="docutils literal notranslate"><span class="pre">config_ids</span></code> list. If there are any conflicts between the configurations, the last configuration in the list will take precedence. The rails will be combined in the order they are specified in the <code class="docutils literal notranslate"><span class="pre">config_ids</span></code> list. The model type and engine across the configurations must be the same.</p>
+<section id="multi-config-api-example">
+<h4>Multi-config API Example<a class="headerlink" href="#multi-config-api-example" title="Link to this heading">#</a></h4>
+<p>When running a guardrails server, it is convenient to create <em>atomic configurations</em> which can be reused across multiple “complete” configurations. For example, you might have:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">input_checking</span></code>: uses the self-check input rail</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_checking</span></code>: uses the self-check output rail</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main</span></code>: uses the <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code> model with no guardrails</p></li>
+</ol>
+<p>You can check the available configurations using the <code class="docutils literal notranslate"><span class="pre">/v1/rails/configs</span></code> endpoint:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8000&quot;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/rails/configs&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="c1"># [{&#39;id&#39;: &#39;output_checking&#39;}, {&#39;id&#39;: &#39;main&#39;}, {&#39;id&#39;: &#39;input_checking&#39;}]</span>
+</pre></div>
+</div>
+<p>Make a call using a single config:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+  <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are stupid.&quot;</span>
+  <span class="p">}]</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>To use multiple configs, use the <code class="docutils literal notranslate"><span class="pre">config_ids</span></code> field instead of <code class="docutils literal notranslate"><span class="pre">config_id</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+  <span class="s2">&quot;config_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;input_checking&quot;</span><span class="p">],</span>
+  <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are stupid.&quot;</span>
+  <span class="p">}]</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="c1"># {&#39;messages&#39;: [{&#39;role&#39;: &#39;assistant&#39;, &#39;content&#39;: &quot;I&#39;m sorry, I can&#39;t respond to that.&quot;}]}</span>
+</pre></div>
+</div>
+<p>In the first call, the LLM engaged with the request from the user. In the second call, the input rail kicked in and blocked the request before it reached the LLM.</p>
+<p>This approach encourages reusability across various configurations without code duplication. For a complete example, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/server_configs/atomic" rel="noreferer noopener" target="_blank">these atomic configurations</a>.</p>
+</section>
+</section>
+<section id="default-configuration">
+<h3>Default Configuration<a class="headerlink" href="#default-configuration" title="Link to this heading">#</a></h3>
+<p>The NeMo Guardrails library server supports having a default guardrail configuration which can be set using the <code class="docutils literal notranslate"><span class="pre">--default-config-id</span></code> flag.
+This configuration is used when no <code class="docutils literal notranslate"><span class="pre">config_id</span></code> is provided in the request.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /v1/chat/completions
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;Hello! What can you do for me?&quot;</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="threads">
+<h2>Threads<a class="headerlink" href="#threads" title="Link to this heading">#</a></h2>
+<p>The Guardrails Server has basic support for storing the conversation threads. This is useful when you can only send the latest user message(s) for a conversation rather than the entire history (e.g., from a third-party integration hook).</p>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h3>
+<p>To use server-side threads, you have to register a datastore. To do this, you must create a <code class="docutils literal notranslate"><span class="pre">config.py</span></code> file in the root of the configurations folder (i.e., the folder containing all the guardrails configurations the server must load). Inside <code class="docutils literal notranslate"><span class="pre">config.py</span></code> use the <code class="docutils literal notranslate"><span class="pre">register_datastore</span></code> function to register the datastore you want to use.</p>
+<p>Out-of-the-box, the NeMo Guardrails library has support for <code class="docutils literal notranslate"><span class="pre">MemoryStore</span></code> (useful for quick testing) and <code class="docutils literal notranslate"><span class="pre">RedisStore</span></code>. If you want to use a different backend, you can implement the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/server/datastore/datastore.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">DataStore</span></code></a> interface and register a different instance in <code class="docutils literal notranslate"><span class="pre">config.py</span></code>.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>to use <code class="docutils literal notranslate"><span class="pre">RedisStore</span></code> you must install <code class="docutils literal notranslate"><span class="pre">aioredis</span> <span class="pre">&gt;=</span> <span class="pre">2.0.1</span></code>.</p>
+</div>
+<p>Next, when making a call to the <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint, you must also include a <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> field:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /v1/chat/completions
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;config_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;config_1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;thread_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1234567890123456&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;Hello! What can you do for me?&quot;</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>for security reasons, the <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> must have a minimum length of 16 characters.</p>
+</div>
+<p>As an example, check out this <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/threads/README.md" rel="noreferer noopener" target="_blank">configuration</a>.</p>
+</section>
+<section id="limitations">
+<h3>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h3>
+<p>Currently, threads are not supported when streaming mode is used (will be added in a future release).</p>
+<p>Threads are stored indefinitely; there is no cleanup mechanism.</p>
+</section>
+</section>
+<section id="chat-ui">
+<h2>Chat UI<a class="headerlink" href="#chat-ui" title="Link to this heading">#</a></h2>
+<p>You can use the Chat UI to test a guardrails configuration quickly.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You should only use the Chat UI for internal testing. For a production deployment of the NeMo Guardrails library server, the Chat UI should be disabled using the <code class="docutils literal notranslate"><span class="pre">--disable-chat-ui</span></code> flag.</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Local Server Setup</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="actions-server.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Actions Server</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cors">CORS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endpoints">Endpoints</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v1-rails-configs"><code class="docutils literal notranslate"><span class="pre">/v1/rails/configs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v1-chat-completions"><code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-config-api-example">Multi-config API Example</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-configuration">Default Configuration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#threads">Threads</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-ui">Chat UI</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2023-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+<script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+
+  </body>
+</html>
