@@ -327,7 +327,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/installation-guide.html">Install the NeMo Guardrails Library</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
@@ -335,7 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="current nav bd-sidenav">
@@ -445,16 +445,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../observability/logging/index.html">Logging</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../observability/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
@@ -486,14 +486,14 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../security/guidelines.html">Security Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/guidelines.html">Security Guidelines for LLM Integrations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 </ul>
 </div>
@@ -555,7 +555,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="guardrailing-bot-reasoning-content">
 <span id="bot-thinking-guardrails"></span><h1>Guardrailing Bot Reasoning Content<a class="headerlink" href="#guardrailing-bot-reasoning-content" title="Link to this heading">#</a></h1>
 <p>Reasoning-capable large language models (LLMs) expose their internal thought process as reasoning traces. These traces reveal how the model arrives at its conclusions, providing transparency into the decision-making process. However, they may also contain sensitive information or problematic reasoning patterns that need to be monitored and controlled.</p>
-<p>The NeMo Guardrails toolkit helps you set up guardrails to inspect and control these reasoning traces by extracting them. With this feature, you can configure guardrails that can block responses based on the model’s reasoning process, enhance moderation decisions with reasoning context, or monitor reasoning patterns.</p>
+<p>The NeMo Guardrails library helps you set up guardrails to inspect and control these reasoning traces by extracting them. With this feature, you can configure guardrails that can block responses based on the model’s reasoning process, enhance moderation decisions with reasoning context, or monitor reasoning patterns.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This guide uses Colang 1.0 syntax. Colang 1.0 currently supports bot reasoning guardrails only.</p>
@@ -567,7 +567,7 @@
 <hr class="docutils" />
 <section id="accessing-reasoning-content">
 <h2>Accessing Reasoning Content<a class="headerlink" href="#accessing-reasoning-content" title="Link to this heading">#</a></h2>
-<p>When an LLM generates a response with reasoning traces, the NeMo Guardrails toolkit extracts the reasoning and makes it available through the <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> variable. You can use this variable in the following ways.</p>
+<p>When an LLM generates a response with reasoning traces, the NeMo Guardrails library extracts the reasoning and makes it available through the <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> variable. You can use this variable in the following ways.</p>
 <section id="in-colang-flows">
 <h3>In Colang Flows<a class="headerlink" href="#in-colang-flows" title="Link to this heading">#</a></h3>
 <p>The reasoning content is available as a context variable in Colang output rails. For example, in <code class="docutils literal notranslate"><span class="pre">config/rails.co</span></code>, you can set up a flow to capture the reasoning content by setting the <code class="docutils literal notranslate"><span class="pre">$captured_reasoning</span></code> variable to <code class="docutils literal notranslate"><span class="pre">$bot_thinking</span></code>.</p>
@@ -699,7 +699,7 @@ This approach provides better code organization and makes it easier to share val
 <section id="using-reasoning-in-self-check-output">
 <h2>Using Reasoning in Self-Check Output<a class="headerlink" href="#using-reasoning-in-self-check-output" title="Link to this heading">#</a></h2>
 <p>The following steps show how to use <code class="docutils literal notranslate"><span class="pre">bot_thinking</span></code> in a self-check output rail. This pattern provides reasoning traces to your moderation LLM, allowing it to make more informed decisions by evaluating both the response and the reasoning process.</p>
-<p>This extends the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/self_check_thinking" rel="noreferer noopener" target="_blank">self check thinking configuration examples</a> in the NeMo Guardrails toolkit repository.</p>
+<p>This extends the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/self_check_thinking" rel="noreferer noopener" target="_blank">self check thinking configuration examples</a> in the NeMo Guardrails library repository.</p>
 <ol class="arabic">
 <li><p>Write the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file as follows:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
@@ -751,7 +751,7 @@ This approach provides better code organization and makes it easier to share val
 <ul class="simple">
 <li><p><a class="reference internal" href="#../configuration-guide/llm-configuration.md#using-llms-with-reasoning-traces"><span class="xref myst">LLM Configuration - Using LLMs with Reasoning Traces</span></a>: API response handling and breaking changes.</p></li>
 <li><p><a class="reference internal" href="#../../getting-started/5-output-rails/README.md"><span class="xref myst">Output Rails</span></a>: General guide on output rails.</p></li>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/self_check_thinking" rel="noreferer noopener" target="_blank">Self-Check Output Example</a>: Complete working configuration example in the NeMo Guardrails toolkit repository.</p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/self_check_thinking" rel="noreferer noopener" target="_blank">Self-Check Output Example</a>: Complete working configuration example in the NeMo Guardrails library repository.</p></li>
 <li><p><a class="reference internal" href="#../../colang-language-syntax-guide.md#actions"><span class="xref myst">Custom Actions</span></a>: Guide on writing custom actions.</p></li>
 </ul>
 </section>

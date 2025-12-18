@@ -327,7 +327,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Install the NeMo Guardrails Library</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
@@ -335,7 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -445,16 +445,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../observability/logging/index.html">Logging</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
@@ -486,14 +486,14 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines for LLM Integrations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 </div>
@@ -548,13 +548,13 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="use-cases">
 <h1>Use Cases<a class="headerlink" href="#use-cases" title="Link to this heading">#</a></h1>
-<p>The NeMo Guardrails Library supports a wide range of use cases for protecting LLM-based applications.
+<p>The NeMo Guardrails library supports a wide range of use cases for protecting LLM-based applications.
 The following sections describe the primary use cases.</p>
 <hr class="docutils" />
 <section id="content-safety">
 <h2>Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h2>
 <p>Content safety guardrails help ensure that both user inputs and LLM outputs are safe and appropriate.
-The NeMo Guardrails Library provides multiple approaches to content safety:</p>
+The NeMo Guardrails library provides multiple approaches to content safety:</p>
 <ul class="simple">
 <li><p><strong>LLM self-checking</strong>: Use the LLM itself to check inputs and outputs for harmful content.</p></li>
 <li><p><strong>NVIDIA safety models</strong>: Integrate with <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Llama 3.1 NemoGuard 8B Content Safety</a> for robust content moderation.</p></li>
@@ -566,7 +566,7 @@ The NeMo Guardrails Library provides multiple approaches to content safety:</p>
 <section id="jailbreak-protection">
 <h2>Jailbreak Protection<a class="headerlink" href="#jailbreak-protection" title="Link to this heading">#</a></h2>
 <p>Jailbreak protection helps prevent adversarial attempts from bypassing safety measures and manipulating the LLM into generating harmful or unwanted content.
-The NeMo Guardrails Library provides multiple layers of jailbreak protection:</p>
+The NeMo Guardrails library provides multiple layers of jailbreak protection:</p>
 <ul class="simple">
 <li><p><strong>Self-check jailbreak detection</strong>: Use the LLM to identify jailbreak attempts.</p></li>
 <li><p><strong>Heuristic detection</strong>: Use pattern-based detection for common jailbreak techniques.</p></li>
@@ -589,7 +589,7 @@ This is implemented through:</p>
 <section id="pii-detection">
 <h2>PII Detection<a class="headerlink" href="#pii-detection" title="Link to this heading">#</a></h2>
 <p>Personally Identifiable Information (PII) detection helps protect user privacy by detecting and masking sensitive data in user inputs, LLM outputs, and retrieved content.
-The NeMo Guardrails Library supports PII detection through multiple integrations:</p>
+The NeMo Guardrails library supports PII detection through multiple integrations:</p>
 <ul class="simple">
 <li><p><strong>Presidio-based detection</strong>: Use <a class="reference internal" href="../user-guides/community/presidio.html"><span class="std std-doc">Microsoft Presidio</span></a> for detecting entities such as names, email addresses, phone numbers, social security numbers, and more.</p></li>
 <li><p><strong>Private AI</strong>: Integrate with <a class="reference internal" href="../user-guides/community/privateai.html"><span class="std std-doc">Private AI</span></a> for advanced PII detection and masking.</p></li>
@@ -620,7 +620,7 @@ This includes:</p>
 </section>
 <section id="custom-rails">
 <h2>Custom Rails<a class="headerlink" href="#custom-rails" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails Library provides extensive flexibility for creating custom guardrails tailored to your specific requirements.</p>
+<p>The NeMo Guardrails library provides extensive flexibility for creating custom guardrails tailored to your specific requirements.</p>
 <section id="add-custom-rails-into-guardrails">
 <h3>Add Custom Rails into Guardrails<a class="headerlink" href="#add-custom-rails-into-guardrails" title="Link to this heading">#</a></h3>
 <p>If you have a script or tool that runs a custom guardrail, you can use it in NeMo Guardrails by following one of these approaches:</p>
@@ -655,7 +655,7 @@ For examples, refer to the <a class="reference internal" href="#../user-guides/g
 </section>
 <section id="integrate-guardrails-into-llm-based-applications">
 <h3>Integrate Guardrails into LLM-based Applications<a class="headerlink" href="#integrate-guardrails-into-llm-based-applications" title="Link to this heading">#</a></h3>
-<p>The NeMo Guardrails Library can be integrated into applications in multiple ways:</p>
+<p>The NeMo Guardrails library can be integrated into applications in multiple ways:</p>
 <ol class="arabic">
 <li><p><strong>Python SDK integration</strong>: Add guardrails directly into your Python application.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>

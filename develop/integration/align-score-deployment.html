@@ -59,7 +59,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/integration/align-score-deployment.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Tools Integration with NeMo Guardrails" href="tools-integration.html" />
+    <link rel="next" title="Tools Integration with the NeMo Guardrails Library" href="tools-integration.html" />
     <link rel="prev" title="Runnable as Action" href="langchain/runnable-as-action/index.html" />
 
 
@@ -323,7 +323,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Install the NeMo Guardrails Library</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
@@ -331,7 +331,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -441,16 +441,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../observability/logging/index.html">Logging</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
@@ -482,14 +482,14 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines for LLM Integrations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 </div>
@@ -546,7 +546,7 @@
 <h1>AlignScore Deployment<a class="headerlink" href="#alignscore-deployment" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The recommended way to use AlignScore with NeMo Guardrails is using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>. For more details, check out how to <a class="reference internal" href="../deployment/using-docker.html"><span class="std std-doc">build and use the image</span></a>.</p>
+<p>The recommended way to use AlignScore with the NeMo Guardrails library is using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>. For more details, check out how to <a class="reference internal" href="../deployment/using-docker.html"><span class="std std-doc">build and use the image</span></a>.</p>
 </div>
 <p>In order to deploy an AlignScore server, follow these steps:</p>
 <div class="admonition important">
@@ -621,7 +621,7 @@ pip<span class="w"> </span>install<span class="w"> </span>.
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tools Integration with NeMo Guardrails</p>
+        <p class="prev-next-title">Tools Integration with the NeMo Guardrails Library</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

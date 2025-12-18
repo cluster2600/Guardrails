@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Advanced OpenTelemetry Integration &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
+    <title>OpenTelemetry Integration &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
   
   
   
@@ -327,7 +327,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install the NeMo Guardrails Library</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
@@ -335,7 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate Guardrails into an Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -445,16 +445,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../logging/index.html">Logging</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tracing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html">Quick Start for Tracing Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">OpenTelemetry Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
@@ -486,14 +486,14 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines for LLM Integrations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 </ul>
 </div>
@@ -530,9 +530,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tracing</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tracing Guardrails</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Advanced OpenTelemetry Integration</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">OpenTelemetry Integration</span></li>
   </ul>
 </nav>
 </div>
@@ -549,14 +549,14 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="advanced-opentelemetry-integration">
-<h1>Advanced OpenTelemetry Integration<a class="headerlink" href="#advanced-opentelemetry-integration" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails follows OpenTelemetry best practices; libraries use only the API while applications configure the SDK. The following sections explain how to install and configure the OpenTelemetry SDK.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="opentelemetry-integration">
+<h1>OpenTelemetry Integration<a class="headerlink" href="#opentelemetry-integration" title="Link to this heading">#</a></h1>
+<p>The NeMo Guardrails library follows OpenTelemetry best practices; libraries use only the API while applications configure the SDK. The following sections explain how to install and configure the OpenTelemetry SDK.</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
-<p>Choose one of the following options for installing the NeMo Guardrails toolkit with tracing support, the OpenTelemetry SDK, and the OpenTelemetry Protocol (OTLP) exporter.</p>
+<p>Choose one of the following options for installing the NeMo Guardrails library with tracing support, the OpenTelemetry SDK, and the OpenTelemetry Protocol (OTLP) exporter.</p>
 <ul>
-<li><p>For basic tracing support in the NeMo Guardrails toolkit:</p>
+<li><p>For basic tracing support in the NeMo Guardrails library:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>tracing<span class="o">]</span>
 </pre></div>
 </div>
@@ -575,7 +575,7 @@
 </section>
 <section id="configuration-examples">
 <h2>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Link to this heading">#</a></h2>
-<p>The following examples show how to configure the NeMo Guardrails client with the OpenTelemetry SDK for development and production use cases.</p>
+<p>The following examples show how to configure the NeMo Guardrails library with the OpenTelemetry SDK for development and production use cases.</p>
 <section id="console-output-development">
 <h3>Console Output (Development)<a class="headerlink" href="#console-output-development" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace</span>
@@ -634,7 +634,7 @@
 </section>
 <section id="opentelemetry-ecosystem-compatibility">
 <h2>OpenTelemetry Ecosystem Compatibility<a class="headerlink" href="#opentelemetry-ecosystem-compatibility" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails works with the entire OpenTelemetry ecosystem including:</p>
+<p>The NeMo Guardrails library works with the entire OpenTelemetry ecosystem including:</p>
 <ul class="simple">
 <li><p><strong>Exporters</strong>: Jaeger, Zipkin, Prometheus, New Relic, Datadog, AWS X-Ray, Google Cloud Trace</p></li>
 <li><p><strong>Collectors</strong>: OpenTelemetry Collector, vendor-specific collectors</p></li>

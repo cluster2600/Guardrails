@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Integrate Guardrails into an Application &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
+    <title>Integrate the NeMo Guardrails Library into Your Application &#8212; NVIDIA NeMo Guardrails Toolkit Developer Guide</title>
   
   
   
@@ -59,7 +59,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/getting-started/integrate-into-application.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Before You Begin Configuring Rails" href="../configure-rails/before-configuration.html" />
+    <link rel="next" title="Prerequisites for Configuring the NeMo Guardrails Library" href="../configure-rails/before-configuration.html" />
     <link rel="prev" title="Multimodal Content Safety with Vision Models as LLM-as-a-judge" href="tutorials/multimodal.html" />
 
 
@@ -327,7 +327,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Install the NeMo Guardrails Library</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
@@ -335,7 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Integrate Guardrails into an Application</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Integrate the NeMo Guardrails Library into Your Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -445,16 +445,16 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Guardrails Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../observability/logging/index.html">Logging</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">Advanced OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
@@ -486,14 +486,14 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security Guidelines for LLM Integrations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 </div>
@@ -529,7 +529,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Integrate Guardrails into an Application</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Integrate the NeMo Guardrails Library into Your Application</span></li>
   </ul>
 </nav>
 </div>
@@ -546,13 +546,13 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="integrate-guardrails-into-an-application">
-<h1>Integrate Guardrails into an Application<a class="headerlink" href="#integrate-guardrails-into-an-application" title="Link to this heading">#</a></h1>
-<p>If you have an existing application, you can integrate NeMo Guardrails into it using the NeMo Guardrails Library.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="integrate-the-nemo-guardrails-library-into-your-application">
+<h1>Integrate the NeMo Guardrails Library into Your Application<a class="headerlink" href="#integrate-the-nemo-guardrails-library-into-your-application" title="Link to this heading">#</a></h1>
+<p>If you have an existing application, you can integrate NeMo Guardrails into it using the NeMo Guardrails library.</p>
 <hr class="docutils" />
 <section id="integrate-guardrails-into-llm-based-applications">
 <h2>Integrate Guardrails into LLM-based Applications<a class="headerlink" href="#integrate-guardrails-into-llm-based-applications" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails Library can be integrated into applications in multiple ways:</p>
+<p>The NeMo Guardrails library can be integrated into applications in multiple ways:</p>
 <ol class="arabic">
 <li><p><strong>Python SDK integration</strong>: Add guardrails directly into your Python application.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
@@ -611,7 +611,7 @@ For more information, refer to the <a class="reference internal" href="../deploy
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Before You Begin Configuring Rails</p>
+        <p class="prev-next-title">Prerequisites for Configuring the NeMo Guardrails Library</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
