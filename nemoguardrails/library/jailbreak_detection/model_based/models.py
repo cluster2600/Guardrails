@@ -15,13 +15,14 @@
 
 from typing import Tuple
 
-import numpy as np  # type: ignore[import-not-found]
-
 
 class SnowflakeEmbed:
     def __init__(self):
-        import torch  # type: ignore
-        from transformers import AutoModel, AutoTokenizer  # type: ignore
+        import torch  # type: ignore[import-not-found]
+        from transformers import (  # type: ignore[import-not-found]
+            AutoModel,
+            AutoTokenizer,
+        )
 
         self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
         self.tokenizer = AutoTokenizer.from_pretrained("Snowflake/snowflake-arctic-embed-m-long")
@@ -50,6 +51,8 @@ class JailbreakClassifier:
             self.classifier = pickle.load(fd)
 
     def __call__(self, text: str) -> Tuple[bool, float]:
+        import numpy as np  # type: ignore[import-not-found]
+
         e = self.embed(text)
         probs = self.classifier.predict_proba([e])
         classification = np.argmax(probs)

@@ -76,7 +76,7 @@ async def self_check_facts(
     llm_call_info_var.set(LLMCallInfo(task=task.value))
 
     # Use a low temperature for deterministic fact checking
-    temperature = config.lowest_temperature if config else 0.001
+    temperature = config.lowest_temperature if config else RailsConfig.model_fields["lowest_temperature"].default
     response = await llm_call(
         llm,
         prompt,

@@ -128,7 +128,9 @@ async def self_check_hallucination(
             stop = llm_task_manager.get_stop_tokens(task=Task.SELF_CHECK_HALLUCINATION)
 
             # Use a low temperature for deterministic hallucination checking
-            temperature = config.lowest_temperature if config else 0.001
+            temperature = (
+                config.lowest_temperature if config else RailsConfig.model_fields["lowest_temperature"].default
+            )
             agreement = await llm_call(
                 llm,
                 prompt,

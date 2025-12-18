@@ -110,8 +110,8 @@ def validate_guardrails_ai_input(
         Dict with validation_result
     """
 
-    text = text or (context.get("user_message", "") if context else "")
-    if not text:
+    validate_text = text if text else context.get("user_message", "") if context else ""
+    if not validate_text:
         raise ValueError("Either 'text' or 'context' must be provided.")
 
     guardrails_ai_config = config.rails.config.guardrails_ai
@@ -127,7 +127,7 @@ def validate_guardrails_ai_input(
 
     joined_parameters = {**parameters, **metadata}
 
-    validation_result = validate_guardrails_ai(validator, text, **joined_parameters)
+    validation_result = validate_guardrails_ai(validator, validate_text, **joined_parameters)
 
     # Transform to the expected format for Colang flows
     return validation_result
@@ -156,8 +156,8 @@ def validate_guardrails_ai_output(
         Dict with validation_result
     """
 
-    text = text or (context.get("bot_message", "") if context else "")
-    if not text:
+    validate_text = text if text else context.get("user_message", "") if context else ""
+    if not validate_text:
         raise ValueError("Either 'text' or 'context' must be provided.")
     if config is None:
         raise ValueError("Config is required")
@@ -176,7 +176,7 @@ def validate_guardrails_ai_output(
     # join parameters and metadata into a single dict
     joined_parameters = {**parameters, **metadata}
 
-    validation_result = validate_guardrails_ai(validator, text, **joined_parameters)
+    validation_result = validate_guardrails_ai(validator, validate_text, **joined_parameters)
 
     return validation_result
 

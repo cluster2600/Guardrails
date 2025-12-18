@@ -48,6 +48,7 @@ from nemoguardrails.llm.cache.utils import (
 from nemoguardrails.llm.taskmanager import LLMTaskManager
 from nemoguardrails.logging.explain import LLMCallInfo
 from nemoguardrails.logging.processing_log import processing_log_var
+from nemoguardrails.rails.llm.config import JailbreakDetectionConfig
 
 log = logging.getLogger(__name__)
 
@@ -65,8 +66,14 @@ async def jailbreak_detection_heuristics(
         return False
 
     jailbreak_api_url = jailbreak_config.server_endpoint
-    lp_threshold = jailbreak_config.length_per_perplexity_threshold
-    ps_ppl_threshold = jailbreak_config.prefix_suffix_perplexity_threshold
+    lp_threshold = (
+        jailbreak_config.length_per_perplexity_threshold
+        or JailbreakDetectionConfig.model_fields["length_per_perplexity_threshold"].default
+    )
+    ps_ppl_threshold = (
+        jailbreak_config.prefix_suffix_perplexity_threshold
+        or JailbreakDetectionConfig.model_fields["prefix_suffix_perplexity_threshold"].default
+    )
 
     if context is None:
         log.warning("Context is required for jailbreak detection")
@@ -85,8 +92,8 @@ async def jailbreak_detection_heuristics(
         )
 
         log.warning("No jailbreak detection endpoint set. Running in-process, NOT RECOMMENDED FOR PRODUCTION.")
-        lp_check = check_jailbreak_length_per_perplexity(prompt, lp_threshold or 89.79)
-        ps_ppl_check = check_jailbreak_prefix_suffix_perplexity(prompt, ps_ppl_threshold or 1845.65)
+        lp_check = check_jailbreak_length_per_perplexity(prompt, lp_threshold)
+        ps_ppl_check = check_jailbreak_prefix_suffix_perplexity(prompt, ps_ppl_threshold)
         jailbreak = any([lp_check["jailbreak"], ps_ppl_check["jailbreak"]])
         return jailbreak
 

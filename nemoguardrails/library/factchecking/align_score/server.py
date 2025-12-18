@@ -15,26 +15,25 @@
 
 import os
 from functools import lru_cache
-from typing import List
+from typing import TYPE_CHECKING, List
 
-try:
-    import nltk  # type: ignore
-except ImportError:
-    nltk = None
+if TYPE_CHECKING:
+    import nltk  # type: ignore[import-not-found]
+    import typer  # type: ignore[import-not-found]
+    import uvicorn  # type: ignore[import-not-found]
+    from alignscore import AlignScore  # type: ignore[import-not-found]
+    from fastapi import FastAPI  # type: ignore[import-not-found]
+else:
+    import nltk
+    import typer
+    import uvicorn
+    from alignscore import AlignScore
+    from fastapi import FastAPI
 
-try:
-    from alignscore import AlignScore  # type: ignore
-except ImportError:
-    AlignScore = None
-
-import typer  # type: ignore[import-not-found]
-import uvicorn  # type: ignore[import-not-found]
-from fastapi import FastAPI  # type: ignore[import-not-found]
 from pydantic import BaseModel
 
 # Make sure we have the punkt tokenizer downloaded.
-if nltk is not None:
-    nltk.download("punkt")
+nltk.download("punkt")
 
 models_path = os.environ.get("ALIGN_SCORE_PATH")
 
@@ -57,8 +56,6 @@ def get_model(model: str):
     """
     if models_path is None:
         raise ValueError("ALIGN_SCORE_PATH environment variable not set")
-    if AlignScore is None:
-        raise ImportError("alignscore package not available")
 
     return AlignScore(
         model="roberta-base",

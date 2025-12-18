@@ -38,6 +38,13 @@ import uvicorn  # type: ignore[import-not-found]
 from fastapi import FastAPI  # type: ignore[import-not-found]
 from pydantic import BaseModel
 
+from nemoguardrails.rails.llm.config import JailbreakDetectionConfig
+
+# Use the JailbreakDetectionConfig defaults for consistency
+LP_THRESHOLD_DEFAULT = JailbreakDetectionConfig.model_fields["length_per_perplexity_threshold"].default
+PS_PPL_THRESHOLD_DEFAULT = JailbreakDetectionConfig.model_fields["prefix_suffix_perplexity_threshold"].default
+
+
 app = FastAPI()
 cli_app = typer.Typer()
 
@@ -47,13 +54,13 @@ device = os.environ.get("JAILBREAK_CHECK_DEVICE", "cpu")
 class JailbreakHeuristicRequest(BaseModel):
     """
     prompt (str): User utterance to the model
-    lp_threshold (float): Threshold value for length-perplexity heuristic. Default: 89.79
-    ps_ppl_threshold (float): Threshold value for prefix/suffix perplexity heuristic. Default: 1845.65
+    lp_threshold (float): Threshold value for length-perplexity heuristic.
+    ps_ppl_threshold (float): Threshold value for prefix/suffix perplexity heuristic.
     """
 
     prompt: str
-    lp_threshold: Optional[float] = 89.79
-    ps_ppl_threshold: Optional[float] = 1845.65
+    lp_threshold: Optional[float] = LP_THRESHOLD_DEFAULT
+    ps_ppl_threshold: Optional[float] = PS_PPL_THRESHOLD_DEFAULT
 
 
 class JailbreakModelRequest(BaseModel):
@@ -79,19 +86,23 @@ def hello_world():
 
 @app.post("/jailbreak_lp_heuristic")
 def lp_heuristic_check(request: JailbreakHeuristicRequest):
-    return hc.check_jailbreak_length_per_perplexity(request.prompt, request.lp_threshold or 89.79)
+    return hc.check_jailbreak_length_per_perplexity(request.prompt, request.lp_threshold or LP_THRESHOLD_DEFAULT)
 
 
 @app.post("/jailbreak_ps_heuristic")
 def ps_ppl_heuristic_check(request: JailbreakHeuristicRequest):
-    return hc.check_jailbreak_prefix_suffix_perplexity(request.prompt, request.ps_ppl_threshold or 1845.65)
+    return hc.check_jailbreak_prefix_suffix_perplexity(
+        request.prompt, request.ps_ppl_threshold or PS_PPL_THRESHOLD_DEFAULT
+    )
 
 
 @app.post("/heuristics")
 def run_all_heuristics(request: JailbreakHeuristicRequest):
     # Will add other heuristics as they become available
-    lp_check = hc.check_jailbreak_length_per_perplexity(request.prompt, request.lp_threshold or 89.79)
-    ps_ppl_check = hc.check_jailbreak_prefix_suffix_perplexity(request.prompt, request.ps_ppl_threshold or 1845.65)
+    lp_check = hc.check_jailbreak_length_per_perplexity(request.prompt, request.lp_threshold or LP_THRESHOLD_DEFAULT)
+    ps_ppl_check = hc.check_jailbreak_prefix_suffix_perplexity(
+        request.prompt, request.ps_ppl_threshold or PS_PPL_THRESHOLD_DEFAULT
+    )
     jailbreak = any([lp_check["jailbreak"], ps_ppl_check["jailbreak"]])
     heuristic_checks = {
         "jailbreak": jailbreak,

@@ -17,21 +17,15 @@ import logging
 import os
 from functools import lru_cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import Union
 
-if TYPE_CHECKING:
-    from .models import JailbreakClassifier
-else:
-    try:
-        from .models import JailbreakClassifier
-    except ImportError:
-        JailbreakClassifier = None
+from nemoguardrails.library.jailbreak_detection.model_based.models import JailbreakClassifier
 
 logger = logging.getLogger(__name__)
 
 
 @lru_cache()
-def initialize_model() -> Union[None, "JailbreakClassifier"]:
+def initialize_model() -> Union[None, JailbreakClassifier]:
     """
     Initialize the global classifier model according to the configuration provided.
     Args

@@ -72,7 +72,7 @@ async def content_safety_check_input(
     task: str = f"content_safety_check_input $model={model_name}"
 
     check_input_prompt = llm_task_manager.render_task_prompt(
-        task=task,  # type: ignore[arg-type]
+        task=task,
         context={
             "user_input": user_input,
         },

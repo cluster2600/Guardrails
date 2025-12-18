@@ -41,15 +41,12 @@ def alignscore_check_facts_mapping(result: float) -> bool:
 @action(output_mapping=alignscore_check_facts_mapping)
 async def alignscore_check_facts(
     llm_task_manager: LLMTaskManager,
-    context: Optional[dict] = None,
+    context: dict,
     llm: Optional[BaseLLM] = None,
     config: Optional[RailsConfig] = None,
     **kwargs,
 ):
     """Checks the facts for the bot response using an information alignment score."""
-    if context is None:
-        raise ValueError("Context is required")
-
     fact_checking_config = llm_task_manager.config.rails.config.fact_checking
     fallback_to_self_check = fact_checking_config.fallback_to_self_check
 

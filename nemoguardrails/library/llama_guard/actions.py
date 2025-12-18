@@ -55,18 +55,14 @@ def parse_llama_guard_response(response: str) -> Tuple[bool, Optional[List[str]]
 @action()
 async def llama_guard_check_input(
     llm_task_manager: LLMTaskManager,
-    context: Optional[dict] = None,
-    llama_guard_llm: Optional[BaseLLM] = None,
+    context: dict,
+    llama_guard_llm: BaseLLM,
     **kwargs,
 ) -> dict:
     """
     Checks user messages using the configured Llama Guard model
     and the configured prompt containing the safety guidelines.
     """
-    if context is None:
-        raise ValueError("Context is required")
-    if llama_guard_llm is None:
-        raise ValueError("llama_guard_llm is required")
 
     user_input = context.get("user_message")
     check_input_prompt = llm_task_manager.render_task_prompt(
@@ -105,18 +101,13 @@ def llama_guard_check_output_mapping(result: dict) -> bool:
 @action(output_mapping=llama_guard_check_output_mapping)
 async def llama_guard_check_output(
     llm_task_manager: LLMTaskManager,
-    context: Optional[dict] = None,
-    llama_guard_llm: Optional[BaseLLM] = None,
+    context: dict,
+    llama_guard_llm: BaseLLM,
 ) -> dict:
     """
     Check the bot response using the configured Llama Guard model
     and the configured prompt containing the safety guidelines.
     """
-    if context is None:
-        raise ValueError("Context is required")
-    if llama_guard_llm is None:
-        raise ValueError("llama_guard_llm is required")
-
     user_input = context.get("user_message")
     bot_response = context.get("bot_message")
 
