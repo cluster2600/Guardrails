@@ -607,11 +607,17 @@
 <ol class="arabic simple">
 <li><p>Deploy a GLiNER-compatible server. An example implementation is provided at <a class="reference internal" href="#../../../examples/deployment/gliner_server/"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">examples/deployment/gliner_server/</span></code></span></a>:</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install dependencies</span>
-pip<span class="w"> </span>install<span class="w"> </span>gliner<span class="w"> </span>torch<span class="w"> </span>fastapi<span class="w"> </span>uvicorn
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/deployment/gliner_server
 
-<span class="c1"># Start the example server (uses nvidia/gliner-PII model by default)</span>
-python<span class="w"> </span>examples/deployment/gliner_server/gliner_server.py<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">1235</span>
+<span class="c1"># Install with uv (recommended)</span>
+uv<span class="w"> </span>sync
+
+<span class="c1"># Start the server (uses nvidia/gliner-PII model by default)</span>
+uv<span class="w"> </span>run<span class="w"> </span>gliner-server<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">1235</span>
+
+<span class="c1"># Or install with pip</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+gliner-server<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">1235</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -897,8 +903,29 @@ python<span class="w"> </span>examples/deployment/gliner_server/gliner_server.py
 <li><p>Supports GPU acceleration (CUDA, MPS on Apple Silicon)</p></li>
 <li><p>Implements text chunking with overlap for long documents</p></li>
 <li><p>Provides entity deduplication</p></li>
+<li><p>Structured as a proper Python package with <code class="docutils literal notranslate"><span class="pre">src/</span></code> layout</p></li>
+<li><p>CLI entry point (<code class="docutils literal notranslate"><span class="pre">gliner-server</span></code>) for easy startup</p></li>
+<li><p>Unit tests for PII utility functions (no server required)</p></li>
+<li><p>Integration test script for end-to-end validation</p></li>
 </ul>
 <p>See the <span class="xref myst">deployment README</span> for detailed instructions.</p>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
+<p>The NeMo Guardrails GLiNER integration tests (<code class="docutils literal notranslate"><span class="pre">tests/test_gliner.py</span></code>) use mocked API responses, so they don’t require a running server. To run them:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests/test_gliner.py<span class="w"> </span>-v
+</pre></div>
+</div>
+<p>The example server package also includes unit tests for the PII utility functions:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/deployment/gliner_server
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w"> </span>-v
+</pre></div>
+</div>
+<p>For integration testing with a running server, use the provided script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/deployment/gliner_server
+./test_integration.sh
+</pre></div>
+</div>
 </section>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
@@ -951,6 +978,7 @@ python<span class="w"> </span>examples/deployment/gliner_server/gliner_server.py
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-options">Configuration Options</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-deployment">Example Deployment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
