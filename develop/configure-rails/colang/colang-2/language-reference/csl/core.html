@@ -650,7 +650,7 @@ utterance even if the utterance is not finished yet).</p>
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">started</span> <span class="pre">saying</span> <span class="pre">something</span></span></dt>
-<dd><p>Wait for start of user utterance</p>
+<dd><p>Wait for start of user utterance.</p>
 <p>Example:</p>
 </dd></dl>
 
@@ -659,7 +659,7 @@ utterance even if the utterance is not finished yet).</p>
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">something</span> <span class="pre">unexpected</span> <span class="pre">-&gt;</span> <span class="pre">$transcript</span></span></dt>
 <dd><p>Wait for a user to have said something unexpected (no active match statement for the user utterance that
 matches the incoming event). This is a rather technical flow. If you are looking for a way to react to a
-wide variety of user messages check out the flows in <code class="docutils literal notranslate"><span class="pre">llm.co</span></code>.</p>
+wide variety of user messages, check out the flows in <code class="docutils literal notranslate"><span class="pre">llm.co</span></code>.</p>
 <p>Example:</p>
 </dd></dl>
 
@@ -669,12 +669,12 @@ wide variety of user messages check out the flows in <code class="docutils liter
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">say</span> <span class="pre">$text</span></span></dt>
-<dd><p>Execute a bot utterance with the provided text and wait until the utterance is completed (e.g. for a voice bot this
+<dd><p>Execute a bot utterance with the provided text and wait until the utterance is completed (e.g. for a voice bot, this
 flow will finish once the bot audio has finished).</p>
 <p>Example:</p>
 <p><strong>Semantic variants</strong></p>
-<p>For more expressive interaction histories and more advance use cases the <code class="docutils literal notranslate"><span class="pre">core.co</span></code> library provides several
-semantic wrappers for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code>. You can use them anywhere instead of a <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code> to annotated the
+<p>For more expressive interaction histories and more advanced use cases, the <code class="docutils literal notranslate"><span class="pre">core.co</span></code> library provides several
+semantic wrappers for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code>. You can use them anywhere instead of a <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code> to annotate the
 purpose of the bot utterance.</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Trigger the bot to inform about something
 flow bot inform $text
@@ -703,28 +703,28 @@ flow bot suggest $text
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">started</span> <span class="pre">saying</span> <span class="pre">$text</span></span></dt>
-<dd><p>Wait for the bot starting with the given utterance</p>
+<dd><p>Wait for the bot to start saying the given utterance</p>
 <p>Example:</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">started</span> <span class="pre">saying</span> <span class="pre">something</span></span></dt>
-<dd><p>Wait for the bot starting with any utterance</p>
+<dd><p>Wait for the bot to start saying any utterance</p>
 <p>Example:</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">said</span> <span class="pre">$text</span></span></dt>
-<dd><p>Wait for the bot to finish saying given utterance</p>
+<dd><p>Wait for the bot to finish saying the given utterance</p>
 <p>Example:</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">said</span> <span class="pre">something</span> <span class="pre">-&gt;</span> <span class="pre">$text</span></span></dt>
-<dd><p>Wait for the bot to finish with any utterance</p>
+<dd><p>Wait for the bot to finish saying any utterance</p>
 <p>Example:</p>
 <p><strong>Semantic variants</strong></p>
 <p>You may react to specific semantic wrappers for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code> that are defined in the <code class="docutils literal notranslate"><span class="pre">core.co</span></code> library</p>
@@ -763,7 +763,7 @@ is not restarted.</p>
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">it</span> <span class="pre">finished</span></span></dt>
-<dd><p>Wait until a flow or action has finished. This will also check the action’s or flow’s state and if it has
+<dd><p>Wait until a flow or action has finished. This will also check the action’s or flow’s state and, if it has
 already finished, continue immediately. If the awaited flow has already failed instead of finished, this flow
 will also fail.</p>
 <p>Note: Actions can never fail, even if stopped, but will always finish. If an action was stopped, the ActionFinished

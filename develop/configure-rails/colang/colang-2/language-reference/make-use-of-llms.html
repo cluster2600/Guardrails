@@ -614,15 +614,15 @@
 <span id="make-use-of-llms"></span><h1>Make use of Large Language Models (LLM)<a class="headerlink" href="#make-use-of-large-language-models-llm" title="Link to this heading">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>While at the core Colang does not require a Large Language Model (LLM) as backend, many of the more advanced mechanisms in the <a class="reference internal" href="the-standard-library.html#the-standard-library"><span class="std std-ref">Colang Standard Library</span></a> (CSL) depend on it.</p>
-<p>To enable the LLM backend you first have to configure the LLM access in the <cite>config.yml</cite> by adding a <cite>models</cite> section like this:</p>
+<p>At its core, Colang does not require a Large Language Model (LLM) as backend. However, many of the more advanced mechanisms in the <a class="reference internal" href="the-standard-library.html#the-standard-library"><span class="std std-ref">Colang Standard Library</span></a> (CSL) depend on one.</p>
+<p>To enable the LLM backend, you first have to configure the LLM access in the <cite>config.yml</cite> by adding a <cite>models</cite> section like this:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
 <span class="w">  </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4-turbo</span>
 </pre></div>
 </div>
-<p>Make sure to also define the required API access key, e.g. for OpenAI you will have to set the <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> environment variable.</p>
+<p>Make sure to also define the required API access key. For example, for OpenAI you will have to set the <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> environment variable.</p>
 <p>Every LLM prompt contains a default context that can be modified if needed to adapt to the use case. See this <a class="reference external" href="../../../tests/test_configs/multi_modal_demo_v2_x/demo.yml">example configuration</a> to get started. This will heavily influence all the LLM invocations.</p>
 </section>
 <section id="supported-models">
@@ -636,7 +636,7 @@
 <span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://www.nvidia.com/en-us/ai/foundry/">NVIDIA AI Foundary</a> hosted NIMs:</p>
+<p><a class="reference external" href="https://www.nvidia.com/en-us/ai/foundry/">NVIDIA AI Foundry</a> hosted NIMs:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
 <span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama3-8b-instruct</span>
 <span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama3-70b-instruct</span>
@@ -644,11 +644,11 @@
 <span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.1-70b-instruct</span>
 </pre></div>
 </div>
-<p>To support other models you would need to create a set of new <a class="reference external" href="../../../nemoguardrails/llm/prompts">template prompts</a> that consider the specific capabilities and the API of the model and add them to your bot configuration.</p>
+<p>To support other models, you would need to create a set of new <a class="reference external" href="../../../nemoguardrails/llm/prompts">template prompts</a> that consider the specific capabilities and the API of the model and add them to your bot configuration.</p>
 </section>
 <section id="natural-language-description-nld">
 <h2>Natural Language Description (NLD)<a class="headerlink" href="#natural-language-description-nld" title="Link to this heading">#</a></h2>
-<p>One of the main LLM generation mechanism in Colang are the so-called Natural Language Description (NLD) in combination with the “generation” operator <code class="docutils literal notranslate"><span class="pre">...</span></code>.</p>
+<p>One of the main LLM generation mechanisms in Colang is the so-called Natural Language Description (NLD) in combination with the “generation” operator <code class="docutils literal notranslate"><span class="pre">...</span></code>.</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Assign result of NLD to a variable
 $world_population = ...&quot;What is the number of people in the world? Give me a number.&quot;
 
@@ -662,10 +662,10 @@ $order_information = ...&quot;Provide the products ordered by the user in a list
 $response_to_user = ...&quot;Provide a brief summary of the current order. Order Information: &#39;{$order_information}&#39;&quot;
 </pre></div>
 </div>
-<p>Every NLD will be interpreted and replaced during runtime by the configured LLM backend and can be used in Colang to generate context dependent values. With NLDs you are able to extract values and summarize content from the conversation with the user or based on results from other sources (like a database or an external service).</p>
+<p>Every NLD will be interpreted and replaced during runtime by the configured LLM backend and can be used in Colang to generate context-dependent values. With NLDs, you are able to extract values and summarize content from the conversation with the user or based on results from other sources (like a database or an external service).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>NLDs together with the variable name are interpreted by the LLM directly. Depending on the LLM you use you need to make sure to be very specific in what value you would like to generate. It is good practice to always clearly specify how you want the response to be formatted and what type it should have (e.g., <code class="docutils literal notranslate"><span class="pre">$user_name</span> <span class="pre">=</span> <span class="pre">...&quot;Return</span> <span class="pre">the</span> <span class="pre">user</span> <span class="pre">name</span> <span class="pre">as</span> <span class="pre">single</span> <span class="pre">string</span> <span class="pre">between</span> <span class="pre">quotes''.</span> <span class="pre">If</span> <span class="pre">no</span> <span class="pre">user</span> <span class="pre">name</span> <span class="pre">is</span> <span class="pre">available</span> <span class="pre">return</span> <span class="pre">'friend'&quot;</span></code>.</p>
+<p>NLDs together with the variable name are interpreted by the LLM directly. Depending on the LLM you use, you need to make sure to be very specific in what value you would like to generate. It is good practice to always clearly specify how you want the response to be formatted and what type it should have (e.g., <code class="docutils literal notranslate"><span class="pre">$user_name</span> <span class="pre">=</span> <span class="pre">...&quot;Return</span> <span class="pre">the</span> <span class="pre">user</span> <span class="pre">name</span> <span class="pre">as</span> <span class="pre">single</span> <span class="pre">string</span> <span class="pre">between</span> <span class="pre">quotes''.</span> <span class="pre">If</span> <span class="pre">no</span> <span class="pre">user</span> <span class="pre">name</span> <span class="pre">is</span> <span class="pre">available</span> <span class="pre">return</span> <span class="pre">'friend'&quot;</span></code>.</p>
 </div>
 <p>Alternatively, you can also describe the purpose and function of a flow using a docstring like NLD at the beginning of a flow. Using a standalone generation operator <code class="docutils literal notranslate"><span class="pre">...</span></code> in the flow will use the flows NLD to infer the right flow expansion automatically:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
@@ -682,11 +682,11 @@ $response_to_user = ...&quot;Provide a brief summary of the current order. Order
 </pre></div>
 </div>
 <p>See the example in <a class="reference internal" href="../getting-started/llm-flows.html#colang-2-getting-started-llm-flows"><span class="std std-ref">LLM Flows</span></a> for more details on how this works.</p>
-<p>Note that there is no explicit control over the NLD response format and sometimes it will fail to generate the expected result. Usually you can improve it by providing more explicit instructions in the NLD, e.g. “Welcome the user with a short sentence that is wrapped in quotation marks like this: ‘Hi there!’”. Another way is to check the returned value by using e.g. the <code class="docutils literal notranslate"><span class="pre">is_str()</span></code> function to make sure that it is of the expected format.</p>
+<p>Note that there is no explicit control over the NLD response format and sometimes it will fail to generate the expected result. Usually you can improve it by providing more explicit instructions in the NLD, e.g. “Welcome the user with a short sentence that is wrapped in quotation marks like this: ‘Hi there!’”. Another way is to check the returned value by using for example the <code class="docutils literal notranslate"><span class="pre">is_str()</span></code> function to make sure that it is of the expected format.</p>
 </section>
 <section id="user-intent-matching">
 <span id="make-use-of-llms-user-intent-matching"></span><h2>User Intent Matching<a class="headerlink" href="#user-intent-matching" title="Link to this heading">#</a></h2>
-<p>In section <a class="reference internal" href="defining-flows.html#action-like-and-intent-like-flows"><span class="std std-ref">Defining Flows</span></a> we have already seen how we can define user intent flows. The limitation was that they did not generalize to variations of the given user intent examples. With the help of an LLM we can overcome this issue and use its reasoning power by importing the <cite>llm</cite> standard library module and activate the flows <code class="docutils literal notranslate"><span class="pre">automating</span> <span class="pre">intent</span> <span class="pre">detection</span></code> and <code class="docutils literal notranslate"><span class="pre">generating</span> <span class="pre">user</span> <span class="pre">intent</span> <span class="pre">for</span> <span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">utterance</span></code> (<a class="reference external" href="../../../nemoguardrails/colang/v2_x/library/llm.co">Github link</a>) to match unexpected user utterances to currently active user intent flows.</p>
+<p>In section <a class="reference internal" href="defining-flows.html#action-like-and-intent-like-flows"><span class="std std-ref">Defining Flows</span></a>, we have already seen how we can define user intent flows. The limitation was that they did not generalize to variations of the given user intent examples. With the help of an LLM, we can overcome this issue and use its reasoning power by importing the <cite>llm</cite> standard library module and activating the flows <code class="docutils literal notranslate"><span class="pre">automating</span> <span class="pre">intent</span> <span class="pre">detection</span></code> and <code class="docutils literal notranslate"><span class="pre">generating</span> <span class="pre">user</span> <span class="pre">intent</span> <span class="pre">for</span> <span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">utterance</span></code> (<a class="reference external" href="../../../nemoguardrails/colang/v2_x/library/llm.co">Github link</a>) to match unexpected user utterances to currently active user intent flows.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">llm/user_intent_match_example/main.co</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
@@ -734,7 +734,7 @@ Thanks for sharing!
 Goodbye!
 </pre></div>
 </div>
-<p>You can see that if we have an exact match for e.g. “Hi”, the LLM will not be invoked since it matches directly with one of the awaited <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span></code> flows. For any other user utterance the activated flow <code class="docutils literal notranslate"><span class="pre">generating</span> <span class="pre">user</span> <span class="pre">intent</span> <span class="pre">for</span> <span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">utterance</span></code> will invoke the LLM, before finding a suitable user intent. If the user utterance was close enough to one of the predefined user intent flows (i.e. <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">greeted</span></code> or <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">goodbye</span></code>), it will cause the related flow to finish successfully. This enables you to even talk in a different language (if supported by the LLM) to successfully map to the correct flow. If no good match was found, the flow <code class="docutils literal notranslate"><span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">intent</span></code> will match.</p>
+<p>You can see that if we have an exact match for “Hi”, for example, the LLM will not be invoked since it matches directly with one of the awaited <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span></code> flows. For any other user utterance, the activated flow <code class="docutils literal notranslate"><span class="pre">generating</span> <span class="pre">user</span> <span class="pre">intent</span> <span class="pre">for</span> <span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">utterance</span></code> will invoke the LLM, before finding a suitable user intent. If the user utterance was close enough to one of the predefined user intent flows (i.e. <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">greeted</span></code> or <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">goodbye</span></code>), it will cause the related flow to finish successfully. This enables you to even talk in a different language (if supported by the LLM) to successfully map to the correct flow. If no good match was found, the flow <code class="docutils literal notranslate"><span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">intent</span></code> will match.</p>
 <p>You might ask yourself how the LLM can know which flows are considered user intent flows. This can either be done based on the flow names by activating the flow <code class="docutils literal notranslate"><span class="pre">automating</span> <span class="pre">intent</span> <span class="pre">detection</span></code> to automatically detect flows starting with ‘user’, or using an explicit flow decorator to mark them independently of their names:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>@meta(user_intent=True)
 flow any fancy flow name
@@ -743,12 +743,12 @@ flow any fancy flow name
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>From a semantic point of view it makes always sense to start a user intent flow with ‘user’ even if marked by a user intent meta decorator.</p>
+<p>From a semantic point of view, it makes sense to start a user intent flow with ‘user’ even if marked by a user intent meta decorator.</p>
 </div>
 </section>
 <section id="bot-action-generation">
 <h2>Bot Action Generation<a class="headerlink" href="#bot-action-generation" title="Link to this heading">#</a></h2>
-<p>Similarly to how we want to be able to handle variations in the user input, we have seen bot intent flows that define a variation of predefined bot actions. While this can be good enough for responses to expected user inputs we would also like to handle unexpected user utterances and not always reply with “Thanks for sharing!”. For this case, another flow from the Standard Library will help us named <code class="docutils literal notranslate"><span class="pre">llm</span> <span class="pre">continue</span> <span class="pre">interaction</span></code>:</p>
+<p>Similarly to how we want to be able to handle variations in the user input, we have seen bot intent flows that define a variation of predefined bot actions. While this can be good enough for responses to expected user inputs, we would also like to handle unexpected user utterances and not always reply with “Thanks for sharing!”. For this case, another flow from the Standard Library named <code class="docutils literal notranslate"><span class="pre">llm</span> <span class="pre">continue</span> <span class="pre">interaction</span></code> will help us:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">llm/bot_intent_generation_example/main.co</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
@@ -777,15 +777,15 @@ I&#39;m glad you liked it! Do you want to hear another one?
 Bye! Have a great day!
 </pre></div>
 </div>
-<p>You see that with this the bot can react to any user input and respond with a suitable bot answer. This generalizes well to multimodal interactions and can be used to generate bot postures and bot gestures as well if provided with a suitable prompting context.</p>
+<p>You see that with this, the bot can react to any user input and respond with a suitable bot answer. This generalizes well to multimodal interactions and can be used to generate bot postures and bot gestures as well, if provided with a suitable prompting context.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The generated actions strongly depend on the current interaction context, the general prompt instructions and sample conversation in the <cite>config.yml</cite>. Try updating them to achieve the expected results.</p>
+<p>The generated actions strongly depend on the current interaction context, the general prompt instructions, and sample conversation in the <cite>config.yml</cite>. Try updating them to achieve the expected results.</p>
 </div>
 </section>
 <section id="basic-interaction-loop">
 <h2>Basic Interaction Loop<a class="headerlink" href="#basic-interaction-loop" title="Link to this heading">#</a></h2>
-<p>We can combine now everything to a basic interaction loop:</p>
+<p>We can now combine everything to create a basic interaction loop:</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">llm/interaction_loop/main.co</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
@@ -818,7 +818,7 @@ flow user expressed goodbye
 </pre></div>
 </div>
 </div>
-<p>This loop will take care of matching user utterances to predefined user intents if possible (e.g. <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">expressed</span> <span class="pre">greeting</span></code> or <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">expressed</span> <span class="pre">goodbye</span></code>) or generate a suitable response to unexpected user intents using the flow <code class="docutils literal notranslate"><span class="pre">llm</span> <span class="pre">continue</span> <span class="pre">interaction</span></code>. Furthermore, if the user does not say anything for more than 12 seconds, the bot will say a random fun fact generated through a NLD.</p>
+<p>This loop will take care of matching user utterances to predefined user intents if possible (e.g. <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">expressed</span> <span class="pre">greeting</span></code> or <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">expressed</span> <span class="pre">goodbye</span></code>) or generate a suitable response to unexpected user intents using the flow <code class="docutils literal notranslate"><span class="pre">llm</span> <span class="pre">continue</span> <span class="pre">interaction</span></code>. Furthermore, if the user does not say anything for more than 12 seconds, the bot will say a random fun fact generated through an NLD.</p>
 </section>
 <section id="guardrailing">
 <h2>Guardrailing<a class="headerlink" href="#guardrailing" title="Link to this heading">#</a></h2>

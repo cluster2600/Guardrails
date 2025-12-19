@@ -613,7 +613,7 @@
 It performs several syntax transformations on the content of the files, such as converting certain keywords and changing the case of certain identifiers.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>There are edge cases not convered by the conversion tool. You should always manually review a guardrail configuration after conversion.</p>
+<p>There are edge cases not covered by the conversion tool. You should always manually review a guardrail configuration after conversion.</p>
 </div>
 <section id="how-it-works">
 <h2>How it Works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h2>
@@ -624,14 +624,14 @@ It performs several syntax transformations on the content of the files, such as 
 <li><p>Converting <code class="docutils literal notranslate"><span class="pre">define</span> <span class="pre">bot</span></code> to <code class="docutils literal notranslate"><span class="pre">flow</span> <span class="pre">bot</span></code>.</p></li>
 <li><p>Converting <code class="docutils literal notranslate"><span class="pre">define</span> <span class="pre">user</span></code> to <code class="docutils literal notranslate"><span class="pre">flow</span> <span class="pre">user</span></code>.</p></li>
 <li><p>Converting <code class="docutils literal notranslate"><span class="pre">execute</span></code> to <code class="docutils literal notranslate"><span class="pre">await</span></code>.</p></li>
-<li><p>Converting snake_case identifiers after <code class="docutils literal notranslate"><span class="pre">await</span></code> to CamelCase and append it with key word <code class="docutils literal notranslate"><span class="pre">Action</span></code> while preserving any arguments used..</p></li>
+<li><p>Converting snake_case identifiers after <code class="docutils literal notranslate"><span class="pre">await</span></code> to CamelCase and appending them with key word <code class="docutils literal notranslate"><span class="pre">Action</span></code> while preserving any arguments used.</p></li>
 <li><p>Converting <code class="docutils literal notranslate"><span class="pre">else</span> <span class="pre">when</span></code> to <code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">when</span></code>.</p></li>
 <li><p>Converting <code class="docutils literal notranslate"><span class="pre">stop</span></code> to <code class="docutils literal notranslate"><span class="pre">abort</span></code>.</p></li>
 <li><p>Converting quoted strings after <code class="docutils literal notranslate"><span class="pre">bot</span></code> to <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code> or <code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">bot</span> <span class="pre">say</span></code>.</p></li>
 <li><p>Converting quoted strings after <code class="docutils literal notranslate"><span class="pre">user</span></code> to <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span></code> or <code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">user</span> <span class="pre">said</span></code>.</p></li>
-<li><p>Convert anonymous flows.</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">active</span></code> decorator for root flows (flows that need activation).</p></li>
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">global</span></code> keyword to global variables.</p></li>
+<li><p>Converting anonymous flows.</p></li>
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">active</span></code> decorator for root flows (flows that need activation).</p></li>
+<li><p>Adding <code class="docutils literal notranslate"><span class="pre">global</span></code> keyword to global variables.</p></li>
 <li><p>Converting <code class="docutils literal notranslate"><span class="pre">...</span></code> to corresponding syntax in Colang 2.</p></li>
 </ul>
 <section id="generation-operator">
@@ -641,15 +641,15 @@ It performs several syntax transformations on the content of the files, such as 
 $var_name = ...
 </pre></div>
 </div>
-<p>It is translated to:</p>
+<p>is translated to:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$name = ... &quot;some instruction in natural language&quot;
 </pre></div>
 </div>
 </section>
 <section id="generic-matching">
 <h3>Generic Matching<a class="headerlink" href="#generic-matching" title="Link to this heading">#</a></h3>
-<p>In Colang 1.0 it was possible to use generic matching using <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">...</span></code> and <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">...</span></code>.
-These have a different equivalent in Colang 2.0. The <code class="docutils literal notranslate"><span class="pre">...</span></code> can no longer be used for matching, only for generation.</p>
+<p>In Colang 1.0, it was possible to use generic matching using <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">...</span></code> and <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">...</span></code>.
+These have different equivalents in Colang 2.0. The <code class="docutils literal notranslate"><span class="pre">...</span></code> can no longer be used for matching, only for generation.</p>
 <p>The following changes are applied during conversion:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">...</span></code> is translated to <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">something</span></code></p></li>
@@ -658,9 +658,9 @@ These have a different equivalent in Colang 2.0. The <code class="docutils liter
 </section>
 <section id="rails-configuration">
 <h3>Rails Configuration<a class="headerlink" href="#rails-configuration" title="Link to this heading">#</a></h3>
-<p>Colang 1.0 configuration can define certain rails in the <code class="docutils literal notranslate"><span class="pre">rails</span></code> field.</p>
+<p>Colang 1.0 configuration can define certain guardrails in the <code class="docutils literal notranslate"><span class="pre">rails</span></code> field.</p>
 <ul class="simple">
-<li><p>If rails are defined in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> a <code class="docutils literal notranslate"><span class="pre">_rails.co</span></code> file is generated with the rails defined in it.</p></li>
+<li><p>If guardrails are defined in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, a <code class="docutils literal notranslate"><span class="pre">_rails.co</span></code> file is generated with the rails defined in it.</p></li>
 </ul>
 </section>
 <section id="example-flow-conversion">
@@ -711,7 +711,7 @@ flow express_greeting
 <li><p>The tool uses regular expressions to find and replace certain patterns in the text. If the input files contain text that matches these patterns but should not be replaced, the tool may produce incorrect results.</p></li>
 <li><p>The tool renames the original files and writes the transformed content to new files with the original names. Use version control to track the changes made by the tool.</p></li>
 <li><p>The tool does not handle errors that may occur during file reading and writing operations. If an error occurs, the tool logs the error and continues with the next file.</p></li>
-<li><p>Using characters like <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">+</span></code> and tokens like <code class="docutils literal notranslate"><span class="pre">or</span></code>, <code class="docutils literal notranslate"><span class="pre">and</span></code>, etc. is not supported in flow definition, the migration tool does not handle this conversion.</p></li>
+<li><p>Using characters like <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">+</span></code> and tokens like <code class="docutils literal notranslate"><span class="pre">or</span></code>, <code class="docutils literal notranslate"><span class="pre">and</span></code>, etc. is not supported in flow definition. The migration tool does not handle this conversion.</p></li>
 <li><p>It is a better practice to define global variables at the beginning of the flow. However, the migration tool does not enforce this.</p></li>
 </ul>
 </section>
