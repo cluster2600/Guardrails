@@ -60,7 +60,7 @@
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Detect Jailbreaks with Nemotron Jailbreak Detect NIM" href="nemoguard-jailbreakdetect-deployment.html" />
-    <link rel="prev" title="Check Content with Nemotron Content Safety NIM" href="nemotron-safety-guard-deployment.html" />
+    <link rel="prev" title="Check Harmful Content with Nemotron Content Safety NIM" href="nemotron-safety-guard-deployment.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -371,10 +371,10 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Rail Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Guardrail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Architecture</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
@@ -384,23 +384,23 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Install</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Content Safety</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Topic Control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Jailbreak Detection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multimodal.html">Multimodal Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Restrict Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Detect Jailbreaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate into Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before You Begin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configure Rails</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Models</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Rails in Parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Parallel Execution of Rails</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/prompt-configuration.html">Prompts</a></li>
@@ -412,7 +412,7 @@
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
@@ -484,9 +484,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Caching Instructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for LLM NIM</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 </ul>
 </details></li>
 </ul>
@@ -496,7 +496,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/core-classes.html">Core Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-Based API</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -516,15 +516,15 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deployment Options</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deploy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Using Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -537,7 +537,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Integrate LangChain Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
 <ul class="nav bd-sidenav">
@@ -716,7 +716,7 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Check Content with Nemotron Content Safety NIM</p>
+        <p class="prev-next-title">Check Harmful Content with Nemotron Content Safety NIM</p>
       </div>
     </a>
     <a class="right-next"
