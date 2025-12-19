@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Generation Options &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Integrate the NeMo Guardrails Library into Your Application &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=6dbb43f8"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'run-rails/generation-options';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started/integrate-into-application';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,11 +56,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/run-rails/generation-options.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/getting-started/integrate-into-application.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Streaming Generated Responses in Real-Time" href="streaming.html" />
-    <link rel="prev" title="NeMo Guardrails Library Core Classes" href="core-classes.html" />
+    <link rel="next" title="Prerequisites for Configuring the NeMo Guardrails Library" href="../configure-rails/before-configuration.html" />
+    <link rel="prev" title="Multimodal Content Safety with Vision Models as LLM-as-a-judge" href="tutorials/multimodal.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -381,16 +381,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Install the NeMo Guardrails Library</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Jailbreak Detection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Multimodal Data</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Install the NeMo Guardrails Library</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/nemotron-safety-guard-deployment.html">Content Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/nemoguard-jailbreakdetect-deployment.html">Jailbreak Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/multimodal.html">Multimodal Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Integrate the NeMo Guardrails Library into Your Application</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
@@ -491,12 +491,12 @@
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Rails</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core-classes.html">Core Classes</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="event-based-api.html">Event-based API</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-based API</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -584,7 +584,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Generation Options</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Integrate the NeMo Guardrails Library into Your Application</span></li>
   </ul>
 </nav>
 </div>
@@ -601,219 +601,44 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="generation-options">
-<h1>Generation Options<a class="headerlink" href="#generation-options" title="Link to this heading">#</a></h1>
-<p>The NeMo Guardrails library exposes a set of <strong>generation options</strong> that give you fine-grained control over how the LLM generation is performed (for example, what rails are enabled, additional parameters that should be passed to the LLM, what context data should be returned, what logging information should be returned).</p>
-<p>The <strong>generation options</strong> can be used both in the Python API and through the server API.</p>
-<p>To use the generation options through the Python API, you must provide the <code class="docutils literal notranslate"><span class="pre">options</span></code> keyword argument:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span>
-    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
-<span class="p">}]</span>
-<span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="o">...</span><span class="p">})</span>
-</pre></div>
-</div>
-<p>To use the generation options through the server API, you must provide the <code class="docutils literal notranslate"><span class="pre">options</span></code> as part of the request body:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /v1/chat/completions
-</pre></div>
-</div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;config_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
-<span class="w">    </span><span class="p">}],</span>
-<span class="w">    </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="err">...</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<section id="output-variables">
-<h2>Output Variables<a class="headerlink" href="#output-variables" title="Link to this heading">#</a></h2>
-<p>Some rails can store additional information in <a class="reference internal" href="#../configuration-guide/colang/colang-language-syntax-guide.md#variables"><span class="xref myst">context variables</span></a>. You can return the content of these variables by setting the <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> generation option to the list of names for all the variables that you are interested in. If you want to return the complete context (this will also include some predefined variables), you can set <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;output_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;some_input_rail_score&quot;</span><span class="p">,</span> <span class="s2">&quot;some_output_rail_score&quot;</span><span class="p">]</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<p>The returned data will be included in the <code class="docutils literal notranslate"><span class="pre">output_data</span></code> key of the response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;output_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;some_input_rail_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;some_output_rail_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="additional-llm-parameters">
-<h2>Additional LLM Parameters<a class="headerlink" href="#additional-llm-parameters" title="Link to this heading">#</a></h2>
-<p>You can pass additional parameters to the LLM call that is used to generate the final message by using the <code class="docutils literal notranslate"><span class="pre">llm_params</span></code> generation option. For example, to use a lower temperature than the default one:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;llm_params&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.2</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<p>The supported parameters depend on the underlying LLM engine. The NeMo Guardrails library passes them “as is”.</p>
-</section>
-<section id="additional-llm-output">
-<h2>Additional LLM Output<a class="headerlink" href="#additional-llm-output" title="Link to this heading">#</a></h2>
-<p>You can receive the additional output from the LLM generation by using the <code class="docutils literal notranslate"><span class="pre">llm_output</span></code> generation options.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;llm_output&quot;</span><span class="p">:</span> <span class="kc">True</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The data that is returned is highly dependent on the underlying implementation of the LangChain connector for the LLM provider. For example, for OpenAI, it only returns <code class="docutils literal notranslate"><span class="pre">token_usage</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code>.</p>
-</div>
-</section>
-<section id="detailed-logging-information">
-<h2>Detailed Logging Information<a class="headerlink" href="#detailed-logging-information" title="Link to this heading">#</a></h2>
-<p>You can obtain detailed information about what happened under the hood during the generation process by setting the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option. This option has four different inner-options:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">activated_rails</span></code>: Include detailed information about the rails that were activated during generation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">llm_calls</span></code>: Include information about all the LLM calls that were made. This includes: prompt, completion, token usage, raw response, etc.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">internal_events</span></code>: Include the array of internal generated events.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">colang_history</span></code>: Include the history of the conversation in Colang format.</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;activated_rails&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;llm_calls&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;internal_events&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;colang_history&quot;</span><span class="p">:</span> <span class="kc">True</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;log&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;activated_rails&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="err">...</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;llm_calls&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;internal_events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;colang_history&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>When using the Python API, the <code class="docutils literal notranslate"><span class="pre">log</span></code> is an object that also has a <code class="docutils literal notranslate"><span class="pre">print_summary</span></code> method. When called, it will print a simplified version of the log information. Below is a sample output.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">print_summary</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gh"># General stats</span>
+  <section class="tex2jax_ignore mathjax_ignore" id="integrate-the-nemo-guardrails-library-into-your-application">
+<h1>Integrate the NeMo Guardrails Library into Your Application<a class="headerlink" href="#integrate-the-nemo-guardrails-library-into-your-application" title="Link to this heading">#</a></h1>
+<p>If you have an existing application, you can integrate NeMo Guardrails into it using the NeMo Guardrails library.</p>
+<hr class="docutils" />
+<section id="integrate-guardrails-into-llm-based-applications">
+<h2>Integrate Guardrails into LLM-based Applications<a class="headerlink" href="#integrate-guardrails-into-llm-based-applications" title="Link to this heading">#</a></h2>
+<p>The NeMo Guardrails library can be integrated into applications in multiple ways:</p>
+<ol class="arabic">
+<li><p><strong>Python SDK integration</strong>: Add guardrails directly into your Python application.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
-<span class="k">-</span><span class="w"> </span>Total time: 2.85s
-<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.56s</span>][<span class="nl">19.64%</span>]: INPUT Rails
-<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">1.40s</span>][<span class="nl">49.02%</span>]: DIALOG Rails
-<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.58s</span>][<span class="nl">20.22%</span>]: GENERATION Rails
-<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.31s</span>][<span class="nl">10.98%</span>]: OUTPUT Rails
-<span class="k">-</span><span class="w"> </span>5 LLM calls, 2.74s total duration, 1641 total prompt tokens, 103 total completion tokens, 1744 total tokens.
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
-<span class="gh"># Detailed stats</span>
+<span class="c1"># Use in your application</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">])</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>LangChain integration</strong>: Wrap guardrails around LangChain chains or use chains within guardrails.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.integrations.langchain.runnable_rails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableRails</span>
 
-<span class="k">-</span><span class="w"> </span>[0.56s] INPUT (self check input): 1 actions (self_check_input), 1 llm calls [0.56s]
-<span class="k">-</span><span class="w"> </span>[0.43s] DIALOG (generate user intent): 1 actions (generate_user_intent), 1 llm calls [0.43s]
-<span class="k">-</span><span class="w"> </span>[0.96s] DIALOG (generate next step): 1 actions (generate_next_step), 1 llm calls [0.95s]
-<span class="k">-</span><span class="w"> </span>[0.58s] GENERATION (generate bot message): 2 actions (retrieve_relevant_chunks, generate_bot_message), 1 llm calls [0.49s]
-<span class="k">-</span><span class="w"> </span>[0.31s] OUTPUT (self check output): 1 actions (self_check_output), 1 llm calls [0.31s]
+<span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">chain_with_guardrails</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">guardrails</span> <span class="o">|</span> <span class="n">model</span> <span class="o">|</span> <span class="n">output_parser</span>
 </pre></div>
 </div>
-</section>
-<section id="disabling-rails">
-<h2>Disabling Rails<a class="headerlink" href="#disabling-rails" title="Link to this heading">#</a></h2>
-<p>You can choose which categories of rails you want to apply by using the <code class="docutils literal notranslate"><span class="pre">rails</span></code> generation option. The four supported categories are: <code class="docutils literal notranslate"><span class="pre">input</span></code>, <code class="docutils literal notranslate"><span class="pre">dialog</span></code>, <code class="docutils literal notranslate"><span class="pre">retrieval</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code>. By default, all are enabled.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
+<p>For more information, refer to the <a class="reference internal" href="../integration/langchain/langchain-integration.html"><span class="std std-doc">LangChain Integration Guide</span></a>.</p>
+</li>
+<li><p><strong>HTTP API integration</strong>: Use the guardrails server to add protection to applications in any programming language.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>path/to/configs
 </pre></div>
 </div>
-<p>is equivalent to:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;rails&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;dialog&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieval&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<section id="input-rails-only">
-<h3>Input Rails Only<a class="headerlink" href="#input-rails-only" title="Link to this heading">#</a></h3>
-<p>If you only want to check a user’s input by running the input rails from a guardrails configuration, you must disable all the others:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
-    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Some user input.&quot;</span>
-<span class="p">}],</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;rails&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<p>The response will be the same string if the input was allowed “as is”:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Some user input.&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>If some of the rails alter the input, for example, to mask sensitive information, then the returned value is the altered input.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Some altered user input.&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>If the input was blocked, you will get the predefined response <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">refuse</span> <span class="pre">to</span> <span class="pre">respond</span></code> (by default “I’m sorry, I can’t respond to that”).</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I&#39;m sorry, I can&#39;t respond to that.&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>For more details on what rails was triggered, use the <code class="docutils literal notranslate"><span class="pre">log.activated_rails</span></code> generation option.</p>
-</section>
-<section id="input-and-output-rails-only">
-<h3>Input and Output Rails Only<a class="headerlink" href="#input-and-output-rails-only" title="Link to this heading">#</a></h3>
-<p>If you want to check both the user input and an output that was generated outside of the guardrails configuration, you must disable the dialog rails and the retrieval rails, and provide a bot message as well when making the call:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
-    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Some user input.&quot;</span>
-<span class="p">},</span> <span class="p">{</span>
-    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Some bot output.&quot;</span>
-<span class="p">}],</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;rails&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<p>The response will be the exact bot message provided, if allowed, an altered version if an output rail decides to change it, for example, to remove sensitive information, or the predefined message for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">refuse</span> <span class="pre">to</span> <span class="pre">respond</span></code>, if the message was blocked.</p>
-<p>For more details on what rails was triggered, use the <code class="docutils literal notranslate"><span class="pre">log.activated_rails</span></code> generation option.</p>
-</section>
-<section id="output-rails-only">
-<h3>Output Rails Only<a class="headerlink" href="#output-rails-only" title="Link to this heading">#</a></h3>
-<p>If you want to apply only the output rails to an LLM output, you must disable the input rails as well and provide an empty input.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
-    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
-<span class="p">},</span> <span class="p">{</span>
-    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Some bot output.&quot;</span>
-<span class="p">}],</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;rails&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="limitations">
-<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Only supported for the <code class="docutils literal notranslate"><span class="pre">generate</span></code>/<code class="docutils literal notranslate"><span class="pre">generate_async</span></code> methods (not for <code class="docutils literal notranslate"><span class="pre">generate_events</span></code>/<code class="docutils literal notranslate"><span class="pre">generate_events_async</span></code>).</p></li>
-<li><p>Specifying which individual rails of a particular type to activate is not yet supported.</p></li>
-</ul>
+<p>For more information, refer to the <a class="reference internal" href="../deployment/local-server/index.html"><span class="std std-doc">Server Guide</span></a>.</p>
+</li>
+<li><p><strong>Docker deployment</strong>: Deploy guardrails as a containerized service.
+For more information, refer to the <a class="reference internal" href="../deployment/using-docker.html"><span class="std std-doc">Using Docker Guide</span></a>.</p></li>
+</ol>
+<p>For complete examples and detailed integration patterns, refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples" rel="noreferer noopener" target="_blank">examples directory</a> in the GitHub repository.</p>
 </section>
 </section>
 
@@ -828,20 +653,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="core-classes.html"
+       href="tutorials/multimodal.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NeMo Guardrails Library Core Classes</p>
+        <p class="prev-next-title">Multimodal Content Safety with Vision Models as LLM-as-a-judge</p>
       </div>
     </a>
     <a class="right-next"
-       href="streaming.html"
+       href="../configure-rails/before-configuration.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Streaming Generated Responses in Real-Time</p>
+        <p class="prev-next-title">Prerequisites for Configuring the NeMo Guardrails Library</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -866,17 +691,7 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-variables">Output Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-llm-parameters">Additional LLM Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-llm-output">Additional LLM Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-logging-information">Detailed Logging Information</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-rails">Disabling Rails</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-rails-only">Input Rails Only</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-and-output-rails-only">Input and Output Rails Only</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-rails-only">Output Rails Only</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrate-guardrails-into-llm-based-applications">Integrate Guardrails into LLM-based Applications</a></li>
 </ul>
   </nav></div>
 
