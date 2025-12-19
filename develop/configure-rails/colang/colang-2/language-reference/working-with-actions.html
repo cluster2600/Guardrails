@@ -657,7 +657,7 @@ XAction.Stop() -&gt; Action state: `Stopping`
 XAction.Finished() -&gt; Action state: `Finished`
 </pre></div>
 </div>
-<p>In the <span class="xref std std-ref">UMIM</span> reference documentation you will find many predefined actions that should cover the most common use cases. Let’s have a look at one of the most prominent actions called <cite>UtteranceBotAction</cite>. This action represents the main channel to communicate with the user, e.g. through speech or text (depending on the specific system). This action relates to events that can be grouped into output and input events from the perspective of a bot:</p>
+<p>In the <span class="xref std std-ref">UMIM</span> reference documentation, you will find many predefined actions that should cover the most common use cases. Let’s have a look at one of the most prominent actions called <cite>UtteranceBotAction</cite>. This action represents the main channel to communicate with the user, e.g. through speech or text (depending on the specific system). This action relates to events that can be grouped into output and input events from the perspective of a bot:</p>
 <p>Output events:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>UtteranceBotAction(script: str).Start()
 UtteranceBotAction.Stop(action_uid: str)
@@ -672,9 +672,9 @@ UtteranceBotAction.Finished(action_uid: str, final_transcript: str, ...)
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note, that Colang is not limited to work only from a bot perspective but could also be used to simulate the user side. In this case the output and input categorization would flip.</p>
+<p>Colang can model both bot and user behavior. When modeling the user, the roles of inputs and outputs are inverted.</p>
 </div>
-<p>While there are no binding rules on how we work with these events using the <code class="docutils literal notranslate"><span class="pre">send</span></code> or <code class="docutils literal notranslate"><span class="pre">match</span></code> keywords, in most cases we will generate output events and match to input events. E.g. if we want the bot to finish saying something before making a gesture we could create the following interaction pattern:</p>
+<p>While there are no binding rules on how we work with these events using the <code class="docutils literal notranslate"><span class="pre">send</span></code> or <code class="docutils literal notranslate"><span class="pre">match</span></code> keywords, in most cases we will generate output events and match to input events. For example, if we want the bot to finish saying something before making a gesture we could create the following interaction pattern:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">actions/action_events/main.co</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
@@ -723,8 +723,8 @@ Gesture: Wave
 Gesture: Wave
 </pre></div>
 </div>
-<p>The keyword <code class="docutils literal notranslate"><span class="pre">start</span></code> creates an action object and then generates an action specific <cite>Start</cite> action event. A reference to this action object can be stored using <code class="docutils literal notranslate"><span class="pre">as</span> <span class="pre">$ref_name</span></code>. With this action reference we can now conveniently match to the <cite>Finished</cite> event and no longer need to use the <cite>action_uid</cite> parameter to identify the specific action.</p>
-<p>Let’s look now at an example of the common user action <cite>UtteranceUserAction</cite>. This action represents the counterpart to the <cite>UtteranceBotAction</cite> and is the main channel of the user to expressing herself, e.g. by talking, writing or any other way depending on the actual system. A user action is usually not started by Colang but by the user (system). These are the most important action events and parameters:</p>
+<p>The keyword <code class="docutils literal notranslate"><span class="pre">start</span></code> creates an action object and then generates an action specific <cite>Start</cite> action event. A reference to this action object can be stored using <code class="docutils literal notranslate"><span class="pre">as</span> <span class="pre">$ref_name</span></code>. With this action reference, we can now conveniently match to the <cite>Finished</cite> event and no longer need to use the <cite>action_uid</cite> parameter to identify the specific action.</p>
+<p>Next, we look at UtteranceUserAction, which mirrors UtteranceBotAction on the user side and serves as the user’s primary channel for expression (e.g., speech, text, or other modalities). A user action is usually not started by Colang but by the user (system). These are the most important action events and parameters:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>UtteranceUserActionStarted(action_uid: str)
 UtteranceUserActionTranscriptUpdated(action_uid: str, interim_transcript: str)
 UtteranceUserActionIntensityUpdated(action_uid: str, intensity: float)
@@ -756,7 +756,7 @@ Great! Thanks
 Gesture: Thumbs up
 </pre></div>
 </div>
-<p>As you might have already noticed, this is very similar to the example we saw in the introduction example <cite>introduction/interaction_sequence/main.co</cite>. The difference is that we have more temporal control and will only start matching user input when the bot has completed the utterance. Note also, how the interaction pattern is completed only once the second bot utterance action and the bot gesture action have both finished.</p>
+<p>As you might have already noticed, this is very similar to the example we saw in <cite>introduction/interaction_sequence/main.co</cite>. The difference is that we have more temporal control and will only start matching user input once the bot has completed the utterance. Note also how the interaction pattern is completed only once the second bot utterance action and the bot gesture action have both finished.</p>
 </section>
 <section id="await-an-action">
 <h2><cite>Await</cite> an Action<a class="headerlink" href="#await-an-action" title="Link to this heading">#</a></h2>
@@ -783,7 +783,7 @@ Gesture: Thumbs up
 </pre></div>
 </div>
 </div>
-<p>Unfortunately, we cannot simplify the second part of the example with this… Or can we though? Actually yes! We can make use of action grouping using the <code class="docutils literal notranslate"><span class="pre">and</span></code> keyword to simplify it like this:</p>
+<p>We can optionally make use of action grouping using the <code class="docutils literal notranslate"><span class="pre">and</span></code> keyword to simplify it like this:</p>
 <div class="literal-block-wrapper docutils container" id="id6">
 <div class="code-block-caption"><span class="caption-text">actions/action_grouping/main.co</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
@@ -797,7 +797,7 @@ Gesture: Thumbs up
 <p>Action grouping is identical to event grouping using the keywords <code class="docutils literal notranslate"><span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">await</span></code> instead of <code class="docutils literal notranslate"><span class="pre">send</span></code> and <code class="docutils literal notranslate"><span class="pre">match</span></code>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Note, that this:</p>
+<p>Note that this:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>await Action1() or Action2()
 </pre></div>
 </div>
@@ -852,7 +852,7 @@ match $action_ref.Finished()
 match UtteranceBotAction.Finished()
 </pre></div>
 </div>
-<p>In the first case the match is on the specific action reference (same action_uid parameter) and will not match to any other <cite>Finished</cite> event of another <cite>UtteranceBotAction</cite>. The second case is more general and will match to any <cite>Finished</cite> event from any <cite>UtteranceBotAction</cite>.</p>
+<p>In the first case, the match is on the specific action reference (same action_uid parameter) and will not match to any other <cite>Finished</cite> event of another <cite>UtteranceBotAction</cite>. The second case is more general and will match to any <cite>Finished</cite> event from any <cite>UtteranceBotAction</cite>.</p>
 <p>With this, we are now prepared to learn more about the concept of flows in the next chapter <a class="reference internal" href="defining-flows.html#defining-flows"><span class="std std-ref">Defining Flows</span></a>.</p>
 </section>
 </section>
