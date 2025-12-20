@@ -539,17 +539,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../integration/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../../../security/guidelines.html">Security</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../python-api/index.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -655,7 +656,7 @@
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">unhandled</span> <span class="pre">user</span> <span class="pre">intent</span> <span class="pre">-&gt;</span> <span class="pre">$intent</span></span></dt>
-<dd><p>Wait for the end of an user intent flow</p>
+<dd><p>Wait for the end of a user intent flow</p>
 <p>Example:</p>
 </dd></dl>
 
@@ -683,16 +684,16 @@
 </section>
 <section id="more-advanced-flows">
 <h2>More Advanced Flows<a class="headerlink" href="#more-advanced-flows" title="Link to this heading">#</a></h2>
-<p>This section describes more advanced flows defined in the <code class="docutils literal notranslate"><span class="pre">llm.co</span></code> library. When you get started with Colang you most
+<p>This section describes more advanced flows defined in the <code class="docutils literal notranslate"><span class="pre">llm.co</span></code> library. When you get started with Colang, you most
 likely will not need to directly use these flows. These flows exist to support more advanced use cases.</p>
 <p><strong>Advanced Interaction Continuation</strong></p>
-<p>Flows with more advanced LLM based continuations</p>
+<p>Flows with more advanced LLM-based continuations</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Generate a flow that continues the current interaction
 flow llm generate interaction continuation flow -&gt; $flow_name
 </pre></div>
 </div>
 <p><strong>Interaction History Logging</strong></p>
-<p>Flows to log interaction history to created required context for LLM prompts.</p>
+<p>Flows to log interaction history to create required context for LLM prompts.</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Activate all automated user and bot intent flows logging based on flow naming
 flow automating intent detection
 

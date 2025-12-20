@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Overview of NVIDIA NeMo Guardrails Library &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Use Case Diagrams &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -413,7 +413,7 @@ const load = async () => {
 
 window.addEventListener("load", load);
 </script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'about/overview';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'resources/use-case-diagrams';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -421,11 +421,11 @@ window.addEventListener("load", load);
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/about/overview.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/resources/use-case-diagrams.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Guardrail Types" href="rail-types.html" />
-    <link rel="prev" title="NVIDIA NeMo Guardrails Library Developer Guide" href="../index.html" />
+    <link rel="next" title="Glossary" href="../glossary.html" />
+    <link rel="prev" title="NeMo Guardrails Library CLI Reference" href="../cli/index.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -734,16 +734,16 @@ window.addEventListener("load", load);
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rail-types.html">Guardrail Types</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architecture/README.html">Architecture</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/rail-types.html">Guardrail Types</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="supported-llms.html">Supported LLMs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/supported-llms.html">Supported LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
@@ -909,11 +909,11 @@ window.addEventListener("load", load);
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Use Case Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
 </ul>
@@ -950,7 +950,7 @@ window.addEventListener("load", load);
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Overview of NVIDIA NeMo Guardrails Library</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Use Case Diagrams</span></li>
   </ul>
 </nav>
 </div>
@@ -967,227 +967,330 @@ window.addEventListener("load", load);
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!--
-  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-  SPDX-License-Identifier: Apache-2.0
--->
-<section class="tex2jax_ignore mathjax_ignore" id="overview-of-nvidia-nemo-guardrails-library">
-<h1>Overview of NVIDIA NeMo Guardrails Library<a class="headerlink" href="#overview-of-nvidia-nemo-guardrails-library" title="Link to this heading">#</a></h1>
-<p>The NVIDIA NeMo Guardrails library (<a class="reference external" href="https://pypi.org/project/nemoguardrails/" rel="noreferer noopener" target="_blank">PyPI</a> | <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails" rel="noreferer noopener" target="_blank">GitHub</a>) is an open-source Python package for adding programmable guardrails to LLM-based applications. It intercepts inputs and outputs, applies configurable safety checks, and blocks or modifies content based on defined policies.</p>
-<section id="nemo-guardrails-library-within-the-nvidia-nemo-software-stack">
-<h2>NeMo Guardrails Library within the NVIDIA NeMo Software Stack<a class="headerlink" href="#nemo-guardrails-library-within-the-nvidia-nemo-software-stack" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://www.nvidia.com/en-us/ai-data-science/products/nemo/" rel="noreferer noopener" target="_blank">NVIDIA NeMo</a> is a suite of microservices, tools, and libraries for building, deploying, and scaling LLM-based applications.</p>
-<p>NeMo Guardrails is part of the NVIDIA NeMo software stack. It takes part in adding programmable guardrails to LLM-based applications. The NeMo Guardrails library provides tools to build guardrails and integrate them into your LLM-based applications at development time. The NeMo Guardrails microservice as part of the <a class="reference external" href="https://docs.nvidia.com/nemo/microservices/latest/about/index.html" rel="noreferer noopener" target="_blank">NeMo microservices platform</a> is a production-ready container image built on top of this library, designed for Kubernetes deployment with Helm charts.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p></p></th>
-<th class="head"><p>NeMo Guardrails Library</p></th>
-<th class="head"><p>NeMo Guardrails Microservice</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Distribution</p></td>
-<td><p>PyPI (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>)</p></td>
-<td><p>Container image (backed by this library)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Deployment</p></td>
-<td><p>Self-managed Python environment</p></td>
-<td><p>Kubernetes with Helm</p></td>
-</tr>
-<tr class="row-even"><td><p>Scaling</p></td>
-<td><p>Application-level</p></td>
-<td><p>Managed by orchestrator</p></td>
-</tr>
-<tr class="row-odd"><td><p>Configuration</p></td>
-<td><p>YAML + Colang</p></td>
-<td><p>Same YAML + Colang format</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- TODO: clarify if this is achievable today -->
-<p>Configurations are portable between the library and microservice, so you can develop locally with the library and deploy to production with the microservice.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="use-case-diagrams">
+<h1>Use Case Diagrams<a class="headerlink" href="#use-case-diagrams" title="Link to this heading">#</a></h1>
+<p>The following diagrams illustrate the NeMo Guardrails architecture for each use case.</p>
+<hr class="docutils" />
+<section id="content-safety">
+<h2>1. Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'background': 'transparent' }}}%%
+
+flowchart LR
+  A(&quot;Application&quot;)
+
+  subgraph NemoGuardrails[&quot;NeMo Guardrails&quot;]
+    direction TB
+    B1(&quot;Input Content Check&quot;)
+    B2(&quot;Output Content Check&quot;)
+  end
+
+  subgraph Safety[&quot;Content Safety Options&quot;]
+    direction TB
+    C1(&quot;LLM Self-Check&quot;)
+    C2(&quot;Llama 3.1 NemoGuard&lt;br/&gt;Content Safety NIM&quot;)
+    C3(&quot;LlamaGuard / Fiddler&quot;)
+    C4(&quot;ActiveFence / AI Defense&quot;)
+  end
+
+  D(&quot;LLM&quot;)
+
+  A --&gt; NemoGuardrails
+  NemoGuardrails --&gt; Safety
+  Safety --&gt; D
+  D --&gt; Safety
+  Safety --&gt; NemoGuardrails
+  NemoGuardrails --&gt; A
+
+  style A fill:#d8d8e8,stroke:#999
+  style NemoGuardrails fill:#f0f7e6,stroke:#76b900,stroke-width:2px
+  style Safety fill:#e8f4d9,stroke:#76b900
+  style D fill:#d8d8e8,stroke:#999
+    </pre><p><em>Content safety guardrails check both user inputs and LLM outputs for harmful content.</em></p>
 </section>
-<section id="architecture">
-<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails library is designed to be integrated into LLM-based applications. It intercepts inputs and outputs, applies configurable safety checks, and blocks or modifies content based on defined policies.</p>
+<hr class="docutils" />
+<section id="jailbreak-protection">
+<h2>2. Jailbreak Protection<a class="headerlink" href="#jailbreak-protection" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'background': 'transparent' }}}%%
+
+flowchart LR
+  A(&quot;Application&quot;)
+
+  subgraph NemoGuardrails[&quot;NeMo Guardrails&quot;]
+    direction TB
+    B1(&quot;Input Jailbreak Detection&quot;)
+  end
+
+  subgraph Jailbreak[&quot;Jailbreak Detection Options&quot;]
+    direction TB
+    C1(&quot;Self-Check Detection&quot;)
+    C2(&quot;Heuristic Detection&quot;)
+    C3(&quot;NemoGuard Jailbreak&lt;br/&gt;Detection NIM&quot;)
+    C4(&quot;Prompt Security /&lt;br/&gt;Pangea AI Guard&quot;)
+  end
+
+  D(&quot;LLM&quot;)
+
+  A --&gt; NemoGuardrails
+  NemoGuardrails --&gt; Jailbreak
+  Jailbreak --&gt; D
+  D --&gt; NemoGuardrails
+  NemoGuardrails --&gt; A
+
+  style A fill:#d8d8e8,stroke:#999
+  style NemoGuardrails fill:#f0f7e6,stroke:#76b900,stroke-width:2px
+  style Jailbreak fill:#ffe6e6,stroke:#cc0000
+  style D fill:#d8d8e8,stroke:#999
+    </pre><p><em>Jailbreak protection prevents adversarial attempts from bypassing safety measures.</em></p>
+</section>
+<hr class="docutils" />
+<section id="topic-control">
+<h2>3. Topic Control<a class="headerlink" href="#topic-control" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'background': 'transparent' }}}%%
+
+flowchart LR
+  A(&quot;Application&quot;)
+
+  subgraph NemoGuardrails[&quot;NeMo Guardrails&quot;]
+    direction TB
+    B1(&quot;Topic Validation&quot;)
+    B2(&quot;Dialog Flow Control&quot;)
+  end
+
+  subgraph TopicControl[&quot;Topic Control Options&quot;]
+    direction TB
+    C1(&quot;Dialog Rails&lt;br/&gt;(Colang)&quot;)
+    C2(&quot;Topical Rails&quot;)
+    C3(&quot;NemoGuard Topic&lt;br/&gt;Control NIM&quot;)
+  end
+
+  D(&quot;LLM&quot;)
+
+  A --&gt; NemoGuardrails
+  NemoGuardrails --&gt; TopicControl
+  TopicControl --&gt; D
+  D --&gt; NemoGuardrails
+  NemoGuardrails --&gt; A
+
+  style A fill:#d8d8e8,stroke:#999
+  style NemoGuardrails fill:#f0f7e6,stroke:#76b900,stroke-width:2px
+  style TopicControl fill:#e6f0ff,stroke:#0066cc
+  style D fill:#d8d8e8,stroke:#999
+    </pre><p><em>Topic control ensures conversations stay within predefined subject boundaries.</em></p>
+</section>
+<hr class="docutils" />
+<section id="pii-detection-and-masking">
+<h2>4. PII Detection and Masking<a class="headerlink" href="#pii-detection-and-masking" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'background': 'transparent' }}}%%
+
+flowchart LR
+  A(&quot;Application&quot;)
+
+  subgraph NemoGuardrails[&quot;NeMo Guardrails&quot;]
+    direction TB
+    B1(&quot;Input PII Detection&quot;)
+    B2(&quot;Output PII Masking&quot;)
+  end
+
+  subgraph PII[&quot;PII Detection Options&quot;]
+    direction TB
+    C1(&quot;Microsoft Presidio&quot;)
+    C2(&quot;Private AI&quot;)
+    C3(&quot;AutoAlign PII&quot;)
+    C4(&quot;GuardrailsAI Validators&quot;)
+  end
+
+  D(&quot;LLM&quot;)
+
+  A --&gt; NemoGuardrails
+  NemoGuardrails --&gt; PII
+  PII --&gt; D
+  D --&gt; PII
+  PII --&gt; NemoGuardrails
+  NemoGuardrails --&gt; A
+
+  style A fill:#d8d8e8,stroke:#999
+  style NemoGuardrails fill:#f0f7e6,stroke:#76b900,stroke-width:2px
+  style PII fill:#fff3e6,stroke:#ff9900
+  style D fill:#d8d8e8,stroke:#999
+    </pre><p><em>PII detection protects user privacy by detecting and masking sensitive data.</em></p>
+</section>
+<hr class="docutils" />
+<section id="agentic-security">
+<h2>5. Agentic Security<a class="headerlink" href="#agentic-security" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'background': 'transparent' }}}%%
+
+flowchart TB
+  A(&quot;Application&quot;)
+
+  subgraph NemoGuardrails[&quot;NeMo Guardrails&quot;]
+    direction TB
+    B1(&quot;Pre-Tool Validation&quot;)
+    B2(&quot;Post-Tool Validation&quot;)
+    B3(&quot;Action Monitoring&quot;)
+  end
+
+  subgraph Agent[&quot;LLM Agent&quot;]
+    direction LR
+    D1(&quot;LLM&quot;)
+    D2(&quot;Tool Calls&quot;)
+  end
+
+  subgraph Tools[&quot;External Tools &amp; APIs&quot;]
+    direction TB
+    E1(&quot;Database&quot;)
+    E2(&quot;File System&quot;)
+    E3(&quot;External APIs&quot;)
+  end
+
+  A --&gt; NemoGuardrails
+  NemoGuardrails --&gt; Agent
+  Agent --&gt; NemoGuardrails
+  D2 --&gt; Tools
+  Tools --&gt; D2
+  NemoGuardrails --&gt; A
+
+  style A fill:#d8d8e8,stroke:#999
+  style NemoGuardrails fill:#f0f7e6,stroke:#76b900,stroke-width:2px
+  style Agent fill:#e6e6fa,stroke:#6600cc
+  style Tools fill:#ffe6cc,stroke:#cc6600
+    </pre><p><em>Agentic security provides guardrails for LLM agents using tools and external systems.</em></p>
+</section>
+<hr class="docutils" />
+<section id="custom-and-third-party-guardrails">
+<h2>6. Custom and Third-Party Guardrails<a class="headerlink" href="#custom-and-third-party-guardrails" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'background': 'transparent' }}}%%
+
+flowchart LR
+  A(&quot;Application&quot;)
+
+  subgraph NemoGuardrails[&quot;NeMo Guardrails&quot;]
+    direction TB
+    B1(&quot;Custom Input Rails&quot;)
+    B2(&quot;Custom Output Rails&quot;)
+  end
+
+  subgraph Custom[&quot;Custom Guardrail Options&quot;]
+    direction TB
+    C1(&quot;Python Actions&quot;)
+    C2(&quot;LangChain Tools&quot;)
+    C3(&quot;Third-Party APIs&quot;)
+    C4(&quot;Custom Scripts&quot;)
+  end
+
+  D(&quot;LLM&quot;)
+
+  A --&gt; NemoGuardrails
+  NemoGuardrails --&gt; Custom
+  Custom --&gt; D
+  D --&gt; Custom
+  Custom --&gt; NemoGuardrails
+  NemoGuardrails --&gt; A
+
+  style A fill:#d8d8e8,stroke:#999
+  style NemoGuardrails fill:#f0f7e6,stroke:#76b900,stroke-width:2px
+  style Custom fill:#e6ffe6,stroke:#009900
+  style D fill:#d8d8e8,stroke:#999
+    </pre><p><em>Build custom guardrails using Python actions, LangChain tools, or third-party APIs.</em></p>
+</section>
+<hr class="docutils" />
+<section id="integration-options">
+<h2>7. Integration Options<a class="headerlink" href="#integration-options" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'background': 'transparent' }}}%%
+
+flowchart TB
+  subgraph SDK[&quot;Python SDK Integration&quot;]
+    direction LR
+    A1(&quot;Python App&quot;)
+    B1(&quot;LLMRails&quot;)
+    C1(&quot;LLM&quot;)
+    A1 --&gt; B1 --&gt; C1
+  end
+
+  subgraph Server[&quot;Server API Integration&quot;]
+    direction LR
+    A2(&quot;Any Application&quot;)
+    B2(&quot;NeMo Guardrails&lt;br/&gt;Server :8000&quot;)
+    C2(&quot;LLM&quot;)
+    A2 --&gt;|&quot;HTTP API&quot;| B2 --&gt; C2
+  end
+
+  subgraph OpenAI[&quot;OpenAI-Compatible Endpoint&quot;]
+    direction LR
+    A3(&quot;Existing OpenAI&lt;br/&gt;Integration&quot;)
+    B3(&quot;/v1/chat/completions&quot;)
+    A3 --&gt; B3
+  end
+
+  style SDK fill:#f0f7e6,stroke:#76b900
+  style Server fill:#e6f0ff,stroke:#0066cc
+  style OpenAI fill:#fff3e6,stroke:#ff9900
+    </pre><p><em>Multiple integration options: Python SDK, HTTP Server API, or OpenAI-compatible endpoint.</em></p>
+</section>
+<hr class="docutils" />
+<section id="combined-architecture-overview">
+<h2>Combined Architecture Overview<a class="headerlink" href="#combined-architecture-overview" title="Link to this heading">#</a></h2>
 <pre  class="mermaid">
         %%{init: {'theme': 'neutral', 'themeVariables': { 'background': 'transparent' }}}%%
 
 flowchart TB
   A(&quot;Application Code&quot;)
-  B(&quot;NeMo Guardrails Library&quot;)
-  C(&quot;Large Language Model (LLM)&quot;)
 
-  A &lt;--&gt; B
+  subgraph NemoGuardrails[&quot;NVIDIA NeMo Guardrails Library&quot;]
+    direction TB
 
-subgraph NemoGuard[&quot;NemoGuard NIMs&quot;]
-  direction TB
-  D(&quot;NemoGuard Content Safety&quot;)
-  E(&quot;NemoGuard Topic Control&quot;)
-  F(&quot;NemoGuard Jailbreak Detection&quot;)
-end
+    subgraph InputRails[&quot;Input Rails&quot;]
+      I1(&quot;Content Safety&quot;)
+      I2(&quot;Jailbreak Detection&quot;)
+      I3(&quot;PII Detection&quot;)
+      I4(&quot;Topic Validation&quot;)
+    end
 
-  B &lt;--&gt; NemoGuard
-  NemoGuard &lt;--&gt; C
+    subgraph OutputRails[&quot;Output Rails&quot;]
+      O1(&quot;Content Check&quot;)
+      O2(&quot;PII Masking&quot;)
+      O3(&quot;Response Validation&quot;)
+    end
+  end
+
+  subgraph NIMs[&quot;NemoGuard NIMs&quot;]
+    direction TB
+    N1(&quot;Content Safety NIM&quot;)
+    N2(&quot;Jailbreak Detection NIM&quot;)
+    N3(&quot;Topic Control NIM&quot;)
+  end
+
+  subgraph ThirdParty[&quot;Third-Party Integrations&quot;]
+    direction TB
+    T1(&quot;Presidio / Private AI&quot;)
+    T2(&quot;ActiveFence / AI Defense&quot;)
+    T3(&quot;LlamaGuard / Fiddler&quot;)
+  end
+
+  C(&quot;Large Language Model&quot;)
+
+  A &lt;--&gt; InputRails
+  InputRails &lt;--&gt; NIMs
+  InputRails &lt;--&gt; ThirdParty
+  NIMs &lt;--&gt; C
+  ThirdParty &lt;--&gt; C
+  C &lt;--&gt; OutputRails
+  OutputRails &lt;--&gt; A
 
   style A fill:#d8d8e8,stroke:#999
-  style B fill:#f0f7e6,stroke:#76b900,stroke-width:2px
+  style NemoGuardrails fill:#f0f7e6,stroke:#76b900,stroke-width:2px
+  style InputRails fill:#e8f4d9,stroke:#76b900
+  style OutputRails fill:#e8f4d9,stroke:#76b900
+  style NIMs fill:#d9edf7,stroke:#31708f
+  style ThirdParty fill:#fcf8e3,stroke:#8a6d3b
   style C fill:#d8d8e8,stroke:#999
-  style D fill:#f0f7e6,stroke:#76b900
-  style E fill:#f0f7e6,stroke:#76b900
-  style F fill:#f0f7e6,stroke:#76b900
-    </pre><p><em>Application code interacting with LLMs through the NeMo Guardrails library.</em></p>
-</section>
-<hr class="docutils" />
-<section id="use-cases">
-<h2>Use Cases<a class="headerlink" href="#use-cases" title="Link to this heading">#</a></h2>
-<p>The following are the top use cases of the NeMo Guardrails library that you can apply to protect your LLM applications.</p>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">🛡️ Add Content Safety</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">Content safety guardrails help ensure that both user inputs and LLM outputs are safe and appropriate.
-The NeMo Guardrails library provides multiple approaches to content safety:</p>
-<ul class="simple">
-<li><p class="sd-card-text"><strong>LLM self-checking</strong>: Use the LLM itself to check inputs and outputs for harmful content.</p></li>
-<li><p class="sd-card-text"><strong>NVIDIA safety models</strong>: Integrate with <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">Llama 3.1 NemoGuard 8B Content Safety</a> for robust content moderation.</p></li>
-<li><p class="sd-card-text"><strong>Community models</strong>: Use <a class="reference internal" href="../user-guides/community/llama-guard.html"><span class="std std-doc">LlamaGuard</span></a>, <a class="reference internal" href="../user-guides/community/fiddler.html"><span class="std std-doc">Fiddler Guardrails</span></a>, and other community content safety solutions.</p></li>
-<li><p class="sd-card-text"><strong>Third-party APIs</strong>: Integrate with <a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html#activefence"><span class="std std-ref">ActiveFence</span></a>, <a class="reference internal" href="../user-guides/community/ai-defense.html"><span class="std std-doc">Cisco AI Defense</span></a>, and other moderation services.</p></li>
-</ul>
-<p class="sd-card-text">For practical examples, try the following tutorials:</p>
-<ul class="simple">
-<li><p class="sd-card-text"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html"><span class="std std-doc">Content Safety - Text</span></a></p></li>
-<li><p class="sd-card-text"><a class="reference internal" href="../getting-started/tutorials/multimodal.html"><span class="std std-doc">Content Safety - Multimodal</span></a></p></li>
-</ul>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">🔒 Add Jailbreak Protection</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">Jailbreak protection helps prevent adversarial attempts from bypassing safety measures and manipulating the LLM into generating harmful or unwanted content.
-The NeMo Guardrails library provides multiple layers of jailbreak protection:</p>
-<ul class="simple">
-<li><p class="sd-card-text"><strong>Self-check jailbreak detection</strong>: Use the LLM to identify jailbreak attempts.</p></li>
-<li><p class="sd-card-text"><strong>Heuristic detection</strong>: Use pattern-based detection for common jailbreak techniques.</p></li>
-<li><p class="sd-card-text"><strong>NVIDIA NemoGuard</strong>: Integrate with <a class="reference internal" href="../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html"><span class="std std-doc">NemoGuard Jailbreak Detection NIM</span></a> for advanced threat detection.</p></li>
-<li><p class="sd-card-text"><strong>Third-party integrations</strong>: Use <a class="reference internal" href="../user-guides/community/prompt-security.html"><span class="std std-doc">Prompt Security</span></a>, <a class="reference internal" href="../user-guides/community/pangea.html"><span class="std std-doc">Pangea AI Guard</span></a>, and other services.</p></li>
-</ul>
-<p class="sd-card-text">For practical examples, try the following tutorial:</p>
-<ul class="simple">
-<li><p class="sd-card-text"><a class="reference internal" href="../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html"><span class="std std-doc">Detect Jailbreaks with Nemotron Jailbreak Detect NIM</span></a></p></li>
-</ul>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">🎯 Control Topic Conversation</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">Topic control guardrails ensure that conversations stay within predefined subject boundaries and prevent the LLM from engaging in off-topic discussions.
-This is implemented through:</p>
-<ul class="simple">
-<li><p class="sd-card-text"><strong>Dialog rails</strong>: Pre-define conversational flows using the Colang language.</p></li>
-<li><p class="sd-card-text"><strong>Topical rails</strong>: Control what topics the bot can and cannot discuss.</p></li>
-<li><p class="sd-card-text"><strong>NVIDIA NemoGuard</strong>: Integrate with <a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html"><span class="std std-doc">NemoGuard Topic Control NIM</span></a> for semantic topic detection.</p></li>
-</ul>
-<p class="sd-card-text">For practical examples, try the following tutorial:</p>
-<ul class="simple">
-<li><p class="sd-card-text"><a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html"><span class="std std-doc">Restrict Topics with Nemotron Topic Control NIM</span></a></p></li>
-</ul>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">🔐 Detect and Mask PII</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">Personally Identifiable Information (PII) detection helps protect user privacy by detecting and masking sensitive data in user inputs, LLM outputs, and retrieved content.
-The NeMo Guardrails library supports PII detection through multiple integrations:</p>
-<ul class="simple">
-<li><p class="sd-card-text"><strong>Presidio-based detection</strong>: Use <a class="reference internal" href="../user-guides/community/presidio.html"><span class="std std-doc">Microsoft Presidio</span></a> for detecting entities such as names, email addresses, phone numbers, social security numbers, and more.</p></li>
-<li><p class="sd-card-text"><strong>Private AI</strong>: Integrate with <a class="reference internal" href="../user-guides/community/privateai.html"><span class="std std-doc">Private AI</span></a> for advanced PII detection and masking.</p></li>
-<li><p class="sd-card-text"><strong>AutoAlign</strong>: Use <a class="reference internal" href="../user-guides/community/auto-align.html"><span class="std std-doc">AutoAlign PII detection</span></a> with customizable entity types.</p></li>
-<li><p class="sd-card-text"><strong>GuardrailsAI</strong>: Access <a class="reference internal" href="../user-guides/community/guardrails-ai.html"><span class="std std-doc">GuardrailsAI PII validators</span></a> from the Guardrails Hub.</p></li>
-</ul>
-<p class="sd-card-text">PII detection can be configured to either detect and block content containing PII or to mask PII entities before processing.</p>
-<p class="sd-card-text">For more information, refer to the <a class="reference internal" href="../user-guides/community/presidio.html"><span class="std std-doc">Presidio Integration</span></a> and <a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html#presidio-based-sensitive-data-detection"><span class="std std-ref">Sensitive Data Detection section</span></a> in the built-in Guardrails library.</p>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">🤖 Add Agentic Security</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">Agentic security provides specialized guardrails for LLM-based agents that use tools and interact with external systems.
-This includes:</p>
-<ul class="simple">
-<li><p class="sd-card-text"><strong>Tool call validation</strong>: Execute rails that validate tool inputs and outputs before and after invocation.</p></li>
-<li><p class="sd-card-text"><strong>Agent workflow protection</strong>: Integrate with <a class="reference internal" href="../integration/langchain/langgraph-integration.html"><span class="std std-doc">LangGraph</span></a> for multi-agent safety.</p></li>
-<li><p class="sd-card-text"><strong>Secure tool integration</strong>: Review guidelines for safely connecting LLMs to external resources (refer to <a class="reference internal" href="../security/guidelines.html"><span class="std std-doc">Security Guidelines</span></a>).</p></li>
-<li><p class="sd-card-text"><strong>Action monitoring</strong>: Monitor detailed logging and tracing of agent actions.</p></li>
-</ul>
-<p class="sd-card-text">Key security considerations for agent systems:</p>
-<ol class="arabic simple">
-<li><p class="sd-card-text">Isolate all authentication information from the LLM.</p></li>
-<li><p class="sd-card-text">Validate and sanitize all tool inputs.</p></li>
-<li><p class="sd-card-text">Apply execution rails to tool calls.</p></li>
-<li><p class="sd-card-text">Monitor agent behavior for unexpected actions.</p></li>
-</ol>
-<p class="sd-card-text">For more information, refer to the <a class="reference internal" href="../integration/tools-integration.html"><span class="std std-doc">Tools Integration Guide</span></a>, <a class="reference internal" href="../security/guidelines.html"><span class="std std-doc">Security Guidelines</span></a>, and <a class="reference internal" href="../integration/langchain/langgraph-integration.html"><span class="std std-doc">LangGraph Integration</span></a>.</p>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">🔧 Build Your Own or Use Third-party Guardrail Solutions</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">The NeMo Guardrails library provides extensive flexibility for creating custom guardrails tailored to your specific requirements. You can either build your own guardrails or use third-party guardrails.
-If you have a script or tool that runs a custom guardrail, you can use it in NeMo Guardrails by following one of these approaches:</p>
-<ol class="arabic simple">
-<li><p class="sd-card-text"><strong>Python actions</strong>: Create custom actions in Python for complex logic and external integrations. For more information, refer to the <a class="reference internal" href="../configure-rails/actions/index.html"><span class="std std-doc">Custom Actions</span></a>.</p></li>
-<li><p class="sd-card-text"><strong>LangChain tool integration</strong>: Register LangChain tools as custom actions. For more information, refer to the <a class="reference internal" href="../integration/tools-integration.html"><span class="std std-doc">Tools Integration with the NeMo Guardrails Library</span></a>.</p></li>
-<li><p class="sd-card-text"><strong>Third-party API integration</strong>: Integrate external moderation and validation services. For a complete list of supported third-party guardrail services, refer to the <a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html#third-party-apis"><span class="std std-ref">Third-Party APIs</span></a> section in the built-in Guardrails library.</p></li>
-</ol>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">🔌 Integrate NeMo Guardrails Library into Your Application</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">You can integrate the NeMo Guardrails library into your application using the tools provided by the library.</p>
-<ol class="arabic">
-<li><p class="sd-card-text"><strong>Python SDK</strong>: Use the Python SDK to add guardrails directly into your Python application.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
-<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
-    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p class="sd-card-text">The <code class="docutils literal notranslate"><span class="pre">generate</span></code> method accepts the same message format as the OpenAI Chat Completions API.</p>
-</li>
-<li><p class="sd-card-text"><strong>Server API</strong>: You can solely set up a guardrails server after programming guardrails using the Python SDK. You can then start a local NeMo Guardrails server with the following command. This server exposes an HTTP API compatible with OpenAI’s <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./config<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
-</pre></div>
-</div>
-<p class="sd-card-text">The server exposes HTTP APIs compatible with OpenAI’s <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint. You can then use the server in your application by sending requests to the server’s endpoint.</p>
-</li>
-</ol>
-</div>
-</details></section>
-<hr class="docutils" />
-<section id="tools">
-<h2>Tools<a class="headerlink" href="#tools" title="Link to this heading">#</a></h2>
-<p>The following are the tools you can use to interact with the NeMo Guardrails library.</p>
-<section id="python-sdk">
-<h3>Python SDK<a class="headerlink" href="#python-sdk" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
-<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
-    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">generate</span></code> method accepts the same message format as the OpenAI Chat Completions API.</p>
-</section>
-<section id="cli-server">
-<h3>CLI Server<a class="headerlink" href="#cli-server" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./config<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
-</pre></div>
-</div>
-<p>The server exposes an HTTP API compatible with OpenAI’s <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint.</p>
-</section>
+    </pre><p><em>Complete architecture showing all guardrail types and integration options.</em></p>
 </section>
 </section>
 
@@ -1202,20 +1305,20 @@ If you have a script or tool that runs a custom guardrail, you can use it in NeM
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="../cli/index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA NeMo Guardrails Library Developer Guide</p>
+        <p class="prev-next-title">NeMo Guardrails Library CLI Reference</p>
       </div>
     </a>
     <a class="right-next"
-       href="rail-types.html"
+       href="../glossary.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Guardrail Types</p>
+        <p class="prev-next-title">Glossary</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1240,14 +1343,14 @@ If you have a script or tool that runs a custom guardrail, you can use it in NeM
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nemo-guardrails-library-within-the-nvidia-nemo-software-stack">NeMo Guardrails Library within the NVIDIA NeMo Software Stack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases">Use Cases</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tools">Tools</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-sdk">Python SDK</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-server">CLI Server</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-safety">1. Content Safety</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jailbreak-protection">2. Jailbreak Protection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-control">3. Topic Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pii-detection-and-masking">4. PII Detection and Masking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agentic-security">5. Agentic Security</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-and-third-party-guardrails">6. Custom and Third-Party Guardrails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-options">7. Integration Options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-architecture-overview">Combined Architecture Overview</a></li>
 </ul>
   </nav></div>
 
