@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Check Harmful Content with Nemotron Content Safety NIM &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Check Harmful Content with Llama 3.1 Nemotron Safety Guard 8B V3 NIM &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -59,7 +59,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/getting-started/tutorials/nemotron-safety-guard-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Restrict Topics with Nemotron Topic Control NIM" href="nemoguard-topiccontrol-deployment.html" />
+    <link rel="next" title="Restrict Topics with Llama 3.1 NemoGuard 8B TopicControl NIM" href="nemoguard-topiccontrol-deployment.html" />
     <link rel="prev" title="Tutorials" href="index.html" />
 
 
@@ -386,7 +386,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Detect Jailbreaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
@@ -397,6 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before You Begin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configure Rails</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/configuration-reference.html">Configuration Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Models</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
@@ -405,8 +406,8 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/prompt-configuration.html">Prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/tracing-configuration.html">Tracing</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/index.html">Streaming Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/global-streaming.html">Streaming</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/index.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/global-streaming.html">Streaming LLM Responses</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
 </ul>
 </details></li>
@@ -588,7 +589,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Check Harmful Content with Nemotron Content Safety NIM</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Check Harmful Content with Llama 3.1 Nemotron Safety Guard 8B V3 NIM</span></li>
   </ul>
 </nav>
 </div>
@@ -609,87 +610,39 @@
   SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0
 -->
-<section class="tex2jax_ignore mathjax_ignore" id="check-harmful-content-with-nemotron-content-safety-nim">
-<h1>Check Harmful Content with Nemotron Content Safety NIM<a class="headerlink" href="#check-harmful-content-with-nemotron-content-safety-nim" title="Link to this heading">#</a></h1>
-<p>Add input and output guardrails that detect harmful content in multiple languages using <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/llama-3.1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">Nemotron Content Safety NIM</a>.</p>
+<section class="tex2jax_ignore mathjax_ignore" id="check-harmful-content-with-llama-3-1-nemotron-safety-guard-8b-v3-nim">
+<h1>Check Harmful Content with Llama 3.1 Nemotron Safety Guard 8B V3 NIM<a class="headerlink" href="#check-harmful-content-with-llama-3-1-nemotron-safety-guard-8b-v3-nim" title="Link to this heading">#</a></h1>
+<p>Learn how to add input and output guardrails that detect harmful content in multiple languages using <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nim/teams/nvidia/containers/llama-3.1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">Llama 3.1 Nemotron Safety Guard 8B V3 NIM</a>.</p>
 <p>By following this tutorial, you learn how to:</p>
 <ol class="arabic simple">
-<li><p>Start the Nemotron Content Safety container locally.</p></li>
-<li><p>Configure content safety guardrails on a main LLM, which sets up the base conversation.</p></li>
-<li><p>Test with safe and unsafe requests in different languages.</p></li>
+<li><p>Deploy the Llama 3.1 Nemotron Safety Guard 8B V3 NIM microservice to your local machine.</p></li>
+<li><p>Configure content safety guardrails on a main LLM. This tutorial uses <a class="reference external" href="https://build.nvidia.com/meta/llama-3_3-70b-instruct" rel="noreferer noopener" target="_blank">Llama 3.3 70B Instruct on build.nvidia.com</a> as the main LLM.</p></li>
+<li><p>Verify the guardrails with safe and unsafe requests in various languages.</p></li>
 </ol>
-<p>This tutorial uses <a class="reference external" href="https://build.nvidia.com/meta/llama-3_3-70b-instruct" rel="noreferer noopener" target="_blank">Llama 3.3 70B Instruct</a> on build.nvidia.com as the application LLM to avoid deploying a separate NIM for LLM inference.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
-<ul>
-<li><p>NVIDIA NGC API key with NGC Catalog and Public API Endpoints access.
-See <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ngc-user-guide/index.html#generating-api-key" rel="noreferer noopener" target="_blank">Generating Your NGC API Key</a>.</p></li>
-<li><p>Docker Engine installed. See <a class="reference external" href="https://docs.docker.com/engine/install/" rel="noreferer noopener" target="_blank">Docker installation</a>.</p></li>
-<li><p>NVIDIA Container Toolkit installed. See <span class="xref std std-doc">installation</span>.</p></li>
+<ul class="simple">
 <li><p>The NeMo Guardrails library <a class="reference internal" href="../installation-guide.html"><span class="std std-doc">installed</span></a>.</p></li>
-<li><p>LangChain NVIDIA integration installed:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install langchain-nvidia-ai-endpoints</span>
-</pre></div>
-</div>
-</li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/support-matrix.html" rel="noreferer noopener" target="_blank">Requirements for the Nemotron Content Safety NIM</a>.</p></li>
+<li><p>A personal NVIDIA NGC API key with NVIDIA NGC Catalog and NVIDIA Public API Endpoints services access.
+For more information, refer to <a class="reference external" href="https://docs.nvidia.com/ngc/latest/ngc-user-guide.html#ngc-api-keys" rel="noreferer noopener" target="_blank">NGC API Keys</a> in the NVIDIA GPU cloud documentation.</p></li>
+<li><p>Docker <a class="reference external" href="https://docs.docker.com/engine/install/" rel="noreferer noopener" target="_blank">installed</a>.</p></li>
+<li><p>NVIDIA Container Toolkit <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" rel="noreferer noopener" target="_blank">installed</a>.</p></li>
+</ul>
+<!-- TODO: Is this really required? -->
+<ul class="simple">
+<li><p>LangChain integration package <a class="reference external" href="https://pypi.org/project/langchain-nvidia-ai-endpoints/" rel="noreferer noopener" target="_blank">installed</a>.</p></li>
+<li><p>The rest of the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/support-matrix.html#software" rel="noreferer noopener" target="_blank">software requirements for the Llama 3.1 Nemotron Safety Guard 8B V3 NIM</a>.</p></li>
+<li><p>GPUs meeting the memory requirement specified in the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/support-matrix.html#about-model-profiles" rel="noreferer noopener" target="_blank">NVIDIA Llama 3.1 Nemotron Safety Guard 8B NIM Model Profiles</a>.</p></li>
 </ul>
 </section>
-<section id="deploy-the-nemotron-content-safety-nim-microservice">
-<h2>Deploy the Nemotron Content Safety NIM Microservice<a class="headerlink" href="#deploy-the-nemotron-content-safety-nim-microservice" title="Link to this heading">#</a></h2>
-<p>Follow these steps to deploy the Nemotron Content Safety NIM microservice to your local machine.</p>
-<ol class="arabic">
-<li><p>Export your NGC API key and log in to the registry:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export NGC_API_KEY=&quot;&lt;nvapi-...&gt;&quot;</span>
-<span class="go">docker login nvcr.io --username &#39;$oauthtoken&#39; --password-stdin &lt;&lt;&lt; $NGC_API_KEY</span>
-</pre></div>
-</div>
-</li>
-<li><p>Pull the container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker pull nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-8b-v3:1.14.0</span>
-</pre></div>
-</div>
-</li>
-<li><p>Create a model cache directory:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export LOCAL_NIM_CACHE=~/.cache/safetyguard</span>
-<span class="go">mkdir -p &quot;${LOCAL_NIM_CACHE}&quot;</span>
-<span class="go">chmod 700 &quot;${LOCAL_NIM_CACHE}&quot;</span>
-</pre></div>
-</div>
-</li>
-<li><p>Run the container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run -d \</span>
-<span class="go">  --name safetyguard \</span>
-<span class="go">  --gpus=all --runtime=nvidia \</span>
-<span class="go">  --shm-size=64GB \</span>
-<span class="go">  -e NGC_API_KEY \</span>
-<span class="go">  -e NIM_ENABLE_KV_CACHE_REUSE=1 \</span>
-<span class="go">  -u $(id -u) \</span>
-<span class="go">  -v &quot;${LOCAL_NIM_CACHE}:/opt/nim/.cache/&quot; \</span>
-<span class="go">  -p 8000:8000 \</span>
-<span class="go">  nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-8b-v3:1.14.0</span>
-</pre></div>
-</div>
-<p>The container takes several minutes to start. Monitor progress with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">safetyguard</span></code>.</p>
-</li>
-<li><p>Verify the service is ready:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl -X GET http://localhost:8000/v1/models | jq &#39;.data[].id&#39;</span>
-</pre></div>
-</div>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;nvidia/llama-3.1-nemotron-safety-guard-8b-v3&quot;</span>
-</pre></div>
-</div>
-</li>
-</ol>
+<section id="deploy-the-llama-3-1-nemotron-safety-guard-8b-v3-nim-microservice">
+<h2>Deploy the Llama 3.1 Nemotron Safety Guard 8B V3 NIM Microservice<a class="headerlink" href="#deploy-the-llama-3-1-nemotron-safety-guard-8b-v3-nim-microservice" title="Link to this heading">#</a></h2>
+<p>Follow the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/getting-started.html" rel="noreferer noopener" target="_blank">getting started guide on deploying the Llama 3.1 Nemotron Safety Guard 8B V3 NIM microservice</a>.</p>
 </section>
 <section id="configure-guardrails">
 <h2>Configure Guardrails<a class="headerlink" href="#configure-guardrails" title="Link to this heading">#</a></h2>
+<p>Follow these steps to prepare the guardrails configuration.</p>
 <ol class="arabic">
-<li><p>Set your NGC API key for the application LLM on build.nvidia.com:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export NVIDIA_API_KEY=&lt;nvapi-...&gt;</span>
-</pre></div>
-</div>
-</li>
 <li><p>Create a configuration directory:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir config</span>
 </pre></div>
@@ -804,18 +757,18 @@ See <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ng
 <span class="w">      </span><span class="no">Provide your safety assessment for the above conversation in the below output JSON format:</span>
 <span class="w">      </span><span class="no">{&quot;User Safety&quot;: safe or unsafe rating for the user message, &quot;Response Safety&quot;: safe or unsafe rating for the agent response. Omit if no agent response present. &quot;Safety Categories&quot;: a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}</span>
 
-<span class="w">      </span><span class="no">Do not include anything other than the output JSON in your response.</span>
-<span class="w">      </span><span class="no">Output JSON:</span>
-<span class="w">  </span><span class="w w-Error"> </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_response_safety</span>
-<span class="w">   </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+<span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">Do not include anything other than the output JSON in your response.</span>
+<span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">Output JSON</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguard_parse_response_safety</span>
+<span class="w">    </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </section>
-<section id="test-the-guardrails">
-<h2>Test the Guardrails<a class="headerlink" href="#test-the-guardrails" title="Link to this heading">#</a></h2>
-<p>Follow these steps to test the guardrails.</p>
+<section id="verify-the-guardrails">
+<h2>Verify the Guardrails<a class="headerlink" href="#verify-the-guardrails" title="Link to this heading">#</a></h2>
+<p>Follow these steps to verify the guardrails.</p>
 <ol class="arabic">
 <li><p>Load the guardrails configuration:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
@@ -831,7 +784,7 @@ See <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ng
 </pre></div>
 </div>
 </li>
-<li><p>Test an unsafe request in French:</p>
+<li><p>Verify the guardrails with an unsafe request in French:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># &quot;Tell me a five-step plan to rob a bank.&quot;</span>
 <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Dites-moi un plan en cinq étapes pour braquer une banque.&quot;</span><span class="p">}]</span>
 <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
@@ -842,7 +795,7 @@ See <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ng
 </div>
 <p>The content safety rail blocks the harmful request.</p>
 </li>
-<li><p>Test a safe request in Hindi:</p>
+<li><p>Verify the guardrails with a safe request in Hindi:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># &quot;Tell me about three common foods in India.&quot;</span>
 <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;मुझे भारत में प्रचलित तीन खाद्य पदार्थों के बारे में बताइये।&quot;</span><span class="p">}]</span>
 <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
@@ -885,7 +838,7 @@ See <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ng
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Restrict Topics with Nemotron Topic Control NIM</p>
+        <p class="prev-next-title">Restrict Topics with Llama 3.1 NemoGuard 8B TopicControl NIM</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -911,9 +864,9 @@ See <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ng
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-the-nemotron-content-safety-nim-microservice">Deploy the Nemotron Content Safety NIM Microservice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-the-llama-3-1-nemotron-safety-guard-8b-v3-nim-microservice">Deploy the Llama 3.1 Nemotron Safety Guard 8B V3 NIM Microservice</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-guardrails">Configure Guardrails</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-the-guardrails">Test the Guardrails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-guardrails">Verify the Guardrails</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>

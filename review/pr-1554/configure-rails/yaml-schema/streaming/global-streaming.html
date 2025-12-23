@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Streaming &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Streaming LLM Responses in Real-Time &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -60,7 +60,7 @@
     <link rel="icon" href="../../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Output Rail Streaming" href="output-rail-streaming.html" />
-    <link rel="prev" title="Streaming Configuration" href="index.html" />
+    <link rel="prev" title="Output Streaming Configuration" href="index.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -386,7 +386,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
@@ -397,6 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../before-configuration.html">Before You Begin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Configure Rails</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Core Configuration</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration-reference.html">Configuration Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model-configuration.html">Models</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
@@ -405,8 +406,8 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../prompt-configuration.html">Prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tracing-configuration.html">Tracing</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Streaming Configuration</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Streaming</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Streaming</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Streaming LLM Responses</a></li>
 <li class="toctree-l3"><a class="reference internal" href="output-rail-streaming.html">Output Rail Streaming</a></li>
 </ul>
 </details></li>
@@ -589,9 +590,9 @@
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Core Configurations for Guardrails</a></li>
     
     
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Streaming Configuration</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Output Streaming Configuration</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Streaming</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Streaming LLM Responses in Real-Time</span></li>
   </ul>
 </nav>
 </div>
@@ -608,9 +609,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="streaming">
-<h1>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails supports streaming LLM responses via the <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> method. No configuration is required to enable streaming—simply use <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">generate_async()</span></code>.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="streaming-llm-responses-in-real-time">
+<h1>Streaming LLM Responses in Real-Time<a class="headerlink" href="#streaming-llm-responses-in-real-time" title="Link to this heading">#</a></h1>
+<p>The NeMo Guardrails library supports streaming LLM responses in real-time through the <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> method. No configuration is required to enable streaming—simply use <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">generate_async()</span></code>.</p>
 <section id="basic-usage">
 <h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
@@ -751,7 +752,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Streaming Configuration</p>
+        <p class="prev-next-title">Output Streaming Configuration</p>
       </div>
     </a>
     <a class="right-next"
