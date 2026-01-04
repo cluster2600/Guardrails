@@ -612,7 +612,7 @@
                   
   <section id="flow-control">
 <span id="id1"></span><h1>Flow control<a class="headerlink" href="#flow-control" title="Link to this heading">#</a></h1>
-<p>Flow control is an essential tool in all programming languages and Colang supports this as well. It enables branching and repetition of interaction patterns in a single flow.</p>
+<p>Flow control is an essential tool in all programming languages, and Colang supports this as well. It enables branching and repetition of interaction patterns in a single flow.</p>
 <section id="conditional-branching-if-elif-else">
 <h2>Conditional Branching (<code class="docutils literal notranslate"><span class="pre">if/elif/else</span></code>)<a class="headerlink" href="#conditional-branching-if-elif-else" title="Link to this heading">#</a></h2>
 <div class="admonition important">
@@ -645,14 +645,14 @@
 </pre></div>
 </div>
 </div>
-<p>In this example the bot’s reaction depends on the state of the variable <code class="docutils literal notranslate"><span class="pre">$number_of_users</span></code> that would contain the number of available users.</p>
+<p>In this example, the bot’s reaction depends on the state of the variable <code class="docutils literal notranslate"><span class="pre">$number_of_users</span></code> that would contain the number of available users.</p>
 </section>
 <section id="event-branching-when-or-when-else">
 <span id="flow-control-event-branching"></span><h2>Event Branching (<code class="docutils literal notranslate"><span class="pre">when/or</span> <span class="pre">when/else</span></code>)<a class="headerlink" href="#event-branching-when-or-when-else" title="Link to this heading">#</a></h2>
-<p>Event branching is a new Colang based concept that enables a branching based on expected events.</p>
+<p>Event branching is a new Colang-based concept that enables a branching based on expected events.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Syntax definition of event based branching:</p>
+<p>Syntax definition of event-based branching:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>when &lt;MixedGroup1&gt;
     &lt;interaction pattern sequence 1&gt;
 [or when &lt;MixedGroup2&gt;
@@ -667,10 +667,10 @@
 <ul class="simple">
 <li><p>The <cite>&lt;MixedGroup&gt;</cite> stands for a mixed grouping of flows, actions and events</p></li>
 <li><p>All actions and flows in the <code class="docutils literal notranslate"><span class="pre">when/or</span> <span class="pre">when</span></code> statements will be started concurrently</p></li>
-<li><p>If neither the <code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">when</span></code> nor the <code class="docutils literal notranslate"><span class="pre">else</span></code> statement is used, the <code class="docutils literal notranslate"><span class="pre">when</span></code> construct could be replace with either just an <code class="docutils literal notranslate"><span class="pre">await</span></code> or <code class="docutils literal notranslate"><span class="pre">match</span></code> statement</p></li>
+<li><p>If neither the <code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">when</span></code> nor the <code class="docutils literal notranslate"><span class="pre">else</span></code> statement is used, the <code class="docutils literal notranslate"><span class="pre">when</span></code> construct could be replaced with either just an <code class="docutils literal notranslate"><span class="pre">await</span></code> or <code class="docutils literal notranslate"><span class="pre">match</span></code> statement</p></li>
 </ul>
 </div>
-<p>With the concurrent pattern matching mechanism we have already seen one way to design a branching interaction pattern based on the users input:</p>
+<p>With the concurrent pattern matching mechanism, we have already seen one way to design a branching interaction pattern based on the user’s input:</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">control_flow_tools/concurrent_patterns/main.co</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
@@ -703,7 +703,7 @@ flow bot react to user wellbeing
 </div>
 </div>
 <p>The number of cases can easily be extended by adding more <code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">when</span></code> statements. The <code class="docutils literal notranslate"><span class="pre">else</span></code> statement will only trigger if all of the <code class="docutils literal notranslate"><span class="pre">when/or</span> <span class="pre">when</span></code> statements have failed.</p>
-<p>From the definition we see that <code class="docutils literal notranslate"><span class="pre">when/or</span> <span class="pre">when</span></code> statements support mixed groups that can contain events, actions and flows. For events this works like a <code class="docutils literal notranslate"><span class="pre">match</span></code> statement, whereas for actions and flows it behaves like an <code class="docutils literal notranslate"><span class="pre">await</span></code> statement. Therefore, actions and flows will be started and then matched with their <code class="docutils literal notranslate"><span class="pre">Finished</span></code> event. Note, that all flows and actions will be started concurrently in the different <code class="docutils literal notranslate"><span class="pre">when/or</span> <span class="pre">when</span></code> statements and stopped as soon as the first case succeeds.</p>
+<p>From the definition we see that <code class="docutils literal notranslate"><span class="pre">when/or</span> <span class="pre">when</span></code> statements support mixed groups that can contain events, actions, and flows. For events, this works like a <code class="docutils literal notranslate"><span class="pre">match</span></code> statement, whereas for actions and flows, it behaves like an <code class="docutils literal notranslate"><span class="pre">await</span></code> statement. Therefore, actions and flows will be started and then matched with their <code class="docutils literal notranslate"><span class="pre">Finished</span></code> event. Note that all flows and actions will be started concurrently in the different <code class="docutils literal notranslate"><span class="pre">when/or</span> <span class="pre">when</span></code> statements and stopped as soon as the first case succeeds.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>All started flows and actions in all the <code class="docutils literal notranslate"><span class="pre">when/or</span> <span class="pre">when</span></code> statements will be stopped as soon as one of the cases succeeded.</p>
@@ -728,7 +728,7 @@ flow pattern b
 </pre></div>
 </div>
 </div>
-<p>Due to the event generation conflict resolution <cite>‘pattern b’</cite> will fail for the user input “Hello”, but successfully finish for the user input “Hi”:</p>
+<p>Due to the event generation conflict resolution, <cite>‘pattern b’</cite> will fail for the user input “Hello”, but successfully finish for the user input “Hi”:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; Hello
 
 Hello
@@ -756,7 +756,7 @@ flow bot gesture $gesture
     await GestureBotAction(gesture=$gesture)
 </pre></div>
 </div>
-<p>This example will not work correctly because only one of the two actions will be started due to the action conflict between <code class="docutils literal notranslate"><span class="pre">UtteranceBotAction</span></code> and <code class="docutils literal notranslate"><span class="pre">GestureBotAction</span></code>. Note, that such cases can be easily detected when following a proper flow <a class="reference internal" href="defining-flows.html#flow-naming-conventions"><span class="std std-ref">naming convention</span></a> since <code class="docutils literal notranslate"><span class="pre">when</span> <span class="pre">bot</span> <span class="pre">say</span> <span class="pre">&quot;Hi</span> <span class="pre">there!&quot;</span></code> is grammatically incorrect. The example above would need to be implemented like this:</p>
+<p>This example will not work correctly because only one of the two actions will be started due to the action conflict between <code class="docutils literal notranslate"><span class="pre">UtteranceBotAction</span></code> and <code class="docutils literal notranslate"><span class="pre">GestureBotAction</span></code>. Note that such cases can be easily detected when following a proper flow <a class="reference internal" href="defining-flows.html#flow-naming-conventions"><span class="std std-ref">naming convention</span></a> since <code class="docutils literal notranslate"><span class="pre">when</span> <span class="pre">bot</span> <span class="pre">say</span> <span class="pre">&quot;Hi</span> <span class="pre">there!&quot;</span></code> is grammatically incorrect. The example above would need to be implemented like this:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow bot greet then comment
     start bot say &quot;Hi there!&quot; as $action_1_ref
         and bot gesture &quot;Wave with one hand&quot; as $action_2_ref
@@ -781,7 +781,7 @@ flow bot gesture $gesture
 </pre></div>
 </div>
 </div>
-<p>In this example the bot will count from one to ten:</p>
+<p>In this example, the bot will count from one to ten:</p>
 <div class="literal-block-wrapper docutils container" id="id6">
 <div class="code-block-caption"><span class="caption-text">control_flow_tools/loop/main.co</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
@@ -795,7 +795,7 @@ flow bot count to $number
 </pre></div>
 </div>
 </div>
-<p>In order to abort the loop early or to skip the rest of the current loop iteration the keywords <code class="docutils literal notranslate"><span class="pre">break</span></code> and <code class="docutils literal notranslate"><span class="pre">continue</span></code> can be used, respectively:</p>
+<p>In order to abort the loop early or to skip the rest of the current loop iteration, the keywords <code class="docutils literal notranslate"><span class="pre">break</span></code> and <code class="docutils literal notranslate"><span class="pre">continue</span></code> can be used, respectively:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow bot count to $number
     $current_number = 0 # Initialized it with 0
     while True # Endless loop
@@ -832,7 +832,7 @@ flow multiply $number_1 $number_2
     return $number_1 * $number_2
 </pre></div>
 </div>
-<p>If no return value is provided you <code class="docutils literal notranslate"><span class="pre">None</span></code> is passed by default.</p>
+<p>If you do not provide a return value, <code class="docutils literal notranslate"><span class="pre">None</span></code> is passed by default.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When assigning the return value of a flow to a variable <code class="docutils literal notranslate"><span class="pre">await</span></code> is not optional before the flow name.</p>
@@ -840,7 +840,7 @@ flow multiply $number_1 $number_2
 </section>
 <section id="no-op-operation-pass">
 <h2>No-op operation (<code class="docutils literal notranslate"><span class="pre">pass</span></code>)<a class="headerlink" href="#no-op-operation-pass" title="Link to this heading">#</a></h2>
-<p>Sometimes, it is useful to have a no-operation keyword <code class="docutils literal notranslate"><span class="pre">pass</span></code>, e.g. as placeholder to make e.g. the syntax valid:</p>
+<p>Sometimes, it is useful to have a no-operation keyword <code class="docutils literal notranslate"><span class="pre">pass</span></code>, for example as a placeholder to make the syntax valid:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
     user greeted then expressed feeling unwell
 
@@ -996,7 +996,7 @@ flow user greeted then expressed feeling unwell
 
   <p class="copyright">
     
-      Copyright © 2023-2025, NVIDIA Corporation.
+      Copyright © 2023-2026, NVIDIA Corporation.
       <br/>
     
   </p>
