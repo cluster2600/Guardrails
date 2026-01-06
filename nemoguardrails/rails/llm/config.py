@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -93,10 +93,6 @@ class ModelCacheConfig(BaseModel):
         default_factory=CacheStatsConfig,
         description="Configuration for cache statistics tracking and logging",
     )
-
-
-class ModelRegistry(BaseModel):
-    pass
 
 
 class Model(BaseModel):

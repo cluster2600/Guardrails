@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -176,33 +176,14 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         chunk: Union[str, object],
         generation_info: Optional[Dict[str, Any]] = None,
     ):
-        """Process a chunk of text or dict.
+        """Process a chunk of text.
 
         If we're in buffering mode, record the text.
         Otherwise, update the full completion, check for stop tokens, and enqueue the chunk.
-        Dict chunks bypass completion tracking and go directly to the queue.
         """
 
         if self.include_generation_metadata and generation_info:
             self.current_generation_info = generation_info
-
-        # Dict chunks bypass buffering and completion tracking
-        if isinstance(chunk, dict):
-            if self.pipe_to:
-                asyncio.create_task(self.pipe_to.push_chunk(chunk))
-            else:
-                if self.include_generation_metadata:
-                    await self.queue.put(
-                        {
-                            "text": chunk,
-                            "generation_info": (
-                                self.current_generation_info.copy() if self.current_generation_info else {}
-                            ),
-                        }
-                    )
-                else:
-                    await self.queue.put(chunk)
-            return
 
         if self.enable_buffer:
             if chunk is not END_OF_STREAM:
@@ -273,28 +254,10 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
 
     async def push_chunk(
         self,
-        chunk: Union[
-            str,
-            # dict,
-            GenerationChunk,
-            AIMessageChunk,
-            ChatGenerationChunk,
-            None,
-            object,
-        ],
+        chunk: Union[str, GenerationChunk, AIMessageChunk, ChatGenerationChunk, None],
         generation_info: Optional[Dict[str, Any]] = None,
     ):
-        """Push a new chunk to the stream.
-
-        Args:
-            chunk: The chunk to push. Can be:
-                - str: Plain text content
-                - dict: Dictionary with fields like role, content, etc.
-                - GenerationChunk/AIMessageChunk/ChatGenerationChunk: LangChain chunk types
-                - None: Signals end of stream (converted to END_OF_STREAM)
-                - object: END_OF_STREAM sentinel
-            generation_info: Optional metadata about the generation
-        """
+        """Push a new chunk to the stream."""
 
         # if generation_info is not explicitly passed,
         # try to get it from the chunk itself if it's a GenerationChunk or ChatGenerationChunk
@@ -318,9 +281,6 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
         elif isinstance(chunk, str):
             # empty string is a valid chunk and should be processed normally
             pass
-        elif isinstance(chunk, dict):
-            # plain dict chunks are allowed for OpenAI-compatible streaming
-            pass
         else:
             raise Exception(f"Unsupported chunk type: {chunk.__class__.__name__}")
 
@@ -330,11 +290,6 @@ class StreamingHandler(AsyncCallbackHandler, AsyncIterator):
 
         if self.include_generation_metadata and generation_info:
             self.current_generation_info = generation_info
-
-        # Dict chunks bypass prefix/suffix processing and go directly to _process
-        if isinstance(chunk, dict):
-            await self._process(chunk, generation_info)
-            return
 
         # Process prefix: accumulate until the expected prefix is received, then remove it.
         if self.prefix:
