@@ -78,11 +78,13 @@ POST /v1/chat/completions
 
 ```json
 {
-    "config_id": "benefits_co",
     "messages": [{
       "role":"user",
       "content":"Hello! What can you do for me?"
-    }]
+    }],
+    "guardrails": {
+        "config_id": "benefits_co"
+    }
 }
 ```
 
@@ -95,7 +97,7 @@ Sample response:
 }]
 ```
 
-The completion endpoint also supports combining multiple configurations in a single request. To do this, you can use the `config_ids` field instead of `config_id`:
+The completion endpoint also supports combining multiple configurations in a single request. To do this, you can use the `config_ids` field instead of `config_id` inside the `guardrails` object:
 
 ```text
 POST /v1/chat/completions
@@ -103,11 +105,13 @@ POST /v1/chat/completions
 
 ```json
 {
-    "config_ids": ["config_1", "config_2"],
     "messages": [{
       "role":"user",
       "content":"Hello! What can you do for me?"
-    }]
+    }],
+    "guardrails": {
+        "config_ids": ["config_1", "config_2"]
+    }
 }
 ```
 
@@ -137,24 +141,28 @@ Make a call using a single config:
 
 ```python
 response = requests.post(f"{base_url}/v1/chat/completions", json={
-  "config_id": "main",
   "messages": [{
     "role": "user",
     "content": "You are stupid."
-  }]
+  }],
+  "guardrails": {
+    "config_id": "main"
+  }
 })
 print(response.json())
 ```
 
-To use multiple configs, use the `config_ids` field instead of `config_id`:
+To use multiple configs, use the `config_ids` field instead of `config_id` inside the `guardrails` object:
 
 ```python
 response = requests.post(f"{base_url}/v1/chat/completions", json={
-  "config_ids": ["main", "input_checking"],
   "messages": [{
     "role": "user",
     "content": "You are stupid."
-  }]
+  }],
+  "guardrails": {
+    "config_ids": ["main", "input_checking"]
+  }
 })
 print(response.json())
 # {'messages': [{'role': 'assistant', 'content': "I'm sorry, I can't respond to that."}]}
@@ -204,12 +212,14 @@ POST /v1/chat/completions
 
 ```json
 {
-    "config_id": "config_1",
-    "thread_id": "1234567890123456",
     "messages": [{
       "role":"user",
       "content":"Hello! What can you do for me?"
-    }]
+    }],
+    "guardrails": {
+        "config_id": "config_1",
+        "thread_id": "1234567890123456"
+    }
 }
 ```
 
