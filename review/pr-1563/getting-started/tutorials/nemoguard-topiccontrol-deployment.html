@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Topic Control with NeMo Topic Control &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Restrict Topics with Llama 3.1 NemoGuard 8B TopicControl NIM &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -59,8 +59,8 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/getting-started/tutorials/nemoguard-topiccontrol-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Jailbreak Detection with NeMo Jailbreak Detect" href="nemoguard-jailbreakdetect-deployment.html" />
-    <link rel="prev" title="Content Safety (Text) with NeMo Content Safety" href="nemotron-safety-guard-deployment.html" />
+    <link rel="next" title="Detect Jailbreak Attempts with NVIDIA NemoGuard JailbreakDetect NIM" href="nemoguard-jailbreakdetect-deployment.html" />
+    <link rel="prev" title="Check Harmful Content with Llama 3.1 Nemotron Safety Guard 8B V3 NIM" href="nemotron-safety-guard-deployment.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -371,10 +371,10 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Rail Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Guardrail Types</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Architecture</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
@@ -382,37 +382,38 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Install the NeMo Guardrails Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Install</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Content Safety</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Topic Control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Jailbreak Detection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multimodal.html">Multimodal Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Restrict Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before You Begin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configure Rails</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/configuration-reference.html">Configuration Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Models</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Rails in Parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Parallel Execution of Rails</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/tracing-configuration.html">Tracing Configuration</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/index.html">Streaming Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/global-streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/prompt-configuration.html">Prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/tracing-configuration.html">Tracing</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/index.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/global-streaming.html">Streaming LLM Responses</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
@@ -457,7 +458,7 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-1/index.html">Colang 1.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/colang-1/colang-language-syntax-guide.html">Colang 1.0 Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/colang-1/colang-language-syntax-guide.html">Colang 1.0 Language Syntax</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/index.html">Colang 1.0 Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/1-hello-world/README.html">Hello World</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
@@ -484,9 +485,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Caching Instructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for LLM NIM</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 </ul>
 </details></li>
 </ul>
@@ -496,34 +497,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/core-classes.html">Core Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-Based API</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../observability/logging/index.html">Logging</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/adapter-configurations.html">Adapters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/opentelemetry-integration.html">OpenTelemetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deployment Options</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deploy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Using Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -532,22 +533,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-rails.html">RunnableRails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langgraph-integration.html">LangGraph Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langgraph-integration.html">LangGraph</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Integrate LangChain Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines for LLM Integrations</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -585,7 +587,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Topic Control with NeMo Topic Control</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Restrict Topics with Llama 3.1 NemoGuard 8B TopicControl NIM</span></li>
   </ul>
 </nav>
 </div>
@@ -602,42 +604,38 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="topic-control-with-nemo-topic-control">
-<h1>Topic Control with NeMo Topic Control<a class="headerlink" href="#topic-control-with-nemo-topic-control" title="Link to this heading">#</a></h1>
-<p>The Topic Control model is available to download as a LoRA adapter module through Hugging Face or as an <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/index.html" rel="noreferer noopener" target="_blank">NVIDIA TopicControl NIM microservice</a> for low-latency optimized inference with <a class="reference external" href="https://docs.nvidia.com/tensorrt-llm/index.html" rel="noreferer noopener" target="_blank">NVIDIA TensorRT-LLM</a>.</p>
-<p>This guide covers how to deploy NeMo Topic Control as a NIM microservice and use it in a NeMo Guardrails configuration.</p>
-<section id="nim-deployment">
-<h2>NIM Deployment<a class="headerlink" href="#nim-deployment" title="Link to this heading">#</a></h2>
-<p>Follow the instructions below to deploy NeMo Topic Control and configure it in a NeMo Guardrails application.</p>
-<section id="access">
-<h3>Access<a class="headerlink" href="#access" title="Link to this heading">#</a></h3>
-<p>The first step is to ensure access to NVIDIA NIM assets through NGC using an NVAIE license.
-Once you have the NGC API key with the necessary permissions, set the following environment variables:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
-docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>-u<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>-p<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span>&lt;your<span class="w"> </span>NGC<span class="w"> </span>API<span class="w"> </span>key&gt;
-</pre></div>
-</div>
-<p>Test that you are able to use the NVIDIA NIM assets through by pulling the latest TopicControl container.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NIM_IMAGE</span><span class="o">=</span>&lt;Path<span class="w"> </span>to<span class="w"> </span>latest<span class="w"> </span>NIM<span class="w"> </span>docker<span class="w"> </span>container&gt;
-<span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_NAME</span><span class="o">=</span><span class="s2">&quot;llama-3.1-nemoguard-8b-topic-control&quot;</span>
-docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_IMAGE</span>
-</pre></div>
-</div>
-<p>And go!</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NGC_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_SERVED_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_CUSTOM_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-p<span class="w"> </span><span class="m">8123</span>:8000<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="nv">$NIM_IMAGE</span>
-</pre></div>
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="restrict-topics-with-llama-3-1-nemoguard-8b-topiccontrol-nim">
+<h1>Restrict Topics with Llama 3.1 NemoGuard 8B TopicControl NIM<a class="headerlink" href="#restrict-topics-with-llama-3-1-nemoguard-8b-topiccontrol-nim" title="Link to this heading">#</a></h1>
+<p>Learn how to restrict conversations to allowed topics using <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/index.html" rel="noreferer noopener" target="_blank">Llama 3.1 NemoGuard 8B TopicControl NIM</a>.</p>
+<p>By following this tutorial, you learn how to:</p>
+<ol class="arabic simple">
+<li><p>Deploy the Llama 3.1 NemoGuard 8B TopicControl NIM microservice to your local machine.</p></li>
+<li><p>Configure topic control rails on a main LLM.</p></li>
+<li><p>Restrict conversations to specific allowed topics.</p></li>
+</ol>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The NeMo Guardrails library <a class="reference internal" href="../installation-guide.html"><span class="std std-doc">installed</span></a>.</p></li>
+<li><p>A personal NVIDIA NGC API key with NVIDIA NGC Catalog and NVIDIA Public API Endpoints services access.
+For more information, refer to <a class="reference external" href="https://docs.nvidia.com/ngc/latest/ngc-user-guide.html#ngc-api-keys" rel="noreferer noopener" target="_blank">NGC API Keys</a> in the NVIDIA GPU cloud documentation.</p></li>
+<li><p>Docker <a class="reference external" href="https://docs.docker.com/engine/install/" rel="noreferer noopener" target="_blank">installed</a>.</p></li>
+<li><p>NVIDIA Container Toolkit <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" rel="noreferer noopener" target="_blank">installed</a>.</p></li>
+<li><p>GPUs meeting the memory requirement specified in the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/support-matrix.html#nvidia-llama-3-1-nemoguard-8b-topicguard-model-profiles" rel="noreferer noopener" target="_blank">NVIDIA Llama 3.1 NemoGuard 8B TopicControl NIM Model Profiles</a>.</p></li>
+</ul>
 </section>
-<section id="use-nemo-topic-control-in-the-nemo-guardrails-app">
-<h3>Use NeMo Topic Control in the NeMo Guardrails App<a class="headerlink" href="#use-nemo-topic-control-in-the-nemo-guardrails-app" title="Link to this heading">#</a></h3>
-<p>A locally running Topic Control NIM exposes the standard OpenAI interface on the <code class="docutils literal notranslate"><span class="pre">v1/chat/completions</span></code> endpoint. NeMo Guardrails provides out-of-the-box support for engines that support the standard LLM interfaces. In the Guardrails configuration, use the engine <code class="docutils literal notranslate"><span class="pre">nim</span></code> for the Topic Control NIM as follows.</p>
+<section id="deploy-the-llama-3-1-nemoguard-8b-topiccontrol-nim-microservice">
+<h2>Deploy the Llama 3.1 NemoGuard 8B TopicControl NIM Microservice<a class="headerlink" href="#deploy-the-llama-3-1-nemoguard-8b-topiccontrol-nim-microservice" title="Link to this heading">#</a></h2>
+<p>Follow the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/getting-started.html" rel="noreferer noopener" target="_blank">getting started guide on deploying the Llama 3.1 NemoGuard 8B TopicControl NIM microservice</a>.</p>
+</section>
+<section id="configure-guardrails">
+<h2>Configure Guardrails<a class="headerlink" href="#configure-guardrails" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">config/config.yaml</span></code> file and add the following content. This sets up the following:</p>
+<ul class="simple">
+<li><p>OpenAI’s <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code> as the main LLM model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">llama-3.1-nemoguard-8b-topic-control</span></code> as the topic control model</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
@@ -646,54 +644,128 @@ docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$NIM_
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;topic_control&quot;</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8123/v1&quot;</span>
-<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llama-3.1-nemoguard-8b-topic-control&quot;</span>
-
+<span class="hll"><span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8123/v1&quot;</span>
+</span><span class="hll"><span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llama-3.1-nemoguard-8b-topic-control&quot;</span>
+</span>
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic safety check input $model=topic_control</span>
 </pre></div>
 </div>
-<p>A few things to note:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">parameters.base_url</span></code> should contain the IP address of the machine the NIM was hosted on, and the port should match the tunnel forwarding port specified in the docker run command.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">parameters.model_name</span></code> in the Guardrails configuration needs to match the <code class="docutils literal notranslate"><span class="pre">$MODEL_NAME</span></code> used when running the NIM container.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">rails</span></code> definitions should list <code class="docutils literal notranslate"><span class="pre">topic_control</span></code> as the model.</p></li>
-</ul>
+<p>The following table explains the configuration parameters for the topic control model highlighted in the code above.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Requirement</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">base_url</span></code></p></td>
+<td><p>Must match the NIM host and port (8123 in this example)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">model_name</span></code></p></td>
+<td><p>Must match <code class="docutils literal notranslate"><span class="pre">$MODEL_NAME</span></code> from the docker run command</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code> file with the topic control prompt template:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic_safety_check_input $model=topic_control</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">You are to act as a customer service agent, providing users with factual information in accordance to the knowledge base. Your role is to ensure that you respond only to relevant queries and adhere to the following guidelines</span>
+
+<span class="w">      </span><span class="no">Guidelines for the user messages:</span>
+<span class="w">      </span><span class="no">- Do not answer questions related to personal opinions or advice on user&#39;s order, future recommendations</span>
+<span class="w">      </span><span class="no">- Do not provide any information on non-company products or services.</span>
+<span class="w">      </span><span class="no">- Do not answer enquiries unrelated to the company policies.</span>
+<span class="w">      </span><span class="no">- Do not answer questions asking for personal details about the agent or its creators.</span>
+<span class="w">      </span><span class="no">- Do not answer questions about sensitive topics related to politics, religion, or other sensitive subjects.</span>
+<span class="w">      </span><span class="no">- If a user asks topics irrelevant to the company&#39;s customer service relations, politely redirect the conversation or end the interaction.</span>
+<span class="w">      </span><span class="no">- Your responses should be professional, accurate, and compliant with customer relations guidelines, focusing solely on providing transparent, up-to-date information about the company that is already publicly available.</span>
+<span class="w">      </span><span class="no">- allow user comments that are related to small talk and chit-chat.</span>
+</pre></div>
+</div>
+<p>Customize the guidelines to match your specific use case and allowed topics.</p>
+</li>
+</ol>
 </section>
-<section id="bonus-caching-the-optimized-trtllm-inference-engines">
-<h3>Bonus: Caching the optimized TRTLLM inference engines<a class="headerlink" href="#bonus-caching-the-optimized-trtllm-inference-engines" title="Link to this heading">#</a></h3>
-<p>If you’d like to not build TRTLLM engines from scratch every time you run the NIM container, you can cache it in the first run by just adding a flag to mount a local directory inside the docker to store the model cache.</p>
-<p>To achieve this, you simply need to mount the folder containing the cached TRTLLM assets onto the docker container while running it using <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">$LOCAL_NIM_CACHE:/opt/nim/.cache</span></code>. See below instructions for the full command.</p>
-<p>Important: Make sure that docker has permissions to write to the cache folder (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chmod</span> <span class="pre">666</span> <span class="pre">$LOCAL_NIM_CACHE</span></code>).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">### To bind a $LOCAL_NIM_CACHE folder to &quot;/opt/nim/.cache&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>&lt;PATH<span class="w"> </span>TO<span class="w"> </span>DIRECTORY<span class="w"> </span>WHERE<span class="w"> </span>YOU<span class="w"> </span>WANT<span class="w"> </span>TO<span class="w"> </span>SAVE<span class="w"> </span>TRTLLM<span class="w"> </span>ENGINE<span class="w"> </span>ASSETS&gt;
+<section id="verify-the-guardrails">
+<h2>Verify the Guardrails<a class="headerlink" href="#verify-the-guardrails" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Set your OpenAI API key for the main LLM:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export OPENAI_API_KEY=&lt;your-openai-api-key&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Load the guardrails configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./config&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_response</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify the guardrails with an off-topic request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the best political party to vote for?&quot;</span><span class="p">}]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">generate_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">I&#39;m sorry, I can&#39;t respond to that.</span>
+</pre></div>
+</div>
+<p>The topic control rail blocks the off-topic request about politics.</p>
+</li>
+<li><p>Verify the guardrails with an allowed request:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is your return policy?&quot;</span><span class="p">}]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">generate_response</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The model responds normally with information about the return policy.</p>
+</li>
+</ol>
+</section>
+<section id="optional-cache-tensorrt-llm-engines">
+<h2>(Optional) Cache TensorRT-LLM Engines<a class="headerlink" href="#optional-cache-tensorrt-llm-engines" title="Link to this heading">#</a></h2>
+<p>Cache the optimized TensorRT-LLM engines to avoid rebuilding them on each container start.</p>
+<ol class="arabic">
+<li><p>Create a cache directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>&lt;path-to-cache-directory&gt;
 mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>
 sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</span><span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>
 </pre></div>
 </div>
-<p>Now mount this directory while running the docker container to store cached assets in this directory, so that mounting it subsequently will cause the container to read the cached assets instead of rebuilding them.</p>
+</li>
+<li><p>Run the container with the cache mounted.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-e<span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$NGC_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_SERVED_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-e<span class="w"> </span><span class="nv">NIM_CUSTOM_MODEL_NAME</span><span class="o">=</span><span class="nv">$MODEL_NAME</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>:<span class="s2">&quot;/opt/nim/.cache/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="nv">$LOCAL_NIM_CACHE</span>:/opt/nim/.cache/<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-p<span class="w"> </span><span class="m">8123</span>:8000<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="nv">$NIM_IMAGE</span>
 </pre></div>
 </div>
+</li>
+</ol>
 </section>
-</section>
-<section id="more-details-on-nemo-topic-control">
-<h2>More details on NeMo Topic Control<a class="headerlink" href="#more-details-on-nemo-topic-control" title="Link to this heading">#</a></h2>
-<p>For more details on NeMo Topic Control, check out these resources:</p>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="#../guardrails-library.md#nvidia-models"><span class="xref myst">NVIDIA NemoGuard models</span></a></p></li>
-<li><p>NeMo Topic Control topic safety example <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/topic_safety" rel="noreferer noopener" target="_blank">configuration and prompts</a></p></li>
-<li><p><a class="reference external" href="https://arxiv.org/abs/2404.03820" rel="noreferer noopener" target="_blank">Paper at EMNLP 2024</a></p></li>
+<li><p><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html#nvidia-models"><span class="std std-ref">Nemotron Safety models overview</span></a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/topic_safety" rel="noreferer noopener" target="_blank">Topic safety example configuration</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2404.03820" rel="noreferer noopener" target="_blank">Topic Control research paper (EMNLP 2024)</a></p></li>
 </ul>
 </section>
 </section>
@@ -714,7 +786,7 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Content Safety (Text) with NeMo Content Safety</p>
+        <p class="prev-next-title">Check Harmful Content with Llama 3.1 Nemotron Safety Guard 8B V3 NIM</p>
       </div>
     </a>
     <a class="right-next"
@@ -722,7 +794,7 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Jailbreak Detection with NeMo Jailbreak Detect</p>
+        <p class="prev-next-title">Detect Jailbreak Attempts with NVIDIA NemoGuard JailbreakDetect NIM</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -747,13 +819,12 @@ sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</sp
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nim-deployment">NIM Deployment</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#access">Access</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-nemo-topic-control-in-the-nemo-guardrails-app">Use NeMo Topic Control in the NeMo Guardrails App</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-caching-the-optimized-trtllm-inference-engines">Bonus: Caching the optimized TRTLLM inference engines</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-details-on-nemo-topic-control">More details on NeMo Topic Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-the-llama-3-1-nemoguard-8b-topiccontrol-nim-microservice">Deploy the Llama 3.1 NemoGuard 8B TopicControl NIM Microservice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-guardrails">Configure Guardrails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-guardrails">Verify the Guardrails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-cache-tensorrt-llm-engines">(Optional) Cache TensorRT-LLM Engines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
 
