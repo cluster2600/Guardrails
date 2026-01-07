@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>LangChain Integration &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>LangChain Frameworks &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -60,7 +60,7 @@
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="LangChain Integration" href="langchain-integration.html" />
-    <link rel="prev" title="Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library" href="../safeguarding-ai-virtual-assistant-blueprint.html" />
+    <link rel="prev" title="NeMo Guardrails Microservice for Production" href="../../deployment/using-microservice.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -238,6 +238,10 @@
     </div>
   
 
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
   
 </div>
 
@@ -521,19 +525,17 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Microservice</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../safeguarding-ai-virtual-assistant-blueprint.html">Blueprint Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">LangChain</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="runnable-rails.html">RunnableRails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html">LangGraph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="chain-with-guardrails/index.html">Chain with Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="runnable-as-action/index.html">Runnable as Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="langgraph-integration.html">LangGraph</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
@@ -582,7 +584,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">LangChain Integration</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">LangChain Frameworks</span></li>
   </ul>
 </nav>
 </div>
@@ -599,18 +601,28 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="langchain-integration">
-<h1>LangChain Integration<a class="headerlink" href="#langchain-integration" title="Link to this heading">#</a></h1>
-<p>This section covers how to integrate the NeMo Guardrails library with LangChain.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="langchain-frameworks">
+<h1>LangChain Frameworks<a class="headerlink" href="#langchain-frameworks" title="Link to this heading">#</a></h1>
+<p>This section covers how to integrate the NeMo Guardrails library with LangChain and LangGraph.</p>
+<section id="langchain">
+<h2>LangChain<a class="headerlink" href="#langchain" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runnable-rails.html">RunnableRails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="langgraph-integration.html">LangGraph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chain-with-guardrails/index.html">Chain with Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runnable-as-action/index.html">Runnable as Action</a></li>
 </ul>
 </div>
+</section>
+<section id="langgraph">
+<h2>LangGraph<a class="headerlink" href="#langgraph" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="langgraph-integration.html">LangGraph</a></li>
+</ul>
+</div>
+</section>
 </section>
 
 
@@ -624,12 +636,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../safeguarding-ai-virtual-assistant-blueprint.html"
+       href="../../deployment/using-microservice.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library</p>
+        <p class="prev-next-title">NeMo Guardrails Microservice for Production</p>
       </div>
     </a>
     <a class="right-next"
@@ -648,9 +660,26 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain">LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langgraph">LangGraph</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 
