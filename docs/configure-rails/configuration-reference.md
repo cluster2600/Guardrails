@@ -624,9 +624,7 @@ prompts:
 | `prompts.stop` | list | `null` | Stop tokens |
 | `prompts.models` | list | `null` | Restrict to engines/models (e.g., `["openai", "nim/llama-3.1"]`) |
 
----
-
-## Available Tasks
+### Available Tasks
 
 The following table lists all available tasks you can specify to `prompts.task`.
 
@@ -641,9 +639,7 @@ The following table lists all available tasks you can specify to `prompts.task`.
 | `generate_bot_message` | Generate bot response |
 | `general` | General response generation (no dialog rails) |
 
----
-
-## Available Prompt Message Types
+### Available Prompt Message Types
 
 The following table lists all available message types you can specify to `prompts.messages.type`.
 

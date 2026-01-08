@@ -31,11 +31,11 @@ Before diving into configuring guardrails, ensure you have the required componen
 Prepare LLM endpoints, NemoGuard NIMs, and knowledge base documents before configuration.
 :::
 
-:::{grid-item-card} Configuration Overview
+:::{grid-item-card} Overview
 :link: overview
 :link-type: doc
 
-Learn the structure of guardrails configuration files and how components work together.
+Learn to write config.yml, Colang flows, and custom actions for guardrails.
 :::
 
 ::::
@@ -60,17 +60,17 @@ Define models, guardrails, prompts, and tracing settings in the config.yml file.
 :link: configuration-reference
 :link-type: doc
 
-Complete reference for all config.yml options including models, rails, prompts, and advanced settings.
+Reference for all config.yml options including models, rails, prompts, and advanced settings.
 :::
 
-:::{grid-item-card} Guardrails Catalog
+:::{grid-item-card} Guardrail Catalog
 :link: guardrail-catalog
 :link-type: doc
 
-Browse the complete catalog of built-in guardrails including content safety, jailbreak detection, and third-party integrations.
+Reference for pre-built guardrails including content safety, jailbreak detection, PII handling, and fact checking.
 :::
 
-:::{grid-item-card} Colang Flows
+:::{grid-item-card} Colang
 :link: colang/index
 :link-type: doc
 
@@ -92,7 +92,7 @@ Optional configurations for extending and optimizing your guardrails system.
 :link: actions/index
 :link-type: doc
 
-Create and register custom Python actions callable from Colang flows.
+Create Python actions to extend guardrails with external APIs and validation logic.
 :::
 
 :::{grid-item-card} Custom Initialization
@@ -102,18 +102,18 @@ Create and register custom Python actions callable from Colang flows.
 Use config.py to register custom LLM providers, embedding providers, and shared resources at startup.
 :::
 
-:::{grid-item-card} Knowledge Base & Providers
+:::{grid-item-card} Other Configurations
 :link: other-configurations/index
 :link-type: doc
 
-Configure knowledge base folders for RAG and custom embedding search providers.
+Additional configuration topics including knowledge base setup and exception handling.
 :::
 
-:::{grid-item-card} Caching
+:::{grid-item-card} Caching Instructions and Prompts
 :link: caching/index
 :link-type: doc
 
-Configure in-memory caching and KV cache reuse to improve performance and reduce latency.
+Configure in-memory caching for LLM calls and KV cache reuse to improve performance and reduce latency.
 :::
 
 :::{grid-item-card} Exceptions and Error Handling

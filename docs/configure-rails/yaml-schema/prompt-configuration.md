@@ -34,7 +34,7 @@ prompts:
       Answer:
 ```
 
-For a complete list of available prompt attributes and tasks, refer to the [](../configuration-reference.md#prompt-tasks).
+For a complete list of available prompt attributes and tasks, refer to the [](../configuration-reference.md#prompts-configuration).
 
 ## Content-Based Prompts
 
