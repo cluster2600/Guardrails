@@ -192,7 +192,7 @@ Once configured, the GLiNER integration can automatically:
 The [`examples/deployment/gliner_server/`](../../../examples/deployment/gliner_server/) directory provides an example GLiNER server implementation.
 This implementation:
 
-- Uses the `nvidia/gliner-PII` model for comprehensive PII detection.
+- Uses the [NVIDIA GLiNER-PII](https://huggingface.co/nvidia/gliner-PII) model for comprehensive PII detection.
 - Supports GPU acceleration (CUDA, MPS on Apple Silicon).
 - Implements text chunking with overlap for long documents.
 - Provides entity deduplication.
