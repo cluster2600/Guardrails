@@ -5,7 +5,7 @@ This integration enables the NeMo Guardrails library to use a GLiNER-compatible 
 
 ## Server Setup
 
-1. Deploy a GLiNER-compatible server.
+Deploy a GLiNER-compatible server.
    Refer to the example implementation at [`examples/deployment/gliner_server/`](../../../examples/deployment/gliner_server/):
 
 ```bash
