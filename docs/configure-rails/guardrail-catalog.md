@@ -142,7 +142,7 @@ rails:
       - self check output
 ```
 
-1. Define the `self_check_output` prompt in the `prompts.yml` file:
+2. Define the `self_check_output` prompt in the `prompts.yml` file:
 
 ```yaml
 prompts:
