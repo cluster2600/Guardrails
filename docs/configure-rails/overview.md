@@ -13,7 +13,7 @@ content:
 
 # NeMo Guardrails Library Configuration Overview
 
-Before using the NeMo Guardrails library, you need to prepare configuration files that define your guardrails behavior. When you initialize the library's core classes or the `nemoguardrails` CLI chat or server, it will load the configuration files you'll create in the next chapter [](../run-rails/index.md). This section provides complete instructions on preparing your configuration files and executable scripts.
+Before using the NeMo Guardrails library, you need to prepare configuration files that define your guardrails behavior. When you initialize the library's core classes or the `nemoguardrails` CLI chat or server, it will load these configuration files as shown in the next chapter [](../run-rails/index.md). This section provides complete instructions on preparing your configuration files and executable scripts.
 
 A guardrails configuration includes the following components. You can start with a basic configuration and add more components as needed. All the components should be placed in the `config` folder, and the locations in the following table are relative to the `config` folder.
 
