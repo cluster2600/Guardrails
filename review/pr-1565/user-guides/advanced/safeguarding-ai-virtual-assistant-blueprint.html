@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>GuardrailsAI Integration &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/community/guardrails-ai';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,7 +56,7 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/community/guardrails-ai.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/safeguarding-ai-virtual-assistant-blueprint.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -583,7 +583,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">GuardrailsAI Integration</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library</span></li>
   </ul>
 </nav>
 </div>
@@ -600,159 +600,59 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="guardrailsai-integration">
-<h1>GuardrailsAI Integration<a class="headerlink" href="#guardrailsai-integration" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails provides out-of-the-box support for <a class="reference external" href="https://github.com/guardrails-ai/guardrails" rel="noreferer noopener" target="_blank">GuardrailsAI</a> validators, enabling comprehensive input and output validation using a rich ecosystem of community-built validators. GuardrailsAI offers validators for content safety, PII detection, toxic language filtering, jailbreak detection, topic restriction, and much more.</p>
-<p>The integration provides access to both built-in validators and the entire <a class="reference external" href="https://hub.guardrailsai.com/" rel="noreferer noopener" target="_blank">Guardrails Hub</a> ecosystem, allowing you to dynamically load and configure validators for your specific use cases.</p>
-<section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
-<p>To use GuardrailsAI validators, you need to install the <code class="docutils literal notranslate"><span class="pre">guardrails-ai</span></code> package:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>guardrails-ai
-</pre></div>
+  <section class="tex2jax_ignore mathjax_ignore" id="safeguard-ai-virtual-assistant-blueprint-with-the-nemo-guardrails-library">
+<h1>Safeguard AI Virtual Assistant Blueprint with the NeMo Guardrails library<a class="headerlink" href="#safeguard-ai-virtual-assistant-blueprint-with-the-nemo-guardrails-library" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This documentation is intended for developers that want to integrate the NeMo Guardrails library into <a class="reference external" href="https://build.nvidia.com/blueprints" rel="noreferer noopener" target="_blank">NVIDIA Blueprints</a></p>
 </div>
-<p>You may also need to install specific validators from the Guardrails Hub:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class="w"> </span>guardrails/toxic_language
-guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class="w"> </span>guardrails/detect_jailbreak
-guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class="w"> </span>guardrails/guardrails_pii
-</pre></div>
-</div>
-</section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
-<p>The GuardrailsAI integration uses a flexible configuration system that allows you to define validators with their parameters and metadata, then reference them in your input and output rails.</p>
-<section id="configuration-structure">
-<h3>Configuration Structure<a class="headerlink" href="#configuration-structure" title="Link to this heading">#</a></h3>
-<p>Add GuardrailsAI validators to your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">validators</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">toxic_language</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
-<span class="w">            </span><span class="nt">validation_method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sentence&quot;</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrails_pii</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">entities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;phone_number&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;email&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ssn&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">competitor_check</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">competitors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Apple&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Google&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Microsoft&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-</pre></div>
-</div>
-</section>
-<section id="input-rails">
-<h3>Input Rails<a class="headerlink" href="#input-rails" title="Link to this heading">#</a></h3>
-<p>To use GuardrailsAI validators for input validation:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;guardrails_pii&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;competitor_check&quot;</span>
-</pre></div>
-</div>
-</section>
-<section id="output-rails">
-<h3>Output Rails<a class="headerlink" href="#output-rails" title="Link to this heading">#</a></h3>
-<p>To use GuardrailsAI validators for output validation:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;toxic_language&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;restricttotopic&quot;</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="built-in-validators">
-<h2>Built-in Validators<a class="headerlink" href="#built-in-validators" title="Link to this heading">#</a></h2>
-<p>The integration includes support for the following validators that are pre-registered in the NeMo Guardrails validator registry. For detailed parameter specifications and usage examples, refer to the official <a class="reference external" href="https://hub.guardrailsai.com/" rel="noreferer noopener" target="_blank">GuardrailsAI Hub</a> documentation for each validator:</p>
+<p>NVIDIA Blueprints are comprehensive reference workflows that accelerate AI application development and deployment. They make it easy to start building and setting up virtual assistants, offering ready-made workflows and tools. Whether you need a simple AI-powered chatbot or a fully animated digital human interface, NVIDIA provides resources to help you create an AI assistant that’s scalable and aligned with your brand. For example, developers can use the <strong><a class="reference external" href="https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service" rel="noreferer noopener" target="_blank">NVIDIA AI Blueprint for AI virtual assistants</a></strong> to build an AI assistant for customer service for delivering a responsive, efficient customer support experience.</p>
+<section id="prerequisites-and-setup">
+<h2>Prerequisites and Setup<a class="headerlink" href="#prerequisites-and-setup" title="Link to this heading">#</a></h2>
+<section id="nvidia-blueprint">
+<h3>NVIDIA Blueprint<a class="headerlink" href="#nvidia-blueprint" title="Link to this heading">#</a></h3>
+<p>The NVIDIA Blueprint for AI virtual assistants can be deployed either with the NVIDIA-hosted endpoints or with locally hosted NIM microservices. To get started with the deployment:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">competitor_check</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/competitor_check</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">detect_jailbreak</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/detect_jailbreak</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guardrails_pii</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/guardrails_pii</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">one_line</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/one_line</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">provenance_llm</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/provenance_llm</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">regex_match</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/regex_match</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">restricttotopic</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://tryolabs/restricttotopic</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">toxic_language</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/toxic_language</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">valid_json</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/valid_json</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">valid_length</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/valid_length</span></code></p></li>
+<li><p><strong><a class="reference external" href="https://build.nvidia.com/nvidia/ai-virtual-assistant-for-customer-service" rel="noreferer noopener" target="_blank">Using the NVIDIA-hosted endpoint</a></strong>: The launchable opens to a jupyter notebook - <code class="docutils literal notranslate"><span class="pre">ai-virtual-assistant-notebook.ipynb</span></code>. Make sure that the <a class="reference external" href="https://github.com/NVIDIA-AI-Blueprints/ai-virtual-assistant?tab=readme-ov-file#hardware-requirements" rel="noreferer noopener" target="_blank">compute requirements</a> are satisfied</p></li>
 </ul>
 </section>
-<section id="complete-example">
-<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h2>
-<p>Here’s a comprehensive example configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4</span>
-
-<span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">validators</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">toxic_language</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
-<span class="w">            </span><span class="nt">validation_method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sentence&quot;</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrails_pii</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">entities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;phone_number&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;email&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ssn&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;credit_card&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">competitor_check</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">competitors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Apple&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Google&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Microsoft&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Amazon&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restricttotopic</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">valid_topics</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;technology&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;science&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;education&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">valid_length</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="w">            </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;guardrails_pii&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;competitor_check&quot;</span>
-
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;toxic_language&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;restricttotopic&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;valid_length&quot;</span>
+<section id="integrating-nemoguard">
+<h3>Integrating NemoGuard<a class="headerlink" href="#integrating-nemoguard" title="Link to this heading">#</a></h3>
+<p>First create a <code class="docutils literal notranslate"><span class="pre">nemoguardrails.yaml</span></code> file at <code class="docutils literal notranslate"><span class="pre">ai-virtual-assistant/deploy/compose</span></code> directory to download and initialize the NeMo Guardrails library. Make sure it has the following content in it. You can change the port as per your requirement.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nemoguardrails</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../../../nemoguardrails</span><span class="w">  </span><span class="c1"># Path to the cloned repository</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nemoguardrails</span>
+<span class="w">    </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span>
+<span class="w">    </span><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">reservations</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">devices</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span>
+<span class="w">              </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">              </span><span class="nt">capabilities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">gpu</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">NGC_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${NGC_API_KEY}</span><span class="w">  </span><span class="c1"># NVIDIA GPU Cloud API Key</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8650:8650&quot;</span><span class="w">  </span><span class="c1"># Map container port 8000 to host port 8000</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8000:8000&quot;</span>
+<span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${USER_ID:-1000}:${GROUP_ID:-1000}&quot;</span><span class="w">  </span><span class="c1"># Use the current user&#39;s UID/GID</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">      </span><span class="no">bash -c &quot;</span>
+<span class="w">      </span><span class="no">export OPENAI_API_KEY=${OPENAI_API_KEY} &amp;&amp;</span>
+<span class="w">      </span><span class="no">cd nemoguardrails</span>
+<span class="w">      </span><span class="no">pip install --no-cache-dir -e .[all]</span>
+<span class="w">      </span><span class="no">&quot;</span>
 </pre></div>
 </div>
+<p>Follow the notebook from - <code class="docutils literal notranslate"><span class="pre">examples/notebooks/safeguard_ai_virtual_assistant_notebook.ipynb</span></code> to deploy the NemoGuard NIM using downloadable containers and learn to step by step integrate it into the NIM blueprint</p>
 </section>
-<section id="custom-validators-from-guardrails-hub">
-<h2>Custom Validators from Guardrails Hub<a class="headerlink" href="#custom-validators-from-guardrails-hub" title="Link to this heading">#</a></h2>
-<p>You can use any validator from the <a class="reference external" href="https://hub.guardrailsai.com/" rel="noreferer noopener" target="_blank">Guardrails Hub</a> by specifying its hub path:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">validators</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_validator_name</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="c1"># Custom parameters specific to the validator</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-</pre></div>
-</div>
-<p>The integration will automatically fetch validator information from the hub if it’s not in the built-in registry.</p>
+<section id="nim-blueprint-api-usage">
+<h3>NIM Blueprint API Usage<a class="headerlink" href="#nim-blueprint-api-usage" title="Link to this heading">#</a></h3>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">ai-virtual-assistant/notebooks/api_usage.ipynb</span></code> to run the blueprint api to see the agent response</p>
 </section>
-<section id="performance-considerations">
-<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Validators are cached to improve performance on repeated use</p></li>
-<li><p>Guard instances are reused when the same validator is called with identical parameters</p></li>
-<li><p>Consider the latency impact when chaining multiple validators</p></li>
-</ul>
-<p>For a complete working example, see the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/guardrails_ai/" rel="noreferer noopener" target="_blank">GuardrailsAI example configuration</a>.</p>
 </section>
 </section>
 
@@ -787,17 +687,12 @@ guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class=
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-structure">Configuration Structure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-rails">Input Rails</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-rails">Output Rails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites-and-setup">Prerequisites and Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-blueprint">NVIDIA Blueprint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#integrating-nemoguard">Integrating NemoGuard</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nim-blueprint-api-usage">NIM Blueprint API Usage</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-validators">Built-in Validators</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-validators-from-guardrails-hub">Custom Validators from Guardrails Hub</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-considerations">Performance Considerations</a></li>
 </ul>
   </nav></div>
 

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>GuardrailsAI Integration &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>AlignScore Deployment &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/community/guardrails-ai';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user-guides/advanced/align-score-deployment';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,7 +56,7 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/community/guardrails-ai.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/user-guides/advanced/align-score-deployment.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
 
@@ -236,10 +236,6 @@
     </div>
   
 
-  
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
   
 </div>
 
@@ -583,7 +579,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">GuardrailsAI Integration</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">AlignScore Deployment</span></li>
   </ul>
 </nav>
 </div>
@@ -600,160 +596,59 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="guardrailsai-integration">
-<h1>GuardrailsAI Integration<a class="headerlink" href="#guardrailsai-integration" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails provides out-of-the-box support for <a class="reference external" href="https://github.com/guardrails-ai/guardrails" rel="noreferer noopener" target="_blank">GuardrailsAI</a> validators, enabling comprehensive input and output validation using a rich ecosystem of community-built validators. GuardrailsAI offers validators for content safety, PII detection, toxic language filtering, jailbreak detection, topic restriction, and much more.</p>
-<p>The integration provides access to both built-in validators and the entire <a class="reference external" href="https://hub.guardrailsai.com/" rel="noreferer noopener" target="_blank">Guardrails Hub</a> ecosystem, allowing you to dynamically load and configure validators for your specific use cases.</p>
-<section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
-<p>To use GuardrailsAI validators, you need to install the <code class="docutils literal notranslate"><span class="pre">guardrails-ai</span></code> package:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>guardrails-ai
+  <section class="tex2jax_ignore mathjax_ignore" id="alignscore-deployment">
+<h1>AlignScore Deployment<a class="headerlink" href="#alignscore-deployment" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The recommended way to use AlignScore with the NeMo Guardrails library is using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>. For more details, check out how to <a class="reference internal" href="../../deployment/using-docker.html"><span class="std std-doc">build and use the image</span></a>.</p>
+</div>
+<p>In order to deploy an AlignScore server, follow these steps:</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Installing AlignScore is not supported on Python 3.11.</p>
+</div>
+<ol class="arabic simple">
+<li><p>Install the <code class="docutils literal notranslate"><span class="pre">alignscore</span></code> package from the GitHub repository:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yuh-zha/AlignScore.git
+<span class="nb">cd</span><span class="w"> </span>AlignScore
+pip<span class="w"> </span>install<span class="w"> </span>.
 </pre></div>
 </div>
-<p>You may also need to install specific validators from the Guardrails Hub:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class="w"> </span>guardrails/toxic_language
-guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class="w"> </span>guardrails/detect_jailbreak
-guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class="w"> </span>guardrails/guardrails_pii
+<ol class="arabic simple" start="2">
+<li><p>Install Pytorch version <code class="docutils literal notranslate"><span class="pre">2.0.1</span></code>.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.0.1
 </pre></div>
 </div>
-</section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
-<p>The GuardrailsAI integration uses a flexible configuration system that allows you to define validators with their parameters and metadata, then reference them in your input and output rails.</p>
-<section id="configuration-structure">
-<h3>Configuration Structure<a class="headerlink" href="#configuration-structure" title="Link to this heading">#</a></h3>
-<p>Add GuardrailsAI validators to your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">validators</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">toxic_language</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
-<span class="w">            </span><span class="nt">validation_method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sentence&quot;</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrails_pii</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">entities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;phone_number&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;email&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ssn&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">competitor_check</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">competitors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Apple&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Google&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Microsoft&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<ol class="arabic simple" start="3">
+<li><p>Download the Spacy <code class="docutils literal notranslate"><span class="pre">en_core_web_sm</span></code> model:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>en_core_web_sm
 </pre></div>
 </div>
-</section>
-<section id="input-rails">
-<h3>Input Rails<a class="headerlink" href="#input-rails" title="Link to this heading">#</a></h3>
-<p>To use GuardrailsAI validators for input validation:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;guardrails_pii&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;competitor_check&quot;</span>
+<ol class="arabic simple" start="4">
+<li><p>Download the one or both of the AlignScore checkpoints:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl -OL https://huggingface.co/yzha/AlignScore/resolve/main/AlignScore-base.ckpt</span>
+<span class="go">curl -OL https://huggingface.co/yzha/AlignScore/resolve/main/AlignScore-large.ckpt</span>
 </pre></div>
 </div>
-</section>
-<section id="output-rails">
-<h3>Output Rails<a class="headerlink" href="#output-rails" title="Link to this heading">#</a></h3>
-<p>To use GuardrailsAI validators for output validation:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;toxic_language&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;restricttotopic&quot;</span>
+<ol class="arabic simple" start="5">
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">ALIGN_SCORE_PATH</span></code> environment variable to point to the path where the checkpoints have been downloaded.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">ALIGN_SCORE_DEVICE</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code> to run the AlignScore model on CPU, or to the corresponding GPU device, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;cuda:0&quot;</span></code>.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">ALIGN_SCORE_PATH</span><span class="o">=</span>&lt;path/to/folder_containing_ckpt&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">ALIGN_SCORE_DEVICE</span><span class="o">=</span><span class="s2">&quot;cuda:0&quot;</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="built-in-validators">
-<h2>Built-in Validators<a class="headerlink" href="#built-in-validators" title="Link to this heading">#</a></h2>
-<p>The integration includes support for the following validators that are pre-registered in the NeMo Guardrails validator registry. For detailed parameter specifications and usage examples, refer to the official <a class="reference external" href="https://hub.guardrailsai.com/" rel="noreferer noopener" target="_blank">GuardrailsAI Hub</a> documentation for each validator:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">competitor_check</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/competitor_check</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">detect_jailbreak</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/detect_jailbreak</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">guardrails_pii</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/guardrails_pii</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">one_line</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/one_line</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">provenance_llm</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/provenance_llm</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">regex_match</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/regex_match</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">restricttotopic</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://tryolabs/restricttotopic</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">toxic_language</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/toxic_language</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">valid_json</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/valid_json</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">valid_length</span></code> - <code class="docutils literal notranslate"><span class="pre">hub://guardrails/valid_length</span></code></p></li>
-</ul>
-</section>
-<section id="complete-example">
-<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h2>
-<p>Here’s a comprehensive example configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4</span>
-
-<span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">validators</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">toxic_language</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
-<span class="w">            </span><span class="nt">validation_method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sentence&quot;</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrails_pii</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">entities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;phone_number&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;email&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;ssn&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;credit_card&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">competitor_check</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">competitors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;Apple&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Google&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Microsoft&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Amazon&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restricttotopic</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">valid_topics</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;technology&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;science&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;education&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">valid_length</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="w">            </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;guardrails_pii&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check input $validator=&quot;competitor_check&quot;</span>
-
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;toxic_language&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;restricttotopic&quot;</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guardrailsai check output $validator=&quot;valid_length&quot;</span>
+<ol class="arabic simple" start="7">
+<li><p>Start the AlignScore server.</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>nemoguardrails.library.factchecking.align_score.server<span class="w"> </span>--port<span class="w"> </span><span class="m">5000</span><span class="w"> </span>--models<span class="o">=</span>base
 </pre></div>
 </div>
-</section>
-<section id="custom-validators-from-guardrails-hub">
-<h2>Custom Validators from Guardrails Hub<a class="headerlink" href="#custom-validators-from-guardrails-hub" title="Link to this heading">#</a></h2>
-<p>You can use any validator from the <a class="reference external" href="https://hub.guardrailsai.com/" rel="noreferer noopener" target="_blank">Guardrails Hub</a> by specifying its hub path:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">validators</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_validator_name</span>
-<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="w">            </span><span class="c1"># Custom parameters specific to the validator</span>
-<span class="w">          </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-</pre></div>
-</div>
-<p>The integration will automatically fetch validator information from the hub if it’s not in the built-in registry.</p>
-</section>
-<section id="performance-considerations">
-<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Validators are cached to improve performance on repeated use</p></li>
-<li><p>Guard instances are reused when the same validator is called with identical parameters</p></li>
-<li><p>Consider the latency impact when chaining multiple validators</p></li>
-</ul>
-<p>For a complete working example, see the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/guardrails_ai/" rel="noreferer noopener" target="_blank">GuardrailsAI example configuration</a>.</p>
-</section>
+<p>By default, the AlignScore server listens on port <code class="docutils literal notranslate"><span class="pre">5000</span></code>. You can change the port using the <code class="docutils literal notranslate"><span class="pre">--port</span></code> option. Also, by default, the AlignScore server loads only the base model. You can load only the large model using <code class="docutils literal notranslate"><span class="pre">--models=large</span></code> or both using <code class="docutils literal notranslate"><span class="pre">--models=base</span> <span class="pre">--models=large</span></code>.</p>
 </section>
 
 
@@ -773,35 +668,9 @@ guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class=
             
             
 
-
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="bd-sidebar-secondary"></div>
 
 
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-structure">Configuration Structure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-rails">Input Rails</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-rails">Output Rails</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-validators">Built-in Validators</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-validators-from-guardrails-hub">Custom Validators from Guardrails Hub</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-considerations">Performance Considerations</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
 
