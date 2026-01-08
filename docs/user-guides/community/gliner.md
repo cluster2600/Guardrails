@@ -1,6 +1,6 @@
 # GLiNER Integration
 
-[GLiNER](https://github.com/urchade/GLiNER) is a generalist and lightweight model for named entity recognition. It can detect a wide range of entity types, including comprehensive PII (Personally Identifiable Information) categories.
+[GLiNER](https://github.com/urchade/GLiNER) is a generalist and lightweight model for named entity recognition. [NVIDIA GLiNER-PII](https://huggingface.co/nvidia/gliner-PII) is an adaptation of this base model that can detect a wide range of entity types, including comprehensive PII (Personally Identifiable Information) categories.
 This integration enables the NeMo Guardrails library to use a GLiNER-compatible server for PII detection and masking in input, output, and retrieval flows.
 
 ## Server Setup
