@@ -230,6 +230,6 @@ cd examples/deployment/gliner_server
 
 - Ensure a GLiNER-compatible server is running and accessible from your NeMo Guardrails application environment.
 - You can use the provided [example server](#example-deployment) or implement your own server following the [API specification](#api-specification).
-- For production deployments, consider [containerizing the server](#docker-deployment).
+- For production deployments, consider containerizing the server.
 
 For more information on GLiNER, refer to the [GLiNER GitHub repository](https://github.com/urchade/GLiNER).
