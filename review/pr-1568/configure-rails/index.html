@@ -411,6 +411,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration-reference.html">YAML Schema Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="actions/creating-actions.html">Creating Custom Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions/built-in-actions.html">Built-in Actions</a></li>
@@ -482,7 +483,6 @@
 <li class="toctree-l2"><a class="reference internal" href="other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="caching/model-memory-cache.html">Memory Model Cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
@@ -622,8 +622,8 @@ Prerequisites</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Configuration Overview</div>
-<p class="sd-card-text">Learn the structure of guardrails configuration files and how components work together.</p>
+Overview</div>
+<p class="sd-card-text">Learn to write config.yml, Colang flows, and custom actions for guardrails.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="overview.html"><span class="doc">NeMo Guardrails Library Configuration Overview</span></a></div>
 </div>
@@ -650,7 +650,7 @@ Configuring YAML File</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 YAML Schema Reference</div>
-<p class="sd-card-text">Complete reference for all config.yml options including models, rails, prompts, and advanced settings.</p>
+<p class="sd-card-text">Reference for all config.yml options including models, rails, prompts, and advanced settings.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="configuration-reference.html"><span class="doc">Configuration YAML Schema Reference</span></a></div>
 </div>
@@ -658,8 +658,8 @@ YAML Schema Reference</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Guardrails Catalog</div>
-<p class="sd-card-text">Browse the complete catalog of built-in guardrails including content safety, jailbreak detection, and third-party integrations.</p>
+Guardrail Catalog</div>
+<p class="sd-card-text">Reference for pre-built guardrails including content safety, jailbreak detection, PII handling, and fact checking.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="guardrail-catalog.html"><span class="doc">Guardrail Catalog</span></a></div>
 </div>
@@ -667,7 +667,7 @@ Guardrails Catalog</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Colang Flows</div>
+Colang</div>
 <p class="sd-card-text">Learn Colang, the event-driven language for defining guardrails flows and bot behavior.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="colang/index.html"><span class="doc">Colang Guide</span></a></div>
@@ -686,7 +686,7 @@ Colang Flows</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Custom Actions</div>
-<p class="sd-card-text">Create and register custom Python actions callable from Colang flows.</p>
+<p class="sd-card-text">Create Python actions to extend guardrails with external APIs and validation logic.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="actions/index.html"><span class="doc">Configuring Custom Actions</span></a></div>
 </div>
@@ -703,8 +703,8 @@ Custom Initialization</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Knowledge Base &amp; Providers</div>
-<p class="sd-card-text">Configure knowledge base folders for RAG and custom embedding search providers.</p>
+Other Configurations</div>
+<p class="sd-card-text">Additional configuration topics including knowledge base setup and exception handling.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="other-configurations/index.html"><span class="doc">Other Configurations</span></a></div>
 </div>
@@ -712,8 +712,8 @@ Knowledge Base &amp; Providers</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Caching</div>
-<p class="sd-card-text">Configure in-memory caching and KV cache reuse to improve performance and reduce latency.</p>
+Caching Instructions and Prompts</div>
+<p class="sd-card-text">Configure in-memory caching for LLM calls and KV cache reuse to improve performance and reduce latency.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="caching/index.html"><span class="doc">Caching Instructions and Prompts</span></a></div>
 </div>

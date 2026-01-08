@@ -59,7 +59,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/configure-rails/configuration-reference.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Configuring Custom Actions" href="actions/index.html" />
+    <link rel="next" title="Guardrail Catalog" href="guardrail-catalog.html" />
     <link rel="prev" title="Output Rail Streaming" href="yaml-schema/streaming/output-rail-streaming.html" />
 
 
@@ -411,6 +411,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">YAML Schema Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="actions/creating-actions.html">Creating Custom Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions/built-in-actions.html">Built-in Actions</a></li>
@@ -482,7 +483,6 @@
 <li class="toctree-l2"><a class="reference internal" href="other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="caching/model-memory-cache.html">Memory Model Cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
@@ -1619,10 +1619,8 @@
 </tbody>
 </table>
 </div>
-</section>
-<hr class="docutils" />
 <section id="available-tasks">
-<h2>Available Tasks<a class="headerlink" href="#available-tasks" title="Link to this heading">#</a></h2>
+<h3>Available Tasks<a class="headerlink" href="#available-tasks" title="Link to this heading">#</a></h3>
 <p>The following table lists all available tasks you can specify to <code class="docutils literal notranslate"><span class="pre">prompts.task</span></code>.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1659,9 +1657,8 @@
 </table>
 </div>
 </section>
-<hr class="docutils" />
 <section id="available-prompt-message-types">
-<h2>Available Prompt Message Types<a class="headerlink" href="#available-prompt-message-types" title="Link to this heading">#</a></h2>
+<h3>Available Prompt Message Types<a class="headerlink" href="#available-prompt-message-types" title="Link to this heading">#</a></h3>
 <p>The following table lists all available message types you can specify to <code class="docutils literal notranslate"><span class="pre">prompts.messages.type</span></code>.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1685,6 +1682,7 @@
 </tbody>
 </table>
 </div>
+</section>
 </section>
 <hr class="docutils" />
 <section id="other-configuration-options">
@@ -1835,11 +1833,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="actions/index.html"
+       href="guardrail-catalog.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Configuring Custom Actions</p>
+        <p class="prev-next-title">Guardrail Catalog</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1918,9 +1916,11 @@
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-configuration">Prompts Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-tasks">Available Tasks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-prompt-message-types">Available Prompt Message Types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-configuration">Prompts Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-tasks">Available Tasks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-prompt-message-types">Available Prompt Message Types</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-configuration-options">Other Configuration Options</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-conversation">Sample Conversation</a></li>
