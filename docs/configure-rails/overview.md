@@ -94,5 +94,5 @@ For each component, refer to the following sections for more details:
 - [](custom-initialization/index.md) - `config.py` for custom initialization.
 - [](other-configurations/knowledge-base.md) - `kb/` folder for RAG.
 
-After preparing your configuration files, you cab use the NeMo Guardrails SDK to instantiate the core classes (`RailsConfig` and `LLMRails`) and run guardrails on your LLM applications.
+After preparing your configuration files, you can use the NeMo Guardrails SDK to instantiate the core classes (`RailsConfig` and `LLMRails`) and run guardrails on your LLM applications.
 For detailed SDK usage, including loading configurations, generating responses, streaming, and debugging, refer to [](../run-rails/index.md).
