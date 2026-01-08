@@ -80,7 +80,7 @@ The following sections provide detailed documentation for each configuration sec
 Configure LLM engines, embedding models, and task-specific models in config.yml.
 :::
 
-:::{grid-item-card} Rails
+:::{grid-item-card} Guardrails
 :link: guardrails-configuration/index
 :link-type: doc
 
@@ -135,7 +135,7 @@ Configuration files should be organized in a `config` folder with the following 
 :maxdepth: 2
 
 Models <model-configuration>
-Rails <guardrails-configuration/index>
+Guardrails <guardrails-configuration/index>
 Prompts <prompt-configuration>
 Tracing <tracing-configuration>
 Streaming <streaming/index>
