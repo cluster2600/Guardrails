@@ -600,14 +600,12 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="gliner-integration">
 <h1>GLiNER Integration<a class="headerlink" href="#gliner-integration" title="Link to this heading">#</a></h1>
-<p><a class="reference external" href="https://github.com/urchade/GLiNER" rel="noreferer noopener" target="_blank">GLiNER</a> is a generalist and lightweight model for named entity recognition. It can detect a wide range of entity types, including comprehensive PII (Personally Identifiable Information) categories.
+<p><a class="reference external" href="https://github.com/urchade/GLiNER" rel="noreferer noopener" target="_blank">GLiNER</a> is a generalist and lightweight model for named entity recognition. <a class="reference external" href="https://huggingface.co/nvidia/gliner-PII" rel="noreferer noopener" target="_blank">NVIDIA GLiNER-PII</a> is an adaptation of this base model that can detect a wide range of entity types, including comprehensive PII (Personally Identifiable Information) categories.
 This integration enables the NeMo Guardrails library to use a GLiNER-compatible server for PII detection and masking in input, output, and retrieval flows.</p>
 <section id="server-setup">
 <h2>Server Setup<a class="headerlink" href="#server-setup" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p>Deploy a GLiNER-compatible server.
-Refer to the example implementation at <a class="reference internal" href="#../../../examples/deployment/gliner_server/"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">examples/deployment/gliner_server/</span></code></span></a>:</p></li>
-</ol>
+<p>Deploy a GLiNER-compatible server.
+Refer to the example implementation at <a class="reference internal" href="#../../../examples/deployment/gliner_server/"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">examples/deployment/gliner_server/</span></code></span></a>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/deployment/gliner_server
 
 <span class="c1"># Install with uv (recommended)</span>
@@ -903,7 +901,7 @@ For example, <code class="docutils literal notranslate"><span class="pre">Hi</sp
 <p>The <a class="reference internal" href="#../../../examples/deployment/gliner_server/"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">examples/deployment/gliner_server/</span></code></span></a> directory provides an example GLiNER server implementation.
 This implementation:</p>
 <ul class="simple">
-<li><p>Uses the <code class="docutils literal notranslate"><span class="pre">nvidia/gliner-PII</span></code> model for comprehensive PII detection.</p></li>
+<li><p>Uses the <a class="reference external" href="https://huggingface.co/nvidia/gliner-PII" rel="noreferer noopener" target="_blank">NVIDIA GLiNER-PII</a> model for comprehensive PII detection.</p></li>
 <li><p>Supports GPU acceleration (CUDA, MPS on Apple Silicon).</p></li>
 <li><p>Implements text chunking with overlap for long documents.</p></li>
 <li><p>Provides entity deduplication.</p></li>

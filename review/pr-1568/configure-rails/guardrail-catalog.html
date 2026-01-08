@@ -630,7 +630,7 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
+<ol class="arabic simple" start="2">
 <li><p>Define the <code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> prompt in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p></li>
 </ol>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
@@ -726,7 +726,7 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
+<ol class="arabic simple" start="2">
 <li><p>Define the <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> prompt in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p></li>
 </ol>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
@@ -1332,7 +1332,7 @@
 <section id="pii-detection">
 <h2>PII Detection<a class="headerlink" href="#pii-detection" title="Link to this heading">#</a></h2>
 <p>The NeMo Guardrails library supports various PII detection models.</p>
-<p>To activate the PII detection, you need to set up the server endpoint of the PII detection model in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> and specify the entities that you want to detect and mask. For example, the following configuration uses the <a class="reference external" href="https://github.com/NVIDIA/GLiNER" rel="noreferer noopener" target="_blank">Gliner</a> PII detection model, where the GLiNER server endpoint is <code class="docutils literal notranslate"><span class="pre">http://localhost:1235/v1/extract</span></code>:</p>
+<p>To activate the PII detection, you need to set up the server endpoint of the PII detection model in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> and specify the entities that you want to detect and mask. For example, the following configuration uses the <a class="reference external" href="https://github.com/NVIDIA/GLiNER" rel="noreferer noopener" target="_blank">GLiNER</a> PII detection model, where the GLiNER server endpoint is <code class="docutils literal notranslate"><span class="pre">http://localhost:1235/v1/extract</span></code>:</p>
 <p><strong>PII detection config</strong></p>
 <p>The detection flow blocks the input, output, and retrieval text if it detects PII.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
