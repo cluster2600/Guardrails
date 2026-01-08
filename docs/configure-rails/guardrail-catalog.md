@@ -726,7 +726,7 @@ The 'topic safety check input' flow uses the [`topic_safety_check_input`](../../
 
 The NeMo Guardrails library supports various PII detection models.
 
-To activate the PII detection, you need to set up the server endpoint of the PII detection model in your `config.yml` and specify the entities that you want to detect and mask. For example, the following configuration uses the [Gliner](https://github.com/NVIDIA/GLiNER) PII detection model, where the GLiNER server endpoint is `http://localhost:1235/v1/extract`:
+To activate the PII detection, you need to set up the server endpoint of the PII detection model in your `config.yml` and specify the entities that you want to detect and mask. For example, the following configuration uses the [GLiNER](https://github.com/NVIDIA/GLiNER) PII detection model, where the GLiNER server endpoint is `http://localhost:1235/v1/extract`:
 
 **PII detection config**
 
