@@ -1,7 +1,7 @@
 ---
 title:
   page: "Configuring Custom Actions"
-  nav: "(Optional) Custom Actions"
+  nav: "Custom Actions"
 description: "Create Python actions to extend guardrails with external APIs and validation logic."
 topics: ["Configuration", "AI Safety"]
 tags: ["Actions", "Python", "API", "Validation", "Customization"]

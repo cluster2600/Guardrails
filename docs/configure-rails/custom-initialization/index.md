@@ -1,7 +1,7 @@
 ---
 title:
   page: "Configuring Custom Initialization"
-  nav: "(Optional) Custom Initialization"
+  nav: "Custom Initialization"
 description: "Use config.py to register custom LLM providers, embedding providers, and shared resources at startup."
 topics: ["Configuration", "Customization"]
 tags: ["config.py", "Initialization", "LLM Providers", "Embedding Providers", "Python"]

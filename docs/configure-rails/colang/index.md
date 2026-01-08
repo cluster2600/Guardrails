@@ -1,7 +1,7 @@
 ---
 title:
   page: "Colang Guide"
-  nav: "(Optional) Colang"
+  nav: "Colang"
 description: "Learn Colang, the event-driven language for defining guardrails flows and bot behavior."
 topics: ["Configuration", "AI Safety"]
 tags: ["Colang", "Flows", "Events", "DSL", "Language"]

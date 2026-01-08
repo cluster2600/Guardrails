@@ -154,9 +154,9 @@ Overview <configure-rails/overview.md>
 Prerequisites <configure-rails/before-configuration.md>
 Configuring YAML File <configure-rails/yaml-schema/index.md>
 YAML Schema Reference <configure-rails/configuration-reference.md>
-(Optional) Custom Actions <configure-rails/actions/index.md>
-(Optional) Custom Initialization <configure-rails/custom-initialization/index.md>
-(Optional) Colang <configure-rails/colang/index.md>
+Custom Actions <configure-rails/actions/index.md>
+Custom Initialization <configure-rails/custom-initialization/index.md>
+Colang <configure-rails/colang/index.md>
 Other Configurations <configure-rails/other-configurations/index.md>
 Guardrail Catalog <configure-rails/guardrail-catalog.md>
 Caching Instructions and Prompts <configure-rails/caching/index.md>
