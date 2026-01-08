@@ -16,7 +16,7 @@ content:
 This section describes the `actions.py` file used to define custom Python actions for the NeMo Guardrails library.
 By configuring custom actions, you can execute Python code within guardrails flows, extending the library with custom logic, external API integrations, and complex validation.
 
-A `actions.py` file defines custom action functions using the `@action` decorator. A decorator is a callable that takes a function and returns a new function, usually adding behavior or attaching metadata.
+An `actions.py` file defines custom action functions using the `@action` decorator. A decorator is a callable that takes a function and returns a new function, usually adding behavior or attaching metadata.
 
 ```python
 from typing import Optional
