@@ -1783,11 +1783,29 @@ The rules use the string data type.</p>
 <p>For more details, check out the <a class="reference internal" href="../user-guides/community/active-fence.html"><span class="std std-doc">ActiveFence Integration</span></a> page.</p>
 </section>
 </section>
+<section id="policyai">
+<h3>PolicyAI<a class="headerlink" href="#policyai" title="Link to this heading">#</a></h3>
+<p>The NeMo Guardrails library supports using <a class="reference external" href="https://musubilabs.ai" rel="noreferer noopener" target="_blank">PolicyAI</a> by Musubi Labs as an input and output rail out-of-the-box (you need to have the <code class="docutils literal notranslate"><span class="pre">POLICYAI_API_KEY</span></code> environment variable set).</p>
+<p>PolicyAI provides policy-based content moderation, allowing you to define custom policies and organize them with tags for environment-based management.</p>
+<section id="id15">
+<h4>Example usage<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">policyai moderation on input</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">policyai moderation on output</span>
+</pre></div>
+</div>
+<p>For more details, check out the <a class="reference internal" href="../user-guides/community/policyai.html"><span class="std std-doc">PolicyAI Integration</span></a> page.</p>
+</section>
+</section>
 <section id="autoalign">
 <h3>AutoAlign<a class="headerlink" href="#autoalign" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using the AutoAlign’s guardrails API (you need to have the <code class="docutils literal notranslate"><span class="pre">AUTOALIGN_API_KEY</span></code> environment variable set).</p>
-<section id="id15">
-<h4>Example usage<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<section id="id16">
+<h4>Example usage<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1803,8 +1821,8 @@ The rules use the string data type.</p>
 <section id="clavata">
 <h3>Clavata<a class="headerlink" href="#clavata" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://www.clavata.ai/blogs/partner-nvidia" rel="noreferer noopener" target="_blank">Clavata AI</a> as an input and output rail out-of-the-box (you need to have the CLAVATA_API_KEY environment variable set).</p>
-<section id="id16">
-<h4>Example usage<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<section id="id17">
+<h4>Example usage<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">clavata</span><span class="p">:</span>
@@ -1820,8 +1838,8 @@ The rules use the string data type.</p>
 <section id="cleanlab">
 <h3>Cleanlab<a class="headerlink" href="#cleanlab" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using the <a class="reference external" href="https://cleanlab.ai/blog/trustworthy-language-model/" rel="noreferer noopener" target="_blank">Cleanlab Trustworthiness Score API</a> as an output rail (you need to have the <code class="docutils literal notranslate"><span class="pre">CLEANLAB_API_KEY</span></code> environment variable set).</p>
-<section id="id17">
-<h4>Example usage<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<section id="id18">
+<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1834,8 +1852,8 @@ The rules use the string data type.</p>
 <section id="gcp-text-moderation">
 <h3>GCP Text Moderation<a class="headerlink" href="#gcp-text-moderation" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using the GCP Text Moderation. You need to be authenticated with GCP, refer <a class="reference external" href="https://cloud.google.com/docs/authentication/application-default-credentials" rel="noreferer noopener" target="_blank">here</a> for auth details.</p>
-<section id="id18">
-<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<section id="id19">
+<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1848,8 +1866,8 @@ The rules use the string data type.</p>
 <section id="guardrailsai-integration">
 <h3>GuardrailsAI Integration<a class="headerlink" href="#guardrailsai-integration" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://github.com/guardrails-ai/guardrails" rel="noreferer noopener" target="_blank">GuardrailsAI validators</a> for comprehensive input and output validation. GuardrailsAI provides a wide range of validators for content safety, PII detection, toxic language filtering, jailbreak detection, and more.</p>
-<section id="id19">
-<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<section id="id20">
+<h4>Example usage<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
@@ -1891,8 +1909,8 @@ The rules use the string data type.</p>
 <span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
-<section id="id20">
-<h4>Example usage<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<section id="id21">
+<h4>Example usage<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
 <p><strong>PII detection</strong></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
@@ -1919,8 +1937,8 @@ The rules use the string data type.</p>
 <span class="w">      </span><span class="nt">server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://testfiddler.ai</span><span class="w"> </span><span class="c1"># Replace this with your fiddler environment</span>
 </pre></div>
 </div>
-<section id="id21">
-<h4>Example usage<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<section id="id22">
+<h4>Example usage<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">fiddler</span><span class="p">:</span>
@@ -1941,8 +1959,8 @@ The rules use the string data type.</p>
 <h3>Prompt Security Protection<a class="headerlink" href="#prompt-security-protection" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://prompt.security/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Prompt Security API</a> for protecting input and output retrieval flows.</p>
 <p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">PS_PROTECT_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">PS_APP_ID</span></code> environment variables.</p>
-<section id="id22">
-<h4>Example usage<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
+<section id="id23">
+<h4>Example usage<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1959,8 +1977,8 @@ The rules use the string data type.</p>
 <h3>Pangea AI Guard<a class="headerlink" href="#pangea-ai-guard" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://pangea.cloud/services/ai-guard/" rel="noreferer noopener" target="_blank">Pangea AI Guard</a> for protecting data and
 interactions with LLMs within AI-powered applications.</p>
-<section id="id23">
-<h4>Example usage<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<section id="id24">
+<h4>Example usage<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1979,8 +1997,8 @@ interactions with LLMs within AI-powered applications.</p>
 <p>The NeMo Guardrails library supports using
 <a class="reference external" href="https://docs.trendmicro.com/en-us/documentation/article/trend-vision-one-ai-scanner-ai-guard" rel="noreferer noopener" target="_blank">Trend Micro Vision One AI Guard</a> for protecting input and output flows within AI-powered applications.</p>
 <p>See <a class="reference internal" href="../user-guides/community/trend-micro.html"><span class="std std-doc">Trend Micro</span></a> for more details.</p>
-<section id="id24">
-<h4>Example usage<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<section id="id25">
+<h4>Example usage<a class="headerlink" href="#id25" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1997,8 +2015,8 @@ interactions with LLMs within AI-powered applications.</p>
 <h3>Cisco AI Defense<a class="headerlink" href="#cisco-ai-defense" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://www.cisco.com/site/us/en/products/security/ai-defense/index.html?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Cisco AI Defense Inspection</a> for protecting input and output flows.</p>
 <p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_KEY</span></code> and <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_ENDPOINT</span></code> environment variables.</p>
-<section id="id25">
-<h4>Example usage<a class="headerlink" href="#id25" title="Link to this heading">#</a></h4>
+<section id="id26">
+<h4>Example usage<a class="headerlink" href="#id26" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -2172,48 +2190,52 @@ interactions with LLMs within AI-powered applications.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#autoalign">AutoAlign</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policyai">PolicyAI</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clavata">Clavata</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#autoalign">AutoAlign</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleanlab">Cleanlab</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clavata">Clavata</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gcp-text-moderation">GCP Text Moderation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleanlab">Cleanlab</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailsai-integration">GuardrailsAI Integration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gcp-text-moderation">GCP Text Moderation</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai-pii-detection">Private AI PII Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailsai-integration">GuardrailsAI Integration</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai-pii-detection">Private AI PII Detection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-micro-vision-one-ai-application-security">Trend Micro Vision One AI Application Security</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Example usage</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cisco-ai-defense">Cisco AI Defense</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-micro-vision-one-ai-application-security">Trend Micro Vision One AI Application Security</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">Example usage</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cisco-ai-defense">Cisco AI Defense</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">Example usage</a></li>
 </ul>
 </li>
 </ul>
