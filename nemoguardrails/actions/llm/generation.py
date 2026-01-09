@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ import threading
 from dataclasses import asdict
 from functools import lru_cache
 from time import time
-from typing import Any, Awaitable, Callable, Dict, List, Optional, Union, cast
+from typing import Any, Awaitable, Callable, Dict, List, Optional, Tuple, Union, cast
 
 from jinja2 import meta
 from jinja2.sandbox import SandboxedEnvironment
@@ -117,7 +117,7 @@ class LLMGenerationActions:
 
         # If set, in passthrough mode, this function will be used instead of
         # calling the LLM with the user input.
-        self.passthrough_fn: Optional[Callable[..., Awaitable[str]]] = None
+        self.passthrough_fn: Optional[Callable[..., Awaitable[Union[str, Tuple[str, Any]]]]] = None
 
     async def init(self):
         # For Colang 2.x we need to do some initial processing

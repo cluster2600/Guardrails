@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,21 +16,9 @@
 from __future__ import annotations
 
 import logging
-from typing import (
-    Any,
-    AsyncIterator,
-    Callable,
-    Dict,
-    Iterator,
-    List,
-    Optional,
-    Union,
-    cast,
-)
+from typing import Any, AsyncIterator, Dict, Iterator, List, Optional, Union
 
-from langchain_core.language_models import BaseLanguageModel
-from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_core.language_models.llms import BaseLLM
+from langchain_core.language_models import BaseChatModel, BaseLanguageModel, BaseLLM
 from langchain_core.messages import AIMessage
 from langchain_core.prompt_values import ChatPromptValue, StringPromptValue
 from langchain_core.runnables import Runnable, RunnableConfig
@@ -116,26 +104,22 @@ class RunnableRails(Runnable[Input, Output]):
             self.passthrough = False
 
             for tool in tools:
-                # Tool is callable at runtime via __call__, cast for type checker
-                self.rails.register_action(cast(Callable[..., Any], tool), tool.name)
+                self.rails.register_action(tool, tool.name)
 
         # If we have a passthrough Runnable, we need to register a passthrough fn
         # that will call it
         if self.passthrough_runnable:
             self._init_passthrough_fn()
 
-    def _init_passthrough_fn(self) -> None:
+    def _init_passthrough_fn(self):
         """Initialize the passthrough function for the LLM rails instance."""
-        # Capture the runnable in the closure (we know it's not None when this is called)
+        if self.passthrough_runnable is None:
+            raise ValueError("passthrough_runnable must be set to initialize passthrough function.")
         passthrough_runnable = self.passthrough_runnable
-        if not passthrough_runnable:
-            raise RuntimeError("Passthrough function could not be initialized")
 
-        async def passthrough_fn(context: dict, events: List[dict]) -> tuple[str, Any]:
+        async def passthrough_fn(context: dict, events: List[dict]):
             # First, we fetch the input from the context
             _input = context.get("passthrough_input")
-            if _input is None:
-                raise ValueError("passthrough_input not found in context")
             if hasattr(passthrough_runnable, "ainvoke"):
                 _output = await passthrough_runnable.ainvoke(_input, self.config, **self.kwargs)
             else:
@@ -152,13 +136,9 @@ class RunnableRails(Runnable[Input, Output]):
 
             return text, _output
 
-        # The passthrough_fn type in LLMGenerationActions is declared as Awaitable[str]
-        # but actually handles tuple returns (see generation.py lines 487-491)
-        self.rails.llm_generation_actions.passthrough_fn = passthrough_fn  # type: ignore[assignment]
+        self.rails.llm_generation_actions.passthrough_fn = passthrough_fn
 
-    def __or__(  # type: ignore[override]
-        self, other: Union[BaseLanguageModel, Runnable[Any, Any]]
-    ) -> Union["RunnableRails[Input, Output]", Runnable[Any, Any]]:
+    def __or__(self, other: Union[BaseLanguageModel, Runnable[Any, Any]]) -> Union["RunnableRails", Runnable[Any, Any]]:  # type: ignore[override]
         """Chain this runnable with another, returning a new runnable.
 
         This method handles two different cases:
@@ -169,7 +149,7 @@ class RunnableRails(Runnable[Input, Output]):
 
         This ensures associativity in complex chains.
         """
-        if isinstance(other, (BaseLLM, BaseChatModel)):
+        if isinstance(other, BaseLanguageModel):
             # Case 1: Set the LLM for this RunnableRails
             self.llm = other
             self.rails.update_llm(other)
@@ -180,10 +160,10 @@ class RunnableRails(Runnable[Input, Output]):
             # This happens when you call llm.bind_tools([...]) - the result is a RunnableBinding
             # that wraps the original LLM but is no longer a BaseLanguageModel instance
             bound = getattr(other, "bound", None)
-            if bound is not None and isinstance(bound, (BaseLLM, BaseChatModel)):
-                # This is an LLM with tools bound to it - store the binding, update rails with unwrapped LLM
+            if bound is not None and isinstance(bound, BaseLanguageModel):
+                # This is an LLM with tools bound to it - treat it as an LLM, not passthrough
                 self.llm = other
-                self.rails.update_llm(bound)
+                self.rails.update_llm(other)
                 return self
 
             if self.passthrough_runnable is None:
@@ -208,28 +188,21 @@ class RunnableRails(Runnable[Input, Output]):
         """The type of the output of this runnable as a type annotation."""
         return Any
 
-    def get_name(
-        self,
-        suffix: Optional[str] = None,
-        *,
-        name: Optional[str] = None,
-    ) -> str:
+    def get_name(self, suffix: Optional[str] = None, *, name: Optional[str] = None) -> str:
         """Get the name of this runnable."""
-        base_name = name if name else "RunnableRails"
+        result = name if name else "RunnableRails"
         if suffix:
-            base_name += suffix
-        return base_name
+            result += suffix
+        return result
 
     def _extract_text_from_input(self, _input: Any) -> str:
         """Extract text content from various input types for passthrough mode."""
         if isinstance(_input, str):
             return _input
         elif is_base_message(_input):
-            content = _input.content
-            return str(content) if content else ""
+            return str(_input.content)
         elif isinstance(_input, dict) and self.passthrough_user_input_key in _input:
-            value = _input.get(self.passthrough_user_input_key)
-            return str(value) if value is not None else ""
+            return str(_input[self.passthrough_user_input_key])
         else:
             return str(_input)
 
@@ -357,9 +330,9 @@ class RunnableRails(Runnable[Input, Output]):
 
     def _get_bot_message(self, result: Any, context: Dict[str, Any]) -> str:
         """Extract the bot message from context or result."""
-        default_value = result.get("content") if isinstance(result, dict) else result
-        bot_message = context.get("bot_message", default_value)
-        return str(bot_message) if bot_message is not None else ""
+        default = result.get("content") if isinstance(result, dict) else result
+        message = context.get("bot_message", default)
+        return str(message) if message is not None else ""
 
     def _format_passthrough_output(self, result: Any, context: Dict[str, Any]) -> Any:
         """Format output for passthrough mode."""
@@ -667,15 +640,13 @@ class RunnableRails(Runnable[Input, Output]):
 
         # Generate response from rails
         res = self.rails.generate(messages=input_messages, options=GenerationOptions(output_vars=True))
-
         if isinstance(res, GenerationResponse):
             context = res.output_data or {}
             result = res.response
             tool_calls = res.tool_calls
             llm_metadata = res.llm_metadata
         else:
-            # For duck-typed objects (including mocks in tests)
-            context = getattr(res, "output_data", None) or {}
+            context = getattr(res, "output_data", {}) or {}
             result = getattr(res, "response", res)
             tool_calls = getattr(res, "tool_calls", None)
             llm_metadata = getattr(res, "llm_metadata", None)
@@ -741,17 +712,13 @@ class RunnableRails(Runnable[Input, Output]):
 
         # Generate response from rails asynchronously
         res = await self.rails.generate_async(messages=input_messages, options=GenerationOptions(output_vars=True))
-
-        # With options specified, we get a GenerationResponse
-        # Also handle mock objects for testing
         if isinstance(res, GenerationResponse):
             context = res.output_data or {}
             result = res.response
             tool_calls = res.tool_calls
             llm_metadata = res.llm_metadata
         else:
-            # For duck-typed objects (including mocks in tests)
-            context = getattr(res, "output_data", None) or {}
+            context = getattr(res, "output_data", {}) or {}
             result = getattr(res, "response", res)
             tool_calls = getattr(res, "tool_calls", None)
             llm_metadata = getattr(res, "llm_metadata", None)
@@ -804,12 +771,11 @@ class RunnableRails(Runnable[Input, Output]):
 
         input_messages = self._transform_input_to_rails_format(input)
 
-        llm = self.rails.llm
-        original_streaming = getattr(llm, "streaming", False) if llm else False
+        original_streaming = getattr(self.rails.llm, "streaming", False)
         streaming_enabled = False
 
-        if llm is not None and hasattr(llm, "streaming") and not original_streaming:
-            setattr(llm, "streaming", True)
+        if hasattr(self.rails.llm, "streaming") and not original_streaming:
+            setattr(self.rails.llm, "streaming", True)
             streaming_enabled = True
 
         try:
@@ -825,8 +791,8 @@ class RunnableRails(Runnable[Input, Output]):
                 formatted_chunk = self._format_streaming_chunk(input, chunk)
                 yield formatted_chunk
         finally:
-            if streaming_enabled and llm is not None and hasattr(llm, "streaming"):
-                setattr(llm, "streaming", original_streaming)
+            if streaming_enabled and hasattr(self.rails.llm, "streaming"):
+                setattr(self.rails.llm, "streaming", original_streaming)
 
     def _format_streaming_chunk(self, input: Any, chunk) -> Any:
         """Format a streaming chunk based on the input type.
@@ -879,41 +845,34 @@ class RunnableRails(Runnable[Input, Output]):
         self,
         inputs: List[Input],
         config: Optional[Union[RunnableConfig, List[RunnableConfig]]] = None,
+        *,
+        return_exceptions: bool = False,
         **kwargs: Optional[Any],
     ) -> List[Output]:
         """Batch inputs and process them synchronously."""
-        # Process inputs sequentially to maintain state consistency
-        # Handle both single config and list of configs
-        if isinstance(config, list):
-            return [self.invoke(inp, cfg, **kwargs) for inp, cfg in zip(inputs, config)]
-        return [self.invoke(inp, config, **kwargs) for inp in inputs]
+        single_config = config[0] if isinstance(config, list) else config
+        return [self.invoke(input, single_config, **kwargs) for input in inputs]
 
     async def abatch(
         self,
         inputs: List[Input],
         config: Optional[Union[RunnableConfig, List[RunnableConfig]]] = None,
+        *,
+        return_exceptions: bool = False,
         **kwargs: Optional[Any],
     ) -> List[Output]:
         """Batch inputs and process them asynchronously.
 
         Concurrency is controlled via config['max_concurrency'] following LangChain best practices.
         """
+        single_config = config[0] if isinstance(config, list) else config
         max_concurrency = None
-        if isinstance(config, list):
-            # Use first config for max_concurrency setting
-            if config and "max_concurrency" in config[0]:
-                max_concurrency = config[0]["max_concurrency"]
-            # When config is a list, pair each input with its config
-            return await gather_with_concurrency(
-                max_concurrency,
-                *[self.ainvoke(input_item, cfg, **kwargs) for input_item, cfg in zip(inputs, config)],
-            )
+        if single_config and "max_concurrency" in single_config:
+            max_concurrency = single_config["max_concurrency"]
 
-        if config and "max_concurrency" in config:
-            max_concurrency = config["max_concurrency"]
         return await gather_with_concurrency(
             max_concurrency,
-            *[self.ainvoke(input_item, config, **kwargs) for input_item in inputs],
+            *[self.ainvoke(input_item, single_config, **kwargs) for input_item in inputs],
         )
 
     def transform(  # type: ignore[override]
@@ -924,8 +883,7 @@ class RunnableRails(Runnable[Input, Output]):
     ) -> Output:
         """Transform the input.
 
-        This is just an alias for invoke. Note: This intentionally differs from
-        the parent class signature which expects an Iterator.
+        This is just an alias for invoke.
         """
         return self.invoke(input, config, **kwargs)
 
@@ -937,7 +895,6 @@ class RunnableRails(Runnable[Input, Output]):
     ) -> Output:
         """Transform the input asynchronously.
 
-        This is just an alias for ainvoke. Note: This intentionally differs from
-        the parent class signature which expects an AsyncIterator.
+        This is just an alias for ainvoke.
         """
         return await self.ainvoke(input, config, **kwargs)
