@@ -635,16 +635,14 @@
 </pre></div>
 </div>
 </section>
-<section id="using-specific-tags">
-<h3>Using Specific Tags<a class="headerlink" href="#using-specific-tags" title="Link to this heading">#</a></h3>
-<p>You can use different policy tags for different environments or use cases:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">policyai moderation on input with tag $tag_name=&quot;staging&quot;</span>
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">policyai moderation on output with tag $tag_name=&quot;production&quot;</span>
+<section id="using-different-tags">
+<h3>Using Different Tags<a class="headerlink" href="#using-different-tags" title="Link to this heading">#</a></h3>
+<p>To use different policy tags for different environments, set the <code class="docutils literal notranslate"><span class="pre">POLICYAI_TAG_NAME</span></code> environment variable:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For staging environment</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">POLICYAI_TAG_NAME</span><span class="o">=</span><span class="s2">&quot;staging&quot;</span>
+
+<span class="c1"># For production environment</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">POLICYAI_TAG_NAME</span><span class="o">=</span><span class="s2">&quot;prod&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -778,7 +776,7 @@ define bot inform content policy violation
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-input-moderation">Basic Input Moderation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-output-moderation">Basic Output Moderation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-specific-tags">Using Specific Tags</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-different-tags">Using Different Tags</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
