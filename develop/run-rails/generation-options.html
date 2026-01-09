@@ -629,106 +629,6 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<section id="output-variables">
-<h2>Output Variables<a class="headerlink" href="#output-variables" title="Link to this heading">#</a></h2>
-<p>Some rails can store additional information in <a class="reference internal" href="#../configuration-guide/colang/colang-language-syntax-guide.md#variables"><span class="xref myst">context variables</span></a>. You can return the content of these variables by setting the <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> generation option to the list of names for all the variables that you are interested in. If you want to return the complete context (this will also include some predefined variables), you can set <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;output_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;some_input_rail_score&quot;</span><span class="p">,</span> <span class="s2">&quot;some_output_rail_score&quot;</span><span class="p">]</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<p>The returned data will be included in the <code class="docutils literal notranslate"><span class="pre">output_data</span></code> key of the response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;output_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;some_input_rail_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;some_output_rail_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="additional-llm-parameters">
-<h2>Additional LLM Parameters<a class="headerlink" href="#additional-llm-parameters" title="Link to this heading">#</a></h2>
-<p>You can pass additional parameters to the LLM call that is used to generate the final message by using the <code class="docutils literal notranslate"><span class="pre">llm_params</span></code> generation option. For example, to use a lower temperature than the default one:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;llm_params&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.2</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<p>The supported parameters depend on the underlying LLM engine. The NeMo Guardrails library passes them “as is”.</p>
-</section>
-<section id="additional-llm-output">
-<h2>Additional LLM Output<a class="headerlink" href="#additional-llm-output" title="Link to this heading">#</a></h2>
-<p>You can receive the additional output from the LLM generation by using the <code class="docutils literal notranslate"><span class="pre">llm_output</span></code> generation options.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;llm_output&quot;</span><span class="p">:</span> <span class="kc">True</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The data that is returned is highly dependent on the underlying implementation of the LangChain connector for the LLM provider. For example, for OpenAI, it only returns <code class="docutils literal notranslate"><span class="pre">token_usage</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code>.</p>
-</div>
-</section>
-<section id="detailed-logging-information">
-<h2>Detailed Logging Information<a class="headerlink" href="#detailed-logging-information" title="Link to this heading">#</a></h2>
-<p>You can obtain detailed information about what happened under the hood during the generation process by setting the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option. This option has four different inner-options:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">activated_rails</span></code>: Include detailed information about the rails that were activated during generation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">llm_calls</span></code>: Include information about all the LLM calls that were made. This includes: prompt, completion, token usage, raw response, etc.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">internal_events</span></code>: Include the array of internal generated events.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">colang_history</span></code>: Include the history of the conversation in Colang format.</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;activated_rails&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;llm_calls&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;internal_events&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;colang_history&quot;</span><span class="p">:</span> <span class="kc">True</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;log&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;activated_rails&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="err">...</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;llm_calls&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;internal_events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;colang_history&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>When using the Python API, the <code class="docutils literal notranslate"><span class="pre">log</span></code> is an object that also has a <code class="docutils literal notranslate"><span class="pre">print_summary</span></code> method. When called, it will print a simplified version of the log information. Below is a sample output.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">print_summary</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gh"># General stats</span>
-
-<span class="k">-</span><span class="w"> </span>Total time: 2.85s
-<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.56s</span>][<span class="nl">19.64%</span>]: INPUT Rails
-<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">1.40s</span>][<span class="nl">49.02%</span>]: DIALOG Rails
-<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.58s</span>][<span class="nl">20.22%</span>]: GENERATION Rails
-<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.31s</span>][<span class="nl">10.98%</span>]: OUTPUT Rails
-<span class="k">-</span><span class="w"> </span>5 LLM calls, 2.74s total duration, 1641 total prompt tokens, 103 total completion tokens, 1744 total tokens.
-
-<span class="gh"># Detailed stats</span>
-
-<span class="k">-</span><span class="w"> </span>[0.56s] INPUT (self check input): 1 actions (self_check_input), 1 llm calls [0.56s]
-<span class="k">-</span><span class="w"> </span>[0.43s] DIALOG (generate user intent): 1 actions (generate_user_intent), 1 llm calls [0.43s]
-<span class="k">-</span><span class="w"> </span>[0.96s] DIALOG (generate next step): 1 actions (generate_next_step), 1 llm calls [0.95s]
-<span class="k">-</span><span class="w"> </span>[0.58s] GENERATION (generate bot message): 2 actions (retrieve_relevant_chunks, generate_bot_message), 1 llm calls [0.49s]
-<span class="k">-</span><span class="w"> </span>[0.31s] OUTPUT (self check output): 1 actions (self_check_output), 1 llm calls [0.31s]
-</pre></div>
-</div>
-</section>
 <section id="disabling-rails">
 <h2>Disabling Rails<a class="headerlink" href="#disabling-rails" title="Link to this heading">#</a></h2>
 <p>You can choose which categories of rails you want to apply by using the <code class="docutils literal notranslate"><span class="pre">rails</span></code> generation option. The four supported categories are: <code class="docutils literal notranslate"><span class="pre">input</span></code>, <code class="docutils literal notranslate"><span class="pre">dialog</span></code>, <code class="docutils literal notranslate"><span class="pre">retrieval</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code>. By default, all are enabled.</p>
@@ -790,11 +690,11 @@
 </pre></div>
 </div>
 <p>The response will be the exact bot message provided, if allowed, an altered version if an output rail decides to change it, for example, to remove sensitive information, or the predefined message for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">refuse</span> <span class="pre">to</span> <span class="pre">respond</span></code>, if the message was blocked.</p>
-<p>For more details on what rails was triggered, use the <code class="docutils literal notranslate"><span class="pre">log.activated_rails</span></code> generation option.</p>
+<p>For receive details on what rails are triggered, use the <code class="docutils literal notranslate"><span class="pre">log.activated_rails</span></code> generation option.</p>
 </section>
 <section id="output-rails-only">
 <h3>Output Rails Only<a class="headerlink" href="#output-rails-only" title="Link to this heading">#</a></h3>
-<p>If you want to apply only the output rails to an LLM output, you must disable the input rails as well and provide an empty input.</p>
+<p>To apply output rails exclusively to an LLM response, disable the input rails and provide an empty input.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
     <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
     <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
@@ -804,9 +704,110 @@
 <span class="p">}],</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;rails&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span>
 <span class="p">})</span>
+
 </pre></div>
 </div>
 </section>
+</section>
+<section id="detailed-logging-information">
+<h2>Detailed Logging Information<a class="headerlink" href="#detailed-logging-information" title="Link to this heading">#</a></h2>
+<p>You can obtain detailed information about what happened under the hood during the generation process by setting the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option. This option has four different inner-options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">activated_rails</span></code>: Include detailed information about the rails that were activated during generation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">llm_calls</span></code>: Include information about all the LLM calls that were made. This includes: prompt, completion, token usage, raw response, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">internal_events</span></code>: Include the array of internal generated events.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">colang_history</span></code>: Include the history of the conversation in Colang format.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;activated_rails&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;llm_calls&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;internal_events&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;colang_history&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;log&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;activated_rails&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">...</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;llm_calls&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;internal_events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;colang_history&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When using the Python API, the <code class="docutils literal notranslate"><span class="pre">log</span></code> is an object that also has a <code class="docutils literal notranslate"><span class="pre">print_summary</span></code> method. When called, it will print a simplified version of the log information. Below is a sample output.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">print_summary</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gh"># General stats</span>
+
+<span class="k">-</span><span class="w"> </span>Total time: 2.85s
+<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.56s</span>][<span class="nl">19.64%</span>]: INPUT Rails
+<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">1.40s</span>][<span class="nl">49.02%</span>]: DIALOG Rails
+<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.58s</span>][<span class="nl">20.22%</span>]: GENERATION Rails
+<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">0.31s</span>][<span class="nl">10.98%</span>]: OUTPUT Rails
+<span class="k">-</span><span class="w"> </span>5 LLM calls, 2.74s total duration, 1641 total prompt tokens, 103 total completion tokens, 1744 total tokens.
+
+<span class="gh"># Detailed stats</span>
+
+<span class="k">-</span><span class="w"> </span>[0.56s] INPUT (self check input): 1 actions (self_check_input), 1 llm calls [0.56s]
+<span class="k">-</span><span class="w"> </span>[0.43s] DIALOG (generate user intent): 1 actions (generate_user_intent), 1 llm calls [0.43s]
+<span class="k">-</span><span class="w"> </span>[0.96s] DIALOG (generate next step): 1 actions (generate_next_step), 1 llm calls [0.95s]
+<span class="k">-</span><span class="w"> </span>[0.58s] GENERATION (generate bot message): 2 actions (retrieve_relevant_chunks, generate_bot_message), 1 llm calls [0.49s]
+<span class="k">-</span><span class="w"> </span>[0.31s] OUTPUT (self check output): 1 actions (self_check_output), 1 llm calls [0.31s]
+</pre></div>
+</div>
+</section>
+<section id="output-variables">
+<h2>Output Variables<a class="headerlink" href="#output-variables" title="Link to this heading">#</a></h2>
+<p>Some rails can store additional information in <a class="reference internal" href="#../configuration-guide/colang/colang-language-syntax-guide.md#variables"><span class="xref myst">context variables</span></a>. You can return the content of these variables by setting the <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> generation option to the list of names for all the variables that you are interested in. If you want to return the complete context (this will also include some predefined variables), you can set <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;output_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;some_input_rail_score&quot;</span><span class="p">,</span> <span class="s2">&quot;some_output_rail_score&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>You can find the returned data in the <code class="docutils literal notranslate"><span class="pre">output_data</span></code> key of the response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;output_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;some_input_rail_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;some_output_rail_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="additional-llm-parameters">
+<h2>Additional LLM Parameters<a class="headerlink" href="#additional-llm-parameters" title="Link to this heading">#</a></h2>
+<p>To supply additional parameters to the LLM call during final message generation, utilize the <code class="docutils literal notranslate"><span class="pre">llm_params</span></code> option. The following example demonstrates how to apply a lower value for <code class="docutils literal notranslate"><span class="pre">temperature</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;llm_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.2</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>The available parameters are determined by the specific LLM engine in use. The NeMo Guardrails library transmits values defined in the options parameter without modification.</p>
+</section>
+<section id="additional-llm-output">
+<h2>Additional LLM Output<a class="headerlink" href="#additional-llm-output" title="Link to this heading">#</a></h2>
+<p>You can receive additional output from the LLM generation by setting <code class="docutils literal notranslate"><span class="pre">llm_output</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> through the <code class="docutils literal notranslate"><span class="pre">options</span></code> parameter.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;llm_output&quot;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The returned data is highly dependent on the underlying implementation of the LangChain connector for the LLM provider. For example, for OpenAI, it only returns <code class="docutils literal notranslate"><span class="pre">token_usage</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code>.</p>
+</div>
 </section>
 <section id="limitations">
 <h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h2>
@@ -866,16 +867,16 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-variables">Output Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-llm-parameters">Additional LLM Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-llm-output">Additional LLM Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-logging-information">Detailed Logging Information</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-rails">Disabling Rails</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-rails-only">Input Rails Only</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-and-output-rails-only">Input and Output Rails Only</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-rails-only">Output Rails Only</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-logging-information">Detailed Logging Information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-variables">Output Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-llm-parameters">Additional LLM Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-llm-output">Additional LLM Output</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
 </ul>
   </nav></div>

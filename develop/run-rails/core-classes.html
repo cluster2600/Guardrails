@@ -736,11 +736,7 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">List[TaskPrompt]</span></code></p></td>
 <td><p>Custom prompts for various tasks</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">streaming</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td><p>Enable streaming responses</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">colang_version</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">colang_version</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
 <td><p>Colang version (“1.0” or “2.x”)</p></td>
 </tr>
@@ -849,6 +845,19 @@
 <span class="p">])</span>
 </pre></div>
 </div>
+<p>You can access context variables in Colang flows using <code class="docutils literal notranslate"><span class="pre">$variable_name</span></code> syntax:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot explain permissions
+    &quot;Hello {$user_name}! As an {$user_role}, you have full system access.&quot;
+</pre></div>
+</div>
+<p>Alternatively, you can access context variables through the <code class="docutils literal notranslate"><span class="pre">context</span></code> parameter. For example, you can set up an action function that uses a variable extracted from the <code class="docutils literal notranslate"><span class="pre">context</span></code> parameter as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@action</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_permissions</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">user_role</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_role&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">user_role</span> <span class="o">==</span> <span class="s2">&quot;admin&quot;</span>
+</pre></div>
+</div>
+<p>For detailed information about context variables, see <a class="reference internal" href="#../configuration-guide/actions/action-parameters.md#the-context-parameter"><span class="xref myst">Action Parameters</span></a> and <a class="reference internal" href="#../configuration-guide/colang/colang-1/colang-language-syntax-guide.md#variables"><span class="xref myst">Colang Variables</span></a>.</p>
 </section>
 </section>
 <section id="asynchronous-generation">
@@ -909,7 +918,7 @@
     <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}],</span>
     <span class="n">options</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;rails&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">],</span>  <span class="c1"># Only apply these rails</span>
-        <span class="s2">&quot;output_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">],</span>       <span class="c1"># Return context variables</span>
+        <span class="s2">&quot;output_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user_message&quot;</span><span class="p">],</span>       <span class="c1"># Return context variables</span>
         <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;activated_rails&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
             <span class="s2">&quot;llm_calls&quot;</span><span class="p">:</span> <span class="kc">True</span>
