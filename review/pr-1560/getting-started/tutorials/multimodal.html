@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Multimodal Content Safety with Vision Models as LLM-as-a-judge &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Add Multimodal Content Safety Using a Vision Model as LLM-as-a-Judge &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -60,7 +60,7 @@
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Integrate the NeMo Guardrails Library into Your Application" href="../integrate-into-application.html" />
-    <link rel="prev" title="Jailbreak Detection with NeMo Jailbreak Detect" href="nemoguard-jailbreakdetect-deployment.html" />
+    <link rel="prev" title="Detect Jailbreak Attempts with NVIDIA NemoGuard JailbreakDetect NIM" href="nemoguard-jailbreakdetect-deployment.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -371,47 +371,43 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Rail Types</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Rails Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Detailed Architecture</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/how-it-works.html">How It Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Guardrail Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Install the NeMo Guardrails Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Install</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Content Safety</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Topic Control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Jailbreak Detection</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Multimodal Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate the NeMo Guardrails Library into Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Before Configuring Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Configuration Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Model Configuration</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Rails in Parallel</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/prompt-configuration.html">Prompt Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/tracing-configuration.html">Tracing Configuration</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/index.html">Streaming Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/global-streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/index.html">About Configuring Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/before-configuration.html">Prerequisites</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/index.html">Configuring YAML File</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/model-configuration.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/prompt-configuration.html">Prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/yaml-schema/tracing-configuration.html">Tracing</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/index.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/global-streaming.html">Streaming LLM Responses</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../configure-rails/yaml-schema/streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
@@ -420,10 +416,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/custom-initialization/index.html">Custom Initialization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/init-function.html">The Init Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-llm-providers.html">Custom LLM Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-embedding-providers.html">Custom Embedding Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-data.html">Custom Configuration Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/init-function.html">Init Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-llm-providers.html">LLM Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-embedding-providers.html">Embedding Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/custom-initialization/custom-data.html">Custom Data</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/colang/index.html">Colang</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -457,7 +453,7 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-1/index.html">Colang 1.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/colang-1/colang-language-syntax-guide.html">Colang 1.0 Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configure-rails/colang/colang-1/colang-language-syntax-guide.html">Colang 1.0 Language Syntax</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/index.html">Colang 1.0 Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/1-hello-world/README.html">Hello World</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
@@ -481,75 +477,79 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/knowledge-base.html">Knowledge Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Caching Instructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for LLM NIM</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/index.html">Run Rails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/core-classes.html">Core Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-Based API</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate NeMo Guardrails Library Performance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">LLM Vulnerability Scanning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../observability/logging/index.html">Logging</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/quick-start.html">Quick Start for Tracing Guardrails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/adapter-configurations.html">Adapter Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/opentelemetry-integration.html">OpenTelemetry Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/adapter-configurations.html">Adapters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/opentelemetry-integration.html">OpenTelemetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deployment Options</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deploy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Using Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Using NeMo Guardrails Microservice</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/safeguarding-ai-virtual-assistant-blueprint.html">Blueprint with NemoGuard NIMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-rails.html">RunnableRails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langgraph-integration.html">LangGraph Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langgraph-integration.html">LangGraph</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/align-score-deployment.html">AlignScore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Integrate LangChain Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Security</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security Guidelines for LLM Integrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">NeMo Guardrails Library Python API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">NeMo Guardrails Library CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -587,7 +587,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Tutorials</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Multimodal Content Safety with Vision Models as LLM-as-a-judge</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Add Multimodal Content Safety Using a Vision Model as LLM-as-a-Judge</span></li>
   </ul>
 </nav>
 </div>
@@ -608,21 +608,24 @@
   SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0
 -->
-<section class="tex2jax_ignore mathjax_ignore" id="multimodal-content-safety-with-vision-models-as-llm-as-a-judge">
-<h1>Multimodal Content Safety with Vision Models as LLM-as-a-judge<a class="headerlink" href="#multimodal-content-safety-with-vision-models-as-llm-as-a-judge" title="Link to this heading">#</a></h1>
-<section id="about-working-with-multimodal-data">
-<h2>About Working with Multimodal Data<a class="headerlink" href="#about-working-with-multimodal-data" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails library supports adding safety checks to multimodal content—images and text.
-The support is for input and output guardrails only.
-Depending on the image reasoning model, you can specify the image to check as a base64 encoded data or as a URL.</p>
-<p>The safety check uses the image reasoning model as LLM as-a-judge to determine if the content is safe.
-The OpenAI, Llama Vision, and Llama Guard models can accept multimodal input and act as a judge model.</p>
-<p>You must ensure the image size and prompt length do not exceed the maximum context length of the model.</p>
-</section>
-<section id="sample-configuration">
-<h2>Sample Configuration<a class="headerlink" href="#sample-configuration" title="Link to this heading">#</a></h2>
+<section class="tex2jax_ignore mathjax_ignore" id="add-multimodal-content-safety-using-a-vision-model-as-llm-as-a-judge">
+<h1>Add Multimodal Content Safety Using a Vision Model as LLM-as-a-Judge<a class="headerlink" href="#add-multimodal-content-safety-using-a-vision-model-as-llm-as-a-judge" title="Link to this heading">#</a></h1>
+<p>Learn how to add safety checks to images and text using a vision model as LLM-as-a-Judge with <a class="reference external" href="https://platform.openai.com/docs/guides/vision" rel="noreferer noopener" target="_blank">OpenAI GPT-4 Vision</a>, Llama Vision, or Llama Guard.</p>
+<p>By following this tutorial, you learn how to:</p>
+<ol class="arabic simple">
+<li><p>Configure multimodal content safety rails for images and text.</p></li>
+<li><p>Use a vision model as LLM-as-a-Judge to evaluate content safety.</p></li>
+<li><p>Test with safe and unsafe image requests.</p></li>
+</ol>
+<p>The NeMo Guardrails library supports multimodal content safety for input and output rails. You can provide images as base64-encoded data or URLs, depending on the model.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Ensure image size and prompt length do not exceed the model’s maximum context length.</p>
+</div>
+<section id="configure-guardrails">
+<h2>Configure Guardrails<a class="headerlink" href="#configure-guardrails" title="Link to this heading">#</a></h2>
 <ol class="arabic">
-<li><p>Create a directory, such as <code class="docutils literal notranslate"><span class="pre">configs/content_safety_vision</span></code>, and add a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file with the following content:</p>
+<li><p>Create a configuration directory and add <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
@@ -641,7 +644,7 @@ The OpenAI, Llama Vision, and Llama Guard models can accept multimodal input and
 </pre></div>
 </div>
 </li>
-<li><p>Add a <code class="docutils literal notranslate"><span class="pre">configs/content_safety_vision/prompts.yml</span></code> file with the following content:</p>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_input $model=vision_rails</span>
 <span class="w">    </span><span class="nt">messages</span><span class="p">:</span>
@@ -692,23 +695,22 @@ The OpenAI, Llama Vision, and Llama Guard models can accept multimodal input and
 </li>
 </ol>
 </section>
-<section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
-<p>The following sample code uses the preceding configuration and sends requests to OpenAI endpoints.
-The sample image is a handgun.</p>
+<section id="test-with-openai">
+<h2>Test with OpenAI<a class="headerlink" href="#test-with-openai" title="Link to this heading">#</a></h2>
+<p>This example sends image requests to OpenAI endpoints and tests safety checks on a handgun image.</p>
 <ol class="arabic">
-<li><p>Set the OpenAI environment variable with your token:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export OPENAI_API_KEY=&lt;api-key&gt;</span>
+<li><p>Set your OpenAI API key:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export OPENAI_API_KEY=&lt;your-openai-api-key&gt;</span>
 </pre></div>
 </div>
 </li>
-<li><p>Import required libraries:</p>
+<li><p>Import libraries:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 </pre></div>
 </div>
 </li>
-<li><p>Load the vision content safety configuration:</p>
+<li><p>Load the configuration:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.rails.llm.llmrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
 
@@ -717,7 +719,7 @@ The sample image is a handgun.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Send an image reasoning request:</p>
+<li><p>Send a safe image reasoning request:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">image_reasoning_message</span> <span class="o">=</span> <span class="p">[{</span>
   <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
   <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[{</span>
@@ -738,7 +740,7 @@ The sample image is a handgun.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Send a potentially unsafe request:</p>
+<li><p>Send an unsafe request:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">potentially_unsafe_message</span> <span class="o">=</span> <span class="p">[{</span>
   <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
   <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[{</span>
@@ -761,11 +763,9 @@ The sample image is a handgun.</p>
 </li>
 </ol>
 </section>
-<section id="tips-for-base-64-encoded-images">
-<h2>Tips for Base 64 Encoded Images<a class="headerlink" href="#tips-for-base-64-encoded-images" title="Link to this heading">#</a></h2>
-<p>Some models, such as the Llama Vision models, do not read an image from a URL.
-For these models, encode the image in base 64 and provide the encoded image to the model.</p>
-<p>The following code sample shows the common Python statements.</p>
+<section id="use-base64-encoded-images">
+<h2>Use Base64-Encoded Images<a class="headerlink" href="#use-base64-encoded-images" title="Link to this heading">#</a></h2>
+<p>Some models such as Llama Vision require base64-encoded images instead of URLs.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
@@ -817,7 +817,7 @@ For these models, encode the image in base 64 and provide the encoded image to t
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Jailbreak Detection with NeMo Jailbreak Detect</p>
+        <p class="prev-next-title">Detect Jailbreak Attempts with NVIDIA NemoGuard JailbreakDetect NIM</p>
       </div>
     </a>
     <a class="right-next"
@@ -850,10 +850,9 @@ For these models, encode the image in base 64 and provide the encoded image to t
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-working-with-multimodal-data">About Working with Multimodal Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-configuration">Sample Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-base-64-encoded-images">Tips for Base 64 Encoded Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-guardrails">Configure Guardrails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-with-openai">Test with OpenAI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-base64-encoded-images">Use Base64-Encoded Images</a></li>
 </ul>
   </nav></div>
 
