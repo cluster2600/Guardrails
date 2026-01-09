@@ -13,7 +13,11 @@ content:
 
 # Model Configuration
 
-In this section, learn how to configure the models used in your guardrails configuration. For a complete reference of all configuration options, refer to the [](../configuration-reference.md).
+In this section, learn how to configure the models to use in your guardrails configuration. For a complete reference of all configuration options, refer to the [](../configuration-reference.md).
+
+## The `models` Key
+
+In the `models` key, you can configure which model to use as the main application LLM, embeddings model, guardrail model, or task-specific model.
 
 ## NVIDIA NIM Configuration
 

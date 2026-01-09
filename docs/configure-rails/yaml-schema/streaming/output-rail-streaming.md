@@ -220,4 +220,4 @@ async for chunk in rails.stream_async(messages=messages):
 ## Related Topics
 
 - [Global Streaming](global-streaming.md) - Enable LLM streaming
-- [Guardrails Configuration](../guardrails-configuration/index.md) - Configure output rail flows
+- [Guardrails Configuration](../guardrails-configuration.md) - Configure output rail flows

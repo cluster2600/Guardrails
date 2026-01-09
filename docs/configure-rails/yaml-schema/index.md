@@ -21,19 +21,13 @@ The `config.yml` file is the primary configuration file for defining LLM models,
 The following is a complete schema for a `config.yml` file:
 
 ```yaml
-# LLM model configuration
+# LLM model configuration. Required.
 models:
   - type: main
     engine: openai
     model: gpt-3.5-turbo-instruct
 
-# Instructions for the LLM (similar to system prompts)
-instructions:
-  - type: general
-    content: |
-      You are a helpful AI assistant.
-
-# Guardrails configuration
+# Guardrails configuration. Required.
 rails:
   input:
     flows:
@@ -43,18 +37,24 @@ rails:
       - self check output
   ... # Other rail configurations
 
-# Prompt customization
+# Instructions for the LLM (similar to system prompts). Optional.
+instructions:
+  - type: general
+    content: |
+      You are a helpful AI assistant.
+
+# Prompt customization. Optional.
 prompts:
   - task: self_check_input
     content: |
       Your task is to check if the user message complies with policy.
 
-# Knowledge base settings
+# Knowledge base settings. Optional.
 knowledge_base:
   embedding_search_provider:
     name: default
 
-# Tracing and monitoring
+# Tracing and monitoring. Optional.
 tracing:
   enabled: true
   adapters:
@@ -81,7 +81,7 @@ Configure LLM engines, embedding models, and task-specific models in config.yml.
 :::
 
 :::{grid-item-card} Guardrails
-:link: guardrails-configuration/index
+:link: guardrails-configuration
 :link-type: doc
 
 Configure input, output, dialog, retrieval, and execution rails in config.yml to control LLM behavior.
@@ -135,7 +135,7 @@ Configuration files should be organized in a `config` folder with the following 
 :maxdepth: 2
 
 Models <model-configuration>
-Guardrails <guardrails-configuration/index>
+Guardrails <guardrails-configuration>
 Prompts <prompt-configuration>
 Tracing <tracing-configuration>
 Streaming <streaming/index>

@@ -13,12 +13,10 @@ content:
 
 # Tracing Configuration
 
-This section describes how to configure tracing and monitoring in the `config.yml` file.
-
-## Overview
-
 The NeMo Guardrails library includes tracing capabilities to monitor and debug guardrails interactions.
 Tracing helps you understand rail activation, LLM call patterns, flow execution, and error conditions.
+
+This section describes how to configure tracing and monitoring in the `config.yml` file.
 
 ## The `tracing` Key
 
