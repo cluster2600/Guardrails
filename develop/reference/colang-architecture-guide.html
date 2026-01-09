@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>NeMo Guardrails Library CLI Reference &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Colang Architecture Guide &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=6dbb43f8"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'cli/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/colang-architecture-guide';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,11 +56,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/cli/index.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/reference/colang-architecture-guide.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Use Case Diagrams" href="../resources/use-case-diagrams.html" />
-    <link rel="prev" title="NeMo Guardrails Library Python API Reference" href="../python-api/index.html" />
+    <link rel="next" title="Guardrails Sequence Diagrams" href="guardrails-sequence-diagrams.html" />
+    <link rel="prev" title="Troubleshooting" href="../troubleshooting.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -538,15 +538,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Colang Architecture Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
@@ -584,7 +584,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">NeMo Guardrails Library CLI Reference</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Colang Architecture Guide</span></li>
   </ul>
 </nav>
 </div>
@@ -601,219 +601,233 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="nemo-guardrails-library-cli-reference">
-<span id="nemoguardrails-cli"></span><h1>NeMo Guardrails Library CLI Reference<a class="headerlink" href="#nemo-guardrails-library-cli-reference" title="Link to this heading">#</a></h1>
-<p><strong>NOTE: THIS SECTION IS WORK IN PROGRESS.</strong></p>
-<p>For testing purposes, the NeMo Guardrails library provides a command line chat that can be used to interact with the LLM.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span>--config<span class="w"> </span>examples/<span class="w"> </span><span class="o">[</span>--verbose<span class="o">]</span><span class="w"> </span><span class="o">[</span>--verbose-llm-calls<span class="o">]</span>
-</pre></div>
-</div>
-<section id="options">
-<h2>Options<a class="headerlink" href="#options" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--config</span></code>: The configuration that should be used. Can be a folder or a .co/.yml file.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code>: In verbose mode, detailed debugging information is also shown.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--verbose-llm-calls</span></code>: In verbose LLM calls mode, the debugging information includes the entire prompt that is sent to the LLM and the completion.</p></li>
-</ul>
-<p>You should now be able to invoke the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
-
-Options:
-<span class="w"> </span>--install-completion<span class="w"> </span><span class="o">[</span>bash<span class="p">|</span>zsh<span class="p">|</span>fish<span class="p">|</span>powershell<span class="p">|</span>pwsh<span class="o">]</span>
-<span class="w">                                 </span>Install<span class="w"> </span>completion<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>specified<span class="w"> </span>shell.
-<span class="w"> </span>--show-completion<span class="w"> </span><span class="o">[</span>bash<span class="p">|</span>zsh<span class="p">|</span>fish<span class="p">|</span>powershell<span class="p">|</span>pwsh<span class="o">]</span>
-<span class="w">                                 </span>Show<span class="w"> </span>completion<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>specified<span class="w"> </span>shell,<span class="w"> </span>to
-<span class="w">                                 </span>copy<span class="w"> </span>it<span class="w"> </span>or<span class="w"> </span>customize<span class="w"> </span>the<span class="w"> </span>installation.
-<span class="w"> </span>--help<span class="w">                          </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-
-Commands:
-<span class="w"> </span>actions-server<span class="w">  </span>Starts<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>actions<span class="w"> </span>server.
-<span class="w"> </span>chat<span class="w">            </span>Starts<span class="w"> </span>an<span class="w"> </span>interactive<span class="w"> </span>chat<span class="w"> </span>session.
-<span class="w"> </span>convert<span class="w">         </span>Convert<span class="w"> </span>a<span class="w"> </span>Colang<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span>directory<span class="w"> </span>to<span class="w"> </span>Colang<span class="w"> </span><span class="m">2</span>.0<span class="w"> </span>format.
-<span class="w"> </span>evaluate<span class="w">        </span>Run<span class="w"> </span>an<span class="w"> </span>evaluation<span class="w"> </span>task.
-<span class="w"> </span>server<span class="w">          </span>Starts<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>server.
-</pre></div>
-</div>
-<p>You can also use the <code class="docutils literal notranslate"><span class="pre">--help</span></code> flag to learn more about each of the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> commands:</p>
-<section id="actions-server">
-<h3>actions-server<a class="headerlink" href="#actions-server" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-
-<span class="w"> </span>Starts<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>actions<span class="w"> </span>server.
-
-Options:
-<span class="w"> </span>--port<span class="w"> </span>INTEGER<span class="w">  </span>The<span class="w"> </span>port<span class="w"> </span>that<span class="w"> </span>the<span class="w"> </span>server<span class="w"> </span>should<span class="w"> </span>listen<span class="w"> </span>on.<span class="w">   </span><span class="o">[</span>default:<span class="w"> </span><span class="m">8001</span><span class="o">]</span>
-<span class="w"> </span>--help<span class="w">          </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-</pre></div>
-</div>
-</section>
-<section id="chat">
-<h3>chat<a class="headerlink" href="#chat" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-
-<span class="w"> </span>Starts<span class="w"> </span>an<span class="w"> </span>interactive<span class="w"> </span>chat<span class="w"> </span>session.
-
-<span class="w"> </span>--config<span class="w">                                       </span>TEXT<span class="w">  </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>directory<span class="w"> </span>containing<span class="w"> </span>configuration
-<span class="w">                                                      </span>files<span class="w"> </span>to<span class="w"> </span>use.<span class="w"> </span>Can<span class="w"> </span>also<span class="w"> </span>point<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>single
-<span class="w">                                                      </span>configuration<span class="w"> </span>file.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>config<span class="o">]</span>
-<span class="w"> </span>--verbose<span class="w">             </span>--no-verbose<span class="w">                   </span>If<span class="w"> </span>the<span class="w"> </span>chat<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>verbose<span class="w"> </span>and<span class="w"> </span>output
-<span class="w">                                                      </span>detailed<span class="w"> </span>logging<span class="w"> </span>information.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>no-verbose<span class="o">]</span>
-<span class="w"> </span>--verbose-no-llm<span class="w">      </span>--no-verbose-no-llm<span class="w">            </span>If<span class="w"> </span>the<span class="w"> </span>chat<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>verbose<span class="w"> </span>and<span class="w"> </span>exclude<span class="w"> </span>the
-<span class="w">                                                      </span>prompts<span class="w"> </span>and<span class="w"> </span>responses<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>LLM<span class="w"> </span>calls.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>no-verbose-no-llm<span class="o">]</span>
-<span class="w"> </span>--verbose-simplify<span class="w">    </span>--no-verbose-simplify<span class="w">          </span>Simplify<span class="w"> </span>further<span class="w"> </span>the<span class="w"> </span>verbose<span class="w"> </span>output.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>no-verbose-simplify<span class="o">]</span>
-<span class="w"> </span>--debug-level<span class="w">                                  </span>TEXT<span class="w">  </span>Enable<span class="w"> </span>debug<span class="w"> </span>mode<span class="w"> </span>which<span class="w"> </span>prints<span class="w"> </span>rich
-<span class="w">                                                      </span>information<span class="w"> </span>about<span class="w"> </span>the<span class="w"> </span>flows<span class="w"> </span>execution.
-<span class="w">                                                      </span>Available<span class="w"> </span>levels:<span class="w"> </span>WARNING,<span class="w"> </span>INFO,<span class="w"> </span>DEBUG
-<span class="w"> </span>--streaming<span class="w">           </span>--no-streaming<span class="w">                 </span>If<span class="w"> </span>the<span class="w"> </span>chat<span class="w"> </span>should<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span>streaming<span class="w"> </span>mode,<span class="w"> </span><span class="k">if</span>
-<span class="w">                                                      </span>possible.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>no-streaming<span class="o">]</span>
-<span class="w"> </span>--server-url<span class="w">                                   </span>TEXT<span class="w">  </span>If<span class="w"> </span>specified,<span class="w"> </span>the<span class="w"> </span>chat<span class="w"> </span>CLI<span class="w"> </span>will<span class="w"> </span>interact<span class="w"> </span>with
-<span class="w">                                                      </span>a<span class="w"> </span>server,<span class="w"> </span>rather<span class="w"> </span>than<span class="w"> </span>load<span class="w"> </span>the<span class="w"> </span>config.<span class="w"> </span>In<span class="w"> </span>this
-<span class="w">                                                      </span><span class="k">case</span>,<span class="w"> </span>the<span class="w"> </span>--config-id<span class="w"> </span>must<span class="w"> </span>also<span class="w"> </span>be<span class="w"> </span>specified.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>None<span class="o">]</span>
-<span class="w"> </span>--config-id<span class="w">                                    </span>TEXT<span class="w">  </span>The<span class="w"> </span>config_id<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>used<span class="w"> </span>when<span class="w"> </span>interacting<span class="w"> </span>with
-<span class="w">                                                      </span>the<span class="w"> </span>server.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>None<span class="o">]</span>
-<span class="w"> </span>--help<span class="w">                                               </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-</pre></div>
-</div>
-</section>
-<section id="server">
-<h3>server<a class="headerlink" href="#server" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>server<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-
-Starts<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>server.
-
-Options:
---port<span class="w">                                        </span>INTEGER<span class="w">  </span>The<span class="w"> </span>port<span class="w"> </span>that<span class="w"> </span>the<span class="w"> </span>server<span class="w"> </span>should<span class="w"> </span>listen<span class="w"> </span>on.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span><span class="m">8000</span><span class="o">]</span>
---config<span class="w">                                      </span>TEXT<span class="w">     </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>directory<span class="w"> </span>containing<span class="w"> </span>multiple<span class="w"> </span>configuration<span class="w"> </span>sub-folders.
---verbose<span class="w">           </span>--no-verbose:<span class="w">                      </span>If<span class="w"> </span>the<span class="w"> </span>server<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>verbose<span class="w"> </span>and<span class="w"> </span>output<span class="w"> </span>detailed<span class="w"> </span>logs<span class="w"> </span>including<span class="w"> </span>prompts.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-verbose<span class="o">]</span>
---disable-chat-ui<span class="w">   </span>--no-disable-chat-ui<span class="w">               </span>Weather<span class="w"> </span>the<span class="w"> </span>ChatUI<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>disabled<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-disable-chat-ui<span class="o">]</span>
---auto-reload<span class="w">       </span>--no-auto-reload<span class="w">                   </span>Enable<span class="w"> </span>auto<span class="w"> </span>reload<span class="w"> </span>option.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-auto-reload<span class="o">]</span>
---prefix<span class="w">                                      </span>TEXT<span class="w">     </span>A<span class="w"> </span>prefix<span class="w"> </span>that<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>added<span class="w"> </span>to<span class="w"> </span>all<span class="w"> </span>server<span class="w"> </span>paths.<span class="w"> </span>Should<span class="w"> </span>start<span class="w"> </span>with<span class="w"> </span><span class="s1">&#39;/&#39;</span>.
---help<span class="w">                                                </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-</pre></div>
-</div>
-</section>
-<section id="evaluate">
-<h3>evaluate<a class="headerlink" href="#evaluate" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>evaluate<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>evaluate<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
-
-Options:
---help:<span class="w">          </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-
-Commands:
-fact-checking:<span class="w">   </span>Evaluate<span class="w"> </span>the<span class="w"> </span>performance<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>fact-checking<span class="w"> </span>rails<span class="w"> </span>defined<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>Guardrails<span class="w"> </span>application.
-hallucination:<span class="w">   </span>Evaluate<span class="w"> </span>the<span class="w"> </span>performance<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>hallucination<span class="w"> </span>rails<span class="w"> </span>defined<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>Guardrails<span class="w"> </span>application.
-moderation:<span class="w">      </span>Evaluate<span class="w"> </span>the<span class="w"> </span>performance<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>moderation<span class="w"> </span>rails<span class="w"> </span>defined<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>Guardrails<span class="w"> </span>application.
-topical:<span class="w">         </span>Evaluates<span class="w"> </span>the<span class="w"> </span>performance<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>topical<span class="w"> </span>rails<span class="w"> </span>defined<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>Guardrails<span class="w"> </span>application.<span class="w"> </span>Computes<span class="w"> </span>accuracy<span class="w"> </span><span class="k">for</span><span class="w"> </span>canonical<span class="w"> </span>form<span class="w"> </span>detection,<span class="w"> </span>next<span class="w"> </span>step<span class="w"> </span>generation,<span class="w"> </span>and<span class="w"> </span>next<span class="w"> </span>bot<span class="w"> </span>message<span class="w"> </span>generation.<span class="w"> </span>Only<span class="w"> </span>a<span class="w"> </span>single<span class="w"> </span>Guardrails<span class="w"> </span>application<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>specified<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>config<span class="w"> </span>option.
-</pre></div>
-</div>
-</section>
-<section id="convert">
-<h3>convert<a class="headerlink" href="#convert" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>convert<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>convert<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>PATH
-
-Convert<span class="w"> </span>a<span class="w"> </span>Colang<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span>directory<span class="w"> </span>to<span class="w"> </span>Colang<span class="w"> </span><span class="m">2</span>.0.
-
-Arguments:
-<span class="w">  </span>path<span class="w"> </span>TEXT<span class="w"> </span>The<span class="w"> </span>path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory<span class="w"> </span>to<span class="w"> </span>migrate.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>None<span class="o">]</span><span class="w"> </span><span class="o">[</span>required<span class="o">]</span>
-
-Options:
---verbose<span class="w">                       </span>--no-verbose<span class="w">                </span>If<span class="w"> </span>the<span class="w"> </span>migration<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>verbose<span class="w"> </span>and<span class="w"> </span>output<span class="w"> </span>detailed<span class="w"> </span>logs.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-verbose<span class="o">]</span>
---validate<span class="w">                      </span>--no-validate<span class="w">               </span>If<span class="w"> </span>the<span class="w"> </span>migration<span class="w"> </span>should<span class="w"> </span>validate<span class="w"> </span>the<span class="w"> </span>output<span class="w"> </span>using<span class="w"> </span>Colang<span class="w"> </span>Parser.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-validate<span class="o">]</span>
---use-active-decorator<span class="w">          </span>--no-use-active-decorator<span class="w">   </span>If<span class="w"> </span>the<span class="w"> </span>migration<span class="w"> </span>should<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span>active<span class="w"> </span>decorator.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>use-active-decorator<span class="o">]</span>
---help<span class="w">                                                      </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-</pre></div>
-</div>
-</section>
-<section id="find-providers">
-<span id="find-providers-command"></span><h3>find-providers<a class="headerlink" href="#find-providers" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-
-Interactive<span class="w"> </span>provider<span class="w"> </span>selection.
-
-This<span class="w"> </span><span class="nb">command</span><span class="w"> </span>provides<span class="w"> </span>an<span class="w"> </span>interactive<span class="w"> </span>interface<span class="w"> </span>to<span class="w"> </span><span class="k">select</span><span class="w"> </span>between<span class="w"> </span>text<span class="w"> </span>completion
-and<span class="w"> </span>chat<span class="w"> </span>completion<span class="w"> </span>providers.<span class="w"> </span>It<span class="w"> </span>will<span class="w"> </span>guide<span class="w"> </span>you<span class="w"> </span>through<span class="w"> </span>selecting<span class="w"> </span>the<span class="w"> </span><span class="nb">type</span><span class="w"> </span>of
-provider<span class="w"> </span><span class="o">(</span>text<span class="w"> </span>completion<span class="w"> </span>or<span class="w"> </span>chat<span class="w"> </span>completion<span class="o">)</span><span class="w"> </span>and<span class="w"> </span><span class="k">then</span><span class="w"> </span>show<span class="w"> </span>you<span class="w"> </span>the<span class="w"> </span>available
-providers<span class="w"> </span><span class="k">for</span><span class="w"> </span>that<span class="w"> </span>type.
-
-Options:
-<span class="w">  </span>--list,<span class="w"> </span>-l<span class="w">    </span>Lists<span class="w"> </span>all<span class="w"> </span>available<span class="w"> </span>providers<span class="w"> </span>without<span class="w"> </span>interactive<span class="w"> </span>selection
-<span class="w">  </span>--help<span class="w">        </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-</pre></div>
-</div>
-<section id="list-mode">
-<h4>List Mode<a class="headerlink" href="#list-mode" title="Link to this heading">#</a></h4>
-<p>Run the following command to list all available providers:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span><span class="o">[</span>--list<span class="o">]</span>
-</pre></div>
-</div>
-</section>
-<section id="interactive-mode">
-<h4>Interactive Mode<a class="headerlink" href="#interactive-mode" title="Link to this heading">#</a></h4>
-<p>Run the following command start an interactive process to select a provider:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>find-providers
-</pre></div>
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="colang-architecture-guide">
+<h1>Colang Architecture Guide<a class="headerlink" href="#colang-architecture-guide" title="Link to this heading">#</a></h1>
+<p>This document provides more details on the architecture and the approach that the NeMo Guardrails library takes for implementing guardrails.</p>
+<p><img alt="Overall Architecture" src="../_images/overall-architecture.png" /></p>
+<section id="the-guardrails-process">
+<h2>The Guardrails Process<a class="headerlink" href="#the-guardrails-process" title="Link to this heading">#</a></h2>
+<p>This section explains in detail the process under the hood, from the utterance sent by the user to the bot utterance that is returned.</p>
+<p>The guardrails runtime uses an event-driven design (i.e., an event loop that processes events and generates back other events). Whenever the user says something to the bot, an <code class="docutils literal notranslate"><span class="pre">UtteranceUserActionFinished</span></code> event is created and sent to the runtime.</p>
+<p>The process has three main stages:</p>
 <ol class="arabic simple">
-<li><p>First, you’ll be prompted to select a provider type:</p>
-<ul class="simple">
-<li><p>Type to filter between “text completion” and “chat completion”, you can press Tab to autocomplete.</p></li>
-<li><p>Use arrow keys to navigate through matches</p></li>
-<li><p>Press Tab to autocomplete</p></li>
-<li><p>Press Enter to select</p></li>
-</ul>
-</li>
-<li><p>Then, you’ll be prompted to select a specific provider:</p>
-<ul class="simple">
-<li><p>Type to filter through available providers</p></li>
-<li><p>Use arrow keys to navigate through matches</p></li>
-<li><p>Press Tab to autocomplete</p></li>
-<li><p>Press Enter to select</p></li>
-</ul>
-</li>
+<li><p>Generate canonical user message</p></li>
+<li><p>Decide next step(s) and execute them</p></li>
+<li><p>Generate bot utterance(s)</p></li>
 </ol>
-<section id="example-of-interactive-mode">
-<h5>Example of Interactive Mode<a class="headerlink" href="#example-of-interactive-mode" title="Link to this heading">#</a></h5>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Available Provider Types: (type to filter, use arrows to select)</span>
-<span class="go">  • text completion</span>
-<span class="go">  • chat completion</span>
+<p>Each of the above stages can involve one or more calls to the LLM.</p>
+<section id="canonical-user-messages">
+<h3>Canonical User Messages<a class="headerlink" href="#canonical-user-messages" title="Link to this heading">#</a></h3>
+<p>The first stage is to generate the canonical form for the user utterance. This canonical form captures the user’s intent and allows the guardrails system to trigger any specific flows.</p>
+<p>This stage is itself implemented through a colang flow:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow generate user intent
+  &quot;&quot;&quot;Turn the raw user utterance into a canonical form.&quot;&quot;&quot;
 
-<span class="go">Select provider type: text</span>
+  event UtteranceUserActionFinished(final_transcript=&quot;...&quot;)
+  execute generate_user_intent
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code> action will do a vector search on all the canonical form examples included in the guardrails configuration, take the top 5 and include them in a prompt, and ask the LLM to generate the canonical form for the current user utterance.</p>
+<p><strong>Note</strong>: The prompt itself contains other elements, such as the sample conversation and the current history of the conversation.</p>
+<p>Once the canonical form is generated, a new <code class="docutils literal notranslate"><span class="pre">UserIntent</span></code> event is created.</p>
+</section>
+<section id="decide-next-steps">
+<h3>Decide Next Steps<a class="headerlink" href="#decide-next-steps" title="Link to this heading">#</a></h3>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">UserIntent</span></code> event is created, there are two potential paths:</p>
+<ol class="arabic simple">
+<li><p>There is a pre-defined flow that can decide what should happen next; or</p></li>
+<li><p>The LLM is used to decide the next step.</p></li>
+</ol>
+<p>When the LLM is used to decide the next step, a vector search is performed for the most relevant flows from the guardrails configuration. As in the previous step, the top 5 flows are included in the prompt, and the LLM is asked to predict the next step.</p>
+<p>This stage is implemented through a flow as well:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow generate next step
+  &quot;&quot;&quot;Generate the next step when there isn&#39;t any.
 
-<span class="go">Available text completion providers: (type to filter, use arrows to select)</span>
-<span class="go">  • anthropic</span>
-<span class="go">  • google_palm</span>
-<span class="go">  • openai</span>
-<span class="go">  • ...</span>
+  We set the priority at 0.9 so it is lower than the default which is 1. So, if there
+  is a flow that has a next step, it will have priority over this one.
+  &quot;&quot;&quot;
+  priority 0.9
 
-<span class="go">Select provider: openai</span>
+  user ...
+  execute generate_next_step
+</pre></div>
+</div>
+<p>Regardless of the path taken, there are two categories of next steps:</p>
+<ol class="arabic simple">
+<li><p>The bot should say something (<code class="docutils literal notranslate"><span class="pre">BotIntent</span></code> events)</p></li>
+<li><p>The bot should execute an action (<code class="docutils literal notranslate"><span class="pre">StartInternalSystemAction</span></code> events)</p></li>
+</ol>
+<p>When an action needs to be executed, the runtime will invoke the action and wait for the result. When the action finishes, an <code class="docutils literal notranslate"><span class="pre">InternalSystemActionFinished</span></code> event is created with the result of the action.</p>
+<p><strong>Note</strong>: The default implementation of the runtime is async, so the action execution is only blocking for a specific user.</p>
+<p>When the bot should say something, the process will move to the next stage, i.e., generating the bot utterance.</p>
+<p>After an action is executed or a bot message is generated, the runtime will try again to generate another next step (e.g., a flow might instruct the bot to execute an action, say something, then execute another action). The processing will stop when there are no more next steps.</p>
+</section>
+<section id="generate-bot-utterances">
+<h3>Generate Bot Utterances<a class="headerlink" href="#generate-bot-utterances" title="Link to this heading">#</a></h3>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">BotIntent</span></code> event is generated, the <code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code> action is invoked.</p>
+<p>Similar to the previous stages, the <code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code> action performs a vector search for the most relevant bot utterance examples included in the guardrails configuration. Next, they get included in the prompt, and we ask the LLM to generate the utterance for the current bot intent.</p>
+<p><strong>Note</strong>: If a knowledge base is provided in the guardrails configuration (i.e., a <code class="docutils literal notranslate"><span class="pre">kb/</span></code> folder), then a vector search is also performed for the most relevant chunks of text to include in the prompt as well (the <code class="docutils literal notranslate"><span class="pre">retrieve_relevant_chunks</span></code> action).</p>
+<p>The flow implementing this logic is the following:</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define extension flow generate bot message
+  &quot;&quot;&quot;Generate the bot utterance for a bot message.
 
-<span class="go">Selected text completion provider: openai</span>
+  We always want to generate an utterance after a bot intent, hence the high priority.
+  &quot;&quot;&quot;
+  priority 100
+
+  bot ...
+  execute retrieve_relevant_chunks
+  execute generate_bot_message
+</pre></div>
+</div>
+<p>Once the bot utterance is generated, a new <code class="docutils literal notranslate"><span class="pre">StartUtteranceBotAction</span></code> event is created.</p>
+</section>
+<section id="complete-example">
+<h3>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h3>
+<p>An example stream of events for processing a user’s request is shown below.</p>
+<p>The conversation between the user and the bot:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">user &quot;how many unemployed people were there in March?&quot;</span>
+<span class="go">  ask about headline numbers</span>
+<span class="go">bot response about headline numbers</span>
+<span class="go">  &quot;According to the US Bureau of Labor Statistics, there were 8.4 million unemployed people in March 2021.&quot;</span>
+</pre></div>
+</div>
+<p>The stream of events processed by the guardrails runtime (a simplified view with unnecessary properties removed and values truncated for readability):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UtteranceUserActionFinished</span>
+<span class="w">  </span><span class="nt">final_transcript</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;how</span><span class="nv"> </span><span class="s">many</span><span class="nv"> </span><span class="s">unemployed</span><span class="nv"> </span><span class="s">people</span><span class="nv"> </span><span class="s">were</span><span class="nv"> </span><span class="s">there</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">March?&quot;</span>
+
+<span class="c1"># Stage 1: generate canonical form</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StartInternalSystemAction</span>
+<span class="w">  </span><span class="nt">action_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_user_intent</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternalSystemActionFinished</span>
+<span class="w">  </span><span class="nt">action_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_user_intent</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">success</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UserIntent</span>
+<span class="w">  </span><span class="nt">intent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ask about headline numbers</span>
+
+<span class="c1"># Stage 2: generate next step</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StartInternalSystemAction</span>
+<span class="w">  </span><span class="nt">action_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_next_step</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternalSystemActionFinished</span>
+<span class="w">  </span><span class="nt">action_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_next_step</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">success</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BotIntent</span>
+<span class="w">  </span><span class="nt">intent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">response about headline numbers</span>
+
+<span class="c1"># Stage 3: generate bot utterance</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StartInternalSystemAction</span>
+<span class="w">  </span><span class="nt">action_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">retrieve_relevant_chunks</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ContextUpdate</span>
+<span class="w">  </span><span class="nt">data</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">relevant_chunks</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;The</span><span class="nv"> </span><span class="s">number</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">persons</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">labor</span><span class="nv"> </span><span class="s">force</span><span class="nv"> </span><span class="s">who</span><span class="nv"> </span><span class="s">...&quot;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternalSystemActionFinished</span>
+<span class="w">  </span><span class="nt">action_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">retrieve_relevant_chunks</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">success</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StartInternalSystemAction</span>
+<span class="w">  </span><span class="nt">action_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_bot_message</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternalSystemActionFinished</span>
+<span class="w">  </span><span class="nt">action_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_bot_message</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">success</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StartInternalSystemAction</span>
+<span class="w">  </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;According</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">US</span><span class="nv"> </span><span class="s">Bureau</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Labor</span><span class="nv"> </span><span class="s">Statistics,</span><span class="nv"> </span><span class="s">there</span><span class="nv"> </span><span class="s">were</span><span class="nv"> </span><span class="s">8.4</span><span class="nv"> </span><span class="s">million</span><span class="nv"> </span><span class="s">unemployed</span><span class="nv"> </span><span class="s">people</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">March</span><span class="nv"> </span><span class="s">2021.&quot;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Listen</span>
 </pre></div>
 </div>
 </section>
+<section id="extending-the-default-process">
+<h3>Extending the Default Process<a class="headerlink" href="#extending-the-default-process" title="Link to this heading">#</a></h3>
+<p>As shown in the examples <span class="xref myst">here</span>, the event-driven design allows us to hook into the process and add additional guardrails.</p>
+<p>For example, in the <span class="xref myst">grounding rail</span> example, we can add an additional fact-checking guardrail (through the <code class="docutils literal notranslate"><span class="pre">check_facts</span></code> action) after a question about the report.</p>
+<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow answer report question
+  user ask about report
+  bot provide report answer
+  $accuracy = execute check_facts
+  if $accuracy &lt; 0.5
+    bot remove last message
+    bot inform answer unknown
+</pre></div>
+</div>
+<p>For advanced use cases, you can also override the default flows mentioned above (i.e. <code class="docutils literal notranslate"><span class="pre">generate</span> <span class="pre">user</span> <span class="pre">intent</span></code>, <code class="docutils literal notranslate"><span class="pre">generate</span> <span class="pre">next</span> <span class="pre">step</span></code>, <code class="docutils literal notranslate"><span class="pre">generate</span> <span class="pre">bot</span> <span class="pre">message</span></code>)</p>
+</section>
+<section id="example-prompt">
+<h3>Example Prompt<a class="headerlink" href="#example-prompt" title="Link to this heading">#</a></h3>
+<p>Below is an example of how the LLM is prompted for the canonical form generation step:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;&quot;&quot;</span>
+<span class="go">Below is a conversation between a helpful AI assistant and a user. The bot is designed to generate human-like text based on the input that it receives. The bot is talkative and provides lots of specific details. If the bot does not know the answer to a question, it truthfully says it does not know.</span>
+<span class="go">&quot;&quot;&quot;</span>
+
+<span class="gp"># </span>This<span class="w"> </span>is<span class="w"> </span>how<span class="w"> </span>a<span class="w"> </span>conversation<span class="w"> </span>between<span class="w"> </span>a<span class="w"> </span>user<span class="w"> </span>and<span class="w"> </span>the<span class="w"> </span>bot<span class="w"> </span>can<span class="w"> </span>go:
+
+<span class="go">user &quot;Hello there!&quot;</span>
+<span class="go">  express greeting</span>
+<span class="go">bot express greeting</span>
+<span class="go">  &quot;Hello! How can I assist you today?&quot;</span>
+<span class="go">user &quot;What can you do for me?&quot;</span>
+<span class="go">  ask about capabilities</span>
+<span class="go">bot respond about capabilities</span>
+<span class="go">  &quot;I am an AI assistant which helps answer questions based on a given knowledge base. For this interaction, I can answer question based on the job report published by US Bureau of Labor Statistics&quot;</span>
+<span class="go">user &quot;Tell me a bit about the US Bureau of Labor Statistics.&quot;</span>
+<span class="go">  ask question about publisher</span>
+<span class="go">bot response for question about publisher</span>
+<span class="go">  &quot;The Bureau of Labor Statistics is the principal fact-finding agency for the Federal Government in the broad field of labor economics and statistics&quot;</span>
+<span class="go">user &quot;thanks&quot;</span>
+<span class="go">  express appreciation</span>
+<span class="go">bot express appreciation and offer additional help</span>
+<span class="go">  &quot;You&#39;re welcome. If you have any more questions or if there&#39;s anything else I can help you with, please don&#39;t hesitate to ask.&quot;</span>
+
+<span class="gp"># </span>This<span class="w"> </span>is<span class="w"> </span>how<span class="w"> </span>the<span class="w"> </span>user<span class="w"> </span>talks:
+
+<span class="go">user &quot;What was the movement on nonfarm payroll?&quot;</span>
+<span class="go">  ask about headline numbers</span>
+
+<span class="go">user &quot;What&#39;s the number of part-time employed number?&quot;</span>
+<span class="go">  ask about household survey data</span>
+
+<span class="go">user &quot;How much did the nonfarm payroll rise by?&quot;</span>
+<span class="go">  ask about headline numbers</span>
+
+<span class="go">user &quot;What is this month&#39;s unemployment rate?&quot;</span>
+<span class="go">  ask about headline numbers</span>
+
+<span class="go">user &quot;How many long term unemployment individuals were reported?&quot;</span>
+<span class="go">  ask about household survey data</span>
+
+<span class="gp"># </span>This<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>current<span class="w"> </span>conversation<span class="w"> </span>between<span class="w"> </span>the<span class="w"> </span>user<span class="w"> </span>and<span class="w"> </span>the<span class="w"> </span>bot:
+
+<span class="go">user &quot;Hello there!&quot;</span>
+<span class="go">  express greeting</span>
+<span class="go">bot express greeting</span>
+<span class="go">  &quot;Hello! How can I assist you today?&quot;</span>
+<span class="go">user &quot;What can you do for me?&quot;</span>
+<span class="go">  ask about capabilities</span>
+<span class="go">bot respond about capabilities</span>
+<span class="go">  &quot;I am an AI assistant which helps answer questions based on a given knowledge base. For this interaction, I can answer question based on the job report published by US Bureau of Labor Statistics&quot;</span>
+<span class="go">user &quot;how many unemployed people were there in March?&quot;</span>
+</pre></div>
+</div>
+<p>Notice the various sections included in the prompt: the general instruction, the sample conversation, the most relevant examples of canonical forms and the current conversation.</p>
 </section>
 </section>
+<section id="interaction-with-llms">
+<h2>Interaction with LLMs<a class="headerlink" href="#interaction-with-llms" title="Link to this heading">#</a></h2>
+<p>This library relies on LangChain for the interaction with LLMs. Below is a high-level sequence diagram showing the interaction between the user’s code (the one using the guardrails), the <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code>, LangChain and the LLM API.</p>
+<p><img alt="Sequence Diagram LLMRails" src="../_images/sequence-diagram-llmrails.png" /></p>
+</section>
+<section id="server-architecture">
+<h2>Server Architecture<a class="headerlink" href="#server-architecture" title="Link to this heading">#</a></h2>
+<p>This library provides a guardrails server with an interface similar to publicly available LLM APIs. Using the server, integrating a guardrails configuration in your application can be as easy as replacing the initial LLM API URL with the Guardrails Server API URL.</p>
+<p><img alt="Guardrails Server" src="../_images/guardrails-server.png" /></p>
+<p>The server is designed with high concurrency in mind, hence the async implementation using FastAPI.</p>
 </section>
 </section>
 
@@ -828,20 +842,20 @@ Options:
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../python-api/index.html"
+       href="../troubleshooting.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NeMo Guardrails Library Python API Reference</p>
+        <p class="prev-next-title">Troubleshooting</p>
       </div>
     </a>
     <a class="right-next"
-       href="../resources/use-case-diagrams.html"
+       href="guardrails-sequence-diagrams.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Use Case Diagrams</p>
+        <p class="prev-next-title">Guardrails Sequence Diagrams</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -866,22 +880,17 @@ Options:
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#options">Options</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actions-server">actions-server</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat">chat</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server">server</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">evaluate</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert">convert</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-providers">find-providers</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#list-mode">List Mode</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-mode">Interactive Mode</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-interactive-mode">Example of Interactive Mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-guardrails-process">The Guardrails Process</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#canonical-user-messages">Canonical User Messages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decide-next-steps">Decide Next Steps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-bot-utterances">Generate Bot Utterances</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-default-process">Extending the Default Process</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-prompt">Example Prompt</a></li>
 </ul>
 </li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interaction-with-llms">Interaction with LLMs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-architecture">Server Architecture</a></li>
 </ul>
   </nav></div>
 

@@ -60,7 +60,7 @@
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Release Notes" href="release-notes.html" />
-    <link rel="prev" title="Architecture Guide" href="architecture/README.html" />
+    <link rel="prev" title="Guardrail Types" href="rail-types.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -371,12 +371,8 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-it-works.html">How It Works</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rail-types.html">Guardrail Types</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architecture/README.html">Architecture</a></li>
-</ul>
-</details></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 </ul>
@@ -541,6 +537,11 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
@@ -602,22 +603,15 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="supported-llms">
 <h1>Supported LLMs<a class="headerlink" href="#supported-llms" title="Link to this heading">#</a></h1>
-<p>The NeMo Guardrails library supports a wide range of LLM providers and their models.</p>
-<section id="llm-providers">
-<h2>LLM Providers<a class="headerlink" href="#llm-providers" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails library supports the following LLM providers:</p>
-<section id="nvidia-nim">
-<h3>NVIDIA NIM<a class="headerlink" href="#nvidia-nim" title="Link to this heading">#</a></h3>
-<p>The NeMo Guardrails library supports NVIDIA NIM microservices for local deployment and NVIDIA API Catalog for hosted models.</p>
-<ul class="simple">
-<li><p><strong>Locally-deployed LLM NIM Microservices</strong>: LLMs deployed on your own infrastructure.</p></li>
-<li><p><strong>NVIDIA API Catalog</strong>: Hosted LLMs on <a class="reference external" href="https://build.nvidia.com/models" rel="noreferer noopener" target="_blank">build.nvidia.com</a>.</p></li>
-<li><p><strong>Specialized NIM Microservices</strong>: Nemo Content Safety, NeMo Topic Control, and NeMo Jailbreak Detect.</p></li>
-</ul>
+<p>The NeMo Guardrails library supports a wide range of LLM providers and models. This includes base models, instruct-tuned, and reasoning models. These models can be served locally on the same machine as NeMo Guardrails, or at a remote endpoint accessible from Guardrails over a network. This flexible approach allows Guardrails to be used for a range of applications: from edge deployments on resource-constrained devices, to horizontally-scalable backend clusters.</p>
+<section id="llm-types">
+<h2>LLM Types<a class="headerlink" href="#llm-types" title="Link to this heading">#</a></h2>
+<p>Integrating NeMo Guardrails improves safety and security of an Application LLM, which is responsible for generating responses to the end-user. NeMo Guardrails can also use the same Application LLM to run guardrails, simplifying deployments and reducing friction to on-ramp. Two examples of this are self-check rails and dialog rails. Self-check rails use the Application LLM to decide whether a user request or LLM response is safe. Dialog rails use the Application LLM to guide the user through a pre-defined conversational flow.</p>
+<p>NeMo Guardrails can also call models for a specific guardrail on behalf of the client. Having guardrail-specific models allows the use of smaller fine-tuned models, which are specialized on the guardrails task. For example the NVIDIA Nemoguard collection of models includes <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">content-safety</a>, <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-topic-control" rel="noreferer noopener" target="_blank">topic-control</a>, and <a class="reference external" href="https://build.nvidia.com/nvidia/nemoguard-jailbreak-detect" rel="noreferer noopener" target="_blank">jailbreak-detect</a> models. These models can be accessed on <a class="reference external" href="https://build.nvidia.com/" rel="noreferer noopener" target="_blank">build.nvidia.com</a> for rapid prototyping, or on <a class="reference external" href="https://catalog.ngc.nvidia.com/" rel="noreferer noopener" target="_blank">NGC Catalog</a> for deployment with NIM Docker containers.</p>
 </section>
-<section id="external-llm-providers">
-<h3>External LLM Providers<a class="headerlink" href="#external-llm-providers" title="Link to this heading">#</a></h3>
-<p>The NeMo Guardrails library supports the following external LLM providers:</p>
+<section id="application-llm-providers">
+<h2>Application LLM Providers<a class="headerlink" href="#application-llm-providers" title="Link to this heading">#</a></h2>
+<p>The NeMo Guardrails library supports major LLM providers, including:</p>
 <ul class="simple">
 <li><p>OpenAI</p></li>
 <li><p>Azure OpenAI</p></li>
@@ -625,7 +619,6 @@
 <li><p>Cohere</p></li>
 <li><p>Google Vertex AI</p></li>
 </ul>
-</section>
 <section id="self-hosted">
 <h3>Self-Hosted<a class="headerlink" href="#self-hosted" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports the following self-hosted LLM providers:</p>
@@ -663,12 +656,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="architecture/README.html"
+       href="rail-types.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Architecture Guide</p>
+        <p class="prev-next-title">Guardrail Types</p>
       </div>
     </a>
     <a class="right-next"
@@ -701,9 +694,8 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-providers">LLM Providers</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-nim">NVIDIA NIM</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#external-llm-providers">External LLM Providers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-types">LLM Types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-llm-providers">Application LLM Providers</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-hosted">Self-Hosted</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#providers-from-langchain-community">Providers from LangChain Community</a></li>
 </ul>
