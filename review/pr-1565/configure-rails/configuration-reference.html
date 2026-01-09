@@ -3,13 +3,13 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Complete Configuration Reference &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Configuration YAML Schema Reference &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -28,27 +28,27 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=e201715b"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'configure-rails/yaml-schema/configuration-reference';</script>
+    <script src="../_static/documentation_options.js?v=e201715b"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'configure-rails/configuration-reference';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,11 +56,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/configure-rails/yaml-schema/configuration-reference.html" />
-    <link rel="icon" href="../../_static/favicon.png"/>
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Model Configuration" href="model-configuration.html" />
-    <link rel="prev" title="Core Configurations for Guardrails" href="index.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/configure-rails/configuration-reference.html" />
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Guardrail Catalog" href="guardrail-catalog.html" />
+    <link rel="prev" title="Output Rail Streaming" href="yaml-schema/streaming/output-rail-streaming.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -88,7 +88,7 @@
   <dialog id="pst-search-dialog">
     
 <form class="bd-search d-flex align-items-center"
-      action="../../search.html"
+      action="../search.html"
       method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search"
@@ -124,7 +124,7 @@
     
   
 
-<a class="navbar-brand logo" href="../../index.html">
+<a class="navbar-brand logo" href="../index.html">
   
   
   
@@ -135,8 +135,8 @@
       
     
     
-    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Library Developer Guide - Home"/>
-    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Library Developer Guide - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Library Developer Guide - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Library Developer Guide - Home"/>
   
   
     <p class="title logo__title">NVIDIA NeMo Guardrails Library Developer Guide</p>
@@ -263,7 +263,7 @@
     
   
 
-<a class="navbar-brand logo" href="../../index.html">
+<a class="navbar-brand logo" href="../index.html">
   
   
   
@@ -274,8 +274,8 @@
       
     
     
-    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Library Developer Guide - Home"/>
-    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Library Developer Guide - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA NeMo Guardrails Library Developer Guide - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA NeMo Guardrails Library Developer Guide - Home"/>
   
   
     <p class="title logo__title">NVIDIA NeMo Guardrails Library Developer Guide</p>
@@ -370,187 +370,186 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Guardrail Types</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/rail-types.html">Guardrail Types</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/supported-llms.html">Supported LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Install</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../before-configuration.html">Before You Begin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Configure Rails</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Core Configuration</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Configuration Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="model-configuration.html">Models</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guardrails-configuration/parallel-rails.html">Parallel Execution of Rails</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2"><a class="reference internal" href="prompt-configuration.html">Prompts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing-configuration.html">Tracing</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="streaming/index.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="streaming/global-streaming.html">Streaming LLM Responses</a></li>
-<li class="toctree-l3"><a class="reference internal" href="streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">About Configuring Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="before-configuration.html">Prerequisites</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="yaml-schema/index.html">Configuring YAML File</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="yaml-schema/model-configuration.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="yaml-schema/prompt-configuration.html">Prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yaml-schema/tracing-configuration.html">Tracing</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="yaml-schema/streaming/index.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="yaml-schema/streaming/global-streaming.html">Streaming LLM Responses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yaml-schema/streaming/output-rail-streaming.html">Output Rail Streaming</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../actions/index.html">Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../actions/creating-actions.html">Creating Custom Actions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../actions/built-in-actions.html">Built-in Actions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../actions/action-parameters.html">Action Parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../actions/registering-actions.html">Registering Actions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">YAML Schema Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions/built-in-actions.html">Built-in Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions/action-parameters.html">Action Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions/registering-actions.html">Registering Actions</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../custom-initialization/index.html">Custom Initialization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/init-function.html">The Init Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-llm-providers.html">Custom LLM Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-embedding-providers.html">Custom Embedding Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-data.html">Custom Configuration Data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="custom-initialization/index.html">Custom Initialization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="custom-initialization/init-function.html">Init Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-initialization/custom-llm-providers.html">LLM Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-initialization/custom-embedding-providers.html">Embedding Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom-initialization/custom-data.html">Custom Data</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../colang/index.html">Colang</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../colang/colang-2/index.html">Colang 2.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../colang/colang-2/whats-changed.html">What’s Changed</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../colang/colang-2/getting-started/index.html">Getting Started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/getting-started/hello-world.html">Hello World</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/getting-started/dialog-rails.html">Dialog Rails</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/getting-started/multimodal-rails.html">Multimodal Rails</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/getting-started/input-rails.html">Input Rails</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/getting-started/interaction-loop.html">Interaction Loop</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/getting-started/llm-flows.html">LLM Flows</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/getting-started/recommended-next-steps.html">Recommended Next Steps</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="colang/index.html">Colang</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="colang/colang-2/index.html">Colang 2.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="colang/colang-2/whats-changed.html">What’s Changed</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="colang/colang-2/getting-started/index.html">Getting Started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/getting-started/hello-world.html">Hello World</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/getting-started/dialog-rails.html">Dialog Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/getting-started/multimodal-rails.html">Multimodal Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/getting-started/input-rails.html">Input Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/getting-started/interaction-loop.html">Interaction Loop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/getting-started/llm-flows.html">LLM Flows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/getting-started/recommended-next-steps.html">Recommended Next Steps</a></li>
 </ul>
 </details></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../colang/colang-2/language-reference/index.html">Language Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/introduction.html">Introduction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/event-generation-and-matching.html">Event Generation &amp; Matching</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/working-with-actions.html">Working with Actions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/defining-flows.html">Defining Flows</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/working-with-variables-and-expressions.html">Working with Variables &amp; Expressions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/flow-control.html">Flow control</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/the-standard-library.html">Colang Standard Library (CSL)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/make-use-of-llms.html">Make use of Large Language Models (LLM)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/more-on-flows.html">More on Flows</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/python-actions.html">Python Actions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-2/language-reference/development-and-debugging.html">Development and Debugging</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="colang/colang-2/language-reference/index.html">Language Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/event-generation-and-matching.html">Event Generation &amp; Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/working-with-actions.html">Working with Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/defining-flows.html">Defining Flows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/working-with-variables-and-expressions.html">Working with Variables &amp; Expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/flow-control.html">Flow control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/the-standard-library.html">Colang Standard Library (CSL)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/make-use-of-llms.html">Make use of Large Language Models (LLM)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/more-on-flows.html">More on Flows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/python-actions.html">Python Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-2/language-reference/development-and-debugging.html">Development and Debugging</a></li>
 </ul>
 </details></li>
-<li class="toctree-l3"><a class="reference internal" href="../colang/colang-2/migration-guide.html">Migrating from Colang 1 to Colang 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colang/colang-2/migration-guide.html">Migrating from Colang 1 to Colang 2</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../colang/colang-1/index.html">Colang 1.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../colang/colang-1/colang-language-syntax-guide.html">Colang 1.0 Language Syntax</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../colang/colang-1/tutorials/index.html">Colang 1.0 Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-1/tutorials/1-hello-world/README.html">Hello World</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-1/tutorials/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-1/tutorials/3-demo-use-case/README.html">Demo Use Case</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-1/tutorials/4-input-rails/README.html">Input Rails</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-1/tutorials/5-output-rails/README.html">Output Rails</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-1/tutorials/6-topical-rails/README.html">Topical Rails</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../colang/colang-1/tutorials/7-rag/README.html">Retrieval-Augmented Generation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="colang/colang-1/index.html">Colang 1.0 Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="colang/colang-1/colang-language-syntax-guide.html">Colang 1.0 Language Syntax</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="colang/colang-1/tutorials/index.html">Colang 1.0 Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-1/tutorials/1-hello-world/README.html">Hello World</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-1/tutorials/2-core-colang-concepts/README.html">Core Colang Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-1/tutorials/3-demo-use-case/README.html">Demo Use Case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-1/tutorials/4-input-rails/README.html">Input Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-1/tutorials/5-output-rails/README.html">Output Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-1/tutorials/6-topical-rails/README.html">Topical Rails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colang/colang-1/tutorials/7-rag/README.html">Retrieval-Augmented Generation</a></li>
 </ul>
 </details></li>
-<li class="toctree-l3"><a class="reference internal" href="../colang/colang-1/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colang/colang-1/bot-thinking-guardrails.html">Guardrailing Bot Reasoning Content</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../colang/usage-examples/index.html">Colang Usage Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../colang/usage-examples/bot-message-instructions.html">Bot Message Instructions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../colang/usage-examples/extract-user-provided-values.html">Extract User-provided Values</a></li>
-</ul>
-</details></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../other-configurations/knowledge-base.html">Knowledge Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="colang/usage-examples/index.html">Colang Usage Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="colang/usage-examples/bot-message-instructions.html">Bot Message Instructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colang/usage-examples/extract-user-provided-values.html">Extract User-provided Values</a></li>
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Rails</span></p>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="other-configurations/knowledge-base.html">Knowledge Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="caching/model-memory-cache.html">Memory Model Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions and Error Handling</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-Based API</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../observability/logging/index.html">Logging</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/quick-start.html">Quick Start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/adapter-configurations.html">Adapters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/opentelemetry-integration.html">OpenTelemetry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observability/logging/index.html">Logging</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../observability/tracing/index.html">Tracing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/quick-start.html">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/adapter-configurations.html">Adapters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/opentelemetry-integration.html">OpenTelemetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observability/tracing/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/actions-server.html">Actions Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deploy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/using-docker.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-rails.html">RunnableRails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langgraph-integration.html">LangGraph</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integration/langchain/runnable-rails.html">RunnableRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integration/langchain/langgraph-integration.html">LangGraph</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -581,14 +580,11 @@
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
-      <a href="../../index.html" class="nav-link" aria-label="Home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Core Configurations for Guardrails</a></li>
-    
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Complete Configuration Reference</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Configuration YAML Schema Reference</span></li>
   </ul>
 </nav>
 </div>
@@ -611,33 +607,9 @@
 
   Source of truth: nemoguardrails/rails/llm/config.py
 -->
-<section class="tex2jax_ignore mathjax_ignore" id="complete-configuration-reference">
-<h1>Complete Configuration Reference<a class="headerlink" href="#complete-configuration-reference" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="configuration-yaml-schema-reference">
+<h1>Configuration YAML Schema Reference<a class="headerlink" href="#configuration-yaml-schema-reference" title="Link to this heading">#</a></h1>
 <p>This reference documents all configuration options for <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, derived from the authoritative Pydantic schema in <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/rails/llm/config.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">nemoguardrails/rails/llm/config.py</span></code></a>.</p>
-<section id="configuration-structure">
-<h2>Configuration Structure<a class="headerlink" href="#configuration-structure" title="Link to this heading">#</a></h2>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span><span class="w">           </span><span class="c1"># LLM and embedding model configurations</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4</span>
-
-<span class="nt">rails</span><span class="p">:</span><span class="w">            </span><span class="c1"># Guardrail configurations</span>
-<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="nt">prompts</span><span class="p">:</span><span class="w">          </span><span class="c1"># Task-specific prompts</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_input</span>
-<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;...&quot;</span>
-
-<span class="nt">instructions</span><span class="p">:</span><span class="w">     </span><span class="c1"># System instructions</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">general</span>
-<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;...&quot;</span>
-</pre></div>
-</div>
-</section>
 <hr class="docutils" />
 <section id="models-configuration">
 <h2>Models Configuration<a class="headerlink" href="#models-configuration" title="Link to this heading">#</a></h2>
@@ -670,37 +642,37 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models.type</span></code></p></td>
 <td><p>string</p></td>
 <td><p>✓</p></td>
 <td><p>Model type: <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">embeddings</span></code>, or task-specific</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">engine</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">models.engine</span></code></p></td>
 <td><p>string</p></td>
 <td><p>✓</p></td>
 <td><p>LLM provider (see <a class="reference internal" href="#engines">Engines</a>)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models.model</span></code></p></td>
 <td><p>string</p></td>
 <td><p>✓</p></td>
 <td><p>Model name (can also be in <code class="docutils literal notranslate"><span class="pre">parameters.model_name</span></code>)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mode</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">models.mode</span></code></p></td>
 <td><p>string</p></td>
 <td><p></p></td>
 <td><p>Completion mode: <code class="docutils literal notranslate"><span class="pre">chat</span></code> or <code class="docutils literal notranslate"><span class="pre">text</span></code> (default: <code class="docutils literal notranslate"><span class="pre">chat</span></code>)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">api_key_env_var</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models.api_key_env_var</span></code></p></td>
 <td><p>string</p></td>
 <td><p></p></td>
 <td><p>Environment variable containing API key</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">models.parameters</span></code></p></td>
 <td><p>object</p></td>
 <td><p></p></td>
 <td><p>Provider-specific parameters passed to LangChain</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cache</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models.cache</span></code></p></td>
 <td><p>object</p></td>
 <td><p></p></td>
 <td><p>Cache configuration for this model</p></td>
@@ -865,22 +837,22 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">enabled</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models.cache.enabled</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Enable caching for this model</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">maxsize</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">models.cache.maxsize</span></code></p></td>
 <td><p>integer</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">50000</span></code></p></td>
 <td><p>Maximum cache entries</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stats.enabled</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models.cache.stats.enabled</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Enable cache statistics tracking</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stats.log_interval</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">models.cache.stats.log_interval</span></code></p></td>
 <td><p>float</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>Seconds between stats logging</p></td>
@@ -940,6 +912,44 @@
 </pre></div>
 </div>
 </section>
+<section id="rail-types">
+<h3>Rail Types<a class="headerlink" href="#rail-types" title="Link to this heading">#</a></h3>
+<p>The following table summarizes the available rail types and their trigger points.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Rail Type</p></th>
+<th class="head"><p>Trigger Point</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Input rails</strong></p></td>
+<td><p>When user input is received</p></td>
+<td><p>Validate, filter, or modify user input</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Retrieval rails</strong></p></td>
+<td><p>After RAG retrieval completes</p></td>
+<td><p>Process retrieved chunks</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Dialog rails</strong></p></td>
+<td><p>After canonical form is computed</p></td>
+<td><p>Control conversation flow</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Execution rails</strong></p></td>
+<td><p>Before/after action execution</p></td>
+<td><p>Control tool and action calls</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Output rails</strong></p></td>
+<td><p>When LLM generates output</p></td>
+<td><p>Validate, filter, or modify bot responses</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The following diagram shows the guardrails process described in the table above in detail.</p>
+<a class="reference internal image-reference" href="../_images/programmable_guardrails_flow.png"><img alt="Diagram showing the programmable guardrails flow" class="align-center" src="../_images/programmable_guardrails_flow.png" style="width: 800px;" />
+</a>
+</section>
 <section id="input-rails">
 <h3>Input Rails<a class="headerlink" href="#input-rails" title="Link to this heading">#</a></h3>
 <p>Process user messages before they reach the LLM.</p>
@@ -961,12 +971,12 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parallel</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.input.parallel</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Execute input rails in parallel</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">flows</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.input.flows</span></code></p></td>
 <td><p>list</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 <td><p>Names of flows that implement input rails</p></td>
@@ -1037,17 +1047,17 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parallel</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.output.parallel</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Execute output rails in parallel</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">flows</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.output.flows</span></code></p></td>
 <td><p>list</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 <td><p>Names of flows that implement output rails</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">streaming</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.output.streaming</span></code></p></td>
 <td><p>object</p></td>
 <td><p></p></td>
 <td><p>Streaming output configuration</p></td>
@@ -1066,22 +1076,22 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">enabled</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.output.streaming.enabled</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Enable streaming mode</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">chunk_size</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.output.streaming.chunk_size</span></code></p></td>
 <td><p>integer</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">200</span></code></p></td>
 <td><p>Tokens per processing chunk</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">context_size</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.output.streaming.context_size</span></code></p></td>
 <td><p>integer</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p></td>
 <td><p>Tokens carried from previous chunk</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stream_first</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.output.streaming.stream_first</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
 <td><p>Stream before applying output rails</p></td>
@@ -1155,17 +1165,17 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">single_call.enabled</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.dialog.single_call.enabled</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Use single LLM call for intent + response</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">single_call.fallback_to_multiple_calls</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.dialog.single_call.fallback_to_multiple_calls</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
 <td><p>Fall back if single call fails</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">user_messages.embeddings_only</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.dialog.user_messages.embeddings_only</span></code></p></td>
 <td><p>boolean</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Use only embeddings for intent matching</p></td>
@@ -1174,8 +1184,11 @@
 </table>
 </div>
 </section>
+<section id="execution-rails">
+<h3>Execution Rails<a class="headerlink" href="#execution-rails" title="Link to this heading">#</a></h3>
+<p>Control tool and action invocations.</p>
 <section id="action-rails">
-<h3>Action Rails<a class="headerlink" href="#action-rails" title="Link to this heading">#</a></h3>
+<h4>Action Rails<a class="headerlink" href="#action-rails" title="Link to this heading">#</a></h4>
 <p>Control custom action and tool invocations.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">actions</span><span class="p">:</span>
@@ -1186,7 +1199,7 @@
 </div>
 </section>
 <section id="tool-rails">
-<h3>Tool Rails<a class="headerlink" href="#tool-rails" title="Link to this heading">#</a></h3>
+<h4>Tool Rails<a class="headerlink" href="#tool-rails" title="Link to this heading">#</a></h4>
 <p>Control tool input/output processing.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">tool_output</span><span class="p">:</span>
@@ -1202,12 +1215,11 @@
 </div>
 </section>
 </section>
-<hr class="docutils" />
 <section id="rails-config-section">
-<h2>Rails Config Section<a class="headerlink" href="#rails-config-section" title="Link to this heading">#</a></h2>
+<h3>Rails Config Section<a class="headerlink" href="#rails-config-section" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">rails.config</span></code> section contains configuration for specific built-in rails.</p>
 <section id="jailbreak-detection">
-<h3>Jailbreak Detection<a class="headerlink" href="#jailbreak-detection" title="Link to this heading">#</a></h3>
+<h4>Jailbreak Detection<a class="headerlink" href="#jailbreak-detection" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">jailbreak_detection</span><span class="p">:</span>
@@ -1231,37 +1243,37 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">server_endpoint</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.server_endpoint</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>Heuristics model endpoint</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">length_per_perplexity_threshold</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.length_per_perplexity_threshold</span></code></p></td>
 <td><p>float</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">89.79</span></code></p></td>
 <td><p>Length/perplexity threshold</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prefix_suffix_perplexity_threshold</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.prefix_suffix_perplexity_threshold</span></code></p></td>
 <td><p>float</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">1845.65</span></code></p></td>
 <td><p>Prefix/suffix perplexity threshold</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nim_base_url</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.nim_base_url</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>NIM base URL (e.g., <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/v1</span></code>)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nim_server_endpoint</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.nim_server_endpoint</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;classify&quot;</span></code></p></td>
 <td><p>NIM endpoint path</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">api_key_env_var</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.api_key_env_var</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>Environment variable for API key</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">api_key</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.api_key</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>API key (not recommended)</p></td>
@@ -1271,7 +1283,7 @@
 </div>
 </section>
 <section id="sensitive-data-detection-presidio">
-<h3>Sensitive Data Detection (Presidio)<a class="headerlink" href="#sensitive-data-detection-presidio" title="Link to this heading">#</a></h3>
+<h4>Sensitive Data Detection (Presidio)<a class="headerlink" href="#sensitive-data-detection-presidio" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">sensitive_data_detection</span><span class="p">:</span>
@@ -1301,22 +1313,22 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">recognizers</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.sensitive_data_detection.recognizers</span></code></p></td>
 <td><p>list</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 <td><p>Custom Presidio recognizers</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input/output/retrieval.entities</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.sensitive_data_detection.input/output/retrieval.entities</span></code></p></td>
 <td><p>list</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 <td><p>Entity types to detect</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">input/output/retrieval.mask_token</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.sensitive_data_detection.input/output/retrieval.mask_token</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;*&quot;</span></code></p></td>
 <td><p>Token for masking</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input/output/retrieval.score_threshold</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.sensitive_data_detection.input/output/retrieval.score_threshold</span></code></p></td>
 <td><p>float</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">0.2</span></code></p></td>
 <td><p>Detection confidence threshold</p></td>
@@ -1326,7 +1338,7 @@
 </div>
 </section>
 <section id="injection-detection">
-<h3>Injection Detection<a class="headerlink" href="#injection-detection" title="Link to this heading">#</a></h3>
+<h4>Injection Detection<a class="headerlink" href="#injection-detection" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">injection_detection</span><span class="p">:</span>
@@ -1349,22 +1361,22 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">injections</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.injection_detection.injections</span></code></p></td>
 <td><p>list</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 <td><p>Injection types: <code class="docutils literal notranslate"><span class="pre">sqli</span></code>, <code class="docutils literal notranslate"><span class="pre">template</span></code>, <code class="docutils literal notranslate"><span class="pre">code</span></code>, <code class="docutils literal notranslate"><span class="pre">xss</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">action</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.injection_detection.action</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;reject&quot;</span></code></p></td>
 <td><p>Action: <code class="docutils literal notranslate"><span class="pre">reject</span></code> or <code class="docutils literal notranslate"><span class="pre">omit</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">yara_path</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.injection_detection.yara_path</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code></p></td>
 <td><p>Custom YARA rules path</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yara_rules</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rails.config.injection_detection.yara_rules</span></code></p></td>
 <td><p>object</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 <td><p>Inline YARA rules</p></td>
@@ -1374,7 +1386,7 @@
 </div>
 </section>
 <section id="fact-checking">
-<h3>Fact Checking<a class="headerlink" href="#fact-checking" title="Link to this heading">#</a></h3>
+<h4>Fact Checking<a class="headerlink" href="#fact-checking" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">fact_checking</span><span class="p">:</span>
@@ -1385,7 +1397,7 @@
 </div>
 </section>
 <section id="content-safety">
-<h3>Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h3>
+<h4>Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">content_safety</span><span class="p">:</span>
@@ -1398,9 +1410,9 @@
 </div>
 </section>
 <section id="third-party-integrations">
-<h3>Third-Party Integrations<a class="headerlink" href="#third-party-integrations" title="Link to this heading">#</a></h3>
+<h4>Third-Party Integrations<a class="headerlink" href="#third-party-integrations" title="Link to this heading">#</a></h4>
 <section id="autoalign">
-<h4>AutoAlign<a class="headerlink" href="#autoalign" title="Link to this heading">#</a></h4>
+<h5>AutoAlign<a class="headerlink" href="#autoalign" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">autoalign</span><span class="p">:</span>
@@ -1411,9 +1423,10 @@
 <span class="w">        </span><span class="nt">guardrails_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/auto-align.html"><span class="std std-doc">AutoAlign Integration</span></a>.</p>
 </section>
 <section id="patronus">
-<h4>Patronus<a class="headerlink" href="#patronus" title="Link to this heading">#</a></h4>
+<h5>Patronus<a class="headerlink" href="#patronus" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">patronus</span><span class="p">:</span>
@@ -1427,9 +1440,10 @@
 <span class="w">          </span><span class="nt">params</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/patronus-evaluate-api.html"><span class="std std-doc">Patronus Evaluate API Integration</span></a>.</p>
 </section>
 <section id="clavata">
-<h4>Clavata<a class="headerlink" href="#clavata" title="Link to this heading">#</a></h4>
+<h5>Clavata<a class="headerlink" href="#clavata" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">clavata</span><span class="p">:</span>
@@ -1444,9 +1458,10 @@
 <span class="w">        </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/clavata.html"><span class="std std-doc">Clavata Integration</span></a>.</p>
 </section>
 <section id="pangea-ai-guard">
-<h4>Pangea AI Guard<a class="headerlink" href="#pangea-ai-guard" title="Link to this heading">#</a></h4>
+<h5>Pangea AI Guard<a class="headerlink" href="#pangea-ai-guard" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">pangea</span><span class="p">:</span>
@@ -1456,9 +1471,10 @@
 <span class="w">        </span><span class="nt">recipe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;recipe_key&quot;</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/pangea.html"><span class="std std-doc">Pangea AI Guard Integration</span></a>.</p>
 </section>
 <section id="trend-micro">
-<h4>Trend Micro<a class="headerlink" href="#trend-micro" title="Link to this heading">#</a></h4>
+<h5>Trend Micro<a class="headerlink" href="#trend-micro" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">trend_micro</span><span class="p">:</span>
@@ -1466,9 +1482,10 @@
 <span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TREND_MICRO_API_KEY&quot;</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/trend-micro.html"><span class="std std-doc">Trend Micro Integration</span></a>.</p>
 </section>
 <section id="cisco-ai-defense">
-<h4>Cisco AI Defense<a class="headerlink" href="#cisco-ai-defense" title="Link to this heading">#</a></h4>
+<h5>Cisco AI Defense<a class="headerlink" href="#cisco-ai-defense" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ai_defense</span><span class="p">:</span>
@@ -1476,9 +1493,10 @@
 <span class="w">      </span><span class="nt">fail_open</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/ai-defense.html"><span class="std std-doc">Cisco AI Defense Integration</span></a>.</p>
 </section>
 <section id="private-ai">
-<h4>Private AI<a class="headerlink" href="#private-ai" title="Link to this heading">#</a></h4>
+<h5>Private AI<a class="headerlink" href="#private-ai" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">private_ai_detection</span><span class="p">:</span>
@@ -1491,9 +1509,10 @@
 <span class="w">        </span><span class="nt">entities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/privateai.html"><span class="std std-doc">Private AI Integration</span></a>.</p>
 </section>
 <section id="fiddler-guardrails">
-<h4>Fiddler Guardrails<a class="headerlink" href="#fiddler-guardrails" title="Link to this heading">#</a></h4>
+<h5>Fiddler Guardrails<a class="headerlink" href="#fiddler-guardrails" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">fiddler</span><span class="p">:</span>
@@ -1502,9 +1521,10 @@
 <span class="w">      </span><span class="nt">faithfulness_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/fiddler.html"><span class="std std-doc">Fiddler Guardrails Integration</span></a>.</p>
 </section>
 <section id="guardrails-ai">
-<h4>Guardrails AI<a class="headerlink" href="#guardrails-ai" title="Link to this heading">#</a></h4>
+<h5>Guardrails AI<a class="headerlink" href="#guardrails-ai" title="Link to this heading">#</a></h5>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
@@ -1520,6 +1540,8 @@
 <span class="w">            </span><span class="nt">parameters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </pre></div>
 </div>
+<p>For more information, refer to <a class="reference internal" href="../user-guides/community/guardrails-ai.html"><span class="std std-doc">Guardrails AI Integration</span></a>.</p>
+</section>
 </section>
 </section>
 </section>
@@ -1550,47 +1572,47 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">task</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.task</span></code></p></td>
 <td><p>string</p></td>
 <td><p>✓</p></td>
 <td><p>Task identifier</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">content</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.content</span></code></p></td>
 <td><p>string</p></td>
 <td><p></p></td>
 <td><p>Prompt template (mutually exclusive with <code class="docutils literal notranslate"><span class="pre">messages</span></code>)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">messages</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.messages</span></code></p></td>
 <td><p>list</p></td>
 <td><p></p></td>
 <td><p>Chat messages (mutually exclusive with <code class="docutils literal notranslate"><span class="pre">content</span></code>)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">output_parser</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.output_parser</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>Output parser name</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_length</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.max_length</span></code></p></td>
 <td><p>integer</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">16000</span></code></p></td>
 <td><p>Maximum prompt length (characters)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.max_tokens</span></code></p></td>
 <td><p>integer</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>Maximum response tokens</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mode</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.mode</span></code></p></td>
 <td><p>string</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;standard&quot;</span></code></p></td>
 <td><p>Prompting mode</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stop</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.stop</span></code></p></td>
 <td><p>list</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>Stop tokens</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prompts.models</span></code></p></td>
 <td><p>list</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>Restrict to engines/models (e.g., <code class="docutils literal notranslate"><span class="pre">[&quot;openai&quot;,</span> <span class="pre">&quot;nim/llama-3.1&quot;]</span></code>)</p></td>
@@ -1598,6 +1620,70 @@
 </tbody>
 </table>
 </div>
+<section id="available-tasks">
+<h3>Available Tasks<a class="headerlink" href="#available-tasks" title="Link to this heading">#</a></h3>
+<p>The following table lists all available tasks you can specify to <code class="docutils literal notranslate"><span class="pre">prompts.task</span></code>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_input</span></code></p></td>
+<td><p>Check if user input complies with policy</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_output</span></code></p></td>
+<td><p>Check if bot output complies with policy</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code></p></td>
+<td><p>Verify factual accuracy of responses</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_hallucination</span></code></p></td>
+<td><p>Detect hallucinations in responses</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code></p></td>
+<td><p>Generate canonical user intent</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generate_next_steps</span></code></p></td>
+<td><p>Determine next conversation step</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code></p></td>
+<td><p>Generate bot response</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">general</span></code></p></td>
+<td><p>General response generation (no dialog rails)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="available-prompt-message-types">
+<h3>Available Prompt Message Types<a class="headerlink" href="#available-prompt-message-types" title="Link to this heading">#</a></h3>
+<p>The following table lists all available message types you can specify to <code class="docutils literal notranslate"><span class="pre">prompts.messages.type</span></code>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">system</span></code></p></td>
+<td><p>System-level instructions</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p></td>
+<td><p>User message content</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">assistant</span></code></p></td>
+<td><p>Assistant/bot message content</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bot</span></code></p></td>
+<td><p>Alias for <code class="docutils literal notranslate"><span class="pre">assistant</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 </section>
 <hr class="docutils" />
 <section id="other-configuration-options">
@@ -1673,6 +1759,7 @@
 <hr class="docutils" />
 <section id="complete-example">
 <h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h2>
+<p>The following YAML example demonstrates a complete <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file that wires together a main language model, a dedicated content safety model, and an embeddings model. It configures rails for input and output content safety checks, points to a local NIM service for jailbreak detection, defines a content safety prompt, provides general instructions for the assistant, and enables response streaming from both the main and content safety models.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="c1"># Main application LLM</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
@@ -1701,6 +1788,8 @@
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+<span class="w">    </span><span class="nt">streaming</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">jailbreak_detection</span><span class="p">:</span>
@@ -1723,17 +1812,6 @@
 </pre></div>
 </div>
 </section>
-<hr class="docutils" />
-<section id="related-topics">
-<h2>Related Topics<a class="headerlink" href="#related-topics" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="model-configuration.html"><span class="std std-doc">Model Configuration</span></a></p></li>
-<li><p><a class="reference internal" href="guardrails-configuration/index.html"><span class="std std-doc">Guardrails Configuration</span></a></p></li>
-<li><p><a class="reference internal" href="guardrails-configuration/built-in-guardrails.html"><span class="std std-doc">Built-in Guardrails</span></a></p></li>
-<li><p><a class="reference internal" href="prompt-configuration.html"><span class="std std-doc">Prompt Configuration</span></a></p></li>
-<li><p><a class="reference internal" href="streaming/index.html"><span class="std std-doc">Streaming Configuration</span></a></p></li>
-</ul>
-</section>
 </section>
 
 
@@ -1747,20 +1825,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="yaml-schema/streaming/output-rail-streaming.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Core Configurations for Guardrails</p>
+        <p class="prev-next-title">Output Rail Streaming</p>
       </div>
     </a>
     <a class="right-next"
-       href="model-configuration.html"
+       href="guardrail-catalog.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Model Configuration</p>
+        <p class="prev-next-title">Guardrail Catalog</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1785,7 +1863,6 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-structure">Configuration Structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models-configuration">Models Configuration</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-schema">Model Schema</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-attributes">Model Attributes</a></li>
@@ -1801,6 +1878,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rails-configuration">Rails Configuration</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rails-schema">Rails Schema</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rail-types">Rail Types</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-rails">Input Rails</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-input-flows">Built-in Input Flows</a></li>
 </ul>
@@ -1812,31 +1890,38 @@
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-rails">Retrieval Rails</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dialog-rails">Dialog Rails</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#action-rails">Action Rails</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-rails">Tool Rails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#execution-rails">Execution Rails</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#action-rails">Action Rails</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-rails">Tool Rails</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rails-config-section">Rails Config Section</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jailbreak-detection">Jailbreak Detection</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitive-data-detection-presidio">Sensitive Data Detection (Presidio)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#injection-detection">Injection Detection</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fact-checking">Fact Checking</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#content-safety">Content Safety</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#third-party-integrations">Third-Party Integrations</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#autoalign">AutoAlign</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#patronus">Patronus</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#clavata">Clavata</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-micro">Trend Micro</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cisco-ai-defense">Cisco AI Defense</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai">Private AI</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails">Fiddler Guardrails</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-ai">Guardrails AI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rails-config-section">Rails Config Section</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#jailbreak-detection">Jailbreak Detection</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitive-data-detection-presidio">Sensitive Data Detection (Presidio)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#injection-detection">Injection Detection</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fact-checking">Fact Checking</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#content-safety">Content Safety</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#third-party-integrations">Third-Party Integrations</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#autoalign">AutoAlign</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#patronus">Patronus</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#clavata">Clavata</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-micro">Trend Micro</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#cisco-ai-defense">Cisco AI Defense</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai">Private AI</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails">Fiddler Guardrails</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-ai">Guardrails AI</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-configuration">Prompts Configuration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-configuration">Prompts Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-tasks">Available Tasks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-prompt-message-types">Available Prompt Message Types</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-configuration-options">Other Configuration Options</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-conversation">Sample Conversation</a></li>
@@ -1848,7 +1933,6 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 </ul>
   </nav></div>
 
@@ -1866,8 +1950,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
 
   <footer class="bd-footer">
@@ -1877,8 +1961,8 @@
       
         <div class="footer-item">
 <a class="footer-brand logo" href="https://www.nvidia.com">
-  <img src="../../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
-  <img src="../../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
 </a></div>
       
         <div class="footer-item">

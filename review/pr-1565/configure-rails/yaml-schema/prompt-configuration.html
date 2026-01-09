@@ -60,7 +60,7 @@
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Tracing Configuration" href="tracing-configuration.html" />
-    <link rel="prev" title="Parallel Execution of Input and Output Rails" href="guardrails-configuration/parallel-rails.html" />
+    <link rel="prev" title="Guardrails Configuration" href="guardrails-configuration/index.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -393,18 +393,15 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../before-configuration.html">Before You Begin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Configure Rails</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Core Configuration</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="configuration-reference.html">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">About Configuring Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../before-configuration.html">Prerequisites</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Configuring YAML File</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="model-configuration.html">Models</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guardrails-configuration/parallel-rails.html">Parallel Execution of Rails</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2"><a class="reference internal" href="guardrails-configuration/index.html">Guardrails Configuration</a></li>
+
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tracing-configuration.html">Tracing</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="streaming/index.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -414,7 +411,9 @@
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../actions/index.html">Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration-reference.html">YAML Schema Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../actions/creating-actions.html">Creating Custom Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../actions/action-parameters.html">Action Parameters</a></li>
@@ -422,10 +421,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../custom-initialization/index.html">Custom Initialization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/init-function.html">The Init Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-llm-providers.html">Custom LLM Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-embedding-providers.html">Custom Embedding Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-data.html">Custom Configuration Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/init-function.html">Init Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-llm-providers.html">LLM Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-embedding-providers.html">Embedding Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-data.html">Custom Data</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../colang/index.html">Colang</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -483,7 +482,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../other-configurations/knowledge-base.html">Knowledge Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -491,8 +489,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/index.html">Run Rails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/core-classes.html">Core Classes</a></li>
@@ -529,7 +528,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-rails.html">RunnableRails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
@@ -586,7 +585,7 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Core Configurations for Guardrails</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Configuring YAML File</a></li>
     
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Prompt Configuration</span></li>
   </ul>
@@ -626,74 +625,7 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 <span class="w">      </span><span class="no">Answer:</span>
 </pre></div>
 </div>
-</section>
-<section id="prompt-attributes">
-<h2>Prompt Attributes<a class="headerlink" href="#prompt-attributes" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Attribute</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">task</span></code></p></td>
-<td><p>The LLM task this prompt is used for</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">content</span></code></p></td>
-<td><p>The prompt template text</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">messages</span></code></p></td>
-<td><p>Message-based prompt format (alternative to <code class="docutils literal notranslate"><span class="pre">content</span></code>)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">models</span></code></p></td>
-<td><p>Optional list of models to which this prompt applies</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_length</span></code></p></td>
-<td><p>Maximum token length for the prompt</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">output_parser</span></code></p></td>
-<td><p>Parser for processing the LLM response</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="available-tasks">
-<h2>Available Tasks<a class="headerlink" href="#available-tasks" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Task</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_input</span></code></p></td>
-<td><p>Check if user input complies with policy</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_output</span></code></p></td>
-<td><p>Check if bot output complies with policy</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code></p></td>
-<td><p>Verify factual accuracy of responses</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_hallucination</span></code></p></td>
-<td><p>Detect hallucinations in responses</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code></p></td>
-<td><p>Generate canonical user intent</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generate_next_steps</span></code></p></td>
-<td><p>Determine next conversation step</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code></p></td>
-<td><p>Generate bot response</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">general</span></code></p></td>
-<td><p>General response generation (no dialog rails)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>For a complete list of available prompt attributes and tasks, refer to the <a class="reference internal" href="../configuration-reference.html#prompts-configuration"><span class="std std-ref">Prompts Configuration</span></a>.</p>
 </section>
 <section id="content-based-prompts">
 <h2>Content-Based Prompts<a class="headerlink" href="#content-based-prompts" title="Link to this heading">#</a></h2>
@@ -735,31 +667,6 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 <span class="w">          </span><span class="no">Would this instruction lead to a problematic response (yes/no)?</span>
 </pre></div>
 </div>
-<section id="message-types">
-<h3>Message Types<a class="headerlink" href="#message-types" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Type</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">system</span></code></p></td>
-<td><p>System-level instructions</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p></td>
-<td><p>User message content</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">assistant</span></code></p></td>
-<td><p>Assistant/bot message content</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bot</span></code></p></td>
-<td><p>Alias for <code class="docutils literal notranslate"><span class="pre">assistant</span></code></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
 </section>
 <section id="model-specific-prompts">
 <h2>Model-Specific Prompts<a class="headerlink" href="#model-specific-prompts" title="Link to this heading">#</a></h2>
@@ -779,7 +686,7 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 </section>
 <section id="template-variables">
 <h2>Template Variables<a class="headerlink" href="#template-variables" title="Link to this heading">#</a></h2>
-<p>Available variables in prompt templates:</p>
+<p>The following table lists all available variables you can use in the prompt content:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable</p></th>
@@ -876,7 +783,6 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 <h2>Related Topics<a class="headerlink" href="#related-topics" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../user-guides/advanced/prompt-customization.html"><span class="doc std std-doc">Prompt Customization</span></a> - Advanced prompt customization</p></li>
-<li><p><a class="reference internal" href="model-configuration.html"><span class="doc std std-doc">LLM Configuration</span></a> - Configure models for prompt tasks</p></li>
 </ul>
 </section>
 </section>
@@ -892,12 +798,12 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="guardrails-configuration/parallel-rails.html"
+       href="guardrails-configuration/index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Parallel Execution of Input and Output Rails</p>
+        <p class="prev-next-title">Guardrails Configuration</p>
       </div>
     </a>
     <a class="right-next"
@@ -932,13 +838,8 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-prompts-key">The <code class="docutils literal notranslate"><span class="pre">prompts</span></code> Key</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-prompt-structure">Basic Prompt Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-attributes">Prompt Attributes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-tasks">Available Tasks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-based-prompts">Content-Based Prompts</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#message-based-prompts">Message-Based Prompts</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#message-types">Message Types</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#message-based-prompts">Message-Based Prompts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specific-prompts">Model-Specific Prompts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#template-variables">Template Variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-configurations">Example Configurations</a><ul class="nav section-nav flex-column">

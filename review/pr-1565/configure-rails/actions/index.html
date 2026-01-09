@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Custom Actions &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Configuring Custom Actions &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -60,7 +60,7 @@
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Creating Custom Actions" href="creating-actions.html" />
-    <link rel="prev" title="Output Rail Streaming" href="../yaml-schema/streaming/output-rail-streaming.html" />
+    <link rel="prev" title="Guardrail Catalog" href="../guardrail-catalog.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -393,18 +393,15 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../before-configuration.html">Before You Begin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Configure Rails</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../yaml-schema/configuration-reference.html">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">About Configuring Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../before-configuration.html">Prerequisites</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../yaml-schema/index.html">Configuring YAML File</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../yaml-schema/model-configuration.html">Models</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../yaml-schema/guardrails-configuration/parallel-rails.html">Parallel Execution of Rails</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../yaml-schema/prompt-configuration.html">Prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../yaml-schema/tracing-configuration.html">Tracing</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../yaml-schema/streaming/index.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -414,7 +411,9 @@
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Actions</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration-reference.html">YAML Schema Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Custom Actions</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="creating-actions.html">Creating Custom Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="action-parameters.html">Action Parameters</a></li>
@@ -422,10 +421,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../custom-initialization/index.html">Custom Initialization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/init-function.html">The Init Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-llm-providers.html">Custom LLM Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-embedding-providers.html">Custom Embedding Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-data.html">Custom Configuration Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/init-function.html">Init Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-llm-providers.html">LLM Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-embedding-providers.html">Embedding Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../custom-initialization/custom-data.html">Custom Data</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../colang/index.html">Colang</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -483,7 +482,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../other-configurations/knowledge-base.html">Knowledge Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -491,8 +489,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/index.html">Run Rails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run-rails/core-classes.html">Core Classes</a></li>
@@ -529,7 +528,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/runnable-rails.html">RunnableRails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
@@ -585,7 +584,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Custom Actions</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Configuring Custom Actions</span></li>
   </ul>
 </nav>
 </div>
@@ -602,13 +601,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="custom-actions">
-<h1>Custom Actions<a class="headerlink" href="#custom-actions" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="configuring-custom-actions">
+<h1>Configuring Custom Actions<a class="headerlink" href="#configuring-custom-actions" title="Link to this heading">#</a></h1>
 <p>This section describes the <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file used to define custom Python actions for the NeMo Guardrails library.
-Custom actions enable you to execute Python code within guardrails flows, extending the library with custom logic, external API integrations, and complex validation.</p>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>A typical <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file defines custom action functions using the <code class="docutils literal notranslate"><span class="pre">&#64;action</span></code> decorator. A decorator is a callable that takes a function and returns a new function, usually adding behavior or attaching metadata.</p>
+By configuring custom actions, you can execute Python code within guardrails flows, extending the library with custom logic, external API integrations, and complex validation.</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file defines custom action functions using the <code class="docutils literal notranslate"><span class="pre">&#64;action</span></code> decorator. A decorator is a callable that takes a function and returns a new function, usually adding behavior or attaching metadata.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">action</span>
 
@@ -632,7 +629,6 @@ Custom actions enable you to execute Python code within guardrails flows, extend
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;active&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-</section>
 <section id="configuration-sections">
 <h2>Configuration Sections<a class="headerlink" href="#configuration-sections" title="Link to this heading">#</a></h2>
 <p>The following sections provide detailed documentation for creating and using custom actions:</p>
@@ -768,12 +764,12 @@ define flow check_output_terms
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../yaml-schema/streaming/output-rail-streaming.html"
+       href="../guardrail-catalog.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Output Rail Streaming</p>
+        <p class="prev-next-title">Guardrail Catalog</p>
       </div>
     </a>
     <a class="right-next"
@@ -806,7 +802,6 @@ define flow check_output_terms
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-sections">Configuration Sections</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-organization">File Organization</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-example">Quick Example</a><ul class="nav section-nav flex-column">

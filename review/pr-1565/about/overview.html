@@ -758,18 +758,15 @@ window.addEventListener("load", load);
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../configure-rails/before-configuration.html">Before You Begin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configure-rails/overview.html">Configure Rails</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/index.html">Core Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/configuration-reference.html">Configuration Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/index.html">About Configuring Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/before-configuration.html">Prerequisites</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/index.html">Configuring YAML File</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/model-configuration.html">Models</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html">Built-in Guardrails</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/parallel-rails.html">Parallel Execution of Rails</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/prompt-configuration.html">Prompts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/yaml-schema/tracing-configuration.html">Tracing</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../configure-rails/yaml-schema/streaming/index.html">Streaming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -779,7 +776,9 @@ window.addEventListener("load", load);
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/actions/index.html">Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
@@ -787,10 +786,10 @@ window.addEventListener("load", load);
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/custom-initialization/index.html">Custom Initialization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/custom-initialization/init-function.html">The Init Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/custom-initialization/custom-llm-providers.html">Custom LLM Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/custom-initialization/custom-embedding-providers.html">Custom Embedding Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/custom-initialization/custom-data.html">Custom Configuration Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/custom-initialization/init-function.html">Init Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/custom-initialization/custom-llm-providers.html">LLM Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/custom-initialization/custom-embedding-providers.html">Embedding Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/custom-initialization/custom-data.html">Custom Data</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/colang/index.html">Colang</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -848,7 +847,6 @@ window.addEventListener("load", load);
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/other-configurations/index.html">Other Configurations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/knowledge-base.html">Knowledge Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -856,8 +854,9 @@ window.addEventListener("load", load);
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Rails</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
@@ -894,7 +893,7 @@ window.addEventListener("load", load);
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../integration/langchain/index.html">LangChain</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/runnable-rails.html">RunnableRails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
@@ -1052,7 +1051,7 @@ The NeMo Guardrails library provides multiple approaches to content safety:</p>
 <li><p class="sd-card-text"><strong>LLM self-checking</strong>: Use the LLM itself to check inputs and outputs for harmful content.</p></li>
 <li><p class="sd-card-text"><strong>NVIDIA safety models</strong>: Integrate with <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">Llama 3.1 NemoGuard 8B Content Safety</a> for robust content moderation.</p></li>
 <li><p class="sd-card-text"><strong>Community models</strong>: Use <a class="reference internal" href="../user-guides/community/llama-guard.html"><span class="std std-doc">LlamaGuard</span></a>, <a class="reference internal" href="../user-guides/community/fiddler.html"><span class="std std-doc">Fiddler Guardrails</span></a>, and other community content safety solutions.</p></li>
-<li><p class="sd-card-text"><strong>Third-party APIs</strong>: Integrate with <a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html#activefence"><span class="std std-ref">ActiveFence</span></a>, <a class="reference internal" href="../user-guides/community/ai-defense.html"><span class="std std-doc">Cisco AI Defense</span></a>, and other moderation services.</p></li>
+<li><p class="sd-card-text"><strong>Third-party APIs</strong>: Integrate with <a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#activefence"><span class="xref myst">ActiveFence</span></a>, <a class="reference internal" href="../user-guides/community/ai-defense.html"><span class="std std-doc">Cisco AI Defense</span></a>, and other moderation services.</p></li>
 </ul>
 <p class="sd-card-text">For practical examples, try the following tutorials:</p>
 <ul class="simple">
@@ -1097,13 +1096,14 @@ This is implemented through:</p>
 <p class="sd-card-text">Personally Identifiable Information (PII) detection helps protect user privacy by detecting and masking sensitive data in user inputs, LLM outputs, and retrieved content.
 The NeMo Guardrails library supports PII detection through multiple integrations:</p>
 <ul class="simple">
+<li><p class="sd-card-text"><strong>Gliner</strong>: Use <a class="reference internal" href="../user-guides/community/gliner.html"><span class="std std-doc">NVIDIA GLiNER-PII</span></a> for detecting entities such as names, email addresses, phone numbers, social security numbers, and more.</p></li>
 <li><p class="sd-card-text"><strong>Presidio-based detection</strong>: Use <a class="reference internal" href="../user-guides/community/presidio.html"><span class="std std-doc">Microsoft Presidio</span></a> for detecting entities such as names, email addresses, phone numbers, social security numbers, and more.</p></li>
 <li><p class="sd-card-text"><strong>Private AI</strong>: Integrate with <a class="reference internal" href="../user-guides/community/privateai.html"><span class="std std-doc">Private AI</span></a> for advanced PII detection and masking.</p></li>
 <li><p class="sd-card-text"><strong>AutoAlign</strong>: Use <a class="reference internal" href="../user-guides/community/auto-align.html"><span class="std std-doc">AutoAlign PII detection</span></a> with customizable entity types.</p></li>
 <li><p class="sd-card-text"><strong>GuardrailsAI</strong>: Access <a class="reference internal" href="../user-guides/community/guardrails-ai.html"><span class="std std-doc">GuardrailsAI PII validators</span></a> from the Guardrails Hub.</p></li>
 </ul>
 <p class="sd-card-text">PII detection can be configured to either detect and block content containing PII or to mask PII entities before processing.</p>
-<p class="sd-card-text">For more information, refer to the <a class="reference internal" href="../user-guides/community/presidio.html"><span class="std std-doc">Presidio Integration</span></a> and <a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html#presidio-based-sensitive-data-detection"><span class="std std-ref">Sensitive Data Detection section</span></a> in the built-in Guardrails library.</p>
+<p class="sd-card-text">For more information, refer to the <a class="reference internal" href="../user-guides/community/presidio.html"><span class="std std-doc">Presidio Integration</span></a> and <a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#presidio-based-sensitive-data-detection"><span class="xref myst">Sensitive Data Detection section</span></a> in the built-in Guardrails library.</p>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
@@ -1131,9 +1131,9 @@ This includes:</p>
 <p class="sd-card-text">The NeMo Guardrails library provides extensive flexibility for creating custom guardrails tailored to your specific requirements. You can either build your own guardrails or use third-party guardrails.
 If you have a script or tool that runs a custom guardrail, you can use it in NeMo Guardrails by following one of these approaches:</p>
 <ol class="arabic simple">
-<li><p class="sd-card-text"><strong>Python actions</strong>: Create custom actions in Python for complex logic and external integrations. For more information, refer to the <a class="reference internal" href="../configure-rails/actions/index.html"><span class="std std-doc">Custom Actions</span></a>.</p></li>
+<li><p class="sd-card-text"><strong>Python actions</strong>: Create custom actions in Python for complex logic and external integrations. For more information, refer to the <a class="reference internal" href="../configure-rails/actions/index.html"><span class="std std-doc">Configuring Custom Actions</span></a>.</p></li>
 <li><p class="sd-card-text"><strong>LangChain tool integration</strong>: Register LangChain tools as custom actions. For more information, refer to the <a class="reference internal" href="../integration/tools-integration.html"><span class="std std-doc">Tools Integration with the NeMo Guardrails Library</span></a>.</p></li>
-<li><p class="sd-card-text"><strong>Third-party API integration</strong>: Integrate external moderation and validation services. For a complete list of supported third-party guardrail services, refer to the <a class="reference internal" href="../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.html#third-party-apis"><span class="std std-ref">Third-Party APIs</span></a> section in the built-in Guardrails library.</p></li>
+<li><p class="sd-card-text"><strong>Third-party API integration</strong>: Integrate external moderation and validation services. For a complete list of supported third-party guardrail services, refer to the <a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#third-party-apis"><code class="xref myst docutils literal notranslate"><span class="pre">../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#third-party-apis</span></code></a> section in the built-in Guardrails library.</p></li>
 </ol>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
@@ -1166,7 +1166,7 @@ If you have a script or tool that runs a custom guardrail, you can use it in NeM
 <hr class="docutils" />
 <section id="tools">
 <h2>Tools<a class="headerlink" href="#tools" title="Link to this heading">#</a></h2>
-<p>The following are the tools you can use to interact with the NeMo Guardrails library.</p>
+<p>The following are the tools you can use to interact with the NeMo Guardrails library and integrate it into your application.</p>
 <section id="python-sdk">
 <h3>Python SDK<a class="headerlink" href="#python-sdk" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
