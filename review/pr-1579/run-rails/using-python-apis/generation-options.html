@@ -615,8 +615,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="generation-options">
 <h1>Generation Options<a class="headerlink" href="#generation-options" title="Link to this heading">#</a></h1>
 <p>The NeMo Guardrails library exposes a set of <strong>generation options</strong> that give you fine-grained control over how the LLM generation is performed (for example, what rails are enabled, additional parameters that should be passed to the LLM, what context data should be returned, what logging information should be returned).</p>
-<p>The <strong>generation options</strong> can be used both in the Python API and through the server API.</p>
-<p>To use the generation options through the Python API, you must provide the <code class="docutils literal notranslate"><span class="pre">options</span></code> keyword argument:</p>
+<p>To use generation options, provide the <code class="docutils literal notranslate"><span class="pre">options</span></code> keyword argument to the <code class="docutils literal notranslate"><span class="pre">generate()</span></code> or <code class="docutils literal notranslate"><span class="pre">generate_async()</span></code> methods:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span>
     <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
     <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
@@ -624,21 +623,9 @@
 <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="o">...</span><span class="p">})</span>
 </pre></div>
 </div>
-<p>To use the generation options through the server API, you must provide the <code class="docutils literal notranslate"><span class="pre">options</span></code> as part of the request body:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /v1/chat/completions
-</pre></div>
-</div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;config_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
-<span class="w">    </span><span class="p">}],</span>
-<span class="w">    </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="err">...</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Generation options are also available through the <a class="reference internal" href="../using-fastapi-server/chat-with-guardrailed-model.html#control-generation-options"><span class="std std-ref">FastAPI server</span></a>.</p>
 </div>
 <section id="disabling-rails">
 <h2>Disabling Rails<a class="headerlink" href="#disabling-rails" title="Link to this heading">#</a></h2>
@@ -778,7 +765,7 @@
 </section>
 <section id="output-variables">
 <h2>Output Variables<a class="headerlink" href="#output-variables" title="Link to this heading">#</a></h2>
-<p>Some rails can store additional information in <a class="reference internal" href="#../configuration-guide/colang/colang-language-syntax-guide.md#variables"><span class="xref myst">context variables</span></a>. You can return the content of these variables by setting the <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> generation option to the list of names for all the variables that you are interested in. If you want to return the complete context (this will also include some predefined variables), you can set <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>Some rails can store additional information in <a class="reference internal" href="../../configure-rails/colang/colang-1/colang-language-syntax-guide.html#variables"><span class="std std-ref">context variables</span></a>. You can return the content of these variables by setting the <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> generation option to the list of names for all the variables that you are interested in. If you want to return the complete context (this will also include some predefined variables), you can set <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;output_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;some_input_rail_score&quot;</span><span class="p">,</span> <span class="s2">&quot;some_output_rail_score&quot;</span><span class="p">]</span>
 <span class="p">})</span>

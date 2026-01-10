@@ -613,10 +613,11 @@
 <h1>NeMo Guardrails Library Python API Reference<a class="headerlink" href="#nemo-guardrails-library-python-api-reference" title="Link to this heading">#</a></h1>
 <p>The primary way for using guardrails in your project is:</p>
 <ol class="arabic simple">
-<li><p>Create a <a class="reference internal" href="#../api/nemoguardrails.rails.llm.config.md#class-railsconfig"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code></span></a> object.</p></li>
-<li><p>Create an <a class="reference internal" href="#../api/nemoguardrails.rails.llm.llmrails.md#class-llmrails"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">LLMRails</span></code></span></a> instance which provides an interface to the LLM that automatically applies the configured guardrails.</p></li>
-<li><p>Generate LLM responses using the <a class="reference internal" href="#../api/nemoguardrails.rails.llm.llmrails.md#method-llmrailsgenerate"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">LLMRails.generate(...)</span></code></span></a> or <a class="reference internal" href="#../api/nemoguardrails.rails.llm.llmrails.md#method-llmrailsgenerate_async"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">LLMRails.generate_async(...)</span></code></span></a> methods.</p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> object.</p></li>
+<li><p>Create an <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code> instance which provides an interface to the LLM that automatically applies the configured guardrails.</p></li>
+<li><p>Generate LLM responses using the <code class="docutils literal notranslate"><span class="pre">LLMRails.generate()</span></code> or <code class="docutils literal notranslate"><span class="pre">LLMRails.generate_async()</span></code> methods.</p></li>
 </ol>
+<p>For detailed class documentation, see <a class="reference internal" href="../../run-rails/using-python-apis/core-classes.html"><span class="std std-doc">Core Classes</span></a>.</p>
 <section id="basic-usage">
 <h2>Basic usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
@@ -633,7 +634,7 @@
 </section>
 <section id="railsconfig">
 <h2>RailsConfig<a class="headerlink" href="#railsconfig" title="Link to this heading">#</a></h2>
-<p>The <a class="reference internal" href="#../api/nemoguardrails.rails.llm.config.md#class-railsconfig"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code></span></a> class contains the key bits of information for configuring guardrails:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> class contains the key bits of information for configuring guardrails:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">models</span></code>: The list of models used by the rails configuration.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">user_messages</span></code>: The list of user messages that should be used for the rails.</p></li>
@@ -647,8 +648,8 @@
 </section>
 <section id="message-generation">
 <h2>Message Generation<a class="headerlink" href="#message-generation" title="Link to this heading">#</a></h2>
-<p>To use a guardrails configuration, you can call the <a class="reference internal" href="#../api/nemoguardrails.rails.llm.llmrails.md#method-llmrailsgenerate"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">LLMRails.generate</span></code></span></a> or <a class="reference internal" href="#../api/nemoguardrails.rails.llm.llmrails.md#method-llmrailsgenerate_async"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">LLMRails.generate_async</span></code></span></a> methods.</p>
-<p>The <a class="reference internal" href="#../api/nemoguardrails.rails.llm.llmrails.md#method-llmrailsgenerate"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">LLMRails.generate</span></code></span></a> method takes as input either a <code class="docutils literal notranslate"><span class="pre">prompt</span></code> or a <code class="docutils literal notranslate"><span class="pre">messages</span></code> array. When a prompt is provided, the guardrails apply as in a single-turn conversation. The structure of a message is the following:</p>
+<p>To use a guardrails configuration, you can call the <code class="docutils literal notranslate"><span class="pre">LLMRails.generate()</span></code> or <code class="docutils literal notranslate"><span class="pre">LLMRails.generate_async()</span></code> methods.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">LLMRails.generate()</span></code> method takes as input either a <code class="docutils literal notranslate"><span class="pre">prompt</span></code> or a <code class="docutils literal notranslate"><span class="pre">messages</span></code> array. When a prompt is provided, the guardrails apply as in a single-turn conversation. The structure of a message is the following:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">properties</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">role</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;string&quot;</span>
@@ -738,13 +739,13 @@
 <section id="chains-as-actions">
 <h3>Chains as Actions<a class="headerlink" href="#chains-as-actions" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p><strong>⚠️ DEPRECATED</strong>: Chain support is deprecated and will be removed in a future release. Please use <a class="reference external" href="https://python.langchain.com/docs/expression_language/" rel="noreferer noopener" target="_blank">Runnable</a> instead. See the <a class="reference internal" href="#langchain/runnable-as-action/README.md"><span class="xref myst">Runnable as Action Guide</span></a> for examples.</p>
+<div><p><strong>⚠️ DEPRECATED</strong>: Chain support is deprecated and will be removed in a future release. Please use <a class="reference external" href="https://python.langchain.com/docs/expression_language/" rel="noreferer noopener" target="_blank">Runnable</a> instead. See the <a class="reference internal" href="../../integration/langchain/runnable-as-action/index.html"><span class="std std-doc">Runnable as Action Guide</span></a> for examples.</p>
 </div></blockquote>
-<p>You can register a Langchain chain as an action using the <a class="reference internal" href="#../api/nemoguardrails.rails.llm.llmrails.md#method-llmrailsregister_action"><span class="xref myst">LLMRails.register_action</span></a> method:</p>
+<p>You can register a Langchain chain as an action using the <code class="docutils literal notranslate"><span class="pre">LLMRails.register_action()</span></code> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">register_action</span><span class="p">(</span><span class="n">some_chain</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;some_chain&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>When a chain is invoked as an action, the parameters of the action correspond to the input keys of the chain. For the return value, if the output of the chain has a single key, the value will be returned. If the chain has multiple output keys, the dictionary of output keys and their values is returned. See the <a class="reference internal" href="#langchain/langchain-integration.md"><span class="xref myst">LangChain Integration Guide</span></a> for more details.</p>
+<p>When a chain is invoked as an action, the parameters of the action correspond to the input keys of the chain. For the return value, if the output of the chain has a single key, the value will be returned. If the chain has multiple output keys, the dictionary of output keys and their values is returned. See the <a class="reference internal" href="../../integration/langchain/langchain-integration.html"><span class="std std-doc">LangChain Integration Guide</span></a> for more details.</p>
 </section>
 <section id="custom-actions">
 <h3>Custom Actions<a class="headerlink" href="#custom-actions" title="Link to this heading">#</a></h3>

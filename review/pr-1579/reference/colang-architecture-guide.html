@@ -754,8 +754,8 @@
 </section>
 <section id="extending-the-default-process">
 <h3>Extending the Default Process<a class="headerlink" href="#extending-the-default-process" title="Link to this heading">#</a></h3>
-<p>As shown in the examples <span class="xref myst">here</span>, the event-driven design allows us to hook into the process and add additional guardrails.</p>
-<p>For example, in the <span class="xref myst">grounding rail</span> example, we can add an additional fact-checking guardrail (through the <code class="docutils literal notranslate"><span class="pre">check_facts</span></code> action) after a question about the report.</p>
+<p>The event-driven design allows us to hook into the process and add additional guardrails.</p>
+<p>For example, we can add an additional fact-checking guardrail (through the <code class="docutils literal notranslate"><span class="pre">check_facts</span></code> action) after a question about the report.</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow answer report question
   user ask about report
   bot provide report answer
