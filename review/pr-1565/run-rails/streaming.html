@@ -371,12 +371,8 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/how-it-works.html">How It Works</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/rail-types.html">Guardrail Types</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../about/how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../about/architecture/README.html">Architecture</a></li>
-</ul>
-</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
 </ul>
@@ -542,6 +538,11 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
@@ -660,6 +661,9 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
+<blockquote>
+<div><p><strong>Warning:</strong> Using <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code> directly is deprecated and will be removed in a future release. Use <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> instead.</p>
+</div></blockquote>
 </section>
 <section id="using-external-async-token-generators">
 <span id="external-async-token-generators"></span><h3>Using External Async Token Generators<a class="headerlink" href="#using-external-async-token-generators" title="Link to this heading">#</a></h3>
@@ -736,19 +740,6 @@
 <li><p>Is primarily supported by OpenAI, AzureOpenAI, and other providers. The NVIDIA NIM provider supports it by default.</p></li>
 <li><p>Allows to safely pass token usage statistics to LLM providers. If the LLM provider you use don’t support it, the parameter is ignored.</p></li>
 </ul>
-<section id="version-requirements">
-<h3>Version Requirements<a class="headerlink" href="#version-requirements" title="Link to this heading">#</a></h3>
-<p>For optimal token usage tracking with streaming, ensure you’re using recent versions of LangChain packages:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.1.0</span></code> for basic streaming token support (minimum requirement)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.2.0</span></code> for enhanced features and stability</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">langchain</span> <span class="pre">&gt;=</span> <span class="pre">0.2.14</span></code> and <code class="docutils literal notranslate"><span class="pre">langchain-core</span> <span class="pre">&gt;=</span> <span class="pre">0.2.14</span></code> for universal token counting support</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The NeMo Guardrails library requires <code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.1.0</span></code> as an optional dependency, which provides basic streaming token usage support. For enhanced features and stability, consider upgrading to <code class="docutils literal notranslate"><span class="pre">langchain-openai</span> <span class="pre">&gt;=</span> <span class="pre">0.2.0</span></code> in your environment.</p>
-</div>
-</section>
 <section id="accessing-token-usage-information">
 <h3>Accessing Token Usage Information<a class="headerlink" href="#accessing-token-usage-information" title="Link to this heading">#</a></h3>
 <p>You can access token usage statistics through the detailed logging capabilities of the NeMo Guardrails library. Use the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option to capture comprehensive information about LLM calls, including token usage:</p>
@@ -870,7 +861,6 @@ add it to the <code class="docutils literal notranslate"><span class="pre">kwarg
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-requirements">Version Requirements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-token-usage-information">Accessing Token Usage Information</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-for-llms-deployed-using-huggingfacepipeline">Streaming for LLMs deployed using HuggingFacePipeline</a></li>

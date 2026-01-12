@@ -371,12 +371,8 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../about/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/how-it-works.html">How It Works</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/rail-types.html">Guardrail Types</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../about/how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../about/how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../about/architecture/README.html">Architecture</a></li>
-</ul>
-</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about/release-notes.html">Release Notes</a></li>
 </ul>
@@ -542,6 +538,11 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
@@ -702,9 +703,9 @@
 <span class="w">  </span><span class="c1"># Content Safety Model served via vLLM (OpenAI-compatible API)</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_reasoning</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/Nemotron-Content-Safety-Reasoning-4B</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">openai_api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:8001/v1</span>
-<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/Nemotron-Content-Safety-Reasoning-4B</span>
 <span class="w">      </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
 <span class="w">      </span><span class="nt">top_p</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.95</span>
 
@@ -857,7 +858,7 @@ energy levels...
 </div>
 <p>When reasoning mode is disabled, the model generates a safety prediction directly:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt harm: unharmful
-Response harm: None
+Response harm: unharmful
 </pre></div>
 </div>
 </section>
@@ -903,7 +904,7 @@ Response harm: unharmful
 </pre></div>
 </div>
 <p><strong>Reasoning On (<code class="docutils literal notranslate"><span class="pre">/think</span></code>)</strong>: Provides explicit reasoning traces for decisions. Better for complex or novel custom policies. Higher latency. See <a class="reference external" href="https://huggingface.co/nvidia/Nemotron-Content-Safety-Reasoning-4B#example-1-vanilla-safety-with-nemotron-content-safety-dataset-v2-taxonomy-reasoning-on-mode" rel="noreferer noopener" target="_blank">example</a>.</p>
-<p><strong>Reasoning Off (<code class="docutils literal notranslate"><span class="pre">/no_think</span></code>)</strong>: Fast classification without reasoning. Suitable for standard safety checks. Lower latency. See <a class="reference external" href="https://huggingface.co/nvidia/Nemotron-Content-Safety-Reasoning-4B#example-2-vanilla-safety-with-nemotron-content-safety-dataset-v2-taxonomy-reasoning-off-mode" rel="noreferer noopener" target="_blank">example</a>.</p>
+<p><strong>Reasoning Off (<code class="docutils literal notranslate"><span class="pre">/no_think</span></code>)</strong>: Fast classification without reasoning. Suitable for standard content safety policies. Lower latency. See <a class="reference external" href="https://huggingface.co/nvidia/Nemotron-Content-Safety-Reasoning-4B#example-2-vanilla-safety-with-nemotron-content-safety-dataset-v2-taxonomy-reasoning-off-mode" rel="noreferer noopener" target="_blank">example</a>.</p>
 </section>
 </section>
 <section id="custom-safety-policies">
