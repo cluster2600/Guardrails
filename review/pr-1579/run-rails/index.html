@@ -614,51 +614,52 @@
 <p>After you <a class="reference internal" href="../configure-rails/index.html"><span class="std std-doc">configure your guardrails</span></a>, you can run guardrailed inference using the tools provided by the NeMo Guardrails library: the Python API and the FastAPI server.</p>
 <p>These tools enable you to interact with your LLM as usual—sending prompts and receiving responses—while the guardrails system monitors and controls all communication in the background.
 The guardrails intercept inputs and outputs, apply your configured rails, and ensure that interactions remain within the boundaries you defined.</p>
+<hr class="docutils" />
 <section id="choosing-the-right-tool">
 <h2>Choosing the Right Tool<a class="headerlink" href="#choosing-the-right-tool" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Use Case</p></th>
-<th class="head"><p>Recommended Tool</p></th>
-<th class="head"><p>Benefits</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Embedding guardrails directly in a Python application</p></td>
-<td><p>Python API</p></td>
-<td><p>No network overhead; guardrails run in the same process as your application.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Rapid prototyping and development</p></td>
-<td><p>Python API</p></td>
-<td><p>Less setup; test configurations in a notebook or script without starting a server.</p></td>
-</tr>
-<tr class="row-even"><td><p>Fine-grained control over generation</p></td>
-<td><p>Python API</p></td>
-<td><p>Access to <code class="docutils literal notranslate"><span class="pre">generate_events()</span></code>, custom streaming handlers, and internal state.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Production deployments with multiple clients</p></td>
-<td><p>FastAPI Server</p></td>
-<td><p>Handles concurrent requests; can be load-balanced and horizontally scaled.</p></td>
-</tr>
-<tr class="row-even"><td><p>Non-Python clients (JavaScript, Go, Java, etc.)</p></td>
-<td><p>FastAPI Server</p></td>
-<td><p>Language-agnostic REST API; no Python dependencies required for clients.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Microservices architecture</p></td>
-<td><p>FastAPI Server</p></td>
-<td><p>Independent service with single responsibility; enables separate scaling.</p></td>
-</tr>
-<tr class="row-even"><td><p>Centralized guardrails management</p></td>
-<td><p>FastAPI Server</p></td>
-<td><p>Update configurations once; all clients benefit without redeployment.</p></td>
-</tr>
-</tbody>
-</table>
+<p>Both the Python API and FastAPI server are production-ready approaches for integrating guardrails into your application.</p>
+<section id="python-api-for-edge-and-embedded-applications">
+<h3>Python API for Edge and Embedded Applications<a class="headerlink" href="#python-api-for-edge-and-embedded-applications" title="Link to this heading">#</a></h3>
+<p>Build guardrails directly into your Python application. You call guardrails functions in your code, and everything runs in the same process with no network overhead.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}</span>
+<span class="p">])</span>
+</pre></div>
 </div>
+<p>This approach is best for:</p>
+<ul class="simple">
+<li><p>Edge deployments where no networked backend is available.</p></li>
+<li><p>Applications that require low latency and no external dependencies.</p></li>
+<li><p>Rapid prototyping and development in notebooks or scripts.</p></li>
+<li><p>Fine-grained control over generation and custom streaming handlers.</p></li>
+</ul>
 </section>
+<section id="fastapi-server-for-networked-and-multi-client-applications">
+<h3>FastAPI Server for Networked and Multi-Client Applications<a class="headerlink" href="#fastapi-server-for-networked-and-multi-client-applications" title="Link to this heading">#</a></h3>
+<p>The FastAPI server provides a RESTful API interface to the guardrails library. Instead of calling Python functions directly, you make HTTP requests to the server endpoints—making integration straightforward for any language or platform.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;config_id&quot;: &quot;my-bot&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]}&#39;</span>
+</pre></div>
+</div>
+<p>This approach is best for:</p>
+<ul class="simple">
+<li><p>Networked systems where multiple clients need access to guardrails.</p></li>
+<li><p>Non-Python clients (JavaScript, Go, Java, etc.) that communicate through HTTP.</p></li>
+<li><p>Microservices architectures where guardrails runs as an independent service.</p></li>
+<li><p>Centralized guardrails management—update configurations once, and all clients benefit.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
-<p>After you’ve chosen the right tool, proceed to one of the following guides to learn how to run guardrailed inference.</p>
+<p>After choosing the right tool for your implementation model, proceed to the corresponding guide from the following.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">
@@ -733,7 +734,11 @@ FastAPI Server</div>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-tool">Choosing the Right Tool</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-tool">Choosing the Right Tool</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api-for-edge-and-embedded-applications">Python API for Edge and Embedded Applications</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fastapi-server-for-networked-and-multi-client-applications">FastAPI Server for Networked and Multi-Client Applications</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
