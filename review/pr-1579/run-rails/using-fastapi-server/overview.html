@@ -624,18 +624,12 @@
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
 <ol class="arabic">
-<li><p>Install the NeMo Guardrails library:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails
-</pre></div>
-</div>
-<p>For more information, see <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">Install the NeMo Guardrails Library</span></a>.</p>
-</li>
-<li><p><strong>Start the server:</strong></p>
+<li><p>Start the server using the nemoguardrails CLI:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./my-config
 </pre></div>
 </div>
 </li>
-<li><p><strong>Send a request:</strong></p>
+<li><p>Send a request to the server:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
@@ -645,7 +639,7 @@
 </pre></div>
 </div>
 </li>
-<li><p><strong>View the Chat UI:</strong> Open <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code> in your browser.</p></li>
+<li><p>View the Chat UI by opening <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code> in your browser.</p></li>
 </ol>
 </section>
 <section id="related-topics">
