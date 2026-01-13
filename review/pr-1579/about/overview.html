@@ -522,11 +522,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deploy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -764,11 +764,20 @@ If you have a script or tool that runs a custom guardrail, you can use it in NeM
 </div>
 <p class="sd-card-text">The <code class="docutils literal notranslate"><span class="pre">generate</span></code> method accepts the same message format as the OpenAI Chat Completions API.</p>
 </li>
-<li><p class="sd-card-text"><strong>Server API</strong>: You can solely set up a guardrails server after programming guardrails using the Python SDK. You can then start a local NeMo Guardrails server with the following command. This server exposes an HTTP API compatible with OpenAI’s <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint.</p>
+<li><p class="sd-card-text"><strong>API Server</strong>: You can solely set up a guardrails server after programming guardrails using the Python SDK. You can then start a local NeMo Guardrails server with the following command.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./config<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
 </pre></div>
 </div>
-<p class="sd-card-text">The server exposes HTTP APIs compatible with OpenAI’s <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint. You can then use the server in your application by sending requests to the server’s endpoint.</p>
+<p class="sd-card-text">The server exposes API endpoints such as <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> for guardrailed chat completions.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;config_id&quot;: &quot;my-config&quot;,</span>
+<span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]</span>
+<span class="s1">  }&#39;</span>
+</pre></div>
+</div>
+ <!-- The server exposes HTTP APIs compatible with OpenAI's `/v1/chat/completions` endpoint. You can then use the server in your application by sending requests to the server's endpoint. -->
 </li>
 </ol>
 </div>
