@@ -497,7 +497,7 @@
 <li class="toctree-l2"><a class="reference internal" href="using-python-apis/event-based-api.html">Event-Based API</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="using-fastapi-server/index.html">FastAPI Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="using-fastapi-server/overview.html">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
@@ -547,7 +547,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/python-api/index.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">FastAPI Server Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
@@ -611,13 +611,13 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="about-running-guardrailed-inference-using-the-nemo-guardrails-library-tools">
 <h1>About Running Guardrailed Inference Using the NeMo Guardrails Library Tools<a class="headerlink" href="#about-running-guardrailed-inference-using-the-nemo-guardrails-library-tools" title="Link to this heading">#</a></h1>
-<p>After you <a class="reference internal" href="../configure-rails/index.html"><span class="std std-doc">configure your guardrails</span></a>, you can run guardrailed inference using the tools provided by the NeMo Guardrails library: the Python API and the FastAPI server.</p>
+<p>After you <a class="reference internal" href="../configure-rails/index.html"><span class="std std-doc">configure your guardrails</span></a>, you can run guardrailed inference using the tools provided by the NeMo Guardrails library: the Python API and the Guardrails API server.</p>
 <p>These tools enable you to interact with your application’s main LLM as usual by sending prompts and receiving responses while the guardrails system monitors and controls all communication in the background.
 The guardrails intercept inputs and outputs between uses and the LLM and the execution of actions done by the LLM. The tools apply your configured guardrails and ensure that any inputs, generated responses, or actions remain within the boundaries you defined.</p>
 <hr class="docutils" />
 <section id="choosing-the-right-tool">
 <h2>Choosing the Right Tool<a class="headerlink" href="#choosing-the-right-tool" title="Link to this heading">#</a></h2>
-<p>Both the Python API and FastAPI server are production-ready approaches for integrating guardrails into your application.</p>
+<p>Both the Python API and the Guardrails API server are production-ready approaches for integrating guardrails into your application.</p>
 <section id="python-api-for-edge-and-embedded-applications">
 <h3>Python API for Edge and Embedded Applications<a class="headerlink" href="#python-api-for-edge-and-embedded-applications" title="Link to this heading">#</a></h3>
 <p>Build guardrails directly into your Python application. You call guardrails functions in your code, and everything runs in the same process with no network overhead.</p>
@@ -639,9 +639,9 @@ The guardrails intercept inputs and outputs between uses and the LLM and the exe
 <li><p>Fine-grained control over generation and custom streaming handlers.</p></li>
 </ul>
 </section>
-<section id="fastapi-server-for-networked-and-multi-client-applications">
-<h3>FastAPI Server for Networked and Multi-Client Applications<a class="headerlink" href="#fastapi-server-for-networked-and-multi-client-applications" title="Link to this heading">#</a></h3>
-<p>The FastAPI server provides a RESTful API interface to the guardrails library. Instead of calling Python functions directly, you make HTTP requests to the server endpoints, making integration straightforward for any language or platform.</p>
+<section id="guardrails-api-server-for-networked-and-multi-client-applications">
+<h3>Guardrails API Server for Networked and Multi-Client Applications<a class="headerlink" href="#guardrails-api-server-for-networked-and-multi-client-applications" title="Link to this heading">#</a></h3>
+<p>The Guardrails API server provides a RESTful API interface to the guardrails library. Instead of calling Python functions directly, you make HTTP requests to the server endpoints, making integration straightforward for any language or platform.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;config_id&quot;: &quot;my-bot&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]}&#39;</span>
@@ -673,10 +673,10 @@ Python API</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-FastAPI Server</div>
-<p class="sd-card-text">Expose guardrails through an HTTP API using the FastAPI server.</p>
+Guardrails API Server</div>
+<p class="sd-card-text">Expose guardrails through an HTTP API using the Guardrails API server.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="using-fastapi-server/index.html"><span class="doc">Use the FastAPI Server</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="using-fastapi-server/index.html"><span class="doc">Use the Guardrails API Server</span></a></div>
 </div>
 </div>
 </div>
@@ -734,7 +734,7 @@ FastAPI Server</div>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-tool">Choosing the Right Tool</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api-for-edge-and-embedded-applications">Python API for Edge and Embedded Applications</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fastapi-server-for-networked-and-multi-client-applications">FastAPI Server for Networked and Multi-Client Applications</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-api-server-for-networked-and-multi-client-applications">Guardrails API Server for Networked and Multi-Client Applications</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
