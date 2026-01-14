@@ -612,7 +612,7 @@
 <section class="tex2jax_ignore mathjax_ignore" id="restrict-topics-with-llama-3-1-nemoguard-8b-topiccontrol-nim">
 <h1>Restrict Topics with Llama 3.1 NemoGuard 8B TopicControl NIM<a class="headerlink" href="#restrict-topics-with-llama-3-1-nemoguard-8b-topiccontrol-nim" title="Link to this heading">#</a></h1>
 <p>Learn how to restrict conversations to allowed topics using <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/index.html" rel="noreferer noopener" target="_blank">Llama 3.1 NemoGuard 8B TopicControl NIM</a>.</p>
-<p>By following this tutorial, you’ll configure a set of topics which are allowed, and interact with both on and off-topic requests.</p>
+<p>By following this tutorial, you learn how to configure a set of allowed topics and interact with both on-topic and off-topic requests.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -644,12 +644,12 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic safety check input $model=topic_control</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file contains the models used by Guardrails in the <code class="docutils literal notranslate"><span class="pre">models</span></code> section, and <code class="docutils literal notranslate"><span class="pre">rails</span></code> controlling when to use these models.
+<p>The <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file contains the models used by Guardrails in the <code class="docutils literal notranslate"><span class="pre">models</span></code> section and <code class="docutils literal notranslate"><span class="pre">rails</span></code> controlling when to use these models.
 The <code class="docutils literal notranslate"><span class="pre">models</span></code> section configures the type and name of each model, along with the engine used to perform LLM inference. The model with type <code class="docutils literal notranslate"><span class="pre">main</span></code> is used to generate responses to user queries.
-The <code class="docutils literal notranslate"><span class="pre">rails</span></code> section configures <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> rails. Topic-control only operates on user input, so there is no output rail flow.
-For more information on guardrail configurations see <a class="reference internal" href="../../configure-rails/overview.html"><span class="std std-doc">Configure Rails</span></a></p>
+The <code class="docutils literal notranslate"><span class="pre">rails</span></code> section configures <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> rails. Topic control only operates on user input, so there is no output rail flow.
+For more information about guardrail configurations, refer to <a class="reference internal" href="../../configure-rails/overview.html"><span class="std std-doc">Configure Rails</span></a>.</p>
 </li>
-<li><p>Create a <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code> file with the topic control prompt template:</p>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">config/prompts.yml</span></code> file with the topic control prompt template.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic_safety_check_input $model=topic_control</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -666,9 +666,9 @@ For more information on guardrail configurations see <a class="reference interna
 <span class="w">      </span><span class="no">- allow user comments that are related to small talk and chit-chat.</span>
 </pre></div>
 </div>
-<p>You can customize the guidelines to match your specific use case and allowed topics. These guidelines are passed to the Topic-Control model in the system prompt.
-The User request is placed in the User prompt.
-The Topic-Control model responds with either <code class="docutils literal notranslate"><span class="pre">on-topic</span></code> or <code class="docutils literal notranslate"><span class="pre">off-topic</span></code> depending on whether the user input matches one of the topics in the prompt.</p>
+<p>You can customize the guidelines to match your specific use case and allowed topics. These guidelines are passed to the topic control model in the system prompt.
+The user request is placed in the user prompt.
+The topic control model responds with either <code class="docutils literal notranslate"><span class="pre">on-topic</span></code> or <code class="docutils literal notranslate"><span class="pre">off-topic</span></code> depending on whether the user input matches one of the topics in the prompt.</p>
 </li>
 </ol>
 </section>
@@ -690,17 +690,17 @@ The Topic-Control model responds with either <code class="docutils literal notra
 </pre></div>
 </div>
 </li>
-<li><p>Enter an off-topic request</p>
-<p>The prompt specifically instructs the model not to respond to questions on politics.
-The topic-control input rail detects a policy violation, and responds with the <code class="docutils literal notranslate"><span class="pre">I'm</span> <span class="pre">sorry,</span> <span class="pre">I</span> <span class="pre">can't</span> <span class="pre">respond</span> <span class="pre">to</span> <span class="pre">that.</span></code> refusal text.
-Because this input rail blocked the user’s input, an LLM response is not generated.</p>
+<li><p>Enter an off-topic request.</p>
+<p>The prompt specifically instructs the model not to respond to questions about politics.
+The topic control input rail detects a policy violation and responds with the <code class="docutils literal notranslate"><span class="pre">I'm</span> <span class="pre">sorry,</span> <span class="pre">I</span> <span class="pre">can't</span> <span class="pre">respond</span> <span class="pre">to</span> <span class="pre">that.</span></code> refusal text.
+Because this input rail blocked the user input, an LLM response is not generated.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  &gt; Which party should I vote for in the next election?</span>
 <span class="go">  I&#39;m sorry, I can&#39;t respond to that.</span>
 </pre></div>
 </div>
 </li>
-<li><p>Enter an on-topic request</p>
-<p>This request is in-line with the topics in the prompt above, so the topic-control rail doesn’t block the user input.
+<li><p>Enter an on-topic request.</p>
+<p>This request is in line with the topics in the prompt, so the topic control rail does not block the user input.
 The user input is passed to the Application LLM for generation.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; I&#39;d like to cancel my subscription. Can I do this by phone or on the website?</span>
 <span class="go">I&#39;d be happy to help you with canceling your subscription. You have a couple of options to do so, and I&#39;ll walk you</span>
@@ -712,11 +712,11 @@ The user input is passed to the Application LLM for generation.</p>
 </li>
 </ol>
 </section>
-<section id="import-the-nemo-guardrails-toolkit-in-python">
-<h2>Import the NeMo Guardrails toolkit in Python<a class="headerlink" href="#import-the-nemo-guardrails-toolkit-in-python" title="Link to this heading">#</a></h2>
-<p>Follow these steps to use the <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/tutorial.html" rel="noreferer noopener" target="_blank">IPython</a> REPL to import the NeMo Guardrails toolkit and issue some requests.</p>
+<section id="import-the-nemo-guardrails-library-in-python">
+<h2>Import the NeMo Guardrails Library in Python<a class="headerlink" href="#import-the-nemo-guardrails-library-in-python" title="Link to this heading">#</a></h2>
+<p>Follow these steps to use the <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/tutorial.html" rel="noreferer noopener" target="_blank">IPython</a> REPL to import the NeMo Guardrails library and issue some requests:</p>
 <ol class="arabic">
-<li><p>Install the IPython REPL and run it to interpret Python code below:</p>
+<li><p>Install the IPython REPL and run it to interpret the Python code below.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>ipython
 <span class="gp">$ </span>ipython
 
@@ -724,7 +724,7 @@ The user input is passed to the Application LLM for generation.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Load the guardrails configuration created above.</p>
+<li><p>Load the guardrails configuration you created earlier.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
@@ -733,7 +733,7 @@ The user input is passed to the Application LLM for generation.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Verify the guardrails with an off-topic political question</p>
+<li><p>Verify the guardrails with an off-topic political question.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Which party should I vote for in the next election?&quot;</span><span class="p">}]</span>
 <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">])</span>
@@ -744,7 +744,7 @@ The user input is passed to the Application LLM for generation.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Verify the guardrails with an on-topic question</p>
+<li><p>Verify the guardrails with an on-topic question.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;d like to cancel my subscription. Can I do this by phone or on the website?&quot;</span><span class="p">}]</span>
 <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">])</span>
@@ -755,8 +755,8 @@ The user input is passed to the Application LLM for generation.</p>
 </ol>
 </section>
 <section id="deploy-llama-3-1-nemoguard-8b-topiccontrol-nim-locally">
-<h2>Deploy Llama 3.1 NemoGuard 8B TopicControl NIM locally<a class="headerlink" href="#deploy-llama-3-1-nemoguard-8b-topiccontrol-nim-locally" title="Link to this heading">#</a></h2>
-<p>This section shows how to run the NemoGuard 8B TopicControl model locally, while still using the build.nvidia.com hosted main model. The pre-requisites are:</p>
+<h2>Deploy Llama 3.1 NemoGuard 8B TopicControl NIM Locally<a class="headerlink" href="#deploy-llama-3-1-nemoguard-8b-topiccontrol-nim-locally" title="Link to this heading">#</a></h2>
+<p>This section shows how to run the NemoGuard 8B TopicControl model locally while still using the main model hosted on <a class="reference external" href="https://build.nvidia.com" rel="noreferer noopener" target="_blank">build.nvidia.com</a>. The prerequisites are:</p>
 <ul class="simple">
 <li><p>The NeMo Guardrails library <a class="reference internal" href="../installation-guide.html"><span class="std std-doc">installed</span></a>.</p></li>
 <li><p>A personal NVIDIA NGC API key with NVIDIA NGC Catalog and NVIDIA Public API Endpoints services access.
@@ -765,9 +765,9 @@ For more information, refer to <a class="reference external" href="https://docs.
 <li><p>NVIDIA Container Toolkit <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" rel="noreferer noopener" target="_blank">installed</a>.</p></li>
 <li><p>GPUs meeting the memory requirement specified in the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemoguard-8b-topiccontrol/latest/support-matrix.html#nvidia-llama-3-1-nemoguard-8b-topicguard-model-profiles" rel="noreferer noopener" target="_blank">NVIDIA Llama 3.1 NemoGuard 8B TopicControl NIM Model Profiles</a>.</p></li>
 </ul>
-<p>To run the Llama 3.1 NemoGuard 8B TopicControl in a Docker container, follow the steps below.</p>
+<p>To run the Llama 3.1 NemoGuard 8B TopicControl in a Docker container, follow these steps:</p>
 <ol class="arabic">
-<li><p>Update the config.yml created above to point to a local NIM deployment rather than build.nvidia.com. The configuration below adds a <code class="docutils literal notranslate"><span class="pre">base_url</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code> field under <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, which tells the NeMo Guardrails toolkit to make requests to the <code class="docutils literal notranslate"><span class="pre">nvidia/llama-3.1-nemoguard-8b-topic-control</span></code> model hosted at <code class="docutils literal notranslate"><span class="pre">http://localhost:8123/v1</span></code>. The Guardrails configuration below has to match the NIM Docker container configuration for them to communicate.</p>
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file you created earlier to point to a local NIM deployment rather than build.nvidia.com. The following configuration adds a <code class="docutils literal notranslate"><span class="pre">base_url</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code> field under <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, which tells the NeMo Guardrails toolkit to make requests to the <code class="docutils literal notranslate"><span class="pre">nvidia/llama-3.1-nemoguard-8b-topic-control</span></code> model hosted at <code class="docutils literal notranslate"><span class="pre">http://localhost:8123/v1</span></code>. The Guardrails configuration must match the NIM Docker container configuration for them to communicate.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -787,24 +787,24 @@ For more information, refer to <a class="reference external" href="https://docs.
 </pre></div>
 </div>
 </li>
-<li><p>Start the Llama 3.1 Topic Control NIM Docker Container. You’ll store your personal NGC API Key in the <code class="docutils literal notranslate"><span class="pre">NGC_API_KEY</span></code> environment variable, then pull and run the NIM Docker image locally.</p>
+<li><p>Start the Llama 3.1 Topic Control NIM Docker container. Store your personal NGC API key in the <code class="docutils literal notranslate"><span class="pre">NGC_API_KEY</span></code> environment variable, then pull and run the NIM Docker image locally.</p>
 <ol class="arabic">
-<li><p>Log in to NVIDIA_NGC so you can pull the container.</p>
-<p>Export your Personal NGC API Key to an environment variable</p>
+<li><p>Log in to your NVIDIA NGC account.</p>
+<p>Export your personal NGC API key to an environment variable.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;...&quot;</span>
 </pre></div>
 </div>
-<p>Log in to the NGC registry</p>
+<p>Log in to the NGC registry by running the following command.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>--username<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>--password-stdin<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span><span class="nv">$NGC_API_KEY</span>
 </pre></div>
 </div>
 </li>
-<li><p>Download the container</p>
+<li><p>Download the container.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>pull<span class="w"> </span>nvcr.io/nim/nvidia/llama-3.1-nemoguard-8b-topic-control:1.10.1
 </pre></div>
 </div>
 </li>
-<li><p>Create a model cache directory on the host machine</p>
+<li><p>Create a model cache directory on the host machine.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>~/.cache/llama-nemotron-topic-guard
 <span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="gp">$ </span>chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -812,7 +812,7 @@ For more information, refer to <a class="reference external" href="https://docs.
 </div>
 </li>
 <li><p>Run the container with the cache directory mounted.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">-p</span></code> argument maps the Docker container’s port 8000 to 8123 to avoid any clashes with other servers running locally.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-p</span></code> argument maps the Docker container port 8000 to 8123 to avoid conflicts with other servers running locally.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--name<span class="w"> </span>llama-nemotron-topic-guard<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
@@ -830,14 +830,14 @@ For more information, refer to <a class="reference external" href="https://docs.
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://localhost:8123/v1/health/ready
 </pre></div>
 </div>
-<p>Example Output</p>
+<p>This returns the following response.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{&quot;object&quot;:&quot;health-response&quot;,&quot;message&quot;:&quot;ready&quot;}</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p>Follow the steps in the <a class="reference internal" href="#run-the-guardrails-chat-application">Run the Guardrails chat application</a> and <a class="reference internal" href="#import-the-nemo-guardrails-toolkit-in-python">Import the NeMo Guardrails toolkit in Python</a> tutorial to run Guardrails with the local model.</p></li>
+<li><p>Follow the steps in <a class="reference internal" href="#run-the-guardrails-chat-application">Run the Guardrails Chat Application</a> and <a class="reference internal" href="#import-the-nemo-guardrails-library-in-python">Import the NeMo Guardrails Library in Python</a> to run Guardrails with the local model.</p></li>
 </ol>
 </section>
 <section id="next-steps">
@@ -903,8 +903,8 @@ For more information, refer to <a class="reference external" href="https://docs.
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-guardrails">Configure Guardrails</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-guardrails-chat-application">Run the Guardrails chat application</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-the-nemo-guardrails-toolkit-in-python">Import the NeMo Guardrails toolkit in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-llama-3-1-nemoguard-8b-topiccontrol-nim-locally">Deploy Llama 3.1 NemoGuard 8B TopicControl NIM locally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-the-nemo-guardrails-library-in-python">Import the NeMo Guardrails Library in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-llama-3-1-nemoguard-8b-topiccontrol-nim-locally">Deploy Llama 3.1 NemoGuard 8B TopicControl NIM Locally</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>

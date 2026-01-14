@@ -633,7 +633,7 @@
 <section id="configure-guardrails">
 <h2>Configure Guardrails<a class="headerlink" href="#configure-guardrails" title="Link to this heading">#</a></h2>
 <ol class="arabic">
-<li><p>Create a configuration directory and add <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
+<li><p>Create a configuration directory and add <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
@@ -652,7 +652,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code>:</p>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_input $model=vision_rails</span>
 <span class="w">    </span><span class="nt">messages</span><span class="p">:</span>
@@ -707,12 +707,12 @@
 <h2>Test with OpenAI<a class="headerlink" href="#test-with-openai" title="Link to this heading">#</a></h2>
 <p>This example sends image requests to OpenAI endpoints and tests safety checks on a handgun image.</p>
 <ol class="arabic">
-<li><p>Set your OpenAI API key:</p>
+<li><p>Set your OpenAI API key.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export OPENAI_API_KEY=&lt;your-openai-api-key&gt;</span>
 </pre></div>
 </div>
 </li>
-<li><p>Install the IPython REPL and run it to interpret Python code below:</p>
+<li><p>Install the IPython REPL and run it to interpret the Python code below.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>ipython
 <span class="gp">$ </span>ipython
 
@@ -720,13 +720,13 @@
 </pre></div>
 </div>
 </li>
-<li><p>Import libraries:</p>
+<li><p>Import libraries.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 </pre></div>
 </div>
 </li>
-<li><p>Load the configuration:</p>
+<li><p>Load the configuration.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.rails.llm.llmrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
 
@@ -735,7 +735,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>Send a safe image reasoning request:</p>
+<li><p>Send a safe image reasoning request.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">image_reasoning_message</span> <span class="o">=</span> <span class="p">[{</span>
   <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
   <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[{</span>
@@ -756,7 +756,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>Send an unsafe request:</p>
+<li><p>Send an unsafe request.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">potentially_unsafe_message</span> <span class="o">=</span> <span class="p">[{</span>
   <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
   <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[{</span>
@@ -785,8 +785,7 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.rails.llm.llmrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./content_safety_vision&quot;</span><span class="p">)</span>
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
