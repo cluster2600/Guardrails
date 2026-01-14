@@ -628,7 +628,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>Create a <code class="docutils literal notranslate"><span class="pre">config/config.yaml</span></code> file and add the following content.</p>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">config/config.yml</span></code> file and add the following content.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -767,7 +767,7 @@ For more information, refer to <a class="reference external" href="https://docs.
 </ul>
 <p>To run the Llama 3.1 NemoGuard 8B TopicControl in a Docker container, follow the steps below.</p>
 <ol class="arabic">
-<li><p>Update the config.yml created above to point to a local NIM deployment rather than build.nvidia.com. The configuration below adds a <code class="docutils literal notranslate"><span class="pre">base_url</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code> field under <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, which tells the NeMo Guardrails toolkit to make requests to the <code class="docutils literal notranslate"><span class="pre">nvidia/llama-3.1-nemotron-safety-guard-8b-v3</span></code> model hosted at <code class="docutils literal notranslate"><span class="pre">http://localhost:8123/v1</span></code>. The Guardrails configuration below has to match the NIM Docker container configuration for them to communicate.</p>
+<li><p>Update the config.yml created above to point to a local NIM deployment rather than build.nvidia.com. The configuration below adds a <code class="docutils literal notranslate"><span class="pre">base_url</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code> field under <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, which tells the NeMo Guardrails toolkit to make requests to the <code class="docutils literal notranslate"><span class="pre">nvidia/llama-3.1-nemoguard-8b-topic-control</span></code> model hosted at <code class="docutils literal notranslate"><span class="pre">http://localhost:8123/v1</span></code>. The Guardrails configuration below has to match the NIM Docker container configuration for them to communicate.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -783,10 +783,7 @@ For more information, refer to <a class="reference external" href="https://docs.
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=content_safety</span>
-<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic safety check input $model=topic_control</span>
 </pre></div>
 </div>
 </li>
@@ -830,7 +827,7 @@ For more information, refer to <a class="reference external" href="https://docs.
 <p>The container requires several minutes to start and download the model from NGC. You can monitor the progress by running the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">llama-nemotron-topic-guard</span></code> command.</p>
 </li>
 <li><p>Confirm the service is ready to respond to inference requests.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl -X GET http://localhost:8000/v1/health/ready</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://localhost:8123/v1/health/ready
 </pre></div>
 </div>
 <p>Example Output</p>

@@ -906,7 +906,7 @@ For more information, refer to <a class="reference external" href="https://docs.
 <p>The container requires several minutes to start and download the model from NGC. You can monitor the progress by running the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">safetyguard8b</span></code> command.</p>
 </li>
 <li><p>Confirm the service is ready to respond to inference requests.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl -X GET http://localhost:8123/v1/models | jq &#39;.data[].id&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://localhost:8123/v1/models<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.data[].id&#39;</span>
 </pre></div>
 </div>
 <p>Example Output</p>
