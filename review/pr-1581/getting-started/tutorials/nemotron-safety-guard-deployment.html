@@ -829,6 +829,96 @@ For more information on guardrail configurations see <a class="reference interna
 </li>
 </ol>
 </section>
+<section id="deploy-llama-3-1-nemotron-safety-guard-8b-v3-nim-locally">
+<h2>Deploy Llama 3.1 Nemotron Safety Guard 8B V3 NIM locally<a class="headerlink" href="#deploy-llama-3-1-nemotron-safety-guard-8b-v3-nim-locally" title="Link to this heading">#</a></h2>
+<p>This section shows how to run the Nemotron Safety Guard 8B model locally, while still using the build.nvidia.com hosted main model. The pre-requisites are:</p>
+<ul class="simple">
+<li><p>The NeMo Guardrails library <a class="reference internal" href="../installation-guide.html"><span class="std std-doc">installed</span></a>.</p></li>
+<li><p>A personal NVIDIA NGC API key with NVIDIA NGC Catalog and NVIDIA Public API Endpoints services access.
+For more information, refer to <a class="reference external" href="https://docs.nvidia.com/ngc/latest/ngc-user-guide.html#ngc-api-keys" rel="noreferer noopener" target="_blank">NGC API Keys</a> in the NVIDIA GPU cloud documentation.</p></li>
+<li><p>Docker <a class="reference external" href="https://docs.docker.com/engine/install/" rel="noreferer noopener" target="_blank">installed</a>.</p></li>
+<li><p>NVIDIA Container Toolkit <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" rel="noreferer noopener" target="_blank">installed</a>.</p></li>
+<li><p>The rest of the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/support-matrix.html#software" rel="noreferer noopener" target="_blank">software requirements for the Llama 3.1 Nemotron Safety Guard 8B V3 NIM</a>.</p></li>
+<li><p>GPUs meeting the memory requirement specified in the <a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/support-matrix.html#about-model-profiles" rel="noreferer noopener" target="_blank">NVIDIA Llama 3.1 Nemotron Safety Guard 8B NIM Model Profiles</a>.</p></li>
+</ul>
+<p>To run the Llama 3.1 Nemotron Safety Guard 8B V3 in a Docker container, follow the steps below.</p>
+<ol class="arabic">
+<li><p>Update the config.yml created above to point to a local NIM deployment rather than build.nvidia.com. The configuration below adds a <code class="docutils literal notranslate"><span class="pre">base_url</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code> field under <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, which tells the NeMo Guardrails toolkit to make requests to the <code class="docutils literal notranslate"><span class="pre">nvidia/llama-3.1-nemotron-safety-guard-8b-v3</span></code> model hosted at <code class="docutils literal notranslate"><span class="pre">http://localhost:8123/v1</span></code>. The Guardrails configuration below has to match the NIM Docker container configuration for them to communicate.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.3-70b-instruct</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/llama-3.1-nemotron-safety-guard-8b-v3</span>
+<span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8123/v1&quot;</span>
+<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvidia/llama-3.1-nemotron-safety-guard-8b-v3&quot;</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=content_safety</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the Llama 3.1 Nemotron Safety Guard 8B V3 NIM Docker Container. You’ll store your personal NGC API Key in the <code class="docutils literal notranslate"><span class="pre">NGC_API_KEY</span></code> environment variable, then pull and run the NIM Docker image locally.</p>
+<ol class="arabic">
+<li><p>Log in to NVIDIA_NGC so you can pull the container.</p>
+<p>Export your Personal NGC API Key to an environment variable</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;...&quot;</span>
+</pre></div>
+</div>
+<p>Log in to the NGC registry</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>login<span class="w"> </span>nvcr.io<span class="w"> </span>--username<span class="w"> </span><span class="s1">&#39;$oauthtoken&#39;</span><span class="w"> </span>--password-stdin<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span><span class="nv">$NGC_API_KEY</span>
+</pre></div>
+</div>
+</li>
+<li><p>Download the container</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>pull<span class="w"> </span>nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-8b-v3:1.14.0
+</pre></div>
+</div>
+</li>
+<li><p>Create a model cache directory on the host machine</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_NIM_CACHE</span><span class="o">=</span>~/.cache/safetyguard8b
+<span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">$ </span>chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the container with the cache directory mounted.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-p</span></code> argument maps the Docker container’s port 8000 to 8123 to avoid any clashes with other servers running locally.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--name<span class="w"> </span>safetyguard8b<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gpus<span class="o">=</span>all<span class="w"> </span>--runtime<span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--shm-size<span class="o">=</span>64GB<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span>NGC_API_KEY<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-u<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCAL_NIM_CACHE</span><span class="si">}</span><span class="s2">:/opt/nim/.cache/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-p<span class="w"> </span><span class="m">8123</span>:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-8b-v3:1.14.0
+</pre></div>
+</div>
+<p>The container requires several minutes to start and download the model from NGC. You can monitor the progress by running the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">safetyguard8b</span></code> command.</p>
+</li>
+<li><p>Confirm the service is ready to respond to inference requests.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl -X GET http://localhost:8123/v1/models | jq &#39;.data[].id&#39;</span>
+</pre></div>
+</div>
+<p>Example Output</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;nvidia/llama-3.1-nemotron-safety-guard-8b-v3&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Follow the steps in the <a class="reference internal" href="#run-the-guardrails-chat-application">Run the Guardrails chat application</a> and <a class="reference internal" href="#import-the-nemo-guardrails-toolkit-in-python">Import the NeMo Guardrails toolkit in Python</a> tutorial to run Guardrails with the local model.</p></li>
+</ol>
+</section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -891,6 +981,7 @@ For more information on guardrail configurations see <a class="reference interna
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-guardrails">Configure Guardrails</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-guardrails-chat-application">Run the Guardrails chat application</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-the-nemo-guardrails-toolkit-in-python">Import the NeMo Guardrails toolkit in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-llama-3-1-nemotron-safety-guard-8b-v3-nim-locally">Deploy Llama 3.1 Nemotron Safety Guard 8B V3 NIM locally</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
