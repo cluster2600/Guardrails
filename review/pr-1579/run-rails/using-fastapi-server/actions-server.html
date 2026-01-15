@@ -381,6 +381,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
@@ -880,15 +881,13 @@ nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span>--po
 <section id="example-complete-workflow">
 <h2>Example: Complete Workflow<a class="headerlink" href="#example-complete-workflow" title="Link to this heading">#</a></h2>
 <p>This example demonstrates running both servers together.</p>
-<section id="id2">
-<h3>1. Start the Actions Server<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p>Start the Actions Server.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span>--port<span class="w"> </span><span class="m">8001</span>
 </pre></div>
 </div>
-</section>
-<section id="configure-guardrails">
-<h3>2. Configure Guardrails<a class="headerlink" href="#configure-guardrails" title="Link to this heading">#</a></h3>
-<p>Create a configuration that uses the actions server:</p>
+</li>
+<li><p>Configure a guardrails configuration to use the actions server.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># config/my-bot/config.yml</span>
 <span class="nt">actions_server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8001&quot;</span>
 
@@ -903,15 +902,13 @@ nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span>--po
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span>
 </pre></div>
 </div>
-</section>
-<section id="start-the-guardrails-server">
-<h3>3. Start the Guardrails Server<a class="headerlink" href="#start-the-guardrails-server" title="Link to this heading">#</a></h3>
+</li>
+<li><p>Start the guardrails server.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./config<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
 </pre></div>
 </div>
-</section>
-<section id="test-the-setup">
-<h3>4. Test the Setup<a class="headerlink" href="#test-the-setup" title="Link to this heading">#</a></h3>
+</li>
+<li><p>Test the servers.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
 <span class="c1"># Verify actions are available</span>
@@ -926,7 +923,8 @@ nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span>--po
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </pre></div>
 </div>
-</section>
+</li>
+</ol>
 </section>
 <hr class="docutils" />
 <section id="deployment-considerations">
@@ -1020,13 +1018,7 @@ nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span>--po
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-guardrails-to-use-the-actions-server">Configure Guardrails to Use the Actions Server</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#register-custom-actions">Register Custom Actions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-complete-workflow">Example: Complete Workflow</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. Start the Actions Server</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-guardrails">2. Configure Guardrails</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-guardrails-server">3. Start the Guardrails Server</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-the-setup">4. Test the Setup</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-complete-workflow">Example: Complete Workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-considerations">Deployment Considerations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 </ul>

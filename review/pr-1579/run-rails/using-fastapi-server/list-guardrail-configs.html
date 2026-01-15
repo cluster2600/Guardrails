@@ -381,6 +381,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
@@ -625,9 +626,9 @@
 <h2>Response<a class="headerlink" href="#response" title="Link to this heading">#</a></h2>
 <p>The endpoint returns an array of configuration objects, each with an <code class="docutils literal notranslate"><span class="pre">id</span></code> field:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-bot&quot;</span><span class="p">},</span>
-<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;customer-service&quot;</span><span class="p">},</span>
-<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;content-moderation&quot;</span><span class="p">}</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;content_safety&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jailbreak_detection&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;topic_safety&quot;</span><span class="p">}</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -648,9 +649,9 @@
 </div>
 <p><strong>Example output:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Available configurations:
-  - input_checking
-  - output_checking
-  - main
+  - content_safety
+  - jailbreak_detection
+  - topic_safety
 </pre></div>
 </div>
 </section>
@@ -678,22 +679,22 @@
 <p>The server discovers configurations based on how it was started:</p>
 <p><strong>Multi-config mode</strong> (default): The server scans the configuration directory for sub-folders containing a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> or <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file.
 Each sub-folder becomes an available configuration with its folder name as the ID.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>configs/
-├── my-bot/           → config_id: &quot;my-bot&quot;
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>examples/configs/
+├── content_safety/        → config_id: &quot;content_safety&quot;
 │   └── config.yml
-├── customer-service/ → config_id: &quot;customer-service&quot;
+├── jailbreak_detection/   → config_id: &quot;jailbreak_detection&quot;
 │   └── config.yml
-└── moderation/       → config_id: &quot;moderation&quot;
+└── topic_safety/          → config_id: &quot;topic_safety&quot;
     └── config.yml
 </pre></div>
 </div>
 <p><strong>Single-config mode</strong>: If the server is pointed to a folder containing a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file directly (not in sub-folders), only that configuration is available.
 The folder name becomes the configuration ID.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./my-single-bot
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs/content_safety
 </pre></div>
 </div>
 <p>The endpoint returns:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-single-bot&quot;</span><span class="p">}]</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;content_safety&quot;</span><span class="p">}]</span>
 </pre></div>
 </div>
 </section>

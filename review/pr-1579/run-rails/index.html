@@ -381,6 +381,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Install</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
@@ -644,7 +645,7 @@ The guardrails intercept inputs and outputs between uses and the LLM and the exe
 <p>The Guardrails API server provides a RESTful API interface to the guardrails library. Instead of calling Python functions directly, you make HTTP requests to the server endpoints, making integration straightforward for any language or platform.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;config_id&quot;: &quot;my-bot&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]}&#39;</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;config_id&quot;: &quot;content_safety&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]}&#39;</span>
 </pre></div>
 </div>
 <p>This approach is best for:</p>

@@ -381,6 +381,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
@@ -923,7 +924,7 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;config_id&quot;: &quot;my-bot&quot;,</span>
+<span class="s1">    &quot;config_id&quot;: &quot;content_safety&quot;,</span>
 <span class="s1">    &quot;messages&quot;: [</span>
 <span class="s1">      {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the capital of France?&quot;}</span>
 <span class="s1">    ]</span>
@@ -936,7 +937,7 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;config_id&quot;: &quot;my-bot&quot;,</span>
+<span class="s1">    &quot;config_id&quot;: &quot;content_safety&quot;,</span>
 <span class="s1">    &quot;messages&quot;: [</span>
 <span class="s1">      {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Tell me a story&quot;}</span>
 <span class="s1">    ],</span>
@@ -950,7 +951,7 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;config_id&quot;: &quot;my-bot&quot;,</span>
+<span class="s1">    &quot;config_id&quot;: &quot;content_safety&quot;,</span>
 <span class="s1">    &quot;messages&quot;: [</span>
 <span class="s1">      {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;}</span>
 <span class="s1">    ],</span>
@@ -970,7 +971,7 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;config_id&quot;: &quot;my-bot&quot;,</span>
+<span class="s1">    &quot;config_id&quot;: &quot;content_safety&quot;,</span>
 <span class="s1">    &quot;messages&quot;: [</span>
 <span class="s1">      {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;}</span>
 <span class="s1">    ],</span>
@@ -992,7 +993,7 @@
 <p>List all available guardrails configurations.</p>
 <p>Returns an array of configuration objects.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-bot&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;content_safety&quot;</span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;customer-service&quot;</span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;content-moderation&quot;</span><span class="p">}</span>
 <span class="p">]</span>

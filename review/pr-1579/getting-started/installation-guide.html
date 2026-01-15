@@ -381,6 +381,7 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Install</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
@@ -622,11 +623,14 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Python</strong></p></td>
+<tr class="row-even"><td><p><strong>Operating System</strong></p></td>
+<td><p>Windows, Linux, MacOS</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Python</strong></p></td>
 <td><p>3.10, 3.11, 3.12, or 3.13</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Hardware</strong></p></td>
-<td><p>The NeMo Guardrails library processes run on CPUs and don’t require GPUs. LLMs that you want to use with NeMo Guardrails must be deployed separately to your own GPUs.</p></td>
+<tr class="row-even"><td><p><strong>Hardware</strong></p></td>
+<td><p>1 CPU with 4GB RAM. The NeMo Guardrails library runs on CPU. External models may require GPUs, which may be deployed separately to the library</p></td>
 </tr>
 </tbody>
 </table>
@@ -656,14 +660,9 @@ venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
 </div>
 </div>
 </li>
-<li><p>Install the package:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails
-</pre></div>
-</div>
-</li>
-<li><p>For OpenAI integration, install with extras and set your API key:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>openai<span class="o">]</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>&lt;your-key&gt;
+<li><p>Install the Nemo Guardrails toolkit with support for NVIDIA-hosted models. Set NVIDIA_API_KEY to your personal API Key generated on <a class="reference external" href="https://build.nvidia.com/" rel="noreferer noopener" target="_blank">https://build.nvidia.com/</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;nemoguardrails[nvidia]&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span><span class="s2">&quot;nvapi-...&quot;</span>
 </pre></div>
 </div>
 </li>
@@ -680,7 +679,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </section>
 <section id="extra-dependencies">
 <h2>Extra Dependencies<a class="headerlink" href="#extra-dependencies" title="Link to this heading">#</a></h2>
-<p>Install optional packages based on your needs:</p>
+<p>The NeMo Guardrails library can be installed with optional “extras”, adding functionality that isn’t required for the core Guardrails library. The table below shows some popular extras. For a comprehensive list, see the <code class="docutils literal notranslate"><span class="pre">[tool.poetry.extras]</span></code> section in <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/pyproject.toml" rel="noreferer noopener" target="_blank">pyproject.toml</a>.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Extra</p></th>
@@ -688,33 +687,32 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">openai</span></code></p></td>
-<td><p>OpenAI integration</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nvidia</span></code></p></td>
+<td><p>NVIDIA-hosted model integration (<a class="reference external" href="https://build.nvidia.com/" rel="noreferer noopener" target="_blank">https://build.nvidia.com/</a>)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">eval</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">openai</span></code></p></td>
+<td><p>OpenAI-hosted model integration</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">eval</span></code></p></td>
 <td><p><span class="xref myst">Evaluation tools</span></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sdd</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sdd</span></code></p></td>
 <td><p><a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#presidio-based-sensitive-data-detection"><span class="xref myst">Sensitive data detection</span></a> using Presidio</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dev</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dev</span></code></p></td>
 <td><p>Developer features like autoreload</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">all</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">all</span></code></p></td>
 <td><p>All optional packages</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>openai<span class="o">]</span><span class="w">     </span><span class="c1"># Single extra</span>
-pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>eval,sdd<span class="o">]</span><span class="w">   </span><span class="c1"># Multiple extras</span>
-pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>all<span class="o">]</span><span class="w">        </span><span class="c1"># Everything</span>
+<p>To prevent the shell from interpreting square brackets as a glob pattern, enclose the nemoguardrails and extensions in double-quotes.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;nemoguardrails[openai]&quot;</span><span class="w">     </span><span class="c1"># Single extra</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;nemoguardrails[eval,sdd]&quot;</span><span class="w">   </span><span class="c1"># Multiple extras</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;nemoguardrails[all]&quot;</span><span class="w">        </span><span class="c1"># Everything</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If dependency resolution fails with <code class="docutils literal notranslate"><span class="pre">[all]</span></code>, add constraints:
-<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;nemoguardrails[all]&quot;</span> <span class="pre">&quot;pandas&gt;=1.4.0,&lt;3&quot;</span></code></p>
 </div>
 <p>Some features like <a class="reference internal" href="../user-guides/community/alignscore.html"><span class="std std-doc">AlignScore</span></a> have additional requirements. Check the feature documentation for details.</p>
 </section>

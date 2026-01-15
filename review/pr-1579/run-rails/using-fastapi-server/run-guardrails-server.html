@@ -381,6 +381,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
@@ -689,32 +690,36 @@ The configuration path must be a folder with sub-folders for each individual con
 </section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<p>The following examples show how to start the server with different options.</p>
 <section id="start-with-default-settings">
 <h3>Start with Default Settings<a class="headerlink" href="#start-with-default-settings" title="Link to this heading">#</a></h3>
+<p>The following command starts the server with default settings.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server
 </pre></div>
 </div>
-<p>The server starts on port 8000 and loads configurations from the <code class="docutils literal notranslate"><span class="pre">./config</span></code> folder.</p>
+<p>The server starts on port 8000 and looks for a <code class="docutils literal notranslate"><span class="pre">./config</span></code> folder in the current directory. If not found, it uses the built-in example configurations.</p>
 </section>
-<section id="start-with-custom-configuration-path">
-<h3>Start with Custom Configuration Path<a class="headerlink" href="#start-with-custom-configuration-path" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>/path/to/my-configs<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
+<section id="start-with-custom-port">
+<h3>Start with Custom Port<a class="headerlink" href="#start-with-custom-port" title="Link to this heading">#</a></h3>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">--port</span></code> flag to start the server on a custom port.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
 </pre></div>
 </div>
 </section>
 <section id="start-with-a-default-configuration">
 <h3>Start with a Default Configuration<a class="headerlink" href="#start-with-a-default-configuration" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./configs<span class="w"> </span>--default-config-id<span class="w"> </span>my-bot
+<p>Use the following command to start the server with a default configuration within a multi-config folder. For example, when you use the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs" rel="noreferer noopener" target="_blank">provided example configurations (<code class="docutils literal notranslate"><span class="pre">examples/configs</span></code>)</a>, you can set the default configuration to <code class="docutils literal notranslate"><span class="pre">content_safety</span></code> as follows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs<span class="w"> </span>--default-config-id<span class="w"> </span>content_safety
 </pre></div>
 </div>
-<p>Requests without a <code class="docutils literal notranslate"><span class="pre">config_id</span></code> use the <code class="docutils literal notranslate"><span class="pre">my-bot</span></code> configuration.</p>
+<p>Chat completions requests without a <code class="docutils literal notranslate"><span class="pre">config_id</span></code> use the <code class="docutils literal notranslate"><span class="pre">content_safety</span></code> configuration by default.</p>
 </section>
 <section id="start-in-development-mode">
 <h3>Start in Development Mode<a class="headerlink" href="#start-in-development-mode" title="Link to this heading">#</a></h3>
+<p>You can add the <code class="docutils literal notranslate"><span class="pre">--auto-reload</span></code> flag to the server to automatically reload when configuration files change.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./configs<span class="w"> </span>--auto-reload
 </pre></div>
 </div>
-<p>The server automatically reloads when configuration files change.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">--auto-reload</span></code> only in development environments. It is not recommended for production.</p>
@@ -750,14 +755,6 @@ The configuration path must be a folder with sub-folders for each individual con
 nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./configs
 </pre></div>
 </div>
-</section>
-<section id="view-api-documentation">
-<h2>View API Documentation<a class="headerlink" href="#view-api-documentation" title="Link to this heading">#</a></h2>
-<p>After starting the server, view the OpenAPI documentation at:</p>
-<ul class="simple">
-<li><p><strong>Swagger UI</strong>: <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/docs</span></code></p></li>
-<li><p><strong>ReDoc</strong>: <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/redoc</span></code></p></li>
-</ul>
 </section>
 <section id="chat-ui">
 <h2>Chat UI<a class="headerlink" href="#chat-ui" title="Link to this heading">#</a></h2>
@@ -835,13 +832,12 @@ For production deployments, disable it using the <code class="docutils literal n
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-folder-structure">Configuration Folder Structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-default-settings">Start with Default Settings</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-custom-configuration-path">Start with Custom Configuration Path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-custom-port">Start with Custom Port</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-a-default-configuration">Start with a Default Configuration</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-in-development-mode">Start in Development Mode</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cors-configuration">CORS Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-api-documentation">View API Documentation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-ui">Chat UI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 </ul>
