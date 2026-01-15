@@ -615,7 +615,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="overview-of-the-nemo-guardrails-library-api-server">
 <h1>Overview of the NeMo Guardrails Library API Server<a class="headerlink" href="#overview-of-the-nemo-guardrails-library-api-server" title="Link to this heading">#</a></h1>
-<p>The Guardrails server:</p>
+<p>The NeMo Guardrails API server:</p>
 <ul class="simple">
 <li><p>Loads guardrails configurations at startup.</p></li>
 <li><p>Exposes a REST API compatible with OpenAI’s chat completions format.</p></li>
@@ -624,38 +624,27 @@
 </ul>
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
-<p>The following steps show how to start the guardrails server and use it to generate a response.</p>
+<p>The following steps show how to start the NeMo Guardrails API server using the provided configuration files and test it by sending requests to the endpoints.</p>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
-<p>Install the NeMo Guardrails library using one of the following methods.</p>
-<div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-0">
-pip (recommended)</label><div class="sd-tab-content docutils">
-<p>Create a virtual environment, activate it, and install the library:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
-pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>nvidia<span class="o">]</span>
+<p>Meet the following prerequisites to use the NeMo Guardrails API server.</p>
+<ol class="arabic">
+<li><p>If you haven’t already, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> extra.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/NVIDIA/NeMo-Guardrails.git</span>
+<span class="go">cd NeMo-Guardrails</span>
+<span class="go">python -m venv .venv</span>
+<span class="go">source .venv/bin/activate</span>
+<span class="go">poetry install --extras &quot;nvidia&quot;</span>
 </pre></div>
 </div>
-</div>
-<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-1">
-Poetry (development)</label><div class="sd-tab-content docutils">
-<p>Clone the repository and install with Poetry:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA/NeMo-Guardrails.git
-<span class="nb">cd</span><span class="w"> </span>NeMo-Guardrails
-python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
-poetry<span class="w"> </span>install<span class="w"> </span>--extras<span class="w"> </span><span class="s2">&quot;nvidia&quot;</span>
+<p>For more information about installing the NeMo Guardrails library, see <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">Install the NeMo Guardrails Library</span></a>.</p>
+</li>
+<li><p>Set up an environment variable for your NVIDIA API key.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export NVIDIA_API_KEY=&quot;nvapi-...&quot;</span>
 </pre></div>
 </div>
-<p>Prefix all commands with <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span></code> when using the nemoguardrails CLI:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs
-</pre></div>
-</div>
-</div>
-</div>
+</li>
+</ol>
 </section>
 <section id="start-the-server">
 <h3>Start the Server<a class="headerlink" href="#start-the-server" title="Link to this heading">#</a></h3>

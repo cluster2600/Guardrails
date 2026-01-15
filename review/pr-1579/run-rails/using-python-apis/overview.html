@@ -623,22 +623,50 @@
 <p>Upon initializing the core classes (<code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> and <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code>), the library loads the configuration files you created in the previous chapter <a class="reference internal" href="../../configure-rails/index.html"><span class="std std-doc">Configure Rails</span></a>.</p>
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<p>The following steps show how to run a sample guardrailed chat request using the NeMo Guardrails library Python API.</p>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
+<p>Meet the following prerequisites to use the NeMo Guardrails library Python API.</p>
+<ol class="arabic">
+<li><p>If you haven’t already, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> extra.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m venv .venv</span>
+<span class="go">source .venv/bin/activate</span>
+<span class="go">pip install nemoguardrails[nvidia]</span>
+</pre></div>
+</div>
+<p>For more information about installing the NeMo Guardrails library, see <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">Install the NeMo Guardrails Library</span></a>.</p>
+</li>
+<li><p>Set up an environment variable for your NVIDIA API key.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export NVIDIA_API_KEY=&quot;nvapi-...&quot;</span>
+</pre></div>
+</div>
+<p>This is required to access NVIDIA-hosted models.</p>
+</li>
+</ol>
+</section>
+<section id="run-a-sample-guardrailed-chat-request">
+<h3>Run a Sample Guardrailed Chat Request<a class="headerlink" href="#run-a-sample-guardrailed-chat-request" title="Link to this heading">#</a></h3>
 <p>The following example shows the minimal code to load the prepared configuration files in the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory and generate a response using the <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code> class.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
 <span class="c1"># Load configuration from the config directory</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;examples/configs&quot;</span><span class="p">)</span>
 
 <span class="c1"># Create the LLMRails instance</span>
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
 <span class="c1"># Generate a response</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello! How are you?&quot;</span><span class="p">}</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span>
+    <span class="p">}</span>
 <span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
+</section>
 </section>
 <section id="when-to-use-each-api">
 <h2>When to Use Each API<a class="headerlink" href="#when-to-use-each-api" title="Link to this heading">#</a></h2>
@@ -744,7 +772,11 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-sample-guardrailed-chat-request">Run a Sample Guardrailed Chat Request</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-each-api">When to Use Each API</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synchronous-vs-asynchronous">Synchronous vs Asynchronous</a></li>
 </ul>
