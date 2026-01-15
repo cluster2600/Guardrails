@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Run the Guardrails Server &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Run the NeMo Guardrails Server &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -596,7 +596,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Use the Guardrails API Server</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Run the Guardrails Server</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Run the NeMo Guardrails Server</span></li>
   </ul>
 </nav>
 </div>
@@ -613,80 +613,80 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="run-the-guardrails-server">
-<h1>Run the Guardrails Server<a class="headerlink" href="#run-the-guardrails-server" title="Link to this heading">#</a></h1>
-<p>The Guardrails server loads a predefined set of guardrails configurations at startup and exposes an HTTP API to use them.
+  <section class="tex2jax_ignore mathjax_ignore" id="run-the-nemo-guardrails-server">
+<h1>Run the NeMo Guardrails Server<a class="headerlink" href="#run-the-nemo-guardrails-server" title="Link to this heading">#</a></h1>
+<p>The NeMo Guardrails server loads a predefined set of guardrails configurations at startup and exposes an HTTP API to use them.
 The server uses <a class="reference external" href="https://fastapi.tiangolo.com/" rel="noreferer noopener" target="_blank">FastAPI</a> and includes a built-in Chat UI for testing.</p>
 <section id="start-the-server">
 <h2>Start the Server<a class="headerlink" href="#start-the-server" title="Link to this heading">#</a></h2>
-<p>Launch the server using the CLI:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">[</span>--config<span class="w"> </span>PATH/TO/CONFIGS<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">[</span>--port<span class="w"> </span>PORT<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">[</span>--prefix<span class="w"> </span>PREFIX<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">[</span>--disable-chat-ui<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">[</span>--auto-reload<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">[</span>--default-config-id<span class="w"> </span>DEFAULT_CONFIG_ID<span class="o">]</span>
+<p>Launch the server using the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs
 </pre></div>
 </div>
-<section id="command-options">
-<h3>Command Options<a class="headerlink" href="#command-options" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 25.0%" />
-<col style="width: 75.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Option</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--config</span></code></p></td>
-<td><p>Path to the folder containing guardrails configurations.
-If not specified, the server looks for a <code class="docutils literal notranslate"><span class="pre">config</span></code> folder in the current directory.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--port</span></code></p></td>
-<td><p>Port number for the server. Default: <code class="docutils literal notranslate"><span class="pre">8000</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--prefix</span></code></p></td>
-<td><p>URL prefix for all server endpoints.
-For example, <code class="docutils literal notranslate"><span class="pre">--prefix</span> <span class="pre">/api</span></code> makes endpoints available at <code class="docutils literal notranslate"><span class="pre">/api/v1/chat/completions</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-chat-ui</span></code></p></td>
-<td><p>Disable the built-in Chat UI. Recommended for production deployments.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--auto-reload</span></code></p></td>
-<td><p>Automatically reload configurations when files change.
-Use only in development environments.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--default-config-id</span></code></p></td>
-<td><p>Default configuration ID to use when none is specified in the request.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>For more information about the available options, see the <a class="reference internal" href="../../reference/cli/index.html#server"><span class="std std-ref">server command in the CLI Reference</span></a>.</p>
 </section>
-</section>
-<section id="configuration-folder-structure">
-<h2>Configuration Folder Structure<a class="headerlink" href="#configuration-folder-structure" title="Link to this heading">#</a></h2>
-<p>The server can load multiple guardrails configurations.
-The configuration path must be a folder with sub-folders for each individual configuration:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.
-├── config
-│   ├── config_1
-│   │   ├── file_1.co
-│   │   └── config.yml
-│   ├── config_2
-│   │   ├── ...
-│   │   └── config.yml
-│   ...
+<section id="link-guardrail-configurations-to-the-server">
+<h2>Link Guardrail Configurations to the Server<a class="headerlink" href="#link-guardrail-configurations-to-the-server" title="Link to this heading">#</a></h2>
+<p>The server supports two modes depending on your folder structure: <strong>multi-config mode</strong> and <strong>single-config mode</strong>.</p>
+<section id="multi-config-mode">
+<h3>Multi-Config Mode<a class="headerlink" href="#multi-config-mode" title="Link to this heading">#</a></h3>
+<p>When the <code class="docutils literal notranslate"><span class="pre">--config</span></code> path points to a folder containing multiple sub-folders, each sub-folder with a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file becomes an available configuration.
+The sub-folder name becomes the <code class="docutils literal notranslate"><span class="pre">config_id</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>examples/configs/          # --config points here
+├── content_safety/        # config_id: &quot;content_safety&quot;
+│   ├── rails.co
+│   └── config.yml
+├── jailbreak_detection/   # config_id: &quot;jailbreak_detection&quot;
+│   ├── flows.co
+│   └── config.yml
+└── topic_safety/          # config_id: &quot;topic_safety&quot;
+    └── config.yml
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If the server is pointed to a folder with a single <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file, only that configuration is available.</p>
+<ol class="arabic">
+<li><p>Start the server in multi-config mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs
+</pre></div>
 </div>
+</li>
+<li><p>List available configurations.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:8000/v1/rails/configs
+</pre></div>
+</div>
+<p>The endpoint returns the list of available configurations.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;content_safety&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jailbreak_detection&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;topic_safety&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="single-config-mode">
+<h3>Single-Config Mode<a class="headerlink" href="#single-config-mode" title="Link to this heading">#</a></h3>
+<p>When the <code class="docutils literal notranslate"><span class="pre">--config</span></code> path points directly to a folder containing a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file, the server runs in single-config mode.
+The folder name becomes the only available <code class="docutils literal notranslate"><span class="pre">config_id</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>examples/configs/content_safety/   # --config points here
+├── rails.co
+└── config.yml                     # config_id: &quot;content_safety&quot;
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>Start the server in single-config mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs/content_safety
+</pre></div>
+</div>
+</li>
+<li><p>List available configurations.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:8000/v1/rails/configs
+</pre></div>
+</div>
+<p>The endpoint returns the single configuration named <code class="docutils literal notranslate"><span class="pre">content_safety</span></code>.</p>
+</li>
+</ol>
+</section>
 </section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
@@ -825,11 +825,12 @@ For production deployments, disable it using the <code class="docutils literal n
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-server">Start the Server</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#command-options">Command Options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-server">Start the Server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#link-guardrail-configurations-to-the-server">Link Guardrail Configurations to the Server</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-config-mode">Multi-Config Mode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-config-mode">Single-Config Mode</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-folder-structure">Configuration Folder Structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-default-settings">Start with Default Settings</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-custom-port">Start with Custom Port</a></li>

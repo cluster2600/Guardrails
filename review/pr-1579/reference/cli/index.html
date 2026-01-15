@@ -618,210 +618,291 @@
 Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 
 Options:
-<span class="w">  </span>--install-completion<span class="w"> </span><span class="o">[</span>bash<span class="p">|</span>zsh<span class="p">|</span>fish<span class="p">|</span>powershell<span class="p">|</span>pwsh<span class="o">]</span>
-<span class="w">                                  </span>Install<span class="w"> </span>completion<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>specified<span class="w"> </span>shell.
-<span class="w">  </span>--show-completion<span class="w"> </span><span class="o">[</span>bash<span class="p">|</span>zsh<span class="p">|</span>fish<span class="p">|</span>powershell<span class="p">|</span>pwsh<span class="o">]</span>
-<span class="w">                                  </span>Show<span class="w"> </span>completion<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>specified<span class="w"> </span>shell,<span class="w"> </span>to
-<span class="w">                                  </span>copy<span class="w"> </span>it<span class="w"> </span>or<span class="w"> </span>customize<span class="w"> </span>the<span class="w"> </span>installation.
-<span class="w">  </span>--help<span class="w">                          </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
+<span class="w">  </span>-v,<span class="w"> </span>--version<span class="w">         </span>Show<span class="w"> </span>version<span class="w"> </span>and<span class="w"> </span>exit.
+<span class="w">  </span>--install-completion<span class="w">  </span>Install<span class="w"> </span>completion<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>current<span class="w"> </span>shell.
+<span class="w">  </span>--show-completion<span class="w">     </span>Show<span class="w"> </span>completion<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>current<span class="w"> </span>shell,<span class="w"> </span>to<span class="w"> </span>copy<span class="w"> </span>it
+<span class="w">                        </span>or<span class="w"> </span>customize<span class="w"> </span>the<span class="w"> </span>installation.
+<span class="w">  </span>--help<span class="w">                </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
 
 Commands:
-<span class="w">  </span>actions-server<span class="w">  </span>Starts<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>actions<span class="w"> </span>server.
-<span class="w">  </span>chat<span class="w">            </span>Starts<span class="w"> </span>an<span class="w"> </span>interactive<span class="w"> </span>chat<span class="w"> </span>session.
-<span class="w">  </span>convert<span class="w">         </span>Convert<span class="w"> </span>a<span class="w"> </span>Colang<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span>directory<span class="w"> </span>to<span class="w"> </span>Colang<span class="w"> </span><span class="m">2</span>.0<span class="w"> </span>format.
-<span class="w">  </span>evaluate<span class="w">        </span>Run<span class="w"> </span>an<span class="w"> </span>evaluation<span class="w"> </span>task.
-<span class="w">  </span>server<span class="w">          </span>Starts<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>server.
+<span class="w">  </span>chat<span class="w">             </span>Start<span class="w"> </span>an<span class="w"> </span>interactive<span class="w"> </span>chat<span class="w"> </span>session.
+<span class="w">  </span>server<span class="w">           </span>Start<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>server.
+<span class="w">  </span>convert<span class="w">          </span>Convert<span class="w"> </span>Colang<span class="w"> </span>files<span class="w"> </span>and<span class="w"> </span>configs<span class="w"> </span>from<span class="w"> </span>older<span class="w"> </span>version<span class="w"> </span>to
+<span class="w">                   </span>the<span class="w"> </span>latest.
+<span class="w">  </span>actions-server<span class="w">   </span>Start<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>actions<span class="w"> </span>server.
+<span class="w">  </span>find-providers<span class="w">   </span>List<span class="w"> </span>and<span class="w"> </span><span class="k">select</span><span class="w"> </span>LLM<span class="w"> </span>providers<span class="w"> </span>interactively.
+<span class="w">  </span><span class="nb">eval</span><span class="w">             </span>Evaluation<span class="w"> </span>a<span class="w"> </span>guardrail<span class="w"> </span>configuration.
 </pre></div>
 </div>
-<p>You can also use the <code class="docutils literal notranslate"><span class="pre">--help</span></code> flag to learn more about each of the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> commands:</p>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">--help</span></code> flag to learn more about each of the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> commands.</p>
+<hr class="docutils" />
 <section id="chat">
-<h2>Chat<a class="headerlink" href="#chat" title="Link to this heading">#</a></h2>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span>--config<span class="w"> </span>examples/<span class="w"> </span><span class="o">[</span>--verbose<span class="o">]</span><span class="w"> </span><span class="o">[</span>--verbose-llm-calls<span class="o">]</span>
+<h2><code class="docutils literal notranslate"><span class="pre">chat</span></code><a class="headerlink" href="#chat" title="Link to this heading">#</a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span>--config<span class="w"> </span>examples/configs/content_safety<span class="w"> </span><span class="o">[</span>--verbose<span class="o">]</span><span class="w"> </span><span class="o">[</span>--streaming<span class="o">]</span>
 </pre></div>
 </div>
 <section id="options">
 <h3>Options<a class="headerlink" href="#options" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--config</span></code>: The configuration that should be used. Can be a folder or a .co/.yml file.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code>: In verbose mode, detailed debugging information is also shown.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--verbose-llm-calls</span></code>: In verbose LLM calls mode, the debugging information includes the entire prompt that is sent to the LLM and the completion.</p></li>
-</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--config</span></code></p></td>
+<td><p>Path to a directory containing configuration files. Can also point to a single configuration file. Default: <code class="docutils literal notranslate"><span class="pre">config</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code></p></td>
+<td><p>Enable verbose mode with detailed logging information.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--verbose-no-llm</span></code></p></td>
+<td><p>Enable verbose mode but exclude LLM prompts and responses.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--verbose-simplify</span></code></p></td>
+<td><p>Simplify the verbose output.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--debug-level</span></code></p></td>
+<td><p>Enable debug mode with rich flow execution info. Levels: <code class="docutils literal notranslate"><span class="pre">WARNING</span></code>, <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--streaming</span></code></p></td>
+<td><p>Enable streaming mode if the configuration supports it.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--server-url</span></code></p></td>
+<td><p>Connect to a server instead of loading config locally. Requires <code class="docutils literal notranslate"><span class="pre">--config-id</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--config-id</span></code></p></td>
+<td><p>The config ID to use when connecting to a server.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 </section>
 <section id="actions-server">
-<h2>Actions Server<a class="headerlink" href="#actions-server" title="Link to this heading">#</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-
-<span class="w"> </span>Starts<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>actions<span class="w"> </span>server.
-
-Options:
-<span class="w"> </span>--port<span class="w"> </span>INTEGER<span class="w">  </span>The<span class="w"> </span>port<span class="w"> </span>that<span class="w"> </span>the<span class="w"> </span>server<span class="w"> </span>should<span class="w"> </span>listen<span class="w"> </span>on.<span class="w">   </span><span class="o">[</span>default:<span class="w"> </span><span class="m">8001</span><span class="o">]</span>
-<span class="w"> </span>--help<span class="w">          </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
+<h2><code class="docutils literal notranslate"><span class="pre">actions-server</span></code><a class="headerlink" href="#actions-server" title="Link to this heading">#</a></h2>
+<p>Start a separate server for running custom actions in an isolated environment.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>actions-server<span class="w"> </span>--port<span class="w"> </span><span class="m">8001</span>
 </pre></div>
 </div>
 <section id="id1">
-<h3>chat<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>chat<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-
-<span class="w"> </span>Starts<span class="w"> </span>an<span class="w"> </span>interactive<span class="w"> </span>chat<span class="w"> </span>session.
-
-<span class="w"> </span>--config<span class="w">                                       </span>TEXT<span class="w">  </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>directory<span class="w"> </span>containing<span class="w"> </span>configuration
-<span class="w">                                                      </span>files<span class="w"> </span>to<span class="w"> </span>use.<span class="w"> </span>Can<span class="w"> </span>also<span class="w"> </span>point<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>single
-<span class="w">                                                      </span>configuration<span class="w"> </span>file.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>config<span class="o">]</span>
-<span class="w"> </span>--verbose<span class="w">             </span>--no-verbose<span class="w">                   </span>If<span class="w"> </span>the<span class="w"> </span>chat<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>verbose<span class="w"> </span>and<span class="w"> </span>output
-<span class="w">                                                      </span>detailed<span class="w"> </span>logging<span class="w"> </span>information.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>no-verbose<span class="o">]</span>
-<span class="w"> </span>--verbose-no-llm<span class="w">      </span>--no-verbose-no-llm<span class="w">            </span>If<span class="w"> </span>the<span class="w"> </span>chat<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>verbose<span class="w"> </span>and<span class="w"> </span>exclude<span class="w"> </span>the
-<span class="w">                                                      </span>prompts<span class="w"> </span>and<span class="w"> </span>responses<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>LLM<span class="w"> </span>calls.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>no-verbose-no-llm<span class="o">]</span>
-<span class="w"> </span>--verbose-simplify<span class="w">    </span>--no-verbose-simplify<span class="w">          </span>Simplify<span class="w"> </span>further<span class="w"> </span>the<span class="w"> </span>verbose<span class="w"> </span>output.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>no-verbose-simplify<span class="o">]</span>
-<span class="w"> </span>--debug-level<span class="w">                                  </span>TEXT<span class="w">  </span>Enable<span class="w"> </span>debug<span class="w"> </span>mode<span class="w"> </span>which<span class="w"> </span>prints<span class="w"> </span>rich
-<span class="w">                                                      </span>information<span class="w"> </span>about<span class="w"> </span>the<span class="w"> </span>flows<span class="w"> </span>execution.
-<span class="w">                                                      </span>Available<span class="w"> </span>levels:<span class="w"> </span>WARNING,<span class="w"> </span>INFO,<span class="w"> </span>DEBUG
-<span class="w"> </span>--streaming<span class="w">           </span>--no-streaming<span class="w">                 </span>If<span class="w"> </span>the<span class="w"> </span>chat<span class="w"> </span>should<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span>streaming<span class="w"> </span>mode,<span class="w"> </span><span class="k">if</span>
-<span class="w">                                                      </span>possible.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>no-streaming<span class="o">]</span>
-<span class="w"> </span>--server-url<span class="w">                                   </span>TEXT<span class="w">  </span>If<span class="w"> </span>specified,<span class="w"> </span>the<span class="w"> </span>chat<span class="w"> </span>CLI<span class="w"> </span>will<span class="w"> </span>interact<span class="w"> </span>with
-<span class="w">                                                      </span>a<span class="w"> </span>server,<span class="w"> </span>rather<span class="w"> </span>than<span class="w"> </span>load<span class="w"> </span>the<span class="w"> </span>config.<span class="w"> </span>In<span class="w"> </span>this
-<span class="w">                                                      </span><span class="k">case</span>,<span class="w"> </span>the<span class="w"> </span>--config-id<span class="w"> </span>must<span class="w"> </span>also<span class="w"> </span>be<span class="w"> </span>specified.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>None<span class="o">]</span>
-<span class="w"> </span>--config-id<span class="w">                                    </span>TEXT<span class="w">  </span>The<span class="w"> </span>config_id<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>used<span class="w"> </span>when<span class="w"> </span>interacting<span class="w"> </span>with
-<span class="w">                                                      </span>the<span class="w"> </span>server.
-<span class="w">                                                      </span><span class="o">[</span>default:<span class="w"> </span>None<span class="o">]</span>
-<span class="w"> </span>--help<span class="w">                                               </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-</pre></div>
+<h3>Options<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--port</span></code></p></td>
+<td><p>The port that the server should listen on. Default: <code class="docutils literal notranslate"><span class="pre">8001</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
+</section>
+<hr class="docutils" />
 <section id="server">
-<h3>server<a class="headerlink" href="#server" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>server<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-
-Starts<span class="w"> </span>a<span class="w"> </span>NeMo<span class="w"> </span>Guardrails<span class="w"> </span>server.
-
-Options:
---port<span class="w">                                        </span>INTEGER<span class="w">  </span>The<span class="w"> </span>port<span class="w"> </span>that<span class="w"> </span>the<span class="w"> </span>server<span class="w"> </span>should<span class="w"> </span>listen<span class="w"> </span>on.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span><span class="m">8000</span><span class="o">]</span>
---config<span class="w">                                      </span>TEXT<span class="w">     </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>directory<span class="w"> </span>containing<span class="w"> </span>multiple<span class="w"> </span>configuration<span class="w"> </span>sub-folders.
---verbose<span class="w">           </span>--no-verbose:<span class="w">                      </span>If<span class="w"> </span>the<span class="w"> </span>server<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>verbose<span class="w"> </span>and<span class="w"> </span>output<span class="w"> </span>detailed<span class="w"> </span>logs<span class="w"> </span>including<span class="w"> </span>prompts.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-verbose<span class="o">]</span>
---disable-chat-ui<span class="w">   </span>--no-disable-chat-ui<span class="w">               </span>Weather<span class="w"> </span>the<span class="w"> </span>ChatUI<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>disabled<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-disable-chat-ui<span class="o">]</span>
---auto-reload<span class="w">       </span>--no-auto-reload<span class="w">                   </span>Enable<span class="w"> </span>auto<span class="w"> </span>reload<span class="w"> </span>option.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-auto-reload<span class="o">]</span>
---prefix<span class="w">                                      </span>TEXT<span class="w">     </span>A<span class="w"> </span>prefix<span class="w"> </span>that<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>added<span class="w"> </span>to<span class="w"> </span>all<span class="w"> </span>server<span class="w"> </span>paths.<span class="w"> </span>Should<span class="w"> </span>start<span class="w"> </span>with<span class="w"> </span><span class="s1">&#39;/&#39;</span>.
---help<span class="w">                                                </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
+<h2><code class="docutils literal notranslate"><span class="pre">server</span></code><a class="headerlink" href="#server" title="Link to this heading">#</a></h2>
+<p>Start the FastAPI server for serving guardrails configurations over HTTP.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
 </pre></div>
 </div>
-</section>
-<section id="evaluate">
-<h3>evaluate<a class="headerlink" href="#evaluate" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>evaluate<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>evaluate<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
-
-Options:
---help:<span class="w">          </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
-
-Commands:
-fact-checking:<span class="w">   </span>Evaluate<span class="w"> </span>the<span class="w"> </span>performance<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>fact-checking<span class="w"> </span>rails<span class="w"> </span>defined<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>Guardrails<span class="w"> </span>application.
-hallucination:<span class="w">   </span>Evaluate<span class="w"> </span>the<span class="w"> </span>performance<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>hallucination<span class="w"> </span>rails<span class="w"> </span>defined<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>Guardrails<span class="w"> </span>application.
-moderation:<span class="w">      </span>Evaluate<span class="w"> </span>the<span class="w"> </span>performance<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>moderation<span class="w"> </span>rails<span class="w"> </span>defined<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>Guardrails<span class="w"> </span>application.
-topical:<span class="w">         </span>Evaluates<span class="w"> </span>the<span class="w"> </span>performance<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>topical<span class="w"> </span>rails<span class="w"> </span>defined<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>Guardrails<span class="w"> </span>application.<span class="w"> </span>Computes<span class="w"> </span>accuracy<span class="w"> </span><span class="k">for</span><span class="w"> </span>canonical<span class="w"> </span>form<span class="w"> </span>detection,<span class="w"> </span>next<span class="w"> </span>step<span class="w"> </span>generation,<span class="w"> </span>and<span class="w"> </span>next<span class="w"> </span>bot<span class="w"> </span>message<span class="w"> </span>generation.<span class="w"> </span>Only<span class="w"> </span>a<span class="w"> </span>single<span class="w"> </span>Guardrails<span class="w"> </span>application<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>specified<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>config<span class="w"> </span>option.
-</pre></div>
+<section id="id2">
+<h3>Options<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--port</span></code></p></td>
+<td><p>The port that the server should listen on. Default: <code class="docutils literal notranslate"><span class="pre">8000</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--config</span></code></p></td>
+<td><p>Path to a directory containing multiple configuration sub-folders.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--default-config-id</span></code></p></td>
+<td><p>The default configuration to use when no config is specified in requests.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code></p></td>
+<td><p>Enable verbose mode with detailed logs including prompts.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--disable-chat-ui</span></code></p></td>
+<td><p>Disable the Chat UI served at the root path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--auto-reload</span></code></p></td>
+<td><p>Enable auto reload when configuration files change.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--prefix</span></code></p></td>
+<td><p>A prefix to add to all server paths. Must start with <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
+</section>
+<hr class="docutils" />
+<section id="eval">
+<h2><code class="docutils literal notranslate"><span class="pre">eval</span></code><a class="headerlink" href="#eval" title="Link to this heading">#</a></h2>
+<p>Evaluate guardrail configurations with various testing and compliance workflows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span><span class="nb">eval</span><span class="w"> </span>run<span class="w"> </span>--config<span class="w"> </span>examples/configs/content_safety
+</pre></div>
+</div>
+<section id="subcommands">
+<h3>Subcommands<a class="headerlink" href="#subcommands" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Subcommand</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run</span></code></p></td>
+<td><p>Run the interactions for an evaluation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">check-compliance</span></code></p></td>
+<td><p>Check the policy compliance of the interactions in the output path.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ui</span></code></p></td>
+<td><p>Launch the Evaluation UI.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rail</span></code></p></td>
+<td><p>Run a rail evaluation task.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span> <span class="pre">eval</span> <span class="pre">&lt;subcommand&gt;</span> <span class="pre">--help</span></code> for details on each subcommand.</p>
+</section>
+</section>
+<hr class="docutils" />
 <section id="convert">
-<h3>convert<a class="headerlink" href="#convert" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>convert<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>convert<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>PATH
-
-Convert<span class="w"> </span>a<span class="w"> </span>Colang<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span>directory<span class="w"> </span>to<span class="w"> </span>Colang<span class="w"> </span><span class="m">2</span>.0.
-
-Arguments:
-<span class="w">  </span>path<span class="w"> </span>TEXT<span class="w"> </span>The<span class="w"> </span>path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory<span class="w"> </span>to<span class="w"> </span>migrate.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>None<span class="o">]</span><span class="w"> </span><span class="o">[</span>required<span class="o">]</span>
-
-Options:
---verbose<span class="w">                       </span>--no-verbose<span class="w">                </span>If<span class="w"> </span>the<span class="w"> </span>migration<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>verbose<span class="w"> </span>and<span class="w"> </span>output<span class="w"> </span>detailed<span class="w"> </span>logs.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-verbose<span class="o">]</span>
---validate<span class="w">                      </span>--no-validate<span class="w">               </span>If<span class="w"> </span>the<span class="w"> </span>migration<span class="w"> </span>should<span class="w"> </span>validate<span class="w"> </span>the<span class="w"> </span>output<span class="w"> </span>using<span class="w"> </span>Colang<span class="w"> </span>Parser.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>no-validate<span class="o">]</span>
---use-active-decorator<span class="w">          </span>--no-use-active-decorator<span class="w">   </span>If<span class="w"> </span>the<span class="w"> </span>migration<span class="w"> </span>should<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span>active<span class="w"> </span>decorator.<span class="w"> </span><span class="o">[</span>default:<span class="w"> </span>use-active-decorator<span class="o">]</span>
---help<span class="w">                                                      </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
+<h2><code class="docutils literal notranslate"><span class="pre">convert</span></code><a class="headerlink" href="#convert" title="Link to this heading">#</a></h2>
+<p>Convert Colang files and configurations from older versions to the latest format.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>convert<span class="w"> </span>./my-config<span class="w"> </span>--from-version<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span>--validate
 </pre></div>
 </div>
+<section id="arguments">
+<h3>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PATH</span></code></p></td>
+<td><p>The path to the file or directory to migrate. Required.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id3">
+<h3>Options<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--from-version</span></code></p></td>
+<td><p>The version of the Colang files to migrate from. Options: <code class="docutils literal notranslate"><span class="pre">1.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0-alpha</span></code>. Default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code></p></td>
+<td><p>Enable verbose mode with detailed logs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--validate</span></code></p></td>
+<td><p>Validate the output using the Colang Parser.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--use-active-decorator</span></code></p></td>
+<td><p>Use the active decorator in the migration. Default: enabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--include-main-flow</span></code></p></td>
+<td><p>Add a main flow to the config. Default: enabled.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
 </section>
 <section id="find-providers">
-<span id="find-providers-command"></span><h3>find-providers<a class="headerlink" href="#find-providers" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span>--help
-
-Usage:<span class="w"> </span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
-
-Interactive<span class="w"> </span>provider<span class="w"> </span>selection.
-
-This<span class="w"> </span><span class="nb">command</span><span class="w"> </span>provides<span class="w"> </span>an<span class="w"> </span>interactive<span class="w"> </span>interface<span class="w"> </span>to<span class="w"> </span><span class="k">select</span><span class="w"> </span>between<span class="w"> </span>text<span class="w"> </span>completion
-and<span class="w"> </span>chat<span class="w"> </span>completion<span class="w"> </span>providers.<span class="w"> </span>It<span class="w"> </span>will<span class="w"> </span>guide<span class="w"> </span>you<span class="w"> </span>through<span class="w"> </span>selecting<span class="w"> </span>the<span class="w"> </span><span class="nb">type</span><span class="w"> </span>of
-provider<span class="w"> </span><span class="o">(</span>text<span class="w"> </span>completion<span class="w"> </span>or<span class="w"> </span>chat<span class="w"> </span>completion<span class="o">)</span><span class="w"> </span>and<span class="w"> </span><span class="k">then</span><span class="w"> </span>show<span class="w"> </span>you<span class="w"> </span>the<span class="w"> </span>available
-providers<span class="w"> </span><span class="k">for</span><span class="w"> </span>that<span class="w"> </span>type.
-
-Options:
-<span class="w">  </span>--list,<span class="w"> </span>-l<span class="w">    </span>Lists<span class="w"> </span>all<span class="w"> </span>available<span class="w"> </span>providers<span class="w"> </span>without<span class="w"> </span>interactive<span class="w"> </span>selection
-<span class="w">  </span>--help<span class="w">        </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span>exit.
+<span id="find-providers-command"></span><h2><code class="docutils literal notranslate"><span class="pre">find-providers</span></code><a class="headerlink" href="#find-providers" title="Link to this heading">#</a></h2>
+<p>List and select LLM providers interactively. This command helps you discover available providers for text completion and chat completion models.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span>--list
 </pre></div>
 </div>
+<section id="id4">
+<h3>Options<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--list</span></code>, <code class="docutils literal notranslate"><span class="pre">-l</span></code></p></td>
+<td><p>List all available providers without interactive selection.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="list-mode">
-<h4>List Mode<a class="headerlink" href="#list-mode" title="Link to this heading">#</a></h4>
+<h3>List Mode<a class="headerlink" href="#list-mode" title="Link to this heading">#</a></h3>
 <p>Run the following command to list all available providers:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span><span class="o">[</span>--list<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>find-providers<span class="w"> </span>--list
 </pre></div>
 </div>
 </section>
 <section id="interactive-mode">
-<h4>Interactive Mode<a class="headerlink" href="#interactive-mode" title="Link to this heading">#</a></h4>
-<p>Run the following command start an interactive process to select a provider:</p>
+<h3>Interactive Mode<a class="headerlink" href="#interactive-mode" title="Link to this heading">#</a></h3>
+<p>Run the command without options to start an interactive provider selection:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>find-providers
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li><p>First, you’ll be prompted to select a provider type:</p>
+<li><p>Select a provider type:</p>
 <ul class="simple">
-<li><p>Type to filter between “text completion” and “chat completion”, you can press Tab to autocomplete.</p></li>
-<li><p>Use arrow keys to navigate through matches</p></li>
-<li><p>Press Tab to autocomplete</p></li>
-<li><p>Press Enter to select</p></li>
+<li><p>Type to filter between “text completion” and “chat completion”.</p></li>
+<li><p>Use arrow keys to navigate through matches.</p></li>
+<li><p>Press Tab to autocomplete.</p></li>
+<li><p>Press Enter to select.</p></li>
 </ul>
 </li>
-<li><p>Then, you’ll be prompted to select a specific provider:</p>
+<li><p>Select a specific provider:</p>
 <ul class="simple">
-<li><p>Type to filter through available providers</p></li>
-<li><p>Use arrow keys to navigate through matches</p></li>
-<li><p>Press Tab to autocomplete</p></li>
-<li><p>Press Enter to select</p></li>
+<li><p>Type to filter through available providers.</p></li>
+<li><p>Use arrow keys to navigate through matches.</p></li>
+<li><p>Press Tab to autocomplete.</p></li>
+<li><p>Press Enter to select.</p></li>
 </ul>
 </li>
 </ol>
-<section id="example-of-interactive-mode">
-<h5>Example of Interactive Mode<a class="headerlink" href="#example-of-interactive-mode" title="Link to this heading">#</a></h5>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Available Provider Types: (type to filter, use arrows to select)</span>
-<span class="go">  • text completion</span>
-<span class="go">  • chat completion</span>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h4>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Available Provider Types: (type to filter, use arrows to select)
+  • text completion
+  • chat completion
 
-<span class="go">Select provider type: text</span>
+Select provider type: text
 
-<span class="go">Available text completion providers: (type to filter, use arrows to select)</span>
-<span class="go">  • anthropic</span>
-<span class="go">  • google_palm</span>
-<span class="go">  • openai</span>
-<span class="go">  • ...</span>
+Available text completion providers: (type to filter, use arrows to select)
+  • anthropic
+  • google_palm
+  • openai
+  • ...
 
-<span class="go">Select provider: openai</span>
+Select provider: openai
 
-<span class="go">Selected text completion provider: openai</span>
+Selected text completion provider: openai
 </pre></div>
 </div>
-</section>
 </section>
 </section>
 </section>
@@ -876,21 +957,32 @@ Options:
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat">Chat</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat"><code class="docutils literal notranslate"><span class="pre">chat</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#options">Options</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actions-server">Actions Server</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">chat</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#server">server</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">evaluate</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert">convert</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-providers">find-providers</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#list-mode">List Mode</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-mode">Interactive Mode</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-interactive-mode">Example of Interactive Mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actions-server"><code class="docutils literal notranslate"><span class="pre">actions-server</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Options</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server"><code class="docutils literal notranslate"><span class="pre">server</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Options</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eval"><code class="docutils literal notranslate"><span class="pre">eval</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subcommands">Subcommands</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convert"><code class="docutils literal notranslate"><span class="pre">convert</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arguments">Arguments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Options</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-providers"><code class="docutils literal notranslate"><span class="pre">find-providers</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-mode">List Mode</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-mode">Interactive Mode</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
 </ul>
 </li>
 </ul>
