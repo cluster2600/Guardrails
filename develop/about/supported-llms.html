@@ -630,9 +630,9 @@
 <li><p>Generic</p></li>
 </ul>
 </section>
-<section id="providers-from-langchain-community">
-<h3>Providers from LangChain Community<a class="headerlink" href="#providers-from-langchain-community" title="Link to this heading">#</a></h3>
-<p>The NeMo Guardrails library supports any LLM provider from the LangChain Community. Refer to <a class="reference external" href="https://docs.langchain.com/oss/python/integrations/providers/all_providers" rel="noreferer noopener" target="_blank">All integration providers</a> in the LangChain documentation.</p>
+<section id="providers-from-langchain">
+<h3>Providers from LangChain<a class="headerlink" href="#providers-from-langchain" title="Link to this heading">#</a></h3>
+<p>The NeMo Guardrails library supports LLM providers from the LangChain Community, including both text completion and chat completion providers. Refer to <a class="reference external" href="https://docs.langchain.com/oss/python/integrations/chat" rel="noreferer noopener" target="_blank">Chat model integrations</a> in the LangChain documentation. You can also use the <a class="reference internal" href="../cli/index.html#find-providers-command"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">nemoguardrails</span> <span class="pre">find-providers</span></code></span></a> CLI command to discover available providers.</p>
 </section>
 </section>
 <section id="embedding-providers">
@@ -640,9 +640,15 @@
 <p>The NeMo Guardrails library supports the following embedding providers:</p>
 <ul class="simple">
 <li><p>NVIDIA NIM</p></li>
+<li><p>NVIDIA AI Endpoints</p></li>
 <li><p>FastEmbed</p></li>
 <li><p>OpenAI</p></li>
+<li><p>Azure OpenAI</p></li>
+<li><p>Cohere</p></li>
+<li><p>SentenceTransformers</p></li>
+<li><p>Google</p></li>
 </ul>
+<p>For more information on configuring embedding providers, refer to <a class="reference internal" href="../configure-rails/other-configurations/embedding-search-providers.html"><span class="std std-doc">Embedding Search Providers</span></a>.</p>
 </section>
 </section>
 
@@ -698,7 +704,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-types">LLM Types</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-llm-providers">Application LLM Providers</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-hosted">Self-Hosted</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#providers-from-langchain-community">Providers from LangChain Community</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#providers-from-langchain">Providers from LangChain</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-providers">Embedding Providers</a></li>
