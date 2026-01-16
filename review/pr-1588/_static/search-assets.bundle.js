@@ -11,7 +11,7 @@ class Utils {
     constructor() {
         // Utility class - no initialization needed
     }
-    
+
     /**
      * Debounce function to limit rapid function calls
      */
@@ -26,14 +26,14 @@ class Utils {
             timeout = setTimeout(later, wait);
         };
     }
-    
+
     /**
      * Escape special regex characters
      */
     escapeRegex(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
-    
+
     /**
      * Escape HTML to prevent XSS attacks
      */
@@ -45,26 +45,26 @@ class Utils {
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
-    
+
     /**
      * Highlight search terms in text
      */
     highlightText(text, query, highlightClass = 'search-highlight') {
         if (!query || !text) return text;
-        
+
         const terms = query.toLowerCase().split(/\s+/);
         let highlighted = text;
-        
+
         terms.forEach(term => {
             if (term.length > 1) {
                 const regex = new RegExp(`(${this.escapeRegex(term)})`, 'gi');
                 highlighted = highlighted.replace(regex, `<mark class="${highlightClass}">$1</mark>`);
             }
         });
-        
+
         return highlighted;
     }
-    
+
     /**
      * Generate breadcrumb from document ID
      */
@@ -72,7 +72,7 @@ class Utils {
         const parts = docId.split('/').filter(part => part && part !== 'index');
         return parts.length > 0 ? parts.join(' › ') : 'Home';
     }
-    
+
     /**
      * Generate anchor link from heading text (Sphinx-style)
      */
@@ -83,7 +83,7 @@ class Utils {
             .replace(/\s+/g, '-')      // Replace spaces with hyphens
             .trim();
     }
-    
+
     /**
      * Get document URL from result object
      */
@@ -93,7 +93,7 @@ class Utils {
         }
         return `${result.id.replace(/^\/+/, '')}.html`;
     }
-    
+
     /**
      * Get appropriate icon for section type
      */
@@ -111,7 +111,7 @@ class Utils {
                 return '<i class="fa-solid fa-circle section-icon"></i>';
         }
     }
-    
+
     /**
      * Load external script (like Lunr.js)
      */
@@ -124,7 +124,7 @@ class Utils {
             document.head.appendChild(script);
         });
     }
-    
+
     /**
      * Safe substring with fallback
      */
@@ -132,14 +132,14 @@ class Utils {
         if (!str) return fallback;
         return str.length > maxLength ? str.substring(0, maxLength) : str;
     }
-    
+
     /**
      * Check if string is valid and not empty
      */
     isValidString(str) {
         return typeof str === 'string' && str.trim().length > 0;
     }
-    
+
     /**
      * Safe array access with fallback
      */
@@ -149,7 +149,8 @@ class Utils {
 }
 
 // Make Utils available globally
-window.Utils = Utils; 
+window.Utils = Utils;
+
 
 // === DocumentLoader.js ===
 /**
@@ -162,7 +163,7 @@ class DocumentLoader {
         this.documents = {};
         this.isLoaded = false;
     }
-    
+
     /**
      * Load documents from JSON index files
      */
@@ -177,7 +178,7 @@ class DocumentLoader {
             throw error;
         }
     }
-    
+
     /**
      * Fetch document data from various possible paths
      */
@@ -185,11 +186,11 @@ class DocumentLoader {
         // Try different paths to account for different page depths
         const possiblePaths = [
             './index.json',
-            '../index.json', 
+            '../index.json',
             '../../index.json',
             '../../../index.json'
         ];
-        
+
         for (const path of possiblePaths) {
             try {
                 const response = await fetch(path);
@@ -202,10 +203,10 @@ class DocumentLoader {
                 console.log(`❌ Failed to load from ${path}: ${error.message}`);
             }
         }
-        
+
         throw new Error('Failed to load search data from any path');
     }
-    
+
     /**
      * Process and filter documents from raw data
      * Supports three formats:
@@ -225,29 +226,29 @@ class DocumentLoader {
             // Fallback: single document
             allDocs = [data];
         }
-        
+
         // Filter out problematic documents
         const filteredDocs = allDocs.filter(doc => this.isValidDocument(doc));
-        
+
         // Store documents by ID
         filteredDocs.forEach(doc => {
             this.documents[doc.id] = this.sanitizeDocument(doc);
         });
-        
+
         console.log(`Processed ${filteredDocs.length} documents (filtered from ${allDocs.length} total)`);
     }
-    
+
     /**
      * Check if a document is valid for indexing
      */
     isValidDocument(doc) {
         const docId = doc.id || '';
-        return !docId.toLowerCase().includes('readme') && 
-               !docId.startsWith('_') && 
-               doc.title && 
+        return !docId.toLowerCase().includes('readme') &&
+               !docId.startsWith('_') &&
+               doc.title &&
                doc.content;
     }
-    
+
     /**
      * Sanitize document content for safe indexing
      * Supports both new schema fields and legacy fields
@@ -276,20 +277,20 @@ class DocumentLoader {
             section_path: this.sanitizeArray(doc.section_path, 200),
             author: this.sanitizeText(doc.author, 100)
         };
-        
+
         // Preserve facets object (dynamic, user-defined keys)
         if (doc.facets && typeof doc.facets === 'object') {
             sanitized.facets = this.sanitizeFacets(doc.facets);
         }
-        
+
         // Preserve legacy flat modality if present and no facets.modality
         if (doc.modality && (!doc.facets || !doc.facets.modality)) {
             sanitized.modality = this.sanitizeText(doc.modality, 50);
         }
-        
+
         return sanitized;
     }
-    
+
     /**
      * Sanitize facets object (dynamic keys with string or array values)
      */
@@ -304,7 +305,7 @@ class DocumentLoader {
         });
         return sanitized;
     }
-    
+
     /**
      * Sanitize text content with length limits
      */
@@ -312,7 +313,7 @@ class DocumentLoader {
         if (!text || typeof text !== 'string') return '';
         return text.substring(0, maxLength);
     }
-    
+
     /**
      * Sanitize array content
      */
@@ -320,7 +321,7 @@ class DocumentLoader {
         if (!Array.isArray(arr)) return [];
         return arr.map(item => String(item)).join(' ').substring(0, maxLength);
     }
-    
+
     /**
      * Sanitize headings array
      */
@@ -331,49 +332,49 @@ class DocumentLoader {
             level: Number(heading.level) || 1
         }));
     }
-    
+
     /**
      * Get all loaded documents
      */
     getDocuments() {
         return this.documents;
     }
-    
+
     /**
      * Get a specific document by ID
      */
     getDocument(id) {
         return this.documents[id];
     }
-    
+
     /**
      * Get document count
      */
     getDocumentCount() {
         return Object.keys(this.documents).length;
     }
-    
+
     /**
      * Check if documents are loaded
      */
     isReady() {
         return this.isLoaded && Object.keys(this.documents).length > 0;
     }
-    
+
     /**
      * Get documents as array for indexing
      */
     getDocumentsArray() {
         return Object.values(this.documents);
     }
-    
+
     /**
      * Filter documents by criteria
      */
     filterDocuments(filterFn) {
         return this.getDocumentsArray().filter(filterFn);
     }
-    
+
     /**
      * Get document statistics
      */
@@ -390,7 +391,8 @@ class DocumentLoader {
 }
 
 // Make DocumentLoader available globally
-window.DocumentLoader = DocumentLoader; 
+window.DocumentLoader = DocumentLoader;
+
 
 // === SearchEngine.js ===
 /**
@@ -413,7 +415,7 @@ class SearchEngine {
         // Dynamic facets - discovered from documents, not predefined
         this.facets = {}; // { facetKey: Set of values }
     }
-    
+
     /**
      * Initialize the search engine with documents
      */
@@ -428,7 +430,7 @@ class SearchEngine {
             throw error;
         }
     }
-    
+
     /**
      * Collect metadata for filtering using actual frontmatter values
      * Supports both new schema (topics, audience) and legacy (categories, personas)
@@ -442,7 +444,7 @@ class SearchEngine {
         this.audience = new Set();
         this.difficulties = new Set();
         this.facets = {}; // Reset dynamic facets
-        
+
         Object.values(this.documents).forEach(doc => {
             // Collect topics (new schema) or categories (legacy)
             const topicsField = doc.topics || doc.categories;
@@ -453,7 +455,7 @@ class SearchEngine {
                     topicsField.split(',').forEach(topic => this.topics.add(topic.trim()));
                 }
             }
-            
+
             // Collect actual frontmatter tags
             if (doc.tags) {
                 if (Array.isArray(doc.tags)) {
@@ -471,10 +473,10 @@ class SearchEngine {
                     });
                 } else if (typeof doc.tags === 'string') {
                     // Handle both comma-separated and space-separated tags
-                    const allTags = doc.tags.includes(',') 
+                    const allTags = doc.tags.includes(',')
                         ? doc.tags.split(',')
                         : doc.tags.split(' ');
-                    
+
                     allTags.forEach(tag => {
                         if (tag && tag.trim()) {
                             this.tags.add(tag.trim());
@@ -482,12 +484,12 @@ class SearchEngine {
                     });
                 }
             }
-            
+
             // Use actual content_type from frontmatter (not calculated doc_type)
             if (doc.content_type) {
                 this.documentTypes.add(doc.content_type);
             }
-            
+
             // Collect audience (new schema) or personas (legacy)
             const audienceField = doc.audience || doc.personas;
             if (audienceField) {
@@ -497,11 +499,11 @@ class SearchEngine {
                     this.audience.add(audienceField);
                 }
             }
-            
+
             if (doc.difficulty) {
                 this.difficulties.add(doc.difficulty);
             }
-            
+
             // Dynamically discover all facets from documents
             if (doc.facets && typeof doc.facets === 'object') {
                 Object.entries(doc.facets).forEach(([facetKey, facetValue]) => {
@@ -517,7 +519,7 @@ class SearchEngine {
                     }
                 });
             }
-            
+
             // Also check for flat facet fields (legacy modality, etc.)
             // These get added to facets dynamically
             if (doc.modality && !this.facets.modality) {
@@ -528,7 +530,7 @@ class SearchEngine {
             }
         });
     }
-    
+
     /**
      * Get available filter options using actual frontmatter taxonomy
      * Returns both new field names and legacy names for backwards compatibility
@@ -540,7 +542,7 @@ class SearchEngine {
         Object.entries(this.facets).forEach(([facetKey, facetSet]) => {
             facetOptions[facetKey] = Array.from(facetSet).sort();
         });
-        
+
         return {
             // New schema names
             topics: Array.from(this.topics).sort(),
@@ -556,7 +558,7 @@ class SearchEngine {
             facets: facetOptions
         };
     }
-    
+
     /**
      * Load Lunr.js library if not already loaded
      */
@@ -565,11 +567,11 @@ class SearchEngine {
             await this.utils.loadScript('https://unpkg.com/lunr@2.3.9/lunr.min.js');
         }
     }
-    
+
     /**
      * Build the Lunr search index
      * Supports both new schema (topics, audience) and legacy (categories, personas)
-     * 
+     *
      * Field boosting rationale:
      * - Title matches are almost always what users want (highest boost)
      * - Description (from frontmatter) is hand-crafted summary (high boost)
@@ -580,26 +582,26 @@ class SearchEngine {
     buildIndex() {
         const documentsArray = Object.values(this.documents);
         const self = this;
-        
+
         this.index = lunr(function() {
             // Define fields with optimized boosting for documentation search patterns
             this.ref('id');
-            
+
             // Primary fields - highest relevance
             this.field('title', { boost: 10 });           // Title matches most important
             this.field('description', { boost: 8 });      // Frontmatter description (hand-crafted)
-            
+
             // Secondary fields - structural relevance
             this.field('keywords', { boost: 7 });         // Explicit keywords
             this.field('headings_text', { boost: 5 });    // Section headings
             this.field('headings', { boost: 5 });         // Section headings (legacy format)
             this.field('tags', { boost: 4 });             // Taxonomy tags
-            
+
             // Tertiary fields - content matching
             this.field('summary', { boost: 3 });          // Summary field
             this.field('topics', { boost: 2 });           // Topic categorization
             this.field('content', { boost: 1 });          // Full content (low to prevent long docs dominating)
-            
+
             // Metadata fields - filtering support
             this.field('content_type', { boost: 1 });
             this.field('audience', { boost: 1 });
@@ -607,7 +609,7 @@ class SearchEngine {
             this.field('modality', { boost: 1 });
             this.field('section_path', { boost: 1 });
             this.field('author', { boost: 1 });
-            
+
             // Add documents to index
             documentsArray.forEach((doc) => {
                 try {
@@ -637,7 +639,7 @@ class SearchEngine {
             }, this);
         });
     }
-    
+
     /**
      * Convert array to string for indexing
      */
@@ -647,7 +649,7 @@ class SearchEngine {
         }
         return arr || '';
     }
-    
+
     /**
      * Extract text from headings array
      */
@@ -655,7 +657,7 @@ class SearchEngine {
         if (!Array.isArray(headings)) return '';
         return headings.map(h => h.text || '').join(' ');
     }
-    
+
     /**
      * Perform search with query and optional filters
      */
@@ -663,31 +665,31 @@ class SearchEngine {
         if (!this.isInitialized || !this.index) {
             return [];
         }
-        
+
         if (!query || query.trim().length < 2) {
             return [];
         }
-        
+
         try {
             // Enhanced search with multiple strategies
             const results = this.performMultiStrategySearch(query);
-            
+
             // Process and enhance results
             const enhancedResults = this.enhanceResults(results, query);
-            
+
             // Apply filters
             const filteredResults = this.applyFilters(enhancedResults, filters);
-            
+
             // Group and rank results
             const groupedResults = this.groupResultsByDocument(filteredResults, query);
-            
+
             return groupedResults.slice(0, maxResults);
-                
+
         } catch (error) {
             return [];
         }
     }
-    
+
     /**
      * Apply filters to search results
      * Supports both new schema (topic, audience) and legacy (category, persona) filter names
@@ -703,7 +705,7 @@ class SearchEngine {
                     return false;
                 }
             }
-            
+
             // Tag filter
             if (filters.tag && filters.tag !== '') {
                 const docTags = this.getDocumentTags(result);
@@ -711,14 +713,14 @@ class SearchEngine {
                     return false;
                 }
             }
-            
+
             // Document type filter (using actual frontmatter content_type)
             if (filters.type && filters.type !== '') {
                 if (result.content_type !== filters.type) {
                     return false;
                 }
             }
-            
+
             // Audience filter (new) or persona filter (legacy)
             const audienceFilter = filters.audience || filters.persona;
             if (audienceFilter && audienceFilter !== '') {
@@ -727,14 +729,14 @@ class SearchEngine {
                     return false;
                 }
             }
-            
+
             // Difficulty filter
             if (filters.difficulty && filters.difficulty !== '') {
                 if (result.difficulty !== filters.difficulty) {
                     return false;
                 }
             }
-            
+
             // Dynamic facet filters (e.g., filters.facets = { modality: 'text-only', framework: 'pytorch' })
             if (filters.facets && typeof filters.facets === 'object') {
                 for (const [facetKey, facetValue] of Object.entries(filters.facets)) {
@@ -746,7 +748,7 @@ class SearchEngine {
                     }
                 }
             }
-            
+
             // Legacy flat facet filters (e.g., filters.modality directly)
             // Check for any filter key that matches a known facet
             for (const facetKey of Object.keys(this.facets)) {
@@ -757,11 +759,11 @@ class SearchEngine {
                     }
                 }
             }
-            
+
             return true;
         });
     }
-    
+
     /**
      * Get a specific facet value for a document
      */
@@ -778,13 +780,13 @@ class SearchEngine {
         }
         return [];
     }
-    
+
     /**
      * Get topics for a document (supports new schema and legacy categories)
      */
     getDocumentTopics(doc) {
         const topics = [];
-        
+
         // From explicit topics (new schema) or categories (legacy)
         const topicsField = doc.topics || doc.categories;
         if (topicsField) {
@@ -794,34 +796,34 @@ class SearchEngine {
                 topics.push(...topicsField.split(',').map(t => t.trim()));
             }
         }
-        
+
         // From section path
         if (doc.section_path && Array.isArray(doc.section_path)) {
             topics.push(...doc.section_path);
         }
-        
+
         // From document ID path
         if (doc.id) {
             const pathParts = doc.id.split('/').filter(part => part && part !== 'index');
             topics.push(...pathParts);
         }
-        
+
         return [...new Set(topics)]; // Remove duplicates
     }
-    
+
     /**
      * Get categories for a document (legacy alias for getDocumentTopics)
      */
     getDocumentCategories(doc) {
         return this.getDocumentTopics(doc);
     }
-    
+
     /**
      * Get tags for a document
      */
     getDocumentTags(doc) {
         if (!doc.tags) return [];
-        
+
         if (Array.isArray(doc.tags)) {
             // Handle array of tags that might contain space-separated strings
             const flatTags = [];
@@ -839,12 +841,12 @@ class SearchEngine {
             });
             return flatTags;
         }
-        
+
         // Handle string tags - check for both comma and space separation
         if (typeof doc.tags === 'string') {
             const allTags = [];
             const tagString = doc.tags.trim();
-            
+
             if (tagString.includes(',')) {
                 // Comma-separated tags
                 tagString.split(',').forEach(tag => {
@@ -860,14 +862,14 @@ class SearchEngine {
                     }
                 });
             }
-            
+
             return allTags;
         }
-        
+
         return [];
     }
-    
-    
+
+
     /**
      * Get audience for a document (supports new schema and legacy personas)
      */
@@ -875,21 +877,21 @@ class SearchEngine {
         // Support both audience (new) and personas (legacy)
         const audienceField = doc.audience || doc.personas;
         if (!audienceField) return [];
-        
+
         if (Array.isArray(audienceField)) {
             return audienceField;
         }
-        
+
         return [audienceField];
     }
-    
+
     /**
      * Get personas for a document (legacy alias for getDocumentAudience)
      */
     getDocumentPersonas(doc) {
         return this.getDocumentAudience(doc);
     }
-    
+
     /**
      * Perform search with multiple strategies
      */
@@ -897,21 +899,21 @@ class SearchEngine {
         const strategies = [
             // Exact phrase search with wildcards
             `"${query}" ${query}*`,
-            // Fuzzy search with wildcards  
+            // Fuzzy search with wildcards
             `${query}* ${query}~2`,
             // Individual terms with boost
             query.split(/\s+/).map(term => `${term}*`).join(' '),
             // Fallback: just the query
             query
         ];
-        
+
         let allResults = [];
         const seenIds = new Set();
-        
+
         for (const strategy of strategies) {
             try {
                 const results = this.index.search(strategy);
-                
+
                 // Add new results (avoid duplicates)
                 results.forEach(result => {
                     if (!seenIds.has(result.ref)) {
@@ -922,40 +924,40 @@ class SearchEngine {
                         });
                     }
                 });
-                
+
                 // If we have enough good results, stop
                 if (allResults.length >= 30) break;
-                
+
             } catch (strategyError) {
                 console.warn(`Search strategy failed: ${strategy}`, strategyError);
             }
         }
-        
+
         return allResults;
     }
-    
+
     /**
      * Enhance search results with document data and apply re-ranking
      */
     enhanceResults(results, query) {
         const queryLower = query.toLowerCase().trim();
         const queryTerms = queryLower.split(/\s+/);
-        
+
         return results.map(result => {
             const doc = this.documents[result.ref];
             if (!doc) {
                 console.warn(`Document not found: ${result.ref}`);
                 return null;
             }
-            
+
             // Calculate additional relevance boost for title matches
             const titleBoost = this.calculateTitleBoost(doc, queryLower, queryTerms);
             const keywordBoost = this.calculateKeywordBoost(doc, queryTerms);
             const descriptionBoost = this.calculateDescriptionBoost(doc, queryTerms);
-            
+
             // Apply boosts to base score
             const enhancedScore = result.score * (1 + titleBoost + keywordBoost + descriptionBoost);
-            
+
             return {
                 ...doc,
                 score: enhancedScore,
@@ -969,17 +971,17 @@ class SearchEngine {
             };
         }).filter(Boolean); // Remove null results
     }
-    
+
     /**
      * Calculate boost for title matches
      * Heavily rewards exact and partial title matches
      */
     calculateTitleBoost(doc, queryLower, queryTerms) {
         if (!doc.title) return 0;
-        
+
         const titleLower = doc.title.toLowerCase();
         let boost = 0;
-        
+
         // Exact title match (highest boost)
         if (titleLower === queryLower) {
             boost += 10;
@@ -1005,46 +1007,46 @@ class SearchEngine {
                 boost += 2 * (matchingTerms.length / queryTerms.length);
             }
         }
-        
+
         // Additional boost if title contains query as a distinct word
         const titleWords = titleLower.split(/[\s\-_:]+/);
         if (titleWords.some(word => word === queryLower || word.startsWith(queryLower))) {
             boost += 2;
         }
-        
+
         return boost;
     }
-    
+
     /**
      * Calculate boost for keyword matches
      */
     calculateKeywordBoost(doc, queryTerms) {
         if (!doc.keywords) return 0;
-        
-        const keywords = Array.isArray(doc.keywords) 
+
+        const keywords = Array.isArray(doc.keywords)
             ? doc.keywords.map(k => k.toLowerCase())
             : doc.keywords.toLowerCase().split(/[\s,]+/);
-        
+
         let boost = 0;
-        
+
         queryTerms.forEach(term => {
             if (keywords.some(kw => kw === term || kw.startsWith(term))) {
                 boost += 1.5;
             }
         });
-        
+
         return boost;
     }
-    
+
     /**
      * Calculate boost for description matches
      */
     calculateDescriptionBoost(doc, queryTerms) {
         if (!doc.description) return 0;
-        
+
         const descLower = doc.description.toLowerCase();
         let boost = 0;
-        
+
         // Check if query terms appear early in description
         queryTerms.forEach(term => {
             const pos = descLower.indexOf(term);
@@ -1053,23 +1055,23 @@ class SearchEngine {
                 boost += pos < 50 ? 1 : 0.5;
             }
         });
-        
+
         return boost;
     }
-    
+
     /**
      * Group results by document and find matching sections
      */
     groupResultsByDocument(results, query) {
         const grouped = new Map();
-        
+
         results.forEach(result => {
             const docId = result.id;
-            
+
             if (!grouped.has(docId)) {
                 // Find matching sections within this document
                 const matchingSections = this.findMatchingSections(result, query);
-                
+
                 grouped.set(docId, {
                     ...result,
                     matchingSections,
@@ -1080,30 +1082,30 @@ class SearchEngine {
                 // Document already exists, combine scores and sections
                 const existing = grouped.get(docId);
                 const additionalSections = this.findMatchingSections(result, query);
-                
+
                 existing.matchingSections = this.mergeSections(existing.matchingSections, additionalSections);
                 existing.totalMatches += 1;
                 existing.combinedScore = Math.max(existing.combinedScore, result.score);
             }
         });
-        
+
         // Convert map to array and sort by combined score
         return Array.from(grouped.values())
             .sort((a, b) => b.combinedScore - a.combinedScore);
     }
-    
+
     /**
      * Find matching sections within a document
      */
     findMatchingSections(result, query) {
         const matchingSections = [];
         const queryTerms = query.toLowerCase().split(/\s+/);
-        
+
         // Check if title matches
         if (result.title) {
             const titleText = result.title.toLowerCase();
             const hasMatch = queryTerms.some(term => titleText.includes(term));
-            
+
             if (hasMatch) {
                 matchingSections.push({
                     type: 'title',
@@ -1113,13 +1115,13 @@ class SearchEngine {
                 });
             }
         }
-        
+
         // Check headings for matches
         if (result.headings && Array.isArray(result.headings)) {
             result.headings.forEach(heading => {
                 const headingText = heading.text?.toLowerCase() || '';
                 const hasMatch = queryTerms.some(term => headingText.includes(term));
-                
+
                 if (hasMatch) {
                     matchingSections.push({
                         type: 'heading',
@@ -1130,7 +1132,7 @@ class SearchEngine {
                 }
             });
         }
-        
+
         // If no specific sections found, add a general content match
         if (matchingSections.length === 0) {
             matchingSections.push({
@@ -1140,43 +1142,43 @@ class SearchEngine {
                 anchor: ''
             });
         }
-        
+
         return matchingSections;
     }
-    
+
     /**
      * Generate anchor link similar to how Sphinx does it
      */
     generateAnchor(headingText) {
         if (!headingText) return '';
-        
+
         return headingText
             .toLowerCase()
             .replace(/[^\w\s-]/g, '')  // Remove special chars
             .replace(/\s+/g, '-')      // Replace spaces with hyphens
             .trim();
     }
-    
+
     /**
      * Merge sections, avoiding duplicates
      */
     mergeSections(existing, additional) {
         const merged = [...existing];
-        
+
         additional.forEach(section => {
-            const isDuplicate = existing.some(existingSection => 
-                existingSection.text === section.text && 
+            const isDuplicate = existing.some(existingSection =>
+                existingSection.text === section.text &&
                 existingSection.type === section.type
             );
-            
+
             if (!isDuplicate) {
                 merged.push(section);
             }
         });
-        
+
         return merged;
     }
-    
+
     /**
      * Get search statistics
      */
@@ -1186,7 +1188,7 @@ class SearchEngine {
         Object.entries(this.facets).forEach(([key, valueSet]) => {
             facetStats[key] = valueSet.size;
         });
-        
+
         return {
             documentsIndexed: Object.keys(this.documents).length,
             topicsAvailable: this.topics.size,
@@ -1199,7 +1201,7 @@ class SearchEngine {
             isInitialized: this.isInitialized
         };
     }
-    
+
     /**
      * Check if the search engine is ready
      */
@@ -1209,7 +1211,8 @@ class SearchEngine {
 }
 
 // Make SearchEngine available globally
-window.SearchEngine = SearchEngine; 
+window.SearchEngine = SearchEngine;
+
 
 // === SearchInterface.js ===
 /**
@@ -1226,7 +1229,7 @@ class SearchInterface {
         this.resultsContainer = null;
         this.statsContainer = null;
     }
-    
+
     /**
      * Create the search interface elements
      */
@@ -1241,12 +1244,12 @@ class SearchInterface {
         }
         console.log('✅ Search interface created');
     }
-    
+
     /**
      * Check if we're on the search page
      */
     isSearchPage() {
-        return window.location.pathname.includes('/search') || 
+        return window.location.pathname.includes('/search') ||
                window.location.pathname.includes('/search.html') ||
                window.location.pathname.endsWith('search/') ||
                document.querySelector('#search-results') !== null ||
@@ -1255,7 +1258,7 @@ class SearchInterface {
                document.title.toLowerCase().includes('search') ||
                document.querySelector('h1')?.textContent.toLowerCase().includes('search');
     }
-    
+
     /**
      * Enhance the existing search page using the template structure
      */
@@ -1263,51 +1266,51 @@ class SearchInterface {
         console.log('🔍 Enhancing search page using existing template...');
         console.log('📄 Page URL:', window.location.href);
         console.log('📋 Page title:', document.title);
-        
+
         // Use the template's existing elements
         this.input = document.querySelector('#enhanced-search-page-input');
         this.resultsContainer = document.querySelector('#enhanced-search-page-results');
-        
+
         console.log('🔎 Template search input found:', !!this.input);
         console.log('📦 Template results container found:', !!this.resultsContainer);
-        
+
         if (this.input && this.resultsContainer) {
             console.log('✅ Using existing template structure - no additional setup needed');
             // The template's JavaScript will handle everything
             return;
         }
-        
+
         // Fallback for non-template pages
         console.log('⚠️ Template elements not found, falling back to generic search page detection');
         this.fallbackToGenericSearchPage();
     }
-    
+
     /**
      * Fallback for pages that don't use the template
      */
     fallbackToGenericSearchPage() {
         // Find existing search elements on generic pages
-        this.input = document.querySelector('#searchbox input[type="text"]') || 
+        this.input = document.querySelector('#searchbox input[type="text"]') ||
                     document.querySelector('input[name="q"]') ||
                     document.querySelector('.search input[type="text"]');
-        
+
         // Find or create results container
         this.resultsContainer = document.querySelector('#search-results') ||
                                document.querySelector('.search-results') ||
                                this.createResultsContainer();
-        
+
         // Create stats container
         this.statsContainer = this.createStatsContainer();
-        
+
         // Hide default Sphinx search results if they exist
         this.hideDefaultResults();
-        
+
         // Initialize with empty state
         this.showEmptyState();
-        
+
         console.log('✅ Generic search page enhanced');
     }
-    
+
     /**
      * Create results container if it doesn't exist
      */
@@ -1315,7 +1318,7 @@ class SearchInterface {
         const container = document.createElement('div');
         container.id = 'enhanced-search-results';
         container.className = 'enhanced-search-results';
-        
+
         // Add basic styling to ensure proper positioning
         container.style.cssText = `
             width: 100%;
@@ -1325,10 +1328,10 @@ class SearchInterface {
             position: relative;
             z-index: 1;
         `;
-        
+
         // Find the best place to insert it within the main content area
         const insertLocation = this.findBestInsertLocation();
-        
+
         if (insertLocation.parent && insertLocation.method === 'append') {
             insertLocation.parent.appendChild(container);
             console.log(`✅ Results container added to: ${insertLocation.parent.className || insertLocation.parent.tagName}`);
@@ -1339,10 +1342,10 @@ class SearchInterface {
             // Last resort - create a wrapper in main content
             this.createInMainContent(container);
         }
-        
+
         return container;
     }
-    
+
     /**
      * Find the best location to insert search results
      */
@@ -1352,13 +1355,13 @@ class SearchInterface {
         if (searchResults) {
             return { parent: searchResults, method: 'append' };
         }
-        
+
         // Look for search form and place results after it
         let searchForm = document.querySelector('#searchbox, .search form, form[action*="search"]');
         if (searchForm) {
             return { parent: searchForm, method: 'after' };
         }
-        
+
         // Look for main content containers (common Sphinx/theme classes)
         const mainSelectors = [
             '.document .body',
@@ -1371,23 +1374,23 @@ class SearchInterface {
             '.rst-content',
             '.body-content'
         ];
-        
+
         for (const selector of mainSelectors) {
             const element = document.querySelector(selector);
             if (element) {
                 return { parent: element, method: 'append' };
             }
         }
-        
+
         // Try to find any container that's not the body
         const anyContainer = document.querySelector('.container, .wrapper, .page, #content');
         if (anyContainer) {
             return { parent: anyContainer, method: 'append' };
         }
-        
+
         return { parent: null, method: null };
     }
-    
+
     /**
      * Create container in main content as last resort
      */
@@ -1400,22 +1403,22 @@ class SearchInterface {
             margin: 2rem auto;
             padding: 0 1rem;
         `;
-        
+
         // Add a title
         const title = document.createElement('h1');
         title.textContent = 'Search Results';
         title.style.cssText = 'margin-bottom: 1rem;';
         wrapper.appendChild(title);
-        
+
         // Add the container
         wrapper.appendChild(container);
-        
+
         // Insert into body, but with proper styling
         document.body.appendChild(wrapper);
-        
+
         console.log('⚠️ Created search results in body with wrapper - consider improving page structure');
     }
-    
+
     /**
      * Create stats container
      */
@@ -1423,15 +1426,15 @@ class SearchInterface {
         const container = document.createElement('div');
         container.className = 'enhanced-search-stats';
         container.style.cssText = 'margin: 1rem 0; font-size: 0.9rem; color: #666;';
-        
+
         // Insert before results
         if (this.resultsContainer && this.resultsContainer.parentNode) {
             this.resultsContainer.parentNode.insertBefore(container, this.resultsContainer);
         }
-        
+
         return container;
     }
-    
+
     /**
      * Hide default Sphinx search results
      */
@@ -1444,7 +1447,7 @@ class SearchInterface {
             el.style.display = 'none';
         });
     }
-    
+
     /**
      * Create the main search modal (legacy - kept for compatibility)
      */
@@ -1459,8 +1462,8 @@ class SearchInterface {
                 <div class="enhanced-search-header">
                     <div class="enhanced-search-input-wrapper">
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             id="enhanced-search-input"
                             class="enhanced-search-input"
                             placeholder="${this.options.placeholder}"
@@ -1482,34 +1485,34 @@ class SearchInterface {
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(modal);
-        
+
         // Cache references
         this.modal = modal;
         this.input = modal.querySelector('#enhanced-search-input');
         this.resultsContainer = modal.querySelector('.enhanced-search-results');
         this.statsContainer = modal.querySelector('.enhanced-search-stats');
-        
+
         // Add event handlers for closing the modal
         const closeButton = modal.querySelector('.enhanced-search-close');
         const backdrop = modal.querySelector('.enhanced-search-backdrop');
-        
+
         if (closeButton) {
             closeButton.addEventListener('click', () => this.hideModal());
         }
-        
+
         if (backdrop) {
             backdrop.addEventListener('click', () => this.hideModal());
         }
-        
+
         // Hide modal by default
         modal.style.display = 'none';
-        
+
         // Initialize with empty state
         this.showEmptyState();
     }
-    
+
     /**
      * Replace or enhance existing search button to show modal
      */
@@ -1518,7 +1521,7 @@ class SearchInterface {
         const searchForm = document.querySelector('#searchbox form') ||
                           document.querySelector('.search form') ||
                           document.querySelector('form[action*="search"]');
-        
+
         if (searchForm) {
             // Prevent form submission and show modal instead
             searchForm.addEventListener('submit', (e) => {
@@ -1527,7 +1530,7 @@ class SearchInterface {
             });
             console.log('✅ Search form enhanced to show modal');
         }
-        
+
         // Find search button specifically and enhance it
         const existingButton = document.querySelector('.search-button-field, .search-button__button');
         if (existingButton) {
@@ -1537,7 +1540,7 @@ class SearchInterface {
             });
             console.log('✅ Search button enhanced to show modal');
         }
-        
+
         // Also look for search input fields and enhance them
         const searchInput = document.querySelector('#searchbox input[type="text"]') ||
                            document.querySelector('.search input[type="text"]');
@@ -1548,7 +1551,7 @@ class SearchInterface {
             console.log('✅ Search input enhanced to show modal on focus');
         }
     }
-    
+
     /**
      * Show the search interface (focus input or show modal)
      */
@@ -1560,7 +1563,7 @@ class SearchInterface {
             this.input.select();
         }
     }
-    
+
     /**
      * Hide the search interface (hide modal or blur input)
      */
@@ -1571,7 +1574,7 @@ class SearchInterface {
             this.input.blur();
         }
     }
-    
+
     /**
      * Show the modal
      */
@@ -1590,7 +1593,7 @@ class SearchInterface {
             console.log('🔍 Search modal shown');
         }
     }
-    
+
     /**
      * Hide the modal
      */
@@ -1609,42 +1612,42 @@ class SearchInterface {
             console.log('🔍 Search modal hidden');
         }
     }
-    
+
     /**
      * Get the search input element
      */
     getInput() {
         return this.input;
     }
-    
+
     /**
      * Get the results container
      */
     getResultsContainer() {
         return this.resultsContainer;
     }
-    
+
     /**
      * Get the stats container
      */
     getStatsContainer() {
         return this.statsContainer;
     }
-    
+
     /**
      * Get the modal element
      */
     getModal() {
         return this.modal;
     }
-    
+
     /**
      * Check if modal is visible
      */
     isModalVisible() {
         return this.isVisible && this.modal && this.modal.style.display !== 'none';
     }
-    
+
     /**
      * Show empty state in results
      */
@@ -1666,7 +1669,7 @@ class SearchInterface {
             `;
         }
     }
-    
+
     /**
      * Show no results state
      */
@@ -1688,7 +1691,7 @@ class SearchInterface {
             `;
         }
     }
-    
+
     /**
      * Show error state
      */
@@ -1702,7 +1705,7 @@ class SearchInterface {
             `;
         }
     }
-    
+
     /**
      * Update search statistics
      */
@@ -1715,7 +1718,7 @@ class SearchInterface {
             }
         }
     }
-    
+
     /**
      * Clear search statistics
      */
@@ -1724,14 +1727,14 @@ class SearchInterface {
             this.statsContainer.innerHTML = '';
         }
     }
-    
+
     /**
      * Get current search query
      */
     getQuery() {
         return this.input ? this.input.value.trim() : '';
     }
-    
+
     /**
      * Set search query
      */
@@ -1740,7 +1743,7 @@ class SearchInterface {
             this.input.value = query;
         }
     }
-    
+
     /**
      * Clear search query
      */
@@ -1749,7 +1752,7 @@ class SearchInterface {
             this.input.value = '';
         }
     }
-    
+
     /**
      * Focus the search input
      */
@@ -1758,21 +1761,21 @@ class SearchInterface {
             this.input.focus();
         }
     }
-    
+
     /**
      * Get close button for event binding
      */
     getCloseButton() {
         return this.modal ? this.modal.querySelector('.enhanced-search-close') : null;
     }
-    
+
     /**
      * Get backdrop for event binding
      */
     getBackdrop() {
         return this.modal ? this.modal.querySelector('.enhanced-search-backdrop') : null;
     }
-    
+
     /**
      * Escape HTML to prevent XSS
      */
@@ -1784,7 +1787,7 @@ class SearchInterface {
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
-    
+
     /**
      * Add CSS class to modal
      */
@@ -1793,7 +1796,7 @@ class SearchInterface {
             this.modal.classList.add(className);
         }
     }
-    
+
     /**
      * Remove CSS class from modal
      */
@@ -1802,14 +1805,14 @@ class SearchInterface {
             this.modal.classList.remove(className);
         }
     }
-    
+
     /**
      * Check if modal has class
      */
     hasModalClass(className) {
         return this.modal ? this.modal.classList.contains(className) : false;
     }
-    
+
     /**
      * Destroy the search interface
      */
@@ -1826,7 +1829,8 @@ class SearchInterface {
 }
 
 // Make SearchInterface available globally
-window.SearchInterface = SearchInterface; 
+window.SearchInterface = SearchInterface;
+
 
 // === ResultRenderer.js ===
 /**
@@ -1839,7 +1843,7 @@ class ResultRenderer {
         this.options = options;
         this.utils = utils;
     }
-    
+
     /**
      * Render search results
      */
@@ -1848,23 +1852,23 @@ class ResultRenderer {
             console.warn('No container provided for rendering results');
             return;
         }
-        
+
         if (results.length === 0) {
             container.innerHTML = this.renderNoResults(query);
             return;
         }
-        
+
         const html = results.map((result, index) => {
             const isSelected = index === 0;
             return this.renderResultItem(result, query, isSelected);
         }).join('');
-        
+
         container.innerHTML = `<div class="search-results-list">${html}</div>`;
-        
+
         // Bind click events
         this.bindResultEvents(container, results);
     }
-    
+
     /**
      * Render a single result item
      */
@@ -1872,15 +1876,15 @@ class ResultRenderer {
         const title = this.utils.highlightText(result.title || 'Untitled', query);
         const summary = this.utils.highlightText(result.summary || result.content?.substring(0, 200) || '', query);
         const breadcrumb = this.utils.generateBreadcrumb(result.id);
-        
+
         // Render matching sections
         const sectionsHtml = this.renderMatchingSections(result, query);
-        
+
         // Show multiple matches indicator
-        const multipleMatchesIndicator = result.totalMatches > 1 
+        const multipleMatchesIndicator = result.totalMatches > 1
             ? `<span class="search-result-matches-count">${result.totalMatches} matches</span>`
             : '';
-        
+
         return `
             <div class="search-result-item ${isSelected ? 'selected' : ''}" tabindex="0" data-url="${this.utils.getDocumentUrl(result)}">
                 <div class="search-result-content">
@@ -1898,7 +1902,7 @@ class ResultRenderer {
             </div>
         `;
     }
-    
+
     /**
      * Render matching sections within a result
      */
@@ -1906,27 +1910,27 @@ class ResultRenderer {
         if (!result.matchingSections || result.matchingSections.length <= 1) {
             return '';
         }
-        
+
         // Show only the first few sections to avoid overwhelming
         const sectionsToShow = result.matchingSections.slice(0, 4);
         const hasMore = result.matchingSections.length > 4;
-        
+
         const sectionsHtml = sectionsToShow.map(section => {
             const icon = this.utils.getSectionIcon(section.type, section.level);
             const sectionText = this.utils.highlightText(section.text, query);
             const anchor = section.anchor ? `#${section.anchor}` : '';
-            
+
             return `
                 <div class="search-result-section" data-anchor="${anchor}">
                     ${icon} <span class="section-text">${sectionText}</span>
                 </div>
             `;
         }).join('');
-        
-        const moreIndicator = hasMore 
+
+        const moreIndicator = hasMore
             ? `<div class="search-result-section-more">+${result.matchingSections.length - 4} more sections</div>`
             : '';
-        
+
         return `
             <div class="search-result-sections">
                 ${sectionsHtml}
@@ -1934,7 +1938,7 @@ class ResultRenderer {
             </div>
         `;
     }
-    
+
     /**
      * Render no results state
      */
@@ -1954,25 +1958,25 @@ class ResultRenderer {
             </div>
         `;
     }
-    
+
     /**
      * Bind click events to result items
      */
     bindResultEvents(container, results) {
         container.querySelectorAll('.search-result-item').forEach((item, index) => {
             const result = results[index];
-            
+
             // Main item click - go to document
             item.addEventListener('click', (e) => {
                 // Don't trigger if clicking on a section
                 if (e.target.closest('.search-result-section')) {
                     return;
                 }
-                
+
                 const url = item.dataset.url;
                 window.location.href = url;
             });
-            
+
             // Section clicks - go to specific section
             item.querySelectorAll('.search-result-section').forEach(sectionEl => {
                 sectionEl.addEventListener('click', (e) => {
@@ -1984,65 +1988,65 @@ class ResultRenderer {
             });
         });
     }
-    
+
     /**
      * Get result items from container
      */
     getResultItems(container) {
         return container.querySelectorAll('.search-result-item');
     }
-    
+
     /**
      * Get selected result item
      */
     getSelectedResult(container) {
         return container.querySelector('.search-result-item.selected');
     }
-    
+
     /**
      * Select next result item
      */
     selectNext(container) {
         const results = this.getResultItems(container);
         const selected = this.getSelectedResult(container);
-        
+
         if (results.length === 0) return;
-        
+
         if (!selected) {
             results[0].classList.add('selected');
             return;
         }
-        
+
         const currentIndex = Array.from(results).indexOf(selected);
         selected.classList.remove('selected');
-        
+
         const nextIndex = (currentIndex + 1) % results.length;
         results[nextIndex].classList.add('selected');
         results[nextIndex].scrollIntoView({ block: 'nearest' });
     }
-    
+
     /**
      * Select previous result item
      */
     selectPrevious(container) {
         const results = this.getResultItems(container);
         const selected = this.getSelectedResult(container);
-        
+
         if (results.length === 0) return;
-        
+
         if (!selected) {
             results[results.length - 1].classList.add('selected');
             return;
         }
-        
+
         const currentIndex = Array.from(results).indexOf(selected);
         selected.classList.remove('selected');
-        
+
         const prevIndex = currentIndex === 0 ? results.length - 1 : currentIndex - 1;
         results[prevIndex].classList.add('selected');
         results[prevIndex].scrollIntoView({ block: 'nearest' });
     }
-    
+
     /**
      * Activate selected result
      */
@@ -2052,7 +2056,7 @@ class ResultRenderer {
             selected.click();
         }
     }
-    
+
     /**
      * Clear all selections
      */
@@ -2060,7 +2064,7 @@ class ResultRenderer {
         const results = this.getResultItems(container);
         results.forEach(result => result.classList.remove('selected'));
     }
-    
+
     /**
      * Render loading state
      */
@@ -2074,7 +2078,7 @@ class ResultRenderer {
             `;
         }
     }
-    
+
     /**
      * Render error state
      */
@@ -2091,7 +2095,8 @@ class ResultRenderer {
 }
 
 // Make ResultRenderer available globally
-window.ResultRenderer = ResultRenderer; 
+window.ResultRenderer = ResultRenderer;
+
 
 // === EventHandler.js ===
 /**
@@ -2106,14 +2111,14 @@ class EventHandler {
         this.resultRenderer = enhancedSearch.resultRenderer;
         this.searchEngine = enhancedSearch.searchEngine;
         this.utils = enhancedSearch.utils;
-        
+
         // Track bound event listeners for cleanup
         this.boundListeners = new Map();
-        
+
         // Debounced search function
         this.debouncedSearch = this.utils.debounce(this.handleSearch.bind(this), 200);
     }
-    
+
     /**
      * Bind all event listeners
      */
@@ -2123,25 +2128,25 @@ class EventHandler {
         this.bindGlobalEvents();
         console.log('✅ Event handlers bound');
     }
-    
+
     /**
      * Bind input-related events
      */
     bindInputEvents() {
         const input = this.searchInterface.getInput();
         if (!input) return;
-        
+
         // Search input
         const inputHandler = (e) => this.debouncedSearch(e);
         input.addEventListener('input', inputHandler);
         this.boundListeners.set('input', inputHandler);
-        
+
         // Keyboard navigation
         const keydownHandler = (e) => this.handleKeyDown(e);
         input.addEventListener('keydown', keydownHandler);
         this.boundListeners.set('keydown', keydownHandler);
     }
-    
+
     /**
      * Bind page-specific events (replaces modal events)
      */
@@ -2150,11 +2155,11 @@ class EventHandler {
         if (!this.searchInterface.isSearchPage()) {
             return;
         }
-        
+
         // Get query parameter if we're on search page
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q');
-        
+
         if (query) {
             // Perform search immediately with the query from URL
             setTimeout(() => {
@@ -2166,7 +2171,7 @@ class EventHandler {
             }, 100);
         }
     }
-    
+
     /**
      * Bind global keyboard shortcuts
      */
@@ -2186,77 +2191,77 @@ class EventHandler {
                 return;
             }
         };
-        
+
         document.addEventListener('keydown', globalKeyHandler);
         this.boundListeners.set('global', globalKeyHandler);
     }
-    
+
     /**
      * Handle search input
      */
     async handleSearch(event) {
         const query = event.target.value.trim();
         const resultsContainer = this.searchInterface.getResultsContainer();
-        
+
         if (query.length < this.enhancedSearch.options.minQueryLength) {
             this.searchInterface.showEmptyState();
             this.searchInterface.clearStats();
             return;
         }
-        
+
         try {
             // Show loading state
             this.resultRenderer.renderLoading(resultsContainer);
-            
+
             // Perform search
             const results = this.searchEngine.search(query, this.enhancedSearch.options.maxResults);
             const count = results.length;
-            
+
             // Render results
             this.resultRenderer.render(results, query, resultsContainer);
-            
+
             // Update stats
             this.searchInterface.updateStats(query, count);
-            
+
             // Emit search event for AI Assistant extension if available
             this.emitSearchEvent(query, results, count);
-                
+
         } catch (error) {
             console.error('Search error:', error);
             this.resultRenderer.renderError(resultsContainer, 'Search temporarily unavailable');
             this.searchInterface.clearStats();
         }
     }
-    
+
     /**
      * Handle keyboard navigation
      */
     handleKeyDown(event) {
         const resultsContainer = this.searchInterface.getResultsContainer();
-        
+
         switch (event.key) {
             case 'ArrowDown':
                 event.preventDefault();
                 this.resultRenderer.selectNext(resultsContainer);
                 break;
-                
+
             case 'ArrowUp':
                 event.preventDefault();
                 this.resultRenderer.selectPrevious(resultsContainer);
                 break;
-                
+
             case 'Enter':
                 event.preventDefault();
                 this.resultRenderer.activateSelected(resultsContainer);
                 break;
-                
+
             case 'Escape':
                 event.preventDefault();
                 this.enhancedSearch.hide();
                 break;
         }
     }
-    
+
     /**
      * Emit search event for other extensions
      */
@@ -2268,7 +2273,7 @@ class EventHandler {
             document.dispatchEvent(searchEvent);
         }
     }
-    
+
     /**
      * Handle window resize
      */
@@ -2279,7 +2284,7 @@ class EventHandler {
             // Could add responsive adjustments here
         }
     }
-    
+
     /**
      * Handle focus management
      */
@@ -2290,10 +2295,10 @@ class EventHandler {
             const focusableElements = modal.querySelectorAll(
                 'button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
             );
-            
+
             const firstFocusable = focusableElements[0];
             const lastFocusable = focusableElements[focusableElements.length - 1];
-            
+
             if (event.key === 'Tab') {
                 if (event.shiftKey) {
                     // Shift + Tab
@@ -2311,7 +2316,7 @@ class EventHandler {
             }
         }
     }
-    
+
     /**
      * Bind additional event listeners
      */
@@ -2320,13 +2325,13 @@ class EventHandler {
         const resizeHandler = this.utils.debounce(() => this.handleResize(), 100);
         window.addEventListener('resize', resizeHandler);
         this.boundListeners.set('resize', resizeHandler);
-        
+
         // Focus trap
         const focusHandler = (e) => this.handleFocus(e);
         document.addEventListener('keydown', focusHandler);
         this.boundListeners.set('focus', focusHandler);
     }
-    
+
     /**
      * Unbind all event listeners
      */
@@ -2337,37 +2342,37 @@ class EventHandler {
             input.removeEventListener('input', this.boundListeners.get('input'));
             input.removeEventListener('keydown', this.boundListeners.get('keydown'));
         }
-        
+
         // Remove modal events
         const closeBtn = this.searchInterface.getCloseButton();
         if (closeBtn && this.boundListeners.has('close')) {
             closeBtn.removeEventListener('click', this.boundListeners.get('close'));
         }
-        
+
         const backdrop = this.searchInterface.getBackdrop();
         if (backdrop && this.boundListeners.has('backdrop')) {
             backdrop.removeEventListener('click', this.boundListeners.get('backdrop'));
         }
-        
+
         // Remove global events
         if (this.boundListeners.has('global')) {
             document.removeEventListener('keydown', this.boundListeners.get('global'));
         }
-        
+
         if (this.boundListeners.has('resize')) {
             window.removeEventListener('resize', this.boundListeners.get('resize'));
         }
-        
+
         if (this.boundListeners.has('focus')) {
             document.removeEventListener('keydown', this.boundListeners.get('focus'));
         }
-        
+
         // Clear listeners map
         this.boundListeners.clear();
-        
+
         console.log('✅ Event handlers unbound');
     }
-    
+
     /**
      * Get event handler statistics
      */
@@ -2379,19 +2384,20 @@ class EventHandler {
             hasModal: !!this.searchInterface.getModal()
         };
     }
-    
+
     /**
      * Check if events are properly bound
      */
     isReady() {
-        return this.boundListeners.size > 0 && 
-               this.searchInterface.getInput() !== null && 
+        return this.boundListeners.size > 0 &&
+               this.searchInterface.getInput() !== null &&
                this.searchInterface.getModal() !== null;
     }
 }
 
 // Make EventHandler available globally
-window.EventHandler = EventHandler; 
+window.EventHandler = EventHandler;
+
 
 // === SearchPageManager.js ===
 /**
@@ -2569,7 +2575,7 @@ class SearchPageManager {
                         <i class="fa-solid fa-chevron-down filter-select-arrow"></i>
                     </div>
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="filter-label" for="tag-filter">
                         <i class="fa-solid fa-tag"></i>
@@ -2583,7 +2589,7 @@ class SearchPageManager {
                         <i class="fa-solid fa-chevron-down filter-select-arrow"></i>
                     </div>
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="filter-label" for="type-filter">
                         <i class="fa-solid fa-file-lines"></i>
@@ -2597,7 +2603,7 @@ class SearchPageManager {
                         <i class="fa-solid fa-chevron-down filter-select-arrow"></i>
                     </div>
                 </div>
-                
+
                 ${facetFilters}
             </div>
         `;
@@ -3127,8 +3133,8 @@ class SearchPageManager {
         if (!topics || topics.length === 0) return '';
 
         const topicBadges = topics.slice(0, 3).map(topic =>
-            `<span class="topic-badge clickable-badge" 
-                   data-filter-type="topic" 
+            `<span class="topic-badge clickable-badge"
+                   data-filter-type="topic"
                    data-filter-value="${this.escapeHtml(topic)}"
                    title="Click to filter by ${this.escapeHtml(topic)}">
                 📁 ${this.escapeHtml(topic)}
@@ -3187,8 +3193,8 @@ class SearchPageManager {
             : '';
 
         return `
-            <div class="search-result mb-4" 
-                 role="option" 
+            <div class="search-result mb-4"
+                 role="option"
                  aria-selected="false"
                  tabindex="-1"
                  id="result-${index}"
@@ -3597,7 +3603,8 @@ class SearchPageManager {
 
         console.log(`🤖 Emitted search-ai-request event for query: "${query}" with ${results.length} results`);
     }
-} 
+}
+
 
 // === main.js ===
 /**
@@ -3620,72 +3627,72 @@ class EnhancedSearch {
             highlightClass: 'search-highlight',
             ...options
         };
-        
+
         this.isLoaded = false;
-        
+
         // Module instances
         this.documentLoader = null;
         this.searchEngine = null;
         this.searchPageManager = null;
         this.utils = null;
-        
+
         this.init();
     }
-    
+
     async init() {
         try {
             // Load required modules
             // Modules bundled - no loading needed
-            
+
             // Initialize core modules
             this.utils = new Utils();
             this.documentLoader = new DocumentLoader();
             this.searchEngine = new SearchEngine(this.utils);
-            
+
             // Load documents and initialize search engine (always needed)
             await this.documentLoader.loadDocuments();
             await this.searchEngine.initialize(this.documentLoader.getDocuments());
-            
+
             // Check if we're on the search page
             const isSearchPage = this.isSearchPage();
-            
+
             if (isSearchPage) {
                 this.searchPageManager = new SearchPageManager();
             }
-            
+
             this.isLoaded = true;
         } catch (error) {
             this.fallbackToDefaultSearch();
         }
     }
-    
+
     isSearchPage() {
-        return window.location.pathname.includes('/search') || 
+        return window.location.pathname.includes('/search') ||
                window.location.pathname.includes('/search.html') ||
                window.location.pathname.endsWith('search/') ||
                document.querySelector('#enhanced-search-page-input') !== null ||
                document.querySelector('#enhanced-search-page-results') !== null;
     }
-    
+
     async loadModules() {
         const moduleNames = [
             'Utils',
-            'DocumentLoader', 
+            'DocumentLoader',
             'SearchEngine',
             'SearchPageManager'
         ];
-        
+
         // Load modules with smart path resolution
-        const modulePromises = moduleNames.map(name => 
+        const modulePromises = moduleNames.map(name =>
             this.loadModuleWithFallback(name)
         );
-        
+
         await Promise.all(modulePromises);
     }
-    
+
     async loadModuleWithFallback(moduleName) {
         const possiblePaths = this.getModulePaths(moduleName);
-        
+
         for (const path of possiblePaths) {
             try {
                 await this.loadModule(path);
@@ -3694,51 +3701,51 @@ class EnhancedSearch {
                 // Continue to next path
             }
         }
-        
+
         throw new Error(`Failed to load module ${moduleName} from any path`);
     }
-    
+
     getModulePaths(moduleName) {
         const fileName = `${moduleName}.js`;
-        
+
         // Calculate nesting level to determine correct _static path
         const pathParts = window.location.pathname.split('/').filter(part => part.length > 0);
         const htmlFile = pathParts[pathParts.length - 1];
-        
+
         // Remove the HTML file from the count if it exists
         let nestingLevel = pathParts.length;
         if (htmlFile && htmlFile.endsWith('.html')) {
             nestingLevel--;
         }
-        
+
         // Build the correct _static path based on nesting level
         const staticPrefix = nestingLevel > 0 ? '../'.repeat(nestingLevel) : './';
         const staticPath = `${staticPrefix}_static`;
-        
+
         // Search assets only has modules directory
         const moduleDir = 'modules';
-        
+
         // Generate paths in order of likelihood
         const paths = [];
-        
+
         // 1. Most likely path based on calculated nesting
         paths.push(`${staticPath}/${moduleDir}/${fileName}`);
-        
+
         // 2. Fallback static paths (for different nesting scenarios)
         paths.push(`_static/${moduleDir}/${fileName}`);
         paths.push(`./_static/${moduleDir}/${fileName}`);
         if (nestingLevel > 1) {
             paths.push(`../_static/${moduleDir}/${fileName}`);
         }
-        
+
         // 3. Legacy fallback paths
         paths.push(`./modules/${fileName}`);
         paths.push(`../modules/${fileName}`);
         paths.push(`modules/${fileName}`);
-        
+
         return paths;
     }
-    
+
     async loadModule(src) {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
@@ -3748,37 +3755,37 @@ class EnhancedSearch {
             document.head.appendChild(script);
         });
     }
-    
+
     // Public API methods
     search(query) {
         if (!this.searchEngine) {
             return [];
         }
-        
+
         return this.searchEngine.search(query);
     }
-    
+
     renderResults(results, query) {
         // Use SearchPageManager for search page rendering
         return '';
     }
-    
+
     fallbackToDefaultSearch() {
         // Don't interfere with default search - just fallback
     }
-    
+
     getDocuments() {
         return this.documentLoader ? this.documentLoader.getDocuments() : [];
     }
-    
+
     get documents() {
         return this.getDocuments();
     }
-    
+
     getSearchEngine() {
         return this.searchEngine;
     }
-    
+
     getOptions() {
         return this.options;
     }
@@ -3796,4 +3803,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-} // End of duplicate prevention check 
+} // End of duplicate prevention check
+
