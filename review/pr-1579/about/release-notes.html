@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -618,7 +618,7 @@
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">#</a></h1>
 <p>The following sections summarize and highlight the changes for each release.
 For a complete record of changes in a release, refer to the
-<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md" rel="noreferer noopener" target="_blank">CHANGELOG.md</a> in the GitHub repository.</p>
+<a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/CHANGELOG.md" rel="noreferer noopener" target="_blank">CHANGELOG.md</a> in the GitHub repository.</p>
 <hr class="docutils" />
 <section id="v0-19-0">
 <span id="id1"></span><h2>0.19.0<a class="headerlink" href="#v0-19-0" title="Link to this heading">#</a></h2>
@@ -692,8 +692,8 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 <ul class="simple">
 <li><p>Enhanced tracing system with <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">OpenTelemetry semantic conventions</a>. To learn more, refer to <a class="reference internal" href="../observability/tracing/index.html#tracing"><span class="std std-ref">Tracing Guardrails</span></a>. For usage examples, refer to the following notebooks</p>
 <ul>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a></p></li>
 </ul>
 </li>
 <li><p>Community integration with <a class="reference external" href="https://www.guardrailsai.com/" rel="noreferer noopener" target="_blank">GuardrailsAI</a> and <a class="reference external" href="https://pangea.cloud/services/ai-guard" rel="noreferer noopener" target="_blank">Pangea AI Guard</a>.</p></li>
@@ -801,15 +801,15 @@ In this release, the class is moved to the <code class="docutils literal notrans
 <li><p>Fixed an issue when tracing is enabled.
 Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
 In this release, the response is not modified when tracing is enabled.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1103" rel="noreferer noopener" target="_blank">PR #1103</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1103" rel="noreferer noopener" target="_blank">PR #1103</a>.</p></li>
 <li><p>Fixed an issue with the self check output flow.
 Previously, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction was not executed when <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> was enabled.
 In this release, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction correctly regardless of the <code class="docutils literal notranslate"><span class="pre">enable_rails_execptions</span></code> value.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1126" rel="noreferer noopener" target="_blank">PR #1126</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1126" rel="noreferer noopener" target="_blank">PR #1126</a>.</p></li>
 <li><p>Previously, the model specification in the guardrails configuration file, <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, did not validate the model name.
 In this release you must specify the model name in the <code class="docutils literal notranslate"><span class="pre">model</span></code> top-level field or as <code class="docutils literal notranslate"><span class="pre">model</span></code> or <code class="docutils literal notranslate"><span class="pre">model_name</span></code> in
 the parameters field.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1084" rel="noreferer noopener" target="_blank">PR #1084</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1084" rel="noreferer noopener" target="_blank">PR #1084</a>.</p></li>
 </ul>
 </section>
 </section>

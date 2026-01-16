@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -630,13 +630,13 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>openai
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
+<ol class="arabic simple">
 <li><p>Set the <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> environment variable:</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="nv">$OPENAI_API_KEY</span><span class="w">    </span><span class="c1"># Replace with your own key</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
+<ol class="arabic simple">
 <li><p>If you’re running this inside a notebook, patch the AsyncIO loop.</p></li>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nest_asyncio</span>
@@ -712,7 +712,7 @@
 <li><p>Using a custom <code class="docutils literal notranslate"><span class="pre">retrieve_relevant_chunks</span></code> action.</p></li>
 <li><p>Using a custom <code class="docutils literal notranslate"><span class="pre">EmbeddingSearchProvider</span></code>.</p></li>
 </ol>
-<p>For option 1, you can add a knowledge base directly into your guardrails configuration by creating a <em>kb</em> folder inside the <em>config</em> folder and adding documents there. Currently, only the Markdown format is supported. For a quick example, check out the complete implementation of the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/examples/bots/abc/README.md" rel="noreferer noopener" target="_blank">ABC Bot</a>.</p>
+<p>For option 1, you can add a knowledge base directly into your guardrails configuration by creating a <em>kb</em> folder inside the <em>config</em> folder and adding documents there. Currently, only the Markdown format is supported. For a quick example, check out the complete implementation of the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/examples/bots/abc/README.md" rel="noreferer noopener" target="_blank">ABC Bot</a>.</p>
 <p>Options 2 and 3 represent advanced use cases beyond the scope of this topic.</p>
 </section>
 </section>

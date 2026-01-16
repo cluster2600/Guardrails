@@ -204,7 +204,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -333,7 +333,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -608,7 +608,7 @@
 <h1>AlignScore Deployment<a class="headerlink" href="#alignscore-deployment" title="Link to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The recommended way to use AlignScore with the NeMo Guardrails library is using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>. For more details, check out how to <a class="reference internal" href="../../deployment/using-docker.html"><span class="std std-doc">build and use the image</span></a>.</p>
+<p>The recommended way to use AlignScore with the NeMo Guardrails library is using the provided <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>. For more details, check out how to <a class="reference internal" href="../../deployment/using-docker.html"><span class="std std-doc">build and use the image</span></a>.</p>
 </div>
 <p>In order to deploy an AlignScore server, follow these steps:</p>
 <div class="admonition important">
@@ -623,26 +623,26 @@
 pip<span class="w"> </span>install<span class="w"> </span>.
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
+<ol class="arabic simple">
 <li><p>Install Pytorch version <code class="docutils literal notranslate"><span class="pre">2.0.1</span></code>.</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.0.1
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
+<ol class="arabic simple">
 <li><p>Download the Spacy <code class="docutils literal notranslate"><span class="pre">en_core_web_sm</span></code> model:</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>en_core_web_sm
 </pre></div>
 </div>
-<ol class="arabic simple" start="4">
+<ol class="arabic simple">
 <li><p>Download the one or both of the AlignScore checkpoints:</p></li>
 </ol>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl -OL https://huggingface.co/yzha/AlignScore/resolve/main/AlignScore-base.ckpt</span>
 <span class="go">curl -OL https://huggingface.co/yzha/AlignScore/resolve/main/AlignScore-large.ckpt</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="5">
+<ol class="arabic simple">
 <li><p>Set the <code class="docutils literal notranslate"><span class="pre">ALIGN_SCORE_PATH</span></code> environment variable to point to the path where the checkpoints have been downloaded.</p></li>
 <li><p>Set the <code class="docutils literal notranslate"><span class="pre">ALIGN_SCORE_DEVICE</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code> to run the AlignScore model on CPU, or to the corresponding GPU device, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;cuda:0&quot;</span></code>.</p></li>
 </ol>
@@ -650,7 +650,7 @@ pip<span class="w"> </span>install<span class="w"> </span>.
 <span class="nb">export</span><span class="w"> </span><span class="nv">ALIGN_SCORE_DEVICE</span><span class="o">=</span><span class="s2">&quot;cuda:0&quot;</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="7">
+<ol class="arabic simple">
 <li><p>Start the AlignScore server.</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>nemoguardrails.library.factchecking.align_score.server<span class="w"> </span>--port<span class="w"> </span><span class="m">5000</span><span class="w"> </span>--models<span class="o">=</span>base
