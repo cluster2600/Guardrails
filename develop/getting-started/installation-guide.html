@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -489,11 +489,23 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -511,16 +523,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -534,23 +541,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -637,36 +645,74 @@
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-0">
 Linux/macOS</label><div class="sd-tab-content docutils">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
-<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
 </pre></div>
 </div>
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-1">
-Windows</label><div class="sd-tab-content docutils">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
-venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+Windows (Git Bash)</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+.venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
 </pre></div>
 </div>
 </div>
 </div>
 </li>
-<li><p>Install the Nemo Guardrails toolkit with support for NVIDIA-hosted models. Set NVIDIA_API_KEY to your personal API Key generated on <a class="reference external" href="https://build.nvidia.com/" rel="noreferer noopener" target="_blank">https://build.nvidia.com/</a>.</p>
+<li><p>Install the NeMo Guardrails library with support for NVIDIA-hosted models. Set <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code> to your personal API key generated on <a class="reference external" href="https://build.nvidia.com/" rel="noreferer noopener" target="_blank">build.nvidia.com</a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;nemoguardrails[nvidia]&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span><span class="s2">&quot;nvapi-...&quot;</span>
 </pre></div>
 </div>
+</li>
+<li><p>Set up an environment variable for your NVIDIA API key.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-nvidia-api-key&quot;</span>
+</pre></div>
+</div>
+<p>This is required to access NVIDIA-hosted models on <a class="reference external" href="https://build.nvidia.com" rel="noreferer noopener" target="_blank">build.nvidia.com</a>. The tutorials and example configurations (<a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs" rel="noreferer noopener" target="_blank">examples/configs</a>) in this library include configurations that use NVIDIA-hosted models.</p>
 </li>
 </ol>
 </section>
 <section id="install-from-source">
 <h2>Install from Source<a class="headerlink" href="#install-from-source" title="Link to this heading">#</a></h2>
 <p>To use the latest development version:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA/NeMo-Guardrails.git
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+pip</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>nvidia<span class="o">]</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span><span class="s2">&quot;nvapi-...&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+pip (development)</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA-NeMo/Guardrails.git
 <span class="nb">cd</span><span class="w"> </span>NeMo-Guardrails
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
 pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
+</div>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
+Poetry (development)</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA-NeMo/Guardrails.git
+<span class="nb">cd</span><span class="w"> </span>NeMo-Guardrails
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+poetry<span class="w"> </span>install<span class="w"> </span>--extras<span class="w"> </span><span class="s2">&quot;nvidia&quot;</span>
+</pre></div>
+</div>
+<p>When using Poetry, prefix CLI commands with <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="extra-dependencies">
@@ -680,54 +726,57 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nvidia</span></code></p></td>
-<td><p>NVIDIA-hosted model integration (<a class="reference external" href="https://build.nvidia.com/" rel="noreferer noopener" target="_blank">https://build.nvidia.com/</a>)</p></td>
+<td><p>NVIDIA-hosted model integration through <a class="reference external" href="https://build.nvidia.com/" rel="noreferer noopener" target="_blank">build.nvidia.com</a></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">openai</span></code></p></td>
 <td><p>OpenAI-hosted model integration</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">eval</span></code></p></td>
-<td><p><span class="xref myst">Evaluation tools</span></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sdd</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sdd</span></code></p></td>
 <td><p><a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#presidio-based-sensitive-data-detection"><span class="xref myst">Sensitive data detection</span></a> using Presidio</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dev</span></code></p></td>
-<td><p>Developer features like autoreload</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">eval</span></code></p></td>
+<td><p><a class="reference internal" href="../evaluation/index.html"><span class="std std-doc">Evaluation tools</span></a> for testing guardrails</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">all</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tracing</span></code></p></td>
+<td><p>OpenTelemetry tracing support</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gcp</span></code></p></td>
+<td><p>Google Cloud Platform language services</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">jailbreak</span></code></p></td>
+<td><p>YARA-based jailbreak detection heuristics</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">multilingual</span></code></p></td>
+<td><p>Language detection for multilingual content</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">all</span></code></p></td>
 <td><p>All optional packages</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>To prevent the shell from interpreting square brackets as a glob pattern, enclose the nemoguardrails and extensions in double-quotes.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;nemoguardrails[openai]&quot;</span><span class="w">     </span><span class="c1"># Single extra</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;nemoguardrails[eval,sdd]&quot;</span><span class="w">   </span><span class="c1"># Multiple extras</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;nemoguardrails[all]&quot;</span><span class="w">        </span><span class="c1"># Everything</span>
-</pre></div>
-</div>
-<p>Some features like <a class="reference internal" href="../user-guides/community/alignscore.html"><span class="std std-doc">AlignScore</span></a> have additional requirements. Check the feature documentation for details.</p>
+<p>Some features such as <a class="reference internal" href="../user-guides/community/alignscore.html"><span class="std std-doc">AlignScore</span></a> have additional requirements. See the feature documentation for details.</p>
 </section>
 <section id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Link to this heading">#</a></h2>
 <p>You can run the NeMo Guardrails library in a Docker container. For containerized deployment, see <a class="reference internal" href="../deployment/using-docker.html"><span class="std std-doc">NeMo Guardrails with Docker</span></a>.</p>
 </section>
-<section id="troubleshooting">
-<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<section id="troubleshooting-installation-issues">
+<h2>Troubleshooting Installation Issues<a class="headerlink" href="#troubleshooting-installation-issues" title="Link to this heading">#</a></h2>
 <p>Use the following information to resolve common installation issues.</p>
 <section id="c-runtime-errors">
 <h3>C++ Runtime Errors<a class="headerlink" href="#c-runtime-errors" title="Link to this heading">#</a></h3>
 <p>The library uses <a class="reference external" href="https://github.com/spotify/annoy" rel="noreferer noopener" target="_blank">annoy</a>, which requires a C++ compiler. If installation fails:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-2">
+<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-5">
 Linux/macOS</label><div class="sd-tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-get<span class="w"> </span>install<span class="w"> </span>gcc<span class="w"> </span>g++<span class="w"> </span>python3-dev
 </pre></div>
 </div>
 </div>
-<input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-3">
+<input id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-6">
 Windows</label><div class="sd-tab-content docutils">
 <p>Install <a class="reference external" href="https://visualstudio.microsoft.com/visual-cpp-build-tools/" rel="noreferer noopener" target="_blank">Microsoft C++ Build Tools</a> (version 14.0 or greater).</p>
 </div>
@@ -790,7 +839,7 @@ Windows</label><div class="sd-tab-content docutils">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install from Source</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-dependencies">Extra Dependencies</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker">Docker</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-installation-issues">Troubleshooting Installation Issues</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-runtime-errors">C++ Runtime Errors</a></li>
 </ul>
 </li>

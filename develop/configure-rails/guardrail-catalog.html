@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -489,11 +489,23 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -511,16 +523,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -534,23 +541,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -632,7 +640,7 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
+<ol class="arabic simple">
 <li><p>Define the <code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> prompt in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p></li>
 </ol>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
@@ -648,7 +656,7 @@
 <p>If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div>
 <p>The above is an example prompt you can use with the <em>self check input rail</em>. See the <a class="reference internal" href="#example-prompts">Example Prompts</a> section below for more details. The <code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> prompt has an input variable <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">user_input</span> <span class="pre">}}</span></code> which includes the input from the user. The completion must be “yes” if the input should be blocked and “no” otherwise.</p>
-<p>The self-check input rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/input_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> action</a>, which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the input should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise:</p>
+<p>The self-check input rail executes the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/self_check/input_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_input</span></code> action</a>, which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the input should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow self check input
   $allowed = execute self_check_input
 
@@ -728,7 +736,7 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
+<ol class="arabic simple">
 <li><p>Define the <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> prompt in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p></li>
 </ol>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
@@ -746,7 +754,7 @@
 <p>If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div>
 <p>The above is an example prompt you can use with the <em>self check output rail</em>. See the <a class="reference internal" href="#id2">Example Prompts</a> section below for more details. The <code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> prompt has an input variable <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">bot_response</span> <span class="pre">}}</span></code> which includes the output from the bot. The completion must be “yes” if the output should be blocked and “no” otherwise.</p>
-<p>The self-check output rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> action</a>, which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the output should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise:</p>
+<p>The self-check output rail executes the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_output</span></code> action</a>, which returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the output should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow self check output
   $allowed = execute self_check_output
 
@@ -859,7 +867,7 @@
 <p>If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div>
 <p>The above is an example prompt that you can use with the <em>self check facts rail</em>. The <code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> prompt has two input variables: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">evidence</span> <span class="pre">}}</span></code>, which includes the relevant chunks, and <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">response</span> <span class="pre">}}</span></code>, which includes the bot response that should be fact-checked. The completion must be “yes” if the response is factually correct and “no” otherwise.</p>
-<p>The self-check fact-checking rail executes the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> action</a>, which returns a score between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (response is not accurate) and <code class="docutils literal notranslate"><span class="pre">1.0</span></code> (response is accurate). The reason a number is returned, instead of a boolean, is to keep a consistent API with other methods that return a score, e.g., the AlignScore method below.</p>
+<p>The self-check fact-checking rail executes the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> action</a>, which returns a score between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (response is not accurate) and <code class="docutils literal notranslate"><span class="pre">1.0</span></code> (response is accurate). The reason a number is returned, instead of a boolean, is to keep a consistent API with other methods that return a score, e.g., the AlignScore method below.</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow self check facts
   if $check_facts == True
     $check_facts = False
@@ -888,7 +896,7 @@
   bot $answer
 </pre></div>
 </div>
-<p>Please refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/rag/custom_rag_output_rails/README.md" rel="noreferer noopener" target="_blank">Custom RAG Output Rails example</a>.</p>
+<p>Please refer to the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs/rag/custom_rag_output_rails/README.md" rel="noreferer noopener" target="_blank">Custom RAG Output Rails example</a>.</p>
 </section>
 </section>
 <section id="hallucination-detection">
@@ -967,7 +975,7 @@
   bot $answer
 </pre></div>
 </div>
-<p>Please refer to the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/examples/configs/rag/custom_rag_output_rails/README.md" rel="noreferer noopener" target="_blank">Custom RAG Output Rails example</a>.</p>
+<p>Please refer to the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs/rag/custom_rag_output_rails/README.md" rel="noreferer noopener" target="_blank">Custom RAG Output Rails example</a>.</p>
 </section>
 </section>
 <section id="implementation-details">
@@ -1546,7 +1554,7 @@ As an alternative to rejecting the output, you can specify to <em>omit</em> the 
 This rule is usually paired with code injection rules.</p></li>
 <li><p>Cross-site scripting (Markdown and Javascript): Recommended if the LLM output is rendered directly in HTML or Markdown.</p></li>
 </ul>
-<p>You can view the default rules in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/injection_detection/yara_rules" rel="noreferer noopener" target="_blank">yara_rules directory</a> of the GitHub repository.</p>
+<p>You can view the default rules in the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/injection_detection/yara_rules" rel="noreferer noopener" target="_blank">yara_rules directory</a> of the GitHub repository.</p>
 </section>
 <section id="configuring-injection-detection">
 <h4>Configuring Injection Detection<a class="headerlink" href="#configuring-injection-detection" title="Link to this heading">#</a></h4>
@@ -1830,7 +1838,7 @@ The rules use the string data type.</p>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cleanlab trustworthiness</span>
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/cleanlab.md" rel="noreferer noopener" target="_blank">Cleanlab Integration</a> page.</p>
+<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/docs/user-guides/community/cleanlab.md" rel="noreferer noopener" target="_blank">Cleanlab Integration</a> page.</p>
 </section>
 </section>
 <section id="gcp-text-moderation">
@@ -1844,7 +1852,7 @@ The rules use the string data type.</p>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gcpnlp moderation</span>
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/gcp-text-moderations.md" rel="noreferer noopener" target="_blank">GCP Text Moderation</a> page.</p>
+<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/docs/user-guides/community/gcp-text-moderations.md" rel="noreferer noopener" target="_blank">GCP Text Moderation</a> page.</p>
 </section>
 </section>
 <section id="guardrailsai-integration">
@@ -1908,7 +1916,7 @@ The rules use the string data type.</p>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detect pii on retrieval</span>
 </pre></div>
 </div>
-<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/docs/user-guides/community/privateai.md" rel="noreferer noopener" target="_blank">Private AI Integration</a> page.</p>
+<p>For more details, check out the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/docs/user-guides/community/privateai.md" rel="noreferer noopener" target="_blank">Private AI Integration</a> page.</p>
 </section>
 </section>
 <section id="fiddler-guardrails-for-safety-and-hallucination-detection">

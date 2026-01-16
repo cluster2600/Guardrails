@@ -60,7 +60,7 @@
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="NeMo Guardrails Microservice for Production" href="using-microservice.html" />
-    <link rel="prev" title="Actions Server" href="local-server/actions-server.html" />
+    <link rel="prev" title="About Deployment Options" href="index.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -489,11 +489,23 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -511,16 +523,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Deployment Options</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -534,23 +541,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -614,7 +622,7 @@
 <section id="clone-the-repository">
 <h3>1. Clone the repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading">#</a></h3>
 <p>Start by cloning the NeMo Guardrails repository:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA/NeMo-Guardrails.git<span class="w"> </span>nemoguardrails
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA-NeMo/Guardrails.git<span class="w"> </span>nemoguardrails
 </pre></div>
 </div>
 <p>And change directory into the repository:</p>
@@ -631,7 +639,7 @@
 </section>
 <section id="optional-build-the-alignscore-server-image">
 <h3>3. [Optional] Build the AlignScore Server Image<a class="headerlink" href="#optional-build-the-alignscore-server-image" title="Link to this heading">#</a></h3>
-<p>If you want to use AlignScore-based fact-checking, you can also build a Docker image using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>.</p>
+<p>If you want to use AlignScore-based fact-checking, you can also build a Docker image using the provided <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/factchecking/align_score/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nemoguardrails/library/factchecking/align_score
 docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>alignscore-server<span class="w"> </span>.
 </pre></div>
@@ -640,7 +648,7 @@ docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </
 </section>
 <section id="optional-build-the-jailbreak-detection-heuristics-server-image">
 <h3>4. [Optional] Build the Jailbreak Detection Heuristics Server Image<a class="headerlink" href="#optional-build-the-jailbreak-detection-heuristics-server-image" title="Link to this heading">#</a></h3>
-<p>If you want to use the jailbreak detection heuristics server, you can also build a Docker image using the provided <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/library/jailbreak_detection/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>.</p>
+<p>If you want to use the jailbreak detection heuristics server, you can also build a Docker image using the provided <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/jailbreak_detection/Dockerfile" rel="noreferer noopener" target="_blank">Dockerfile</a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nemoguardrails/library/jailbreak_detection
 docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>jailbreak_detection_heuristics<span class="w"> </span>.
 </pre></div>
@@ -702,12 +710,12 @@ docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="local-server/actions-server.html"
+       href="index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Actions Server</p>
+        <p class="prev-next-title">About Deployment Options</p>
       </div>
     </a>
     <a class="right-next"

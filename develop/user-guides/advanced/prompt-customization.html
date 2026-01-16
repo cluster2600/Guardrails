@@ -204,7 +204,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -337,7 +337,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -487,11 +487,23 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run-rails/index.html">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../run-rails/using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../run-rails/using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -509,16 +521,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../deployment/local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deployment/using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -532,23 +539,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -612,11 +620,11 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code>: decide the exact bot message that should be returned.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">general</span></code>: generate the next bot message based on the history of user and bot messages; this task is used when there are no dialog rails defined (i.e., no user message canonical forms).</p></li>
 </ol>
-<p>Check out the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/llm/types.py" rel="noreferer noopener" target="_blank">Task type</a> for the complete list of tasks.</p>
+<p>Check out the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/nemoguardrails/llm/types.py" rel="noreferer noopener" target="_blank">Task type</a> for the complete list of tasks.</p>
 </section>
 <section id="prompt-configuration">
 <h2>Prompt Configuration<a class="headerlink" href="#prompt-configuration" title="Link to this heading">#</a></h2>
-<p>The toolkit provides predefined prompts for each task and for certain LLM models. They are located in the <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/llm/prompts" rel="noreferer noopener" target="_blank">nemoguardrails/llm/prompts</a> folder. You can customize the prompts further by including a <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file in a guardrails configuration (technically, the file name is not essential, and you can also include the <code class="docutils literal notranslate"><span class="pre">prompts</span></code> key in the general <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file).</p>
+<p>The toolkit provides predefined prompts for each task and for certain LLM models. They are located in the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/llm/prompts" rel="noreferer noopener" target="_blank">nemoguardrails/llm/prompts</a> folder. You can customize the prompts further by including a <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file in a guardrails configuration (technically, the file name is not essential, and you can also include the <code class="docutils literal notranslate"><span class="pre">prompts</span></code> key in the general <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file).</p>
 <p>Additionally, if the environment variable <code class="docutils literal notranslate"><span class="pre">PROMPTS_DIR</span></code> is set, the toolkit will also load any prompts defined in the specified directory. The loading is performed once, when the python module is loaded. The folder must contain one or more <code class="docutils literal notranslate"><span class="pre">.yml</span></code> files which contain prompt definitions (inside the <code class="docutils literal notranslate"><span class="pre">prompts</span></code> key).</p>
 <p>To override the prompt for a specific model, you need to specify the <code class="docutils literal notranslate"><span class="pre">models</span></code> key:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
@@ -793,7 +801,7 @@
 <section id="custom-tasks-and-prompts">
 <h2>Custom Tasks and Prompts<a class="headerlink" href="#custom-tasks-and-prompts" title="Link to this heading">#</a></h2>
 <p>In the scenario where you would like to create a custom task beyond those included in
-<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/nemoguardrails/llm/types.py" rel="noreferer noopener" target="_blank">the default tasks</a>, you can include the task and associated prompt as provided in the example below:</p>
+<a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/llm/types.py" rel="noreferer noopener" target="_blank">the default tasks</a>, you can include the task and associated prompt as provided in the example below:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">summarize_text</span>
 <span class="w">  </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>

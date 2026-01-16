@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -489,11 +489,23 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../../../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../run-rails/index.html">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../run-rails/using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -511,16 +523,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../../../deployment/index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../deployment/local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../deployment/index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../deployment/using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -534,23 +541,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../../../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
