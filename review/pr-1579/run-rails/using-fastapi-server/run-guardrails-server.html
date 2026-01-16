@@ -615,7 +615,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="run-the-nemo-guardrails-server">
 <h1>Run the NeMo Guardrails Server<a class="headerlink" href="#run-the-nemo-guardrails-server" title="Link to this heading">#</a></h1>
-<p>The NeMo Guardrails server loads a predefined set of guardrails configurations at startup and exposes an HTTP API to use them.
+<p>The NeMo Guardrails server loads configurations from a local directory at startup and exposes an HTTP API to use them.
 The server uses <a class="reference external" href="https://fastapi.tiangolo.com/" rel="noreferer noopener" target="_blank">FastAPI</a> and includes a built-in Chat UI for testing.</p>
 <section id="start-the-server">
 <h2>Start the Server<a class="headerlink" href="#start-the-server" title="Link to this heading">#</a></h2>
@@ -623,7 +623,7 @@ The server uses <a class="reference external" href="https://fastapi.tiangolo.com
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs
 </pre></div>
 </div>
-<p>For more information about the available options, see the <a class="reference internal" href="../../reference/cli/index.html#server"><span class="std std-ref">server command in the CLI Reference</span></a>.</p>
+<p>For more information about the available options, see <a class="reference internal" href="../../reference/cli/index.html#server"><span class="std std-ref">server</span></a>.</p>
 </section>
 <section id="link-guardrail-configurations-to-the-server">
 <h2>Link Guardrail Configurations to the Server<a class="headerlink" href="#link-guardrail-configurations-to-the-server" title="Link to this heading">#</a></h2>
@@ -771,7 +771,7 @@ For production deployments, disable it using the <code class="docutils literal n
 <ul class="simple">
 <li><p><a class="reference internal" href="chat-with-guardrailed-model.html"><span class="std std-doc">Chat with Guardrailed Model</span></a></p></li>
 <li><p><a class="reference internal" href="list-guardrail-configs.html"><span class="std std-doc">List Guardrail Configurations</span></a></p></li>
-<li><p><a class="reference internal" href="../../reference/api-server-endpoints/index.html"><span class="std std-doc">Server Endpoints Reference</span></a></p></li>
+<li><p><a class="reference internal" href="../../reference/api-server-endpoints/index.html"><span class="std std-doc">NeMo Guardrails Library API Server Endpoints Reference</span></a></p></li>
 </ul>
 </section>
 </section>

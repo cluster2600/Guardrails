@@ -626,7 +626,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Generation options are also available through the <a class="reference internal" href="../using-fastapi-server/chat-with-guardrailed-model.html#control-generation-options"><span class="std std-ref">Guardrails API server</span></a>.</p>
+<p>Generation options are also available through <a class="reference internal" href="../using-fastapi-server/chat-with-guardrailed-model.html#control-generation-options"><span class="std std-ref">Control Generation Options</span></a>.</p>
 </div>
 <section id="disabling-rails">
 <h2>Disabling Rails<a class="headerlink" href="#disabling-rails" title="Link to this heading">#</a></h2>
@@ -766,7 +766,7 @@
 </section>
 <section id="output-variables">
 <h2>Output Variables<a class="headerlink" href="#output-variables" title="Link to this heading">#</a></h2>
-<p>Some rails can store additional information in <a class="reference internal" href="../../configure-rails/colang/colang-1/colang-language-syntax-guide.html#variables"><span class="std std-ref">context variables</span></a>. You can return the content of these variables by setting the <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> generation option to the list of names for all the variables that you are interested in. If you want to return the complete context (this will also include some predefined variables), you can set <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>Some rails can store additional information in <a class="reference internal" href="../../configure-rails/colang/colang-1/colang-language-syntax-guide.html#variables"><span class="std std-ref">Variables</span></a>. You can return the content of these variables by setting the <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> generation option to the list of names for all the variables that you are interested in. If you want to return the complete context (this will also include some predefined variables), you can set <code class="docutils literal notranslate"><span class="pre">output_vars</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;output_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;some_input_rail_score&quot;</span><span class="p">,</span> <span class="s2">&quot;some_output_rail_score&quot;</span><span class="p">]</span>
 <span class="p">})</span>

@@ -616,6 +616,10 @@
   <section class="tex2jax_ignore mathjax_ignore" id="chat-with-guardrailed-model">
 <h1>Chat with Guardrailed Model<a class="headerlink" href="#chat-with-guardrailed-model" title="Link to this heading">#</a></h1>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint to send messages and receive guarded responses from the server.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While the endpoint is in the same format as the OpenAI’s chat completions API endpoint, it is currently not compatible with the OpenAI API.</p>
+</div>
 <section id="basic-request">
 <h2>Basic Request<a class="headerlink" href="#basic-request" title="Link to this heading">#</a></h2>
 <p>Send a POST request to the chat completions endpoint:</p>
@@ -742,6 +746,10 @@ If there are conflicts, the last configuration takes precedence.</p>
 <h2>Conversation Threads<a class="headerlink" href="#conversation-threads" title="Link to this heading">#</a></h2>
 <p>Use <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> to maintain conversation history on the server.
 This is useful when you can only send the latest message rather than the full history.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> must be at least 16 characters long for security reasons.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First message</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
@@ -760,7 +768,7 @@ This is useful when you can only send the latest message rather than the full hi
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> must be at least 16 characters long for security reasons.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> is currently not implemented in the NeMo Guardrails microservices.</p>
 </div>
 <section id="configure-thread-storage">
 <h3>Configure Thread Storage<a class="headerlink" href="#configure-thread-storage" title="Link to this heading">#</a></h3>
@@ -823,14 +831,14 @@ This is useful when you can only send the latest message rather than the full hi
 <span class="p">})</span>
 </pre></div>
 </div>
-<p>For complete details on generation options, see the <a class="reference internal" href="../../reference/api-server-endpoints/index.html"><span class="std std-doc">Server Endpoints Reference</span></a>.</p>
+<p>For complete details on generation options, see <a class="reference internal" href="../../reference/api-server-endpoints/index.html"><span class="std std-doc">NeMo Guardrails Library API Server Endpoints Reference</span></a>.</p>
 </section>
 <section id="related-topics">
 <h2>Related Topics<a class="headerlink" href="#related-topics" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="run-guardrails-server.html"><span class="std std-doc">Run the Guardrails Server</span></a></p></li>
+<li><p><a class="reference internal" href="run-guardrails-server.html"><span class="std std-doc">Run the NeMo Guardrails Server</span></a></p></li>
 <li><p><a class="reference internal" href="list-guardrail-configs.html"><span class="std std-doc">List Guardrail Configurations</span></a></p></li>
-<li><p><a class="reference internal" href="../../reference/api-server-endpoints/index.html"><span class="std std-doc">Server Endpoints Reference</span></a></p></li>
+<li><p><a class="reference internal" href="../../reference/api-server-endpoints/index.html"><span class="std std-doc">NeMo Guardrails Library API Server Endpoints Reference</span></a></p></li>
 </ul>
 </section>
 </section>
