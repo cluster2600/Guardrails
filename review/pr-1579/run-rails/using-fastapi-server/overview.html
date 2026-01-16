@@ -629,21 +629,12 @@
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
 <p>Meet the following prerequisites to use the NeMo Guardrails API server.</p>
 <ol class="arabic">
-<li><p>If you haven’t already, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> extra.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/NVIDIA-NeMo/Guardrails.git</span>
-<span class="go">cd NeMo-Guardrails</span>
-<span class="go">python -m venv .venv</span>
-<span class="go">source .venv/bin/activate</span>
-<span class="go">poetry install --extras &quot;nvidia&quot;</span>
-</pre></div>
-</div>
-<p>For more information about installing the NeMo Guardrails library, see <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">Install the NeMo Guardrails Library</span></a>.</p>
-</li>
+<li><p>If you haven’t already, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> extra, following the instructions in <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">Install the NeMo Guardrails Library</span></a>.</p></li>
 <li><p>Set up an environment variable for your NVIDIA API key.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export NVIDIA_API_KEY=&quot;your-nvidia-api-key&quot;</span>
 </pre></div>
 </div>
-<p>This is required to access NVIDIA-hosted models on <a class="reference external" href="https://build.nvidia.com" rel="noreferer noopener" target="_blank">build.nvidia.com</a>. The provided example configurations (<a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs" rel="noreferer noopener" target="_blank">examples/configs</a>) in this library, which are used throughtout the code examples in this documentation, include configurations that use NVIDIA-hosted models, so you need to set this environment variable to fully use them.</p>
+<p>This is required to access NVIDIA-hosted models on <a class="reference external" href="https://build.nvidia.com" rel="noreferer noopener" target="_blank">build.nvidia.com</a>. The provided example configurations (<a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs" rel="noreferer noopener" target="_blank">examples/configs</a>) and code examples throughout the documentation use NVIDIA-hosted models.</p>
 </li>
 </ol>
 </section>
