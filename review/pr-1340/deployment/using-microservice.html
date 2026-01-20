@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -238,6 +238,10 @@
     </div>
   
 
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
   
 </div>
 
@@ -335,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -485,11 +489,23 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -507,16 +523,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using-docker.html">Docker</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Microservice</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -530,23 +541,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -600,8 +612,71 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="nemo-guardrails-microservice-for-production">
 <h1>NeMo Guardrails Microservice for Production<a class="headerlink" href="#nemo-guardrails-microservice-for-production" title="Link to this heading">#</a></h1>
-<p>You can also deploy the Guardrails server as a microservice. For more information, refer to the <a class="reference external" href="https://docs.nvidia.com/nemo/microservices/latest/about/index.html" rel="noreferer noopener" target="_blank">NeMo Microservices Documentation</a>.</p>
-<p>This option is recommended for migrating your Guardrails server to production environments.</p>
+<p>The NeMo Guardrails microservice in the <a class="reference external" href="https://docs.nvidia.com/nemo/microservices/latest/about/index.html" rel="noreferer noopener" target="_blank">NeMo microservices platform</a> is the production-grade, high availability, scalable, end-to-end data flywheel deployment option, available for the <a class="reference external" href="https://www.nvidia.com/en-us/data-center/products/ai-enterprise/" rel="noreferer noopener" target="_blank">NVIDIA AI Enterprise plan</a>.</p>
+<p>The NeMo microservices platform provides a fully-featured guardrails microservice that provides the same capabilities as the NeMo Guardrails library through its own API, as the guardrails microservice is built on top of the library.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Capability</p></th>
+<th class="head text-center"><p>NeMo Guardrails Library API Server</p></th>
+<th class="head text-center"><p>NeMo Guardrails Microservice</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>REST API for guardrailed chat completions</p></td>
+<td class="text-center"><p>✓</p></td>
+<td class="text-center"><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>Guardrails configuration management</p></td>
+<td class="text-center"><p>By managing the config folder structure</p></td>
+<td class="text-center"><p>Through the platform’s config API endpoints</p></td>
+</tr>
+<tr class="row-even"><td><p>NeMo microservices platform integration</p></td>
+<td class="text-center"><p>No need</p></td>
+<td class="text-center"><p>Required</p></td>
+</tr>
+<tr class="row-odd"><td><p>Production-grade reliability</p></td>
+<td class="text-center"><p>Limited (self-managed and no high availability support out of the box)</p></td>
+<td class="text-center"><p>Supported by the platform</p></td>
+</tr>
+<tr class="row-even"><td><p>Support</p></td>
+<td class="text-center"><p>Open source community</p></td>
+<td class="text-center"><p>NVIDIA AI Enterprise plan</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="when-to-use-each-option">
+<h2>When to Use Each Option<a class="headerlink" href="#when-to-use-each-option" title="Link to this heading">#</a></h2>
+<p>Use the following guidelines to decide when to use each option.</p>
+<section id="nemo-guardrails-library-api-server">
+<h3>NeMo Guardrails Library API Server<a class="headerlink" href="#nemo-guardrails-library-api-server" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../run-rails/using-fastapi-server/index.html"><span class="std std-doc">Guardrails API server</span></a> included in the NeMo Guardrails library is suitable for:</p>
+<ul class="simple">
+<li><p>Direct integration of guardrails into your application.</p></li>
+<li><p>Proof-of-concept deployments.</p></li>
+<li><p>Development and testing environments.</p></li>
+<li><p>Evaluating guardrails configurations before production.</p></li>
+</ul>
+<p>For this option, refer to the following topics:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../run-rails/using-fastapi-server/index.html"><span class="std std-doc">Use the Guardrails API Server</span></a></p></li>
+<li><p><a class="reference internal" href="../reference/api-server-endpoints/index.html"><span class="std std-doc">NeMo Guardrails Library API Server Endpoints Reference</span></a></p></li>
+</ul>
+</section>
+<section id="nemo-guardrails-microservice">
+<h3>NeMo Guardrails Microservice<a class="headerlink" href="#nemo-guardrails-microservice" title="Link to this heading">#</a></h3>
+<p>The NeMo Guardrails microservice is recommended for:</p>
+<ul class="simple">
+<li><p>Production deployments requiring enterprise-grade reliability.</p></li>
+<li><p>Organizations already using or planning to adopt the NeMo microservices platform.</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The NeMo Guardrails microservice operates within the NeMo microservices platform ecosystem and requires other microservices to function. It is not a standalone solution.</p>
+</div>
+<p>For deployment instructions and API documentation for the NeMo Guardrails microservice, refer to <a class="reference external" href="https://docs.nvidia.com/nemo/microservices/latest/about/index.html" rel="noreferer noopener" target="_blank">NVIDIA NeMo Microservices Documentation</a>.</p>
+</section>
+</section>
 </section>
 
 
@@ -639,9 +714,29 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-each-option">When to Use Each Option</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nemo-guardrails-library-api-server">NeMo Guardrails Library API Server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nemo-guardrails-microservice">NeMo Guardrails Microservice</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

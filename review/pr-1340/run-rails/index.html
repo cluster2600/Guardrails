@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Run the NeMo Guardrails Library with the Python APIs &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>About Running Guardrailed Inference Using the NeMo Guardrails Library Tools &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -59,7 +59,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/run-rails/index.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="NeMo Guardrails Library Core Classes" href="core-classes.html" />
+    <link rel="next" title="Using the NeMo Guardrails Library Python API" href="using-python-apis/index.html" />
     <link rel="prev" title="Exceptions and Error Handling" href="../configure-rails/exceptions.html" />
 
 
@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -489,11 +489,23 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -511,16 +523,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -534,23 +541,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -585,7 +593,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Run the NeMo Guardrails Library with the Python APIs</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">About Running Guardrailed Inference Using the NeMo Guardrails Library Tools</span></li>
   </ul>
 </nav>
 </div>
@@ -602,131 +610,81 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="run-the-nemo-guardrails-library-with-the-python-apis">
-<h1>Run the NeMo Guardrails Library with the Python APIs<a class="headerlink" href="#run-the-nemo-guardrails-library-with-the-python-apis" title="Link to this heading">#</a></h1>
-<p>This section covers how to use the NeMo Guardrails library programmatically through the Python API. Learn about the core classes, generation methods, and advanced features for integrating guardrails into your applications.</p>
-<section id="core-classes">
-<h2>Core Classes<a class="headerlink" href="#core-classes" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails library provides two core classes for running guardrails:</p>
-<ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code></strong>: Loads and manages guardrails configuration from files or content.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">LLMRails</span></code></strong>: The main interface for generating responses with guardrails applied.</p></li>
-</ul>
-<p>Upon initializing the core classes (<code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> and <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code>) or starting the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI chat or server, the toolkit loads the configuration files you created in the previous chapter <a class="reference internal" href="#../configuration-guide/index.md"><span class="xref myst">Configure Rails</span></a>.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="about-running-guardrailed-inference-using-the-nemo-guardrails-library-tools">
+<h1>About Running Guardrailed Inference Using the NeMo Guardrails Library Tools<a class="headerlink" href="#about-running-guardrailed-inference-using-the-nemo-guardrails-library-tools" title="Link to this heading">#</a></h1>
+<p>After you <a class="reference internal" href="../configure-rails/index.html"><span class="std std-doc">configure your guardrails</span></a>, you can run guardrailed inference using the tools provided by the NeMo Guardrails library: the Python API and the Guardrails API server.</p>
+<p>These tools enable you to interact with your application’s main LLM as usual by sending prompts and receiving responses while the guardrails system monitors and controls all communication in the background.
+The guardrails intercept inputs and outputs between uses and the LLM and the execution of actions done by the LLM. The tools apply your configured guardrails and ensure that any inputs, generated responses, or actions remain within the boundaries you defined.</p>
+<hr class="docutils" />
+<section id="install-the-nemo-guardrails-library">
+<h2>Install the NeMo Guardrails Library<a class="headerlink" href="#install-the-nemo-guardrails-library" title="Link to this heading">#</a></h2>
+<p>To use the Python API or the Guardrails API server, you need to install the NeMo Guardrails library. See <a class="reference internal" href="../getting-started/installation-guide.html"><span class="std std-doc">Install the NeMo Guardrails Library</span></a> for instructions.</p>
 </section>
-<section id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
-<p>The following example shows the minimal code to load the prepared configuration files in the <code class="docutils literal notranslate"><span class="pre">config</span></code> directory and generate a response using the <code class="docutils literal notranslate"><span class="pre">LLMRails</span></code> class.</p>
+<hr class="docutils" />
+<section id="choosing-the-right-tool">
+<h2>Choosing the Right Tool<a class="headerlink" href="#choosing-the-right-tool" title="Link to this heading">#</a></h2>
+<p>Both the Python API and the Guardrails API server are production-ready approaches for integrating guardrails into your application.</p>
+<section id="python-api-for-edge-and-embedded-applications">
+<h3>Python API for Edge and Embedded Applications<a class="headerlink" href="#python-api-for-edge-and-embedded-applications" title="Link to this heading">#</a></h3>
+<p>Build guardrails directly into your Python application. You call guardrails functions in your code, and everything runs in the same process with no network overhead.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
-<span class="c1"># Load configuration from the config directory</span>
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
-
-<span class="c1"># Create the LLMRails instance</span>
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
-<span class="c1"># Generate a response</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello! How are you?&quot;</span><span class="p">}</span>
+    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}</span>
 <span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>This approach is best for:</p>
+<ul class="simple">
+<li><p>Edge deployments where no networked backend is available.</p></li>
+<li><p>Applications that require low latency and no external dependencies.</p></li>
+<li><p>Rapid prototyping and development in notebooks or scripts.</p></li>
+<li><p>Fine-grained control over generation and custom streaming handlers.</p></li>
+</ul>
 </section>
-<section id="sections">
-<h2>Sections<a class="headerlink" href="#sections" title="Link to this heading">#</a></h2>
+<section id="guardrails-api-server-for-networked-and-multi-client-applications">
+<h3>Guardrails API Server for Networked and Multi-Client Applications<a class="headerlink" href="#guardrails-api-server-for-networked-and-multi-client-applications" title="Link to this heading">#</a></h3>
+<p>The Guardrails API server provides a RESTful API interface to the guardrails library. Instead of calling Python functions directly, you make HTTP requests to the server endpoints, making integration straightforward for any language or platform.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;config_id&quot;: &quot;content_safety&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]}&#39;</span>
+</pre></div>
+</div>
+<p>This approach is best for:</p>
+<ul class="simple">
+<li><p>Networked systems where multiple clients need access to guardrails.</p></li>
+<li><p>Non-Python clients such as JavaScript, Go, and Java that communicate through HTTP.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<p>After choosing the right tool for your implementation model, proceed to the corresponding guide from the following.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Core Classes</div>
-<p class="sd-card-text">Load guardrails configurations with RailsConfig and generate responses with LLMRails.</p>
+Python API</div>
+<p class="sd-card-text">Run guardrailed inference using the NeMo Guardrails Python API.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="core-classes.html"><span class="doc">NeMo Guardrails Library Core Classes</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Generation Options</div>
-<p class="sd-card-text">Configure generation behavior with options for logging, LLM parameters, and rail selection.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="generation-options.html"><span class="doc">Generation Options</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="using-python-apis/index.html"><span class="doc">Using the NeMo Guardrails Library Python API</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Streaming</div>
-<p class="sd-card-text">Stream LLM responses in real-time with the stream_async method and output rails support.</p>
+Guardrails API Server</div>
+<p class="sd-card-text">Expose guardrails through an HTTP API using the Guardrails API server.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="streaming.html"><span class="doc">Streaming Generated Responses in Real-Time</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Event-Based API</div>
-<p class="sd-card-text">Use generate_events for low-level control over guardrails execution and event handling.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="event-based-api.html"><span class="doc">NeMo Guardrails Library Event-Based API</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="using-fastapi-server/index.html"><span class="doc">Use the Guardrails API Server</span></a></div>
 </div>
 </div>
-</div>
-</section>
-<section id="when-to-use-each-api">
-<h2>When to Use Each API<a class="headerlink" href="#when-to-use-each-api" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>API</p></th>
-<th class="head"><p>Use Case</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate()</span></code> / <code class="docutils literal notranslate"><span class="pre">generate_async()</span></code></p></td>
-<td><p>Standard chat interactions with messages</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stream_async()</span></code></p></td>
-<td><p>Real-time token streaming</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_events()</span></code> / <code class="docutils literal notranslate"><span class="pre">generate_events_async()</span></code></p></td>
-<td><p>Low-level event control for custom integrations</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="synchronous-vs-asynchronous">
-<h2>Synchronous vs Asynchronous<a class="headerlink" href="#synchronous-vs-asynchronous" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails library provides both synchronous and asynchronous methods:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Synchronous</p></th>
-<th class="head"><p>Asynchronous</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate()</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">generate_async()</span></code></p></td>
-<td><p>Generate responses from messages</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generate_events()</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">generate_events_async()</span></code></p></td>
-<td><p>Generate events from event history</p></td>
-</tr>
-<tr class="row-even"><td><p>-</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">stream_async()</span></code></p></td>
-<td><p>Stream tokens asynchronously</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Use asynchronous methods (<code class="docutils literal notranslate"><span class="pre">generate_async</span></code>, <code class="docutils literal notranslate"><span class="pre">stream_async</span></code>) in async contexts for better performance. The synchronous <code class="docutils literal notranslate"><span class="pre">generate()</span></code> method cannot be called from within an async context.</p>
 </div>
 </section>
 </section>
@@ -751,11 +709,11 @@ Event-Based API</div>
       </div>
     </a>
     <a class="right-next"
-       href="core-classes.html"
+       href="using-python-apis/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">NeMo Guardrails Library Core Classes</p>
+        <p class="prev-next-title">Using the NeMo Guardrails Library Python API</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -780,11 +738,13 @@ Event-Based API</div>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-classes">Core Classes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sections">Sections</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-each-api">When to Use Each API</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synchronous-vs-asynchronous">Synchronous vs Asynchronous</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nemo-guardrails-library">Install the NeMo Guardrails Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-tool">Choosing the Right Tool</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-api-for-edge-and-embedded-applications">Python API for Edge and Embedded Applications</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-api-server-for-networked-and-multi-client-applications">Guardrails API Server for Networked and Multi-Client Applications</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
 

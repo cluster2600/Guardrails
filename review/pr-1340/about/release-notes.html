@@ -206,7 +206,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +339,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -489,11 +489,23 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
@@ -511,16 +523,11 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
@@ -534,23 +541,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Colang Architecture Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Guardrails Sequence Diagrams</a></li>
-</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -610,7 +618,7 @@
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">#</a></h1>
 <p>The following sections summarize and highlight the changes for each release.
 For a complete record of changes in a release, refer to the
-<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md" rel="noreferer noopener" target="_blank">CHANGELOG.md</a> in the GitHub repository.</p>
+<a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/CHANGELOG.md" rel="noreferer noopener" target="_blank">CHANGELOG.md</a> in the GitHub repository.</p>
 <hr class="docutils" />
 <section id="v0-19-0">
 <span id="id1"></span><h2>0.19.0<a class="headerlink" href="#v0-19-0" title="Link to this heading">#</a></h2>
@@ -684,8 +692,8 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 <ul class="simple">
 <li><p>Enhanced tracing system with <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">OpenTelemetry semantic conventions</a>. To learn more, refer to <a class="reference internal" href="../observability/tracing/index.html#tracing"><span class="std std-ref">Tracing Guardrails</span></a>. For usage examples, refer to the following notebooks</p>
 <ul>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a></p></li>
 </ul>
 </li>
 <li><p>Community integration with <a class="reference external" href="https://www.guardrailsai.com/" rel="noreferer noopener" target="_blank">GuardrailsAI</a> and <a class="reference external" href="https://pangea.cloud/services/ai-guard" rel="noreferer noopener" target="_blank">Pangea AI Guard</a>.</p></li>
@@ -706,7 +714,7 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 <li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="#parallel-rails"><code class="xref myst docutils literal notranslate"><span class="pre">parallel-rails</span></code></a>.</p></li>
 <li><p>Implemented a new way of configuring tracing. You can now use the OpenTelemetry SDK and the OpenTelemetry Protocol (OTLP) exporter while configuring the NeMo Guardrails clients in your application code directly. To learn more, refer to the <a class="reference internal" href="#tracing-configuration"><span class="xref myst">basic tracing configuration guide</span></a> and the <a class="reference internal" href="../observability/tracing/index.html#tracing"><span class="std std-ref">advanced tracing configuration guide</span></a>.</p></li>
 <li><p>Updated the streaming capability of output rails to support parallel execution.</p></li>
-<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="../run-rails/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
+<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="../run-rails/using-python-apis/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
 </ul>
 </section>
 <section id="breaking-changes">
@@ -793,15 +801,15 @@ In this release, the class is moved to the <code class="docutils literal notrans
 <li><p>Fixed an issue when tracing is enabled.
 Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
 In this release, the response is not modified when tracing is enabled.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1103" rel="noreferer noopener" target="_blank">PR #1103</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1103" rel="noreferer noopener" target="_blank">PR #1103</a>.</p></li>
 <li><p>Fixed an issue with the self check output flow.
 Previously, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction was not executed when <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> was enabled.
 In this release, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction correctly regardless of the <code class="docutils literal notranslate"><span class="pre">enable_rails_execptions</span></code> value.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1126" rel="noreferer noopener" target="_blank">PR #1126</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1126" rel="noreferer noopener" target="_blank">PR #1126</a>.</p></li>
 <li><p>Previously, the model specification in the guardrails configuration file, <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, did not validate the model name.
 In this release you must specify the model name in the <code class="docutils literal notranslate"><span class="pre">model</span></code> top-level field or as <code class="docutils literal notranslate"><span class="pre">model</span></code> or <code class="docutils literal notranslate"><span class="pre">model_name</span></code> in
 the parameters field.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1084" rel="noreferer noopener" target="_blank">PR #1084</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1084" rel="noreferer noopener" target="_blank">PR #1084</a>.</p></li>
 </ul>
 </section>
 </section>
