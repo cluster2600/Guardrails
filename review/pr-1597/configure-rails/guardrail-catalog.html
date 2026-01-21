@@ -995,7 +995,7 @@
 <p>The NeMo Guardrails library provides out of the box connectivity for safety models trained by NVIDIA for specialized use cases. These models are provided as both HuggingFace checkpoints and as NVIDIA NIM containers that provide out of the box TRTLLM support with lower latency.</p>
 <section id="content-safety">
 <h3>Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h3>
-<p>The content safety checks inside Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as Nvidia’s <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">Nemotron Content Safety</a> model, Meta’s <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/" rel="noreferer noopener" target="_blank">Llama Guard 3</a>, and Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma" rel="noreferer noopener" target="_blank">ShieldGemma</a>.</p>
+<p>The content safety checks inside Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">NVIDIA Nemotron Content Safety</a>(<a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/index.html" rel="noreferer noopener" target="_blank">documentation</a>) model, Meta <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/" rel="noreferer noopener" target="_blank">Llama Guard 3</a>, and Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma" rel="noreferer noopener" target="_blank">ShieldGemma</a>.</p>
 <p>To use the content safety check, you should:</p>
 <ol class="arabic">
 <li><p>Include the desired content safety models in the models section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
@@ -1004,7 +1004,7 @@
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo-instruct</span>
 
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;content_safety&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8123/v1&quot;</span>
@@ -1019,7 +1019,11 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> is a unique idenfier for the model that will be passed to the input and output rails as a parameter.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> is a unique idenfier for the model to be referred to in the input and output rails as a parameter.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Llama Guard 3 is a gated model on Hugging Face. To use this model, you must <a class="reference external" href="https://huggingface.co/meta-llama/Llama-Guard-3-8B" rel="noreferer noopener" target="_blank">request access</a> and log in using the Hugging Face CLI with <code class="docutils literal notranslate"><span class="pre">huggingface-cli</span> <span class="pre">login</span></code>.</p>
 </div>
 </li>
 <li><p>Include the content safety check in the input and output rails section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
@@ -1087,7 +1091,7 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">output</span></code> rails executes the <a class="reference download internal" download="" href="../_downloads/a471c13ab5d1bc9f07ec87e1615cc6cc/actions.py"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">content_safety_check_input</span></code></span></a> and <a class="reference download internal" download="" href="../_downloads/a471c13ab5d1bc9f07ec87e1615cc6cc/actions.py"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">content_safety_check_output</span></code></span></a> actions respectively.</p>
 <section id="multilingual-content-safety">
 <h4>Multilingual Content Safety<a class="headerlink" href="#multilingual-content-safety" title="Link to this heading">#</a></h4>
-<!-- TODO: should we mention nvidia/llama-3.1-nemotron-safety-guard-8b-v3  -->
+<p>This feature is useful when using multilingual content safety models, such as <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">NVIDIA Nemotron Safety Guard</a>, to adapt the standard refusal message which is English only.</p>
 <p>When content safety rails block unsafe content, you can configure the NeMo Guardrails library to detect the user’s input language and return refusal messages in that language.</p>
 <section id="supported-languages-and-default-refusal-messages">
 <h5>Supported Languages and Default Refusal Messages<a class="headerlink" href="#supported-languages-and-default-refusal-messages" title="Link to this heading">#</a></h5>

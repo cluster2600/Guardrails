@@ -625,7 +625,7 @@ For a complete record of changes in a release, refer to the
 <section id="key-features">
 <span id="v0-20-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
 <ul>
-<li><p>Added support for multilingual language detection and refusal messages by integrating the <a class="reference external" href="https://github.com/LlmKira/fast-langdetect" rel="noreferer noopener" target="_blank">fast-langdetect package</a>. To use this feature, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">multilingual</span></code> extra.</p>
+<li><p>Added support for multilingual refusal messages to complement multilingual content safety models such as <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">NVIDIA Nemotron Safety Guard 8B v3</a>. This feature uses the <a class="reference external" href="https://github.com/LlmKira/fast-langdetect" rel="noreferer noopener" target="_blank">fast-langdetect package</a> to detect the user’s input language and return refusal messages in the appropriate language. To use this feature, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">multilingual</span></code> extra.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>multilingual<span class="o">]</span>
 </pre></div>
 </div>
