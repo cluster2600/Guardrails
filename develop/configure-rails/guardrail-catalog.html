@@ -995,36 +995,38 @@
 <p>The NeMo Guardrails library provides out of the box connectivity for safety models trained by NVIDIA for specialized use cases. These models are provided as both HuggingFace checkpoints and as NVIDIA NIM containers that provide out of the box TRTLLM support with lower latency.</p>
 <section id="content-safety">
 <h3>Content Safety<a class="headerlink" href="#content-safety" title="Link to this heading">#</a></h3>
-<p>The content safety checks inside Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as Nvidia’s <a class="reference external" href="https://docs.nvidia.com/nim/#nemoguard" rel="noreferer noopener" target="_blank">Nemotron Content Safety</a> model, Meta’s <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/" rel="noreferer noopener" target="_blank">Llama Guard 3</a>, and Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma" rel="noreferer noopener" target="_blank">ShieldGemma</a>.</p>
+<p>The content safety checks inside Guardrails act as a robust set of guardrails designed to ensure the integrity and safety of both input and output text. This feature allows users to utilize a variety of advanced content safety models such as <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">NVIDIA Nemotron Content Safety</a>(<a class="reference external" href="https://docs.nvidia.com/nim/llama-3-1-nemotron-safety-guard-8b/latest/index.html" rel="noreferer noopener" target="_blank">documentation</a>) model, Meta <a class="reference external" href="https://www.llama.com/docs/model-cards-and-prompt-formats/llama-guard-3/" rel="noreferer noopener" target="_blank">Llama Guard 3</a>, and Google’s <a class="reference external" href="https://ai.google.dev/gemma/docs/shieldgemma" rel="noreferer noopener" target="_blank">ShieldGemma</a>.</p>
 <p>To use the content safety check, you should:</p>
-<ol class="arabic simple">
-<li><p>Include the desired content safety models in the models section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
-</ol>
+<ol class="arabic">
+<li><p>Include the desired content safety models in the models section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
 <span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo-instruct</span>
 
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;content_safety&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8123/v1&quot;</span>
 <span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llama-3.1-nemoguard-8b-content-safety&quot;</span>
 
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama_guard_2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama_guard_3</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vllm_openai</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">openai_api_base</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:5005/v1&quot;</span>
-<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;meta-llama/Meta-Llama-Guard-2-8B&quot;</span>
+<span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;meta-llama/Meta-Llama-Guard-3-8B&quot;</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> is a unique idenfier for the model that will be passed to the input and output rails as a parameter.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> is a unique idenfier for the model to be referred to in the input and output rails as a parameter.</p>
 </div>
-<ol class="arabic simple">
-<li><p>Include the content safety check in the input and output rails section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
-</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Llama Guard 3 is a gated model on Hugging Face. To use this model, you must <a class="reference external" href="https://huggingface.co/meta-llama/Llama-Guard-3-8B" rel="noreferer noopener" target="_blank">request access</a> and log in using the Hugging Face CLI with <code class="docutils literal notranslate"><span class="pre">huggingface-cli</span> <span class="pre">login</span></code>.</p>
+</div>
+</li>
+<li><p>Include the content safety check in the input and output rails section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1035,9 +1037,8 @@
 </pre></div>
 </div>
 <p>It is important to note that you must define the models in the <code class="docutils literal notranslate"><span class="pre">models</span></code> section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file before using them in the input and output flows. The <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">output</span></code> flows are used to check the input and output text, respectively. The <code class="docutils literal notranslate"><span class="pre">$model</span></code> parameter specifies the model to be used for content safety checking. The model must be defined in the <code class="docutils literal notranslate"><span class="pre">models</span></code> section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file. The <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">output</span></code> flows return a boolean value indicating whether the input or output text is safe. Depending on the model, it also returns set of policy violations. Please refer to the <span class="xref myst">content safety example</span> for more details.</p>
-<ol class="arabic simple">
-<li><p>Specify the prompts for each content safety check flow in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file, here is the example prompt for the <code class="docutils literal notranslate"><span class="pre">shieldgemma</span></code> model:</p></li>
-</ol>
+</li>
+<li><p>Specify the prompts for each content safety check flow in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file, here is the example prompt for the <code class="docutils literal notranslate"><span class="pre">shieldgemma</span></code> model:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety_check_input $model=shieldgemma</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -1072,7 +1073,7 @@
 <blockquote>
 <div><p>WARNING: If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div></blockquote>
-<ol class="arabic">
+</li>
 <li><p>You must specify the output parser. You can use your own parser and register it or use the off-the-shelf <code class="docutils literal notranslate"><span class="pre">is_content_safe</span></code> output parser as shown above.</p>
 <p>This parser works by checking for specific keywords in the response:</p>
 <ul class="simple">
@@ -1088,13 +1089,13 @@
 </div>
 <p>The above is an example prompt that you can use with the <em>content safety check input $model=shieldgemma</em>. The prompt has one input variable: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">user_input</span> <span class="pre">}}</span></code>, which includes user input that should be moderated. The completion must be “yes” if the response is not safe and “no” otherwise. Optionally, some models may return a set of policy violations.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">output</span></code> rails executes the <a class="reference download internal" download="" href="../_downloads/a471c13ab5d1bc9f07ec87e1615cc6cc/actions.py"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">content_safety_check_input</span></code></span></a> and <a class="reference download internal" download="" href="../_downloads/a471c13ab5d1bc9f07ec87e1615cc6cc/actions.py"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">content_safety_check_output</span></code></span></a> actions respectively.</p>
-<section id="multilingual-refusal-messages">
-<h4>Multilingual Refusal Messages<a class="headerlink" href="#multilingual-refusal-messages" title="Link to this heading">#</a></h4>
-<!-- TODO: should we mention nvidia/llama-3.1-nemotron-safety-guard-8b-v3  -->
-<p>When content safety rails block unsafe content, you can configure the NeMo Guardrails library to automatically detect the user’s input language and return refusal messages in that same language. This provides a better user experience for multilingual applications.</p>
-<section id="supported-languages">
-<h5>Supported Languages<a class="headerlink" href="#supported-languages" title="Link to this heading">#</a></h5>
-<p>The multilingual feature supports 9 languages:</p>
+<section id="multilingual-content-safety">
+<h4>Multilingual Content Safety<a class="headerlink" href="#multilingual-content-safety" title="Link to this heading">#</a></h4>
+<p>This feature is useful when using multilingual content safety models, such as <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">NVIDIA Nemotron Safety Guard</a>, to adapt the standard refusal message which is English only.</p>
+<p>When content safety rails block unsafe content, you can configure the NeMo Guardrails library to detect the user’s input language and return refusal messages in that language.</p>
+<section id="supported-languages-and-default-refusal-messages">
+<h5>Supported Languages and Default Refusal Messages<a class="headerlink" href="#supported-languages-and-default-refusal-messages" title="Link to this heading">#</a></h5>
+<p>The following languages are available for multilingual language detection. Upon refusal, the library returns the refusal message in the detected language.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Language</p></th>
@@ -1142,18 +1143,19 @@
 </tbody>
 </table>
 </div>
-<p>If the detected language is not in this list, English is used as the fallback.</p>
+<p>If the detected language is not in this list, it falls back to the default refusal message in English.</p>
 </section>
-<section id="installation">
-<h5>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h5>
-<p>To use multilingual refusal messages, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">multilingual</span></code> extra:</p>
+<section id="enabling-multilingual-language-detection">
+<h5>Enabling Multilingual Language Detection<a class="headerlink" href="#enabling-multilingual-language-detection" title="Link to this heading">#</a></h5>
+<p>To enable multilingual language detection, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">multilingual</span></code> extra:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>multilingual<span class="o">]</span>
 </pre></div>
 </div>
+<p>This extra installs the <a class="reference external" href="https://github.com/LlmKira/fast-langdetect" rel="noreferer noopener" target="_blank">fast-langdetect package</a>, which detects the language of user input so the library can return refusal messages in the appropriate language.</p>
 </section>
-<section id="id8">
-<h5>Usage<a class="headerlink" href="#id8" title="Link to this heading">#</a></h5>
-<p>To enable multilingual refusal messages, add the <code class="docutils literal notranslate"><span class="pre">multilingual</span></code> configuration to your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
+<section id="enabling-multilingual-refusal-messages">
+<h5>Enabling Multilingual Refusal Messages<a class="headerlink" href="#enabling-multilingual-refusal-messages" title="Link to this heading">#</a></h5>
+<p>To enable multilingual refusal messages, add the <code class="docutils literal notranslate"><span class="pre">multilingual</span></code> configuration to your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> as shown in the following example.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -1179,9 +1181,9 @@
 </pre></div>
 </div>
 </section>
-<section id="custom-refusal-messages">
-<h5>Custom Refusal Messages<a class="headerlink" href="#custom-refusal-messages" title="Link to this heading">#</a></h5>
-<p>You can customize the refusal messages for each language:</p>
+<section id="specifying-custom-refusal-messages">
+<h5>Specifying Custom Refusal Messages<a class="headerlink" href="#specifying-custom-refusal-messages" title="Link to this heading">#</a></h5>
+<p>You can specify custom refusal messages for each language as shown in the following example.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">content_safety</span><span class="p">:</span>
@@ -1194,61 +1196,24 @@
 <span class="w">          </span><span class="c1"># Add other languages as needed</span>
 </pre></div>
 </div>
-<p>If a custom message is not provided for a detected language, the built-in default message for that language is used.</p>
-<!--  TODO: shall we include it here -->
-</section>
-<section id="how-it-works">
-<h5>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h5>
-<p>When <code class="docutils literal notranslate"><span class="pre">multilingual.enabled</span></code> is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>:</p>
-<ol class="arabic simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">detect_language</span></code> action uses the <a class="reference external" href="https://github.com/LlmKira/fast-langdetect" rel="noreferer noopener" target="_blank">fast-langdetect</a> library to detect the language of the user’s input</p></li>
-<li><p>If the content safety check blocks the input, the refusal message is returned in the detected language</p></li>
-<li><p>Language detection adds minimal latency (~12μs per request)</p></li>
-</ol>
+<p>If a custom message is not provided for a detected language, it falls back to the default refusal message for that language.</p>
 </section>
 <section id="cold-start-behavior">
 <h5>Cold Start Behavior<a class="headerlink" href="#cold-start-behavior" title="Link to this heading">#</a></h5>
-<p>The fast-langdetect library downloads a language detection model on first use:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Model</p></th>
-<th class="head"><p>Download Size</p></th>
-<th class="head"><p><a class="reference external" href="https://github.com/LlmKira/fast-langdetect?tab=readme-ov-file#memory-note" rel="noreferer noopener" target="_blank">Memory Usage</a></p></th>
-<th class="head"><p>First Call Behavior</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> (default)</p></td>
-<td><p>125 MB</p></td>
-<td><p>~170-210 MB</p></td>
-<td><p>Downloads model on first call if not cached</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lite</span></code></p></td>
-<td><p>~0.9 MB (bundled)</p></td>
-<td><p>~45-60 MB</p></td>
-<td><p>No download, works offline immediately</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Default cache location:</strong></p>
-<p>fast-langdetect stores its downloaded FastText model in a temporary, OS-specific cache directory at <code class="docutils literal notranslate"><span class="pre">{system_temp_dir}/fasttext-langdetect/</span></code>, where <code class="docutils literal notranslate"><span class="pre">system_temp_dir</span></code> is whatever directory your operating system uses for temporary files:</p>
+<p>The fast-langdetect library downloads a language detection model on first use.
+For more details on first call behavior, refer to the <a class="reference external" href="https://github.com/LlmKira/fast-langdetect?tab=readme-ov-file#memory-note" rel="noreferer noopener" target="_blank">fast-langdetect documentation</a>.</p>
+</section>
+<section id="production-considerations">
+<h5>Production Considerations<a class="headerlink" href="#production-considerations" title="Link to this heading">#</a></h5>
 <ul class="simple">
-<li><p><strong>macOS</strong>: A sandboxed temp path such as <code class="docutils literal notranslate"><span class="pre">/var/folders/&lt;random&gt;/T/fasttext-langdetect/</span></code></p></li>
-<li><p><strong>Linux</strong>: The global temp directory <code class="docutils literal notranslate"><span class="pre">/tmp/fasttext-langdetect/</span></code></p></li>
-<li><p><strong>Windows</strong>: The user’s temporary directory, e.g., <code class="docutils literal notranslate"><span class="pre">C:\Users\&lt;User&gt;\AppData\Local\Temp\fasttext-langdetect\</span></code></p></li>
-</ul>
-<p>You can override this location via the <code class="docutils literal notranslate"><span class="pre">FTLANG_CACHE</span></code> environment variable.</p>
-<p><strong>Production considerations:</strong></p>
-<ul class="simple">
-<li><p>First API call may take ~10-20 seconds to download and load the full model (network-dependent)</p></li>
-<li><p>Subsequent calls use the cached model with ~9-12μs latency</p></li>
-<li><p>For container/serverless environments, consider pre-warming during startup or persisting the model cache in your container image</p></li>
+<li><p>First API call might take 10-20 seconds to download and load the model, depending on the network.</p></li>
+<li><p>Subsequent calls use the cached model with ~9-12μs latency.</p></li>
+<li><p>For container or serverless environments, pre-warm during startup or persist the model cache in your container image.</p></li>
 </ul>
 </section>
-<section id="accuracy">
-<h5>Accuracy<a class="headerlink" href="#accuracy" title="Link to this heading">#</a></h5>
-<p>Language detection accuracy was benchmarked on two datasets:</p>
+<section id="language-detection-accuracy-benchmark">
+<h5>Language Detection Accuracy Benchmark<a class="headerlink" href="#language-detection-accuracy-benchmark" title="Link to this heading">#</a></h5>
+<p>Language detection is benchmarked on the following datasets.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Dataset</p></th>
@@ -1274,8 +1239,8 @@
 <section id="topic-safety">
 <h3>Topic Safety<a class="headerlink" href="#topic-safety" title="Link to this heading">#</a></h3>
 <p>The topic safety feature allows you to define and enforce specific conversation rules and boundaries using NVIDIA’s Topic Control model. This model helps ensure that conversations stay within predefined topics and follow specified guidelines.</p>
-<section id="id9">
-<h4>Usage<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
+<section id="id8">
+<h4>Usage<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
 <p>To use the topic safety check, you should:</p>
 <ol class="arabic simple">
 <li><p>Include the topic control model in the models section of your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file (as shown in the Content Safety section above):</p></li>
@@ -1332,8 +1297,8 @@
 </pre></div>
 </div>
 </section>
-<section id="id10">
-<h4>Implementation Details<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<section id="id9">
+<h4>Implementation Details<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
 <p>The ‘topic safety check input’ flow uses the <a class="reference download internal" download="" href="../_downloads/a4e273149727751e52aaf493e457d877/actions.py"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">topic_safety_check_input</span></code></span></a> action. The model returns a boolean value indicating whether the user input is on-topic or not. Please refer to the <span class="xref myst">topic safety example</span> for more details.</p>
 </section>
 </section>
@@ -1712,8 +1677,8 @@ The rules use the string data type.</p>
 <section id="llama-guard-based-content-moderation">
 <h3>Llama Guard-based Content Moderation<a class="headerlink" href="#llama-guard-based-content-moderation" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library provides out-of-the-box support for content moderation using Meta’s <a class="reference external" href="https://ai.meta.com/research/publications/llama-guard-llm-based-input-output-safeguard-for-human-ai-conversations/" rel="noreferer noopener" target="_blank">Llama Guard</a> model.</p>
-<section id="id11">
-<h4>Example usage<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<section id="id10">
+<h4>Example usage<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1729,8 +1694,8 @@ The rules use the string data type.</p>
 <section id="patronus-lynx-based-rag-hallucination-detection">
 <h3>Patronus Lynx-based RAG Hallucination Detection<a class="headerlink" href="#patronus-lynx-based-rag-hallucination-detection" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports hallucination detection in RAG systems using <a class="reference internal" href="#www.patronus.ai"><span class="xref myst">Patronus AI</span></a>’s Lynx model. The model is hosted on Hugging Face and comes in both a 70B parameters (see <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-70B-Instruct" rel="noreferer noopener" target="_blank">here</a>) and 8B parameters (see <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-8B-Instruct" rel="noreferer noopener" target="_blank">here</a>) variant.</p>
-<section id="id12">
-<h4>Example usage<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
+<section id="id11">
+<h4>Example usage<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1754,8 +1719,8 @@ The rules use the string data type.</p>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
-<section id="id13">
-<h4>Example usage<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<section id="id12">
+<h4>Example usage<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1779,8 +1744,8 @@ The rules use the string data type.</p>
 <section id="activefence">
 <h3>ActiveFence<a class="headerlink" href="#activefence" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using the <a class="reference external" href="https://docs.activefence.com/index.html" rel="noreferer noopener" target="_blank">ActiveFence ActiveScore API</a> as an input and output rail out-of-the-box (you need to have the <code class="docutils literal notranslate"><span class="pre">ACTIVEFENCE_API_KEY</span></code> environment variable set).</p>
-<section id="id14">
-<h4>Example usage<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<section id="id13">
+<h4>Example usage<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1796,8 +1761,8 @@ The rules use the string data type.</p>
 <section id="autoalign">
 <h3>AutoAlign<a class="headerlink" href="#autoalign" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using the AutoAlign’s guardrails API (you need to have the <code class="docutils literal notranslate"><span class="pre">AUTOALIGN_API_KEY</span></code> environment variable set).</p>
-<section id="id15">
-<h4>Example usage<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<section id="id14">
+<h4>Example usage<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1813,8 +1778,8 @@ The rules use the string data type.</p>
 <section id="clavata">
 <h3>Clavata<a class="headerlink" href="#clavata" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://www.clavata.ai/blogs/partner-nvidia" rel="noreferer noopener" target="_blank">Clavata AI</a> as an input and output rail out-of-the-box (you need to have the CLAVATA_API_KEY environment variable set).</p>
-<section id="id16">
-<h4>Example usage<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<section id="id15">
+<h4>Example usage<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">clavata</span><span class="p">:</span>
@@ -1830,8 +1795,8 @@ The rules use the string data type.</p>
 <section id="cleanlab">
 <h3>Cleanlab<a class="headerlink" href="#cleanlab" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using the <a class="reference external" href="https://cleanlab.ai/blog/trustworthy-language-model/" rel="noreferer noopener" target="_blank">Cleanlab Trustworthiness Score API</a> as an output rail (you need to have the <code class="docutils literal notranslate"><span class="pre">CLEANLAB_API_KEY</span></code> environment variable set).</p>
-<section id="id17">
-<h4>Example usage<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<section id="id16">
+<h4>Example usage<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1844,8 +1809,8 @@ The rules use the string data type.</p>
 <section id="gcp-text-moderation">
 <h3>GCP Text Moderation<a class="headerlink" href="#gcp-text-moderation" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using the GCP Text Moderation. You need to be authenticated with GCP, refer <a class="reference external" href="https://cloud.google.com/docs/authentication/application-default-credentials" rel="noreferer noopener" target="_blank">here</a> for auth details.</p>
-<section id="id18">
-<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<section id="id17">
+<h4>Example usage<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1858,8 +1823,8 @@ The rules use the string data type.</p>
 <section id="guardrailsai-integration">
 <h3>GuardrailsAI Integration<a class="headerlink" href="#guardrailsai-integration" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://github.com/guardrails-ai/guardrails" rel="noreferer noopener" target="_blank">GuardrailsAI validators</a> for comprehensive input and output validation. GuardrailsAI provides a wide range of validators for content safety, PII detection, toxic language filtering, jailbreak detection, and more.</p>
-<section id="id19">
-<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<section id="id18">
+<h4>Example usage<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">guardrails_ai</span><span class="p">:</span>
@@ -1901,8 +1866,8 @@ The rules use the string data type.</p>
 <span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
-<section id="id20">
-<h4>Example usage<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<section id="id19">
+<h4>Example usage<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
 <p><strong>PII detection</strong></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
@@ -1929,8 +1894,8 @@ The rules use the string data type.</p>
 <span class="w">      </span><span class="nt">server_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://testfiddler.ai</span><span class="w"> </span><span class="c1"># Replace this with your fiddler environment</span>
 </pre></div>
 </div>
-<section id="id21">
-<h4>Example usage<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<section id="id20">
+<h4>Example usage<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">fiddler</span><span class="p">:</span>
@@ -1951,8 +1916,8 @@ The rules use the string data type.</p>
 <h3>Prompt Security Protection<a class="headerlink" href="#prompt-security-protection" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://prompt.security/?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Prompt Security API</a> for protecting input and output retrieval flows.</p>
 <p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">PS_PROTECT_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">PS_APP_ID</span></code> environment variables.</p>
-<section id="id22">
-<h4>Example usage<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
+<section id="id21">
+<h4>Example usage<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1969,8 +1934,8 @@ The rules use the string data type.</p>
 <h3>Pangea AI Guard<a class="headerlink" href="#pangea-ai-guard" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://pangea.cloud/services/ai-guard/" rel="noreferer noopener" target="_blank">Pangea AI Guard</a> for protecting data and
 interactions with LLMs within AI-powered applications.</p>
-<section id="id23">
-<h4>Example usage<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<section id="id22">
+<h4>Example usage<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -1989,8 +1954,8 @@ interactions with LLMs within AI-powered applications.</p>
 <p>The NeMo Guardrails library supports using
 <a class="reference external" href="https://docs.trendmicro.com/en-us/documentation/article/trend-vision-one-ai-scanner-ai-guard" rel="noreferer noopener" target="_blank">Trend Micro Vision One AI Guard</a> for protecting input and output flows within AI-powered applications.</p>
 <p>See <a class="reference internal" href="../user-guides/community/trend-micro.html"><span class="std std-doc">Trend Micro</span></a> for more details.</p>
-<section id="id24">
-<h4>Example usage<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<section id="id23">
+<h4>Example usage<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -2007,8 +1972,8 @@ interactions with LLMs within AI-powered applications.</p>
 <h3>Cisco AI Defense<a class="headerlink" href="#cisco-ai-defense" title="Link to this heading">#</a></h3>
 <p>The NeMo Guardrails library supports using <a class="reference external" href="https://www.cisco.com/site/us/en/products/security/ai-defense/index.html?utm_medium=github&amp;amp;utm_campaign=nemo-guardrails" rel="noreferer noopener" target="_blank">Cisco AI Defense Inspection</a> for protecting input and output flows.</p>
 <p>To activate the protection, you need to set the <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_KEY</span></code> and <code class="docutils literal notranslate"><span class="pre">AI_DEFENSE_API_ENDPOINT</span></code> environment variables.</p>
-<section id="id25">
-<h4>Example usage<a class="headerlink" href="#id25" title="Link to this heading">#</a></h4>
+<section id="id24">
+<h4>Example usage<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
@@ -2116,22 +2081,22 @@ interactions with LLMs within AI-powered applications.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-models">NVIDIA Models</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#content-safety">Content Safety</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multilingual-refusal-messages">Multilingual Refusal Messages</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-languages">Supported Languages</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Usage</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-refusal-messages">Custom Refusal Messages</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How It Works</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#multilingual-content-safety">Multilingual Content Safety</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-languages-and-default-refusal-messages">Supported Languages and Default Refusal Messages</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-multilingual-language-detection">Enabling Multilingual Language Detection</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-multilingual-refusal-messages">Enabling Multilingual Refusal Messages</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-custom-refusal-messages">Specifying Custom Refusal Messages</a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#cold-start-behavior">Cold Start Behavior</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy">Accuracy</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#production-considerations">Production Considerations</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#language-detection-accuracy-benchmark">Language Detection Accuracy Benchmark</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-safety">Topic Safety</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Usage</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#customizing-topic-rules">Customizing Topic Rules</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Implementation Details</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Implementation Details</a></li>
 </ul>
 </li>
 </ul>
@@ -2164,66 +2129,66 @@ interactions with LLMs within AI-powered applications.</p>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llama-guard-based-content-moderation">Llama Guard-based Content Moderation</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#patronus-lynx-based-rag-hallucination-detection">Patronus Lynx-based RAG Hallucination Detection</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#presidio-based-sensitive-data-detection">Presidio-based Sensitive Data Detection</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Example usage</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#third-party-apis">Third-Party APIs</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activefence">ActiveFence</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#autoalign">AutoAlign</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clavata">Clavata</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleanlab">Cleanlab</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gcp-text-moderation">GCP Text Moderation</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrailsai-integration">GuardrailsAI Integration</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#private-ai-pii-detection">Private AI PII Detection</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiddler-guardrails-for-safety-and-hallucination-detection">Fiddler Guardrails for Safety and Hallucination Detection</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-security-protection">Prompt Security Protection</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pangea-ai-guard">Pangea AI Guard</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-micro-vision-one-ai-application-security">Trend Micro Vision One AI Application Security</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Example usage</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cisco-ai-defense">Cisco AI Defense</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">Example usage</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Example usage</a></li>
 </ul>
 </li>
 </ul>

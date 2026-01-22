@@ -654,7 +654,7 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models.type</span></code></p></td>
 <td><p>string</p></td>
 <td><p>✓</p></td>
-<td><p>Model type: <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">embeddings</span></code>, or task-specific</p></td>
+<td><p>Model identifier (see <a class="reference internal" href="#model-types">Model Types</a>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">models.engine</span></code></p></td>
 <td><p>string</p></td>
@@ -692,6 +692,10 @@
 </section>
 <section id="model-types">
 <h3>Model Types<a class="headerlink" href="#model-types" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> field is a free-form string identifier. Certain types have special handling in the runtime, while custom types can be defined and referenced in flows via <code class="docutils literal notranslate"><span class="pre">$model=&lt;type&gt;</span></code>.</p>
+<section id="reserved-types">
+<h4>Reserved Types<a class="headerlink" href="#reserved-types" title="Link to this heading">#</a></h4>
+<p>These types have special handling in the NeMo Guardrails runtime:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Type</p></th>
@@ -700,41 +704,61 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">main</span></code></p></td>
-<td><p>Primary application LLM</p></td>
+<td><p>Primary application LLM for conversation</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">embeddings</span></code></p></td>
-<td><p>Embedding generation model</p></td>
+<td><p>Embedding model for knowledge base and similarity search</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_input</span></code></p></td>
-<td><p>Input validation model</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">self_check_output</span></code></p></td>
-<td><p>Output validation model</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">content_safety</span></code></p></td>
-<td><p>Content safety model</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">topic_control</span></code></p></td>
-<td><p>Topic control model</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code></p></td>
-<td><p>Canonical user intent generation</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generate_next_steps</span></code></p></td>
-<td><p>Next step prediction</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code></p></td>
-<td><p>Bot response generation</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fact_checking</span></code></p></td>
-<td><p>Fact verification model</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">llama_guard</span></code></p></td>
-<td><p>LlamaGuard content moderation</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">jailbreak_detection</span></code></p></td>
+<td><p>Jailbreak detection model (used with NIM)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+</section>
+<section id="commonly-used-types">
+<h4>Commonly-Used Types<a class="headerlink" href="#commonly-used-types" title="Link to this heading">#</a></h4>
+<p>The following types are commonly used with guardrails:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Usage Example in Flows</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">content_safety</span></code></p></td>
+<td><p>Content safety model</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span> <span class="pre">$model=content_safety</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">topic_control</span></code></p></td>
+<td><p>Topic control model</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">topic</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">input</span> <span class="pre">$model=topic_control</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">llama_guard</span></code></p></td>
+<td><p>Llama Guard content moderation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">guard</span> <span class="pre">check</span> <span class="pre">input</span> <span class="pre">$model=llama_guard</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="custom-types">
+<h4>Custom Types<a class="headerlink" href="#custom-types" title="Link to this heading">#</a></h4>
+<p>You can define any custom type and reference it in flows. For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_safety_model</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self-hosted</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-org/custom-safety-model</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=my_safety_model</span>
+</pre></div>
+</div>
+<p>The runtime validates that any <code class="docutils literal notranslate"><span class="pre">$model=&lt;type&gt;</span></code> reference in flows has a matching model defined in the configuration.</p>
+</section>
 </section>
 <section id="engines">
 <h3>Engines<a class="headerlink" href="#engines" title="Link to this heading">#</a></h3>
@@ -1417,6 +1441,45 @@
 <span class="w">          </span><span class="nt">es</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Lo</span><span class="nv"> </span><span class="s">siento,</span><span class="nv"> </span><span class="s">no</span><span class="nv"> </span><span class="s">puedo</span><span class="nv"> </span><span class="s">ayudar</span><span class="nv"> </span><span class="s">con</span><span class="nv"> </span><span class="s">eso.&quot;</span>
 </pre></div>
 </div>
+<p>The multilingual feature supports the following languages:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Language</p></th>
+<th class="head"><p>Code</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>English</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">en</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Spanish</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">es</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Chinese</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">zh</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>German</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">de</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>French</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fr</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Hindi</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">hi</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Japanese</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ja</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Arabic</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ar</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Thai</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">th</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If the detected language is not in this list, English is used as the fallback. For more details, refer to <a class="reference internal" href="guardrail-catalog.html#multilingual-content-safety"><span class="std std-ref">Multilingual Content Safety</span></a>.</p>
 </section>
 <section id="third-party-integrations">
 <h4>Third-Party Integrations<a class="headerlink" href="#third-party-integrations" title="Link to this heading">#</a></h4>
@@ -1875,7 +1938,12 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models-configuration">Models Configuration</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-schema">Model Schema</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-attributes">Model Attributes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-types">Model Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-types">Model Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reserved-types">Reserved Types</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#commonly-used-types">Commonly-Used Types</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-types">Custom Types</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#engines">Engines</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#core-engines">Core Engines</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#self-hosted-engines">Self-Hosted Engines</a></li>
