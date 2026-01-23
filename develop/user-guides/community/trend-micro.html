@@ -628,8 +628,13 @@
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">trend_micro</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">v1_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.xdr.trendmicro.com/beta/aiSecurity/guard&quot;</span><span class="w"> </span><span class="c1"># Replace this with your AI Guard URL</span>
+<span class="w">      </span><span class="nt">v1_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails&quot;</span><span class="w">  </span><span class="c1"># Trend Micro AI Guard Endpoint</span>
 <span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;V1_API_KEY&quot;</span>
+<span class="w">      </span><span class="nt">application_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-ai-app&quot;</span><span class="w">  </span><span class="c1"># Required: Application identifier (max 64 chars, alphanumeric, hyphens, underscores)</span>
+<span class="w">      </span><span class="c1"># Optional:</span>
+<span class="w">      </span><span class="nt">detailed_response</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># Set to true for detailed AI Guard results</span>
+<span class="w">      </span><span class="c1"># For other regions, use: https://api.{region}.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails</span>
+<span class="w">      </span><span class="c1"># where region is: eu, jp, au, in, sg, or mea</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trend ai guard input</span>
@@ -645,8 +650,13 @@
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">trend_micro</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">v1_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.xdr.trendmicro.com/beta/aiSecurity/guard&quot;</span><span class="w"> </span><span class="c1"># Replace this with your AI Guard URL</span>
+<span class="w">      </span><span class="nt">v1_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails&quot;</span><span class="w">  </span><span class="c1"># Trend Micro AI Guard Endpoint</span>
 <span class="w">      </span><span class="nt">api_key_env_var</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;V1_API_KEY&quot;</span>
+<span class="w">      </span><span class="nt">application_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-ai-app&quot;</span><span class="w">  </span><span class="c1"># Required: Application identifier (max 64 chars, alphanumeric, hyphens, underscores)</span>
+<span class="w">      </span><span class="c1"># Optional:</span>
+<span class="w">      </span><span class="nt">detailed_response</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># Set to true for detailed AI results</span>
+<span class="w">      </span><span class="c1"># For other regions, use: https://api.{region}.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails</span>
+<span class="w">      </span><span class="c1"># where region is: eu, jp, au, in, sg, or mea</span>
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>rails.co
