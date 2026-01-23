@@ -378,7 +378,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
@@ -387,7 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
@@ -655,7 +655,7 @@ You will secure an application LLM and test block prompt injection and jailbreak
 </pre></div>
 </div>
 <p>The <a class="reference external" href="https://build.nvidia.com/nvidia/nemoguard-jailbreak-detect" rel="noreferer noopener" target="_blank">Nemoguard Jailbreak Detect</a> model does not use any prompts, so you don’t need to create a <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file for this model.</p>
-<p>For more information about the configuration parameters, refer to the <a class="reference internal" href="#../../configure-rails/yaml-schema/configuration-reference.md"><span class="xref myst">Configuration Reference</span></a>.</p>
+<p>For more information about the configuration parameters, refer to the <a class="reference internal" href="../../configure-rails/configuration-reference.html"><span class="std std-doc">Configuration Reference</span></a>.</p>
 </li>
 </ol>
 </section>
@@ -753,7 +753,7 @@ You will secure an application LLM and test block prompt injection and jailbreak
 </ul>
 <p>To run the NVIDIA NemoGuard JailbreakDetect NIM in a Docker container, follow these steps:</p>
 <ol class="arabic">
-<li><p>Update the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file you created earlier to point to a local NIM deployment rather than build.nvidia.com. The following configuration updates the <code class="docutils literal notranslate"><span class="pre">nim_base_url</span></code> to point to <code class="docutils literal notranslate"><span class="pre">http://localhost:8123</span></code>, which tells the NeMo Guardrails toolkit to make requests to the local NIM deployment. The Guardrails configuration must match the NIM Docker container configuration for them to communicate.</p>
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file you created earlier to point to a local NIM deployment rather than build.nvidia.com. The following configuration updates the <code class="docutils literal notranslate"><span class="pre">nim_base_url</span></code> to point to <code class="docutils literal notranslate"><span class="pre">http://localhost:8123</span></code>, which tells the NeMo Guardrails library to make requests to the local NIM deployment. The Guardrails configuration must match the NIM Docker container configuration for them to communicate.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -828,7 +828,7 @@ You will secure an application LLM and test block prompt injection and jailbreak
 <ul class="simple">
 <li><p><a class="reference external" href="https://docs.nvidia.com/nim/nemoguard-jailbreakdetect/latest/index.html" rel="noreferer noopener" target="_blank">NVIDIA NemoGuard JailbreakDetect NIM documentation</a></p></li>
 <li><p><a class="reference internal" href="../../user-guides/jailbreak-detection-heuristics/README.html"><span class="std std-doc">Jailbreak Detection Heuristics</span></a> for detection without a NIM</p></li>
-<li><p><a class="reference internal" href="#../../configure-rails/yaml-schema/configuration-reference.md"><span class="xref myst">Configuration Reference</span></a> for all configuration options</p></li>
+<li><p><a class="reference internal" href="../../configure-rails/configuration-reference.html"><span class="std std-doc">Configuration Reference</span></a> for all configuration options</p></li>
 </ul>
 </section>
 </section>
