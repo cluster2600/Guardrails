@@ -1,0 +1,271 @@
+# Documentation Self-Improvement Agent Configuration for NeMo Guardrails
+# Adapted for the Guardrails repository structure
+
+# Documentation directories to scan
+docs_directories:
+  - "docs/"
+  - "examples/"
+  - "qa/"
+
+# Rules directory location (uses prompt-library rules)
+# The agent will look for rules here, or fall back to embedded rules
+rules_directory: ".cursor/rules"
+
+# Git settings
+default_base_ref: "develop"
+branch_prefix: "docs/auto-improvement"
+
+# Customer-facing patterns
+# These are code files that, when changed, likely impact user-facing documentation
+customer_facing_patterns:
+  # Core API (user-facing Python interface)
+  - "nemoguardrails/__init__.py"
+  - "nemoguardrails/rails/**/*.py"
+  - "nemoguardrails/streaming.py"
+  
+  # CLI (user-facing commands)
+  - "nemoguardrails/cli/**/*.py"
+  
+  # Server API (user-facing REST endpoints)
+  - "nemoguardrails/server/**/*.py"
+  - "nemoguardrails/actions_server/**/*.py"
+  
+  # Colang language (user-facing DSL)
+  - "nemoguardrails/colang/**/*.py"
+  - "nemoguardrails/colang/**/*.co"
+  
+  # Actions (user-extensible)
+  - "nemoguardrails/actions/**/*.py"
+  
+  # Library of guardrails (user-configurable)
+  - "nemoguardrails/library/**/*.py"
+  - "nemoguardrails/library/**/*.co"
+  
+  # LLM providers (user-configurable)
+  - "nemoguardrails/llm/**/*.py"
+  - "nemoguardrails/llm/**/*.yml"
+  
+  # Embeddings (user-configurable)
+  - "nemoguardrails/embeddings/**/*.py"
+  
+  # Integrations (user-facing)
+  - "nemoguardrails/integrations/**/*.py"
+  
+  # Evaluation (user-facing tools)
+  - "nemoguardrails/eval/**/*.py"
+  - "nemoguardrails/evaluate/**/*.py"
+  
+  # Tracing/Logging (user-configurable)
+  - "nemoguardrails/tracing/**/*.py"
+  - "nemoguardrails/logging/**/*.py"
+  
+  # Examples (user-facing samples)
+  - "examples/**/*.py"
+  - "examples/**/*.yml"
+  - "examples/**/*.co"
+  - "examples/**/*.md"
+  
+  # Configuration schemas
+  - "nemoguardrails/rails/llm/config.py"
+  - "nemoguardrails/rails/llm/options.py"
+
+# Required rules - always run these
+required_rules:
+  - "validation/docs-audit-enhanced"   # Deep audit with confidence scoring
+  - "transformation/docs-polish"        # Style and clarity improvements
+
+# Conditional rules - run based on change type
+conditional_rules:
+  api:
+    - "validation/docs-code-example-audit"
+    - "validation/docs-drift"
+  
+  schema:
+    - "validation/docs-drift"
+  
+  config:
+    - "validation/docs-drift"
+  
+  example:
+    - "validation/docs-code-example-audit"
+  
+  cli:
+    - "validation/docs-code-example-audit"
+  
+  colang:
+    - "validation/docs-code-example-audit"
+
+# Code-to-docs mapping for NeMo Guardrails
+code_to_docs_mappings:
+  # Core Rails API
+  - pattern: "nemoguardrails/rails/**/*.py"
+    impacts:
+      - "docs/run-rails/**"
+      - "docs/reference/python-api/**"
+      - "docs/getting-started/**"
+    severity: "high"
+    change_type: "api"
+  
+  # CLI changes
+  - pattern: "nemoguardrails/cli/**/*.py"
+    impacts:
+      - "docs/reference/cli/**"
+      - "docs/getting-started/**"
+    severity: "high"
+    change_type: "cli"
+  
+  # Server/API endpoints
+  - pattern: "nemoguardrails/server/**/*.py"
+    impacts:
+      - "docs/reference/api-server-endpoints/**"
+      - "docs/run-rails/using-fastapi-server/**"
+      - "docs/deployment/**"
+    severity: "high"
+    change_type: "api"
+  
+  # Colang language
+  - pattern: "nemoguardrails/colang/**/*.py"
+    impacts:
+      - "docs/configure-rails/colang/**"
+      - "docs/reference/colang-architecture-guide.md"
+    severity: "high"
+    change_type: "colang"
+  
+  - pattern: "nemoguardrails/colang/**/*.co"
+    impacts:
+      - "docs/configure-rails/colang/**"
+    severity: "medium"
+    change_type: "colang"
+  
+  # Actions
+  - pattern: "nemoguardrails/actions/**/*.py"
+    impacts:
+      - "docs/configure-rails/actions/**"
+    severity: "medium"
+    change_type: "api"
+  
+  # Library guardrails
+  - pattern: "nemoguardrails/library/**/*.py"
+    impacts:
+      - "docs/configure-rails/guardrail-catalog.md"
+      - "docs/user-guides/community/**"
+    severity: "high"
+    change_type: "api"
+  
+  - pattern: "nemoguardrails/library/content_safety/**"
+    impacts:
+      - "docs/getting-started/tutorials/nemotron-content-safety-reasoning-deployment.md"
+      - "docs/user-guides/community/**"
+    severity: "high"
+    change_type: "api"
+  
+  - pattern: "nemoguardrails/library/jailbreak_detection/**"
+    impacts:
+      - "docs/getting-started/tutorials/nemoguard-jailbreakdetect-deployment.md"
+      - "docs/user-guides/jailbreak-detection-heuristics/**"
+    severity: "high"
+    change_type: "api"
+  
+  - pattern: "nemoguardrails/library/topic_safety/**"
+    impacts:
+      - "docs/getting-started/tutorials/nemoguard-topiccontrol-deployment.md"
+    severity: "high"
+    change_type: "api"
+  
+  # LLM providers
+  - pattern: "nemoguardrails/llm/**/*.py"
+    impacts:
+      - "docs/about/supported-llms.md"
+      - "docs/configure-rails/custom-initialization/custom-llm-providers.md"
+    severity: "medium"
+    change_type: "config"
+  
+  - pattern: "nemoguardrails/llm/**/*.yml"
+    impacts:
+      - "docs/about/supported-llms.md"
+    severity: "medium"
+    change_type: "config"
+  
+  # Embeddings
+  - pattern: "nemoguardrails/embeddings/**/*.py"
+    impacts:
+      - "docs/configure-rails/custom-initialization/custom-embedding-providers.md"
+    severity: "medium"
+    change_type: "config"
+  
+  # Configuration
+  - pattern: "nemoguardrails/rails/llm/config.py"
+    impacts:
+      - "docs/configure-rails/yaml-schema/**"
+      - "docs/configure-rails/**"
+    severity: "high"
+    change_type: "schema"
+  
+  - pattern: "nemoguardrails/rails/llm/options.py"
+    impacts:
+      - "docs/run-rails/using-python-apis/generation-options.md"
+    severity: "high"
+    change_type: "schema"
+  
+  # Integrations
+  - pattern: "nemoguardrails/integrations/langchain/**"
+    impacts:
+      - "docs/integration/langchain/**"
+    severity: "medium"
+    change_type: "api"
+  
+  # Tracing
+  - pattern: "nemoguardrails/tracing/**/*.py"
+    impacts:
+      - "docs/observability/tracing/**"
+    severity: "medium"
+    change_type: "api"
+  
+  # Logging
+  - pattern: "nemoguardrails/logging/**/*.py"
+    impacts:
+      - "docs/observability/logging/**"
+    severity: "medium"
+    change_type: "config"
+  
+  # Evaluation
+  - pattern: "nemoguardrails/eval/**/*.py"
+    impacts:
+      - "docs/evaluation/**"
+      - "docs/user-guides/eval/**"
+    severity: "medium"
+    change_type: "api"
+  
+  - pattern: "nemoguardrails/evaluate/**/*.py"
+    impacts:
+      - "docs/evaluation/**"
+    severity: "medium"
+    change_type: "api"
+  
+  # Examples affect tutorials
+  - pattern: "examples/configs/**"
+    impacts:
+      - "docs/getting-started/**"
+      - "docs/configure-rails/**"
+    severity: "medium"
+    change_type: "example"
+  
+  - pattern: "examples/bots/**"
+    impacts:
+      - "docs/getting-started/**"
+    severity: "medium"
+    change_type: "example"
+  
+  - pattern: "examples/notebooks/**"
+    impacts:
+      - "docs/user-guides/**"
+    severity: "medium"
+    change_type: "example"
+
+# Quality thresholds
+min_confidence_for_pr: 70.0
+max_files_per_pr: 15
+
+# Output directories
+report_directory: ".dori/reports"
+state_directory: ".dori/state"
