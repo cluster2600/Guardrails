@@ -378,7 +378,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
@@ -387,7 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
@@ -662,7 +662,7 @@ The NeMo Guardrails library provides multiple approaches to content safety:</p>
 <li><p class="sd-card-text"><strong>LLM self-checking</strong>: Use the LLM itself to check inputs and outputs for harmful content.</p></li>
 <li><p class="sd-card-text"><strong>NVIDIA safety models</strong>: Integrate with <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">Llama 3.1 NemoGuard 8B Content Safety</a> for robust content moderation.</p></li>
 <li><p class="sd-card-text"><strong>Community models</strong>: Use <a class="reference internal" href="../user-guides/community/llama-guard.html"><span class="std std-doc">LlamaGuard</span></a>, <a class="reference internal" href="../user-guides/community/fiddler.html"><span class="std std-doc">Fiddler Guardrails</span></a>, and other community content safety solutions.</p></li>
-<li><p class="sd-card-text"><strong>Third-party APIs</strong>: Integrate with <a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#activefence"><span class="xref myst">ActiveFence</span></a>, <a class="reference internal" href="../user-guides/community/ai-defense.html"><span class="std std-doc">Cisco AI Defense</span></a>, and other moderation services.</p></li>
+<li><p class="sd-card-text"><strong>Third-party APIs</strong>: Integrate with <a class="reference internal" href="../configure-rails/guardrail-catalog.html#activefence"><span class="std std-ref">ActiveFence</span></a>, <a class="reference internal" href="../user-guides/community/ai-defense.html"><span class="std std-doc">Cisco AI Defense</span></a>, and other moderation services.</p></li>
 </ul>
 <p class="sd-card-text">For practical examples, try the following tutorials:</p>
 <ul class="simple">
@@ -714,7 +714,7 @@ The NeMo Guardrails library supports PII detection through multiple integrations
 <li><p class="sd-card-text"><strong>GuardrailsAI</strong>: Access <a class="reference internal" href="../user-guides/community/guardrails-ai.html"><span class="std std-doc">GuardrailsAI PII validators</span></a> from the Guardrails Hub.</p></li>
 </ul>
 <p class="sd-card-text">PII detection can be configured to either detect and block content containing PII or to mask PII entities before processing.</p>
-<p class="sd-card-text">For more information, refer to the <a class="reference internal" href="../user-guides/community/presidio.html"><span class="std std-doc">Presidio Integration</span></a> and <a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#presidio-based-sensitive-data-detection"><span class="xref myst">Sensitive Data Detection section</span></a> in the built-in Guardrails library.</p>
+<p class="sd-card-text">For more information, refer to the <a class="reference internal" href="../user-guides/community/presidio.html"><span class="std std-doc">Presidio Integration</span></a> and <a class="reference internal" href="../configure-rails/guardrail-catalog.html#presidio-based-sensitive-data-detection"><span class="std std-ref">Sensitive Data Detection section</span></a> in the Guardrail Catalog.</p>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
@@ -724,7 +724,7 @@ This includes:</p>
 <ul class="simple">
 <li><p class="sd-card-text"><strong>Tool call validation</strong>: Execute rails that validate tool inputs and outputs before and after invocation.</p></li>
 <li><p class="sd-card-text"><strong>Agent workflow protection</strong>: Integrate with <a class="reference internal" href="../integration/langchain/langgraph-integration.html"><span class="std std-doc">LangGraph</span></a> for multi-agent safety.</p></li>
-<li><p class="sd-card-text"><strong>Secure tool integration</strong>: Review guidelines for safely connecting LLMs to external resources (refer to <a class="reference internal" href="#../security/guidelines.md"><span class="xref myst">Security Guidelines</span></a>).</p></li>
+<li><p class="sd-card-text"><strong>Secure tool integration</strong>: Review guidelines for safely connecting LLMs to external resources (refer to <a class="reference internal" href="../resources/security/guidelines.html"><span class="std std-doc">Security Guidelines</span></a>).</p></li>
 <li><p class="sd-card-text"><strong>Action monitoring</strong>: Monitor detailed logging and tracing of agent actions.</p></li>
 </ul>
 <p class="sd-card-text">Key security considerations for agent systems:</p>
@@ -734,7 +734,7 @@ This includes:</p>
 <li><p class="sd-card-text">Apply execution rails to tool calls.</p></li>
 <li><p class="sd-card-text">Monitor agent behavior for unexpected actions.</p></li>
 </ol>
-<p class="sd-card-text">For more information, refer to the <a class="reference internal" href="../integration/tools-integration.html"><span class="std std-doc">Tools Integration Guide</span></a>, <a class="reference internal" href="#../security/guidelines.md"><span class="xref myst">Security Guidelines</span></a>, and <a class="reference internal" href="../integration/langchain/langgraph-integration.html"><span class="std std-doc">LangGraph Integration</span></a>.</p>
+<p class="sd-card-text">For more information, refer to the <a class="reference internal" href="../integration/tools-integration.html"><span class="std std-doc">Tools Integration Guide</span></a>, <a class="reference internal" href="../resources/security/guidelines.html"><span class="std std-doc">Security Guidelines</span></a>, and <a class="reference internal" href="../integration/langchain/langgraph-integration.html"><span class="std std-doc">LangGraph Integration</span></a>.</p>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
@@ -744,7 +744,7 @@ If you have a script or tool that runs a custom guardrail, you can use it in NeM
 <ol class="arabic simple">
 <li><p class="sd-card-text"><strong>Python actions</strong>: Create custom actions in Python for complex logic and external integrations. For more information, refer to the <a class="reference internal" href="../configure-rails/actions/index.html"><span class="std std-doc">Configuring Custom Actions</span></a>.</p></li>
 <li><p class="sd-card-text"><strong>LangChain tool integration</strong>: Register LangChain tools as custom actions. For more information, refer to the <a class="reference internal" href="../integration/tools-integration.html"><span class="std std-doc">Tools Integration with the NeMo Guardrails Library</span></a>.</p></li>
-<li><p class="sd-card-text"><strong>Third-party API integration</strong>: Integrate external moderation and validation services. For a complete list of supported third-party guardrail services, refer to the <a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#third-party-apis"><code class="xref myst docutils literal notranslate"><span class="pre">../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#third-party-apis</span></code></a> section in the built-in Guardrails library.</p></li>
+<li><p class="sd-card-text"><strong>Third-party API integration</strong>: Integrate external moderation and validation services. For a complete list of supported third-party guardrail services, refer to the <a class="reference internal" href="../configure-rails/guardrail-catalog.html#third-party-apis"><span class="std std-ref">Third-Party APIs</span></a> section in the Guardrail Catalog.</p></li>
 </ol>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">

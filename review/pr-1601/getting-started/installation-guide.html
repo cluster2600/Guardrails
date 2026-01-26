@@ -378,7 +378,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Install</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
@@ -387,7 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integrate-into-application.html">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
@@ -613,8 +613,8 @@
   <section class="tex2jax_ignore mathjax_ignore" id="install-the-nemo-guardrails-library">
 <h1>Install the NeMo Guardrails Library<a class="headerlink" href="#install-the-nemo-guardrails-library" title="Link to this heading">#</a></h1>
 <p>Follow these steps to install the NeMo Guardrails library.</p>
-<section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
 <p>Verify your system meets the following requirements before installation.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -654,7 +654,7 @@ Linux/macOS</label><div class="sd-tab-content docutils">
 <label class="sd-tab-label" for="sd-tab-item-1">
 Windows (Git Bash)</label><div class="sd-tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-.venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+<span class="nb">source</span><span class="w"> </span>.venv/Scripts/activate
 </pre></div>
 </div>
 </div>
@@ -673,23 +673,13 @@ Windows (Git Bash)</label><div class="sd-tab-content docutils">
 </li>
 </ol>
 </section>
-<section id="install-from-source">
-<h2>Install from Source<a class="headerlink" href="#install-from-source" title="Link to this heading">#</a></h2>
-<p>To use the latest development version:</p>
+<section id="alternative-installation-methods">
+<h2>Alternative Installation Methods<a class="headerlink" href="#alternative-installation-methods" title="Link to this heading">#</a></h2>
+<p>Install the NeMo Guardrails library from source using pip or Poetry. Choose this method if you want to contribute to the library or use the latest development version.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-2">
 pip</label><div class="sd-tab-content docutils">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
-pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>nvidia<span class="o">]</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span><span class="s2">&quot;nvapi-...&quot;</span>
-</pre></div>
-</div>
-</div>
-<input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-3">
-pip (development)</label><div class="sd-tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA-NeMo/Guardrails.git<span class="w"> </span>nemoguardrails
 <span class="nb">cd</span><span class="w"> </span>nemoguardrails
 python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
@@ -698,9 +688,9 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </pre></div>
 </div>
 </div>
-<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-4">
-Poetry (development)</label><div class="sd-tab-content docutils">
+<input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+Poetry</label><div class="sd-tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA-NeMo/Guardrails.git<span class="w"> </span>nemoguardrails
 <span class="nb">cd</span><span class="w"> </span>nemoguardrails
 python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
@@ -732,7 +722,7 @@ poetry<span class="w"> </span>install<span class="w"> </span>--extras<span class
 <td><p>OpenAI-hosted model integration</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sdd</span></code></p></td>
-<td><p><a class="reference internal" href="#../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#presidio-based-sensitive-data-detection"><span class="xref myst">Sensitive data detection</span></a> using Presidio</p></td>
+<td><p><a class="reference internal" href="../configure-rails/guardrail-catalog.html#presidio-based-sensitive-data-detection"><span class="std std-ref">Sensitive data detection</span></a> using Presidio</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">eval</span></code></p></td>
 <td><p><a class="reference internal" href="../evaluation/index.html"><span class="std std-doc">Evaluation tools</span></a> for testing guardrails</p></td>
@@ -768,15 +758,15 @@ poetry<span class="w"> </span>install<span class="w"> </span>--extras<span class
 <h3>C++ Runtime Errors<a class="headerlink" href="#c-runtime-errors" title="Link to this heading">#</a></h3>
 <p>The library uses <a class="reference external" href="https://github.com/spotify/annoy" rel="noreferer noopener" target="_blank">annoy</a>, which requires a C++ compiler. If installation fails:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-2" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-5">
+<input checked="checked" id="sd-tab-item-4" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
 Linux/macOS</label><div class="sd-tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-get<span class="w"> </span>install<span class="w"> </span>gcc<span class="w"> </span>g++<span class="w"> </span>python3-dev
 </pre></div>
 </div>
 </div>
-<input id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-6">
+<input id="sd-tab-item-5" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-5">
 Windows</label><div class="sd-tab-content docutils">
 <p>Install <a class="reference external" href="https://visualstudio.microsoft.com/visual-cpp-build-tools/" rel="noreferer noopener" target="_blank">Microsoft C++ Build Tools</a> (version 14.0 or greater).</p>
 </div>
@@ -834,9 +824,9 @@ Windows</label><div class="sd-tab-content docutils">
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install from Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-installation-methods">Alternative Installation Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-dependencies">Extra Dependencies</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker">Docker</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-installation-issues">Troubleshooting Installation Issues</a><ul class="nav section-nav flex-column">
