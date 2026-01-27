@@ -410,7 +410,7 @@
 <li class="toctree-l1"><a class="reference internal" href="configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions/registering-actions.html">Registering Actions</a></li>
@@ -480,12 +480,12 @@
 <li class="toctree-l2"><a class="reference internal" href="other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -509,7 +509,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -626,6 +626,9 @@
 Prerequisites</div>
 <p class="sd-card-text">Prepare LLM endpoints, NemoGuard NIMs, and knowledge base documents before configuration.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Get Started</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="before-configuration.html"><span class="doc">Prerequisites for Configuring the NeMo Guardrails Library</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -634,6 +637,9 @@ Prerequisites</div>
 <div class="sd-card-title sd-font-weight-bold docutils">
 Overview</div>
 <p class="sd-card-text">Learn to write config.yml, Colang flows, and custom actions for guardrails.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Concept</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="overview.html"><span class="doc">NeMo Guardrails Library Configuration Overview</span></a></div>
 </div>
@@ -653,6 +659,9 @@ Overview</div>
 Configuring YAML File</div>
 <p class="sd-card-text">Define models, guardrails, prompts, and tracing settings in the config.yml file.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="yaml-schema/index.html"><span class="doc">Configuring YAML File</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -662,6 +671,9 @@ Configuring YAML File</div>
 YAML Schema Reference</div>
 <p class="sd-card-text">Reference for all config.yml options including models, rails, prompts, and advanced settings.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="configuration-reference.html"><span class="doc">Configuration YAML Schema Reference</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -669,7 +681,10 @@ YAML Schema Reference</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Guardrail Catalog</div>
-<p class="sd-card-text">Reference for pre-built guardrails including content safety, jailbreak detection, PII handling, and fact checking.</p>
+<p class="sd-card-text">Reference for pre-built guardrails including content safety, jailbreak detection, and PII handling.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="guardrail-catalog.html"><span class="doc">Guardrail Catalog</span></a></div>
 </div>
@@ -679,6 +694,9 @@ Guardrail Catalog</div>
 <div class="sd-card-title sd-font-weight-bold docutils">
 Colang</div>
 <p class="sd-card-text">Learn Colang, the event-driven language for defining guardrails flows and bot behavior.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Concept</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="colang/index.html"><span class="doc">Colang Guide</span></a></div>
 </div>
@@ -698,6 +716,9 @@ Colang</div>
 Custom Actions</div>
 <p class="sd-card-text">Create Python actions to extend guardrails with external APIs and validation logic.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">How To</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="actions/index.html"><span class="doc">Configuring Custom Actions</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -707,6 +728,9 @@ Custom Actions</div>
 Custom Initialization</div>
 <p class="sd-card-text">Use config.py to register custom LLM providers, embedding providers, and shared resources at startup.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">How To</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="custom-initialization/index.html"><span class="doc">Configuring Custom Initialization</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -714,7 +738,10 @@ Custom Initialization</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Other Configurations</div>
-<p class="sd-card-text">Additional configuration topics including knowledge base setup and exception handling.</p>
+<p class="sd-card-text">Additional configuration topics including knowledge base setup and embedding search providers.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="other-configurations/index.html"><span class="doc">Other Configurations</span></a></div>
 </div>
@@ -722,8 +749,11 @@ Other Configurations</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Caching Instructions and Prompts</div>
+Caching</div>
 <p class="sd-card-text">Configure in-memory caching for LLM calls and KV cache reuse to improve performance and reduce latency.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">How To</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="caching/index.html"><span class="doc">Caching Instructions and Prompts</span></a></div>
 </div>
@@ -731,8 +761,11 @@ Caching Instructions and Prompts</div>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Exceptions and Error Handling</div>
+Exceptions</div>
 <p class="sd-card-text">Raise and handle exceptions in guardrails flows to control error behavior and custom responses.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="exceptions.html"><span class="doc">Exceptions and Error Handling</span></a></div>
 </div>

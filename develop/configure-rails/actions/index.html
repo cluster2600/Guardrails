@@ -410,7 +410,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Custom Actions</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registering-actions.html">Registering Actions</a></li>
@@ -480,12 +480,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -509,7 +509,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -612,7 +612,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="configuring-custom-actions">
 <h1>Configuring Custom Actions<a class="headerlink" href="#configuring-custom-actions" title="Link to this heading">#</a></h1>
-<p>This section describes the <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file used to define custom Python actions for the NeMo Guardrails library.
+<p>This section guides you through how to create the <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file to define custom Python actions and integrate them into the NeMo Guardrails library.
 By configuring custom actions, you can execute Python code within guardrails flows, extending the library with custom logic, external API integrations, and complex validation.</p>
 <p>An <code class="docutils literal notranslate"><span class="pre">actions.py</span></code> file defines custom action functions using the <code class="docutils literal notranslate"><span class="pre">&#64;action</span></code> decorator. A decorator is a callable that takes a function and returns a new function, usually adding behavior or attaching metadata.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
@@ -647,8 +647,11 @@ By configuring custom actions, you can execute Python code within guardrails flo
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Creating Custom Actions</div>
-<p class="sd-card-text">Create custom actions using the &#64;action decorator to integrate Python logic into guardrails flows.</p>
+Creating Actions</div>
+<p class="sd-card-text">Create custom actions using the &#64;action decorator to integrate Python logic.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">How To</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="creating-actions.html"><span class="doc">Creating Custom Actions</span></a></div>
 </div>
@@ -657,7 +660,10 @@ Creating Custom Actions</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Built-in Actions</div>
-<p class="sd-card-text">Reference for default actions included in the NeMo Guardrails library for common operations.</p>
+<p class="sd-card-text">Reference for default actions included in the NeMo Guardrails library.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="built-in-actions.html"><span class="doc">Built-in Actions</span></a></div>
 </div>
@@ -666,7 +672,10 @@ Built-in Actions</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Action Parameters</div>
-<p class="sd-card-text">Reference for special parameters like context, llm, and config automatically provided to actions.</p>
+<p class="sd-card-text">Reference for special parameters like context, llm, and config provided to actions.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="action-parameters.html"><span class="doc">Action Parameters</span></a></div>
 </div>
@@ -675,7 +684,10 @@ Action Parameters</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Registering Actions</div>
-<p class="sd-card-text">Register custom actions via actions.py, LLMRails.register_action(), or init.py for different use cases.</p>
+<p class="sd-card-text">Register custom actions via actions.py, LLMRails.register_action(), or config.py.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">How To</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="registering-actions.html"><span class="doc">Registering Actions</span></a></div>
 </div>
