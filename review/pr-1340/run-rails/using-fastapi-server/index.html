@@ -374,7 +374,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
@@ -383,7 +383,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
@@ -406,7 +406,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/registering-actions.html">Registering Actions</a></li>
@@ -476,12 +476,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="current nav bd-sidenav">
@@ -505,7 +505,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -619,6 +619,9 @@ This section covers how to run the server and interact with it.</p>
 Overview</div>
 <p class="sd-card-text">The Guardrails API server is a tool for running guardrails in a secure, isolated environment.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Concept</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="overview.html"><span class="doc">Overview of the NeMo Guardrails Library API Server</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -627,6 +630,9 @@ Overview</div>
 <div class="sd-card-title sd-font-weight-bold docutils">
 Run the Server</div>
 <p class="sd-card-text">Start the Guardrails API server, configure CORS, and enable auto-reload.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Tutorial</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="run-guardrails-server.html"><span class="doc">Run the NeMo Guardrails Server</span></a></div>
 </div>
@@ -637,6 +643,9 @@ Run the Server</div>
 Chat Completions</div>
 <p class="sd-card-text">Send chat requests, use streaming, and manage conversation threads.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Tutorial</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="chat-with-guardrailed-model.html"><span class="doc">Chat with Guardrailed Model</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -646,6 +655,9 @@ Chat Completions</div>
 List Configurations</div>
 <p class="sd-card-text">Retrieve available guardrails configurations from the server.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="list-guardrail-configs.html"><span class="doc">List Guardrail Configurations</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -654,6 +666,9 @@ List Configurations</div>
 <div class="sd-card-title sd-font-weight-bold docutils">
 Actions Server</div>
 <p class="sd-card-text">Run guardrail actions in a secure, isolated environment.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Tutorial</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="actions-server.html"><span class="doc">Use the Actions Server</span></a></div>
 </div>

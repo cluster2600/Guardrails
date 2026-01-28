@@ -378,7 +378,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/installation-guide.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
@@ -387,7 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/integrate-into-application.html">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="current nav bd-sidenav">
@@ -410,7 +410,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../actions/registering-actions.html">Registering Actions</a></li>
@@ -480,12 +480,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -509,7 +509,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -675,6 +675,9 @@ The <code class="docutils literal notranslate"><span class="pre">config.yml</spa
 Models</div>
 <p class="sd-card-text">Configure LLM engines, embedding models, and task-specific models in config.yml.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="model-configuration.html"><span class="doc">Model Configuration</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -683,6 +686,9 @@ Models</div>
 <div class="sd-card-title sd-font-weight-bold docutils">
 Guardrails</div>
 <p class="sd-card-text">Configure input, output, dialog, retrieval, and execution rails in config.yml to control LLM behavior.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="guardrails-configuration/index.html"><span class="doc">Guardrails Configuration</span></a></div>
 </div>
@@ -693,6 +699,9 @@ Guardrails</div>
 Prompts</div>
 <p class="sd-card-text">Customize prompts for self-check, fact-checking, and intent generation tasks.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="prompt-configuration.html"><span class="doc">Prompt Configuration</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -702,6 +711,9 @@ Prompts</div>
 Tracing</div>
 <p class="sd-card-text">Configure FileSystem and OpenTelemetry tracing adapters to monitor guardrails.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="tracing-configuration.html"><span class="doc">Tracing Configuration</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -710,6 +722,9 @@ Tracing</div>
 <div class="sd-card-title sd-font-weight-bold docutils">
 Streaming</div>
 <p class="sd-card-text">Configure streaming for LLM token generation and output rail processing in config.yml.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Reference</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="streaming/index.html"><span class="doc">Output Streaming Configuration</span></a></div>
 </div>

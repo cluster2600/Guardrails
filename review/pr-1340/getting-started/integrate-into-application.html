@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Integrate the NeMo Guardrails Library into Your Application &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>Integrate Guardrails into Your Application &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -239,10 +239,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -378,7 +374,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
@@ -387,7 +383,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Integrate</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
@@ -410,7 +406,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/registering-actions.html">Registering Actions</a></li>
@@ -480,12 +476,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -509,7 +505,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -593,7 +589,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Integrate the NeMo Guardrails Library into Your Application</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Integrate Guardrails into Your Application</span></li>
   </ul>
 </nav>
 </div>
@@ -610,15 +606,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="integrate-the-nemo-guardrails-library-into-your-application">
-<h1>Integrate the NeMo Guardrails Library into Your Application<a class="headerlink" href="#integrate-the-nemo-guardrails-library-into-your-application" title="Link to this heading">#</a></h1>
-<p>If you have an existing application, you can integrate NeMo Guardrails into it using the NeMo Guardrails library.</p>
-<hr class="docutils" />
-<section id="integrate-guardrails-into-llm-based-applications">
-<h2>Integrate Guardrails into LLM-based Applications<a class="headerlink" href="#integrate-guardrails-into-llm-based-applications" title="Link to this heading">#</a></h2>
-<p>The NeMo Guardrails library can be integrated into applications in multiple ways:</p>
-<ol class="arabic">
-<li><p><strong>Python SDK integration</strong>: Add guardrails directly into your Python application.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="integrate-guardrails-into-your-application">
+<h1>Integrate Guardrails into Your Application<a class="headerlink" href="#integrate-guardrails-into-your-application" title="Link to this heading">#</a></h1>
+<p>The NeMo Guardrails library provides the following tools to integrate guardrails into your applications.</p>
+<ul>
+<li><p>Use the NeMo Guardrails Python SDK to add guardrails directly into your Python application.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;path/to/config&quot;</span><span class="p">)</span>
@@ -629,7 +621,7 @@
 </pre></div>
 </div>
 </li>
-<li><p><strong>LangChain integration</strong>: Wrap guardrails around LangChain chains or use chains within guardrails.</p>
+<li><p>Use the NeMo Guardrails LangChain integration capabilities to wrap guardrails around LangChain chains or use chains within guardrails.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.integrations.langchain.runnable_rails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableRails</span>
 
 <span class="n">guardrails</span> <span class="o">=</span> <span class="n">RunnableRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -638,17 +630,25 @@
 </div>
 <p>For more information, refer to the <a class="reference internal" href="../integration/langchain/langchain-integration.html"><span class="std std-doc">LangChain Integration Guide</span></a>.</p>
 </li>
-<li><p><strong>HTTP API integration</strong>: Use the guardrails server to add protection to applications in any programming language.</p>
+<li><p>Integrate the NeMo Guardrails API server into your application to add protection to applications in any programming language.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>path/to/configs
 </pre></div>
 </div>
-<p>For more information, refer to the <a class="reference internal" href="#../deployment/local-server/index.md"><span class="xref myst">Server Guide</span></a>.</p>
+<p>You can then use the API server in your application by sending requests to the server’s endpoint.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;config_id&quot;: &quot;content_safety&quot;,</span>
+<span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]</span>
+<span class="s1">  }&#39;</span>
+</pre></div>
+</div>
+<p>For more information, refer to <a class="reference internal" href="../run-rails/using-fastapi-server/index.html"><span class="std std-doc">Use the Guardrails API Server</span></a>.</p>
 </li>
-<li><p><strong>Docker deployment</strong>: Deploy guardrails as a containerized service.
-For more information, refer to the <a class="reference internal" href="../deployment/using-docker.html"><span class="std std-doc">Using Docker Guide</span></a>.</p></li>
-</ol>
-<p>For complete examples and detailed integration patterns, refer to the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples" rel="noreferer noopener" target="_blank">examples directory</a> in the GitHub repository.</p>
-</section>
+<li><p>Use the NeMo Guardrails Docker deployment capabilities to deploy guardrails as a containerized service.
+For more information, refer to <a class="reference internal" href="../deployment/using-docker.html"><span class="std std-doc">Deploy NeMo Guardrails Library with Docker</span></a>.</p></li>
+</ul>
+<p>For more examples and detailed integration patterns, refer to the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples" rel="noreferer noopener" target="_blank">examples directory</a> in the NeMo Guardrails GitHub repository.</p>
 </section>
 
 
@@ -686,25 +686,9 @@ For more information, refer to the <a class="reference internal" href="../deploy
             
             
 
-
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="bd-sidebar-secondary"></div>
 
 
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrate-guardrails-into-llm-based-applications">Integrate Guardrails into LLM-based Applications</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
 

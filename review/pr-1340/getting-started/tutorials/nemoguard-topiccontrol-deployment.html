@@ -378,7 +378,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
@@ -387,7 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
@@ -410,7 +410,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/registering-actions.html">Registering Actions</a></li>
@@ -480,12 +480,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -509,7 +509,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -714,7 +714,7 @@ The user input is passed to the Application LLM for generation.</p>
 <span class="go">I&#39;d be happy to help you with canceling your subscription. You have a couple of options to do so, and I&#39;ll walk you</span>
 <span class="go">through them.</span>
 
-<span class="go">[The NeMo Guardrails toolkit responds with instructions and information on subscription cancellations]</span>
+<span class="go">[The NeMo Guardrails library responds with instructions and information on subscription cancellations]</span>
 </pre></div>
 </div>
 </li>
@@ -775,7 +775,7 @@ For more information, refer to <a class="reference external" href="https://docs.
 </ul>
 <p>To run the Llama 3.1 NemoGuard 8B TopicControl in a Docker container, follow these steps:</p>
 <ol class="arabic">
-<li><p>Update the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file you created earlier to point to a local NIM deployment rather than build.nvidia.com. The following configuration adds a <code class="docutils literal notranslate"><span class="pre">base_url</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code> field under <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, which tells the NeMo Guardrails toolkit to make requests to the <code class="docutils literal notranslate"><span class="pre">nvidia/llama-3.1-nemoguard-8b-topic-control</span></code> model hosted at <code class="docutils literal notranslate"><span class="pre">http://localhost:8123/v1</span></code>. The Guardrails configuration must match the NIM Docker container configuration for them to communicate.</p>
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file you created earlier to point to a local NIM deployment rather than build.nvidia.com. The following configuration adds a <code class="docutils literal notranslate"><span class="pre">base_url</span></code> and <code class="docutils literal notranslate"><span class="pre">model_name</span></code> field under <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, which tells the NeMo Guardrails library to make requests to the <code class="docutils literal notranslate"><span class="pre">nvidia/llama-3.1-nemoguard-8b-topic-control</span></code> model hosted at <code class="docutils literal notranslate"><span class="pre">http://localhost:8123/v1</span></code>. The Guardrails configuration must match the NIM Docker container configuration for them to communicate.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -851,10 +851,10 @@ For more information, refer to <a class="reference external" href="https://docs.
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="#../../configure-rails/yaml-schema/guardrails-configuration/built-in-guardrails.md#nvidia-models"><span class="xref myst">Nemotron Safety models overview</span></a></p></li>
+<li><p><a class="reference internal" href="../../configure-rails/guardrail-catalog.html#topic-safety"><span class="std std-ref">Topic Safety overview</span></a></p></li>
 <li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs/topic_safety" rel="noreferer noopener" target="_blank">Topic safety example configuration</a></p></li>
 <li><p><a class="reference external" href="https://arxiv.org/abs/2404.03820" rel="noreferer noopener" target="_blank">Topic Control research paper (EMNLP 2024)</a></p></li>
-<li><p><a class="reference internal" href="../../configure-rails/overview.html"><span class="std std-doc">NeMo Guardrails Toolkit Configuration Guide</span></a></p></li>
+<li><p><a class="reference internal" href="../../configure-rails/overview.html"><span class="std std-doc">NeMo Guardrails Library Configuration Guide</span></a></p></li>
 </ul>
 </section>
 </section>

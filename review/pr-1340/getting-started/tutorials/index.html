@@ -374,7 +374,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
@@ -383,7 +383,7 @@
 <li class="toctree-l2"><a class="reference internal" href="multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrate-into-application.html">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
@@ -406,7 +406,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/actions/registering-actions.html">Registering Actions</a></li>
@@ -476,12 +476,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configure-rails/exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -505,7 +505,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -618,6 +618,9 @@
 Check Harmful Content</div>
 <p class="sd-card-text">Check text inputs and outputs for harmful content using Nemotron Content Safety NIM.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Tutorial</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="nemotron-safety-guard-deployment.html"><span class="doc">Check Harmful Content with Llama 3.1 Nemotron Safety Guard 8B V3 NIM</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -627,6 +630,9 @@ Check Harmful Content</div>
 Content Safety Reasoning</div>
 <p class="sd-card-text">Deploy Nemotron-Content-Safety-Reasoning-4B for customizable content safety with reasoning traces.</p>
 </div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Tutorial</span></p>
+</div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="nemotron-content-safety-reasoning-deployment.html"><span class="doc">Content Safety with Nemotron-Content-Safety-Reasoning-4B</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
@@ -634,7 +640,10 @@ Content Safety Reasoning</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Restrict Topics</div>
-<p class="sd-card-text">Restrict conversations to allowed topics using Nemotron Topic Control NIM.</p>
+<p class="sd-card-text">Restrict conversations to allowed topics using Llama 3.1 NemoGuard 8B TopicControl NIM.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Tutorial</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="nemoguard-topiccontrol-deployment.html"><span class="doc">Restrict Topics with Llama 3.1 NemoGuard 8B TopicControl NIM</span></a></div>
 </div>
@@ -643,7 +652,10 @@ Restrict Topics</div>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Detect Jailbreak Attempts</div>
-<p class="sd-card-text">Detect and block adversarial prompts and jailbreak attempts using Nemotron Jailbreak Detect NIM.</p>
+<p class="sd-card-text">Detect and block adversarial prompts and jailbreak attempts using NemoGuard JailbreakDetect NIM.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Tutorial</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="nemoguard-jailbreakdetect-deployment.html"><span class="doc">Detect Jailbreak Attempts with NVIDIA NemoGuard JailbreakDetect NIM</span></a></div>
 </div>
@@ -653,6 +665,9 @@ Detect Jailbreak Attempts</div>
 <div class="sd-card-title sd-font-weight-bold docutils">
 Add Multimodal Content Safety</div>
 <p class="sd-card-text">Add safety checks to images and text using a vision model as LLM-as-a-Judge.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text"><span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">Tutorial</span></p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="multimodal.html"><span class="doc">Add Multimodal Content Safety Using a Vision Model as LLM-as-a-Judge</span></a></div>
 </div>
