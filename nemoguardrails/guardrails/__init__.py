@@ -12,3 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from nemoguardrails.guardrails.config_manager import ConfigId, ConfigManager
+from nemoguardrails.guardrails.guardrails import Guardrails, MessageRole
+
+__all__ = ["ConfigId", "ConfigManager", "Guardrails", "MessageRole"]
