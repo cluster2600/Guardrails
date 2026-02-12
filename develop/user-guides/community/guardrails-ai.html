@@ -677,6 +677,14 @@ guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class=
 </pre></div>
 </div>
 </section>
+<section id="result-format-in-colang-flows">
+<h3>Result Format in Colang Flows<a class="headerlink" href="#result-format-in-colang-flows" title="Link to this heading">#</a></h3>
+<p>The GuardrailsAI actions (<code class="docutils literal notranslate"><span class="pre">validate_guardrails_ai_input</span></code> and <code class="docutils literal notranslate"><span class="pre">validate_guardrails_ai_output</span></code>) return a dict that is stored in <code class="docutils literal notranslate"><span class="pre">$result</span></code> when used in flows. This dict contains:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">validation_result</span></code></strong>: The raw GuardrailsAI validation outcome (e.g., <code class="docutils literal notranslate"><span class="pre">PassResult</span></code> or <code class="docutils literal notranslate"><span class="pre">FailResult</span></code>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">valid</span></code></strong>: A boolean derived from the GuardrailsAI <code class="docutils literal notranslate"><span class="pre">validation_passed</span></code> field. Use this in flow conditions such as <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">not</span> <span class="pre">$result[&quot;valid&quot;]</span></code> to decide whether to block.</p></li>
+</ul>
+</section>
 </section>
 <section id="built-in-validators">
 <h2>Built-in Validators<a class="headerlink" href="#built-in-validators" title="Link to this heading">#</a></h2>
@@ -804,6 +812,7 @@ guardrails<span class="w"> </span>hub<span class="w"> </span>install<span class=
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-structure">Configuration Structure</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-rails">Input Rails</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-rails">Output Rails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#result-format-in-colang-flows">Result Format in Colang Flows</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-validators">Built-in Validators</a></li>
