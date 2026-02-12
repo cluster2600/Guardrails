@@ -701,9 +701,12 @@
 </div>
 </section>
 <hr class="docutils" />
+<section id="streaming-metadata">
+<h2>Streaming Metadata<a class="headerlink" href="#streaming-metadata" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">include_metadata=True</span></code> in <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> to receive per-chunk metadata (token usage, finish reason). See <a class="reference internal" href="../../../run-rails/using-python-apis/streaming.html#streaming-metadata"><span class="std std-ref">Streaming Metadata</span></a> for details.</p>
+</section>
 <section id="token-usage-tracking">
 <h2>Token Usage Tracking<a class="headerlink" href="#token-usage-tracking" title="Link to this heading">#</a></h2>
-<p>When using <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code>, NeMo Guardrails automatically enables token usage tracking by setting <code class="docutils literal notranslate"><span class="pre">stream_usage</span> <span class="pre">=</span> <span class="pre">True</span></code> on the underlying LLM model.</p>
 <p>Access token usage through the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -801,6 +804,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-handler-deprecated">Streaming With Handler (Deprecated)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-usage">CLI Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-metadata">Streaming Metadata</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#huggingface-pipeline-streaming">HuggingFace Pipeline Streaming</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>

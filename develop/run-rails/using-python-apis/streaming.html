@@ -747,14 +747,27 @@
 <p>This feature enables seamless integration of the NeMo Guardrails library with any streaming LLM or token source while maintaining all the safety features of output rails.</p>
 </section>
 </section>
+<section id="streaming-metadata">
+<h2>Streaming Metadata<a class="headerlink" href="#streaming-metadata" title="Link to this heading">#</a></h2>
+<p>When using <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code>, you can receive per-chunk metadata (e.g., token usage, finish reason) by setting <code class="docutils literal notranslate"><span class="pre">include_metadata=True</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">rails</span><span class="o">.</span><span class="n">stream_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">include_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">include_metadata=True</span></code>, each chunk is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> with a mandatory <code class="docutils literal notranslate"><span class="pre">&quot;text&quot;</span></code> key. The final chunk also includes a <code class="docutils literal notranslate"><span class="pre">&quot;metadata&quot;</span></code> key containing <code class="docutils literal notranslate"><span class="pre">response_metadata</span></code> (finish reason, model name) and <code class="docutils literal notranslate"><span class="pre">usage_metadata</span></code> (token counts):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;!&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;response_metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;finish_reason&quot;</span><span class="p">:</span> <span class="s2">&quot;stop&quot;</span><span class="p">,</span> <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt-4o&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;usage_metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;input_tokens&quot;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="s2">&quot;output_tokens&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;total_tokens&quot;</span><span class="p">:</span> <span class="mi">84</span><span class="p">}</span>
+<span class="p">}}</span>
+</pre></div>
+</div>
+<p>Without <code class="docutils literal notranslate"><span class="pre">include_metadata</span></code>, chunks are plain strings (default behavior).</p>
+</section>
 <section id="token-usage-tracking">
 <h2>Token Usage Tracking<a class="headerlink" href="#token-usage-tracking" title="Link to this heading">#</a></h2>
-<p>When streaming is enabled, the NeMo Guardrails library automatically enables token usage tracking by setting the <code class="docutils literal notranslate"><span class="pre">stream_usage</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code> for the underlying LLM model. This feature:</p>
-<ul class="simple">
-<li><p>Provides token usage statistics even when streaming responses.</p></li>
-<li><p>Is primarily supported by OpenAI, AzureOpenAI, and other providers. The NVIDIA NIM provider supports it by default.</p></li>
-<li><p>Allows to safely pass token usage statistics to LLM providers. If the LLM provider you use don’t support it, the parameter is ignored.</p></li>
-</ul>
+<p>Token usage statistics are available when streaming responses, depending on provider support. When the provider does not return token usage statistics, the final chunk’s <code class="docutils literal notranslate"><span class="pre">metadata</span></code> will contain <code class="docutils literal notranslate"><span class="pre">response_metadata</span></code> and <code class="docutils literal notranslate"><span class="pre">usage_metadata</span></code> set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <section id="accessing-token-usage-information">
 <h3>Accessing Token Usage Information<a class="headerlink" href="#accessing-token-usage-information" title="Link to this heading">#</a></h3>
 <p>You can access token usage statistics through the detailed logging capabilities of the NeMo Guardrails library. Use the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option to capture comprehensive information about LLM calls, including token usage:</p>
@@ -862,6 +875,7 @@ add it to the <code class="docutils literal notranslate"><span class="pre">kwarg
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-external-async-token-generators">Using External Async Token Generators</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-metadata">Streaming Metadata</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-token-usage-information">Accessing Token Usage Information</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-for-llms-deployed-using-huggingfacepipeline">Streaming for LLMs Deployed Using HuggingFacePipeline</a></li>
