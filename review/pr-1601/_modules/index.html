@@ -7,9 +7,8 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Evaluation &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overview: module code &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -34,6 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/enhanced-search.css?v=2e2db37d" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -47,8 +47,374 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../_static/search-assets.bundle.js?v=00e3e057"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'evaluation/index';</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/index';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -56,7 +422,7 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/evaluation/index.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/_modules/index.html" />
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="search" title="Search" href="../search.html" />
 
@@ -404,7 +770,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/registering-actions.html">Registering Actions</a></li>
@@ -474,12 +840,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -489,6 +855,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/check-messages.html">Check Messages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
 </ul>
 </details></li>
@@ -503,8 +870,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="README.html">Evaluate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
 <ul class="nav bd-sidenav">
@@ -527,6 +894,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integration/langchain/agent-middleware.html">Agent Middleware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/runnable-rails.html">RunnableRails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
@@ -540,7 +908,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/python-api/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.llmrails.LLMRails.html">nemoguardrails.rails.llm.llmrails.LLMRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.config.RailsConfig.html">nemoguardrails.rails.llm.config.RailsConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationOptions.html">nemoguardrails.rails.llm.options.GenerationOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationResponse.html">nemoguardrails.rails.llm.options.GenerationResponse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationRailsOptions.html">nemoguardrails.rails.llm.options.GenerationRailsOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationLogOptions.html">nemoguardrails.rails.llm.options.GenerationLogOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationLog.html">nemoguardrails.rails.llm.options.GenerationLog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationStats.html">nemoguardrails.rails.llm.options.GenerationStats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.ActivatedRail.html">nemoguardrails.rails.llm.options.ActivatedRail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.ExecutedAction.html">nemoguardrails.rails.llm.options.ExecutedAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.actions.action.html">nemoguardrails.actions.action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.RailType.html">nemoguardrails.rails.llm.options.RailType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.RailStatus.html">nemoguardrails.rails.llm.options.RailStatus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.RailsResult.html">nemoguardrails.rails.llm.options.RailsResult</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
 </ul>
@@ -587,7 +971,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Evaluation</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Overview: module code</span></li>
   </ul>
 </nav>
 </div>
@@ -604,25 +988,12 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="evaluation">
-<h1>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="README.html">Evaluate</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="README.html#dialog-rails">Dialog Rails</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#input-and-output-rails">Input and Output Rails</a></li>
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="nemoguardrails/actions/actions.html">nemoguardrails.actions.actions</a></li>
+<li><a href="nemoguardrails/rails/llm/config.html">nemoguardrails.rails.llm.config</a></li>
+<li><a href="nemoguardrails/rails/llm/llmrails.html">nemoguardrails.rails.llm.llmrails</a></li>
+<li><a href="nemoguardrails/rails/llm/options.html">nemoguardrails.rails.llm.options</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="llm-vulnerability-scanning.html">Vulnerability Scanning</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="llm-vulnerability-scanning.html#garak">Garak</a></li>
-<li class="toctree-l2"><a class="reference internal" href="llm-vulnerability-scanning.html#scan-results">Scan Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="llm-vulnerability-scanning.html#llm-vulnerability-categories">LLM Vulnerability Categories</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-
 
                 </article>
               

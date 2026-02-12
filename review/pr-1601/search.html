@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 
 
@@ -33,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/enhanced-search.css?v=2e2db37d" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -41,12 +41,12 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-
     <script src="_static/documentation_options.js?v=ba17ea1a"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="_static/search-assets.bundle.js?v=00e3e057"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
@@ -422,13 +422,6 @@ window.addEventListener("load", load);
             false;
         </script>
 
-<script src="_static/searchtools.js"></script>
-
-<script src="_static/language_data.js"></script>
-
-<script src="searchindex.js"></script>
-
-
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/search.html" />
     <link rel="icon" href="_static/favicon.png"/>
     <link rel="search" title="Search" href="#" />
@@ -777,7 +770,7 @@ window.addEventListener("load", load);
 <li class="toctree-l1"><a class="reference internal" href="configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure-rails/actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/actions/registering-actions.html">Registering Actions</a></li>
@@ -847,12 +840,12 @@ window.addEventListener("load", load);
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-rails/exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -862,6 +855,7 @@ window.addEventListener("load", load);
 <li class="toctree-l2"><a class="reference internal" href="run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run-rails/using-python-apis/check-messages.html">Check Messages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
 </ul>
 </details></li>
@@ -876,7 +870,7 @@ window.addEventListener("load", load);
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -900,6 +894,7 @@ window.addEventListener("load", load);
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="integration/langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration/langchain/agent-middleware.html">Agent Middleware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="integration/langchain/runnable-rails.html">RunnableRails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
@@ -913,7 +908,23 @@ window.addEventListener("load", load);
 <li class="toctree-l1"><a class="reference internal" href="reference/colang-architecture-guide.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference/python-api/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.llmrails.LLMRails.html">nemoguardrails.rails.llm.llmrails.LLMRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.config.RailsConfig.html">nemoguardrails.rails.llm.config.RailsConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationOptions.html">nemoguardrails.rails.llm.options.GenerationOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationResponse.html">nemoguardrails.rails.llm.options.GenerationResponse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationRailsOptions.html">nemoguardrails.rails.llm.options.GenerationRailsOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationLogOptions.html">nemoguardrails.rails.llm.options.GenerationLogOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationLog.html">nemoguardrails.rails.llm.options.GenerationLog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationStats.html">nemoguardrails.rails.llm.options.GenerationStats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.ActivatedRail.html">nemoguardrails.rails.llm.options.ActivatedRail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.ExecutedAction.html">nemoguardrails.rails.llm.options.ExecutedAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.actions.action.html">nemoguardrails.actions.action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.RailType.html">nemoguardrails.rails.llm.options.RailType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.RailStatus.html">nemoguardrails.rails.llm.options.RailStatus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/python-api/generated/nemoguardrails.rails.llm.options.RailsResult.html">nemoguardrails.rails.llm.options.RailsResult</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/cli/index.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
 </ul>
@@ -948,41 +959,39 @@ window.addEventListener("load", load);
               <div class="bd-header-article d-print-none"></div>
               
               
-  <div class="bd-search-container">
-    <h1>Search</h1>
-    <noscript>
-      <div class="admonition error">
-        <p class="admonition-title">Error</p>
-        <p>Please activate JavaScript to enable the search functionality.</p>
-      </div>
-    </noscript>
-    
-<form class="bd-search d-flex align-items-center"
-      action="#"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         placeholder="Search the docs ..."
-         aria-label="Search the docs ..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    <div id="search-results"></div>
+<div class="bd-search-container">
+  <h1>Search</h1>
+
+  <noscript>
+    <div class="alert alert-error">
+      <p class="alert-title">Error</p>
+      <p>Please activate JavaScript to enable the search functionality.</p>
+    </div>
+  </noscript>
+
+  
+  <div class="search-controls-container mb-4">
+    <input type="search" class="form-control" id="enhanced-search-page-input"
+      placeholder="Search NVIDIA documentation..." autocomplete="off" spellcheck="false"
+      aria-label="Search documentation">
   </div>
-  <script>
-    // Activate the search field on page load
-    let searchInput = document.querySelector("form.bd-search input");
-    if (searchInput) {
-        searchInput.focus();
-        searchInput.select();
-        console.log("[PST]: Set focus on search field.");
-    }
-  </script>
+
+  
+  <div id="enhanced-search-page-results">
+    <div class="search-empty-state text-center py-4">
+      <i class="fa-solid fa-magnifying-glass fa-2x mb-3 search-icon-primary"></i>
+      <h4 class="search-empty-title">Search Documentation</h4>
+      <p class="search-empty-text">Start typing to search across all documentation pages...</p>
+      <div class="mt-3">
+        <small class="search-empty-tips">
+          <i class="fa-solid fa-lightbulb search-icon-primary"></i>
+          <strong>Search Tips:</strong> Use specific terms for better results • Search includes titles, content, and
+          headings
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
 
               
               

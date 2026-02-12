@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/enhanced-search.css?v=2e2db37d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -47,6 +48,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../../../_static/search-assets.bundle.js?v=00e3e057"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'configure-rails/yaml-schema/streaming/global-streaming';</script>
     <script>
@@ -410,7 +412,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../actions/registering-actions.html">Registering Actions</a></li>
@@ -480,12 +482,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
@@ -495,6 +497,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-python-apis/check-messages.html">Check Messages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
 </ul>
 </details></li>
@@ -509,7 +512,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -533,6 +536,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../integration/langchain/agent-middleware.html">Agent Middleware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../integration/langchain/runnable-rails.html">RunnableRails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
@@ -546,7 +550,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/colang-architecture-guide.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../reference/python-api/index.html">Python API</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../reference/python-api/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.llmrails.LLMRails.html">nemoguardrails.rails.llm.llmrails.LLMRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.config.RailsConfig.html">nemoguardrails.rails.llm.config.RailsConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationOptions.html">nemoguardrails.rails.llm.options.GenerationOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationResponse.html">nemoguardrails.rails.llm.options.GenerationResponse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationRailsOptions.html">nemoguardrails.rails.llm.options.GenerationRailsOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationLogOptions.html">nemoguardrails.rails.llm.options.GenerationLogOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationLog.html">nemoguardrails.rails.llm.options.GenerationLog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationStats.html">nemoguardrails.rails.llm.options.GenerationStats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.ActivatedRail.html">nemoguardrails.rails.llm.options.ActivatedRail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.ExecutedAction.html">nemoguardrails.rails.llm.options.ExecutedAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.actions.action.html">nemoguardrails.actions.action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.RailType.html">nemoguardrails.rails.llm.options.RailType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.RailStatus.html">nemoguardrails.rails.llm.options.RailStatus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reference/python-api/generated/nemoguardrails.rails.llm.options.RailsResult.html">nemoguardrails.rails.llm.options.RailsResult</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/cli/index.html">CLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
 </ul>
@@ -697,9 +717,12 @@
 </div>
 </section>
 <hr class="docutils" />
+<section id="streaming-metadata">
+<h2>Streaming Metadata<a class="headerlink" href="#streaming-metadata" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">include_metadata=True</span></code> in <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> to receive per-chunk metadata (token usage, finish reason). See <a class="reference internal" href="../../../run-rails/using-python-apis/streaming.html#streaming-metadata"><span class="std std-ref">Streaming Metadata</span></a> for details.</p>
+</section>
 <section id="token-usage-tracking">
 <h2>Token Usage Tracking<a class="headerlink" href="#token-usage-tracking" title="Link to this heading">#</a></h2>
-<p>When using <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code>, NeMo Guardrails automatically enables token usage tracking by setting <code class="docutils literal notranslate"><span class="pre">stream_usage</span> <span class="pre">=</span> <span class="pre">True</span></code> on the underlying LLM model.</p>
 <p>Access token usage through the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -797,6 +820,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-handler-deprecated">Streaming With Handler (Deprecated)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-usage">CLI Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-metadata">Streaming Metadata</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-usage-tracking">Token Usage Tracking</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#huggingface-pipeline-streaming">HuggingFace Pipeline Streaming</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
