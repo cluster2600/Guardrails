@@ -767,7 +767,7 @@
 </section>
 <section id="token-usage-tracking">
 <h2>Token Usage Tracking<a class="headerlink" href="#token-usage-tracking" title="Link to this heading">#</a></h2>
-<p>Token usage statistics are available when streaming responses depending on provider support.</p>
+<p>Token usage statistics are available when streaming responses, depending on provider support. When the provider does not return token usage statistics, the final chunk’s <code class="docutils literal notranslate"><span class="pre">metadata</span></code> will contain <code class="docutils literal notranslate"><span class="pre">response_metadata</span></code> and <code class="docutils literal notranslate"><span class="pre">usage_metadata</span></code> set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <section id="accessing-token-usage-information">
 <h3>Accessing Token Usage Information<a class="headerlink" href="#accessing-token-usage-information" title="Link to this heading">#</a></h3>
 <p>You can access token usage statistics through the detailed logging capabilities of the NeMo Guardrails library. Use the <code class="docutils literal notranslate"><span class="pre">log</span></code> generation option to capture comprehensive information about LLM calls, including token usage:</p>
