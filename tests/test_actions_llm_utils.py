@@ -29,6 +29,8 @@ from nemoguardrails.actions.llm.utils import (
     _infer_provider_from_module,
     _store_reasoning_traces,
     _store_tool_calls,
+    get_colang_history,
+    get_last_user_utterance,
     llm_call,
 )
 from nemoguardrails.context import reasoning_trace_var, tool_calls_var
@@ -694,3 +696,86 @@ class TestFilterParamsForOpenAIReasoningModels:
         params = {"temperature": 0.5, "max_tokens": 100}
         _filter_params_for_openai_reasoning_models(llm, params)
         assert params == {"temperature": 0.5, "max_tokens": 100}
+
+
+FAKE_BASE64 = "iVBORw0KGgoAAAANSUhEUg" * 5000
+
+
+def _mm_content(text=None, image_b64=None):
+    parts = []
+    if text is not None:
+        parts.append({"type": "text", "text": text})
+    if image_b64 is not None:
+        parts.append({"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_b64}"}})
+    return parts
+
+
+class TestGetColangHistoryMultimodal:
+    def test_text_only_message_unchanged(self):
+        events = [{"type": "UserMessage", "text": "Hello there"}]
+        result = get_colang_history(events)
+        assert 'user "Hello there"' in result
+
+    def test_multimodal_text_and_image(self):
+        events = [{"type": "UserMessage", "text": _mm_content("Describe this", FAKE_BASE64)}]
+        result = get_colang_history(events)
+        assert FAKE_BASE64 not in result
+        assert "Describe this [+ image]" in result
+
+    def test_multimodal_image_only(self):
+        events = [{"type": "UserMessage", "text": _mm_content(image_b64=FAKE_BASE64)}]
+        result = get_colang_history(events)
+        assert FAKE_BASE64 not in result
+        assert "[+ image]" in result
+
+    def test_multimodal_multiple_text_parts(self):
+        content = [
+            {"type": "text", "text": "First part"},
+            {"type": "text", "text": "Second part"},
+            {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{FAKE_BASE64}"}},
+        ]
+        events = [{"type": "UserMessage", "text": content}]
+        result = get_colang_history(events)
+        assert FAKE_BASE64 not in result
+        assert "First part Second part [+ image]" in result
+
+    def test_multimodal_does_not_bloat_history(self):
+        events = [{"type": "UserMessage", "text": _mm_content("Describe this", FAKE_BASE64)}]
+        result = get_colang_history(events)
+        assert FAKE_BASE64 not in result
+        assert len(result) < 1000
+
+    def test_mixed_text_and_multimodal_conversation(self):
+        events = [
+            {"type": "UserMessage", "text": "Hi"},
+            {"type": "UserIntent", "intent": "express greeting"},
+            {"type": "BotIntent", "intent": "express greeting"},
+            {"type": "StartUtteranceBotAction", "script": "Hello!"},
+            {"type": "UserMessage", "text": _mm_content("What is this?", FAKE_BASE64)},
+        ]
+        result = get_colang_history(events)
+        assert 'user "Hi"' in result
+        assert FAKE_BASE64 not in result
+        assert 'user "What is this? [+ image]"' in result
+
+
+class TestGetLastUserUtteranceMultimodal:
+    def test_text_returns_string(self):
+        events = [{"type": "UserMessage", "text": "Plain text"}]
+        result = get_last_user_utterance(events)
+        assert result == "Plain text"
+        assert isinstance(result, str)
+
+    def test_multimodal_returns_string(self):
+        events = [{"type": "UserMessage", "text": _mm_content("Describe this", FAKE_BASE64)}]
+        result = get_last_user_utterance(events)
+        assert isinstance(result, str)
+        assert FAKE_BASE64 not in result
+        assert "[+ image]" in result
+
+    def test_multimodal_image_only(self):
+        events = [{"type": "UserMessage", "text": _mm_content(image_b64=FAKE_BASE64)}]
+        result = get_last_user_utterance(events)
+        assert isinstance(result, str)
+        assert FAKE_BASE64 not in result
+        assert "[+ image]" in result
