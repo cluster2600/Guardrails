@@ -1828,6 +1828,15 @@ window.addEventListener("load", load);
     <span class="p">)</span>
 
 
+<span class="k">class</span><span class="w"> </span><span class="nc">CrowdStrikeAIDRRailConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration data for the CrowdStrike AIDR API&quot;&quot;&quot;</span>
+
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Timeout in seconds for API requests to CrowdStrike AIDR&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
 <span class="k">class</span><span class="w"> </span><span class="nc">PangeaRailOptions</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration data for the Pangea AI Guard API&quot;&quot;&quot;</span>
 
@@ -2035,6 +2044,11 @@ window.addEventListener("load", load);
     <span class="n">clavata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClavataRailConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="n">ClavataRailConfig</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration for Clavata.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">crowdstrike_aidr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CrowdStrikeAIDRRailConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">CrowdStrikeAIDRRailConfig</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration for CrowdStrike AIDR.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">pangea</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PangeaRailConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
