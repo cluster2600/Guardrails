@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=df3ac72c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/enhanced-search.css?v=2e2db37d" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
@@ -42,17 +43,18 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=e201715b"></script>
+    <script src="../_static/documentation_options.js?v=ba17ea1a"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../_static/search-assets.bundle.js?v=00e3e057"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'about/release-notes';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.20.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -206,7 +208,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -339,7 +341,7 @@
           
           
           
-          <a href="https://github.com/NVIDIA/NeMo-Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/NVIDIA-NeMo/Guardrails" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -371,26 +373,23 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">About NeMo Guardrails Library</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-it-works.html">How It Works</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rail-types.html">Guardrail Types</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="how-it-works/index.html">How It Works</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="how-it-works/guardrails-process.html">Sequence Diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architecture/README.html">Architecture</a></li>
-</ul>
-</details></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-llms.html">Supported LLMs</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Release Notes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation-guide.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/tutorials/index.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-safety-guard-deployment.html">Check Harmful Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemotron-content-safety-reasoning-deployment.html">Content Safety Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-topiccontrol-deployment.html">Restrict Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html">Detect Jailbreak Attempts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting-started/tutorials/multimodal.html">Add Multimodal Content Safety</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/integrate-into-application.html">Integrate Guardrails</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure Guardrails</span></p>
 <ul class="nav bd-sidenav">
@@ -413,7 +412,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../configure-rails/configuration-reference.html">YAML Schema Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configure-rails/guardrail-catalog.html">Guardrail Catalog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/creating-actions.html">Creating Custom Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/built-in-actions.html">Built-in Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/action-parameters.html">Action Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/actions/registering-actions.html">Registering Actions</a></li>
@@ -483,24 +482,37 @@
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/other-configurations/embedding-search-providers.html">Embedding Search Providers</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/caching/index.html">Caching Instructions and Prompts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../configure-rails/caching/index.html">Caching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/model-memory-cache.html">Memory Model Cache</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse for NemoGuard NIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html">KV Cache Reuse</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../configure-rails/exceptions.html">Exceptions and Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure-rails/exceptions.html">Exceptions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Run Guardrailed Inference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">Run Rails</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/core-classes.html">Core Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/generation-options.html">Generation Options</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/streaming.html">Streaming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../run-rails/event-based-api.html">Event-Based API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run-rails/index.html">About Running Guardrailed Inference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-python-apis/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/core-classes.html">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/generation-options.html">Generation Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/check-messages.html">Check Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-python-apis/event-based-api.html">Event-Based API</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../run-rails/using-fastapi-server/index.html">Guardrails API Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Evaluation</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../evaluation/README.html">Evaluate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation/evaluate-guardrails.html">Evaluate Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../evaluation/llm-vulnerability-scanning.html">Vulnerability Scanning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Observability</span></p>
@@ -514,21 +526,17 @@
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deployment Guides</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More Deployment Options</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deploy</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../deployment/local-server/index.html">Local Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/guardrails-server.html">Guardrails Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../deployment/local-server/actions-server.html">Actions Server</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/index.html">Deployment Options</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deployment/using-docker.html">Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">Microservice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deployment/using-microservice.html">NeMo Microservice</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Integration with Third-Party Libraries</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../integration/langchain/index.html">LangChain Frameworks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/langchain-integration.html">LangChain Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integration/langchain/agent-middleware.html">Agent Middleware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/runnable-rails.html">RunnableRails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/chain-with-guardrails/index.html">Chain with Guardrails</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration/langchain/runnable-as-action/index.html">Runnable as Action</a></li>
@@ -537,18 +545,40 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/colang-architecture-guide.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/guardrails-sequence-diagrams.html">Sequence Diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/use-case-diagrams.html">Use Case Diagrams</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/python-api/index.html">Python API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.llmrails.LLMRails.html">nemoguardrails.rails.llm.llmrails.LLMRails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.config.RailsConfig.html">nemoguardrails.rails.llm.config.RailsConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationOptions.html">nemoguardrails.rails.llm.options.GenerationOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationResponse.html">nemoguardrails.rails.llm.options.GenerationResponse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationRailsOptions.html">nemoguardrails.rails.llm.options.GenerationRailsOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationLogOptions.html">nemoguardrails.rails.llm.options.GenerationLogOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationLog.html">nemoguardrails.rails.llm.options.GenerationLog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.GenerationStats.html">nemoguardrails.rails.llm.options.GenerationStats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.ActivatedRail.html">nemoguardrails.rails.llm.options.ActivatedRail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.ExecutedAction.html">nemoguardrails.rails.llm.options.ExecutedAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.actions.action.html">nemoguardrails.actions.action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.RailType.html">nemoguardrails.rails.llm.options.RailType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.RailStatus.html">nemoguardrails.rails.llm.options.RailStatus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/python-api/generated/nemoguardrails.rails.llm.options.RailsResult.html">nemoguardrails.rails.llm.options.RailsResult</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli/index.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api-server-endpoints/index.html">Guardrails API Server Endpoints</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Troubleshooting</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../faqs.html">Frequently Asked Questions (FAQ)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python-api/index.html">Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../resources/use-case-diagrams.html">Use Case Diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/guidelines.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/faqs.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources/security/guidelines.html">Security</a></li>
 </ul>
 </div>
 </nav></div>
@@ -608,12 +638,107 @@
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">#</a></h1>
 <p>The following sections summarize and highlight the changes for each release.
 For a complete record of changes in a release, refer to the
-<a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/CHANGELOG.md" rel="noreferer noopener" target="_blank">CHANGELOG.md</a> in the GitHub repository.</p>
+<a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/CHANGELOG.md" rel="noreferer noopener" target="_blank">CHANGELOG.md</a> in the GitHub repository.</p>
 <hr class="docutils" />
-<section id="v0-19-0">
-<span id="id1"></span><h2>0.19.0<a class="headerlink" href="#v0-19-0" title="Link to this heading">#</a></h2>
+<section id="v0-20-0">
+<span id="id1"></span><h2>0.20.0<a class="headerlink" href="#v0-20-0" title="Link to this heading">#</a></h2>
 <section id="key-features">
-<span id="v0-19-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
+<span id="v0-20-0-features"></span><h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
+<ul>
+<li><p>Added support for multilingual content safety models such as <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemotron-safety-guard-8b-v3" rel="noreferer noopener" target="_blank">NVIDIA Nemotron Safety Guard 8B v3</a>. This feature uses the <a class="reference external" href="https://github.com/LlmKira/fast-langdetect" rel="noreferer noopener" target="_blank">fast-langdetect package</a> to detect the user’s input language and return refusal messages in the appropriate language. To use this feature, install the NeMo Guardrails library with the <code class="docutils literal notranslate"><span class="pre">multilingual</span></code> extra.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>nemoguardrails<span class="o">[</span>multilingual<span class="o">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Added support for configuring custom refusal messages per language to complement multilingual content safety models. You can enable multilingual refusal messages and specify custom refusal messages in the <code class="docutils literal notranslate"><span class="pre">rails.config.content_safety</span></code> section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">content_safety</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">multilingual</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">refusal_messages</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">en</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sorry,</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">cannot</span><span class="nv"> </span><span class="s">help</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">request.&quot;</span>
+<span class="w">          </span><span class="nt">es</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Lo</span><span class="nv"> </span><span class="s">siento,</span><span class="nv"> </span><span class="s">no</span><span class="nv"> </span><span class="s">puedo</span><span class="nv"> </span><span class="s">ayudar</span><span class="nv"> </span><span class="s">con</span><span class="nv"> </span><span class="s">esa</span><span class="nv"> </span><span class="s">solicitud.&quot;</span>
+<span class="w">          </span><span class="nt">zh</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;抱歉，我无法处理该请求。&quot;</span>
+<span class="w">          </span><span class="c1"># Add other languages as needed</span>
+</pre></div>
+</div>
+<p>For more information, refer to <a class="reference internal" href="../configure-rails/guardrail-catalog.html#multilingual-content-safety"><span class="std std-ref">Multilingual Content Safety</span></a>.</p>
+</li>
+<li><p>Added support for <a class="reference external" href="https://huggingface.co/nvidia/gliner-PII" rel="noreferer noopener" target="_blank">NVIDIA GLiNER-PII</a> for detecting entities such as names, email addresses, phone numbers, social security numbers, and more. For more information, refer to <a class="reference internal" href="../user-guides/community/gliner.html"><span class="std std-doc">GLiNER Integration</span></a>.</p></li>
+</ul>
+</section>
+<section id="breaking-changes">
+<h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">#</a></h3>
+<ul>
+<li><p>A breaking change removes redundant streaming configuration for output rails. Prior to the change, streaming had to be enabled in two places: <code class="docutils literal notranslate"><span class="pre">streaming</span></code> and <code class="docutils literal notranslate"><span class="pre">rails.output.streaming.enabled</span></code>. This change removes the top-level <code class="docutils literal notranslate"><span class="pre">streaming</span></code> configuration.</p>
+<ul>
+<li><p>Example <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> before the change:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.3-70b-instruct</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/llama-3.1-nemoguard-8b-content-safety</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=content_safety</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+<span class="w">    </span><span class="nt">streaming</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">      </span><span class="nt">chunk_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
+<span class="w">      </span><span class="nt">context_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+
+<span class="hll"><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"> </span><span class="c1"># No longer needed starting from v0.20.0</span>
+</span></pre></div>
+</div>
+</li>
+<li><p>Example <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> after the change:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">meta/llama-3.3-70b-instruct</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia_ai_endpoints</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/llama-3.1-nemoguard-8b-content-safety</span>
+
+<span class="nt">rails</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check input $model=content_safety</span>
+<span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content safety check output $model=content_safety</span>
+<span class="w">    </span><span class="nt">streaming</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">      </span><span class="nt">chunk_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
+<span class="w">      </span><span class="nt">context_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>For more information, refer to <a class="reference internal" href="../run-rails/using-python-apis/streaming.html"><span class="std std-doc">Streaming Generated Responses in Real-Time</span></a>.</p>
+</li>
+</ul>
+</section>
+<section id="other-changes">
+<h3>Other Changes<a class="headerlink" href="#other-changes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Restructured the documentation with improved navigation, clearer content organization, and updated configuration reference and user guides.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="v0-19-0">
+<span id="id2"></span><h2>0.19.0<a class="headerlink" href="#v0-19-0" title="Link to this heading">#</a></h2>
+<section id="v0-19-0-features">
+<span id="id3"></span><h3>Key Features<a class="headerlink" href="#v0-19-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for LangChain 1.x, including the content blocks API for reasoning traces and tool calls.</p></li>
 </ul>
@@ -628,9 +753,9 @@ For a complete record of changes in a release, refer to the
 </section>
 </section>
 <section id="v0-18-0">
-<span id="id2"></span><h2>0.18.0<a class="headerlink" href="#v0-18-0" title="Link to this heading">#</a></h2>
+<span id="id4"></span><h2>0.18.0<a class="headerlink" href="#v0-18-0" title="Link to this heading">#</a></h2>
 <section id="v0-18-0-features">
-<span id="id3"></span><h3>Key Features<a class="headerlink" href="#v0-18-0-features" title="Link to this heading">#</a></h3>
+<span id="id5"></span><h3>Key Features<a class="headerlink" href="#v0-18-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>In-memory caching of guardrail model calls for reduced latency and cost savings.
 NeMo Guardrails now supports per-model caching of guardrail responses using an LFU (Least Frequently Used) cache.
@@ -643,7 +768,7 @@ For more information, refer to <a class="reference internal" href="../configure-
 </ul>
 </section>
 <section id="v0-18-0-fixed-issues">
-<span id="id4"></span><h3>Fixed Issues<a class="headerlink" href="#v0-18-0-fixed-issues" title="Link to this heading">#</a></h3>
+<span id="id6"></span><h3>Fixed Issues<a class="headerlink" href="#v0-18-0-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Implemented validation of content safety and topic control guardrail configurations at creation time, providing prompt error reporting if required prompt templates or parameters are missing.</p></li>
 </ul>
@@ -651,9 +776,9 @@ For more information, refer to <a class="reference internal" href="../configure-
 </section>
 </section>
 <section id="v0-17-0">
-<span id="id5"></span><h2>0.17.0<a class="headerlink" href="#v0-17-0" title="Link to this heading">#</a></h2>
+<span id="id7"></span><h2>0.17.0<a class="headerlink" href="#v0-17-0" title="Link to this heading">#</a></h2>
 <section id="v0-17-0-features">
-<span id="id6"></span><h3>Key Features<a class="headerlink" href="#v0-17-0-features" title="Link to this heading">#</a></h3>
+<span id="id8"></span><h3>Key Features<a class="headerlink" href="#v0-17-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for <a class="reference internal" href="#./user-guides/langchain/langgraph-integration.md"><span class="xref myst">integrating with LangGraph and tool calling</span></a>.
 This integration enables building safe and controlled multi-agent workflows.
@@ -666,8 +791,8 @@ This enhancement enables NeMo Guardrails to plug into LangChain pipelines seamle
 Refer to <a class="reference internal" href="#./user-guides/community/trend-micro.md"><span class="xref myst">configuration documentation</span></a> for more information.</p></li>
 </ul>
 </section>
-<section id="other-changes">
-<span id="v0-17-0-other-changes"></span><h3>Other Changes<a class="headerlink" href="#other-changes" title="Link to this heading">#</a></h3>
+<section id="v0-17-0-other-changes">
+<span id="id9"></span><h3>Other Changes<a class="headerlink" href="#v0-17-0-other-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Improved URL handling for connecting to NemoGuard JailbreakDetect NIM.
 Guardrails now tolerates the URL for <code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.nim_base_url</span></code> ending with or without a trailing slash.
@@ -676,39 +801,39 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 </section>
 </section>
 <section id="v0-16-0">
-<span id="id7"></span><h2>0.16.0<a class="headerlink" href="#v0-16-0" title="Link to this heading">#</a></h2>
+<span id="id10"></span><h2>0.16.0<a class="headerlink" href="#v0-16-0" title="Link to this heading">#</a></h2>
 <section id="v0-16-0-features">
-<span id="id8"></span><h3>Key Features<a class="headerlink" href="#v0-16-0-features" title="Link to this heading">#</a></h3>
+<span id="id11"></span><h3>Key Features<a class="headerlink" href="#v0-16-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Enhanced tracing system with <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">OpenTelemetry semantic conventions</a>. To learn more, refer to <a class="reference internal" href="../observability/tracing/index.html#tracing"><span class="std std-ref">Tracing Guardrails</span></a>. For usage examples, refer to the following notebooks</p>
 <ul>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a></p></li>
 </ul>
 </li>
 <li><p>Community integration with <a class="reference external" href="https://www.guardrailsai.com/" rel="noreferer noopener" target="_blank">GuardrailsAI</a> and <a class="reference external" href="https://pangea.cloud/services/ai-guard" rel="noreferer noopener" target="_blank">Pangea AI Guard</a>.</p></li>
 </ul>
 </section>
 <section id="v0-16-0-other-changes">
-<span id="id9"></span><h3>Other Changes<a class="headerlink" href="#v0-16-0-other-changes" title="Link to this heading">#</a></h3>
+<span id="id12"></span><h3>Other Changes<a class="headerlink" href="#v0-16-0-other-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added documentation about using KV cache reuse for LLM-based NemoGuard NIMs. By using KV cache reuse, you can improve the performance of LLM-based NemoGuard NIMs where the system prompt is the same for all calls up to the point where user query and LLM response are injected. To learn more, refer to <a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html#kv-cache-reuse"><span class="std std-ref">KV Cache Reuse for NemoGuard NIM</span></a>.</p></li>
 </ul>
 </section>
 </section>
 <section id="v0-15-0">
-<span id="id10"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
+<span id="id13"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
 <section id="v0-15-0-features">
-<span id="id11"></span><h3>Key Features<a class="headerlink" href="#v0-15-0-features" title="Link to this heading">#</a></h3>
+<span id="id14"></span><h3>Key Features<a class="headerlink" href="#v0-15-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="#parallel-rails"><code class="xref myst docutils literal notranslate"><span class="pre">parallel-rails</span></code></a>.</p></li>
 <li><p>Implemented a new way of configuring tracing. You can now use the OpenTelemetry SDK and the OpenTelemetry Protocol (OTLP) exporter while configuring the NeMo Guardrails clients in your application code directly. To learn more, refer to the <a class="reference internal" href="#tracing-configuration"><span class="xref myst">basic tracing configuration guide</span></a> and the <a class="reference internal" href="../observability/tracing/index.html#tracing"><span class="std std-ref">advanced tracing configuration guide</span></a>.</p></li>
 <li><p>Updated the streaming capability of output rails to support parallel execution.</p></li>
-<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="../run-rails/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
+<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="../run-rails/using-python-apis/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
 </ul>
 </section>
-<section id="breaking-changes">
-<h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">#</a></h3>
+<section id="id15">
+<h3>Breaking Changes<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
 <p>With the new tracing configuration, the following old configuration for tracing in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> is no longer supported.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">#  No longer supported</span>
 <span class="nt">tracing</span><span class="p">:</span>
@@ -729,7 +854,7 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 </section>
 </section>
 <section id="v0-14-1">
-<span id="id12"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
+<span id="id16"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
 <section id="features">
 <span id="v0-14-1-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -737,7 +862,7 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 </ul>
 </section>
 <section id="v0-14-1-fixed-issues">
-<span id="id13"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-1-fixed-issues" title="Link to this heading">#</a></h3>
+<span id="id17"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-1-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed lazy loading of jailbreak detection dependencies. Before, jailbreak detection imported unnecessary dependencies when using NIM, which led to installation of those dependencies even when not using the local model-based jailbreak detection.</p></li>
 <li><p>Fixed constructor LLM configuration to properly load other config models.</p></li>
@@ -748,9 +873,9 @@ Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-j
 </section>
 </section>
 <section id="v0-14-0">
-<span id="id14"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
+<span id="id18"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
 <section id="v0-14-0-features">
-<span id="id15"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
+<span id="id19"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Python 3.13.</p></li>
 <li><p>Enhanced working with advanced reasoning models.</p>
@@ -776,7 +901,7 @@ For more information, refer to <a class="reference internal" href="#./user-guide
 </ul>
 </section>
 <section id="v0-14-0-breaking-changes">
-<span id="id16"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
+<span id="id20"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Removed support for the NeMo LLM Service, <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>.
 This provider reached end-of-life on February 5, 2025.</p></li>
@@ -786,20 +911,20 @@ In this release, the class is moved to the <code class="docutils literal notrans
 </ul>
 </section>
 <section id="v0-14-0-fixed-issues">
-<span id="id17"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
+<span id="id21"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue when tracing is enabled.
 Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
 In this release, the response is not modified when tracing is enabled.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1103" rel="noreferer noopener" target="_blank">PR #1103</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1103" rel="noreferer noopener" target="_blank">PR #1103</a>.</p></li>
 <li><p>Fixed an issue with the self check output flow.
 Previously, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction was not executed when <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> was enabled.
 In this release, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction correctly regardless of the <code class="docutils literal notranslate"><span class="pre">enable_rails_execptions</span></code> value.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1126" rel="noreferer noopener" target="_blank">PR #1126</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1126" rel="noreferer noopener" target="_blank">PR #1126</a>.</p></li>
 <li><p>Previously, the model specification in the guardrails configuration file, <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, did not validate the model name.
 In this release you must specify the model name in the <code class="docutils literal notranslate"><span class="pre">model</span></code> top-level field or as <code class="docutils literal notranslate"><span class="pre">model</span></code> or <code class="docutils literal notranslate"><span class="pre">model_name</span></code> in
 the parameters field.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/pull/1084" rel="noreferer noopener" target="_blank">PR #1084</a>.</p></li>
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1084" rel="noreferer noopener" target="_blank">PR #1084</a>.</p></li>
 </ul>
 </section>
 </section>
@@ -854,6 +979,7 @@ For more information, refer to <a class="reference external" href="https://githu
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-20-0">0.20.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-19-0">0.19.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-18-0">0.18.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-17-0">0.17.0</a></li>
