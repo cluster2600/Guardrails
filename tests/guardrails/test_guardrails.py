@@ -223,7 +223,7 @@ class TestGuardrailsInit:
 
         # Verify attributes are set correctly
         assert guardrails.config == _nemoguards_rails_config
-        assert guardrails.verbose is False
+        assert not guardrails.verbose
         assert guardrails.rails_engine == mock_llmrails_instance
 
     @patch("nemoguardrails.guardrails.guardrails.LLMRails")
@@ -238,7 +238,7 @@ class TestGuardrailsInit:
 
         # Verify attributes are set correctly
         assert guardrails.config == _nemoguards_rails_config
-        assert guardrails.verbose is True
+        assert guardrails.verbose
         assert guardrails.rails_engine == mock_llmrails_instance
 
 
@@ -776,8 +776,8 @@ class TestHasOnlyIORailsFlows:
         assert not guardrails._has_only_iorails_flows()
 
     @patch("nemoguardrails.guardrails.guardrails.LLMRails")
-    def test_has_only_iorails_flows_unsupported_topic_safety_input_rails(self, mock_llmrails_class):
-        """Check if we have input and output content safety **and also input topic-safety** we can't use IORails"""
+    def test_has_only_iorails_flows_with_topic_safety_input_rails(self, mock_llmrails_class):
+        """Content safety + topic safety input rails are both supported by IORails."""
         config = RailsConfig.from_content(
             config={
                 "models": [
@@ -805,7 +805,7 @@ class TestHasOnlyIORailsFlows:
             }
         )
         guardrails = Guardrails(config=config)
-        assert guardrails._has_only_iorails_flows() is False
+        assert guardrails._has_only_iorails_flows()
 
     @patch("nemoguardrails.guardrails.guardrails.LLMRails")
     def test_has_only_iorails_flows_unsupported_self_check_output_rails(self, mock_llmrails_class):
@@ -823,4 +823,4 @@ class TestHasOnlyIORailsFlows:
             extra_prompts=[{"task": "self_check_output", "content": "placeholder"}],
         )
         guardrails = Guardrails(config=config)
-        assert guardrails._has_only_iorails_flows() is False
+        assert not guardrails._has_only_iorails_flows()

@@ -23,12 +23,19 @@ import pytest
 from nemoguardrails.guardrails.guardrails_types import RailResult
 from nemoguardrails.guardrails.model_manager import ModelManager
 from nemoguardrails.guardrails.rails_manager import RailsManager
+from nemoguardrails.library.topic_safety.actions import (
+    TOPIC_SAFETY_MAX_TOKENS,
+    TOPIC_SAFETY_OUTPUT_RESTRICTION,
+    TOPIC_SAFETY_TEMPERATURE,
+)
 from nemoguardrails.rails.llm.config import RailsConfig
 from tests.guardrails.test_data import (
     CONTENT_SAFETY_CONFIG,
     CONTENT_SAFETY_INPUT_PROMPT,
     CONTENT_SAFETY_OUTPUT_PROMPT,
     NEMOGUARDS_CONFIG,
+    TOPIC_SAFETY_CONFIG,
+    TOPIC_SAFETY_INPUT_PROMPT,
 )
 
 
@@ -542,3 +549,203 @@ class TestEndToEndContentSafetyCheck:
         prompt_content = messages_sent[0]["content"]
         assert "user query" in prompt_content
         assert "bot answer" in prompt_content
+
+
+@pytest.fixture
+def topic_safety_rails_config():
+    return RailsConfig.from_content(config=TOPIC_SAFETY_CONFIG)
+
+
+@pytest.fixture
+def topic_safety_model_manager(topic_safety_rails_config):
+    return ModelManager(topic_safety_rails_config)
+
+
+@pytest.fixture
+def topic_safety_rails_manager(topic_safety_rails_config, topic_safety_model_manager):
+    return RailsManager(topic_safety_rails_config, topic_safety_model_manager)
+
+
+class TestTopicSafetyInit:
+    """Test prompts and flows are correctly stored for topic safety config."""
+
+    def test_stores_prompt(self, topic_safety_rails_manager):
+        """Topic safety prompt is keyed by its task name."""
+        assert "topic_safety_check_input $model=topic_control" in topic_safety_rails_manager.prompts
+
+    def test_prompt_content_matches(self, topic_safety_rails_manager):
+        """Stored prompt content matches the TOPIC_SAFETY_INPUT_PROMPT constant."""
+        prompt = topic_safety_rails_manager.prompts["topic_safety_check_input $model=topic_control"]
+        assert prompt.content == TOPIC_SAFETY_INPUT_PROMPT
+
+    def test_input_flow_populated(self, topic_safety_rails_manager):
+        """Input flows list contains the topic safety flow."""
+        assert "topic safety check input $model=topic_control" in topic_safety_rails_manager.input_flows
+
+    def test_no_output_flows(self, topic_safety_rails_manager):
+        """Topic-safety-only config has no output flows."""
+        assert topic_safety_rails_manager.output_flows == []
+
+
+class TestRenderTopicSafetyPrompt:
+    """Test the _render_topic_safety_prompt helper."""
+
+    def test_appends_output_restriction(self, topic_safety_rails_manager):
+        """The output restriction suffix is appended to the prompt."""
+        result = topic_safety_rails_manager._render_topic_safety_prompt("topic_safety_check_input $model=topic_control")
+        assert result.endswith(TOPIC_SAFETY_OUTPUT_RESTRICTION)
+
+    def test_prompt_contains_guidelines(self, topic_safety_rails_manager):
+        """The rendered prompt still contains the original guidelines."""
+        result = topic_safety_rails_manager._render_topic_safety_prompt("topic_safety_check_input $model=topic_control")
+        assert "Guidelines for the user messages:" in result
+
+    def test_suffix_appended_once(self, topic_safety_rails_manager):
+        """Calling render twice doesn't double-append the suffix."""
+        result1 = topic_safety_rails_manager._render_topic_safety_prompt(
+            "topic_safety_check_input $model=topic_control"
+        )
+        # Manually store it back as if the suffix was already present
+        topic_safety_rails_manager.prompts["topic_safety_check_input $model=topic_control"].content = result1
+        result2 = topic_safety_rails_manager._render_topic_safety_prompt(
+            "topic_safety_check_input $model=topic_control"
+        )
+        assert result1 == result2
+
+    def test_missing_prompt_raises(self, topic_safety_rails_manager):
+        """Raises RuntimeError for a missing prompt key."""
+        with pytest.raises(RuntimeError, match="No prompt template found"):
+            topic_safety_rails_manager._render_topic_safety_prompt("nonexistent_task")
+
+
+class TestParseTopicSafetyResponse:
+    """Test the _parse_topic_safety_response static method."""
+
+    def test_on_topic_returns_safe(self):
+        result = RailsManager._parse_topic_safety_response("on-topic")
+        assert result.is_safe
+        assert result.reason is None
+
+    def test_off_topic_returns_unsafe(self):
+        result = RailsManager._parse_topic_safety_response("off-topic")
+        assert not result.is_safe
+        assert "off-topic" in result.reason
+
+    def test_case_insensitive_off_topic(self):
+        result = RailsManager._parse_topic_safety_response("Off-Topic")
+        assert not result.is_safe
+
+    def test_case_insensitive_on_topic(self):
+        result = RailsManager._parse_topic_safety_response("On-Topic")
+        assert result.is_safe
+
+    def test_whitespace_handling(self):
+        result = RailsManager._parse_topic_safety_response("  off-topic  \n")
+        assert not result.is_safe
+
+    def test_unexpected_response_treated_as_on_topic(self):
+        """Non-'off-topic' responses default to safe (same as library action)."""
+        result = RailsManager._parse_topic_safety_response("something unexpected")
+        assert result.is_safe
+
+
+class TestTopicSafetyInputRailDispatch:
+    """Test that _run_input_rail dispatches to _check_topic_safety_input."""
+
+    @pytest.mark.asyncio
+    async def test_dispatches_topic_safety(self, topic_safety_rails_manager):
+        """The topic safety flow dispatches to _check_topic_safety_input."""
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(return_value="on-topic")
+        flow = "topic safety check input $model=topic_control"
+        result = await topic_safety_rails_manager._run_input_rail(flow, [{"role": "user", "content": "hello"}])
+        assert result.is_safe
+
+
+class TestTopicSafetyIsInputSafe:
+    """Test end-to-end topic safety input checks via the public is_input_safe method."""
+
+    @pytest.mark.asyncio
+    async def test_on_topic_returns_safe(self, topic_safety_rails_manager):
+        """Returns is_safe=True when the model says on-topic."""
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(return_value="on-topic")
+        result = await topic_safety_rails_manager.is_input_safe(
+            [{"role": "user", "content": "What is your return policy?"}]
+        )
+        assert result.is_safe
+
+    @pytest.mark.asyncio
+    async def test_off_topic_returns_unsafe(self, topic_safety_rails_manager):
+        """Returns is_safe=False when the model says off-topic."""
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(return_value="off-topic")
+        result = await topic_safety_rails_manager.is_input_safe(
+            [{"role": "user", "content": "Tell me about the meaning of life"}]
+        )
+        assert not result.is_safe
+        assert "off-topic" in result.reason
+
+    @pytest.mark.asyncio
+    async def test_model_error_returns_unsafe(self, topic_safety_rails_manager):
+        """Model exceptions are caught and returned as unsafe."""
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(side_effect=RuntimeError("timeout"))
+        result = await topic_safety_rails_manager.is_input_safe([{"role": "user", "content": "hello"}])
+        assert not result.is_safe
+        assert "error" in result.reason.lower()
+
+
+class TestTopicSafetyE2E:
+    """Test the full _check_topic_safety_input flow: prompt rendering, model call, response parsing."""
+
+    @pytest.mark.asyncio
+    async def test_sends_system_and_user_messages(self, topic_safety_rails_manager):
+        """Verifies the model receives a system message (guidelines) and user message."""
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(return_value="on-topic")
+
+        flow = "topic safety check input $model=topic_control"
+        await topic_safety_rails_manager._check_topic_safety_input(flow, [{"role": "user", "content": "test question"}])
+
+        call_args = topic_safety_rails_manager.model_manager.generate_async.call_args
+        model_type = call_args[0][0]
+        messages_sent = call_args[0][1]
+
+        assert model_type == "topic_control"
+        assert len(messages_sent) == 2
+        assert messages_sent[0]["role"] == "system"
+        assert messages_sent[1]["role"] == "user"
+        assert messages_sent[1]["content"] == "test question"
+
+    @pytest.mark.asyncio
+    async def test_system_prompt_contains_guidelines_and_suffix(self, topic_safety_rails_manager):
+        """The system prompt has the original guidelines and the output restriction suffix."""
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(return_value="on-topic")
+
+        flow = "topic safety check input $model=topic_control"
+        await topic_safety_rails_manager._check_topic_safety_input(flow, [{"role": "user", "content": "hi"}])
+
+        call_args = topic_safety_rails_manager.model_manager.generate_async.call_args
+        system_content = call_args[0][1][0]["content"]
+        assert "Guidelines for the user messages:" in system_content
+        assert system_content.endswith(TOPIC_SAFETY_OUTPUT_RESTRICTION)
+
+    @pytest.mark.asyncio
+    async def test_passes_temperature_and_max_tokens(self, topic_safety_rails_manager):
+        """Verifies temperature=0.01 and max_tokens=10 are passed as kwargs."""
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(return_value="on-topic")
+
+        flow = "topic safety check input $model=topic_control"
+        await topic_safety_rails_manager._check_topic_safety_input(flow, [{"role": "user", "content": "hi"}])
+
+        call_kwargs = topic_safety_rails_manager.model_manager.generate_async.call_args[1]
+        assert call_kwargs["temperature"] == TOPIC_SAFETY_TEMPERATURE
+        assert call_kwargs["max_tokens"] == TOPIC_SAFETY_MAX_TOKENS
+
+    @pytest.mark.asyncio
+    async def test_off_topic_e2e(self, topic_safety_rails_manager):
+        """End-to-end: off-topic response produces is_safe=False."""
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(return_value="off-topic")
+
+        flow = "topic safety check input $model=topic_control"
+        result = await topic_safety_rails_manager._check_topic_safety_input(
+            flow, [{"role": "user", "content": "What's the weather?"}]
+        )
+        assert not result.is_safe
+        assert "off-topic" in result.reason

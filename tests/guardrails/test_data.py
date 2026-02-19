@@ -119,6 +119,32 @@ Guidelines for the user messages:
 """
 
 
+# Topic-safety input-only configuration with models and prompts
+TOPIC_SAFETY_CONFIG = {
+    "models": [
+        {"type": "main", "engine": "nim", "model": "meta/llama-3.3-70b-instruct"},
+        {
+            "type": "topic_control",
+            "engine": "nim",
+            "model": "nvidia/llama-3.1-nemoguard-8b-topic-control",
+        },
+    ],
+    "rails": {
+        "input": {
+            "flows": [
+                "topic safety check input $model=topic_control",
+            ]
+        },
+    },
+    "prompts": [
+        {
+            "task": "topic_safety_check_input $model=topic_control",
+            "content": TOPIC_SAFETY_INPUT_PROMPT,
+        },
+    ],
+}
+
+
 # Content-safety input and output configuration with models and prompts
 CONTENT_SAFETY_CONFIG = {
     "models": [
