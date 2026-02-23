@@ -15,7 +15,7 @@
 
 import logging
 import re
-from typing import TYPE_CHECKING, Any, Dict, List, NoReturn, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Any, Dict, List, NoReturn, Optional, Union
 
 from langchain_core.language_models import BaseLanguageModel
 from langchain_core.runnables.base import Runnable
@@ -238,6 +238,7 @@ async def _stream_llm_call(
 
     handler.stop = stop or []
     accumulated_metadata: Dict[str, Any] = {}
+    last_chunk = None
 
     try:
         async for chunk in llm.astream(messages, stop=stop):
@@ -313,7 +314,10 @@ def _log_prompt(prompt: Union[str, List[dict]]) -> None:
         formatted_prompt = "\n" + "\n".join(
             [
                 "[cyan]"
-                + type_map.get(msg.get("role", msg.get("type", "")), msg.get("role", msg.get("type", "")).title())
+                + type_map.get(
+                    msg.get("role") or msg.get("type") or "",
+                    (msg.get("role") or msg.get("type") or "").title(),
+                )
                 + "[/]"
                 + "\n"
                 + (msg.get("content", "") if isinstance(msg.get("content", ""), str) else "")
