@@ -644,7 +644,7 @@
 <p>This guide shows you how to create a “Hello World” guardrails configuration that controls the greeting behavior. Before you begin, make sure you have <a class="reference internal" href="#../../getting-started/installation-guide.md"><span class="xref myst">installed NeMo Guardrails</span></a>.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
-<p>This “Hello World” guardrails configuration uses the OpenAI <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code> model.</p>
+<p>This “Hello World” guardrails configuration uses the OpenAI <code class="docutils literal notranslate"><span class="pre">gpt-4o-mini</span></code> model.</p>
 <ol class="arabic simple">
 <li><p>Install the <code class="docutils literal notranslate"><span class="pre">openai</span></code> package:</p></li>
 </ol>
@@ -678,7 +678,7 @@
 <span class="go">│   ├── ...</span>
 </pre></div>
 </div>
-<p>See the <a class="reference internal" href="#../../user-guides/configuration-guide.md"><span class="xref myst">Configuration Guide</span></a> for information about the contents of these files.</p>
+<p>See the <a class="reference internal" href="../../../../configuration-reference.html"><span class="std std-doc">Configuration Reference</span></a> for information about the contents of these files.</p>
 <ol class="arabic simple">
 <li><p>Create a folder, such as <em>config</em>, for your configuration:</p></li>
 </ol>
@@ -691,10 +691,10 @@
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">   </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">   </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo-instruct</span>
+<span class="w">   </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <em>config.yml</em> file configures the LLM model. For a complete list of supported LLM models, see <a class="reference internal" href="#../../user-guides/configuration-guide.md#supported-llm-models"><span class="xref myst">Supported LLM Models</span></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">models</span></code> key in the <em>config.yml</em> file configures the LLM model. For a complete list of supported LLM models, see <a class="reference internal" href="../../../../../about/supported-llms.html"><span class="std std-doc">Supported LLM Models</span></a>.</p>
 </section>
 <section id="step-2-load-the-guardrails-configuration">
 <h2>Step 2: load the guardrails configuration<a class="headerlink" href="#step-2-load-the-guardrails-configuration" title="Link to this heading">#</a></h2>
