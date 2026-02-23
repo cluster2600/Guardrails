@@ -638,7 +638,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="output-rail-streaming">
 <h1>Output Rail Streaming<a class="headerlink" href="#output-rail-streaming" title="Link to this heading">#</a></h1>
-<p>Configure how output rails are applied to streamed tokens under <code class="docutils literal notranslate"><span class="pre">rails.output.streaming</span></code>.</p>
+<p>Configure how output rails process streamed tokens under <code class="docutils literal notranslate"><span class="pre">rails.output.streaming</span></code>.</p>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
@@ -682,18 +682,17 @@
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stream_first</span></code></p></td>
 <td><p>bool</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, tokens are yielded to the client before output rails run on the chunk</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the client receives tokens before output rails run on the chunk</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
 <hr class="docutils" />
-<section id="parameter-details">
-<h2>Parameter Details<a class="headerlink" href="#parameter-details" title="Link to this heading">#</a></h2>
+<section id="tips-for-setting-parameters">
+<h3>Tips for Setting Parameters<a class="headerlink" href="#tips-for-setting-parameters" title="Link to this heading">#</a></h3>
 <section id="enabled">
-<h3>enabled<a class="headerlink" href="#enabled" title="Link to this heading">#</a></h3>
-<p>When output rails are configured and you want to use <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code>, this must be set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<h4>enabled<a class="headerlink" href="#enabled" title="Link to this heading">#</a></h4>
+<p>When you configure output rails and want to use <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code>, set this to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <p>If not enabled, you receive an error:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>stream_async() cannot be used when output rails are configured but
 rails.output.streaming.enabled is False. Either set
@@ -703,8 +702,8 @@ generate_async() instead of stream_async().
 </div>
 </section>
 <section id="chunk-size">
-<h3>chunk_size<a class="headerlink" href="#chunk-size" title="Link to this heading">#</a></h3>
-<p>The number of tokens buffered before output rails are applied.</p>
+<h4>chunk_size<a class="headerlink" href="#chunk-size" title="Link to this heading">#</a></h4>
+<p>The number of tokens buffered before output rails run.</p>
 <ul class="simple">
 <li><p><strong>Larger values</strong>: Fewer rail executions, but higher latency to first output</p></li>
 <li><p><strong>Smaller values</strong>: More rail executions, but faster time-to-first-token</p></li>
@@ -712,18 +711,19 @@ generate_async() instead of stream_async().
 <p><strong>Default:</strong> <code class="docutils literal notranslate"><span class="pre">200</span></code> tokens</p>
 </section>
 <section id="context-size">
-<h3>context_size<a class="headerlink" href="#context-size" title="Link to this heading">#</a></h3>
+<h4>context_size<a class="headerlink" href="#context-size" title="Link to this heading">#</a></h4>
 <p>The number of tokens from the previous chunk carried over to provide context for the next chunk.</p>
 <p>This helps output rails make consistent decisions across chunk boundaries. For example, if a sentence spans two chunks, the context ensures the rail can evaluate the complete sentence.</p>
 <p><strong>Default:</strong> <code class="docutils literal notranslate"><span class="pre">50</span></code> tokens</p>
 </section>
 <section id="stream-first">
-<h3>stream_first<a class="headerlink" href="#stream-first" title="Link to this heading">#</a></h3>
+<h4>stream_first<a class="headerlink" href="#stream-first" title="Link to this heading">#</a></h4>
 <p>Controls when tokens are streamed relative to output rail processing:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> (default): Each chunk of tokens is yielded to the client <strong>before</strong> output rails run on that chunk. Provides faster time-to-first-token, but if a rail blocks the content, the user has already received the tokens. The stream terminates with a JSON error on violation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: Output rails run on each chunk <strong>before</strong> tokens are yielded. The user never sees blocked content, but time-to-first-token increases by the rail execution time per chunk.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> (default): The client receives each chunk of tokens before output rails process that chunk. This provides faster time-to-first-token, but if a rail blocks the content, the user has already received the tokens. The stream terminates with a JSON error on violation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: Output rails process each chunk before the client receives tokens. The user never sees blocked content, but time-to-first-token increases by the rail execution time per chunk.</p></li>
 </ul>
+</section>
 </section>
 </section>
 <hr class="docutils" />
@@ -793,7 +793,7 @@ generate_async() instead of stream_async().
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>With <code class="docutils literal notranslate"><span class="pre">stream_first:</span> <span class="pre">True</span></code>, tokens are streamed to the client <strong>before</strong> output rails run. If a rail blocks the content, the user will have already received the tokens up to that point. The stream terminates with a JSON error object when a violation is detected.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">stream_first:</span> <span class="pre">True</span></code>, the client receives tokens before output rails run. If a rail blocks the content, the user has already received the tokens up to that point. The stream terminates with a JSON error object when it detects a violation.</p>
 </div>
 </section>
 <section id="safety-first-configuration">
@@ -816,14 +816,14 @@ generate_async() instead of stream_async().
 <section id="how-it-works">
 <h2>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p><strong>Token Buffering</strong>: Tokens from the LLM are buffered until <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> tokens have accumulated.</p></li>
+<li><p><strong>Token Buffering</strong>: The system buffers tokens from the LLM until <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> tokens accumulate.</p></li>
 <li><p><strong>Streaming or Rail Execution</strong> (depends on <code class="docutils literal notranslate"><span class="pre">stream_first</span></code>):</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">stream_first:</span> <span class="pre">True</span></code> (default): The new tokens are yielded to the client immediately, <strong>then</strong> output rails run on the chunk (including context). If rails block, the stream terminates with a JSON error — but the user already received the tokens.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">stream_first:</span> <span class="pre">False</span></code>: Output rails run on the chunk first. Only if rails pass are the new tokens yielded to the client.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stream_first:</span> <span class="pre">True</span></code> (default): The client receives the new tokens immediately, then output rails run on the chunk (including context). If the rails block the content, the stream terminates with a JSON error, while the client receives the tokens up to that point.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stream_first:</span> <span class="pre">False</span></code>: Output rails run on the chunk first. The client receives the new tokens only if rails pass. If the rails block the content, the client never receives the tokens.</p></li>
 </ul>
 </li>
-<li><p><strong>Context Overlap</strong>: The last <code class="docutils literal notranslate"><span class="pre">context_size</span></code> tokens from the current chunk are retained and prepended to the next chunk’s processing context. This gives rails visibility across chunk boundaries.</p></li>
+<li><p><strong>Context Overlap</strong>: The system retains the last <code class="docutils literal notranslate"><span class="pre">context_size</span></code> tokens from the current chunk and prepends them to the next chunk’s processing context. This gives rails visibility across chunk boundaries.</p></li>
 <li><p><strong>Blocking</strong>: If any rail blocks the content, the stream yields a JSON error object (<code class="docutils literal notranslate"><span class="pre">{&quot;error&quot;:</span> <span class="pre">{...}}</span></code>) and terminates immediately.</p></li>
 </ol>
 <section id="stream-first-true-default">
@@ -852,7 +852,7 @@ generate_async() instead of stream_async().
 </section>
 <section id="buffer-overlap">
 <h3>Buffer Overlap<a class="headerlink" href="#buffer-overlap" title="Link to this heading">#</a></h3>
-<p>Only new tokens are streamed to the user. The <code class="docutils literal notranslate"><span class="pre">context_size</span></code> tokens are used solely for rail processing context:</p>
+<p>The client receives only new tokens. Output rails use the <code class="docutils literal notranslate"><span class="pre">context_size</span></code> tokens solely for processing context:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Chunk 1: rails process [token1 ... token200]
          user receives  [token1 ... token200]
 
@@ -939,12 +939,14 @@ Chunk 2: rails process [token151 ... token200, token201 ... token400]
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-details">Parameter Details</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabled">enabled</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-size">chunk_size</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-size">context_size</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stream-first">stream_first</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-setting-parameters">Tips for Setting Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enabled">enabled</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-size">chunk_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#context-size">context_size</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stream-first">stream_first</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a></li>

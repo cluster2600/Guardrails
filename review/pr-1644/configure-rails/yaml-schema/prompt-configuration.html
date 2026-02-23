@@ -658,7 +658,7 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 </section>
 <section id="content-based-prompts">
 <h2>Content-Based Prompts<a class="headerlink" href="#content-based-prompts" title="Link to this heading">#</a></h2>
-<p>Simple prompts using the <code class="docutils literal notranslate"><span class="pre">content</span></code> attribute with Jinja2 templating:</p>
+<p>The following example shows a simple prompt that uses the <code class="docutils literal notranslate"><span class="pre">content</span></code> attribute with Jinja2 templating:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_input</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -727,47 +727,47 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">task</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
 <td><p>(required)</p></td>
-<td><p>The task ID this prompt is associated with</p></td>
+<td><p>The task ID for the prompt to associate with.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">content</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
 <td><p>—</p></td>
-<td><p>The prompt content string (mutually exclusive with <code class="docutils literal notranslate"><span class="pre">messages</span></code>)</p></td>
+<td><p>The prompt content string. Mutually exclusive with <code class="docutils literal notranslate"><span class="pre">messages</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">messages</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">list</span></code></p></td>
 <td><p>—</p></td>
-<td><p>List of chat messages (mutually exclusive with <code class="docutils literal notranslate"><span class="pre">content</span></code>)</p></td>
+<td><p>List of chat messages. Mutually exclusive with <code class="docutils literal notranslate"><span class="pre">content</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">models</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">list[str]</span></code></p></td>
 <td><p>—</p></td>
-<td><p>Restrict prompt to specific engines/models (format: <code class="docutils literal notranslate"><span class="pre">engine</span></code> or <code class="docutils literal notranslate"><span class="pre">engine/model</span></code>)</p></td>
+<td><p>Restricts the prompt to specific engines or models (format: <code class="docutils literal notranslate"><span class="pre">engine</span></code> or <code class="docutils literal notranslate"><span class="pre">engine/model</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">output_parser</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
 <td><p>—</p></td>
-<td><p>Name of the output parser to use</p></td>
+<td><p>Name of the output parser to use for the prompt.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_length</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">16000</span></code></p></td>
-<td><p>Maximum prompt length in characters</p></td>
+<td><p>Maximum prompt length in characters.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mode</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;standard&quot;</span></code></p></td>
-<td><p>Prompting mode this prompt applies to</p></td>
+<td><p>Prompting mode this prompt applies to.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stop</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">list[str]</span></code></p></td>
 <td><p>—</p></td>
-<td><p>Stop tokens for models that support them</p></td>
+<td><p>Stop tokens for models that support them.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
 <td><p>—</p></td>
-<td><p>Maximum number of tokens for the completion</p></td>
+<td><p>Maximum number of tokens for the completion.</p></td>
 </tr>
 </tbody>
 </table>
