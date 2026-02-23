@@ -667,7 +667,7 @@
 </section>
 <section id="output-moderation">
 <h2>Output Moderation<a class="headerlink" href="#output-moderation" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails comes with a built-in <a class="reference internal" href="#../../user-guides/guardrails-library.md#output-checking"><span class="xref myst">output self-checking rail</span></a>. This rail uses a separate LLM call to make sure that the bot’s response should be allowed.</p>
+<p>NeMo Guardrails comes with a built-in <a class="reference internal" href="../../../../guardrail-catalog.html#self-check-output"><span class="std std-ref">output self-checking rail</span></a>. This rail uses a separate LLM call to make sure that the bot’s response should be allowed.</p>
 <p>Activating the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> rail is similar to the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">input</span></code> rail:</p>
 <ol class="arabic simple">
 <li><p>Activate the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> rail in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p></li>
@@ -804,13 +804,11 @@ You can enable streaming to provide asynchronous responses and reduce the time t
 </span><span class="hll"><span class="w">       </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </span><span class="hll"><span class="w">       </span><span class="nt">chunk_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
 </span><span class="w">       </span><span class="nt">context_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
-<span class="hll">
-</span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </pre></div>
 </div>
 </li>
 </ol>
-<p>The <code class="docutils literal notranslate"><span class="pre">enabled:</span> <span class="pre">True</span></code> field is required to enable streaming output rails while the <code class="docutils literal notranslate"><span class="pre">streaming:</span> <span class="pre">True</span></code> field is needed to enable streaming generation.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">enabled:</span> <span class="pre">True</span></code> field is required to enable streaming output rails.</p>
 <ol class="arabic">
 <li><p>Call the <code class="docutils literal notranslate"><span class="pre">stream_async</span></code> method and handle the chunked response:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span><span class="p">,</span> <span class="n">LLMRails</span>
@@ -837,7 +835,7 @@ You can enable streaming to provide asynchronous responses and reduce the time t
 </li>
 </ol>
 <p>For reference information about the related <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file fields,
-refer to <a class="reference internal" href="#../../user-guides/configuration-guide.md#output-rails"><code class="xref myst docutils literal notranslate"><span class="pre">../../user-guides/configuration-guide.md#output-rails</span></code></a>.</p>
+refer to the <a class="reference internal" href="../../../../configuration-reference.html#output-rails"><span class="std std-ref">Configuration Reference</span></a>.</p>
 </section>
 <section id="custom-output-rail">
 <h2>Custom Output Rail<a class="headerlink" href="#custom-output-rail" title="Link to this heading">#</a></h2>

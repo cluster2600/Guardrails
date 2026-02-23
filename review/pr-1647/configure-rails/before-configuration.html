@@ -640,7 +640,7 @@ This page covers the prerequisites and decisions to make before you begin workin
 <p>Use the following checklist to ensure that you have all the necessary components ready before you begin configuring guardrails.</p>
 <ul class="simple">
 <li><p>[ ] (Required) Main LLM endpoint and credentials ready. Refer to <a class="reference internal" href="#hosted-llm-for-the-main-llm"><span class="std std-ref">Hosted LLM for the Main LLM</span></a> for more details.</p></li>
-<li><p>[ ] (Recommended) NemoGuard NIM endpoints deployed. Refer to <a class="reference internal" href="#nemoguard-nim-microservices"><span class="std std-ref">NemoGuard NIM Microservices</span></a> for more details.</p></li>
+<li><p>[ ] (Recommended) NemoGuard NIM endpoints deployed. Refer to <a class="reference internal" href="#supported-nemoguard-nim-microservices"><span class="std std-ref">NVIDIA NemoGuard NIM Microservices</span></a> for more details.</p></li>
 <li><p>[ ] (Optional) Knowledge base documents prepared. Refer to <a class="reference internal" href="#knowledge-base-documents"><span class="std std-ref">Knowledge Base Documents</span></a> for more details.</p></li>
 <li><p>[ ] (Optional) Custom action requirements identified. Refer to <a class="reference internal" href="#advanced-components"><span class="std std-ref">Advanced Components</span></a> for more details.</p></li>
 </ul>
@@ -693,14 +693,14 @@ This page covers the prerequisites and decisions to make before you begin workin
 <li><p>[ ] LLM API endpoint URL, either locally, on NVIDIA API Catalog, or on the third-party providers</p></li>
 <li><p>[ ] Authentication credentials (API key or token)</p></li>
 </ul>
-</section>
 <hr class="docutils" />
-<section id="nemoguard-nim-microservices">
-<h2>NemoGuard NIM Microservices<a class="headerlink" href="#nemoguard-nim-microservices" title="Link to this heading">#</a></h2>
+</section>
+<section id="nvidia-nemoguard-nim-microservices">
+<span id="supported-nemoguard-nim-microservices"></span><h2>NVIDIA NemoGuard NIM Microservices<a class="headerlink" href="#nvidia-nemoguard-nim-microservices" title="Link to this heading">#</a></h2>
 <p>Deploy dedicated safety models to offload guardrail checks from the main LLM:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>NemoGuard Model</p></th>
+<tr class="row-odd"><th class="head"><p>NVIDIA NemoGuard Model</p></th>
 <th class="head"><p>Purpose</p></th>
 </tr>
 </thead>
@@ -823,7 +823,7 @@ This page covers the prerequisites and decisions to make before you begin workin
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checklist-summary">Checklist Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hosted-llm-for-the-main-llm">Hosted LLM for the Main LLM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nemoguard-nim-microservices">NemoGuard NIM Microservices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-nemoguard-nim-microservices">NVIDIA NemoGuard NIM Microservices</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-base-documents">Knowledge Base Documents</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-components">Advanced Components</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
