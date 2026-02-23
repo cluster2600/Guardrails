@@ -668,12 +668,9 @@
 <p>If output rails are configured but <code class="docutils literal notranslate"><span class="pre">rails.output.streaming.enabled</span></code> is not set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, calling <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> will raise an <code class="docutils literal notranslate"><span class="pre">StreamingNotSupportedError</span></code>.</p>
 </section>
 <hr class="docutils" />
-<section id="streaming-with-handler-deprecated">
-<h2>Streaming With Handler (Deprecated)<a class="headerlink" href="#streaming-with-handler-deprecated" title="Link to this heading">#</a></h2>
-<blockquote>
-<div><p><strong>Warning:</strong> Using <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code> directly is deprecated and will be removed in a future release. Use <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> instead.</p>
-</div></blockquote>
-<p>For advanced use cases requiring more control over token processing, you can use a <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code> with <code class="docutils literal notranslate"><span class="pre">generate_async()</span></code>:</p>
+<section id="streaming-with-handler">
+<h2>Streaming With Handler<a class="headerlink" href="#streaming-with-handler" title="Link to this heading">#</a></h2>
+<p>For advanced use cases requiring more control over token processing, you can use a <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code> with <code class="docutils literal notranslate"><span class="pre">generate_async()</span></code>. The preferred approach for most use cases is <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code>, but <code class="docutils literal notranslate"><span class="pre">StreamingHandler</span></code> remains supported:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span><span class="p">,</span> <span class="n">RailsConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.streaming</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamingHandler</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
@@ -817,7 +814,7 @@
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-output-rails">Streaming With Output Rails</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-handler-deprecated">Streaming With Handler (Deprecated)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-with-handler">Streaming With Handler</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-api">Server API</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-usage">CLI Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-metadata">Streaming Metadata</a></li>

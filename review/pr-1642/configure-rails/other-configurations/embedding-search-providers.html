@@ -635,7 +635,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="embedding-search-providers">
 <h1>Embedding Search Providers<a class="headerlink" href="#embedding-search-providers" title="Link to this heading">#</a></h1>
-<p>NeMo Guardrails utilizes embedding search, also known as vector databases, for implementing the <a class="reference internal" href="#../../architecture/README.md#the-guardrails-process"><span class="xref myst">guardrails process</span></a> and for the <a class="reference internal" href="#../configuration-guide.md#knowledge-base-documents"><span class="xref myst">knowledge base</span></a> functionality.</p>
+<p>NeMo Guardrails utilizes embedding search, also known as vector databases, for implementing the <a class="reference internal" href="../../reference/colang-architecture-guide.html#the-guardrails-process"><span class="std std-ref">guardrails process</span></a> and for the <a class="reference internal" href="knowledge-base.html"><span class="std std-doc">knowledge base</span></a> functionality.</p>
 <p>To enhance the efficiency of the embedding search process, NeMo Guardrails can employ a caching mechanism for embeddings. This mechanism stores computed embeddings, thereby reducing the need for repeated computations and accelerating the search process. By default, the caching mechanism is disabled.</p>
 <p>The default embedding search uses FastEmbed for computing the embeddings (the <code class="docutils literal notranslate"><span class="pre">all-MiniLM-L6-v2</span></code> model) and Annoy for performing the search. The default configuration is as follows:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">core</span><span class="p">:</span>
@@ -677,7 +677,7 @@
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">embedding_engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">      </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text-embedding-ada-002</span>
+<span class="w">      </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text-embedding-3-small</span>
 <span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 <span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256</span>
@@ -689,7 +689,7 @@
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 <span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">embedding_engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">      </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text-embedding-ada-002</span>
+<span class="w">      </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text-embedding-3-small</span>
 <span class="w">    </span><span class="nt">cache</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 <span class="w">      </span><span class="nt">key_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256</span>
@@ -735,7 +735,7 @@ The default <code class="docutils literal notranslate"><span class="pre">cache</
 <span class="sd">        This is optional, might not be needed for all implementations.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_results</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">IndexItem</span><span class="p">]:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_results</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">IndexItem</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Searches the index for the closest matches to the provided text.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 

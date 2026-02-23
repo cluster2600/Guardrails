@@ -695,43 +695,16 @@ To understand better what is happening under the hood, here’s how the <code cl
 <hr class="docutils" />
 <section id="exception-types">
 <h2>Exception Types<a class="headerlink" href="#exception-types" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails supports several predefined exception types:</p>
-<section id="inputrailexception">
-<h3>InputRailException<a class="headerlink" href="#inputrailexception" title="Link to this heading">#</a></h3>
-<p>Raised when input rails block or reject user input.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow custom input check
-  if $user_message contains &quot;forbidden_word&quot;
-    create event InputRailException(message=&quot;Input contains forbidden content.&quot;)
-</pre></div>
-</div>
-</section>
-<section id="outputrailexception">
-<h3>OutputRailException<a class="headerlink" href="#outputrailexception" title="Link to this heading">#</a></h3>
-<p>Raised when output rails block or reject bot responses.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow custom output check
-  if $bot_message contains &quot;sensitive_info&quot;
-    create event OutputRailException(message=&quot;Output contains sensitive information.&quot;)
-</pre></div>
-</div>
-</section>
-<section id="dialograilexception">
-<h3>DialogRailException<a class="headerlink" href="#dialograilexception" title="Link to this heading">#</a></h3>
-<p>Raised when dialog rails encounter issues during conversation flow.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow topic restriction
-  if $user_intent == &quot;ask_about_restricted_topic&quot;
-    create event DialogRailException(message=&quot;This topic is not allowed in the current context.&quot;)
-</pre></div>
-</div>
-</section>
-<section id="retrievalrailexception">
-<h3>RetrievalRailException<a class="headerlink" href="#retrievalrailexception" title="Link to this heading">#</a></h3>
-<p>Raised when retrieval rails encounter issues with document retrieval.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow retrieval validation
-  if len($relevant_chunks) == 0
-    create event RetrievalRailException(message=&quot;No relevant information found for the query.&quot;)
-</pre></div>
-</div>
-</section>
+<p>The NeMo Guardrails library includes additional exception types for specific integrations:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LlamaGuardInputRailException</span></code> / <code class="docutils literal notranslate"><span class="pre">LlamaGuardOutputRailException</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JailbreakDetectionRailException</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ContentSafetyCheckInputException</span></code> / <code class="docutils literal notranslate"><span class="pre">ContentSafetyCheckOutputException</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FactCheckRailException</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SelfCheckHallucinationRailException</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">InjectionDetectionRailException</span></code></p></li>
+</ul>
+<p>Each library rail raises its own exception type when <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> is enabled.</p>
 </section>
 <hr class="docutils" />
 <section id="custom-exception-handling">
@@ -815,18 +788,6 @@ To understand better what is happening under the hood, here’s how the <code cl
 <li><p><strong>Configuration Control</strong>: Use the <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> setting to control whether rails return exceptions or predefined messages.</p></li>
 </ol>
 </section>
-<hr class="docutils" />
-<section id="integration-with-tracing">
-<h2>Integration with Tracing<a class="headerlink" href="#integration-with-tracing" title="Link to this heading">#</a></h2>
-<p>Exceptions are automatically captured by the tracing system when enabled. This allows you to:</p>
-<ul class="simple">
-<li><p>Monitor exception frequency and types</p></li>
-<li><p>Track which rails are triggering exceptions</p></li>
-<li><p>Analyze patterns in user inputs that cause exceptions</p></li>
-<li><p>Debug and improve rail configurations</p></li>
-</ul>
-<p>For more information on tracing, see the <a class="reference internal" href="#tracing-configuration.md"><span class="xref myst">Tracing Configuration</span></a> guide.</p>
-</section>
 </section>
 
 
@@ -879,13 +840,7 @@ To understand better what is happening under the hood, here’s how the <code cl
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardrails-library-exception">Guardrails Library Exception</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exception-types">Exception Types</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inputrailexception">InputRailException</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outputrailexception">OutputRailException</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dialograilexception">DialogRailException</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrievalrailexception">RetrievalRailException</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exception-types">Exception Types</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-exception-handling">Custom Exception Handling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exception-response-format">Exception Response Format</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#field-descriptions">Field Descriptions</a></li>
@@ -893,7 +848,6 @@ To understand better what is happening under the hood, here’s how the <code cl
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-exceptions-in-applications">Handling Exceptions in Applications</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-with-tracing">Integration with Tracing</a></li>
 </ul>
   </nav></div>
 

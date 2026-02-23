@@ -1049,7 +1049,7 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">input</span></code></p></td>
 <td><p>LLM-based policy compliance check</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">check</span> <span class="pre">jailbreak</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">jailbreak</span> <span class="pre">detection</span> <span class="pre">heuristics</span></code></p></td>
 <td><p>Jailbreak detection heuristics</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">jailbreak</span> <span class="pre">detection</span> <span class="pre">model</span></code></p></td>
@@ -1179,6 +1179,9 @@
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">content</span> <span class="pre">safety</span> <span class="pre">check</span> <span class="pre">output</span></code></p></td>
 <td><p>NVIDIA content safety model</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">injection</span> <span class="pre">detection</span></code></p></td>
+<td><p>Injection detection (SQL, XSS, code, template)</p></td>
 </tr>
 </tbody>
 </table>
@@ -1792,8 +1795,14 @@
 <section id="sample-conversation">
 <h3>Sample Conversation<a class="headerlink" href="#sample-conversation" title="Link to this heading">#</a></h3>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sample_conversation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">  </span><span class="no">user: Hello</span>
-<span class="w">  </span><span class="no">assistant: Hi! How can I help you?</span>
+<span class="w">  </span><span class="no">user &quot;Hello there!&quot;</span>
+<span class="w">    </span><span class="no">express greeting</span>
+<span class="w">  </span><span class="no">bot express greeting</span>
+<span class="w">    </span><span class="no">&quot;Hello! How can I assist you today?&quot;</span>
+<span class="w">  </span><span class="no">user &quot;What can you do for me?&quot;</span>
+<span class="w">    </span><span class="no">ask about capabilities</span>
+<span class="w">  </span><span class="no">bot respond about capabilities</span>
+<span class="w">    </span><span class="no">&quot;As an AI assistant, I can help you with a wide range of tasks.&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -1831,12 +1840,10 @@
 </section>
 <section id="streaming">
 <h3>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h3>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">stream_on_start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">stream_on_end</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">first_chunk_suffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">last_chunk_suffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.20.0: </span>The top-level <code class="docutils literal notranslate"><span class="pre">streaming</span></code> field is a boolean that is no longer required. Use the <code class="docutils literal notranslate"><span class="pre">stream_async()</span></code> method directly instead. For output rail streaming configuration, see <a class="reference internal" href="#output-streaming-configuration">Output Streaming Configuration</a>.</p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">streaming</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
 </section>
