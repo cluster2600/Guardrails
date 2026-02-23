@@ -649,7 +649,7 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code></p></td>
 <td><p>Generate the canonical form for the user utterance</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generate_next_step</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generate_next_steps</span></code></p></td>
 <td><p>Generate the next step in the conversation flow</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code></p></td>
@@ -670,8 +670,8 @@
 </pre></div>
 </div>
 </section>
-<section id="generate-next-step">
-<h3>generate_next_step<a class="headerlink" href="#generate-next-step" title="Link to this heading">#</a></h3>
+<section id="generate-next-steps">
+<h3>generate_next_steps<a class="headerlink" href="#generate-next-steps" title="Link to this heading">#</a></h3>
 <p>Determines what the bot should do next:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Automatically called to decide next action
 # Output: bot express greeting, execute some_action, etc.
@@ -784,7 +784,11 @@ define flow self check output
 </section>
 <section id="langchain-tool-wrappers">
 <h2>LangChain Tool Wrappers<a class="headerlink" href="#langchain-tool-wrappers" title="Link to this heading">#</a></h2>
-<p>The library includes wrappers for popular LangChain tools:</p>
+<p>The library includes wrappers for popular LangChain tools.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These tool wrappers are only available when the <code class="docutils literal notranslate"><span class="pre">NEMO_GUARDRAILS_DEMO_ACTIONS</span></code> environment variable is set.</p>
+</div>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Action</p></th>
@@ -825,7 +829,7 @@ define flow self check output
 <td><p>Wikipedia information</p></td>
 <td><p>None</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wolfram_alpha_query</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wolframalpha_query</span></code></p></td>
 <td><p>Math and science queries</p></td>
 <td><p>Wolfram Alpha API key</p></td>
 </tr>
@@ -918,8 +922,11 @@ define flow self check output
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">llama_guard_check_output</span></code></p></td>
 <td><p>LlamaGuard output moderation</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">content_safety_check</span></code></p></td>
-<td><p>NVIDIA content safety model</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">content_safety_check_input</span></code></p></td>
+<td><p>NVIDIA content safety model for input (requires <code class="docutils literal notranslate"><span class="pre">model_name</span></code> parameter)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">content_safety_check_output</span></code></p></td>
+<td><p>NVIDIA content safety model for output (requires <code class="docutils literal notranslate"><span class="pre">model_name</span></code> parameter)</p></td>
 </tr>
 </tbody>
 </table>
@@ -947,8 +954,11 @@ define flow self check output
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_jailbreak</span></code></p></td>
-<td><p>Detect jailbreak attempts</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">jailbreak_detection_model</span></code></p></td>
+<td><p>Detect jailbreak attempts using a trained classifier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">jailbreak_detection_heuristics</span></code></p></td>
+<td><p>Detect jailbreak attempts using heuristic checks</p></td>
 </tr>
 </tbody>
 </table>
@@ -957,7 +967,7 @@ define flow self check output
 <span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check jailbreak</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak detection heuristics</span>
 </pre></div>
 </div>
 </section>
@@ -965,8 +975,7 @@ define flow self check output
 <h2>Using Built-in Actions in Custom Flows<a class="headerlink" href="#using-built-in-actions-in-custom-flows" title="Link to this heading">#</a></h2>
 <p>You can combine built-in actions with custom logic:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow enhanced_input_check
-  # First, check for jailbreak
-  $is_jailbreak = execute check_jailbreak
+  $is_jailbreak = execute jailbreak_detection_heuristics
   if $is_jailbreak
     bot refuse to respond
     stop
@@ -1046,7 +1055,7 @@ define flow self check output
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-actions">Core Actions</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-user-intent">generate_user_intent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-next-step">generate_next_step</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-next-steps">generate_next_steps</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-bot-message">generate_bot_message</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieve-relevant-chunks">retrieve_relevant_chunks</a></li>
 </ul>

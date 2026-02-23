@@ -650,20 +650,25 @@
 </tr>
 <tr class="row-odd"><td><p><strong>Colang Flows</strong></p></td>
 <td><p>Optional</p></td>
-<td><p>A collection of Colang files (<code class="docutils literal notranslate"><span class="pre">.co</span></code> files) implementing the rails.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">rails</span></code> folder</p></td>
+<td><p>A collection of Colang files (<code class="docutils literal notranslate"><span class="pre">.co</span></code> files) implementing the rails. Files are loaded recursively from anywhere in the config directory.</p></td>
+<td><p>Config root, <code class="docutils literal notranslate"><span class="pre">rails/</span></code> folder, or any subfolder</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Custom Actions</strong></p></td>
+<tr class="row-even"><td><p><strong>Custom Prompts</strong></p></td>
+<td><p>Optional</p></td>
+<td><p>YAML file with custom prompts for guardrails tasks. Prompts can also be defined directly in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Custom Actions</strong></p></td>
 <td><p>Optional</p></td>
 <td><p>Python functions decorated with <code class="docutils literal notranslate"><span class="pre">&#64;action()</span></code> that can be called from Colang flows during request processing (for example, external API calls, validation logic).</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">actions.py</span></code> or <code class="docutils literal notranslate"><span class="pre">actions/</span></code> folder</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Custom Initialization</strong></p></td>
+<tr class="row-even"><td><p><strong>Custom Initialization</strong></p></td>
 <td><p>Optional</p></td>
 <td><p>Python code that runs once at startup to register custom LLM providers, embedding providers, or shared resources (for example, database connections).</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">config.py</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Knowledge Base Documents</strong></p></td>
+<tr class="row-odd"><td><p><strong>Knowledge Base Documents</strong></p></td>
 <td><p>Optional</p></td>
 <td><p>Documents (<code class="docutils literal notranslate"><span class="pre">.md</span></code> files) that can be used in a RAG (Retrieval-Augmented Generation) scenario (i.e. Retrieval rail) using the built-in Knowledge Base support.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">kb</span></code> folder</p></td>
@@ -706,8 +711,9 @@
 <li><p>Complete configuration with all components</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>config/
 ├── config.yml          # Core configuration
+├── prompts.yml         # Custom prompts (optional, can also be in config.yml)
 ├── config.py           # Custom initialization (LLM providers, etc.)
-├── rails/              # Colang flow files
+├── rails/              # Colang flow files (can also be at config root)
 │   ├── input.co
 │   ├── output.co
 │   └── ...
