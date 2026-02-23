@@ -1022,7 +1022,7 @@
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo-instruct</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
 
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_safety</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -1039,7 +1039,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> is a unique idenfier for the model to be referred to in the input and output rails as a parameter.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> is a unique identifier for the model to be referred to in the input and output rails as a parameter.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1486,7 +1486,7 @@ Using the default value allows for detection of 49/50 GCG-style attacks with a 0
 <section id="setup">
 <h4>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h4>
 <p>The recommended way for using the jailbreak detection heuristics and models is to <a class="reference internal" href="../user-guides/jailbreak-detection-heuristics/README.html"><span class="std std-doc">deploy the jailbreak detection server</span></a> separately.</p>
-<p>For quick testing, you can use the jailbreak detection heuristics rail locally by first installing <code class="docutils literal notranslate"><span class="pre">transformers</span></code> and <code class="docutils literal notranslate"><span class="pre">tourch</span></code>.</p>
+<p>For quick testing, you can use the jailbreak detection heuristics rail locally by first installing <code class="docutils literal notranslate"><span class="pre">transformers</span></code> and <code class="docutils literal notranslate"><span class="pre">torch</span></code>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>transformers<span class="w"> </span>torch
 </pre></div>
 </div>
