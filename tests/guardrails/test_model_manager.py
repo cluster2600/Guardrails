@@ -84,25 +84,69 @@ class TestModelManagerLifecycle:
 
     @pytest.mark.asyncio
     async def test_start_calls_start_on_all_engines(self, manager):
-        """start() delegates to each engine's start()."""
+        """start() delegates to each engine's start() and sets _running."""
         for engine in manager._engines.values():
             engine.start = AsyncMock()
 
+        assert manager._running is False
         await manager.start()
+        assert manager._running is True
 
         for engine in manager._engines.values():
             engine.start.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_stop_calls_stop_on_all_engines(self, manager):
-        """stop() delegates to each engine's stop()."""
+        """stop() delegates to each engine's stop() and clears _running."""
         for engine in manager._engines.values():
+            engine.start = AsyncMock()
             engine.stop = AsyncMock()
 
+        await manager.start()
+        assert manager._running is True
         await manager.stop()
+        assert manager._running is False
 
         for engine in manager._engines.values():
             engine.stop.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_start_is_idempotent(self, manager):
+        """Calling start() twice only starts engines once."""
+        for engine in manager._engines.values():
+            engine.start = AsyncMock()
+
+        await manager.start()
+        await manager.start()  # second call is a no-op
+
+        for engine in manager._engines.values():
+            engine.start.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_stop_is_idempotent(self, manager):
+        """Calling stop() twice only stops engines once."""
+        for engine in manager._engines.values():
+            engine.start = AsyncMock()
+            engine.stop = AsyncMock()
+
+        await manager.start()
+        await manager.stop()
+        await manager.stop()  # second call is a no-op
+
+        for engine in manager._engines.values():
+            engine.stop.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_stop_without_start_is_noop(self, manager):
+        """stop() without a prior start() does not raise."""
+        for engine in manager._engines.values():
+            engine.stop = AsyncMock()
+
+        await manager.stop()  # should not raise
+        assert manager._running is False
+
+        for engine in manager._engines.values():
+            engine.stop.assert_not_called()
 
 
 class TestModelManagerGenerateAsync:
@@ -139,6 +183,129 @@ class TestModelManagerGenerateAsync:
         """Raises KeyError when the model type doesn't exist."""
         with pytest.raises(KeyError):
             await manager.generate_async("nonexistent", [{"role": "user", "content": "Hi"}])
+
+
+class TestModelManagerStartErrors:
+    """Test ModelManager start() error handling and rollback."""
+
+    @pytest.mark.asyncio
+    async def test_start_rolls_back_on_engine_failure(self, manager):
+        """When one engine fails to start, already-started engines are stopped."""
+        engines = list(manager._engines.values())
+
+        # First two engines start OK, third raises
+        engines[0].start = AsyncMock()
+        engines[0].stop = AsyncMock()
+        engines[1].start = AsyncMock()
+        engines[1].stop = AsyncMock()
+        engines[2].start = AsyncMock(side_effect=RuntimeError("Error starting model"))
+        engines[2].stop = AsyncMock()
+
+        with pytest.raises(RuntimeError, match="Failed to start model engines"):
+            await manager.start()
+
+        # Successfully-started engines should have been rolled back
+        engines[0].stop.assert_called_once()
+        engines[1].stop.assert_called_once()
+
+        # Manager should not be running
+        assert manager._running is False
+
+    @pytest.mark.asyncio
+    async def test_start_error_message_includes_engine_type(self, manager):
+        """Error message includes which engine types failed."""
+        engine = manager.get_engine("main")
+        engine.start = AsyncMock(side_effect=RuntimeError("connection refused"))
+
+        # Mock other engines to succeed
+        for engine_type, engine in manager._engines.items():
+            if engine_type != "main":
+                engine.start = AsyncMock()
+                engine.stop = AsyncMock()
+
+        with pytest.raises(RuntimeError, match="Engine type main"):
+            await manager.start()
+
+    @pytest.mark.asyncio
+    async def test_start_rollback_swallows_stop_errors(self, manager):
+        """Rollback continues even if stopping a started engine raises."""
+        engines = list(manager._engines.items())
+
+        # First engine starts OK but stop raises during rollback
+        engines[0][1].start = AsyncMock()
+        engines[0][1].stop = AsyncMock(side_effect=RuntimeError("stop failed"))
+
+        # Second engine starts OK
+        engines[1][1].start = AsyncMock()
+        engines[1][1].stop = AsyncMock()
+
+        # Third engine fails to start
+        engines[2][1].start = AsyncMock(side_effect=RuntimeError("start failed"))
+        engines[2][1].stop = AsyncMock()
+
+        with pytest.raises(RuntimeError, match="Failed to start model engines"):
+            await manager.start()
+
+        # Both started engines should have had stop() called (even if one raises)
+        engines[0][1].stop.assert_called_once()
+        engines[1][1].stop.assert_called_once()
+
+
+class TestModelManagerStopErrors:
+    """Test ModelManager stop() error handling."""
+
+    @pytest.mark.asyncio
+    async def test_stop_raises_on_engine_error(self, manager):
+        """stop() raises RuntimeError when an engine fails to stop."""
+        for engine in manager._engines.values():
+            engine.start = AsyncMock()
+
+        await manager.start()
+
+        # One engine fails to stop
+        engine = manager.get_engine("main")
+        engine.stop = AsyncMock(side_effect=RuntimeError("close failed"))
+        for engine_type, engine in manager._engines.items():
+            if engine_type != "main":
+                engine.stop = AsyncMock()
+
+        with pytest.raises(RuntimeError, match="Failed to stop model engines"):
+            await manager.stop()
+
+    @pytest.mark.asyncio
+    async def test_stop_error_includes_engine_type(self, manager):
+        """Error message includes which engine type failed to stop."""
+        for engine in manager._engines.values():
+            engine.start = AsyncMock()
+
+        await manager.start()
+
+        engine = manager.get_engine("content_safety")
+        engine.stop = AsyncMock(side_effect=RuntimeError("timeout"))
+        for engine_type, engine in manager._engines.items():
+            if engine_type != "content_safety":
+                engine.stop = AsyncMock()
+
+        with pytest.raises(RuntimeError, match="Engine type content_safety"):
+            await manager.stop()
+
+    @pytest.mark.asyncio
+    async def test_stop_attempts_all_engines_even_on_errors(self, manager):
+        """stop() tries to stop all engines, not just the first one that fails."""
+        for engine in manager._engines.values():
+            engine.start = AsyncMock()
+
+        await manager.start()
+
+        for engine in manager._engines.values():
+            engine.stop = AsyncMock(side_effect=RuntimeError("fail"))
+
+        with pytest.raises(RuntimeError):
+            await manager.stop()
+
+        # All engines should have had stop() called
+        for engine in manager._engines.values():
+            engine.stop.assert_called_once()
 
 
 class TestModelManagerContextManager:

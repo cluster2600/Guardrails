@@ -23,7 +23,6 @@ Retries are handled by aiohttp-retry (ExponentialRetry).
 import logging
 import os
 from typing import Any, Optional, cast
-from urllib.parse import urljoin
 
 import aiohttp
 from aiohttp_retry import ExponentialRetry, RetryClient
@@ -83,20 +82,30 @@ class ModelEngine:
             exceptions={aiohttp.ClientConnectionError},
         )
         self._client: Optional[RetryClient] = None
+        self._running = False
 
     async def start(self) -> None:
-        """Create this engine's RetryClient."""
-        if self._client is None:
-            self._client = RetryClient(
-                retry_options=self._retry_options,
-                client_session=aiohttp.ClientSession(timeout=self._timeout),
-            )
+        """Create this engine's RetryClient. Call this during service startup."""
+        if self._running:
+            return
+
+        self._client = RetryClient(
+            retry_options=self._retry_options,
+            client_session=aiohttp.ClientSession(timeout=self._timeout),
+        )
+        self._running = True
 
     async def stop(self) -> None:
-        """Close this engine's RetryClient."""
-        if self._client:
-            await self._client.close()
-            self._client = None
+        """Close this engine's RetryClient. Call this during service shutdown."""
+        if not self._running:
+            return
+
+        try:
+            if self._client:
+                await self._client.close()
+                self._client = None
+        finally:
+            self._running = False
 
     def _resolve_base_url(self) -> str:
         """Resolve the base URL from model parameters or engine type."""
@@ -116,9 +125,7 @@ class ModelEngine:
     def _get_environment_variable(self, variable_name: str) -> str | None:
         """Return the value stored in environment variable `variable_name`."""
         env_value = os.environ.get(variable_name)
-        if env_value:
-            return env_value
-        return None
+        return env_value
 
     def _resolve_api_key(self, engine: str | None) -> Optional[str]:
         """Resolve the API key from model config or environment."""
@@ -159,17 +166,17 @@ class ModelEngine:
             The parsed JSON response dict from the API.
 
         Raises:
-            ModelEngineError: If the request fails after all retries or the client is not started.
+            ModelEngineError: If the request fails after all retries.
         """
 
         # Lazy-initialize client if `start()` hasn't yet been called.
-        if self._client is None:
+        if not self._running:
             await self.start()
 
         # Cast as RetryClient so type-checking knows it isn't None
         client = cast(RetryClient, self._client)
 
-        url = urljoin(self.base_url, _CHAT_COMPLETIONS_ENDPOINT)
+        url = self.base_url.rstrip("/") + _CHAT_COMPLETIONS_ENDPOINT
 
         headers: dict[str, str] = {"Content-Type": "application/json"}
         if self.api_key:
@@ -199,6 +206,15 @@ class ModelEngine:
                 f"Request to model '{self.model_name}' failed: {exc}",
                 model_name=self.model_name,
             ) from exc
+
+    async def __aenter__(self):
+        """Context manager (used for testing rather than long-lived instance)"""
+        await self.start()
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        """Context manager (used for testing rather than long-lived instance)"""
+        await self.stop()
 
 
 async def _safe_read_body(response: aiohttp.ClientResponse) -> str:

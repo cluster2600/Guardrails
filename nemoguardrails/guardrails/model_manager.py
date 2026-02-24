@@ -38,6 +38,7 @@ class ModelManager:
 
     def __init__(self, models: list[Model]) -> None:
         self._engines: dict[str, ModelEngine] = {}
+        self._running = False
 
         for model_config in models:
             self._engines[model_config.type] = ModelEngine(model_config)
@@ -49,14 +50,58 @@ class ModelManager:
             )
 
     async def start(self) -> None:
-        """Start all model engine clients."""
-        for engine in self._engines.values():
-            await engine.start()
+        """Start all model engine clients. Call this during service startup."""
+        if self._running:
+            return
+
+        started = []
+        engine_errors = {}
+        for engine_type, engine in self._engines.items():
+            try:
+                await engine.start()
+                started.append(engine)
+            except Exception as e:
+                engine_errors[engine_type] = e
+                log.error("Error starting model engine type %s: %s", engine_type, e)
+
+        if engine_errors:
+            # Roll back engines that started successfully to avoid leaked clients
+            for engine in started:
+                try:
+                    await engine.stop()
+                except Exception:
+                    pass
+            engine_error_string = ", ".join(
+                f"Engine type {engine_type}: exception {exception}" for engine_type, exception in engine_errors.items()
+            )
+            raise RuntimeError(f"Failed to start model engines: {engine_error_string}")
+
+        self._running = True
 
     async def stop(self) -> None:
-        """Stop all model engine clients."""
-        for engine in self._engines.values():
-            await engine.stop()
+        """Stop all model engine clients. Call this during service shutdown."""
+        if not self._running:
+            return
+
+        engine_errors = {}
+        try:
+            for engine_type, engine in self._engines.items():
+                try:
+                    await engine.stop()
+                except Exception as e:
+                    engine_errors[engine_type] = e
+                    log.error("Error stopping model engine type %s: %s", engine_type, e)
+        finally:
+            self._running = False
+
+        if engine_errors:
+            engine_error_string = ", ".join(
+                [
+                    f"Engine type {engine_type}: exception {exception}"
+                    for engine_type, exception in engine_errors.items()
+                ]
+            )
+            raise RuntimeError(f"Failed to stop model engines: {engine_error_string}")
 
     def get_engine(self, model_type: str) -> ModelEngine:
         """Look up a ModelEngine by its model type.
