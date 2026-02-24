@@ -738,6 +738,7 @@
 </section>
 <section id="retrieval-rails">
 <h3>Retrieval Rails<a class="headerlink" href="#retrieval-rails" title="Link to this heading">#</a></h3>
+<p>When a chunk matches any of the configured retrieval patterns, <strong>that chunk is removed</strong> from the retrieval results and is not passed to the model. Only chunks that do not match the patterns are kept and used as context.</p>
 <p>To detect regex patterns in retrieved knowledge base chunks:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span>
@@ -843,13 +844,18 @@
 </section>
 <section id="regex-rail-behavior">
 <h2>Regex Rail Behavior<a class="headerlink" href="#regex-rail-behavior" title="Link to this heading">#</a></h2>
-<p>When a regex rail has a regex pattern match, the following steps happen:</p>
+<p>When a regex rail has a regex pattern match, the following steps happen (depending on rails type):</p>
+<p><strong>Input and output rails</strong></p>
 <ol class="arabic simple">
 <li><p>The action returns a <code class="docutils literal notranslate"><span class="pre">RegexDetectionResult</span></code> with <code class="docutils literal notranslate"><span class="pre">is_match=True</span></code> and the matched pattern(s) in <code class="docutils literal notranslate"><span class="pre">detections</span></code>.</p></li>
-<li><p>The bot responds with: <code class="docutils literal notranslate"><span class="pre">&quot;I'm</span> <span class="pre">sorry,</span> <span class="pre">I</span> <span class="pre">can't</span> <span class="pre">respond</span> <span class="pre">to</span> <span class="pre">that.&quot;</span></code> (using the standard <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">refuse</span> <span class="pre">to</span> <span class="pre">respond</span></code> message, consistent with other rails).</p></li>
+<li><p>The bot responds with: <code class="docutils literal notranslate"><span class="pre">&quot;I'm</span> <span class="pre">sorry,</span> <span class="pre">I</span> <span class="pre">can't</span> <span class="pre">respond</span> <span class="pre">to</span> <span class="pre">that.&quot;</span></code> (using the standard <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">refuse</span> <span class="pre">to</span> <span class="pre">respond</span></code> message).</p></li>
 <li><p>The flow is aborted.</p></li>
 </ol>
-<p>The matched pattern(s) are available in <code class="docutils literal notranslate"><span class="pre">result[&quot;detections&quot;]</span></code> for logging and debugging. They are also logged at <code class="docutils literal notranslate"><span class="pre">INFO</span></code> level by the action.</p>
+<p><strong>Retrieval rails</strong></p>
+<ol class="arabic simple">
+<li><p>Chunks that match any retrieval pattern are <strong>removed</strong> from the retrieval results. Only non-matching chunks are passed to the model as context.</p></li>
+</ol>
+<p><strong>NOTE:</strong> The matched pattern(s) are available in <code class="docutils literal notranslate"><span class="pre">result[&quot;detections&quot;]</span></code> for logging and debugging. They are also logged at <code class="docutils literal notranslate"><span class="pre">INFO</span></code> level by the action.</p>
 </section>
 </section>
 
