@@ -124,17 +124,12 @@ class Guardrails:
     def generate(
         self, prompt: str | None = None, messages: LLMMessages | None = None, **kwargs
     ) -> Union[str, dict, GenerationResponse, Tuple[dict, dict]]:
-        """Generate an LLM response synchronously with guardrails applied."""
-
-        if isinstance(self.rails_engine, IORails):
-            raise NotImplementedError("IORails doesn't support generate()")
+        """Generate an LLM response synchronously with guardrails applied.
+        Supported in both IORails and LLMRails
+        """
 
         generate_messages = self._convert_to_messages(prompt, messages)
-
-        # self.rails_engine must be LLMRails since we raise above if we're using IORails
-        llmrails = cast(LLMRails, self.rails_engine)
-        response = llmrails.generate(messages=generate_messages, **kwargs)
-        return response
+        return self.rails_engine.generate(messages=generate_messages, **kwargs)
 
     @overload
     async def generate_async(self, prompt: str | None = None, messages: LLMMessages | None = None, **kwargs) -> str: ...
