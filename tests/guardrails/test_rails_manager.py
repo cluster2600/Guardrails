@@ -36,6 +36,7 @@ from tests.guardrails.test_data import (
     NEMOGUARDS_CONFIG,
     TOPIC_SAFETY_CONFIG,
     TOPIC_SAFETY_INPUT_PROMPT,
+    TOPIC_SAFETY_INPUT_PROMPT_WITH_RESTRICTION,
 )
 
 
@@ -558,7 +559,7 @@ def topic_safety_rails_config():
 
 @pytest.fixture
 def topic_safety_model_manager(topic_safety_rails_config):
-    return ModelManager(topic_safety_rails_config)
+    return ModelManager(topic_safety_rails_config.models)
 
 
 @pytest.fixture
@@ -749,3 +750,30 @@ class TestTopicSafetyE2E:
         )
         assert not result.is_safe
         assert "off-topic" in result.reason
+
+    @pytest.mark.asyncio
+    async def test_multiturn_includes_conversation_history(self, topic_safety_rails_manager):
+        """Multi-turn conversations must include prior turns so the topic-control
+        model has context for follow-up messages like 'tell me more'.
+
+        Matches the behavior of the library action in actions.py which does:
+            messages.extend(conversation_history)
+            messages.append({"type": "user", "content": user_input})
+        """
+        topic_safety_rails_manager.model_manager.generate_async = AsyncMock(return_value="on-topic")
+
+        multiturn_messages = [
+            {"role": "user", "content": "What is your return policy?"},
+            {"role": "assistant", "content": "You can return items within 30 days."},
+            {"role": "user", "content": "Tell me more about that"},
+        ]
+
+        flow = "topic safety check input $model=topic_control"
+        await topic_safety_rails_manager._check_topic_safety_input(flow, multiturn_messages)
+
+        topic_safety_call_args = topic_safety_rails_manager.model_manager.generate_async.call_args[0]
+        assert topic_safety_call_args[0] == "topic_control"
+        assert topic_safety_call_args[1] == [
+            {"role": "system", "content": TOPIC_SAFETY_INPUT_PROMPT_WITH_RESTRICTION},
+            *multiturn_messages,
+        ]

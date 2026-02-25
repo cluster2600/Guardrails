@@ -223,7 +223,7 @@ class TestGuardrailsInit:
 
         # Verify attributes are set correctly
         assert guardrails.config == _nemoguards_rails_config
-        assert not guardrails.verbose
+        assert guardrails.verbose is False
         assert guardrails.rails_engine == mock_llmrails_instance
 
     @patch("nemoguardrails.guardrails.guardrails.LLMRails")
@@ -238,7 +238,7 @@ class TestGuardrailsInit:
 
         # Verify attributes are set correctly
         assert guardrails.config == _nemoguards_rails_config
-        assert guardrails.verbose
+        assert guardrails.verbose is True
         assert guardrails.rails_engine == mock_llmrails_instance
 
 
@@ -805,7 +805,7 @@ class TestHasOnlyIORailsFlows:
             }
         )
         guardrails = Guardrails(config=config)
-        assert guardrails._has_only_iorails_flows()
+        assert guardrails._has_only_iorails_flows() is True
 
     @patch("nemoguardrails.guardrails.guardrails.LLMRails")
     def test_has_only_iorails_flows_unsupported_self_check_output_rails(self, mock_llmrails_class):
@@ -823,4 +823,4 @@ class TestHasOnlyIORailsFlows:
             extra_prompts=[{"task": "self_check_output", "content": "placeholder"}],
         )
         guardrails = Guardrails(config=config)
-        assert not guardrails._has_only_iorails_flows()
+        assert guardrails._has_only_iorails_flows() is False

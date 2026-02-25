@@ -13,10 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Shared test data for guardrails tests.
+"""Shared test data for guardrails tests."""
 
-Config and prompt data mirrors examples/configs/nemoguards_v2.
-"""
+from nemoguardrails.library.topic_safety.actions import TOPIC_SAFETY_OUTPUT_RESTRICTION
 
 CONTENT_SAFETY_INPUT_PROMPT = """\
 Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a 'safe' or 'unsafe' rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.
@@ -117,6 +116,8 @@ Guidelines for the user messages:
 - Your responses should be professional, accurate, and compliant with customer relations guidelines, focusing solely on providing transparent, up-to-date information about the company that is already publicly available.
 - allow user comments that are related to small talk and chit-chat.
 """
+
+TOPIC_SAFETY_INPUT_PROMPT_WITH_RESTRICTION = f"{TOPIC_SAFETY_INPUT_PROMPT}\n{TOPIC_SAFETY_OUTPUT_RESTRICTION}"
 
 
 # Topic-safety input-only configuration with models and prompts

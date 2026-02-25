@@ -164,10 +164,11 @@ class RailsManager:
         """Check topic safety via the topic_control model.
 
         Unlike content safety which sends a single rendered prompt, topic control
-        sends a system message (guidelines) plus the user message separately.
+        sends a system message (guidelines) plus the full conversation history.
+        This matches the library action behavior which includes all prior turns
+        so the model has context for follow-up messages.
         """
         model_type = self._flow_model_type(flow)
-        last_user_content = self._last_user_content(messages)
         prompt_key = self._flow_to_prompt_key(flow)
         system_prompt = self._render_topic_safety_prompt(prompt_key)
 
@@ -176,7 +177,7 @@ class RailsManager:
                 model_type,
                 [
                     {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": last_user_content},
+                    *messages,
                 ],
                 temperature=TOPIC_SAFETY_TEMPERATURE,
                 max_tokens=TOPIC_SAFETY_MAX_TOKENS,
