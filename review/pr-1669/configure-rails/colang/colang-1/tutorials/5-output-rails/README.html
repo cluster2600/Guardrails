@@ -396,18 +396,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">About Configuring Guardrails</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../before-configuration.html">Prerequisites</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../guardrail-catalog/index.html">Guardrail Catalog</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/content-safety.html">Content Safety</a></li>
-
-<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/jailbreak-protection.html">Jailbreak Protection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/topic-control.html">Topic Control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/pii-detection.html">PII Detection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/agentic-security.html">Agentic Security</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/fact-checking.html">Hallucinations &amp; Fact-Checking</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/self-check.html">LLM Self-Check</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/third-party.html">Third-Party APIs</a></li>
-</ul>
-</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../yaml-schema/index.html">Configuring YAML File</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../yaml-schema/model-configuration.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../yaml-schema/guardrails-configuration/index.html">Guardrails Configuration</a></li>
@@ -422,7 +410,18 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../configuration-reference.html">YAML Schema Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../guardrail-catalog/index.html">Guardrail Catalog</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/content-safety.html">Content Safety</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/jailbreak-protection.html">Jailbreak Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/topic-control.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/pii-detection.html">PII Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/agentic-security.html">Agentic Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/fact-checking.html">Hallucinations &amp; Fact-Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/self-check.html">LLM Self-Check</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/third-party.html">Third-Party APIs</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../actions/built-in-actions.html">Built-in Actions</a></li>
@@ -679,7 +678,7 @@
 </section>
 <section id="output-moderation">
 <h2>Output Moderation<a class="headerlink" href="#output-moderation" title="Link to this heading">#</a></h2>
-<p>NeMo Guardrails comes with a built-in <a class="reference internal" href="../../../../guardrail-catalog.html#self-check-output"><span class="std std-ref">output self-checking rail</span></a>. This rail uses a separate LLM call to make sure that the bot’s response should be allowed.</p>
+<p>NeMo Guardrails comes with a built-in <a class="reference internal" href="#../../../../guardrail-catalog.md#self-check-output"><span class="xref myst">output self-checking rail</span></a>. This rail uses a separate LLM call to make sure that the bot’s response should be allowed.</p>
 <p>Activating the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> rail is similar to the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">input</span></code> rail:</p>
 <ol class="arabic simple">
 <li><p>Activate the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">output</span></code> rail in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>.</p></li>
