@@ -658,18 +658,16 @@
 <section id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h3>
 <p>To use the self-check fact-checking rail, you should:</p>
-<ol class="arabic simple">
-<li><p>Include the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">facts</span></code> flow name in the output rails section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
-</ol>
+<ol class="arabic">
+<li><p>Include the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">facts</span></code> flow name in the output rails section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check facts</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>Define the <code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> prompt in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p></li>
-</ol>
+</li>
+<li><p>Define the <code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> prompt in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_facts</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
@@ -682,6 +680,8 @@
 <p class="admonition-title">Note</p>
 <p>If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div>
+</li>
+</ol>
 <p>The above is an example prompt that you can use with the <em>self check facts rail</em>. The <code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> prompt has two input variables: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">evidence</span> <span class="pre">}}</span></code>, which includes the relevant chunks, and <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">response</span> <span class="pre">}}</span></code>, which includes the bot response that should be fact-checked. The completion must be “yes” if the response is factually correct and “no” otherwise.</p>
 <p>The self-check fact-checking rail executes the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> action</a>, which returns a score between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (response is not accurate) and <code class="docutils literal notranslate"><span class="pre">1.0</span></code> (response is accurate). The reason a number is returned, instead of a boolean, is to keep a consistent API with other methods that return a score, e.g., the AlignScore method below.</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow self check facts
@@ -722,18 +722,16 @@
 <section id="id1">
 <h3>Usage<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <p>To use the hallucination rail, you should:</p>
-<ol class="arabic simple">
-<li><p>Include the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">hallucination</span></code> flow name in the output rails section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
-</ol>
+<ol class="arabic">
+<li><p>Include the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">hallucination</span></code> flow name in the output rails section of the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check hallucination</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>Define a <code class="docutils literal notranslate"><span class="pre">self_check_hallucination</span></code> prompt in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p></li>
-</ol>
+</li>
+<li><p>Define a <code class="docutils literal notranslate"><span class="pre">self_check_hallucination</span></code> prompt in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self_check_hallucination</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
@@ -746,6 +744,8 @@
 <p class="admonition-title">Note</p>
 <p>If a prompt is not defined, an exception will be raised when the configuration is loaded.</p>
 </div>
+</li>
+</ol>
 <p>The above is an example prompt you can use with the <em>self check hallucination rail</em>. The <code class="docutils literal notranslate"><span class="pre">self_check_hallucination</span></code> prompt has two input variables: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">paragraph</span> <span class="pre">}}</span></code>, which represents alternative generations for the same user query, and <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">statement</span> <span class="pre">}}</span></code>, which represents the current bot response. The completion must be “yes” if the statement is not a hallucination (i.e., agrees with alternative generations) and “no” otherwise.</p>
 <p>You can use the self-check hallucination detection in two modes:</p>
 <ol class="arabic simple">

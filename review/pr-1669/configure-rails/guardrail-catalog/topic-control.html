@@ -650,9 +650,8 @@
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
 <p>To use the topic safety check, you should:</p>
-<ol class="arabic simple">
-<li><p>Include the topic control model in the models section of your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p></li>
-</ol>
+<ol class="arabic">
+<li><p>Include the topic control model in the models section of your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;topic_control&quot;</span>
 <span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim</span>
@@ -661,18 +660,16 @@
 <span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;llama-3.1-nemoguard-8b-topic-control&quot;</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>Include the topic safety check in your rails configuration:</p></li>
-</ol>
+</li>
+<li><p>Include the topic safety check in your rails configuration:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic safety check input $model=topic_control</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>Define your topic rules in the system prompt. Here’s an example prompt that enforces specific conversation boundaries:</p></li>
-</ol>
+</li>
+<li><p>Define your topic rules in the system prompt. Here’s an example prompt that enforces specific conversation boundaries:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topic_safety_check_input $model=topic_control</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -684,6 +681,8 @@
 <span class="w">      </span><span class="no">- Do not answer enquiries unrelated to the companny policies.</span>
 </pre></div>
 </div>
+</li>
+</ol>
 <p>The system prompt must end with the topic safety output restriction - <code class="docutils literal notranslate"><span class="pre">If</span> <span class="pre">any</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">above</span> <span class="pre">conditions</span> <span class="pre">are</span> <span class="pre">violated,</span> <span class="pre">please</span> <span class="pre">respond</span> <span class="pre">with</span> <span class="pre">&quot;off-topic&quot;.</span> <span class="pre">Otherwise,</span> <span class="pre">respond</span> <span class="pre">with</span> <span class="pre">&quot;on-topic&quot;.</span> <span class="pre">You</span> <span class="pre">must</span> <span class="pre">respond</span> <span class="pre">with</span> <span class="pre">&quot;on-topic&quot;</span> <span class="pre">or</span> <span class="pre">&quot;off-topic&quot;.</span></code> This condition is automatically added to the system prompt by the topic safety check input flow. If you want to customize the output restriction, you can do so by modifying the <code class="docutils literal notranslate"><span class="pre">TOPIC_SAFETY_OUTPUT_RESTRICTION</span></code> variable in the <a class="reference download internal" download="" href="../../_downloads/a4e273149727751e52aaf493e457d877/actions.py"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">topic_safety_check_input</span></code></span></a> action.</p>
 </section>
 <section id="customizing-topic-rules">
