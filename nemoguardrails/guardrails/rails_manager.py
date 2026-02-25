@@ -26,6 +26,11 @@ from jinja2.sandbox import SandboxedEnvironment
 
 from nemoguardrails.guardrails.guardrails_types import LLMMessages, RailResult
 from nemoguardrails.guardrails.model_manager import ModelManager
+from nemoguardrails.library.topic_safety.actions import (
+    TOPIC_SAFETY_MAX_TOKENS,
+    TOPIC_SAFETY_OUTPUT_RESTRICTION,
+    TOPIC_SAFETY_TEMPERATURE,
+)
 from nemoguardrails.llm.output_parsers import nemoguard_parse_prompt_safety, nemoguard_parse_response_safety
 from nemoguardrails.rails.llm.config import RailsConfig, TaskPrompt
 
@@ -103,6 +108,8 @@ class RailsManager:
 
         if base_flow == "content safety check input":
             return await self._check_content_safety_input(flow, messages)
+        elif base_flow == "topic safety check input":
+            return await self._check_topic_safety_input(flow, messages)
         else:
             raise RuntimeError(f"Input rail flow `{base_flow}` not supported")
 
@@ -152,6 +159,57 @@ class RailsManager:
         except Exception as e:
             log.error("Content safety output check failed: %s", e)
             return RailResult(is_safe=False, reason=f"Content safety output check error: {e}")
+
+    async def _check_topic_safety_input(self, flow: str, messages: list[dict]) -> RailResult:
+        """Check topic safety via the topic_control model.
+
+        Unlike content safety which sends a single rendered prompt, topic control
+        sends a system message (guidelines) plus the full conversation history.
+        This matches the library action behavior which includes all prior turns
+        so the model has context for follow-up messages.
+        """
+        model_type = self._flow_model_type(flow)
+        prompt_key = self._flow_to_prompt_key(flow)
+        system_prompt = self._render_topic_safety_prompt(prompt_key)
+
+        try:
+            response_text = await self.model_manager.generate_async(
+                model_type,
+                [
+                    {"role": "system", "content": system_prompt},
+                    *messages,
+                ],
+                temperature=TOPIC_SAFETY_TEMPERATURE,
+                max_tokens=TOPIC_SAFETY_MAX_TOKENS,
+            )
+            return self._parse_topic_safety_response(response_text)
+
+        except Exception as e:
+            log.error("Topic safety input check failed: %s", e)
+            return RailResult(is_safe=False, reason=f"Topic safety input check error: {e}")
+
+    def _render_topic_safety_prompt(self, prompt_key: str) -> str:
+        """Look up a topic safety prompt and append the output restriction suffix.
+
+        The topic safety prompt template is the system message containing policy
+        guidelines.  Unlike content safety prompts it does NOT contain
+        ``{{ user_input }}`` — the user input is sent as a separate message.
+        """
+        prompt_template = self.prompts.get(prompt_key)
+        if not prompt_template or not prompt_template.content:
+            raise RuntimeError(f"No prompt template found for key {prompt_key}")
+
+        system_prompt = prompt_template.content.strip()
+        if not system_prompt.endswith(TOPIC_SAFETY_OUTPUT_RESTRICTION):
+            system_prompt = f"{system_prompt}\n\n{TOPIC_SAFETY_OUTPUT_RESTRICTION}"
+        return system_prompt
+
+    @staticmethod
+    def _parse_topic_safety_response(response: str) -> RailResult:
+        """LLM response of "off-topic" is unsafe, anything else is safe. Return RailsResult."""
+        if response.lower().strip() == "off-topic":
+            return RailResult(is_safe=False, reason="Topic safety: off-topic")
+        return RailResult(is_safe=True)
 
     def _render_prompt(
         self,
