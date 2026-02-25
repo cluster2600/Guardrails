@@ -43,7 +43,7 @@ log = logging.getLogger(__name__)
 
 # Set with flows supported by the IORailsEngine
 IORAILS_RAILS = {"input", "output"}
-IORAILS_INPUT_FLOWS = {"content safety check input", "topic safety check input"}
+IORAILS_INPUT_FLOWS = {"content safety check input"}
 IORAILS_OUTPUT_FLOWS = {"content safety check output"}
 
 

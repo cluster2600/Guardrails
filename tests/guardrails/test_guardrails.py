@@ -776,8 +776,8 @@ class TestHasOnlyIORailsFlows:
         assert not guardrails._has_only_iorails_flows()
 
     @patch("nemoguardrails.guardrails.guardrails.LLMRails")
-    def test_has_only_iorails_flows_with_topic_safety_input_rails(self, mock_llmrails_class):
-        """Content safety + topic safety input rails are both supported by IORails."""
+    def test_has_only_iorails_flows_unsupported_topic_safety_input_rails(self, mock_llmrails_class):
+        """Check if we have input and output content safety **and also input topic-safety** we can't use IORails"""
         config = RailsConfig.from_content(
             config={
                 "models": [
@@ -805,7 +805,7 @@ class TestHasOnlyIORailsFlows:
             }
         )
         guardrails = Guardrails(config=config)
-        assert guardrails._has_only_iorails_flows() is True
+        assert guardrails._has_only_iorails_flows() is False
 
     @patch("nemoguardrails.guardrails.guardrails.LLMRails")
     def test_has_only_iorails_flows_unsupported_self_check_output_rails(self, mock_llmrails_class):
