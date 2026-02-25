@@ -239,3 +239,53 @@ NEMOGUARDS_CONFIG = {
         },
     ],
 }
+
+## PARALLEL CONFIGS
+
+# Nemoguards config has 3 input rails, this enables parallel execution
+NEMOGUARDS_PARALLEL_INPUT_CONFIG = {
+    **NEMOGUARDS_CONFIG,
+    "rails": {
+        **NEMOGUARDS_CONFIG["rails"],
+        "input": {**NEMOGUARDS_CONFIG["rails"]["input"], "parallel": True},
+    },
+}
+
+# Nemoguards config only has one output rail, so add a second content-safety output with a different model
+NEMOGUARDS_PARALLEL_OUTPUT_CONFIG = {
+    "models": NEMOGUARDS_CONFIG["models"]
+    + [
+        {
+            "type": "content_safety2",
+            "engine": "nim",
+            "model": "nvidia/llama-3.1-nemoguard-8b-content-safety",
+        }
+    ],
+    "rails": {
+        **NEMOGUARDS_CONFIG["rails"],
+        "output": {
+            **NEMOGUARDS_CONFIG["rails"]["output"],
+            "parallel": True,
+            "flows": NEMOGUARDS_CONFIG["rails"]["output"]["flows"]
+            + ["content safety check output $model=content_safety2"],
+        },
+    },
+    "prompts": NEMOGUARDS_CONFIG["prompts"]
+    + [
+        {
+            "task": "content_safety_check_output $model=content_safety2",
+            "content": CONTENT_SAFETY_OUTPUT_PROMPT,
+            "output_parser": "nemoguard_parse_response_safety",
+            "max_tokens": 50,
+        },
+    ],
+}
+
+# Nemoguards config with both parallel input and output rails enabled
+NEMOGUARDS_PARALLEL_CONFIG = {
+    **NEMOGUARDS_PARALLEL_OUTPUT_CONFIG,
+    "rails": {
+        **NEMOGUARDS_PARALLEL_OUTPUT_CONFIG["rails"],
+        "input": {**NEMOGUARDS_PARALLEL_OUTPUT_CONFIG["rails"]["input"], "parallel": True},
+    },
+}
