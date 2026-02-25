@@ -30,7 +30,7 @@ from nemoguardrails.guardrails.async_work_queue import AsyncWorkQueue
 from nemoguardrails.guardrails.guardrails_types import LLMMessages
 from nemoguardrails.guardrails.iorails import IORails
 from nemoguardrails.logging.explain import ExplainInfo
-from nemoguardrails.rails.llm.config import RailsConfig
+from nemoguardrails.rails.llm.config import RailsConfig, _get_flow_name
 from nemoguardrails.rails.llm.llmrails import LLMRails
 from nemoguardrails.rails.llm.options import GenerationResponse
 
@@ -42,8 +42,8 @@ log = logging.getLogger(__name__)
 
 
 # Set with flows supported by the IORailsEngine
-IORAILS_RAILS = {"input", "output"}
-IORAILS_INPUT_FLOWS = {"content safety check input", "topic safety check input"}
+IORAILS_RAILS = {"input", "output", "config"}
+IORAILS_INPUT_FLOWS = {"content safety check input", "topic safety check input", "jailbreak detection model"}
 IORAILS_OUTPUT_FLOWS = {"content safety check output"}
 
 
@@ -78,6 +78,9 @@ class Guardrails:
         # List of all queues for lifecycle management
         self._queues = [self._generate_async_queue]
 
+        # Track whether startup() has been called (supports lazy initialization)
+        self._started = False
+
     @property
     def rails_engine(self) -> IORails | LLMRails:
         """Get immutable LLMRails object"""
@@ -110,16 +113,21 @@ class Guardrails:
             return False
 
         for flow in self.config.rails.input.flows:
-            flow_type = flow.split("$")[0].strip()
-            if flow_type not in IORAILS_INPUT_FLOWS:
+            flow_name = _get_flow_name(flow)
+            if flow_name not in IORAILS_INPUT_FLOWS:
                 return False
 
         for flow in self.config.rails.output.flows:
-            flow_type = flow.split("$")[0].strip()
-            if flow_type not in IORAILS_OUTPUT_FLOWS:
+            flow_name = _get_flow_name(flow)
+            if flow_name not in IORAILS_OUTPUT_FLOWS:
                 return False
 
         return True
+
+    async def _ensure_started(self) -> None:
+        """Lazy initialization: call startup() on first use if not already started."""
+        if not self._started:
+            await self.startup()
 
     def generate(
         self, prompt: str | None = None, messages: LLMMessages | None = None, **kwargs
@@ -155,6 +163,7 @@ class Guardrails:
         """Generate an LLM response asynchronously with guardrails applied.
         Supported by both LLMRails and IORails
         """
+        await self._ensure_started()
 
         generate_messages = self._convert_to_messages(prompt, messages)
         response = await self._generate_async_queue.submit(
@@ -201,18 +210,32 @@ class Guardrails:
         llmrails.update_llm(llm)
 
     async def startup(self) -> None:
-        """Lifecycle method to start async worker tasks and the rails engine"""
+        """Lifecycle method to start async worker tasks and the rails engine.
+
+        Idempotent: safe to call multiple times. Also called automatically
+        on first generate_async() if not called explicitly, so callers are
+        not required to manage the lifecycle.
+        """
+        if self._started:
+            return
         for queue in self._queues:
             await queue.start()
         if isinstance(self.rails_engine, IORails):
             await self.rails_engine.start()
+        self._started = True
 
     async def shutdown(self) -> None:
-        """Lifecycle method to stop async worker tasks and the rails engine"""
+        """Lifecycle method to stop async worker tasks and the rails engine.
+
+        Idempotent: safe to call multiple times.
+        """
+        if not self._started:
+            return
         for queue in self._queues:
             await queue.stop()
         if isinstance(self.rails_engine, IORails):
             await self.rails_engine.stop()
+        self._started = False
 
     async def __aenter__(self):
         """Async context manager entry."""

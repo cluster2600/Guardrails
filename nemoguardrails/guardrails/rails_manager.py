@@ -32,7 +32,7 @@ from nemoguardrails.library.topic_safety.actions import (
     TOPIC_SAFETY_TEMPERATURE,
 )
 from nemoguardrails.llm.output_parsers import nemoguard_parse_prompt_safety, nemoguard_parse_response_safety
-from nemoguardrails.rails.llm.config import RailsConfig, TaskPrompt
+from nemoguardrails.rails.llm.config import RailsConfig, TaskPrompt, _get_flow_model, _get_flow_name
 
 log = logging.getLogger(__name__)
 
@@ -63,39 +63,26 @@ class RailsManager:
         log.info("RailsManager initialized: input_flows=%s, output_flows=%s", self.input_flows, self.output_flows)
 
     async def is_input_safe(self, messages: list[dict]) -> RailResult:
-        """Run input-rails and return whether all rails pass
-
-        Args:
-            messages: The conversation messages to check.
-
-        Returns:
-            RailResult(is_safe=True) if all rails pass, or RailResult(is_safe=False, reason=...) on failure.
-        """
+        """Run all enabled input rails sequentially, short-circuiting on the first failure."""
         if not self.input_flows:
             return RailResult(is_safe=True)
 
         for flow in self.input_flows:
             result = await self._run_input_rail(flow, messages)
+            log.debug("Input flow %s result %s", flow, result)
             if not result.is_safe:
                 return result
 
         return RailResult(is_safe=True)
 
     async def is_output_safe(self, messages: list[dict], response: str) -> RailResult:
-        """Run all enabled output rails.
-
-        Args:
-            messages: The original conversation messages (input context).
-            response: The LLM-generated response to check.
-
-        Returns:
-            RailResult(is_safe=True) if all rails pass, or RailResult(is_safe=False, reason=...) on failure.
-        """
+        """Run all enabled output rails sequentially, short-circuiting on the first failure."""
         if not self.output_flows:
             return RailResult(is_safe=True)
 
         for flow in self.output_flows:
             result = await self._run_output_rail(flow, messages, response)
+            log.debug("Output flow %s result %s", flow, result)
             if not result.is_safe:
                 return result
 
@@ -104,18 +91,20 @@ class RailsManager:
     async def _run_input_rail(self, flow: str, messages: list[dict]) -> RailResult:
         """Run an input rail flow if it's supported. If not raise an exception"""
         # Extract the base flow name (strip any $model=... parameter)
-        base_flow = self._flow_name(flow)
+        base_flow = _get_flow_name(flow)
 
         if base_flow == "content safety check input":
             return await self._check_content_safety_input(flow, messages)
         elif base_flow == "topic safety check input":
             return await self._check_topic_safety_input(flow, messages)
+        elif base_flow == "jailbreak detection model":
+            return await self._check_jailbreak_detection(messages)
         else:
             raise RuntimeError(f"Input rail flow `{base_flow}` not supported")
 
     async def _run_output_rail(self, flow: str, messages: list[dict], response: str) -> RailResult:
         """Run an output rail flow if it's supported. If not raise an exception"""
-        base_flow = self._flow_name(flow)
+        base_flow = _get_flow_name(flow)
 
         if base_flow == "content safety check output":
             return await self._check_content_safety_output(flow, messages, response)
@@ -125,7 +114,10 @@ class RailsManager:
     async def _check_content_safety_input(self, flow: str, messages: list[dict]) -> RailResult:
         """Check input content safety via the content_safety model."""
 
-        model_type = self._flow_model_type(flow)
+        model_type = _get_flow_model(flow)
+        if not model_type:
+            raise RuntimeError(f"Model not specified for content-safety input rail: {flow}")
+
         last_user_content = self._last_user_content(messages)
         prompt_key = self._flow_to_prompt_key(flow)
         prompt_content = self._render_prompt(prompt_key, user_input=last_user_content)
@@ -144,7 +136,10 @@ class RailsManager:
 
     async def _check_content_safety_output(self, flow: str, messages: list[dict], response: str) -> RailResult:
         """Check output content safety via the content_safety model."""
-        model_type = self._flow_model_type(flow)
+        model_type = _get_flow_model(flow)
+        if not model_type:
+            raise RuntimeError(f"Model not specified for content-safety output rail: {flow}")
+
         last_user_content = self._last_user_content(messages)
         prompt_key = self._flow_to_prompt_key(flow)
         prompt_content = self._render_prompt(prompt_key, user_input=last_user_content, bot_response=response)
@@ -168,7 +163,11 @@ class RailsManager:
         This matches the library action behavior which includes all prior turns
         so the model has context for follow-up messages.
         """
-        model_type = self._flow_model_type(flow)
+        model_type = _get_flow_model(flow)
+        if not model_type:
+            raise RuntimeError(f"Model not specified for topic-safety input rail: {flow}")
+
+        last_user_content = self._last_user_content(messages)
         prompt_key = self._flow_to_prompt_key(flow)
         system_prompt = self._render_topic_safety_prompt(prompt_key)
 
@@ -187,6 +186,32 @@ class RailsManager:
         except Exception as e:
             log.error("Topic safety input check failed: %s", e)
             return RailResult(is_safe=False, reason=f"Topic safety input check error: {e}")
+
+    async def _check_jailbreak_detection(self, messages: list[dict]) -> RailResult:
+        """Check for jailbreak attempts by calling the jailbreak detection APIEngine."""
+        last_user_content = self._last_user_content(messages)
+
+        try:
+            response = await self.model_manager.api_call("jailbreak_detection", {"input": last_user_content})
+            return self._parse_jailbreak_response(response)
+
+        except Exception as e:
+            log.error("Jailbreak detection check failed: %s", e)
+            return RailResult(is_safe=False, reason=f"Jailbreak detection check error: {e}")
+
+    @staticmethod
+    def _parse_jailbreak_response(response: dict) -> RailResult:
+        """Convert a {"jailbreak": bool} API response to a RailResult.
+        Response looks like: {"jailbreak": true, "score": 0.6599113682063298}
+        """
+        if "jailbreak" not in response:
+            raise RuntimeError(f"Jailbreak detection response missing 'jailbreak' field: {response}")
+
+        jailbreak_detected = response["jailbreak"]
+        score = response.get("score", "unknown")
+        if jailbreak_detected:
+            return RailResult(is_safe=False, reason=f"Score: {score}")
+        return RailResult(is_safe=True, reason=f"Score: {score}")
 
     def _render_topic_safety_prompt(self, prompt_key: str) -> str:
         """Look up a topic safety prompt and append the output restriction suffix.
@@ -239,24 +264,6 @@ class RailsManager:
             base, param = flow.split("$", 1)
             return base.strip().replace(" ", "_") + " $" + param
         return flow.replace(" ", "_")
-
-    @staticmethod
-    def _flow_name(flow: str) -> str:
-        """Extract the base flow name, stripping any $model=... parameter.
-        For example:
-           'content safety check input $model=content_safety' -> 'content safety check input'
-           'self check input' -> 'self check input'
-        """
-        if "$model=" in flow:
-            return flow.split("$model=")[0].strip()
-        return flow
-
-    @staticmethod
-    def _flow_model_type(flow: str) -> str:
-        """Extract the model type from a flow name like 'content safety check input $model=content_safety'."""
-        if "$model=" in flow:
-            return flow.split("$model=")[1].strip()
-        raise RuntimeError(f"Flow {flow} doesn't contain a model type")
 
     @staticmethod
     def _last_content_by_role(messages: LLMMessages, role: str) -> str:

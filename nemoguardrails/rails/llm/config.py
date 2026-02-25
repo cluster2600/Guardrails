@@ -1977,6 +1977,11 @@ def _generate_rails_flows(flows):
 MODEL_PREFIX = "$model="
 
 
+def _get_flow_name(flow_text) -> Optional[str]:
+    """Helper to return a model name from a flow definition"""
+    return _normalize_flow_id(flow_text)
+
+
 def _get_flow_model(flow_text) -> Optional[str]:
     """Helper to return a model name from a flow definition"""
     if MODEL_PREFIX not in flow_text:
