@@ -1011,6 +1011,7 @@ window.addEventListener("load", load);
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
@@ -1020,6 +1021,7 @@ window.addEventListener("load", load);
     <span class="n">BaseModel</span><span class="p">,</span>
     <span class="n">ConfigDict</span><span class="p">,</span>
     <span class="n">Field</span><span class="p">,</span>
+    <span class="n">PrivateAttr</span><span class="p">,</span>
     <span class="n">SecretStr</span><span class="p">,</span>
     <span class="n">model_validator</span><span class="p">,</span>
     <span class="n">root_validator</span><span class="p">,</span>
@@ -1234,6 +1236,56 @@ window.addEventListener("load", load);
     <span class="n">retrieval</span><span class="p">:</span> <span class="n">SensitiveDataDetectionOptions</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="n">SensitiveDataDetectionOptions</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration of the entities to be detected on retrieved relevant chunks.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">RegexDetectionOptions</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration options for regex pattern detection on a specific source.&quot;&quot;&quot;</span>
+
+    <span class="n">patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of regex patterns to match against the text.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">case_insensitive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to perform case-insensitive matching.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">_compiled_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;re.Pattern[str]&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compile_patterns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;RegexDetectionOptions&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pre-compile regex patterns at config load time.&quot;&quot;&quot;</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case_insensitive</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">compiled</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patterns</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">compiled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">flags</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">re</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid regex pattern at index </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">pattern</span><span class="si">!r}</span><span class="s2">): </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_compiled_patterns&quot;</span><span class="p">,</span> <span class="n">compiled</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compiled_patterns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;re.Pattern[str]&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the pre-compiled regex patterns.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_patterns</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">RegexDetection</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for regex pattern detection.&quot;&quot;&quot;</span>
+
+    <span class="nb">input</span><span class="p">:</span> <span class="n">RegexDetectionOptions</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">RegexDetectionOptions</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration for regex patterns to detect on user input.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">RegexDetectionOptions</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">RegexDetectionOptions</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration for regex patterns to detect on bot output.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">retrieval</span><span class="p">:</span> <span class="n">RegexDetectionOptions</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">RegexDetectionOptions</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration for regex patterns to detect on retrieved relevant chunks.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 
@@ -2014,6 +2066,11 @@ window.addEventListener("load", load);
     <span class="n">sensitive_data_detection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SensitiveDataDetection</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="n">SensitiveDataDetection</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration for detecting sensitive data.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">regex_detection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RegexDetection</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">RegexDetection</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration for regex pattern detection.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">jailbreak_detection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">JailbreakDetectionConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
