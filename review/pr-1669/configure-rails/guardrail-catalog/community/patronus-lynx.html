@@ -61,7 +61,7 @@
     <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/configure-rails/guardrail-catalog/community/patronus-lynx.html" />
     <link rel="icon" href="../../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Patronus Lynx Deployment" href="patronus-lynx-deployment.html" />
+    <link rel="next" title="Presidio Integration" href="presidio.html" />
     <link rel="prev" title="Patronus Evaluate API Integration" href="patronus-evaluate-api.html" />
 
 
@@ -435,7 +435,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pangea.html">Pangea AI Guard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="patronus-evaluate-api.html">Patronus Evaluate API</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Patronus Lynx</a></li>
-<li class="toctree-l3"><a class="reference internal" href="patronus-lynx-deployment.html">Patronus Lynx Deployment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="presidio.html">Presidio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="privateai.html">Private AI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="prompt-security.html">Prompt Security</a></li>
@@ -681,14 +680,76 @@
 </ul>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
-<p>Since Patronus Lynx is fully open source, you can host it however you like. You can find a guide to host Lynx using vLLM <a class="reference internal" href="patronus-lynx-deployment.html"><span class="std std-doc">here</span></a>.</p>
+<p>Because Patronus Lynx is completely open source, you have the flexibility to deploy it in any environment you prefer. An easy method for hosting is to use vLLM.</p>
+<ol class="arabic">
+<li><p>Get access to Patronus Lynx on HuggingFace. See <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-70B-Instruct" rel="noreferer noopener" target="_blank">here</a> for the 70B parameters variant, and <a class="reference external" href="https://huggingface.co/PatronusAI/Patronus-Lynx-8B-Instruct" rel="noreferer noopener" target="_blank">here</a> for the 8B parameters variant. The examples below use the <code class="docutils literal notranslate"><span class="pre">70B</span></code> parameters model, but there’s no additional configuration to deploy the smaller model, so you can swap the model name references out with <code class="docutils literal notranslate"><span class="pre">8B</span></code>.</p></li>
+<li><p>Log in to Hugging Face</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>huggingface-cli<span class="w"> </span>login
+</pre></div>
+</div>
+</li>
+<li><p>Install vLLM and spin up a server hosting Patronus Lynx</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>vllm
+python<span class="w"> </span>-m<span class="w"> </span>vllm.entrypoints.openai.api_server<span class="w"> </span>--port<span class="w"> </span><span class="m">5000</span><span class="w"> </span>--model<span class="w"> </span>PatronusAI/Patronus-Lynx-70B-Instruct
+</pre></div>
+</div>
+<p>This will launch the vLLM inference server on <code class="docutils literal notranslate"><span class="pre">http://localhost:5000/</span></code>. You can use the OpenAI API spec to send it a cURL request to make sure it works:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:5000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">  &quot;model&quot;: &quot;PatronusAI/Patronus-Lynx-70B-Instruct&quot;,</span>
+<span class="s1">  &quot;messages&quot;: [</span>
+<span class="s1">   {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is a hallucination?&quot;},</span>
+<span class="s1">  ]</span>
+<span class="s1">}&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create a model called <code class="docutils literal notranslate"><span class="pre">patronus_lynx</span></code> in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file, setting the host and port to what you set it as above. If the vLLM is running on a different server from <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code>, you’ll have to replace <code class="docutils literal notranslate"><span class="pre">localhost</span></code> with the vLLM server’s address. Check out the <a class="reference internal" href="#"><span class="std std-doc">Patronus Lynx Integration</span></a> guide for more information.</p></li>
+</ol>
+</section>
+<section id="ollama">
+<h2>Ollama<a class="headerlink" href="#ollama" title="Link to this heading">#</a></h2>
+<p>You can also run Patronus Lynx 8B on your personal computer using Ollama!</p>
+<ol class="arabic">
+<li><p>Install <a class="reference external" href="https://ollama.com/download" rel="noreferer noopener" target="_blank">Ollama</a>.</p></li>
+<li><p>Get access to a GGUF quantized version of Lynx 8B on Huggingface. Check it out <a class="reference external" href="https://huggingface.co/PatronusAI/Lynx-8B-Instruct-Q4_K_M-GGUF" rel="noreferer noopener" target="_blank">here</a>.</p></li>
+<li><p>Download the gguf model from the repository <a class="reference external" href="https://huggingface.co/PatronusAI/Lynx-8B-Instruct-Q4_K_M-GGUF/blob/main/patronus-lynx-8b-instruct-q4_k_m.gguf" rel="noreferer noopener" target="_blank">here</a>. This may take a few minutes.</p></li>
+<li><p>Create a file called <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code> with the following contents:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>FROM<span class="w"> </span><span class="s2">&quot;./patronus-lynx-8b-instruct-q4_k_m.gguf&quot;</span>
+PARAMETER<span class="w"> </span>stop<span class="w"> </span><span class="s2">&quot;&lt;|im_start|&gt;&quot;</span>
+PARAMETER<span class="w"> </span>stop<span class="w"> </span><span class="s2">&quot;&lt;|im_end|&gt;&quot;</span>
+TEMPLATE<span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;|im_start|&gt;system</span>
+<span class="s2">{{ .System }}&lt;|im_end|&gt;</span>
+<span class="s2">&lt;|im_start|&gt;user</span>
+<span class="s2">{{ .Prompt }}&lt;|im_end|&gt;</span>
+<span class="s2">&lt;|im_start|&gt;assistant</span>
+</pre></div>
+</div>
+<p>Ensure that the <code class="docutils literal notranslate"><span class="pre">FROM</span></code> field correctly points to the <code class="docutils literal notranslate"><span class="pre">patronus-lynx-8b-instruct-q4_k_m.gguf</span></code> file you downloaded in Step 3.</p>
+</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">create</span> <span class="pre">patronus-lynx-8b</span> <span class="pre">-f</span> <span class="pre">Modelfile</span></code>.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">run</span> <span class="pre">patronus-lynx-8b</span></code>. You should now be able to chat with <code class="docutils literal notranslate"><span class="pre">patronus-lynx-8b</span></code>!</p></li>
+<li><p>Create a model called <code class="docutils literal notranslate"><span class="pre">patronus_lynx</span></code> in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file, like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">- type</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">patronus_lynx</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">engine</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">model</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">patronus-lynx-8b</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">parameters</span><span class="p p-Indicator">:</span>
+<span class="w">      </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:11434&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
 <p>Here is how to configure your bot to use Patronus Lynx to check for RAG hallucinations in your bot output:</p>
-<ol class="arabic simple">
-<li><p>Add a model of type <code class="docutils literal notranslate"><span class="pre">patronus_lynx</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> - the example below uses vLLM to run Lynx:</p></li>
-</ol>
+<ol class="arabic">
+<li><p>Add a model of type <code class="docutils literal notranslate"><span class="pre">patronus_lynx</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> - the example below uses vLLM to run Lynx:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 
@@ -699,18 +760,16 @@
 <span class="w">      </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PatronusAI/Patronus-Lynx-70B-Instruct&quot;</span><span class="w"> </span><span class="c1"># &quot;PatronusAI/Patronus-Lynx-8B-Instruct&quot;</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>Add the guardrail name is <code class="docutils literal notranslate"><span class="pre">patronus</span> <span class="pre">lynx</span> <span class="pre">check</span> <span class="pre">output</span> <span class="pre">hallucination</span></code> to your output rails in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p></li>
-</ol>
+</li>
+<li><p>Add the guardrail <code class="docutils literal notranslate"><span class="pre">patronus</span> <span class="pre">lynx</span> <span class="pre">check</span> <span class="pre">output</span> <span class="pre">hallucination</span></code> to your output rails in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">patronus lynx check output hallucination</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
-<li><p>Add a prompt for <code class="docutils literal notranslate"><span class="pre">patronus_lynx_check_output_hallucination</span></code> in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p></li>
-</ol>
+</li>
+<li><p>Add a prompt for <code class="docutils literal notranslate"><span class="pre">patronus_lynx_check_output_hallucination</span></code> in the <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">patronus_lynx_check_output_hallucination</span>
 <span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -718,6 +777,8 @@
 <span class="w">      </span><span class="no">...</span>
 </pre></div>
 </div>
+</li>
+</ol>
 <p>We recommend you base your Lynx hallucination detection prompt off of the provided example <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs/patronusai/prompts.yml" rel="noreferer noopener" target="_blank">here</a>.</p>
 <p>Under the hood, the <code class="docutils literal notranslate"><span class="pre">patronus</span> <span class="pre">lynx</span> <span class="pre">check</span> <span class="pre">output</span> <span class="pre">hallucination</span></code> rail runs the <code class="docutils literal notranslate"><span class="pre">patronus_lynx_check_output_hallucination</span></code> action, which you can find <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/patronusai/actions.py" rel="noreferer noopener" target="_blank">here</a>. It returns whether a hallucination is detected (<code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>) and potentially a reasoning trace explaining the decision. The bot’s response will be blocked if hallucination is <code class="docutils literal notranslate"><span class="pre">True</span></code>. Note: If Lynx’s outputs are misconfigured or a hallucination decision cannot be found, the action default is to return <code class="docutils literal notranslate"><span class="pre">True</span></code> for hallucination.</p>
 <p>Here’s the <code class="docutils literal notranslate"><span class="pre">patronus</span> <span class="pre">lynx</span> <span class="pre">check</span> <span class="pre">output</span> <span class="pre">hallucination</span></code> flow, showing how the action is executed:</p>
@@ -758,11 +819,11 @@ define flow patronus lynx check output hallucination
       </div>
     </a>
     <a class="right-next"
-       href="patronus-lynx-deployment.html"
+       href="presidio.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Patronus Lynx Deployment</p>
+        <p class="prev-next-title">Presidio Integration</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -788,6 +849,7 @@ define flow patronus lynx check output hallucination
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama">Ollama</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 </ul>
   </nav></div>

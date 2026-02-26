@@ -793,7 +793,6 @@ window.addEventListener("load", load);
 <li class="toctree-l3"><a class="reference internal" href="../../../../configure-rails/guardrail-catalog/community/pangea.html">Pangea AI Guard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../configure-rails/guardrail-catalog/community/patronus-evaluate-api.html">Patronus Evaluate API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../configure-rails/guardrail-catalog/community/patronus-lynx.html">Patronus Lynx</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../configure-rails/guardrail-catalog/community/patronus-lynx-deployment.html">Patronus Lynx Deployment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../configure-rails/guardrail-catalog/community/presidio.html">Presidio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../configure-rails/guardrail-catalog/community/privateai.html">Private AI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../configure-rails/guardrail-catalog/community/prompt-security.html">Prompt Security</a></li>
@@ -2008,7 +2007,7 @@ window.addEventListener("load", load);
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Conversation history so far: </span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">explain_info</span><span class="o">.</span><span class="n">colang_history</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">total_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;--- :: Total processing took </span><span class="si">%.2f</span><span class="s2"> seconds. LLM Stats: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">total_time</span><span class="p">,</span> <span class="n">llm_stats</span><span class="p">))</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;--- :: Total processing took </span><span class="si">%.2f</span><span class="s2"> seconds. Stats: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">total_time</span><span class="p">,</span> <span class="n">llm_stats</span><span class="p">))</span>
 
         <span class="c1"># If there is a streaming handler, we make sure we close it now</span>
         <span class="n">streaming_handler</span> <span class="o">=</span> <span class="n">streaming_handler_var</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
