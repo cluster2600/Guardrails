@@ -697,7 +697,7 @@ For a complete record of changes in a release, refer to the
 <span class="w">          </span><span class="c1"># Add other languages as needed</span>
 </pre></div>
 </div>
-<p>For more information, refer to <a class="reference internal" href="#../configure-rails/guardrail-catalog.md#multilingual-content-safety"><code class="xref myst docutils literal notranslate"><span class="pre">../configure-rails/guardrail-catalog.md#multilingual-content-safety</span></code></a>.</p>
+<p>For more information, refer to <a class="reference internal" href="../configure-rails/guardrail-catalog/content-safety.html#multilingual-refusal-messages"><span class="std std-ref">Multilingual Refusal Messages</span></a>.</p>
 </li>
 <li><p>Added support for <a class="reference external" href="https://huggingface.co/nvidia/gliner-PII" rel="noreferer noopener" target="_blank">NVIDIA GLiNER-PII</a> for detecting entities such as names, email addresses, phone numbers, social security numbers, and more. For more information, refer to <a class="reference internal" href="../configure-rails/guardrail-catalog/community/gliner.html"><span class="std std-doc">GLiNER Integration</span></a>.</p></li>
 </ul>
@@ -814,11 +814,11 @@ For more information, refer to <a class="reference internal" href="../configure-
 <section id="v0-17-0-features">
 <span id="id8"></span><h3>Key Features<a class="headerlink" href="#v0-17-0-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Added support for <a class="reference internal" href="#./user-guides/langchain/langgraph-integration.md"><span class="xref myst">integrating with LangGraph and tool calling</span></a>.
+<li><p>Added support for <a class="reference internal" href="../integration/langchain/langgraph-integration.html"><span class="std std-doc">integrating with LangGraph and tool calling</span></a>.
 This integration enables building safe and controlled multi-agent workflows.
 LangGraph enables you to create sophisticated agent architectures with state management, conditional routing, and tool calling, while NeMo Guardrails provides the safety layer to ensure responsible AI behavior.
 You can intercept, store, and forward LLM tool invocations with backward compatibility.</p></li>
-<li><p>Enhanced support for <a class="reference internal" href="#./user-guides/langchain/runnable-rails.md"><span class="xref myst">integrating with LangChain <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code></span></a>.
+<li><p>Enhanced support for <a class="reference internal" href="../integration/langchain/runnable-rails.html"><span class="std std-doc">integrating with LangChain <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code></span></a>.
 This release supports the LangChain Runnable interface, such as synchronous and asynchronous operations, streaming, and batch processing while preserving metadata during LangChain operation.
 This enhancement enables NeMo Guardrails to plug into LangChain pipelines seamlessly.</p></li>
 <li><p>Trend Micro contributed support for Trend Micro Vision One AI Application Security AI Guard.
@@ -830,7 +830,7 @@ Refer to <a class="reference internal" href="../configure-rails/guardrail-catalo
 <ul class="simple">
 <li><p>Improved URL handling for connecting to NemoGuard JailbreakDetect NIM.
 Guardrails now tolerates the URL for <code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.nim_base_url</span></code> ending with or without a trailing slash.
-Refer to <a class="reference internal" href="#./user-guides/advanced/nemoguard-jailbreakdetect-deployment.md"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/advanced/nemoguard-jailbreakdetect-deployment.md</span></code></a> for information about using the NIM.</p></li>
+Refer to <a class="reference internal" href="../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html"><span class="std std-doc">Detect Jailbreak Attempts with NVIDIA NemoGuard JailbreakDetect NIM</span></a> for information about using the NIM.</p></li>
 </ul>
 </section>
 </section>
@@ -929,7 +929,7 @@ LangChain Community chat model providers.
 You must use <code class="docutils literal notranslate"><span class="pre">langchain</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.14</span></code> or higher and <code class="docutils literal notranslate"><span class="pre">langchain-community</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.5</span></code> or higher.
 For information about using model providers, refer to <a class="reference internal" href="#./user-guides/configuration-guide.md#the-llm-model"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/configuration-guide.md#the-llm-model</span></code></a>.</p></li>
 <li><p>Added support for code injection detection.
-For more information, refer to <a class="reference internal" href="#./user-guides/guardrails-library.md#injection-detection"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/guardrails-library.md#injection-detection</span></code></a>.</p></li>
+For more information, refer to <a class="reference internal" href="../configure-rails/guardrail-catalog/agentic-security.html#injection-detection"><span class="std std-ref">Injection Detection</span></a>.</p></li>
 <li><p>Enhanced the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI with a <code class="docutils literal notranslate"><span class="pre">find-providers</span></code> argument to list chat and text completion providers.
 For more information, refer to <a class="reference internal" href="#./user-guides/cli.md#providers"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/cli.md#providers</span></code></a>.</p></li>
 </ul>
