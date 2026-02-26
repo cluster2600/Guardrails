@@ -1,6 +1,6 @@
 # Patronus Evaluate API Integration
 
-NeMo Guardrails supports using [Patronus AI](www.patronus.ai)'s Evaluate API as an output rail. The Evaluate API gives you access to Patronus' powerful suite of fully-managed in-house evaluation models, including [Lynx](patronus-lynx.md), Judge (a hosted LLM-as-a-Judge model), Toxicity, PII, and PHI models, and a suite of specialized RAG evaluators with
+NeMo Guardrails supports using [Patronus AI](https://www.patronus.ai)'s Evaluate API as an output rail. The Evaluate API gives you access to Patronus' powerful suite of fully-managed in-house evaluation models, including [Lynx](patronus-lynx.md), Judge (a hosted LLM-as-a-Judge model), Toxicity, PII, and PHI models, and a suite of specialized RAG evaluators with
 industry-leading performance on metrics like Answer Relevance, Context Relevance, Context Sufficiency, and Hallucination.
 
 Patronus also has Managed configurations of the Judge evaluator, which you can use to detect AI failures like prompt injection and brand misalignment in order to prevent problematic bot responses from being returned to users.
@@ -19,35 +19,35 @@ Here's how to use the Patronus Evaluate API as an output rail:
 
 2. Add the guardrail `patronus api check output` to your output rails in `config.yml`:
 
-```yaml
-rails:
-  output:
-    flows:
-      - patronus api check output
-```
+    ```yaml
+    rails:
+      output:
+        flows:
+          - patronus api check output
+    ```
 
 3. Add a rails config for Patronus in `config.yml`:
 
-```yaml
-rails:
-  config:
-    patronus:
-      output:
-        evaluate_config:
-          success_strategy: "all_pass"
-          params:
-            {
-              evaluators:
-                [
-                  { "evaluator": "lynx" },
-                  {
-                    "evaluator": "answer-relevance",
-                    "explain_strategy": "on-fail",
-                  },
-                ],
-              tags: { "retrieval_configuration": "ast-123" },
-            }
-```
+    ```yaml
+    rails:
+      config:
+        patronus:
+          output:
+            evaluate_config:
+              success_strategy: "all_pass"
+              params:
+                {
+                  evaluators:
+                    [
+                      { "evaluator": "lynx" },
+                      {
+                        "evaluator": "answer-relevance",
+                        "explain_strategy": "on-fail",
+                      },
+                    ],
+                  tags: { "retrieval_configuration": "ast-123" },
+                }
+    ```
 
 The `evaluate_config` has two top-level arguments: `success_strategy` and `params`.
 
