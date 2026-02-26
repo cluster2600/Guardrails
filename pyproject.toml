@@ -4,7 +4,7 @@ description = "NeMo Guardrails is an open-source toolkit for easily adding progr
 authors = ["NVIDIA <nemoguardrails@nvidia.com>"]
 license = "LICENSE.md"
 readme = "README.md"
-version = "0.20.0"
+version = "0.21.0-rc5"
 packages = [{ include = "nemoguardrails" }]
 
 
@@ -175,11 +175,9 @@ include = [
   "nemoguardrails/server/**",
   "tests/test_callbacks.py",
   "nemoguardrails/benchmark/**",
-  "nemoguardrails/guardrails/**"
+  "nemoguardrails/guardrails/**",
 ]
-exclude = [
-  "nemoguardrails/llm/providers/trtllm/**",
-]
+exclude = ["nemoguardrails/llm/providers/trtllm/**"]
 
 [tool.poetry.group.docs]
 optional = true
