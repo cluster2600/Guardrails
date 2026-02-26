@@ -22,6 +22,7 @@ Retries are handled by aiohttp-retry (ExponentialRetry).
 
 import logging
 import os
+import time
 from typing import Any, Optional, cast
 
 import aiohttp
@@ -34,7 +35,7 @@ from nemoguardrails.guardrails._http import (
     RETRYABLE_STATUS_CODES,
     safe_read_body,
 )
-from nemoguardrails.guardrails.guardrails_types import LLMMessages
+from nemoguardrails.guardrails.guardrails_types import LLMMessages, get_request_id, truncate
 from nemoguardrails.rails.llm.config import Model
 
 log = logging.getLogger(__name__)
@@ -190,20 +191,41 @@ class ModelEngine:
             **kwargs,
         }
 
+        req_id = get_request_id()
+        log.info("[%s] HTTP POST %s model='%s'", req_id, url, self.model_name)
+        log.debug("[%s] HTTP request body: %s", req_id, truncate(body))
+
+        t0 = time.monotonic()
         try:
             async with client.post(url, json=body, headers=headers) as response:
+                elapsed_ms = (time.monotonic() - t0) * 1000
+
                 if response.status >= 400:
                     error_body = await safe_read_body(response)
+                    log.warning(
+                        "[%s] HTTP %s from model '%s' time=%.1fms", req_id, response.status, self.model_name, elapsed_ms
+                    )
                     raise ModelEngineError(
                         f"HTTP {response.status} from model '{self.model_name}': {error_body}",
                         model_name=self.model_name,
                         status=response.status,
                     )
-                return await response.json()
+
+                result = await response.json()
+                log.debug(
+                    "[%s] HTTP response status=%s time=%.1fms body: %s",
+                    req_id,
+                    response.status,
+                    elapsed_ms,
+                    truncate(result),
+                )
+                return result
 
         except ModelEngineError:
             raise
         except Exception as exc:
+            elapsed_ms = (time.monotonic() - t0) * 1000
+            log.warning("[%s] Request to model '%s' failed time=%.1fms", req_id, self.model_name, elapsed_ms)
             raise ModelEngineError(
                 f"Request to model '{self.model_name}' failed: {exc}",
                 model_name=self.model_name,
