@@ -18,10 +18,13 @@
 from __future__ import annotations
 
 import logging
+import time
 from typing import TYPE_CHECKING, Any, Optional, cast
 
 import aiohttp
 from aiohttp_retry import ExponentialRetry, RetryClient
+
+from nemoguardrails.guardrails.guardrails_types import get_request_id, truncate
 
 if TYPE_CHECKING:
     from nemoguardrails.rails.llm.config import JailbreakDetectionConfig
@@ -132,23 +135,44 @@ class APIEngine:
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
 
+        req_id = get_request_id()
+        log.info("[%s] HTTP POST %s", req_id, url)
+        log.debug("[%s] HTTP request body: %s", req_id, truncate(request_body))
+
+        t0 = time.monotonic()
         try:
             async with client.post(url, json=request_body, headers=headers) as response:
+                elapsed_ms = (time.monotonic() - t0) * 1000
+
                 if response.status >= 400:
                     error_body = await safe_read_body(response)
+                    log.warning("[%s] HTTP %s from endpoint '%s' time=%.1fms", req_id, response.status, url, elapsed_ms)
                     raise APIEngineError(
                         f"HTTP {response.status} from endpoint '{url}': {error_body}",
                         endpoint=url,
                         status=response.status,
                     )
-                return await response.json()
+
+                result = await response.json()
+                log.debug(
+                    "[%s] HTTP response status=%s time=%.1fms body: %s",
+                    req_id,
+                    response.status,
+                    elapsed_ms,
+                    truncate(result),
+                )
+                return result
 
         except aiohttp.ContentTypeError as exc:
+            elapsed_ms = (time.monotonic() - t0) * 1000
+            log.warning("[%s] Failed to parse response as JSON time=%.1fms", req_id, elapsed_ms)
             raise APIEngineError(f"Failed to parse response as JSON: {exc}", endpoint=url, status=exc.status) from exc
 
         except APIEngineError:
             raise
         except Exception as exc:
+            elapsed_ms = (time.monotonic() - t0) * 1000
+            log.warning("[%s] Request to endpoint '%s' failed time=%.1fms", req_id, url, elapsed_ms)
             raise APIEngineError(
                 f"Request to endpoint '{url}' failed: {exc}",
                 endpoint=url,

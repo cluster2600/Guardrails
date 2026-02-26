@@ -23,6 +23,7 @@ import logging
 from typing import Any
 
 from nemoguardrails.guardrails.api_engine import APIEngine
+from nemoguardrails.guardrails.guardrails_types import get_request_id, truncate
 from nemoguardrails.guardrails.model_engine import ModelEngine
 from nemoguardrails.rails.llm.config import RailsConfig
 
@@ -148,13 +149,23 @@ class ModelManager:
 
     async def generate_async(self, model_type: str, messages: list[dict], **kwargs: Any) -> str:
         """Generate a chat completion response from the named model engine."""
+        req_id = get_request_id()
+        log.debug("[%s] Model engine '%s' messages: %s", req_id, model_type, truncate(messages))
+
         engine = self._get_model_engine(model_type)
         response = await engine.call(messages, **kwargs)
-        return response["choices"][0]["message"]["content"]
+        result = response["choices"][0]["message"]["content"]
+
+        log.debug("[%s] Model engine '%s' response: %s", req_id, model_type, truncate(result))
+        return result
 
     async def api_call(self, api_name: str, message: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
+        req_id = get_request_id()
+        log.debug("[%s] API engine '%s' request: %s", req_id, api_name, truncate(message))
         api_engine = self._get_api_engine(api_name)
         response = await api_engine.call(message, **kwargs)
+
+        log.debug("[%s] API engine '%s' response: %s", req_id, api_name, truncate(response))
         return response
 
     async def __aenter__(self):
