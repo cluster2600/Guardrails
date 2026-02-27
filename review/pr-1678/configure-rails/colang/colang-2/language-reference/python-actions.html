@@ -572,7 +572,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../integration/langchain/langgraph-integration.html">LangGraph</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../user-guides/advanced/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
@@ -682,7 +681,7 @@
 </pre></div>
 </div>
 <p>And here is how you can call it from a Colang flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     $result = await CustomTestAction(value=5)
     bot say &quot;The result is: {$result}&quot;
 </pre></div>
@@ -697,7 +696,7 @@
 </pre></div>
 </div>
 <p>And here is how you can call it from a Colang flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     # Option 1 start the action and let your flow continue until you really need the result from the action
     start CustomTestAction(value=5) as $action_ref
     # Some other statements ...

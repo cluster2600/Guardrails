@@ -576,7 +576,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../integration/langchain/langgraph-integration.html">LangGraph</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../user-guides/advanced/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
@@ -750,13 +749,13 @@
 likely will not need to directly use these flows. These flows exist to support more advanced use cases.</p>
 <p><strong>Advanced Interaction Continuation</strong></p>
 <p>Flows with more advanced LLM-based continuations</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Generate a flow that continues the current interaction
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Generate a flow that continues the current interaction
 flow llm generate interaction continuation flow -&gt; $flow_name
 </pre></div>
 </div>
 <p><strong>Interaction History Logging</strong></p>
 <p>Flows to log interaction history to create required context for LLM prompts.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Activate all automated user and bot intent flows logging based on flow naming
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Activate all automated user and bot intent flows logging based on flow naming
 flow automating intent detection
 
 # Marking user intent flows using only naming convention
@@ -774,7 +773,7 @@ flow logging marked bot intent flows
 </div>
 <p><strong>State Tracking Flows</strong></p>
 <p>These are flows that track bot and user states in global variables.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Track most recent unhandled user intent state in global variable $user_intent_state
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Track most recent unhandled user intent state in global variable $user_intent_state
 flow tracking unhandled user intent state
 </pre></div>
 </div>

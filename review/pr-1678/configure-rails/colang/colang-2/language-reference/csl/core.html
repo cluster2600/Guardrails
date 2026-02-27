@@ -576,7 +576,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../integration/langchain/langgraph-integration.html">LangGraph</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../user-guides/advanced/align-score-deployment.html">AlignScore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../integration/tools-integration.html">Tools Integration</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
@@ -739,7 +738,7 @@ flow will finish once the bot audio has finished).</p>
 <p>For more expressive interaction histories and more advanced use cases, the <code class="docutils literal notranslate"><span class="pre">core.co</span></code> library provides several
 semantic wrappers for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code>. You can use them anywhere instead of a <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code> to annotate the
 purpose of the bot utterance.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Trigger the bot to inform about something
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Trigger the bot to inform about something
 flow bot inform $text
 
 # Trigger the bot to ask something
@@ -791,7 +790,7 @@ flow bot suggest $text
 <p>Example:</p>
 <p><strong>Semantic variants</strong></p>
 <p>You may react to specific semantic wrappers for <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">say</span></code> that are defined in the <code class="docutils literal notranslate"><span class="pre">core.co</span></code> library</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Wait for the bot to finish informing about something
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Wait for the bot to finish informing about something
 flow bot informed something -&gt; $text
 
 # Wait for the bot to finish asking about something
