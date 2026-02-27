@@ -665,7 +665,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="using-jailbreak-detection-heuristics">
 <h1>Using Jailbreak Detection Heuristics<a class="headerlink" href="#using-jailbreak-detection-heuristics" title="Link to this heading">#</a></h1>
 <p>This guide demonstrates how to use jailbreak detection heuristics in a guardrails configuration to detect malicious prompts.</p>
-<p>We will use the guardrails configuration for the ABC Bot defined for the <a class="reference internal" href="#../../getting-started/6-topical-rails/README.md"><span class="xref myst">topical rails example</span></a> part of the <a class="reference internal" href="#../../getting-started/README.md"><span class="xref myst">Getting Started Guide</span></a>.</p>
+<p>We will use the guardrails configuration for the ABC Bot defined for the <a class="reference internal" href="../../configure-rails/colang/colang-1/tutorials/6-topical-rails/README.html"><span class="std std-doc">topical rails example</span></a> part of the <a class="reference internal" href="../../getting-started/installation-guide.html"><span class="std std-doc">Getting Started Guide</span></a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Init: remove any existing configuration and copy the ABC bot from topical rails example</span>
 !rm<span class="w"> </span>-r<span class="w"> </span>config
 !cp<span class="w"> </span>-r<span class="w"> </span>../../getting-started/6-topical-rails/config<span class="w"> </span>.
@@ -719,21 +719,21 @@
 <h2>Jailbreak Detection Heuristics<a class="headerlink" href="#jailbreak-detection-heuristics" title="Link to this heading">#</a></h2>
 <p>NeMo Guardrails supports jailbreak detection using a set of heuristics. Currently, two heuristics are supported:</p>
 <ol class="arabic simple">
-<li><p><a class="reference internal" href="#../user-guides/guardrails-library.md#length-per-perplexity"><span class="xref myst">Length per Perplexity</span></a></p></li>
-<li><p><a class="reference internal" href="#../user-guides/guardrails-library.md#prefix-and-suffix-perplexity"><span class="xref myst">Prefix and Suffix Perplexity</span></a></p></li>
+<li><p><a class="reference internal" href="../../configure-rails/guardrail-catalog/jailbreak-protection.html#length-per-perplexity"><span class="std std-ref">Length per Perplexity</span></a></p></li>
+<li><p><a class="reference internal" href="../../configure-rails/guardrail-catalog/jailbreak-protection.html#prefix-and-suffix-perplexity"><span class="std std-ref">Prefix and Suffix Perplexity</span></a></p></li>
 </ol>
 <p>To compute the perplexity of a string, the current implementation uses the <code class="docutils literal notranslate"><span class="pre">gpt2-large</span></code> model.</p>
-<p>More information about these heuristics can be found in the <a class="reference internal" href="#../user-guides/guardrails-library.md#jailbreak-detection-heuristics"><span class="xref myst">Guardrails Library</span></a>.</p>
+<p>More information about these heuristics can be found in the <a class="reference internal" href="../../configure-rails/guardrail-catalog/jailbreak-protection.html"><span class="std std-doc">Jailbreak Protection</span></a> reference.</p>
 <section id="activating-jailbreak-detection-heuristics">
 <h3>Activating Jailbreak Detection Heuristics<a class="headerlink" href="#activating-jailbreak-detection-heuristics" title="Link to this heading">#</a></h3>
-<p>To activate the jailbreak detection heuristics, we first need to include the <code class="docutils literal notranslate"><span class="pre">jailbreak</span> <span class="pre">detection</span> <span class="pre">heuristics</span></code> flow as an input rail in our guardrails configuration. We can do this by adding the following to the <a class="reference internal" href="#config/config.yml"><span class="xref myst">config.yml</span></a> of the ABC bot:</p>
+<p>To activate the jailbreak detection heuristics, we first need to include the <code class="docutils literal notranslate"><span class="pre">jailbreak</span> <span class="pre">detection</span> <span class="pre">heuristics</span></code> flow as an input rail in our guardrails configuration. We can do this by adding the following to the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> of the ABC bot:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
   input:
     flows:
       - jailbreak detection heuristics
 </pre></div>
 </div>
-<p>To the same file we need to configure the jailbreak detection heuristics. We can do this by adding the following to the <a class="reference internal" href="#config/config.yml"><span class="xref myst">config.yml</span></a></p>
+<p>To the same file we need to configure the jailbreak detection heuristics. We can do this by adding the following to <code class="docutils literal notranslate"><span class="pre">config.yml</span></code></p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
   config:
     jailbreak_detection:
@@ -741,7 +741,7 @@
       prefix_suffix_perplexity_threshold: 1845.65
 </pre></div>
 </div>
-<p>The thresholds for the length perplexity and prefix/suffix perplexity are derived from a combination of malicious and benign prompts. More information about these thresholds can be found in the <a class="reference internal" href="#../user-guides/guardrails-library.md#jailbreak-detection-heuristics"><span class="xref myst">Guardrails Library</span></a>.</p>
+<p>The thresholds for the length perplexity and prefix/suffix perplexity are derived from a combination of malicious and benign prompts. More information about these thresholds can be found in the <a class="reference internal" href="../../configure-rails/guardrail-catalog/jailbreak-protection.html"><span class="std std-doc">Jailbreak Protection</span></a> reference.</p>
 </section>
 </section>
 <section id="testing-the-input-rail-with-jailbreak-detection-heuristics">
@@ -749,7 +749,7 @@
 <p>To test the bot with the jailbreak detection heuristics as the input rail, we need to create an LLMRails object given the current configuration. We can then prompt the LLM with a GCG-style message and check the response.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">RailsConfig</span><span class="p">,</span> <span class="n">LLMRails</span>
 
-<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;../../getting-started/6-topical-rails/config/&quot;</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">RailsConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;../../configure-rails/colang/colang-1/tutorials/6-topical-rails/config/&quot;</span><span class="p">)</span>
 <span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span>
     <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
@@ -810,7 +810,7 @@
 <p>We see that the prompt was not filtered out by the jailbreak detection heuristics and the response was generated by the bot.</p>
 <section id="using-the-jailbreak-detection-heuristics-in-production">
 <h3>Using the Jailbreak Detection Heuristics in Production<a class="headerlink" href="#using-the-jailbreak-detection-heuristics-in-production" title="Link to this heading">#</a></h3>
-<p>The recommended way for using the jailbreak detection heuristics is to <a class="reference internal" href="#../../user-guides/advanced/jailbreak-detection-deployment.md"><span class="xref myst">deploy the jailbreak detection heuristics server</span></a> separately. This would spin up a server that by default listens on port 1337. You can then configure the guardrails configuration to use the jailbreak detection heuristics server by adding the following to the <a class="reference internal" href="#../../getting-started/6-topical-rails/config/config.yml"><span class="xref myst">config.yml</span></a> of the ABC bot:</p>
+<p>The recommended way for using the jailbreak detection heuristics is to <a class="reference internal" href="../../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html"><span class="std std-doc">deploy the jailbreak detection heuristics server</span></a> separately. This would spin up a server that by default listens on port 1337. You can then configure the guardrails configuration to use the jailbreak detection heuristics server by adding the following to the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> of the ABC bot:</p>
 <div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>rails:
   config:
     jailbreak_detection:
