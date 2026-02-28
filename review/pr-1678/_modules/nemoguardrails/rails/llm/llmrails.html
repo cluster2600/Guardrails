@@ -1201,9 +1201,7 @@ window.addEventListener("load", load);
             <span class="n">default_flows_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_folder</span><span class="p">,</span> <span class="n">default_flows_file</span><span class="p">)</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">default_flows_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">default_flows_content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                <span class="n">default_flows</span> <span class="o">=</span> <span class="n">parse_colang_file</span><span class="p">(</span>
-                    <span class="n">default_flows_file</span><span class="p">,</span> <span class="n">default_flows_content</span>
-                <span class="p">)[</span><span class="s2">&quot;flows&quot;</span><span class="p">]</span>
+                <span class="n">default_flows</span> <span class="o">=</span> <span class="n">parse_colang_file</span><span class="p">(</span><span class="n">default_flows_file</span><span class="p">,</span> <span class="n">default_flows_content</span><span class="p">)[</span><span class="s2">&quot;flows&quot;</span><span class="p">]</span>
 
             <span class="c1"># We mark all the default flows as system flows.</span>
             <span class="k">for</span> <span class="n">flow_config</span> <span class="ow">in</span> <span class="n">default_flows</span><span class="p">:</span>
@@ -1221,9 +1219,7 @@ window.addEventListener("load", load);
                     <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.co&quot;</span><span class="p">):</span>
                         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading file: </span><span class="si">{</span><span class="n">full_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                            <span class="n">content</span> <span class="o">=</span> <span class="n">parse_colang_file</span><span class="p">(</span>
-                                <span class="n">file</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">version</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">colang_version</span>
-                            <span class="p">)</span>
+                            <span class="n">content</span> <span class="o">=</span> <span class="n">parse_colang_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">version</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">colang_version</span><span class="p">)</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
                                 <span class="k">continue</span>
 
@@ -1235,20 +1231,14 @@ window.addEventListener("load", load);
                         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">flows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s2">&quot;flows&quot;</span><span class="p">])</span>
 
                         <span class="c1"># And all the messages as well, if they have not been overwritten</span>
-                        <span class="k">for</span> <span class="n">message_id</span><span class="p">,</span> <span class="n">utterances</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                            <span class="s2">&quot;bot_messages&quot;</span><span class="p">,</span> <span class="p">{}</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">for</span> <span class="n">message_id</span><span class="p">,</span> <span class="n">utterances</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bot_messages&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                             <span class="k">if</span> <span class="n">message_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">bot_messages</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">bot_messages</span><span class="p">[</span><span class="n">message_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">utterances</span>
 
         <span class="c1"># Last but not least, we mark all the flows that are used in any of the rails</span>
         <span class="c1"># as system flows (so they don&#39;t end up in the prompt).</span>
 
-        <span class="n">rail_flow_ids</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">flows</span>
-            <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">flows</span>
-            <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">retrieval</span><span class="o">.</span><span class="n">flows</span>
-        <span class="p">)</span>
+        <span class="n">rail_flow_ids</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">flows</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">flows</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">retrieval</span><span class="o">.</span><span class="n">flows</span>
 
         <span class="k">for</span> <span class="n">flow_config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">flows</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">flow_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rail_flow_ids</span><span class="p">:</span>
@@ -1259,9 +1249,9 @@ window.addEventListener("load", load);
 
         <span class="c1"># We check if the configuration or any of the imported ones have config.py modules.</span>
         <span class="n">config_modules</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">_path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">imported_paths</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">imported_paths</span> <span class="k">else</span> <span class="p">[]</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config_path</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">_path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">imported_paths</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">imported_paths</span> <span class="k">else</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config_path</span>
+        <span class="p">]:</span>
             <span class="k">if</span> <span class="n">_path</span><span class="p">:</span>
                 <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_path</span><span class="p">,</span> <span class="s2">&quot;config.py&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
@@ -1282,9 +1272,7 @@ window.addEventListener("load", load);
             <span class="p">)</span>
 
         <span class="c1"># First, we initialize the runtime.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span> <span class="o">=</span> <span class="n">colang_version_to_runtime</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">colang_version</span><span class="p">](</span>
-            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span> <span class="o">=</span> <span class="n">colang_version_to_runtime</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">colang_version</span><span class="p">](</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
         <span class="c1"># If we have a config_modules with an `init` function, we call it.</span>
         <span class="c1"># We need to call this here because the `init` might register additional</span>
@@ -1318,9 +1306,7 @@ window.addEventListener("load", load);
 
         <span class="c1"># Next, we initialize the LLM Generate actions and register them.</span>
         <span class="n">llm_generation_actions_class</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">LLMGenerationActions</span>
-            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">colang_version</span> <span class="o">==</span> <span class="s2">&quot;1.0&quot;</span>
-            <span class="k">else</span> <span class="n">LLMGenerationActionsV2dotx</span>
+            <span class="n">LLMGenerationActions</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">colang_version</span> <span class="o">==</span> <span class="s2">&quot;1.0&quot;</span> <span class="k">else</span> <span class="n">LLMGenerationActionsV2dotx</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">llm_generation_actions</span> <span class="o">=</span> <span class="n">llm_generation_actions_class</span><span class="p">(</span>
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
@@ -1376,22 +1362,16 @@ window.addEventListener("load", load);
             <span class="c1"># content safety check input/output flows are special as they have parameters</span>
             <span class="n">flow_name</span> <span class="o">=</span> <span class="n">_normalize_flow_id</span><span class="p">(</span><span class="n">flow_name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">flow_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">existing_flows_names</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">InvalidRailsConfigurationError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The provided input rail flow `</span><span class="si">{</span><span class="n">flow_name</span><span class="si">}</span><span class="s2">` does not exist&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">InvalidRailsConfigurationError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The provided input rail flow `</span><span class="si">{</span><span class="n">flow_name</span><span class="si">}</span><span class="s2">` does not exist&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">flow_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">flows</span><span class="p">:</span>
             <span class="n">flow_name</span> <span class="o">=</span> <span class="n">_normalize_flow_id</span><span class="p">(</span><span class="n">flow_name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">flow_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">existing_flows_names</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">InvalidRailsConfigurationError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The provided output rail flow `</span><span class="si">{</span><span class="n">flow_name</span><span class="si">}</span><span class="s2">` does not exist&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">InvalidRailsConfigurationError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The provided output rail flow `</span><span class="si">{</span><span class="n">flow_name</span><span class="si">}</span><span class="s2">` does not exist&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">flow_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">retrieval</span><span class="o">.</span><span class="n">flows</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">flow_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">existing_flows_names</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">InvalidRailsConfigurationError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The provided retrieval rail flow `</span><span class="si">{</span><span class="n">flow_name</span><span class="si">}</span><span class="s2">` does not exist&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">InvalidRailsConfigurationError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The provided retrieval rail flow `</span><span class="si">{</span><span class="n">flow_name</span><span class="si">}</span><span class="s2">` does not exist&quot;</span><span class="p">)</span>
 
         <span class="c1"># If both passthrough mode and single call mode are specified, we raise an exception.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">passthrough</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">single_call</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
@@ -1465,9 +1445,7 @@ window.addEventListener("load", load);
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Otherwise, initialize the main LLM from the config</span>
-            <span class="n">main_model</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">model</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">models</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;main&quot;</span><span class="p">),</span> <span class="kc">None</span>
-            <span class="p">)</span>
+            <span class="n">main_model</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">model</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">models</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;main&quot;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">main_model</span> <span class="ow">and</span> <span class="n">main_model</span><span class="o">.</span><span class="n">model</span><span class="p">:</span>
                 <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_model_kwargs</span><span class="p">(</span><span class="n">main_model</span><span class="p">)</span>
@@ -1480,9 +1458,7 @@ window.addEventListener("load", load);
                 <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">register_action_param</span><span class="p">(</span><span class="s2">&quot;llm&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;No main LLM specified in the config and no LLM provided via constructor.&quot;</span>
-                <span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No main LLM specified in the config and no LLM provided via constructor.&quot;</span><span class="p">)</span>
 
         <span class="n">llms</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
@@ -1523,9 +1499,7 @@ window.addEventListener("load", load);
                     <span class="n">model_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">llm_config</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">_llm&quot;</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
                         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">llm_model</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">register_action_param</span><span class="p">(</span>
-                        <span class="n">model_name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
-                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">register_action_param</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">))</span>
                     <span class="c1"># this is used for content safety and topic control</span>
                     <span class="n">llms</span><span class="p">[</span><span class="n">llm_config</span><span class="o">.</span><span class="n">type</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
 
@@ -1567,9 +1541,7 @@ window.addEventListener("load", load);
             <span class="n">stats_logging_interval</span><span class="o">=</span><span class="n">stats_logging_interval</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Created cache for model &#39;</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&#39; with maxsize </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">maxsize</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created cache for model &#39;</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&#39; with maxsize </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">maxsize</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">cache</span>
 
@@ -1602,15 +1574,9 @@ window.addEventListener("load", load);
             <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.embeddings.basic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicEmbeddingsIndex</span>
 
             <span class="k">return</span> <span class="n">BasicEmbeddingsIndex</span><span class="p">(</span>
-                <span class="n">embedding_model</span><span class="o">=</span><span class="n">esp_config</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="s2">&quot;embedding_model&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_embedding_model</span>
-                <span class="p">),</span>
-                <span class="n">embedding_engine</span><span class="o">=</span><span class="n">esp_config</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="s2">&quot;embedding_engine&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_embedding_engine</span>
-                <span class="p">),</span>
-                <span class="n">embedding_params</span><span class="o">=</span><span class="n">esp_config</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="s2">&quot;embedding_parameters&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_embedding_params</span>
-                <span class="p">),</span>
+                <span class="n">embedding_model</span><span class="o">=</span><span class="n">esp_config</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;embedding_model&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_embedding_model</span><span class="p">),</span>
+                <span class="n">embedding_engine</span><span class="o">=</span><span class="n">esp_config</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;embedding_engine&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_embedding_engine</span><span class="p">),</span>
+                <span class="n">embedding_params</span><span class="o">=</span><span class="n">esp_config</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;embedding_parameters&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_embedding_params</span><span class="p">),</span>
                 <span class="n">cache_config</span><span class="o">=</span><span class="n">esp_config</span><span class="o">.</span><span class="n">cache</span><span class="p">,</span>
                 <span class="c1"># We make sure we also pass additional relevant params.</span>
                 <span class="o">**</span><span class="p">{</span>
@@ -1688,9 +1654,7 @@ window.addEventListener("load", load);
 
                 <span class="k">elif</span> <span class="n">msg</span><span class="p">[</span><span class="s2">&quot;role&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;assistant&quot;</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">):</span>
-                        <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;BotToolCalls&quot;</span><span class="p">,</span> <span class="s2">&quot;tool_calls&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">[</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">]}</span>
-                        <span class="p">)</span>
+                        <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;BotToolCalls&quot;</span><span class="p">,</span> <span class="s2">&quot;tool_calls&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">[</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">]})</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">action_uid</span> <span class="o">=</span> <span class="n">new_uuid</span><span class="p">()</span>
                         <span class="n">start_event</span> <span class="o">=</span> <span class="n">new_event_dict</span><span class="p">(</span>
@@ -1731,15 +1695,9 @@ window.addEventListener("load", load);
                                     <span class="k">if</span> <span class="n">messages</span><span class="p">[</span><span class="n">tool_idx</span><span class="p">][</span><span class="s2">&quot;role&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;tool&quot;</span><span class="p">:</span>
                                         <span class="n">tool_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                                             <span class="p">{</span>
-                                                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">[</span><span class="n">tool_idx</span><span class="p">][</span>
-                                                    <span class="s2">&quot;content&quot;</span>
-                                                <span class="p">],</span>
-                                                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">[</span><span class="n">tool_idx</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                                    <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span>
-                                                <span class="p">),</span>
-                                                <span class="s2">&quot;tool_call_id&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">[</span><span class="n">tool_idx</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                                    <span class="s2">&quot;tool_call_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
-                                                <span class="p">),</span>
+                                                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">[</span><span class="n">tool_idx</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">],</span>
+                                                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">[</span><span class="n">tool_idx</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">),</span>
+                                                <span class="s2">&quot;tool_call_id&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">[</span><span class="n">tool_idx</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tool_call_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
                                             <span class="p">}</span>
                                         <span class="p">)</span>
 
@@ -1751,9 +1709,7 @@ window.addEventListener("load", load);
                                 <span class="p">)</span>
 
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                                    <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;UserMessage&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">user_message</span><span class="p">}</span>
-                                <span class="p">)</span>
+                                <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;UserMessage&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">user_message</span><span class="p">})</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)):</span>
@@ -1842,7 +1798,8 @@ window.addEventListener("load", load);
 <span class="sd">        Returns:</span>
 <span class="sd">            The completion (when a prompt is provided) or the next message.</span>
 
-<span class="sd">        System messages are not yet supported.&quot;&quot;&quot;</span>
+<span class="sd">        System messages are not yet supported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># convert options to gen_options of type GenerationOptions</span>
         <span class="n">gen_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GenerationOptions</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1907,12 +1864,7 @@ window.addEventListener("load", load);
         <span class="c1"># If the last message is from the assistant, rather than the user, then</span>
         <span class="c1"># we move that to the `$bot_message` variable. This is to enable a more</span>
         <span class="c1"># convenient interface. (only when dialog rails are disabled)</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">messages</span>
-            <span class="ow">and</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;role&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;assistant&quot;</span>
-            <span class="ow">and</span> <span class="n">gen_options</span>
-            <span class="ow">and</span> <span class="n">gen_options</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">dialog</span> <span class="ow">is</span> <span class="kc">False</span>
-        <span class="p">):</span>
+        <span class="k">if</span> <span class="n">messages</span> <span class="ow">and</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;role&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;assistant&quot;</span> <span class="ow">and</span> <span class="n">gen_options</span> <span class="ow">and</span> <span class="n">gen_options</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">dialog</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="c1"># We already have the first message with a context update, so we use that</span>
             <span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">][</span><span class="s2">&quot;bot_message&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
             <span class="n">messages</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1940,9 +1892,7 @@ window.addEventListener("load", load);
             <span class="n">new_events</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="c1"># Compute the new events.</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">new_events</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">generate_events</span><span class="p">(</span>
-                    <span class="n">state_events</span> <span class="o">+</span> <span class="n">events</span><span class="p">,</span> <span class="n">processing_log</span><span class="o">=</span><span class="n">processing_log</span>
-                <span class="p">)</span>
+                <span class="n">new_events</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">generate_events</span><span class="p">(</span><span class="n">state_events</span> <span class="o">+</span> <span class="n">events</span><span class="p">,</span> <span class="n">processing_log</span><span class="o">=</span><span class="n">processing_log</span><span class="p">)</span>
                 <span class="n">output_state</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -2030,10 +1980,7 @@ window.addEventListener("load", load);
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Ensure all items in responses are strings</span>
-            <span class="n">responses</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">response</span>
-                <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span>
-            <span class="p">]</span>
+            <span class="n">responses</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">response</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">]</span>
             <span class="n">new_message</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">responses</span><span class="p">)}</span>
         <span class="k">if</span> <span class="n">response_tool_calls</span><span class="p">:</span>
             <span class="n">new_message</span><span class="p">[</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_tool_calls</span>
@@ -2056,15 +2003,10 @@ window.addEventListener("load", load);
         <span class="c1"># TODO: add support for logging flag</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">explain_info</span><span class="o">.</span><span class="n">colang_history</span> <span class="o">=</span> <span class="n">get_colang_history</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Conversation history so far: </span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">explain_info</span><span class="o">.</span><span class="n">colang_history</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Conversation history so far: </span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">explain_info</span><span class="o">.</span><span class="n">colang_history</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">total_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;--- :: Total processing took </span><span class="si">%.2f</span><span class="s2"> seconds. Stats: </span><span class="si">%s</span><span class="s2">&quot;</span>
-            <span class="o">%</span> <span class="p">(</span><span class="n">total_time</span><span class="p">,</span> <span class="n">llm_stats</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;--- :: Total processing took </span><span class="si">%.2f</span><span class="s2"> seconds. Stats: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">total_time</span><span class="p">,</span> <span class="n">llm_stats</span><span class="p">))</span>
 
         <span class="c1"># If there is a streaming handler, we make sure we close it now</span>
         <span class="n">streaming_handler</span> <span class="o">=</span> <span class="n">streaming_handler_var</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
@@ -2129,9 +2071,7 @@ window.addEventListener("load", load);
 
                 <span class="c1"># Include information about activated rails and LLM calls if requested</span>
                 <span class="n">log_options</span> <span class="o">=</span> <span class="n">gen_options</span><span class="o">.</span><span class="n">log</span> <span class="k">if</span> <span class="n">gen_options</span> <span class="k">else</span> <span class="kc">None</span>
-                <span class="k">if</span> <span class="n">log_options</span> <span class="ow">and</span> <span class="p">(</span>
-                    <span class="n">log_options</span><span class="o">.</span><span class="n">activated_rails</span> <span class="ow">or</span> <span class="n">log_options</span><span class="o">.</span><span class="n">llm_calls</span>
-                <span class="p">):</span>
+                <span class="k">if</span> <span class="n">log_options</span> <span class="ow">and</span> <span class="p">(</span><span class="n">log_options</span><span class="o">.</span><span class="n">activated_rails</span> <span class="ow">or</span> <span class="n">log_options</span><span class="o">.</span><span class="n">llm_calls</span><span class="p">):</span>
                     <span class="n">res</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">GenerationLog</span><span class="p">()</span>
 
                     <span class="c1"># We always include the stats</span>
@@ -2170,9 +2110,7 @@ window.addEventListener("load", load);
                                     <span class="n">res</span><span class="o">.</span><span class="n">llm_output</span> <span class="o">=</span> <span class="n">llm_call</span><span class="o">.</span><span class="n">raw_response</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">gen_options</span> <span class="ow">and</span> <span class="n">gen_options</span><span class="o">.</span><span class="n">output_vars</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;The `output_vars` option is not supported for Colang 2.0 configurations.&quot;</span>
-                    <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The `output_vars` option is not supported for Colang 2.0 configurations.&quot;</span><span class="p">)</span>
 
                 <span class="n">log_options</span> <span class="o">=</span> <span class="n">gen_options</span><span class="o">.</span><span class="n">log</span> <span class="k">if</span> <span class="n">gen_options</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="n">log_options</span> <span class="ow">and</span> <span class="p">(</span>
@@ -2181,14 +2119,10 @@ window.addEventListener("load", load);
                     <span class="ow">or</span> <span class="n">log_options</span><span class="o">.</span><span class="n">internal_events</span>
                     <span class="ow">or</span> <span class="n">log_options</span><span class="o">.</span><span class="n">colang_history</span>
                 <span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;The `log` option is not supported for Colang 2.0 configurations.&quot;</span>
-                    <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The `log` option is not supported for Colang 2.0 configurations.&quot;</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">gen_options</span> <span class="ow">and</span> <span class="n">gen_options</span><span class="o">.</span><span class="n">llm_output</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;The `llm_output` option is not supported for Colang 2.0 configurations.&quot;</span>
-                    <span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The `llm_output` option is not supported for Colang 2.0 configurations.&quot;</span><span class="p">)</span>
 
             <span class="c1"># Include the state</span>
             <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2199,12 +2133,8 @@ window.addEventListener("load", load);
                 <span class="c1"># lazy import to avoid circular dependency</span>
                 <span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tracer</span>
 
-                <span class="n">span_format</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tracing</span><span class="p">,</span> <span class="s2">&quot;span_format&quot;</span><span class="p">,</span> <span class="s2">&quot;opentelemetry&quot;</span>
-                <span class="p">)</span>
-                <span class="n">enable_content_capture</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tracing</span><span class="p">,</span> <span class="s2">&quot;enable_content_capture&quot;</span><span class="p">,</span> <span class="kc">False</span>
-                <span class="p">)</span>
+                <span class="n">span_format</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tracing</span><span class="p">,</span> <span class="s2">&quot;span_format&quot;</span><span class="p">,</span> <span class="s2">&quot;opentelemetry&quot;</span><span class="p">)</span>
+                <span class="n">enable_content_capture</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tracing</span><span class="p">,</span> <span class="s2">&quot;enable_content_capture&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
                 <span class="c1"># Create a Tracer instance with instantiated adapters and span configuration</span>
                 <span class="n">tracer</span> <span class="o">=</span> <span class="n">Tracer</span><span class="p">(</span>
                     <span class="nb">input</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
@@ -2254,8 +2184,7 @@ window.addEventListener("load", load);
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_validate_streaming_with_output_rails</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">flows</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span>
-            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span><span class="o">.</span><span class="n">enabled</span>
+            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span><span class="o">.</span><span class="n">enabled</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="n">StreamingNotSupportedError</span><span class="p">(</span>
                 <span class="s2">&quot;stream_async() cannot be used when output rails are configured but &quot;</span>
@@ -2314,10 +2243,7 @@ window.addEventListener("load", load);
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_streaming_with_output_rails</span><span class="p">()</span>
         <span class="c1"># if an external generator is provided, use it directly</span>
         <span class="k">if</span> <span class="n">generator</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span><span class="o">.</span><span class="n">enabled</span>
-            <span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_output_rails_in_streaming</span><span class="p">(</span>
                     <span class="n">streaming_handler</span><span class="o">=</span><span class="n">generator</span><span class="p">,</span>
                     <span class="n">output_rails_streaming_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
@@ -2367,10 +2293,7 @@ window.addEventListener("load", load);
         <span class="c1"># when we have output rails we wrap the streaming handler</span>
         <span class="c1"># if len(self.config.rails.output.flows) &gt; 0:</span>
         <span class="c1">#</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span>
-            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span><span class="o">.</span><span class="n">enabled</span>
-        <span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
             <span class="n">base_iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_output_rails_in_streaming</span><span class="p">(</span>
                 <span class="n">streaming_handler</span><span class="o">=</span><span class="n">streaming_handler</span><span class="p">,</span>
                 <span class="n">output_rails_streaming_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
@@ -2449,9 +2372,7 @@ window.addEventListener("load", load);
 
         <span class="c1"># Compute the new events.</span>
         <span class="n">processing_log</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">new_events</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">generate_events</span><span class="p">(</span>
-            <span class="n">events</span><span class="p">,</span> <span class="n">processing_log</span><span class="o">=</span><span class="n">processing_log</span>
-        <span class="p">)</span>
+        <span class="n">new_events</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">generate_events</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">processing_log</span><span class="o">=</span><span class="n">processing_log</span><span class="p">)</span>
 
         <span class="c1"># If logging is enabled, we log the conversation</span>
         <span class="c1"># TODO: add support for logging flag</span>
@@ -2512,9 +2433,7 @@ window.addEventListener("load", load);
         <span class="c1"># We need to protect &#39;process_events&#39; to be called only once at a time</span>
         <span class="c1"># TODO (cschueller): Why is this?</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">process_events_semaphore</span><span class="p">:</span>
-            <span class="n">output_events</span><span class="p">,</span> <span class="n">output_state</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">process_events</span><span class="p">(</span>
-                <span class="n">events</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">blocking</span>
-            <span class="p">)</span>
+            <span class="n">output_events</span><span class="p">,</span> <span class="n">output_state</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">process_events</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">blocking</span><span class="p">)</span>
 
         <span class="n">took</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
         <span class="c1"># Small tweak, disable this when there were no events (or it was just too fast).</span>
@@ -2542,9 +2461,7 @@ window.addEventListener("load", load);
             <span class="p">)</span>
 
         <span class="n">loop</span> <span class="o">=</span> <span class="n">get_or_create_event_loop</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">process_events_async</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">blocking</span><span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">process_events_async</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">blocking</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="LLMRails.check_async">
@@ -2623,17 +2540,13 @@ window.addEventListener("load", load);
         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_async</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">GenerationResponse</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Expected GenerationResponse, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected GenerationResponse, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">blocking_rail</span> <span class="o">=</span> <span class="n">_get_blocking_rail</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
         <span class="n">result_content</span> <span class="o">=</span> <span class="n">_get_last_response_content</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">blocking_rail</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">RailsResult</span><span class="p">(</span>
-                <span class="n">status</span><span class="o">=</span><span class="n">RailStatus</span><span class="o">.</span><span class="n">BLOCKED</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">result_content</span><span class="p">,</span> <span class="n">rail</span><span class="o">=</span><span class="n">blocking_rail</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">RailsResult</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">RailStatus</span><span class="o">.</span><span class="n">BLOCKED</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">result_content</span><span class="p">,</span> <span class="n">rail</span><span class="o">=</span><span class="n">blocking_rail</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">result_content</span> <span class="o">!=</span> <span class="n">original_content</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">RailsResult</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">RailStatus</span><span class="o">.</span><span class="n">MODIFIED</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">result_content</span><span class="p">)</span>
@@ -2664,9 +2577,7 @@ window.addEventListener("load", load);
             <span class="p">)</span>
 
         <span class="n">loop</span> <span class="o">=</span> <span class="n">get_or_create_event_loop</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">check_async</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">rail_types</span><span class="o">=</span><span class="n">rail_types</span><span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_async</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">rail_types</span><span class="o">=</span><span class="n">rail_types</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="LLMRails.register_action">
@@ -2715,9 +2626,7 @@ window.addEventListener("load", load);
 
 <div class="viewcode-block" id="LLMRails.register_embedding_search_provider">
 <a class="viewcode-back" href="../../../../reference/python-api/generated/nemoguardrails.rails.llm.llmrails.LLMRails.html#nemoguardrails.rails.llm.llmrails.LLMRails.register_embedding_search_provider">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">register_embedding_search_provider</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EmbeddingsIndex</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_embedding_search_provider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EmbeddingsIndex</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a new embedding search provider.</span>
 
 <span class="sd">        Args:</span>
@@ -2731,9 +2640,7 @@ window.addEventListener("load", load);
 
 <div class="viewcode-block" id="LLMRails.register_embedding_provider">
 <a class="viewcode-back" href="../../../../reference/python-api/generated/nemoguardrails.rails.llm.llmrails.LLMRails.html#nemoguardrails.rails.llm.llmrails.LLMRails.register_embedding_provider">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">register_embedding_provider</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EmbeddingModel</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_embedding_provider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EmbeddingModel</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a custom embedding provider.</span>
 
 <span class="sd">        Args:</span>
@@ -2867,27 +2774,21 @@ window.addEventListener("load", load);
                 <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
                 <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
                 <span class="s2">&quot;llms&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">registered_action_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;llms&quot;</span><span class="p">,</span> <span class="p">{}),</span>
-                <span class="s2">&quot;llm&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">registered_action_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">action_name</span><span class="si">}</span><span class="s2">_llm&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span>
-                <span class="p">),</span>
+                <span class="s2">&quot;llm&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">registered_action_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">action_name</span><span class="si">}</span><span class="s2">_llm&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="p">),</span>
                 <span class="o">**</span><span class="n">action_params</span><span class="p">,</span>
             <span class="p">}</span>
 
         <span class="n">buffer_strategy</span> <span class="o">=</span> <span class="n">get_buffer_strategy</span><span class="p">(</span><span class="n">output_rails_streaming_config</span><span class="p">)</span>
         <span class="n">output_rails_flows_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">flows</span>
         <span class="n">stream_first</span> <span class="o">=</span> <span class="n">stream_first</span> <span class="ow">or</span> <span class="n">output_rails_streaming_config</span><span class="o">.</span><span class="n">stream_first</span>
-        <span class="n">get_action_details</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-            <span class="n">get_action_details_from_flow_id</span><span class="p">,</span> <span class="n">flows</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">flows</span>
-        <span class="p">)</span>
+        <span class="n">get_action_details</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">get_action_details_from_flow_id</span><span class="p">,</span> <span class="n">flows</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">flows</span><span class="p">)</span>
 
         <span class="n">parallel_mode</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;parallel&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
         <span class="k">async</span> <span class="k">for</span> <span class="n">chunk_batch</span> <span class="ow">in</span> <span class="n">buffer_strategy</span><span class="p">(</span><span class="n">streaming_handler</span><span class="p">):</span>
             <span class="n">user_output_chunks</span> <span class="o">=</span> <span class="n">chunk_batch</span><span class="o">.</span><span class="n">user_output_chunks</span>
             <span class="c1"># format processing_context for output rails processing (needs full context)</span>
-            <span class="n">bot_response_chunk</span> <span class="o">=</span> <span class="n">buffer_strategy</span><span class="o">.</span><span class="n">format_chunks</span><span class="p">(</span>
-                <span class="n">chunk_batch</span><span class="o">.</span><span class="n">processing_context</span>
-            <span class="p">)</span>
+            <span class="n">bot_response_chunk</span> <span class="o">=</span> <span class="n">buffer_strategy</span><span class="o">.</span><span class="n">format_chunks</span><span class="p">(</span><span class="n">chunk_batch</span><span class="o">.</span><span class="n">processing_context</span><span class="p">)</span>
 
             <span class="c1"># check if user_output_chunks is a list of individual chunks</span>
             <span class="c1"># or if it&#39;s a JSON string, by convention this means an error occurred and the error dict is stored as a JSON</span>
@@ -2907,9 +2808,7 @@ window.addEventListener("load", load);
 
             <span class="k">if</span> <span class="n">parallel_mode</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">context</span> <span class="o">=</span> <span class="n">_prepare_context_for_parallel_rails</span><span class="p">(</span>
-                        <span class="n">bot_response_chunk</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">messages</span>
-                    <span class="p">)</span>
+                    <span class="n">context</span> <span class="o">=</span> <span class="n">_prepare_context_for_parallel_rails</span><span class="p">(</span><span class="n">bot_response_chunk</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
                     <span class="n">events</span> <span class="o">=</span> <span class="n">_create_events_for_chunk</span><span class="p">(</span><span class="n">bot_response_chunk</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
 
                     <span class="n">flows_with_params</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2940,9 +2839,7 @@ window.addEventListener("load", load);
                     <span class="n">result</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">result_tuple</span>
 
                     <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="s2">&quot;success&quot;</span><span class="p">:</span>
-                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Parallel rails execution failed with status: </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span>
-                        <span class="p">)</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parallel rails execution failed with status: </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="c1"># continue processing the chunk even if rails fail</span>
                         <span class="k">pass</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -2955,9 +2852,7 @@ window.addEventListener("load", load);
                             <span class="n">error_type</span> <span class="o">=</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error_type&quot;</span><span class="p">)</span>
 
                             <span class="k">if</span> <span class="n">error_type</span> <span class="o">==</span> <span class="s2">&quot;internal_error&quot;</span><span class="p">:</span>
-                                <span class="n">error_message</span> <span class="o">=</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;error_message&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown error&quot;</span>
-                                <span class="p">)</span>
+                                <span class="n">error_message</span> <span class="o">=</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error_message&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown error&quot;</span><span class="p">)</span>
                                 <span class="n">reason</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Internal error in </span><span class="si">{</span><span class="n">blocked_flow</span><span class="si">}</span><span class="s2"> rail: </span><span class="si">{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
                                 <span class="n">error_code</span> <span class="o">=</span> <span class="s2">&quot;rail_execution_failure&quot;</span>
                                 <span class="n">error_type</span> <span class="o">=</span> <span class="s2">&quot;internal_error&quot;</span>
@@ -2999,9 +2894,7 @@ window.addEventListener("load", load);
                         <span class="n">action_params</span><span class="o">=</span><span class="n">action_params</span><span class="p">,</span>
                     <span class="p">)</span>
 
-                    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">action_dispatcher</span><span class="o">.</span><span class="n">execute_action</span><span class="p">(</span>
-                        <span class="n">action_name</span><span class="p">,</span> <span class="n">params</span>
-                    <span class="p">)</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">action_dispatcher</span><span class="o">.</span><span class="n">execute_action</span><span class="p">(</span><span class="n">action_name</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">explain_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_explain_info</span><span class="p">()</span>
 
                     <span class="n">action_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">action_dispatcher</span><span class="o">.</span><span class="n">get_action</span><span class="p">(</span><span class="n">action_name</span><span class="p">)</span>
