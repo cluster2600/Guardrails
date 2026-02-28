@@ -706,7 +706,7 @@ current evaluation, this is the step.</p></li>
 </ul>
 <p>The datasets were transformed into a NeMo Guardrails app by defining canonical forms for each intent, specific dialogue flows, and even bot messages (for the <em>chit-chat</em> dataset alone).
 The two datasets have a large number of user intents, thus dialog rails. One of them is very generic and has higher-grained intents (<em>chit-chat</em>), while the <em>banking</em> dataset is domain-specific and more fine-grained.
-More details about running the dialog rails evaluation experiments and the evaluation datasets are available <span class="xref myst">here</span>.</p>
+More details about running the dialog rails evaluation experiments and the evaluation datasets are available <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/evaluate/data/topical/README.md" rel="noreferer noopener" target="_blank">here</a>.</p>
 <p>Preliminary evaluation results follow next. In all experiments, we have chosen to have a balanced test set with at most 3 samples per intent.
 For both datasets, we have assessed the performance for various LLMs and also for the number of samples (<code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">all,</span> <span class="pre">3,</span> <span class="pre">1</span></code>) per intent that are indexed in the vector database.</p>
 <p>Take into account that the performance of an LLM is heavily dependent on the prompt, especially due to the more complex <a class="reference internal" href="../reference/colang-architecture-guide.html#example-prompt"><span class="std std-ref">prompt used by Guardrails</span></a>.
