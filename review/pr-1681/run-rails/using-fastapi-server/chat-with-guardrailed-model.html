@@ -721,7 +721,7 @@ Guardrails-specific fields such as <code class="docutils literal notranslate"><s
 <p>The <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> response object may include additional fields depending on your request options:</p>
 <ul class="simple">
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">state</span></code></strong> — State object for continuing the conversation. Return this in subsequent requests to resume.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">llm_output</span></code></strong> — Additional LLM output data (when <code class="docutils literal notranslate"><span class="pre">options.llm_output</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">llm_output</span></code></strong> — Additional LLM output data (when <code class="docutils literal notranslate"><span class="pre">guardrails.options.llm_output</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>).</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">output_data</span></code></strong> — Values for requested context variables (when <code class="docutils literal notranslate"><span class="pre">guardrails.options.output_vars</span></code> is set).</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">log</span></code></strong> — Logging information (when <code class="docutils literal notranslate"><span class="pre">guardrails.options.log</span></code> is configured).</p></li>
 </ul>
