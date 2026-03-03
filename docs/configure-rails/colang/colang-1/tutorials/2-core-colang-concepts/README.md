@@ -17,13 +17,13 @@ This "Hello World" guardrails configuration uses the OpenAI `gpt-4o-mini` model.
 pip install openai
 ```
 
-2. Set the `OPENAI_API_KEY` environment variable:
+1. Set the `OPENAI_API_KEY` environment variable:
 
 ```bash
 export OPENAI_API_KEY=$OPENAI_API_KEY  # Replace with your own key
 ```
 
-3. If you're running this inside a notebook, patch the AsyncIO loop.
+1. If you're running this inside a notebook, patch the AsyncIO loop.
 
 ```python
 import nest_asyncio
@@ -76,7 +76,7 @@ If you are wondering whether *user message canonical forms* are the same as clas
 
 In Colang, *flows* represent patterns of interaction between the user and the bot. In their simplest form, they are sequences of user and bot messages. In the "Hello World" example, the `greeting` flow is defined as:
 
-```colang
+```text
 define flow greeting
   user express greeting
   bot express greeting
@@ -247,7 +247,7 @@ print(info.llm_calls[0].completion)
   express greeting
 ```
 
-As we can see, the LLM correctly predicted the `express greeting` canonical form. It even went further to predict what the bot should do, which is `bot express greeting`, and the utterance that should be used. However, for the `generate_user_intent` task, only the first predicted line is used. If you want the LLM to predict everything in a single call, you can enable the [single LLM call option](#) in *config.yml* by setting the `rails.dialog.single_call` key to **True**.
+As we can see, the LLM correctly predicted the `express greeting` canonical form. It even went further to predict what the bot should do, which is `bot express greeting`, and the utterance that should be used. However, for the `generate_user_intent` task, only the first predicted line is used. If you want the LLM to predict everything in a single call, you can enable the [single LLM call option](../../../../configuration-reference.md#dialog-rails) in *config.yml* by setting the `rails.dialog.single_call` key to **True**.
 
 ### Step 2: Determine the next step
 
@@ -278,7 +278,7 @@ In our "Hello World" example, the predefined messages "Hello world!" and "How ar
 
 In the previous example, the LLM is prompted once. The following figure provides a summary of the outlined sequence of steps:
 
-```{image} ../../_static/puml/core_colang_concepts_fig_1.png
+```{image} ../../../../../_static/puml/core_colang_concepts_fig_1.png
 :alt: "Sequence diagram showing the three main steps of processing a user greeting: 1) Computing the canonical form of the user message, 2) Determining the next step using flows, and 3) Generating the bot's response message"
 :width: 486px
 :align: center
@@ -328,7 +328,7 @@ Summary: 3 LLM call(s) took 1.79 seconds and used 1374 tokens.
 
 Based on these steps, we can see that the `ask general question` canonical form is predicted for the user utterance "What is the capital of France?". Since there is no flow that matches it, the LLM is asked to predict the next step, which in this case is `bot response for general question`. Also, since there is no predefined response, the LLM is asked a third time to predict the final message.
 
-```{image} ../../_static/puml/core_colang_concepts_fig_2.png
+```{image} ../../../../../_static/puml/core_colang_concepts_fig_2.png
 :alt: "Sequence diagram showing the three main steps of processing a follow-up question in NeMo Guardrails: 1) Computing the canonical form of the user message, such as 'ask general question' for 'What is the capital of France?', 2) Determining the next step using the LLM, such as 'bot response for general question', and 3) Generating the bot's response message. These are the steps to handle a question that doesn't have a predefined flow."
 :width: 586px
 :align: center

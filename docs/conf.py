@@ -186,7 +186,7 @@ redirects = {
     # Other user guides
     "user-guides/cli": "reference/cli/index.html",
     "user-guides/colang-language-syntax-guide": "configure-rails/colang/colang-1/colang-language-syntax-guide.html",
-    "user-guides/guardrails-library": "configure-rails/guardrail-catalog.html",
+    "user-guides/guardrails-library": "configure-rails/guardrail-catalog/index.html",
     "user-guides/guardrails-process": "about/how-it-works.html",
     "user-guides/llm-support": "about/supported-llms.html",
     "user-guides/llm": "about/supported-llms.html",
@@ -212,6 +212,12 @@ exclude_patterns = [
     "README.md",
     "_build/**",
     "_extensions/**",
+    "LIVE_DOCS.md",
+    "research.md",
+    "scripts/**",
+    "docs-structure-context.md",
+    "user-guides/**",
+    "**/.cursor/**",
 ]
 
 myst_linkify_fuzzy_links = False
@@ -232,6 +238,7 @@ myst_substitutions = {
 myst_url_schemes = {
     "http": None,
     "https": None,
+    "mailto": None,
     "pr": {
         "url": "https://github.com/NVIDIA-NeMo/Guardrails/pull/{{path}}",
         "title": "PR #{{path}}",

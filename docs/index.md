@@ -118,7 +118,7 @@ Run guardrailed inference using the Python API or Guardrails API server.
 :::
 
 :::{grid-item-card} Evaluate
-:link: evaluation/README
+:link: evaluation/evaluate-guardrails
 :link-type: doc
 
 Measure accuracy and performance of dialog, fact-checking, moderation, and hallucination rails.
@@ -238,7 +238,6 @@ NeMo Microservice <deployment/using-microservice>
 :hidden:
 
 LangChain Frameworks <integration/langchain/index.md>
-AlignScore <integration/align-score-deployment>
 Tools Integration <integration/tools-integration.md>
 ```
 

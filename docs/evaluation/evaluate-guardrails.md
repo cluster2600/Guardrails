@@ -67,7 +67,7 @@ For the initial evaluation experiments for dialog rails, we have used two datase
 
 The datasets were transformed into a NeMo Guardrails app by defining canonical forms for each intent, specific dialogue flows, and even bot messages (for the _chit-chat_ dataset alone).
 The two datasets have a large number of user intents, thus dialog rails. One of them is very generic and has higher-grained intents (_chit-chat_), while the _banking_ dataset is domain-specific and more fine-grained.
-More details about running the dialog rails evaluation experiments and the evaluation datasets are available [here](../../nemoguardrails/evaluate/data/topical/README.md).
+More details about running the dialog rails evaluation experiments and the evaluation datasets are available [here](https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/evaluate/data/topical/README.md).
 
 Preliminary evaluation results follow next. In all experiments, we have chosen to have a balanced test set with at most 3 samples per intent.
 For both datasets, we have assessed the performance for various LLMs and also for the number of samples (`k = all, 3, 1`) per intent that are indexed in the vector database.
@@ -273,6 +273,8 @@ These results are using the _Simple_ prompt defined in the LLM Self-Checking met
 | gemini-1.0-pro         | 63                           | 36<sup>*</sup>                            | 97                           |
 
 <sup>*</sup> Note that as of Mar 13, 2024 `gemini-1.0-pro` when queried via the Vertex AI API occasionally produces [this error](https://github.com/GoogleCloudPlatform/generative-ai/issues/344). Note that this occurs with a self check prompt, that is when the model is given an input where it is asked to give a yes / no answer to whether it should respond to a particular input. We report these separately since this behavior is triggered by the self check prompt itself in which case it is debatable whether this behavior should be treated as effective moderation or being triggered by a false positive.
+
+(llamaguard-based-moderation-rails-performance)=
 
 ##### LlamaGuard-based Moderation Rails Performance
 
