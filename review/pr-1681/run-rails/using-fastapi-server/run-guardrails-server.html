@@ -805,13 +805,18 @@ The folder name becomes the only available <code class="docutils literal notrans
 </div>
 <p>Set the appropriate API key for your provider:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For NVIDIA-hosted models</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;nim&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://integrate.api.nvidia.com&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-nvidia-api-key&quot;</span>
 
 <span class="c1"># For OpenAI models</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;openai&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://api.openai.com/v1&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-openai-api-key&quot;</span>
 
 <span class="c1"># For Anthropic models</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;anthropic&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://api.anthropic.com&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-anthropic-api-key&quot;</span>
 
 <span class="c1"># For Azure OpenAI (also accepts &quot;azure_openai&quot; as engine name)</span>
