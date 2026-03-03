@@ -728,7 +728,7 @@ with guardrails-specific fields nested under a <code class="docutils literal not
 <span class="w">  </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;max_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;guardrails&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;config_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-config&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;config_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-config&quot;</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -758,7 +758,7 @@ with guardrails-specific fields nested under a <code class="docutils literal not
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">messages</span></code></p></td>
 <td><p>array of objects</p></td>
 <td><p>No</p></td>
-<td><p>The list of messages in the current conversation. Each message has <code class="docutils literal notranslate"><span class="pre">role</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span></code> fields.</p></td>
+<td><p>The list of messages in the current conversation. Each message has <code class="docutils literal notranslate"><span class="pre">role</span></code> and <code class="docutils literal notranslate"><span class="pre">content</span></code> fields. Although the OpenAI API requires this field, the Guardrails server treats it as optional to support stateful continuation via <code class="docutils literal notranslate"><span class="pre">guardrails.state</span></code>. When omitted, defaults to an empty list.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stream</span></code></p></td>
 <td><p>boolean</p></td>
@@ -1301,13 +1301,17 @@ This endpoint proxies the request to the provider specified by <code class="docu
 </thead>
 <tbody>
 <tr class="row-even"><td><p>502</p></td>
-<td><p>The upstream provider is unreachable, <code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_ENGINE</span></code> is unsupported, or <code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_BASE_URL</span></code> is not set.</p></td>
+<td><p>The upstream provider is unreachable or returned an error.</p></td>
 </tr>
 <tr class="row-odd"><td><p>4xx</p></td>
 <td><p>Proxied from the upstream provider (e.g., 401 for an invalid API key).</p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the engine is not in the built-in provider table and <code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_BASE_URL</span></code> is not set, the endpoint returns an empty model list instead of an error.</p>
 </div>
 </section>
 </section>
