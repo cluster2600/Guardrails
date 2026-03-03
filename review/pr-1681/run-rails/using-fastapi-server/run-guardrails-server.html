@@ -539,6 +539,7 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -808,6 +809,21 @@ The folder name becomes the only available <code class="docutils literal notrans
 
 <span class="c1"># For OpenAI models</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-openai-api-key&quot;</span>
+
+<span class="c1"># For Anthropic models</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;anthropic&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-anthropic-api-key&quot;</span>
+
+<span class="c1"># For Azure OpenAI (also accepts &quot;azure_openai&quot; as engine name)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;azure&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-azure-api-key&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;https://your-resource.openai.azure.com&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_API_VERSION</span><span class="o">=</span><span class="s2">&quot;2024-06-01&quot;</span><span class="w">  </span><span class="c1"># optional, defaults to 2024-06-01</span>
+
+<span class="c1"># For Cohere models</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;cohere&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">COHERE_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-cohere-api-key&quot;</span>
+<span class="c1"># export COHERE_BASE_URL=&quot;https://custom-endpoint.example.com&quot;  # optional</span>
 
 <span class="c1"># For self-hosted models (e.g., vLLM, NIM, TRT-LLM)</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;vllm&quot;</span>
