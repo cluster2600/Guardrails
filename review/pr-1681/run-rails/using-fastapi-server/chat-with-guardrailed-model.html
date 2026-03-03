@@ -735,7 +735,7 @@ Pass guardrails-specific fields using the <code class="docutils literal notransl
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
     <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000/v1&quot;</span><span class="p">,</span>
-    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;not-used&quot;</span>  <span class="c1"># Required by the SDK but not used by the guardrails server</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;not-used&quot;</span>  <span class="c1"># Required by OpenAI SDK but not used by the guardrails server</span>
 <span class="p">)</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
@@ -1020,32 +1020,6 @@ This is useful when you can only send the latest message rather than the full hi
 <span class="p">})</span>
 </pre></div>
 </div>
-<section id="continue-with-state">
-<h3>Continue with State<a class="headerlink" href="#continue-with-state" title="Link to this heading">#</a></h3>
-<p>To continue a conversation using the <code class="docutils literal notranslate"><span class="pre">state</span></code> object returned in a previous response, pass it back in the <code class="docutils literal notranslate"><span class="pre">guardrails.state</span></code> field.
-The state object must contain an <code class="docutils literal notranslate"><span class="pre">events</span></code> or <code class="docutils literal notranslate"><span class="pre">state</span></code> key. Use an empty dict <code class="docutils literal notranslate"><span class="pre">{}</span></code> to start a new conversation.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First request</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">}],</span>
-    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-<span class="n">state</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;guardrails&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span>
-
-<span class="c1"># Continue with state</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me more&quot;</span><span class="p">}],</span>
-    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="n">state</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-</pre></div>
-</div>
-</section>
 <section id="standard-openai-parameters">
 <h3>Standard OpenAI Parameters<a class="headerlink" href="#standard-openai-parameters" title="Link to this heading">#</a></h3>
 <p>You can also pass standard OpenAI parameters such as <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">max_tokens</span></code>, <code class="docutils literal notranslate"><span class="pre">top_p</span></code>, <code class="docutils literal notranslate"><span class="pre">stop</span></code>, <code class="docutils literal notranslate"><span class="pre">presence_penalty</span></code>, and <code class="docutils literal notranslate"><span class="pre">frequency_penalty</span></code> at the top level:</p>
@@ -1146,7 +1120,6 @@ The state object must contain an <code class="docutils literal notranslate"><spa
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-context">Add Context</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-generation-options">Control Generation Options</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continue-with-state">Continue with State</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-openai-parameters">Standard OpenAI Parameters</a></li>
 </ul>
 </li>
