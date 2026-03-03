@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Run the NeMo Guardrails Server &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
+    <title>List Available Models &#8212; NVIDIA NeMo Guardrails Library Developer Guide</title>
   
   
   
@@ -50,7 +50,7 @@
     <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
     <script src="../../_static/search-assets.bundle.js?v=00e3e057"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'run-rails/using-fastapi-server/run-guardrails-server';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'run-rails/using-fastapi-server/list-models';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -58,11 +58,11 @@
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
-    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/run-rails/using-fastapi-server/run-guardrails-server.html" />
+    <link rel="canonical" href="https://docs.nvidia.com/nemo/guardrails/latest/run-rails/using-fastapi-server/list-models.html" />
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Chat with Guardrailed Model" href="chat-with-guardrailed-model.html" />
-    <link rel="prev" title="Overview of the NeMo Guardrails Library API Server" href="overview.html" />
+    <link rel="next" title="Use the Actions Server" href="actions-server.html" />
+    <link rel="prev" title="List Guardrail Configurations" href="list-guardrail-configs.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -536,10 +536,10 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Guardrails API Server</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Run the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="list-guardrail-configs.html">List Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="list-models.html">List Models</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -650,7 +650,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Use the Guardrails API Server</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Run the NeMo Guardrails Server</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">List Available Models</span></li>
   </ul>
 </nav>
 </div>
@@ -667,220 +667,166 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="run-the-nemo-guardrails-server">
-<h1>Run the NeMo Guardrails Server<a class="headerlink" href="#run-the-nemo-guardrails-server" title="Link to this heading">#</a></h1>
-<p>The NeMo Guardrails server loads configurations from a local directory at startup and exposes an HTTP API to use them.
-The server uses <a class="reference external" href="https://fastapi.tiangolo.com/" rel="noreferer noopener" target="_blank">FastAPI</a> and includes a built-in Chat UI for testing.</p>
-<section id="start-the-server">
-<h2>Start the Server<a class="headerlink" href="#start-the-server" title="Link to this heading">#</a></h2>
-<p>Launch the server using the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs
+  <section class="tex2jax_ignore mathjax_ignore" id="list-available-models">
+<h1>List Available Models<a class="headerlink" href="#list-available-models" title="Link to this heading">#</a></h1>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/v1/models</span></code> endpoint to retrieve the list of LLM models available from the configured provider.
+This endpoint is compatible with the <a class="reference external" href="https://platform.openai.com/docs/api-reference/models/list" rel="noreferer noopener" target="_blank">OpenAI Models API</a>
+and proxies the request to the upstream model provider configured via environment variables.</p>
+<section id="request">
+<h2>Request<a class="headerlink" href="#request" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:8000/v1/models
 </pre></div>
 </div>
-<p>For more information about the available options, see <a class="reference internal" href="../../reference/cli/index.html#server"><span class="std std-ref">server</span></a>.</p>
+<p>No request body or query parameters are required.</p>
 </section>
-<section id="link-guardrail-configurations-to-the-server">
-<h2>Link Guardrail Configurations to the Server<a class="headerlink" href="#link-guardrail-configurations-to-the-server" title="Link to this heading">#</a></h2>
-<p>The server supports two modes depending on your folder structure: <strong>multi-config mode</strong> and <strong>single-config mode</strong>.</p>
-<section id="multi-config-mode">
-<h3>Multi-Config Mode<a class="headerlink" href="#multi-config-mode" title="Link to this heading">#</a></h3>
-<p>When the <code class="docutils literal notranslate"><span class="pre">--config</span></code> path points to a folder containing multiple sub-folders, each sub-folder with a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file becomes an available configuration.
-The sub-folder name becomes the <code class="docutils literal notranslate"><span class="pre">config_id</span></code>.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>examples/configs/          # --config points here
-├── content_safety/        # config_id: &quot;content_safety&quot;
-│   ├── rails.co
-│   └── config.yml
-├── jailbreak_detection/   # config_id: &quot;jailbreak_detection&quot;
-│   ├── flows.co
-│   └── config.yml
-└── topic_safety/          # config_id: &quot;topic_safety&quot;
-    └── config.yml
-</pre></div>
-</div>
-<ol class="arabic">
-<li><p>Start the server in multi-config mode:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs
-</pre></div>
-</div>
-</li>
-<li><p>List available configurations.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:8000/v1/rails/configs
-</pre></div>
-</div>
-<p>The endpoint returns the list of available configurations.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;content_safety&quot;</span><span class="p">},</span>
-<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jailbreak_detection&quot;</span><span class="p">},</span>
-<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;topic_safety&quot;</span><span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-<section id="single-config-mode">
-<h3>Single-Config Mode<a class="headerlink" href="#single-config-mode" title="Link to this heading">#</a></h3>
-<p>When the <code class="docutils literal notranslate"><span class="pre">--config</span></code> path points directly to a folder containing a <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file, the server runs in single-config mode.
-The folder name becomes the only available <code class="docutils literal notranslate"><span class="pre">config_id</span></code>.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>examples/configs/content_safety/   # --config points here
-├── rails.co
-└── config.yml                     # config_id: &quot;content_safety&quot;
-</pre></div>
-</div>
-<ol class="arabic">
-<li><p>Start the server in single-config mode:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs/content_safety
-</pre></div>
-</div>
-</li>
-<li><p>List available configurations.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:8000/v1/rails/configs
-</pre></div>
-</div>
-<p>The endpoint returns the single configuration named <code class="docutils literal notranslate"><span class="pre">content_safety</span></code>.</p>
-</li>
-</ol>
-</section>
-</section>
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
-<p>The following examples show how to start the server with different options.</p>
-<section id="start-with-default-settings">
-<h3>Start with Default Settings<a class="headerlink" href="#start-with-default-settings" title="Link to this heading">#</a></h3>
-<p>The following command starts the server with default settings.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server
-</pre></div>
-</div>
-<p>The server starts on port 8000 and looks for a <code class="docutils literal notranslate"><span class="pre">./config</span></code> folder in the current directory. If not found, it uses the built-in example configurations.</p>
-</section>
-<section id="start-with-custom-port">
-<h3>Start with Custom Port<a class="headerlink" href="#start-with-custom-port" title="Link to this heading">#</a></h3>
-<p>You can use the <code class="docutils literal notranslate"><span class="pre">--port</span></code> flag to start the server on a custom port.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
+<section id="response">
+<h2>Response<a class="headerlink" href="#response" title="Link to this heading">#</a></h2>
+<p>The endpoint returns a standard OpenAI models list:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1700000000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;owned_by&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;system&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;meta/llama-3.1-70b-instruct&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1700000000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;owned_by&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;system&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="start-with-a-default-configuration">
-<h3>Start with a Default Configuration<a class="headerlink" href="#start-with-a-default-configuration" title="Link to this heading">#</a></h3>
-<p>Use the following command to start the server with a default configuration within a multi-config folder. For example, when you use the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/examples/configs" rel="noreferer noopener" target="_blank">provided example configurations (<code class="docutils literal notranslate"><span class="pre">examples/configs</span></code>)</a>, you can set the default configuration to <code class="docutils literal notranslate"><span class="pre">content_safety</span></code> as follows.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>examples/configs<span class="w"> </span>--default-config-id<span class="w"> </span>content_safety
-</pre></div>
-</div>
-<p>Chat completions requests without a <code class="docutils literal notranslate"><span class="pre">config_id</span></code> use the <code class="docutils literal notranslate"><span class="pre">content_safety</span></code> configuration by default.</p>
-</section>
-<section id="start-in-development-mode">
-<h3>Start in Development Mode<a class="headerlink" href="#start-in-development-mode" title="Link to this heading">#</a></h3>
-<p>You can add the <code class="docutils literal notranslate"><span class="pre">--auto-reload</span></code> flag to the server to automatically reload when configuration files change.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./configs<span class="w"> </span>--auto-reload
-</pre></div>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Use <code class="docutils literal notranslate"><span class="pre">--auto-reload</span></code> only in development environments. It is not recommended for production.</p>
-</div>
-</section>
-</section>
-<section id="model-provider-configuration">
-<h2>Model Provider Configuration<a class="headerlink" href="#model-provider-configuration" title="Link to this heading">#</a></h2>
-<p>When the <code class="docutils literal notranslate"><span class="pre">model</span></code> field is specified in a chat completion request, the server uses environment variables to determine which LLM provider and endpoint to use.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 35.0%" />
-<col style="width: 65.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Environment Variable</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_ENGINE</span></code></p></td>
-<td><p>The LLM engine to use (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;openai&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;nim&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;vllm&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;anthropic&quot;</span></code>). Default: <code class="docutils literal notranslate"><span class="pre">&quot;openai&quot;</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_BASE_URL</span></code></p></td>
-<td><p>Base URL for the LLM provider. Use this for self-hosted models (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;http://localhost:8080/v1&quot;</span></code>).</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Set the appropriate API key for your provider:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For NVIDIA-hosted models</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;nim&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://integrate.api.nvidia.com&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">NVIDIA_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-nvidia-api-key&quot;</span>
+<section id="using-python">
+<h2>Using Python<a class="headerlink" href="#using-python" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
-<span class="c1"># For OpenAI models</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;openai&quot;</span>
+<span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/models&quot;</span><span class="p">)</span>
+<span class="n">models</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available models:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">model</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-the-openai-python-sdk">
+<h2>Using the OpenAI Python SDK<a class="headerlink" href="#using-the-openai-python-sdk" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000/v1&quot;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;not-used&quot;</span>
+<span class="p">)</span>
+
+<span class="n">models</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="provider-configuration">
+<h2>Provider Configuration<a class="headerlink" href="#provider-configuration" title="Link to this heading">#</a></h2>
+<p>The server determines which upstream provider to query based on the <code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_ENGINE</span></code> and related environment variables.
+The following providers are supported.</p>
+<section id="openai">
+<h3>OpenAI<a class="headerlink" href="#openai" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;openai&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://api.openai.com/v1&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-openai-api-key&quot;</span>
-
-<span class="c1"># For Anthropic models</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;anthropic&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://api.anthropic.com&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-anthropic-api-key&quot;</span>
-
-<span class="c1"># For Azure OpenAI (also accepts &quot;azure_openai&quot; as engine name)</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;azure&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-azure-api-key&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;https://your-resource.openai.azure.com&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_API_VERSION</span><span class="o">=</span><span class="s2">&quot;2024-06-01&quot;</span><span class="w">  </span><span class="c1"># optional, defaults to 2024-06-01</span>
-
-<span class="c1"># For Cohere models</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;cohere&quot;</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">COHERE_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-cohere-api-key&quot;</span>
-<span class="c1"># export COHERE_BASE_URL=&quot;https://custom-endpoint.example.com&quot;  # optional</span>
-
-<span class="c1"># For self-hosted models (e.g., vLLM, NIM, TRT-LLM)</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;vllm&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="nvidia-nim">
+<h3>NVIDIA NIM<a class="headerlink" href="#nvidia-nim" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;nim&quot;</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080/v1&quot;</span>
 </pre></div>
 </div>
 </section>
-<section id="cors-configuration">
-<h2>CORS Configuration<a class="headerlink" href="#cors-configuration" title="Link to this heading">#</a></h2>
-<p>To enable your guardrails server to receive requests from browser-based applications, configure CORS using environment variables:</p>
+<section id="vllm-trt-llm">
+<h3>vLLM / TRT-LLM<a class="headerlink" href="#vllm-trt-llm" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;vllm&quot;</span><span class="w">  </span><span class="c1"># or &quot;trt_llm&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080/v1&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="anthropic">
+<h3>Anthropic<a class="headerlink" href="#anthropic" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;anthropic&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-anthropic-api-key&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="azure-openai">
+<h3>Azure OpenAI<a class="headerlink" href="#azure-openai" title="Link to this heading">#</a></h3>
+<p>The engine name <code class="docutils literal notranslate"><span class="pre">azure_openai</span></code> is also accepted as an alias for <code class="docutils literal notranslate"><span class="pre">azure</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;azure&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-azure-api-key&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;https://your-resource.openai.azure.com&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_OPENAI_API_VERSION</span><span class="o">=</span><span class="s2">&quot;2024-06-01&quot;</span><span class="w">  </span><span class="c1"># optional, defaults to 2024-06-01</span>
+</pre></div>
+</div>
+</section>
+<section id="cohere">
+<h3>Cohere<a class="headerlink" href="#cohere" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;cohere&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">COHERE_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-cohere-api-key&quot;</span>
+<span class="c1"># Optional: override the Cohere API base URL (defaults to https://api.cohere.com)</span>
+<span class="c1"># export COHERE_BASE_URL=&quot;https://custom-cohere-endpoint.example.com&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-openai-compatible-endpoint">
+<h3>Custom OpenAI-Compatible Endpoint<a class="headerlink" href="#custom-openai-compatible-endpoint" title="Link to this heading">#</a></h3>
+<p>For any provider that exposes an OpenAI-compatible <code class="docutils literal notranslate"><span class="pre">/v1/models</span></code> endpoint, set <code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_BASE_URL</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_ENGINE</span><span class="o">=</span><span class="s2">&quot;my-custom-engine&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAIN_MODEL_BASE_URL</span><span class="o">=</span><span class="s2">&quot;http://my-provider:8080/v1&quot;</span>
+</pre></div>
+</div>
+<p>The server falls back to querying <code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_BASE_URL</span></code> when the engine is not in the built-in provider table.</p>
+</section>
+</section>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Link to this heading">#</a></h2>
+<p>The endpoint forwards the <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header from the incoming request to the upstream provider.
+If no <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header is present, the server uses the API key from the appropriate environment variable for the configured engine.</p>
+</section>
+<section id="error-responses">
+<h2>Error Responses<a class="headerlink" href="#error-responses" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 40.0%" />
-<col style="width: 60.0%" />
-</colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Environment Variable</p></th>
+<tr class="row-odd"><th class="head"><p>Status Code</p></th>
 <th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NEMO_GUARDRAILS_SERVER_ENABLE_CORS</span></code></p></td>
-<td><p>Set to <code class="docutils literal notranslate"><span class="pre">true</span></code> to enable CORS. Default: <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></td>
+<tr class="row-even"><td><p>502</p></td>
+<td><p>The upstream provider is unreachable or returned an error.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NEMO_GUARDRAILS_SERVER_ALLOWED_ORIGINS</span></code></p></td>
-<td><p>Comma-separated list of allowed origins. Default: <code class="docutils literal notranslate"><span class="pre">*</span></code>.</p></td>
+<tr class="row-odd"><td><p>4xx</p></td>
+<td><p>Proxied from the upstream provider (e.g., 401 for invalid API key).</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Example:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NEMO_GUARDRAILS_SERVER_ENABLE_CORS</span><span class="o">=</span><span class="nb">true</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">NEMO_GUARDRAILS_SERVER_ALLOWED_ORIGINS</span><span class="o">=</span>http://localhost:3000,https://myapp.com
-nemoguardrails<span class="w"> </span>server<span class="w"> </span>--config<span class="w"> </span>./configs
-</pre></div>
-</div>
-</section>
-<section id="chat-ui">
-<h2>Chat UI<a class="headerlink" href="#chat-ui" title="Link to this heading">#</a></h2>
-<p>The server includes a built-in Chat UI for testing guardrails configurations.
-Access it at <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/</span></code> after starting the server.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The Chat UI is for internal testing only.
-For production deployments, disable it using the <code class="docutils literal notranslate"><span class="pre">--disable-chat-ui</span></code> flag.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the engine is not in the built-in provider table and <code class="docutils literal notranslate"><span class="pre">MAIN_MODEL_BASE_URL</span></code> is not set, the endpoint returns an empty model list instead of an error.</p>
 </div>
 </section>
 <section id="related-topics">
 <h2>Related Topics<a class="headerlink" href="#related-topics" title="Link to this heading">#</a></h2>
 <ul class="simple">
+<li><p><a class="reference internal" href="run-guardrails-server.html"><span class="std std-doc">Run the NeMo Guardrails Server</span></a></p></li>
 <li><p><a class="reference internal" href="chat-with-guardrailed-model.html"><span class="std std-doc">Chat with Guardrailed Model</span></a></p></li>
-<li><p><a class="reference internal" href="list-guardrail-configs.html"><span class="std std-doc">List Guardrail Configurations</span></a></p></li>
 <li><p><a class="reference internal" href="../../reference/api-server-endpoints/index.html"><span class="std std-doc">NeMo Guardrails Library API Server Endpoints Reference</span></a></p></li>
 </ul>
 </section>
@@ -897,20 +843,20 @@ For production deployments, disable it using the <code class="docutils literal n
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="overview.html"
+       href="list-guardrail-configs.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Overview of the NeMo Guardrails Library API Server</p>
+        <p class="prev-next-title">List Guardrail Configurations</p>
       </div>
     </a>
     <a class="right-next"
-       href="chat-with-guardrailed-model.html"
+       href="actions-server.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Chat with Guardrailed Model</p>
+        <p class="prev-next-title">Use the Actions Server</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -935,22 +881,22 @@ For production deployments, disable it using the <code class="docutils literal n
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-server">Start the Server</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#link-guardrail-configurations-to-the-server">Link Guardrail Configurations to the Server</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-config-mode">Multi-Config Mode</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-config-mode">Single-Config Mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request">Request</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#response">Response</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-python">Using Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-openai-python-sdk">Using the OpenAI Python SDK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#provider-configuration">Provider Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openai">OpenAI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-nim">NVIDIA NIM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vllm-trt-llm">vLLM / TRT-LLM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anthropic">Anthropic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#azure-openai">Azure OpenAI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cohere">Cohere</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-openai-compatible-endpoint">Custom OpenAI-Compatible Endpoint</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-default-settings">Start with Default Settings</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-custom-port">Start with Custom Port</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-a-default-configuration">Start with a Default Configuration</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-in-development-mode">Start in Development Mode</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-provider-configuration">Model Provider Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cors-configuration">CORS Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-ui">Chat UI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authentication">Authentication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-responses">Error Responses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 </ul>
   </nav></div>
