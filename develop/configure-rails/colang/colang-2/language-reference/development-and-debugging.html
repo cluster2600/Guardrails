@@ -690,7 +690,7 @@
 <p>To help debugging your Colang flows, you can use the print statement <code class="docutils literal notranslate"><span class="pre">print</span> <span class="pre">&lt;expression&gt;</span></code> to print something to the standard output.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">development_debugging/print_statement/main.co</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     user said something as $flow
     print $flow.transcript
 </pre></div>
@@ -705,7 +705,7 @@
 <p>Furthermore, the Colang function <code class="docutils literal notranslate"><span class="pre">flows_info</span></code> can be used to return more information about a flow instance:</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">development_debugging/flows_info/main.co</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     await a
     match RestartEvent()
 
@@ -816,7 +816,7 @@ flow a
 </div>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">All CLI debugging commands</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flows [--all] [--order_by_name] # Shows all (active) flows in a table in order of their interaction loop priority and name
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flows [--all] [--order_by_name] # Shows all (active) flows in a table in order of their interaction loop priority and name
 tree # Shows the flow hierarchy tree of all (active) flows. A flow is waiting on a child flow to finish if it&#39;s indicated by the character `&gt;`.
 flow [&lt;flow_name&gt;|&lt;flow_instance_uid&gt;] # Show flow or flow instance details
 pause # Pause timer event processing such that interaction does not continue on its own

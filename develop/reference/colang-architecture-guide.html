@@ -683,7 +683,7 @@
 <h3>Canonical User Messages<a class="headerlink" href="#canonical-user-messages" title="Link to this heading">#</a></h3>
 <p>The first stage is to generate the canonical form for the user utterance. This canonical form captures the user’s intent and allows the guardrails system to trigger any specific flows.</p>
 <p>This stage is itself implemented through a colang flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow generate user intent
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow generate user intent
   &quot;&quot;&quot;Turn the raw user utterance into a canonical form.&quot;&quot;&quot;
 
   event UtteranceUserActionFinished(final_transcript=&quot;...&quot;)
@@ -703,7 +703,7 @@
 </ol>
 <p>When the LLM is used to decide the next step, a vector search is performed for the most relevant flows from the guardrails configuration. As in the previous step, the top 5 flows are included in the prompt, and the LLM is asked to predict the next step.</p>
 <p>This stage is implemented through a flow as well:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow generate next step
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow generate next step
   &quot;&quot;&quot;Generate the next step when there isn&#39;t any.
 
   We set the priority at 0.9 so it is lower than the default which is 1. So, if there
@@ -731,7 +731,7 @@
 <p>Similar to the previous stages, the <code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code> action performs a vector search for the most relevant bot utterance examples included in the guardrails configuration. Next, they get included in the prompt, and we ask the LLM to generate the utterance for the current bot intent.</p>
 <p><strong>Note</strong>: If a knowledge base is provided in the guardrails configuration (i.e., a <code class="docutils literal notranslate"><span class="pre">kb/</span></code> folder), then a vector search is also performed for the most relevant chunks of text to include in the prompt as well (the <code class="docutils literal notranslate"><span class="pre">retrieve_relevant_chunks</span></code> action).</p>
 <p>The flow implementing this logic is the following:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define extension flow generate bot message
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define extension flow generate bot message
   &quot;&quot;&quot;Generate the bot utterance for a bot message.
 
   We always want to generate an utterance after a bot intent, hence the high priority.
@@ -811,7 +811,7 @@
 <h3>Extending the Default Process<a class="headerlink" href="#extending-the-default-process" title="Link to this heading">#</a></h3>
 <p>The event-driven design allows us to hook into the process and add additional guardrails.</p>
 <p>For example, we can add an additional fact-checking guardrail (through the <code class="docutils literal notranslate"><span class="pre">check_facts</span></code> action) after a question about the report.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow answer report question
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow answer report question
   user ask about report
   bot provide report answer
   $accuracy = execute check_facts

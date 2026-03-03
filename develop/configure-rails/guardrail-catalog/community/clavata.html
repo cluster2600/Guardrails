@@ -764,7 +764,7 @@
 <h4>For users of Colang 2.0<a class="headerlink" href="#for-users-of-colang-2-0" title="Link to this heading">#</a></h4>
 <p>If you’re using Colang 2.0, there’s no need to specify configuration for input and output rails in your <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>. In fact, doing so is now deprecated. The good news is that because Colang 2.0 supports flows with variables, you can specify which policy to use (and even which labels to match) inline in the definitions for any of your rails (i.e., input, output, dialog, etc.)</p>
 <p>Here’s an example of how to configure an input rail to check against a specific Clavata policy:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import guardrails
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import guardrails
 import nemoguardrails.library.clavata
 
 
@@ -785,7 +785,7 @@ flow input rails $input_text
 <section id="programmatic-usage">
 <h3>2. Programmatic Usage<a class="headerlink" href="#programmatic-usage" title="Link to this heading">#</a></h3>
 <p>If you are using colang 2.x, you can make use of the Clavata action in your own flows:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Check content
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Check content
 $is_match = await ClavataCheckAction(text=$some_text, policy=$some_policy_alias)
 </pre></div>
 </div>

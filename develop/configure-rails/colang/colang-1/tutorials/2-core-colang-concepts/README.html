@@ -685,13 +685,13 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>openai
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
+<ol class="arabic simple">
 <li><p>Set the <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> environment variable:</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="nv">$OPENAI_API_KEY</span><span class="w">  </span><span class="c1"># Replace with your own key</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
+<ol class="arabic simple">
 <li><p>If you’re running this inside a notebook, patch the AsyncIO loop.</p></li>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nest_asyncio</span>
@@ -736,7 +736,7 @@
 <section id="flows">
 <h3>Flows<a class="headerlink" href="#flows" title="Link to this heading">#</a></h3>
 <p>In Colang, <em>flows</em> represent patterns of interaction between the user and the bot. In their simplest form, they are sequences of user and bot messages. In the “Hello World” example, the <code class="docutils literal notranslate"><span class="pre">greeting</span></code> flow is defined as:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow greeting
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow greeting
   user express greeting
   bot express greeting
   bot ask how are you
@@ -888,7 +888,7 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  express greeting</span>
 </pre></div>
 </div>
-<p>As we can see, the LLM correctly predicted the <code class="docutils literal notranslate"><span class="pre">express</span> <span class="pre">greeting</span></code> canonical form. It even went further to predict what the bot should do, which is <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code>, and the utterance that should be used. However, for the <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code> task, only the first predicted line is used. If you want the LLM to predict everything in a single call, you can enable the <a class="reference internal" href="#"><span class="xref myst">single LLM call option</span></a> in <em>config.yml</em> by setting the <code class="docutils literal notranslate"><span class="pre">rails.dialog.single_call</span></code> key to <strong>True</strong>.</p>
+<p>As we can see, the LLM correctly predicted the <code class="docutils literal notranslate"><span class="pre">express</span> <span class="pre">greeting</span></code> canonical form. It even went further to predict what the bot should do, which is <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code>, and the utterance that should be used. However, for the <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code> task, only the first predicted line is used. If you want the LLM to predict everything in a single call, you can enable the <a class="reference internal" href="../../../../configuration-reference.html#dialog-rails"><span class="std std-ref">single LLM call option</span></a> in <em>config.yml</em> by setting the <code class="docutils literal notranslate"><span class="pre">rails.dialog.single_call</span></code> key to <strong>True</strong>.</p>
 </section>
 <section id="step-2-determine-the-next-step">
 <h3>Step 2: Determine the next step<a class="headerlink" href="#step-2-determine-the-next-step" title="Link to this heading">#</a></h3>
@@ -916,7 +916,7 @@
 <section id="the-follow-up-question">
 <h2>The follow-up question<a class="headerlink" href="#the-follow-up-question" title="Link to this heading">#</a></h2>
 <p>In the previous example, the LLM is prompted once. The following figure provides a summary of the outlined sequence of steps:</p>
-<a class="reference internal image-reference" href="configure-rails/colang/colang-1/_static/puml/core_colang_concepts_fig_1.png"><img alt="Sequence diagram showing the three main steps of processing a user greeting: 1) Computing the canonical form of the user message, 2) Determining the next step using flows, and 3) Generating the bot's response message" class="align-center" src="configure-rails/colang/colang-1/_static/puml/core_colang_concepts_fig_1.png" style="width: 486px;" />
+<a class="reference internal image-reference" href="../../../../../_images/core_colang_concepts_fig_1.png"><img alt="Sequence diagram showing the three main steps of processing a user greeting: 1) Computing the canonical form of the user message, 2) Determining the next step using flows, and 3) Generating the bot's response message" class="align-center" src="../../../../../_images/core_colang_concepts_fig_1.png" style="width: 486px;" />
 </a>
 <p>Let’s examine the same process for the follow-up question “What is the capital of France?”.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
@@ -952,7 +952,7 @@
 </pre></div>
 </div>
 <p>Based on these steps, we can see that the <code class="docutils literal notranslate"><span class="pre">ask</span> <span class="pre">general</span> <span class="pre">question</span></code> canonical form is predicted for the user utterance “What is the capital of France?”. Since there is no flow that matches it, the LLM is asked to predict the next step, which in this case is <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">response</span> <span class="pre">for</span> <span class="pre">general</span> <span class="pre">question</span></code>. Also, since there is no predefined response, the LLM is asked a third time to predict the final message.</p>
-<a class="reference internal image-reference" href="configure-rails/colang/colang-1/_static/puml/core_colang_concepts_fig_2.png"><img alt="Sequence diagram showing the three main steps of processing a follow-up question in NeMo Guardrails: 1) Computing the canonical form of the user message, such as 'ask general question' for 'What is the capital of France?', 2) Determining the next step using the LLM, such as 'bot response for general question', and 3) Generating the bot's response message. These are the steps to handle a question that doesn't have a predefined flow." class="align-center" src="configure-rails/colang/colang-1/_static/puml/core_colang_concepts_fig_2.png" style="width: 586px;" />
+<a class="reference internal image-reference" href="../../../../../_images/core_colang_concepts_fig_2.png"><img alt="Sequence diagram showing the three main steps of processing a follow-up question in NeMo Guardrails: 1) Computing the canonical form of the user message, such as 'ask general question' for 'What is the capital of France?', 2) Determining the next step using the LLM, such as 'bot response for general question', and 3) Generating the bot's response message. These are the steps to handle a question that doesn't have a predefined flow." class="align-center" src="../../../../../_images/core_colang_concepts_fig_2.png" style="width: 586px;" />
 </a>
 </section>
 <section id="wrapping-up">

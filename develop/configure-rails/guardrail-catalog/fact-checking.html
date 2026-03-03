@@ -707,7 +707,7 @@
 </ol>
 <p>The above is an example prompt that you can use with the <em>self check facts rail</em>. The <code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> prompt has two input variables: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">evidence</span> <span class="pre">}}</span></code>, which includes the relevant chunks, and <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">response</span> <span class="pre">}}</span></code>, which includes the bot response that should be fact-checked. The completion must be “yes” if the response is factually correct and “no” otherwise.</p>
 <p>The self-check fact-checking rail executes the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/self_check/output_check/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">self_check_facts</span></code> action</a>, which returns a score between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (response is not accurate) and <code class="docutils literal notranslate"><span class="pre">1.0</span></code> (response is accurate). The reason a number is returned, instead of a boolean, is to keep a consistent API with other methods that return a score, e.g., the AlignScore method below.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow self check facts
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define subflow self check facts
   if $check_facts == True
     $check_facts = False
 
@@ -719,7 +719,7 @@
 </div>
 <p>To trigger the self-check fact-checking rail for a bot message, you must set the <code class="docutils literal notranslate"><span class="pre">$check_facts</span></code> context variable to <code class="docutils literal notranslate"><span class="pre">True</span></code> before a bot message requiring fact-checking. This enables you to explicitly enable fact-checking only when needed (e.g. when answering an important question vs. chitchat).</p>
 <p>The example below will trigger the fact-checking output rail every time the bot responds to a question about the report.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow
   user ask about report
   $check_facts = True
   bot provide report answer
@@ -729,7 +729,7 @@
 <section id="usage-in-combination-with-a-custom-rag">
 <h3>Usage in combination with a custom RAG<a class="headerlink" href="#usage-in-combination-with-a-custom-rag" title="Link to this heading">#</a></h3>
 <p>Fact-checking also works in a custom RAG implementation based on a custom action:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow answer report question
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow answer report question
   user ...
   $answer = execute rag()
   $check_facts = True
@@ -779,14 +779,14 @@
 <section id="blocking-mode">
 <h3>Blocking Mode<a class="headerlink" href="#blocking-mode" title="Link to this heading">#</a></h3>
 <p>Similar to self-check fact-checking, to trigger the self-check hallucination rail in blocking mode, you have to set the <code class="docutils literal notranslate"><span class="pre">$check_hallucination</span></code> context variable to <code class="docutils literal notranslate"><span class="pre">True</span></code> to verify that a bot message is not prone to hallucination:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow
   user ask about people
   $check_hallucination = True
   bot respond about people
 </pre></div>
 </div>
 <p>The above example will trigger the hallucination rail for every people-related question (matching the canonical form <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">ask</span> <span class="pre">about</span> <span class="pre">people</span></code>), which is usually more prone to contain incorrect statements. If the bot message contains hallucinations, the default <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">inform</span> <span class="pre">answer</span> <span class="pre">unknown</span></code> message is used. To override it, include the following in one of your Colang files:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot inform answer unknown
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define bot inform answer unknown
   &quot;I don&#39;t know the answer to that.&quot;
 </pre></div>
 </div>
@@ -794,14 +794,14 @@
 <section id="warning-mode">
 <h3>Warning Mode<a class="headerlink" href="#warning-mode" title="Link to this heading">#</a></h3>
 <p>Similar to above, if you want to allow sending the response back to the user, but with a warning, you have to set the <code class="docutils literal notranslate"><span class="pre">$hallucination_warning</span></code> context variable to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow
   user ask about people
   $hallucination_warning = True
   bot respond about people
 </pre></div>
 </div>
 <p>To override the default message, include the following in one of your Colang files:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define bot inform answer prone to hallucination
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define bot inform answer prone to hallucination
   &quot;The previous answer is prone to hallucination and may not be accurate.&quot;
 </pre></div>
 </div>
@@ -809,7 +809,7 @@
 <section id="id2">
 <h3>Usage in combination with a custom RAG<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>Hallucination-checking also works in a custom RAG implementation based on a custom action:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow answer report question
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow answer report question
   user ...
   $answer = execute rag()
   $check_hallucination = True

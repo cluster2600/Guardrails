@@ -781,18 +781,18 @@
 <span class="p">})</span>
 </pre></div>
 </div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;log&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;activated_rails&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="err">...</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;llm_calls&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;internal_events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;colang_history&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
+  &quot;response&quot;: [...],
+  &quot;log&quot;: {
+    &quot;activated_rails&quot;: {
+      ...
+    },
+    &quot;stats&quot;: {...},
+    &quot;llm_calls&quot;: [...],
+    &quot;internal_events&quot;: [...],
+    &quot;colang_history&quot;: &quot;...&quot;
+  }
+}
 </pre></div>
 </div>
 <p>When using the Python API, the <code class="docutils literal notranslate"><span class="pre">log</span></code> is an object that also has a <code class="docutils literal notranslate"><span class="pre">print_summary</span></code> method. When called, it will print a simplified version of the log information. Below is a sample output.</p>
@@ -827,13 +827,13 @@
 </pre></div>
 </div>
 <p>You can find the returned data in the <code class="docutils literal notranslate"><span class="pre">output_data</span></code> key of the response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;output_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;some_input_rail_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;some_output_rail_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
+  &quot;response&quot;: [...],
+  &quot;output_data&quot;: {
+    &quot;some_input_rail_score&quot;: 0.7,
+    &quot;some_output_rail_score&quot;: 0.8
+  }
+}
 </pre></div>
 </div>
 </section>

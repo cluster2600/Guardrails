@@ -670,7 +670,7 @@
 An exception is an event whose name ends with <code class="docutils literal notranslate"><span class="pre">Exception</span></code>, e.g., <code class="docutils literal notranslate"><span class="pre">InputRailException</span></code>.
 When an exception is raised, the final output is a message with the role set to <code class="docutils literal notranslate"><span class="pre">exception</span></code> and the content
 set to additional information about the exception. For example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow input rail example
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow input rail example
   # ...
   create event InputRailException(message=&quot;Input not allowed.&quot;)
 </pre></div>
@@ -690,7 +690,7 @@ set to additional information about the exception. For example:</p>
 <hr class="docutils" />
 <section id="guardrails-library-exception">
 <h2>Guardrails Library Exception<a class="headerlink" href="#guardrails-library-exception" title="Link to this heading">#</a></h2>
-<p>By default, all the guardrails included in the <a class="reference internal" href="#guardrail-catalog.md"><code class="xref myst docutils literal notranslate"><span class="pre">guardrail-catalog.md</span></code></a> return a predefined message
+<p>By default, all the guardrails included in the <a class="reference internal" href="guardrail-catalog/index.html"><span class="std std-doc">Guardrail Catalog</span></a> return a predefined message
 when a rail is triggered. You can change this behavior by setting the <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> key to <code class="docutils literal notranslate"><span class="pre">True</span></code> in your
 <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">enable_rails_exceptions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
@@ -698,7 +698,7 @@ when a rail is triggered. You can change this behavior by setting the <code clas
 </div>
 <p>When this setting is enabled, the rails are triggered, they will return an exception message.
 To understand better what is happening under the hood, here’s how the <code class="docutils literal notranslate"><span class="pre">self</span> <span class="pre">check</span> <span class="pre">input</span></code> rail is implemented:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow self check input
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow self check input
   $allowed = execute self_check_input
   if not $allowed
     if $config.enable_rails_exceptions
@@ -744,7 +744,7 @@ To understand better what is happening under the hood, here’s how the <code cl
 <section id="custom-exception-handling">
 <h2>Custom Exception Handling<a class="headerlink" href="#custom-exception-handling" title="Link to this heading">#</a></h2>
 <p>You can create custom exception types by following the naming convention of ending with <code class="docutils literal notranslate"><span class="pre">Exception</span></code>:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow custom validation
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow custom validation
   if not $custom_condition
     create event CustomValidationException(message=&quot;Custom validation failed.&quot;)
 </pre></div>

@@ -867,7 +867,7 @@
 <h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Link to this heading">#</a></h2>
 <section id="passthrough-mode">
 <h3>Passthrough Mode<a class="headerlink" href="#passthrough-mode" title="Link to this heading">#</a></h3>
-<p>The role of a guardrail configuration is to validate user input, check LLM output, and guide the LLM model on how to respond. See the <a class="reference internal" href="#../configuration-guide.md#guardrails-definitions"><span class="xref myst">Configuration Guide</span></a> for more details on the different types of rails.</p>
+<p>The role of a guardrail configuration is to validate user input, check LLM output, and guide the LLM model on how to respond. See the <a class="reference internal" href="../../configure-rails/configuration-reference.html#rail-types"><span class="std std-ref">Configuration Guide</span></a> for more details on the different types of rails.</p>
 <p>To achieve this, the guardrail configuration might make additional calls to the LLM or other models/APIs (for example, for fact-checking and content moderation).</p>
 <p>By default, when the guardrail configuration decides that it is safe to prompt the LLM, it uses the exact prompt that was provided as the input, such as a string, <code class="docutils literal notranslate"><span class="pre">StringPromptValue</span></code> or <code class="docutils literal notranslate"><span class="pre">ChatPromptValue</span></code>. However, to enforce specific rails, for example, dialog rails, general instructions, the guardrails configuration needs to alter the prompt used to generate the response.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">passthrough</span></code> parameter controls this behavior.</p>

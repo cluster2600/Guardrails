@@ -682,7 +682,7 @@
 </pre></div>
 </div>
 <p>And here is how you can call it from a Colang flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     $result = await CustomTestAction(value=5)
     bot say &quot;The result is: {$result}&quot;
 </pre></div>
@@ -697,7 +697,7 @@
 </pre></div>
 </div>
 <p>And here is how you can call it from a Colang flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     # Option 1 start the action and let your flow continue until you really need the result from the action
     start CustomTestAction(value=5) as $action_ref
     # Some other statements ...

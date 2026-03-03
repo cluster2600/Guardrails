@@ -698,7 +698,7 @@
 <section id="generate-user-intent">
 <h3>generate_user_intent<a class="headerlink" href="#generate-user-intent" title="Link to this heading">#</a></h3>
 <p>Converts raw user input into a canonical intent form:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Automatically called during guardrails process
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Automatically called during guardrails process
 # Input: &quot;Hello there!&quot;
 # Output: express greeting
 </pre></div>
@@ -707,7 +707,7 @@
 <section id="generate-next-steps">
 <h3>generate_next_steps<a class="headerlink" href="#generate-next-steps" title="Link to this heading">#</a></h3>
 <p>Determines what the bot should do next:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Automatically called to decide next action
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Automatically called to decide next action
 # Output: bot express greeting, execute some_action, etc.
 </pre></div>
 </div>
@@ -715,7 +715,7 @@
 <section id="generate-bot-message">
 <h3>generate_bot_message<a class="headerlink" href="#generate-bot-message" title="Link to this heading">#</a></h3>
 <p>Generates the actual bot response text:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Converts intent to natural language
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Converts intent to natural language
 # Input: bot express greeting
 # Output: &quot;Hello! How can I help you today?&quot;
 </pre></div>
@@ -724,7 +724,7 @@
 <section id="retrieve-relevant-chunks">
 <h3>retrieve_relevant_chunks<a class="headerlink" href="#retrieve-relevant-chunks" title="Link to this heading">#</a></h3>
 <p>Retrieves context from the knowledge base:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Retrieves relevant documents for RAG
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Retrieves relevant documents for RAG
 # Result stored in $relevant_chunks context variable
 </pre></div>
 </div>
@@ -765,7 +765,7 @@
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span>
 </pre></div>
 </div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># rails/input.co
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># rails/input.co
 define flow self check input
   $allowed = execute self_check_input
   if not $allowed
@@ -784,7 +784,7 @@ define flow self check input
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check output</span>
 </pre></div>
 </div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># rails/output.co
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># rails/output.co
 define flow self check output
   $allowed = execute self_check_output
   if not $allowed
@@ -876,7 +876,7 @@ define flow self check output
 </div>
 <section id="using-langchain-tools">
 <h3>Using LangChain Tools<a class="headerlink" href="#using-langchain-tools" title="Link to this heading">#</a></h3>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow answer with search
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow answer with search
   user ask about current events
   $results = execute google_search(query=$user_query)
   bot provide search results
@@ -885,7 +885,7 @@ define flow self check output
 </section>
 <section id="wikipedia-example">
 <h3>Wikipedia Example<a class="headerlink" href="#wikipedia-example" title="Link to this heading">#</a></h3>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow answer with wikipedia
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow answer with wikipedia
   user ask about historical facts
   $info = execute wikipedia_query(query=$user_query)
   bot provide information
@@ -924,7 +924,7 @@ define flow self check output
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PHONE_NUMBER</span>
 </pre></div>
 </div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow check input sensitive data
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow check input sensitive data
   $has_pii = execute detect_sensitive_data
   if $has_pii
     bot refuse to respond
@@ -934,7 +934,7 @@ define flow self check output
 </section>
 <section id="mask-sensitive-data">
 <h3>mask_sensitive_data<a class="headerlink" href="#mask-sensitive-data" title="Link to this heading">#</a></h3>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow mask input sensitive data
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow mask input sensitive data
   $masked_input = execute mask_sensitive_data
   # Continue with masked input
 </pre></div>
@@ -1008,7 +1008,7 @@ define flow self check output
 <section id="using-built-in-actions-in-custom-flows">
 <h2>Using Built-in Actions in Custom Flows<a class="headerlink" href="#using-built-in-actions-in-custom-flows" title="Link to this heading">#</a></h2>
 <p>You can combine built-in actions with custom logic:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow enhanced_input_check
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow enhanced_input_check
   $is_jailbreak = execute jailbreak_detection_heuristics
   if $is_jailbreak
     bot refuse to respond
