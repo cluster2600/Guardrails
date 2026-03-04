@@ -1081,6 +1081,9 @@ window.addEventListener("load", load);
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;default_config_v2.yml&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">_fc</span><span class="p">:</span>
     <span class="n">_default_config_v2</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">_fc</span><span class="p">)</span>
 
+<span class="c1"># Jailbreak-related strings</span>
+<span class="n">JAILBREAK_FLOW_MODEL</span> <span class="o">=</span> <span class="s2">&quot;jailbreak detection model&quot;</span>
+<span class="n">JAILBREAK_FLOW_HEURISTICS</span> <span class="o">=</span> <span class="s2">&quot;jailbreak detection heuristics&quot;</span>
 
 <span class="c1"># Extract the COLANGPATH directories.</span>
 <span class="n">colang_path_dirs</span> <span class="o">=</span> <span class="p">[</span>
@@ -1728,9 +1731,9 @@ window.addEventListener("load", load);
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The endpoint for the jailbreak detection heuristics/model container.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">length_per_perplexity_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">89.79</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The length/perplexity threshold.&quot;</span><span class="p">)</span>
+    <span class="n">length_per_perplexity_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">89.79</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The length/perplexity threshold.&quot;</span><span class="p">)</span>
     <span class="n">prefix_suffix_perplexity_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="mf">1845.65</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The prefix/suffix perplexity threshold.&quot;</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">1845.65</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The prefix/suffix perplexity threshold.&quot;</span>
     <span class="p">)</span>
     <span class="n">nim_base_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1770,6 +1773,15 @@ window.addEventListener("load", load);
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nim_url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nim_base_url</span><span class="p">:</span>
             <span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nim_port</span> <span class="ow">or</span> <span class="mi">8000</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nim_base_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nim_url</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/v1&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;JailbreakDetectionConfig&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate URL formats for endpoints.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nim_base_url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nim_base_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;nim_base_url must start with &#39;http://&#39; or &#39;https://&#39;, got &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nim_base_url</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_endpoint</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_endpoint</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;server_endpoint must start with &#39;http://&#39; or &#39;https://&#39;, got &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">server_endpoint</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_api_key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -2751,6 +2763,63 @@ window.addEventListener("load", load);
                     <span class="s2">&quot;It uses &#39;is_content safe&#39; as the default output parser.&quot;</span>
                     <span class="s2">&quot;This behavior will be deprecated in future versions.&quot;</span>
                 <span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="RailsConfig.check_jailbreak_detection_config">
+<a class="viewcode-back" href="../../../../reference/python-api/generated/nemoguardrails.rails.llm.config.RailsConfig.html#nemoguardrails.rails.llm.config.RailsConfig.check_jailbreak_detection_config">[docs]</a>
+    <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_jailbreak_detection_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate jailbreak detection configuration against enabled flows.&quot;&quot;&quot;</span>
+        <span class="n">rails</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rails&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">config_data</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">input_flows</span> <span class="o">=</span> <span class="p">(</span><span class="n">rails</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;flows&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+
+        <span class="n">jailbreak_config</span> <span class="o">=</span> <span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;jailbreak_detection&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">has_model_flow</span> <span class="o">=</span> <span class="n">JAILBREAK_FLOW_MODEL</span> <span class="ow">in</span> <span class="n">input_flows</span>
+        <span class="n">has_heuristics_flow</span> <span class="o">=</span> <span class="n">JAILBREAK_FLOW_HEURISTICS</span> <span class="ow">in</span> <span class="n">input_flows</span>
+        <span class="n">has_any_jailbreak_flow</span> <span class="o">=</span> <span class="n">has_model_flow</span> <span class="ow">or</span> <span class="n">has_heuristics_flow</span>
+
+        <span class="c1"># Case A: Config present but no flow references it</span>
+        <span class="k">if</span> <span class="n">jailbreak_config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_any_jailbreak_flow</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Jailbreak detection configuration is present under &quot;</span>
+                <span class="s2">&quot;rails.config.jailbreak_detection but no jailbreak detection flow &quot;</span>
+                <span class="s2">&quot;is enabled. To use jailbreak detection, add &#39;jailbreak detection model&#39; &quot;</span>
+                <span class="s2">&quot;or &#39;jailbreak detection heuristics&#39; to rails.input.flows.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Case B: &quot;jailbreak detection model&quot; flow is enabled</span>
+        <span class="k">if</span> <span class="n">has_model_flow</span><span class="p">:</span>
+            <span class="n">nim_base_url</span> <span class="o">=</span> <span class="n">jailbreak_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nim_base_url&quot;</span><span class="p">)</span>
+            <span class="n">nim_url</span> <span class="o">=</span> <span class="n">jailbreak_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nim_url&quot;</span><span class="p">)</span>  <span class="c1"># deprecated, migrated later</span>
+            <span class="n">server_endpoint</span> <span class="o">=</span> <span class="n">jailbreak_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;server_endpoint&quot;</span><span class="p">)</span>
+            <span class="n">nim_server_endpoint</span> <span class="o">=</span> <span class="n">jailbreak_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nim_server_endpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;classify&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">nim_base_url</span> <span class="ow">or</span> <span class="n">nim_url</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">nim_server_endpoint</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">InvalidRailsConfigurationError</span><span class="p">(</span>
+                        <span class="s2">&quot;nim_base_url is set for jailbreak detection model but &quot;</span>
+                        <span class="s2">&quot;nim_server_endpoint is empty. Both must be configured &quot;</span>
+                        <span class="s2">&quot;when using NIM-based jailbreak detection.&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">server_endpoint</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;No endpoint configured for jailbreak detection model. &quot;</span>
+                    <span class="s2">&quot;Will fall back to local in-process detection, which is &quot;</span>
+                    <span class="s2">&quot;not recommended for production.&quot;</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Case C: &quot;jailbreak detection heuristics&quot; flow is enabled</span>
+        <span class="k">if</span> <span class="n">has_heuristics_flow</span><span class="p">:</span>
+            <span class="n">server_endpoint</span> <span class="o">=</span> <span class="n">jailbreak_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;server_endpoint&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">server_endpoint</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;No server_endpoint configured for jailbreak detection heuristics. &quot;</span>
+                    <span class="s2">&quot;Will fall back to local in-process detection, which is &quot;</span>
+                    <span class="s2">&quot;not recommended for production.&quot;</span>
+                <span class="p">)</span>
+
         <span class="k">return</span> <span class="n">values</span></div>
 
 
