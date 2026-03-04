@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -721,7 +722,7 @@
 </section>
 <section id="adding-guardrails">
 <h2>Adding Guardrails<a class="headerlink" href="#adding-guardrails" title="Link to this heading">#</a></h2>
-<p>To protect against such attempts, we can use a guardrails configuration. In the configuration below, we use the <a class="reference internal" href="#../../guardrails-library.md#self-check-input"><span class="xref myst">self-check input rails</span></a>.</p>
+<p>To protect against such attempts, we can use a guardrails configuration. In the configuration below, we use the <a class="reference internal" href="../../../configure-rails/guardrail-catalog/self-check.html#self-check-input"><span class="std std-ref">self-check input rails</span></a>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
 <span class="w">   </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>

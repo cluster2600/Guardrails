@@ -535,6 +535,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -674,7 +675,7 @@
   <section id="guardrail-flows-guardrails-co">
 <h1>Guardrail Flows (<a class="reference external" href="../../../nemoguardrails/colang/v2_x/library/guardrails.co">guardrails.co</a>)<a class="headerlink" href="#guardrail-flows-guardrails-co" title="Link to this heading">#</a></h1>
 <p>Flows to guardrail user inputs and LLM responses.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Check user utterances before they get further processed
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Check user utterances before they get further processed
 flow run input rails $input_text
 
 # Check llm responses before they get further processed

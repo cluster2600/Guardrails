@@ -535,6 +535,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -674,7 +675,7 @@
   <section id="interactive-avatar-modality-flows-avatars-co">
 <h1>Interactive Avatar Modality Flows (<a class="reference external" href="../../../nemoguardrails/colang/v2_x/library/avatars.co">avatars.co</a>)<a class="headerlink" href="#interactive-avatar-modality-flows-avatars-co" title="Link to this heading">#</a></h1>
 <p><strong>User Event Flows</strong></p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Wait for a UI selection
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Wait for a UI selection
 flow user selected choice $choice_id -&gt; $choice
 
 # Wait for a UI selection to have happened (considering also choices that happened right before)
@@ -694,7 +695,7 @@ flow user interrupted bot talking $sentence_length=15
 </pre></div>
 </div>
 <p><strong>Bot Action Flows</strong></p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Trigger a specific bot gesture
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Trigger a specific bot gesture
 flow bot gesture $gesture
 
 # Trigger a specific bot gesture delayed
@@ -717,7 +718,7 @@ flow scene show form $prompt $inputs
 </pre></div>
 </div>
 <p><strong>Bot Event Flows</strong></p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Wait for the bot to start with the given gesture
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Wait for the bot to start with the given gesture
 flow bot started gesture $gesture
 
 # Wait for the bot to start with any gesture
@@ -735,13 +736,13 @@ flow bot started an action -&gt; $action
 </div>
 <p><strong>State Tracking Flows</strong></p>
 <p>These are flows that track bot and user states in global variables.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Track most recent visual choice selection state in global variable $choice_selection_state
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Track most recent visual choice selection state in global variable $choice_selection_state
 flow tracking visual choice selection state
 </pre></div>
 </div>
 <p><strong>Helper &amp; Utility Flows</strong></p>
 <p>These are some useful helper and utility flows:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Stops all the current bot actions
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Stops all the current bot actions
 flow finish all bot actions
 
 # Stops all the current scene actions
@@ -752,7 +753,7 @@ flow handling bot talking interruption $mode=&quot;inform&quot;
 </pre></div>
 </div>
 <p><strong>Posture Management Flows</strong></p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Activates all the posture management
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Activates all the posture management
 flow managing bot postures
 
 # Start and stop listening posture

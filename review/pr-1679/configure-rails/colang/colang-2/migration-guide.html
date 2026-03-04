@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -699,12 +700,12 @@ It performs several syntax transformations on the content of the files, such as 
 <section id="generation-operator">
 <h3>Generation operator<a class="headerlink" href="#generation-operator" title="Link to this heading">#</a></h3>
 <p>The syntax for the generation operation has changed slightly between Colang 1.0 and 2.0. The following Colang 1.0 snippet:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># some instruction in natural language
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># some instruction in natural language
 $var_name = ...
 </pre></div>
 </div>
 <p>is translated to:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$name = ... &quot;some instruction in natural language&quot;
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$name = ... &quot;some instruction in natural language&quot;
 </pre></div>
 </div>
 </section>
@@ -728,13 +729,13 @@ These have different equivalents in Colang 2.0. The <code class="docutils litera
 <section id="example-flow-conversion">
 <h3>Example Flow conversion<a class="headerlink" href="#example-flow-conversion" title="Link to this heading">#</a></h3>
 <p>As an example, the following flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow
   user express greeting
   bot express greeting
 </pre></div>
 </div>
 <p>is converted to:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>@active
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>@active
 flow express_greeting
   user express greeting
   bot express greeting

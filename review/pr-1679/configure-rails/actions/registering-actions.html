@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -830,7 +831,7 @@
 </section>
 <section id="using-registered-tools-in-colang">
 <h3>Using Registered Tools in Colang<a class="headerlink" href="#using-registered-tools-in-colang" title="Link to this heading">#</a></h3>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow weather_flow
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow weather_flow
   user ask about weather
   $weather = execute get_weather(city=$city_name)
   bot provide weather info

@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -683,13 +684,13 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>openai
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
+<ol class="arabic simple">
 <li><p>Set the <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> environment variable:</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="nv">$OPENAI_API_KEY</span><span class="w">    </span><span class="c1"># Replace with your own key</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
+<ol class="arabic simple">
 <li><p>If you’re running this inside a notebook, patch the AsyncIO loop.</p></li>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nest_asyncio</span>
@@ -742,7 +743,7 @@
 <ol class="arabic simple">
 <li><p>Add the following content to a new Colang file: <em>config/rails/disallowed_topics.co</em>:</p></li>
 </ol>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define user ask about cooking
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define user ask about cooking
   &quot;How can I cook pasta?&quot;
   &quot;How much do I have to boil pasta?&quot;
 
@@ -769,7 +770,7 @@ define user ask about criminal activity
 <blockquote>
 <div><p><strong>NOTE</strong>: the performance of dialog rails is depends strongly on the number and quality of the provided examples.</p>
 </div></blockquote>
-<ol class="arabic simple" start="2">
+<ol class="arabic simple">
 <li><p>Define the following flows that use these messages in <em>config/rails/disallowed_topics.co</em>.</p></li>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">define</span> <span class="n">flow</span>

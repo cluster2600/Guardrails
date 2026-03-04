@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -813,6 +814,10 @@
 </pre></div>
 </div>
 <p>Without <code class="docutils literal notranslate"><span class="pre">include_metadata</span></code>, chunks are plain strings (default behavior).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">include_generation_metadata</span></code> parameter is deprecated. Use <code class="docutils literal notranslate"><span class="pre">include_metadata</span></code> instead. It will be removed in version 0.22.0.</p>
+</div>
 </section>
 <section id="token-usage-tracking">
 <h2>Token Usage Tracking<a class="headerlink" href="#token-usage-tracking" title="Link to this heading">#</a></h2>

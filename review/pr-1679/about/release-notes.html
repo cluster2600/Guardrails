@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -765,201 +766,20 @@ For a complete record of changes in a release, refer to the
 <ul class="simple">
 <li><p>Restructured the documentation with improved navigation, clearer content organization, and updated configuration reference and user guides.</p></li>
 </ul>
+</section>
+</section>
 <hr class="docutils" />
-</section>
-</section>
-<section id="v0-19-0">
-<span id="id2"></span><h2>0.19.0<a class="headerlink" href="#v0-19-0" title="Link to this heading">#</a></h2>
-<section id="v0-19-0-features">
-<span id="id3"></span><h3>Key Features<a class="headerlink" href="#v0-19-0-features" title="Link to this heading">#</a></h3>
+<section id="previous-release-notes">
+<h2>Previous Release Notes<a class="headerlink" href="#previous-release-notes" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Added support for LangChain 1.x, including the content blocks API for reasoning traces and tool calls.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nemo/guardrails/0.19.0/release-notes.html" rel="noreferer noopener" target="_blank">0.19.0</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nemo/guardrails/0.18.0/release-notes.html" rel="noreferer noopener" target="_blank">0.18.0</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nemo/guardrails/0.17.0/release-notes.html" rel="noreferer noopener" target="_blank">0.17.0</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nemo/guardrails/0.16.0/release-notes.html" rel="noreferer noopener" target="_blank">0.16.0</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nemo/guardrails/0.15.0/release-notes.html" rel="noreferer noopener" target="_blank">0.15.0</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nemo/guardrails/0.14.1/release-notes.html" rel="noreferer noopener" target="_blank">0.14.1</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nemo/guardrails/0.14.0/release-notes.html" rel="noreferer noopener" target="_blank">0.14.0</a></p></li>
 </ul>
-</section>
-<section id="fixed-issues">
-<span id="v0-19-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Fixed TypeError in Colang 2.x chat caused by incorrect type conversion between <code class="docutils literal notranslate"><span class="pre">State</span></code> and <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></li>
-<li><p>Fixed async streaming support for the ChatNVIDIA provider patch by adding a new <code class="docutils literal notranslate"><span class="pre">async_stream_decorator</span></code>.</p></li>
-</ul>
-<hr class="docutils" />
-</section>
-</section>
-<section id="v0-18-0">
-<span id="id4"></span><h2>0.18.0<a class="headerlink" href="#v0-18-0" title="Link to this heading">#</a></h2>
-<section id="v0-18-0-features">
-<span id="id5"></span><h3>Key Features<a class="headerlink" href="#v0-18-0-features" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>In-memory caching of guardrail model calls for reduced latency and cost savings.
-NeMo Guardrails now supports per-model caching of guardrail responses using an LFU (Least Frequently Used) cache.
-This feature is particularly effective for safety models such as NVIDIA NemoGuard <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-content-safety" rel="noreferer noopener" target="_blank">Content Safety</a>, <a class="reference external" href="https://build.nvidia.com/nvidia/llama-3_1-nemoguard-8b-topic-control" rel="noreferer noopener" target="_blank">Topic Control</a>, and <a class="reference external" href="https://build.nvidia.com/nvidia/nemoguard-jailbreak-detect" rel="noreferer noopener" target="_blank">Jailbreak Detection</a> where identical inputs are common.
-For more information, refer to <a class="reference internal" href="../configure-rails/caching/model-memory-cache.html#model-memory-cache"><span class="std std-ref">Memory Model Cache</span></a>.</p></li>
-<li><p>NeMo Guardrails extracts the reasoning traces from the LLM response and emits them as <code class="docutils literal notranslate"><span class="pre">BotThinking</span></code> events before the final <code class="docutils literal notranslate"><span class="pre">BotMessage</span></code> event.
-For more information, refer to <a class="reference internal" href="../configure-rails/colang/colang-1/bot-thinking-guardrails.html#bot-thinking-guardrails"><span class="std std-ref">Guardrailing Bot Reasoning Content</span></a>.</p></li>
-<li><p>New community integration with <a class="reference external" href="https://www.cisco.com/site/ca/en/products/security/ai-defense/index.html" rel="noreferer noopener" target="_blank">Cisco AI Defense</a>.</p></li>
-<li><p>New embedding integrations with Azure OpenAI, Google, and Cohere.</p></li>
-</ul>
-</section>
-<section id="v0-18-0-fixed-issues">
-<span id="id6"></span><h3>Fixed Issues<a class="headerlink" href="#v0-18-0-fixed-issues" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Implemented validation of content safety and topic control guardrail configurations at creation time, providing prompt error reporting if required prompt templates or parameters are missing.</p></li>
-</ul>
-<hr class="docutils" />
-</section>
-</section>
-<section id="v0-17-0">
-<span id="id7"></span><h2>0.17.0<a class="headerlink" href="#v0-17-0" title="Link to this heading">#</a></h2>
-<section id="v0-17-0-features">
-<span id="id8"></span><h3>Key Features<a class="headerlink" href="#v0-17-0-features" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Added support for <a class="reference internal" href="../integration/langchain/langgraph-integration.html"><span class="std std-doc">integrating with LangGraph and tool calling</span></a>.
-This integration enables building safe and controlled multi-agent workflows.
-LangGraph enables you to create sophisticated agent architectures with state management, conditional routing, and tool calling, while NeMo Guardrails provides the safety layer to ensure responsible AI behavior.
-You can intercept, store, and forward LLM tool invocations with backward compatibility.</p></li>
-<li><p>Enhanced support for <a class="reference internal" href="../integration/langchain/runnable-rails.html"><span class="std std-doc">integrating with LangChain <code class="docutils literal notranslate"><span class="pre">RunnableRails</span></code></span></a>.
-This release supports the LangChain Runnable interface, such as synchronous and asynchronous operations, streaming, and batch processing while preserving metadata during LangChain operation.
-This enhancement enables NeMo Guardrails to plug into LangChain pipelines seamlessly.</p></li>
-<li><p>Trend Micro contributed support for Trend Micro Vision One AI Application Security AI Guard.
-Refer to <a class="reference internal" href="../configure-rails/guardrail-catalog/community/trend-micro.html"><span class="std std-doc">configuration documentation</span></a> for more information.</p></li>
-</ul>
-</section>
-<section id="v0-17-0-other-changes">
-<span id="id9"></span><h3>Other Changes<a class="headerlink" href="#v0-17-0-other-changes" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Improved URL handling for connecting to NemoGuard JailbreakDetect NIM.
-Guardrails now tolerates the URL for <code class="docutils literal notranslate"><span class="pre">rails.config.jailbreak_detection.nim_base_url</span></code> ending with or without a trailing slash.
-Refer to <a class="reference internal" href="../getting-started/tutorials/nemoguard-jailbreakdetect-deployment.html"><span class="std std-doc">Detect Jailbreak Attempts with NVIDIA NemoGuard JailbreakDetect NIM</span></a> for information about using the NIM.</p></li>
-</ul>
-</section>
-</section>
-<section id="v0-16-0">
-<span id="id10"></span><h2>0.16.0<a class="headerlink" href="#v0-16-0" title="Link to this heading">#</a></h2>
-<section id="v0-16-0-features">
-<span id="id11"></span><h3>Key Features<a class="headerlink" href="#v0-16-0-features" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Enhanced tracing system with <a class="reference external" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" rel="noreferer noopener" target="_blank">OpenTelemetry semantic conventions</a>. To learn more, refer to <a class="reference internal" href="../observability/tracing/index.html#tracing"><span class="std std-ref">Tracing Guardrails</span></a>. For usage examples, refer to the following notebooks</p>
-<ul>
-<li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/docs/getting-started/8-tracing/1_tracing_quickstart.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails Quickstart</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/docs/getting-started/8-tracing/2_tracing_with_jaeger.ipynb" rel="noreferer noopener" target="_blank">Tracing Guardrails with Jaeger</a></p></li>
-</ul>
-</li>
-<li><p>Community integration with <a class="reference external" href="https://www.guardrailsai.com/" rel="noreferer noopener" target="_blank">GuardrailsAI</a> and <a class="reference external" href="https://pangea.cloud/services/ai-guard" rel="noreferer noopener" target="_blank">Pangea AI Guard</a>.</p></li>
-</ul>
-</section>
-<section id="v0-16-0-other-changes">
-<span id="id12"></span><h3>Other Changes<a class="headerlink" href="#v0-16-0-other-changes" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Added documentation about using KV cache reuse for LLM-based NemoGuard NIMs. By using KV cache reuse, you can improve the performance of LLM-based NemoGuard NIMs where the system prompt is the same for all calls up to the point where user query and LLM response are injected. To learn more, refer to <a class="reference internal" href="../configure-rails/caching/kv-cache-reuse.html#kv-cache-reuse"><span class="std std-ref">KV Cache Reuse for NemoGuard NIM</span></a>.</p></li>
-</ul>
-</section>
-</section>
-<section id="v0-15-0">
-<span id="id13"></span><h2>0.15.0<a class="headerlink" href="#v0-15-0" title="Link to this heading">#</a></h2>
-<section id="v0-15-0-features">
-<span id="id14"></span><h3>Key Features<a class="headerlink" href="#v0-15-0-features" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Added parallel execution for input and output rails. To learn more, refer to <a class="reference internal" href="#parallel-rails"><code class="xref myst docutils literal notranslate"><span class="pre">parallel-rails</span></code></a>.</p></li>
-<li><p>Implemented a new way of configuring tracing. You can now use the OpenTelemetry SDK and the OpenTelemetry Protocol (OTLP) exporter while configuring the NeMo Guardrails clients in your application code directly. To learn more, refer to the <a class="reference internal" href="#tracing-configuration"><span class="xref myst">basic tracing configuration guide</span></a> and the <a class="reference internal" href="../observability/tracing/index.html#tracing"><span class="std std-ref">advanced tracing configuration guide</span></a>.</p></li>
-<li><p>Updated the streaming capability of output rails to support parallel execution.</p></li>
-<li><p>Added support for external async token generators. To learn more, refer to the <a class="reference internal" href="../run-rails/using-python-apis/streaming.html#external-async-token-generators"><span class="std std-ref">Using External Async Token Generators</span></a> section.</p></li>
-</ul>
-</section>
-<section id="id15">
-<h3>Breaking Changes<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
-<p>With the new tracing configuration, the following old configuration for tracing in <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> is no longer supported.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">#  No longer supported</span>
-<span class="nt">tracing</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">adapters</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenTelemetry</span>
-<span class="w">      </span><span class="nt">service_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-service&quot;</span>
-<span class="w">      </span><span class="nt">exporter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;console&quot;</span>
-</pre></div>
-</div>
-<p>To find the new way of configuring tracing, refer to <a class="reference internal" href="#tracing-configuration"><code class="xref myst docutils literal notranslate"><span class="pre">tracing-configuration</span></code></a>.</p>
-</section>
-<section id="deprecated-functions">
-<h3>Deprecated Functions<a class="headerlink" href="#deprecated-functions" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">register_otel_exporter()</span></code> is deprecated and will be removed in v0.16.0. Configure exporters directly in your application instead.</p></li>
-</ul>
-</section>
-</section>
-<section id="v0-14-1">
-<span id="id16"></span><h2>0.14.1<a class="headerlink" href="#v0-14-1" title="Link to this heading">#</a></h2>
-<section id="features">
-<span id="v0-14-1-features"></span><h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Added direct API key configuration support for jailbreak detection. This change adds a new optional field <code class="docutils literal notranslate"><span class="pre">api_key</span></code> to the <code class="docutils literal notranslate"><span class="pre">JailbreakDetectionConfig</span></code> Pydantic model. This allows to provide an API Key in a <code class="docutils literal notranslate"><span class="pre">RailsConfig</span></code> object or YAML file, for use in Jailbreak NIM calls. Prior to this change, the <code class="docutils literal notranslate"><span class="pre">api_key_env_var</span></code> field used an environment variable (for example <code class="docutils literal notranslate"><span class="pre">NVIDIA_API_KEY</span></code>) to get the API Key for the Jailbreak NIM.</p></li>
-</ul>
-</section>
-<section id="v0-14-1-fixed-issues">
-<span id="id17"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-1-fixed-issues" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Fixed lazy loading of jailbreak detection dependencies. Before, jailbreak detection imported unnecessary dependencies when using NIM, which led to installation of those dependencies even when not using the local model-based jailbreak detection.</p></li>
-<li><p>Fixed constructor LLM configuration to properly load other config models.</p></li>
-<li><p>Fixed content safety policy violations handling by replacing try-except with iterable unpacking.</p></li>
-<li><p>Fixed numpy version compatibility by pinning to version 1.23.5 for scikit-learn compatibility.</p></li>
-<li><p>Fixed iterable unpacking compatibility in content safety output parsers.</p></li>
-</ul>
-</section>
-</section>
-<section id="v0-14-0">
-<span id="id18"></span><h2>0.14.0<a class="headerlink" href="#v0-14-0" title="Link to this heading">#</a></h2>
-<section id="v0-14-0-features">
-<span id="id19"></span><h3>Features<a class="headerlink" href="#v0-14-0-features" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Added support for Python 3.13.</p></li>
-<li><p>Enhanced working with advanced reasoning models.</p>
-<ul>
-<li><p>Added support for the NVIDIA Nemotron family of advanced reasoning models, such as Llama 3.1 Nemotron Ultra 253B V1.</p></li>
-<li><p>Added the <code class="docutils literal notranslate"><span class="pre">rails.output.apply_to_reasoning_traces</span></code> field.
-When this field is <code class="docutils literal notranslate"><span class="pre">True</span></code>, output rails are applied to the reasoning traces and the model output.
-For more information, refer to <a class="reference internal" href="#./user-guides/configuration-guide.md#using-llms-with-reasoning-traces"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/configuration-guide.md#using-llms-with-reasoning-traces</span></code></a>.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_thinking_traces</span></code> field is deprecated and replaced by the <code class="docutils literal notranslate"><span class="pre">reasoning_config.remove_reasoning_traces</span></code> field that has the same purpose and subfields.</p></li>
-<li><p>Previously, if <code class="docutils literal notranslate"><span class="pre">remove_thinking_traces</span></code> was set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the reasoning traces were omitted from the final response presented to the end user.
-In this release, <code class="docutils literal notranslate"><span class="pre">remove_reasoning_traces</span></code> controls whether reasoning traces are removed from internal tasks and has no effect on the final response presented to the user.</p></li>
-<li><p>Using advanced reasoning models with dialog rails is not supported.</p></li>
-</ul>
-</li>
-<li><p>Simplified and broadened support for chat model providers from LangChain and
-LangChain Community chat model providers.
-You must use <code class="docutils literal notranslate"><span class="pre">langchain</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.14</span></code> or higher and <code class="docutils literal notranslate"><span class="pre">langchain-community</span></code> version <code class="docutils literal notranslate"><span class="pre">0.2.5</span></code> or higher.
-For information about using model providers, refer to <a class="reference internal" href="#./user-guides/configuration-guide.md#the-llm-model"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/configuration-guide.md#the-llm-model</span></code></a>.</p></li>
-<li><p>Added support for code injection detection.
-For more information, refer to <a class="reference internal" href="../configure-rails/guardrail-catalog/agentic-security.html#injection-detection"><span class="std std-ref">Injection Detection</span></a>.</p></li>
-<li><p>Enhanced the <code class="docutils literal notranslate"><span class="pre">nemoguardrails</span></code> CLI with a <code class="docutils literal notranslate"><span class="pre">find-providers</span></code> argument to list chat and text completion providers.
-For more information, refer to <a class="reference internal" href="#./user-guides/cli.md#providers"><code class="xref myst docutils literal notranslate"><span class="pre">./user-guides/cli.md#providers</span></code></a>.</p></li>
-</ul>
-</section>
-<section id="v0-14-0-breaking-changes">
-<span id="id20"></span><h3>Breaking Changes<a class="headerlink" href="#v0-14-0-breaking-changes" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Removed support for the NeMo LLM Service, <code class="docutils literal notranslate"><span class="pre">nemollm</span></code>.
-This provider reached end-of-life on February 5, 2025.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">HuggingFacePipelineCompatible</span></code> provider is refactored.
-Previously, the class was available from the <code class="docutils literal notranslate"><span class="pre">nemoguardrails.llm.providers</span></code> package.
-In this release, the class is moved to the <code class="docutils literal notranslate"><span class="pre">nemoguardrails.llm.providers.huggingface</span></code> package.</p></li>
-</ul>
-</section>
-<section id="v0-14-0-fixed-issues">
-<span id="id21"></span><h3>Fixed Issues<a class="headerlink" href="#v0-14-0-fixed-issues" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Fixed an issue when tracing is enabled.
-Previously, the response was replaced when tracing is enabled and could cause a crash or exception.
-In this release, the response is not modified when tracing is enabled.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1103" rel="noreferer noopener" target="_blank">PR #1103</a>.</p></li>
-<li><p>Fixed an issue with the self check output flow.
-Previously, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction was not executed when <code class="docutils literal notranslate"><span class="pre">enable_rails_exceptions</span></code> was enabled.
-In this release, the <code class="docutils literal notranslate"><span class="pre">stop</span></code> instruction correctly regardless of the <code class="docutils literal notranslate"><span class="pre">enable_rails_execptions</span></code> value.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1126" rel="noreferer noopener" target="_blank">PR #1126</a>.</p></li>
-<li><p>Previously, the model specification in the guardrails configuration file, <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>, did not validate the model name.
-In this release you must specify the model name in the <code class="docutils literal notranslate"><span class="pre">model</span></code> top-level field or as <code class="docutils literal notranslate"><span class="pre">model</span></code> or <code class="docutils literal notranslate"><span class="pre">model_name</span></code> in
-the parameters field.
-For more information, refer to <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/pull/1084" rel="noreferer noopener" target="_blank">PR #1084</a>.</p></li>
-</ul>
-</section>
 </section>
 </section>
 
@@ -1013,13 +833,7 @@ For more information, refer to <a class="reference external" href="https://githu
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-20-0">0.20.0</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-19-0">0.19.0</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-18-0">0.18.0</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-17-0">0.17.0</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-16-0">0.16.0</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-15-0">0.15.0</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-14-1">0.14.1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-14-0">0.14.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#previous-release-notes">Previous Release Notes</a></li>
 </ul>
   </nav></div>
 

@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -683,7 +684,7 @@
 <li><p><a class="reference internal" href="#tonal-detection">Tonal Detection</a></p></li>
 <li><p><a class="reference internal" href="#toxicity-extraction">Toxicity detection</a></p></li>
 <li><p><a class="reference internal" href="#pii">PII</a></p></li>
-<li><p><a class="reference internal" href="#factcheck-or-groundness-check"><span class="xref myst">Factcheck</span></a></p></li>
+<li><p><a class="reference internal" href="#fact-check">Factcheck</a></p></li>
 </ol>
 <p>Note: Factcheck is implemented a bit differently, compared to other guardrails.
 Please have a look at its description within this document to understand its usage.</p>
@@ -691,7 +692,7 @@ Please have a look at its description within this document to understand its usa
 <h2>AutoAlign API KEY<a class="headerlink" href="#autoalign-api-key" title="Link to this heading">#</a></h2>
 <p>In order to use AutoAlign’s guardrails you need to set <code class="docutils literal notranslate"><span class="pre">AUTOALIGN_API_KEY</span></code> as an environment variable in your system,
 with the API key as its value.</p>
-<p>Please contact <a class="reference internal" href="#mailto:hello&#64;autoalign.ai"><span class="xref myst">hello&#64;autoalign.ai</span></a> for your own API key. Please mention NeMo and AutoAlign in the subject line in order to receive quick responses from the AutoAlign team.</p>
+<p>Please contact <a class="reference external" href="mailto:hello&#37;&#52;&#48;autoalign&#46;ai" rel="noreferer noopener" target="_blank">hello<span>&#64;</span>autoalign<span>&#46;</span>ai</a> for your own API key. Please mention NeMo and AutoAlign in the subject line in order to receive quick responses from the AutoAlign team.</p>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
@@ -942,7 +943,7 @@ given below.</p>
 <p><strong>Please note that</strong> all the additional configs such as <code class="docutils literal notranslate"><span class="pre">matching_scores</span></code>, <code class="docutils literal notranslate"><span class="pre">contextual_rules</span></code>, and <code class="docutils literal notranslate"><span class="pre">enabled_types</span></code> are optional; if they are not specified then the default values will be applied.</p>
 <p>The config for the guardrails has to be defined separately for both input and output side, as shown in the above example.</p>
 <p>The colang file has been implemented in the following format in the library:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow autoalign check input
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow autoalign check input
   $input_result = execute autoalign_input_api(show_autoalign_message=True)
 
   if $input_result[&quot;guardrails_triggered&quot;]
@@ -968,7 +969,6 @@ define bot respond pii output
 
 define bot refuse to respond
   &quot;I&#39;m sorry I can&#39;t respond.&quot;
-
 </pre></div>
 </div>
 <p>The actions <code class="docutils literal notranslate"><span class="pre">autoalign_input_api</span></code> and <code class="docutils literal notranslate"><span class="pre">autoalign_output_api</span></code> takes in two arguments <code class="docutils literal notranslate"><span class="pre">show_autoalign_message</span></code> and
@@ -1090,7 +1090,7 @@ which is under <code class="docutils literal notranslate"><span class="pre">inpu
 </pre></div>
 </div>
 <p>Can extract toxic phrases by changing the colang file a bit:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow autoalign check input
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define subflow autoalign check input
   $input_result = execute autoalign_input_api(show_autoalign_message=True, show_toxic_phrases=True)
   if $input_result[&quot;guardrails_triggered&quot;]
     $autoalign_input_response = $input_result[&#39;combined_response&#39;]
@@ -1228,7 +1228,7 @@ process.</p>
 computation, and we encourage users to determine which LLM responses should go through
 AutoAlign groundness check whenever possible.</p>
 <p>Following is the format of the colang file, which is present in the library:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow autoalign groundedness output
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define subflow autoalign groundedness output
   if $check_facts == True
     $check_facts = False
     $threshold = 0.5
@@ -1241,7 +1241,7 @@ The <code class="docutils literal notranslate"><span class="pre">show_autoalign_
 or not. The response from AutoAlign would be presented as a subtext, when
 <code class="docutils literal notranslate"><span class="pre">show_autoalign_message</span></code> is kept <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <p>To use this flow you need to have colang file of the following format:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define user ask about pluto
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define user ask about pluto
   &quot;What is pluto?&quot;
   &quot;How many moons does pluto have?&quot;
   &quot;Is pluto a planet?&quot;

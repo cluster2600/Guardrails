@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -719,7 +720,7 @@
 </li>
 </ol>
 <p>The rails execute the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/llama_guard/actions.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">llama_guard_check_*</span></code> actions</a>, which return <code class="docutils literal notranslate"><span class="pre">True</span></code> if the user input or the bot message should be allowed, and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise, along with a list of the unsafe content categories as defined in the Llama Guard prompt.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow llama guard check input
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow llama guard check input
   $llama_guard_response = execute llama_guard_check_input
   $allowed = $llama_guard_response[&quot;allowed&quot;]
   $llama_guard_policy_violations = $llama_guard_response[&quot;policy_violations&quot;]

@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -690,7 +691,7 @@
 <p>The example below extends the <a class="reference internal" href="hello-world.html#colang-2-getting-started-hello-world"><span class="std std-ref">Hello World example</span></a> by creating the <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">expressed</span> <span class="pre">greeting</span></code> and <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code> messages.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">examples/v2_x/tutorial/hello_world_2/main.co</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>import core
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span>flow main
 <span class="linenos"> 4</span>  user expressed greeting
@@ -715,7 +716,7 @@
 <p>To enable the use of the LLM to drive the interaction for inputs that are not matched exactly by flows, you have to <em>activate</em> the <code class="docutils literal notranslate"><span class="pre">llm</span> <span class="pre">continuation</span></code> flow, which is part of the <code class="docutils literal notranslate"><span class="pre">llm</span></code> module in the <a class="reference internal" href="../language-reference/the-standard-library.html#the-standard-library"><span class="std std-ref">Colang Standard Library (CSL)</span></a>.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">examples/v2_x/tutorial/hello_world_3/main.co</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>import core
 <span class="linenos"> 2</span>import llm
 <span class="linenos"> 3</span>
 <span class="linenos"> 4</span>flow main

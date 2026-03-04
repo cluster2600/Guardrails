@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -669,7 +670,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="kv-cache-reuse-for-nemoguard-nim">
 <span id="kv-cache-reuse"></span><h1>KV Cache Reuse for NemoGuard NIM<a class="headerlink" href="#kv-cache-reuse-for-nemoguard-nim" title="Link to this heading">#</a></h1>
 <p>When you configure NeMo Guardrails to call NemoGuard NIMs in response to a client request, every NIM call interjecting the input and response adds to the inference latency.
-The application LLM can only begin generating a response after all input checks, which may <a class="reference internal" href="#parallel-rails"><span class="xref myst">run in parallel</span></a>, are complete. Additionally, response latency is introduced if you run the guardrail checks on the application LLM’s response; the larger the response, the longer it takes to check the response.</p>
+The application LLM can only begin generating a response after all input checks, which may <a class="reference internal" href="../yaml-schema/guardrails-configuration/parallel-rails.html"><span class="std std-doc">run in parallel</span></a>, are complete. Additionally, response latency is introduced if you run the guardrail checks on the application LLM’s response; the larger the response, the longer it takes to check the response.</p>
 <p><a class="reference external" href="https://docs.nvidia.com/nim/large-language-models/latest/kv-cache-reuse.html" rel="noreferer noopener" target="_blank">KV Cache Reuse</a> (also known as prefix-caching) is a feature of the NVIDIA NIM for LLMs that provides a performance improvement by reusing the decoder layers for the prompt.</p>
 <section id="how-key-value-cache-reuse-works">
 <h2>How Key-Value Cache Reuse Works<a class="headerlink" href="#how-key-value-cache-reuse-works" title="Link to this heading">#</a></h2>

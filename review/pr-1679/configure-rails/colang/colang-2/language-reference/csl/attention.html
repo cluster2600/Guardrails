@@ -535,6 +535,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -679,7 +680,7 @@
 <span class="sig-name descname"><span class="pre">tracking</span> <span class="pre">user</span> <span class="pre">attention</span></span></dt>
 <dd><p>For the automatic handling of user attention events, you need to activate this flow to track user attention levels during the last user utterance. This information will be used to change the functionality of all <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span></code> flows such that they will no longer finish when the user says something while being inattentive.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 import attention
 
 flow main
@@ -696,7 +697,7 @@ flow main
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">(overwritten)</span></span></dt>
 <dd><p>When you include <code class="docutils literal notranslate"><span class="pre">attention.co</span></code> in your bot folder, it overrides all <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">said</span></code> related flows so that these flows only consider user utterances when the user is attentive. You can overwrite the default attention check by overwriting the flow <code class="docutils literal notranslate"><span class="pre">attention</span> <span class="pre">checks</span></code> explained below. For your first test, the default implementation should work well with the Tokkio setup.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 import attention
 
 flow main
@@ -715,7 +716,7 @@ flow main
 <span class="sig-name descname"><span class="pre">attention</span> <span class="pre">checks</span> <span class="pre">$event</span> <span class="pre">-&gt;</span> <span class="pre">$is_attentive</span></span></dt>
 <dd><p>The <code class="docutils literal notranslate"><span class="pre">attention</span> <span class="pre">checks</span></code> flow is called whenever the system needs to decide if a user utterance was completed while the user was attentive. You can overwrite the default behavior by overwriting this flow in your bot script.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 import attention
 
 @override
@@ -732,7 +733,7 @@ flow attention checks $event -&gt; $is_attentive
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">said</span> <span class="pre">something</span> <span class="pre">inattentively</span></span></dt>
 <dd><p>The user said something while being inattentive. Use this flow to let the user know that the bot assumes that the user is not attentive and the utterance will be ignored.</p>
 <p>Example:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 import attention
 import avatar # Only needed for the optional bot gesture we use below
 

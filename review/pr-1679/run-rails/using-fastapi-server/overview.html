@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -671,7 +672,8 @@
 <p>The NeMo Guardrails API server:</p>
 <ul class="simple">
 <li><p>Loads guardrails configurations at startup.</p></li>
-<li><p>Exposes a REST API compatible with OpenAI’s chat completions format.</p></li>
+<li><p>Exposes an <a class="reference external" href="https://platform.openai.com/docs/api-reference/chat/create" rel="noreferer noopener" target="_blank">OpenAI-compatible REST API</a> for chat completions and model listing.</p></li>
+<li><p>Works with the <a class="reference external" href="https://github.com/openai/openai-python" rel="noreferer noopener" target="_blank">OpenAI Python SDK</a> — use <code class="docutils literal notranslate"><span class="pre">OpenAI(base_url=&quot;http://localhost:8000/v1&quot;)</span></code>.</p></li>
 <li><p>Includes a built-in Chat UI for testing.</p></li>
 <li><p>Supports multiple configurations and combining them per-request.</p></li>
 </ul>
@@ -718,8 +720,11 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;config_id&quot;: &quot;content_safety&quot;,</span>
-<span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]</span>
+<span class="s1">    &quot;model&quot;: &quot;meta/llama-3.1-8b-instruct&quot;,</span>
+<span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}],</span>
+<span class="s1">    &quot;guardrails&quot;: {</span>
+<span class="s1">      &quot;config_id&quot;: &quot;content_safety&quot;</span>
+<span class="s1">    }</span>
 <span class="s1">  }&#39;</span>
 </pre></div>
 </div>

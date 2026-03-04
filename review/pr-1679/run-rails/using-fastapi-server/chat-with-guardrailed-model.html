@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -668,49 +669,105 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="chat-with-guardrailed-model">
 <h1>Chat with Guardrailed Model<a class="headerlink" href="#chat-with-guardrailed-model" title="Link to this heading">#</a></h1>
-<p>Use the <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint to send messages and receive guarded responses from the server.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>While the endpoint is in the same format as the OpenAI’s chat completions API endpoint, it is currently not compatible with the OpenAI API.</p>
-</div>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint to send messages and receive guarded responses from the server.
+The endpoint is compatible with the <a class="reference external" href="https://platform.openai.com/docs/api-reference/chat/create" rel="noreferer noopener" target="_blank">OpenAI Chat Completions API</a>,
+with additional guardrails-specific fields nested under a <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> object.</p>
 <section id="basic-request">
 <h2>Basic Request<a class="headerlink" href="#basic-request" title="Link to this heading">#</a></h2>
-<p>Send a POST request to the chat completions endpoint:</p>
+<p>Send a POST request to the chat completions endpoint.
+The <code class="docutils literal notranslate"><span class="pre">model</span></code> field is required and specifies which LLM to use.
+Guardrails-specific fields such as <code class="docutils literal notranslate"><span class="pre">config_id</span></code> are nested under the <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> object.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;config_id&quot;: &quot;content_safety&quot;,</span>
+<span class="s1">    &quot;model&quot;: &quot;meta/llama-3.1-8b-instruct&quot;,</span>
 <span class="s1">    &quot;messages&quot;: [</span>
 <span class="s1">      {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello! What can you do for me?&quot;}</span>
-<span class="s1">    ]</span>
+<span class="s1">    ],</span>
+<span class="s1">    &quot;guardrails&quot;: {</span>
+<span class="s1">      &quot;config_id&quot;: &quot;content_safety&quot;</span>
+<span class="s1">    }</span>
 <span class="s1">  }&#39;</span>
 </pre></div>
 </div>
 <section id="response">
 <h3>Response<a class="headerlink" href="#response" title="Link to this heading">#</a></h3>
+<p>The response follows the standard OpenAI <code class="docutils literal notranslate"><span class="pre">ChatCompletion</span></code> format, with an additional <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> object containing guardrails-specific output data.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chatcmpl-abc123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chat.completion&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1700000000</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;choices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I can help you with your questions. What would you like to know?&quot;</span>
+<span class="w">      </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I can help you with your questions. What would you like to know?&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;finish_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stop&quot;</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">]</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;guardrails&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;config_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;llm_output&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;output_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;log&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> response object may include additional fields depending on your request options:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">state</span></code></strong> — State object for continuing the conversation. Return this in subsequent requests to resume.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">llm_output</span></code></strong> — Additional LLM output data (when <code class="docutils literal notranslate"><span class="pre">guardrails.options.llm_output</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">output_data</span></code></strong> — Values for requested context variables (when <code class="docutils literal notranslate"><span class="pre">guardrails.options.output_vars</span></code> is set).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">log</span></code></strong> — Logging information (when <code class="docutils literal notranslate"><span class="pre">guardrails.options.log</span></code> is configured).</p></li>
+</ul>
 </section>
 </section>
-<section id="using-python">
-<h2>Using Python<a class="headerlink" href="#using-python" title="Link to this heading">#</a></h2>
+<section id="using-the-openai-python-sdk">
+<h2>Using the OpenAI Python SDK<a class="headerlink" href="#using-the-openai-python-sdk" title="Link to this heading">#</a></h2>
+<p>Since the server is OpenAI-compatible, you can use the <a class="reference external" href="https://github.com/openai/openai-python" rel="noreferer noopener" target="_blank">OpenAI Python SDK</a> to interact with it.
+Pass guardrails-specific fields using the <code class="docutils literal notranslate"><span class="pre">extra_body</span></code> parameter.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000/v1&quot;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;not-used&quot;</span>  <span class="c1"># Required by OpenAI SDK but not used by the guardrails server</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello! What can you do for me?&quot;</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-python-requests">
+<h2>Using Python Requests<a class="headerlink" href="#using-python-requests" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
 <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
     <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello! What can you do for me?&quot;</span><span class="p">}</span>
-    <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span>
+    <span class="p">}</span>
 <span class="p">})</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
@@ -719,12 +776,16 @@
 </section>
 <section id="combine-multiple-configurations">
 <h2>Combine Multiple Configurations<a class="headerlink" href="#combine-multiple-configurations" title="Link to this heading">#</a></h2>
-<p>You can combine multiple guardrails configurations in a single request using <code class="docutils literal notranslate"><span class="pre">config_ids</span></code>:</p>
+<p>You can combine multiple guardrails configurations in a single request using <code class="docutils literal notranslate"><span class="pre">config_ids</span></code> inside the <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> object.
+Use either <code class="docutils literal notranslate"><span class="pre">config_id</span></code> or <code class="docutils literal notranslate"><span class="pre">config_ids</span></code>, but not both — they are mutually exclusive.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;config_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;input_checking&quot;</span><span class="p">,</span> <span class="s2">&quot;output_checking&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
     <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}</span>
-    <span class="p">]</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;input_checking&quot;</span><span class="p">,</span> <span class="s2">&quot;output_checking&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
 </div>
@@ -744,20 +805,26 @@ If there are conflicts, the last configuration takes precedence.</p>
 </ol>
 <p><strong>Without input checking:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are stupid.&quot;</span><span class="p">}]</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are stupid.&quot;</span><span class="p">}],</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;main&quot;</span>
+    <span class="p">}</span>
 <span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
 <span class="c1"># LLM responds to the message</span>
 </pre></div>
 </div>
 <p><strong>With input checking:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;config_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;input_checking&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are stupid.&quot;</span><span class="p">}]</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are stupid.&quot;</span><span class="p">}],</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_ids&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;input_checking&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
 <span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-<span class="c1"># {&quot;messages&quot;: [{&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;I&#39;m sorry, I can&#39;t respond to that.&quot;}]}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+<span class="c1"># &quot;I&#39;m sorry, I can&#39;t respond to that.&quot;</span>
 </pre></div>
 </div>
 <p>The input rail blocks the inappropriate message before it reaches the LLM.</p>
@@ -765,8 +832,9 @@ If there are conflicts, the last configuration takes precedence.</p>
 </section>
 <section id="use-the-default-configuration">
 <h2>Use the Default Configuration<a class="headerlink" href="#use-the-default-configuration" title="Link to this heading">#</a></h2>
-<p>If the server was started with <code class="docutils literal notranslate"><span class="pre">--default-config-id</span></code>, you can omit the configuration:</p>
+<p>If the server was started with <code class="docutils literal notranslate"><span class="pre">--default-config-id</span></code>, you can omit the <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> object:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
     <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}</span>
     <span class="p">]</span>
@@ -776,15 +844,70 @@ If there are conflicts, the last configuration takes precedence.</p>
 </section>
 <section id="streaming-responses">
 <h2>Streaming Responses<a class="headerlink" href="#streaming-responses" title="Link to this heading">#</a></h2>
-<p>Enable streaming to receive partial responses as they are generated:</p>
+<p>Enable streaming to receive partial responses as server-sent events (SSE).
+Each chunk follows the OpenAI streaming format.</p>
+<section id="using-curl">
+<h3>Using curl<a class="headerlink" href="#using-curl" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;model&quot;: &quot;meta/llama-3.1-8b-instruct&quot;,</span>
+<span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Tell me a story&quot;}],</span>
+<span class="s1">    &quot;stream&quot;: true,</span>
+<span class="s1">    &quot;guardrails&quot;: {</span>
+<span class="s1">      &quot;config_id&quot;: &quot;content_safety&quot;</span>
+<span class="s1">    }</span>
+<span class="s1">  }&#39;</span>
+</pre></div>
+</div>
+<p>The server sends chunks in SSE format:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>data: {&quot;id&quot;:&quot;chatcmpl-abc123&quot;,&quot;object&quot;:&quot;chat.completion.chunk&quot;,&quot;created&quot;:1700000000,&quot;model&quot;:&quot;meta/llama-3.1-8b-instruct&quot;,&quot;choices&quot;:[{&quot;delta&quot;:{&quot;content&quot;:&quot;Once&quot;},&quot;index&quot;:0,&quot;finish_reason&quot;:null}]}
+
+data: {&quot;id&quot;:&quot;chatcmpl-abc123&quot;,&quot;object&quot;:&quot;chat.completion.chunk&quot;,&quot;created&quot;:1700000000,&quot;model&quot;:&quot;meta/llama-3.1-8b-instruct&quot;,&quot;choices&quot;:[{&quot;delta&quot;:{&quot;content&quot;:&quot; upon&quot;},&quot;index&quot;:0,&quot;finish_reason&quot;:null}]}
+
+data: [DONE]
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>Using the OpenAI Python SDK<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000/v1&quot;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;not-used&quot;</span>
+<span class="p">)</span>
+
+<span class="n">stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a story&quot;</span><span class="p">}],</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Using Python Requests<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span>
     <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
         <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a story&quot;</span><span class="p">}],</span>
-        <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span>
+        <span class="p">}</span>
     <span class="p">},</span>
     <span class="n">stream</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
@@ -795,26 +918,33 @@ If there are conflicts, the last configuration takes precedence.</p>
 </pre></div>
 </div>
 </section>
+</section>
 <section id="conversation-threads">
 <h2>Conversation Threads<a class="headerlink" href="#conversation-threads" title="Link to this heading">#</a></h2>
-<p>Use <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> to maintain conversation history on the server.
+<p>Use <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> inside the <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> object to maintain conversation history on the server.
 This is useful when you can only send the latest message rather than the full history.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> must be at least 16 characters long for security reasons.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">thread_id</span></code> must be between 16 and 255 characters long.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First message</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;thread_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user-session-12345678&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;My name is Alice.&quot;</span><span class="p">}]</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;My name is Alice.&quot;</span><span class="p">}],</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;thread_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user-session-12345678&quot;</span>
+    <span class="p">}</span>
 <span class="p">})</span>
 
 <span class="c1"># Follow-up message (server remembers the conversation)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;thread_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user-session-12345678&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is my name?&quot;</span><span class="p">}]</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is my name?&quot;</span><span class="p">}],</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;thread_id&quot;</span><span class="p">:</span> <span class="s2">&quot;user-session-12345678&quot;</span>
+    <span class="p">}</span>
 <span class="p">})</span>
 <span class="c1"># The assistant remembers &quot;Alice&quot;</span>
 </pre></div>
@@ -853,13 +983,16 @@ This is useful when you can only send the latest message rather than the full hi
 </section>
 <section id="add-context">
 <h2>Add Context<a class="headerlink" href="#add-context" title="Link to this heading">#</a></h2>
-<p>Include additional context data in your request:</p>
+<p>Include additional context data in your request using the <code class="docutils literal notranslate"><span class="pre">context</span></code> field inside the <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> object:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
     <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is my account balance?&quot;</span><span class="p">}],</span>
-    <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;account_type&quot;</span><span class="p">:</span> <span class="s2">&quot;premium&quot;</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account_type&quot;</span><span class="p">:</span> <span class="s2">&quot;premium&quot;</span>
+        <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
@@ -867,24 +1000,42 @@ This is useful when you can only send the latest message rather than the full hi
 </section>
 <section id="control-generation-options">
 <h2>Control Generation Options<a class="headerlink" href="#control-generation-options" title="Link to this heading">#</a></h2>
-<p>Use the <code class="docutils literal notranslate"><span class="pre">options</span></code> field to control which rails are applied and what information is returned:</p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">options</span></code> field inside the <code class="docutils literal notranslate"><span class="pre">guardrails</span></code> object to control which rails are applied and what information is returned:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
-    <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
     <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">}],</span>
-    <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;rails&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s2">&quot;dialog&quot;</span><span class="p">:</span> <span class="kc">False</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;activated_rails&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;rails&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;dialog&quot;</span><span class="p">:</span> <span class="kc">False</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;activated_rails&quot;</span><span class="p">:</span> <span class="kc">True</span>
+            <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">})</span>
 </pre></div>
 </div>
+<section id="standard-openai-parameters">
+<h3>Standard OpenAI Parameters<a class="headerlink" href="#standard-openai-parameters" title="Link to this heading">#</a></h3>
+<p>You can also pass standard OpenAI parameters such as <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">max_tokens</span></code>, <code class="docutils literal notranslate"><span class="pre">top_p</span></code>, <code class="docutils literal notranslate"><span class="pre">stop</span></code>, <code class="docutils literal notranslate"><span class="pre">presence_penalty</span></code>, and <code class="docutils literal notranslate"><span class="pre">frequency_penalty</span></code> at the top level:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;meta/llama-3.1-8b-instruct&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">}],</span>
+    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+    <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+    <span class="s2">&quot;guardrails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;config_id&quot;</span><span class="p">:</span> <span class="s2">&quot;content_safety&quot;</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+</div>
 <p>For complete details on generation options, see <a class="reference internal" href="../../reference/api-server-endpoints/index.html"><span class="std std-doc">NeMo Guardrails Library API Server Endpoints Reference</span></a>.</p>
+</section>
 </section>
 <section id="related-topics">
 <h2>Related Topics<a class="headerlink" href="#related-topics" title="Link to this heading">#</a></h2>
@@ -949,20 +1100,29 @@ This is useful when you can only send the latest message rather than the full hi
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#response">Response</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-python">Using Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-openai-python-sdk">Using the OpenAI Python SDK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-python-requests">Using Python Requests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-multiple-configurations">Combine Multiple Configurations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-atomic-configurations">Example: Atomic Configurations</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-default-configuration">Use the Default Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-responses">Streaming Responses</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-responses">Streaming Responses</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-curl">Using curl</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Using the OpenAI Python SDK</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Using Python Requests</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversation-threads">Conversation Threads</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-thread-storage">Configure Thread Storage</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#thread-limitations">Thread Limitations</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-context">Add Context</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-generation-options">Control Generation Options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-generation-options">Control Generation Options</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-openai-parameters">Standard OpenAI Parameters</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 </ul>
   </nav></div>

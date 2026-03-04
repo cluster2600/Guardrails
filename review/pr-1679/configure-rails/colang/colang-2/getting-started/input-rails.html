@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -689,7 +690,7 @@
 <p>In the example below, the <code class="docutils literal notranslate"><span class="pre">input</span> <span class="pre">rails</span></code> flow calls another flow named <code class="docutils literal notranslate"><span class="pre">check</span> <span class="pre">user</span> <span class="pre">message</span></code> which prompts the LLM to check the input.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">examples/v2_x/tutorial/guardrails_1/main.co</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>import core
 <span class="hll"><span class="linenos"> 2</span>import guardrails
 </span><span class="hll"><span class="linenos"> 3</span>import llm
 </span><span class="linenos"> 4</span>

@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -706,7 +707,7 @@ current evaluation, this is the step.</p></li>
 </ul>
 <p>The datasets were transformed into a NeMo Guardrails app by defining canonical forms for each intent, specific dialogue flows, and even bot messages (for the <em>chit-chat</em> dataset alone).
 The two datasets have a large number of user intents, thus dialog rails. One of them is very generic and has higher-grained intents (<em>chit-chat</em>), while the <em>banking</em> dataset is domain-specific and more fine-grained.
-More details about running the dialog rails evaluation experiments and the evaluation datasets are available <span class="xref myst">here</span>.</p>
+More details about running the dialog rails evaluation experiments and the evaluation datasets are available <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/evaluate/data/topical/README.md" rel="noreferer noopener" target="_blank">here</a>.</p>
 <p>Preliminary evaluation results follow next. In all experiments, we have chosen to have a balanced test set with at most 3 samples per intent.
 For both datasets, we have assessed the performance for various LLMs and also for the number of samples (<code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">all,</span> <span class="pre">3,</span> <span class="pre">1</span></code>) per intent that are indexed in the vector database.</p>
 <p>Take into account that the performance of an LLM is heavily dependent on the prompt, especially due to the more complex <a class="reference internal" href="../reference/colang-architecture-guide.html#example-prompt"><span class="std std-ref">prompt used by Guardrails</span></a>.
@@ -1249,7 +1250,7 @@ For more details, consult the <a class="reference internal" href="../configure-r
 </div>
 <p><sup>*</sup> Note that as of Mar 13, 2024 <code class="docutils literal notranslate"><span class="pre">gemini-1.0-pro</span></code> when queried via the Vertex AI API occasionally produces <a class="reference external" href="https://github.com/GoogleCloudPlatform/generative-ai/issues/344" rel="noreferer noopener" target="_blank">this error</a>. Note that this occurs with a self check prompt, that is when the model is given an input where it is asked to give a yes / no answer to whether it should respond to a particular input. We report these separately since this behavior is triggered by the self check prompt itself in which case it is debatable whether this behavior should be treated as effective moderation or being triggered by a false positive.</p>
 <section id="llamaguard-based-moderation-rails-performance">
-<h5>LlamaGuard-based Moderation Rails Performance<a class="headerlink" href="#llamaguard-based-moderation-rails-performance" title="Link to this heading">#</a></h5>
+<span id="id5"></span><h5>LlamaGuard-based Moderation Rails Performance<a class="headerlink" href="#llamaguard-based-moderation-rails-performance" title="Link to this heading">#</a></h5>
 <p>Evaluation date: January 8, 2024.</p>
 <p>Guardrails offers out-of-the-box support for Meta’s new Llama Guard model for input/output moderation.
 Below, we evaluate Llama Guard and compare it to the self-checking approach with the <em>Complex</em> prompt for two popular datasets.</p>
@@ -1327,13 +1328,13 @@ Number of user inputs labeled harmful: 730 (7.2%)</p>
 <li><p>We then check if the answers are consistent with each other. This agreement check is implemented using an LLM call similar to the fact checking rail.</p></li>
 <li><p>If the answers are inconsistent, it indicates that the model might be hallucinating.</p></li>
 </ul>
-<section id="id5">
-<h4>Self-Check<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<section id="id6">
+<h4>Self-Check<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
 <p>This rail will use the LLM for self-checking with a custom prompt if the answers are inconsistent. The custom prompt can be similar to an NLI task.
 For more details, consult the <a class="reference internal" href="../configure-rails/guardrail-catalog/self-check.html"><span class="std std-doc">LLM Self-Check</span></a> guide.</p>
 </section>
-<section id="id6">
-<h4>Evaluation<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<section id="id7">
+<h4>Evaluation<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
 <p>To run the hallucination rail, use the following CLI command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nemoguardrails<span class="w"> </span>evaluate<span class="w"> </span>hallucination<span class="w"> </span>--config<span class="o">=</span>path/to/guardrails/config
 </pre></div>
@@ -1349,8 +1350,8 @@ For more details, consult the <a class="reference internal" href="../configure-r
 <p>To evaluate the hallucination rail on your own dataset, you can follow the create a text file with the list of questions and run the evaluation using the following command</p>
 <p><code class="docutils literal notranslate"><span class="pre">nemoguardrails</span> <span class="pre">evaluate</span> <span class="pre">hallucination</span> <span class="pre">--dataset-path</span> <span class="pre">&lt;path-to-your-text-file&gt;</span></code></p>
 </section>
-<section id="id7">
-<h4>Evaluation Results<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+<section id="id8">
+<h4>Evaluation Results<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
 <p>To evaluate the hallucination rail, we manually curate a set of <a class="reference download internal" download="" href="../_downloads/21913015d9e497f77d6f5003ce31c66d/sample.txt"><span class="xref download myst">questions</span></a> which mainly consists of questions with a false premise, i.e., questions that cannot have a correct answer.</p>
 <p>For example, the question “What is the capital of the moon?” has a false premise since the moon does not have a capital. Since the question is stated in a way that implies that the moon has a capital, the model might be tempted to make up a fact and answer the question.</p>
 <p>We then run the hallucination rail on these questions and check if the model is able to detect the hallucination. We run the evaluation using OpenAI <code class="docutils literal notranslate"><span class="pre">text-davinci-003</span></code> and <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo</span></code> models.</p>
@@ -1467,9 +1468,9 @@ For more details, consult the <a class="reference internal" href="../configure-r
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallucination-rails">Hallucination Rails</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Self-Check</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Evaluation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Evaluation Results</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Self-Check</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Evaluation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Evaluation Results</a></li>
 </ul>
 </li>
 </ul>

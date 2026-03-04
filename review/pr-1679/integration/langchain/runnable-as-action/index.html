@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -712,7 +713,7 @@
 <section id="guardrails-configuration">
 <h2>Guardrails Configuration<a class="headerlink" href="#guardrails-configuration" title="Link to this heading">#</a></h2>
 <p>Now, let’s create a guardrails configuration that uses the <code class="docutils literal notranslate"><span class="pre">CheckKeywords</span></code> runnable as part of an input rail flow. To achieve this, you need to register an instance of <code class="docutils literal notranslate"><span class="pre">CheckKeywords</span></code> as an action. In the snippets below, we register it as the <code class="docutils literal notranslate"><span class="pre">check_keywords</span></code> action. We can then use this action inside the <code class="docutils literal notranslate"><span class="pre">check</span> <span class="pre">proprietary</span> <span class="pre">keywords</span></code> flow, which is used as an input rail.</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow check proprietary keywords
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow check proprietary keywords
   $keywords = &quot;proprietary&quot;
   $has_keywords = execute check_keywords(text=$user_message, keywords=$keywords)
 

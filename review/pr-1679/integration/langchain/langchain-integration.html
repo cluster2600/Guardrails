@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -723,7 +724,7 @@
 </pre></div>
 </div>
 <p>Once registered, the chain (or <code class="docutils literal notranslate"><span class="pre">Runnable</span></code>) can be invoked from within a flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow
   ...
   $result = execute sample_action
   ...

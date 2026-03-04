@@ -535,6 +535,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -680,7 +681,7 @@
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">activefence</span> <span class="pre">moderation</span> <span class="pre">on</span> <span class="pre">input</span></code> flow uses the maximum risk score with an 0.85 threshold to decide if the text should be allowed or not (i.e., if the risk score is above the threshold, it is considered a violation). The <code class="docutils literal notranslate"><span class="pre">activefence</span> <span class="pre">moderation</span> <span class="pre">on</span> <span class="pre">input</span> <span class="pre">detailed</span></code> has individual scores per category of violation.</p>
 <p>To customize the scores, you have to overwrite the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/activefence/flows.co" rel="noreferer noopener" target="_blank">default flows</a> in your config. For example, to change the threshold for <code class="docutils literal notranslate"><span class="pre">activefence</span> <span class="pre">moderation</span> <span class="pre">on</span> <span class="pre">input</span></code> you can add the following flow to your config:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow activefence moderation on input
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define subflow activefence moderation on input
   &quot;&quot;&quot;Guardrail based on the maximum risk score.&quot;&quot;&quot;
   $result = execute call activefence api
 
@@ -690,7 +691,7 @@
 </pre></div>
 </div>
 <p>ActiveFence’s ActiveScore API gives flexibility in controlling the behavior of various supported violations individually. To leverage that, you can use the violations dictionary (<code class="docutils literal notranslate"><span class="pre">violations_dict</span></code>), one of the outputs from the API, to set different thresholds for different violations. Below is an example of one such input moderation flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow activefence input moderation detailed
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow activefence input moderation detailed
   $result = execute call activefence api
 
   if $result.violations.get(&quot;abusive_or_harmful.hate_speech&quot;, 0) &gt; 0.8

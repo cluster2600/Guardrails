@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -675,7 +676,7 @@
 <p>In question-answering or RAG applications: high trustworthiness is indicative of a correct response. In open-ended chat applications, a high score corresponds to the response being helpful and informative. Low trustworthiness scores indicate outputs that are likely bad or incorrect, or complex prompts where the LLM might have output the right response this time but might output the wrong response when run on the same prompt again (so it cannot be trusted).</p>
 <p>The trustworthiness score is further explained and comprehensively benchmarked in <a class="reference external" href="https://help.cleanlab.ai/tlm/" rel="noreferer noopener" target="_blank">Cleanlab’s documentation</a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">cleanlab</span> <span class="pre">trustworthiness</span></code> guardrail flow uses a default trustworthiness score threshold of 0.6 to determine if your LLM output should be allowed or not. When the trustworthiness score falls below the threshold, the corresponding LLM response is flagged as <em>unstrustworthy</em>. You can easily change the cutoff value for the trustworthiness score by adjusting the threshold in the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/tree/develop/nemoguardrails/library/cleanlab/flows.co" rel="noreferer noopener" target="_blank">config</a>. For example, to change the threshold to 0.7, add the following flow to your config:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define subflow cleanlab trustworthiness
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define subflow cleanlab trustworthiness
   &quot;&quot;&quot;Guardrail based on trustworthiness score.&quot;&quot;&quot;
   $result = execute call cleanlab api
 
@@ -693,7 +694,7 @@ define bot response untrustworthy
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install --upgrade cleanlab-tlm</span>
 </pre></div>
 </div>
-<p>You can get an API key for free by <a class="reference external" href="https://tlm.cleanlab.ai/" rel="noreferer noopener" target="_blank">creating a Cleanlab account</a> or experiment with the trustworthiness scores in the <a class="reference external" href="https://chat.cleanlab.ai/chat" rel="noreferer noopener" target="_blank">playground</a>. Feel free to <a class="reference internal" href="#mailto:suport&#64;cleanlab.ai"><span class="xref myst">email Cleanlab</span></a> with any questions.</p>
+<p>You can get an API key for free by <a class="reference external" href="https://tlm.cleanlab.ai/" rel="noreferer noopener" target="_blank">creating a Cleanlab account</a> or experiment with the trustworthiness scores in the <a class="reference external" href="https://chat.cleanlab.ai/chat" rel="noreferer noopener" target="_blank">playground</a>. Feel free to <a class="reference external" href="mailto:support&#37;&#52;&#48;cleanlab&#46;ai" rel="noreferer noopener" target="_blank">email Cleanlab</a> with any questions.</p>
 <p>Lastly, set the <code class="docutils literal notranslate"><span class="pre">CLEANLAB_API_KEY</span></code> environment variable with the API key.</p>
 </section>
 </section>

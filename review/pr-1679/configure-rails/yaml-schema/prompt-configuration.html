@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -669,6 +670,33 @@
   <section class="tex2jax_ignore mathjax_ignore" id="prompt-configuration">
 <h1>Prompt Configuration<a class="headerlink" href="#prompt-configuration" title="Link to this heading">#</a></h1>
 <p>This section describes how to customize prompts in the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code> or <code class="docutils literal notranslate"><span class="pre">prompts.yml</span></code> file.</p>
+<section id="task-oriented-prompting">
+<h2>Task-Oriented Prompting<a class="headerlink" href="#task-oriented-prompting" title="Link to this heading">#</a></h2>
+<p>The interaction with the LLM is task-oriented: each LLM call performs a specific task. The core tasks in the <a class="reference internal" href="../../reference/colang-architecture-guide.html"><span class="std std-doc">guardrails process</span></a> are:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code></p></td>
+<td><p>Generate the canonical user message from raw utterance (e.g., “Hello there” → <code class="docutils literal notranslate"><span class="pre">express</span> <span class="pre">greeting</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generate_next_steps</span></code></p></td>
+<td><p>Decide what the bot should say or what action to execute (e.g., <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code></p></td>
+<td><p>Decide the exact bot message to return</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">general</span></code></p></td>
+<td><p>Generate the next bot message based on history; used when no dialog rails are defined</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For the complete list of tasks, see <a class="reference external" href="https://github.com/NVIDIA/NeMo-Guardrails/blob/develop/nemoguardrails/llm/types.py" rel="noreferer noopener" target="_blank">Task type</a>.</p>
+</section>
 <section id="the-prompts-key">
 <h2>The <code class="docutils literal notranslate"><span class="pre">prompts</span></code> Key<a class="headerlink" href="#the-prompts-key" title="Link to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">prompts</span></code> key allows you to customize the prompts used for various LLM tasks.
@@ -746,6 +774,36 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 </pre></div>
 </div>
 </section>
+<section id="prompting-modes">
+<h2>Prompting Modes<a class="headerlink" href="#prompting-modes" title="Link to this heading">#</a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">mode</span></code> attribute to define multiple prompt versions for the same task and model. This enables prompt engineering experiments such as compact prompts for lower latency.</p>
+<p><strong>Configuration:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">models</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-3.5-turbo</span>
+
+<span class="nt">prompting_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;compact&quot;</span><span class="w">  </span><span class="c1"># Default is &quot;standard&quot;</span>
+</pre></div>
+</div>
+<p><strong>Prompt definition:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_user_intent</span>
+<span class="w">    </span><span class="nt">models</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai/gpt-3.5-turbo</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Default prompt with full context including {{ history }}</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_user_intent</span>
+<span class="w">    </span><span class="nt">models</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai/gpt-3.5-turbo</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">compact</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Smaller prompt with reduced few-shot examples</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">mode</span></code> in the prompt definition must match the <code class="docutils literal notranslate"><span class="pre">prompting_mode</span></code> in the top-level configuration. If no matching mode is found, the <code class="docutils literal notranslate"><span class="pre">standard</span></code> prompt is used.</p>
+</section>
 <section id="prompt-attributes-reference">
 <h2>Prompt Attributes Reference<a class="headerlink" href="#prompt-attributes-reference" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -808,7 +866,9 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 </section>
 <section id="template-variables">
 <h2>Template Variables<a class="headerlink" href="#template-variables" title="Link to this heading">#</a></h2>
-<p>The following table lists common variables you can use in the prompt content:</p>
+<p>Prompt templates use <a class="reference external" href="https://jinja.palletsprojects.com/" rel="noreferer noopener" target="_blank">Jinja2</a> for variable substitution. Three types of variables are available:</p>
+<section id="system-variables">
+<h3>System Variables<a class="headerlink" href="#system-variables" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable</p></th>
@@ -826,7 +886,7 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 <td><p>Conversation history (supports filters like <code class="docutils literal notranslate"><span class="pre">colang</span></code>, <code class="docutils literal notranslate"><span class="pre">user_assistant_sequence</span></code>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">relevant_chunks</span> <span class="pre">}}</span></code></p></td>
-<td><p>Retrieved knowledge base chunks</p></td>
+<td><p>Retrieved knowledge base chunks (only for <code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code> task)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">general_instructions</span> <span class="pre">}}</span></code></p></td>
 <td><p>General instructions from the <code class="docutils literal notranslate"><span class="pre">instructions</span></code> config</p></td>
@@ -842,6 +902,94 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 </tr>
 </tbody>
 </table>
+</div>
+</section>
+<section id="prompt-variables">
+<h3>Prompt Variables<a class="headerlink" href="#prompt-variables" title="Link to this heading">#</a></h3>
+<p>Register custom variables using the <code class="docutils literal notranslate"><span class="pre">LLMRails.register_prompt_context()</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nemoguardrails</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRails</span>
+
+<span class="n">rails</span> <span class="o">=</span> <span class="n">LLMRails</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">rails</span><span class="o">.</span><span class="n">register_prompt_context</span><span class="p">(</span><span class="s2">&quot;company_name&quot;</span><span class="p">,</span> <span class="s2">&quot;Acme Corp&quot;</span><span class="p">)</span>
+<span class="n">rails</span><span class="o">.</span><span class="n">register_prompt_context</span><span class="p">(</span><span class="s2">&quot;current_date&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>If a function is provided, the value is computed for each rendering.</p>
+</section>
+<section id="context-variables">
+<h3>Context Variables<a class="headerlink" href="#context-variables" title="Link to this heading">#</a></h3>
+<p>Flows in your guardrails configuration can define <a class="reference internal" href="../colang/colang-1/colang-language-syntax-guide.html#variables"><span class="std std-ref">context variables</span></a>. These variables are also available in prompt templates.</p>
+</section>
+</section>
+<section id="filters">
+<h2>Filters<a class="headerlink" href="#filters" title="Link to this heading">#</a></h2>
+<p>Filters modify variable content using the pipe symbol (<code class="docutils literal notranslate"><span class="pre">|</span></code>). The library provides these predefined filters:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">colang</span></code></p></td>
+<td><p>Transforms an array of events into Colang representation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">remove_text_messages</span></code></p></td>
+<td><p>Removes text messages from Colang history, leaving only intents and actions</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">first_turns(n)</span></code></p></td>
+<td><p>Limits a Colang history to the first <code class="docutils literal notranslate"><span class="pre">n</span></code> turns</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">user_assistant_sequence</span></code></p></td>
+<td><p>Transforms events into “User: …/Assistant: …” format</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">to_messages</span></code></p></td>
+<td><p>Transforms Colang history into user/bot messages for chat models</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">verbose_v1</span></code></p></td>
+<td><p>Transforms Colang history into a more verbose, explicit form</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Example:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">{{ sample_conversation | first_turns(2) }}</span>
+<span class="w">  </span><span class="no">{{ history | colang }}</span>
+</pre></div>
+</div>
+</section>
+<section id="output-parsers">
+<h2>Output Parsers<a class="headerlink" href="#output-parsers" title="Link to this heading">#</a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">output_parser</span></code> attribute to parse LLM output. Available parsers:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parser</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">user_intent</span></code></p></td>
+<td><p>Removes “User intent:” prefix if present</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bot_intent</span></code></p></td>
+<td><p>Removes “Bot intent:” prefix if present</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bot_message</span></code></p></td>
+<td><p>Removes “Bot message:” prefix if present</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">verbose_v1</span></code></p></td>
+<td><p>Parses output from the <code class="docutils literal notranslate"><span class="pre">verbose_v1</span></code> filter</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate_user_intent</span>
+<span class="w">    </span><span class="nt">output_parser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user_intent</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">...</span>
+</pre></div>
 </div>
 </section>
 <section id="example-configurations">
@@ -902,6 +1050,45 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 </div>
 </section>
 </section>
+<section id="custom-tasks-and-prompts">
+<h2>Custom Tasks and Prompts<a class="headerlink" href="#custom-tasks-and-prompts" title="Link to this heading">#</a></h2>
+<p>Define custom tasks beyond the built-in tasks by adding them to your prompts configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">prompts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">summarize_text</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Text: {{ user_input }}</span>
+<span class="w">      </span><span class="no">Summarize the above text.</span>
+</pre></div>
+</div>
+<p>Render custom task prompts in an action using <code class="docutils literal notranslate"><span class="pre">LLMTaskManager</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">llm_task_manager</span><span class="o">.</span><span class="n">render_task_prompt</span><span class="p">(</span>
+    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;summarize_text&quot;</span><span class="p">,</span>
+    <span class="n">context</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;user_input&quot;</span><span class="p">:</span> <span class="n">user_input</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">llm_call</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">llm_params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="predefined-prompts">
+<h2>Predefined Prompts<a class="headerlink" href="#predefined-prompts" title="Link to this heading">#</a></h2>
+<p>The library includes predefined prompts for these models:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">openai/gpt-3.5-turbo-instruct</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">openai/gpt-3.5-turbo</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">openai/gpt-4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">databricks/dolly-v2-3b</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cohere/command</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cohere/command-light</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cohere/command-light-nightly</span></code></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Predefined prompts are continuously evaluated and improved. Test and customize prompts for your specific use case before deploying to production.</p>
+</div>
+</section>
 <section id="environment-variable">
 <h2>Environment Variable<a class="headerlink" href="#environment-variable" title="Link to this heading">#</a></h2>
 <p>You can also load prompts from an external directory by setting:</p>
@@ -909,12 +1096,6 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
 </pre></div>
 </div>
 <p>The directory must contain <code class="docutils literal notranslate"><span class="pre">.yml</span></code> files with prompt definitions.</p>
-</section>
-<section id="related-topics">
-<h2>Related Topics<a class="headerlink" href="#related-topics" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="../../user-guides/advanced/prompt-customization.html"><span class="doc std std-doc">Prompt Customization</span></a> - Advanced prompt customization</p></li>
-</ul>
 </section>
 </section>
 
@@ -967,21 +1148,31 @@ You can define prompts in the main <code class="docutils literal notranslate"><s
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-oriented-prompting">Task-Oriented Prompting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-prompts-key">The <code class="docutils literal notranslate"><span class="pre">prompts</span></code> Key</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-prompt-structure">Basic Prompt Structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-based-prompts">Content-Based Prompts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#message-based-prompts">Message-Based Prompts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specific-prompts">Model-Specific Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompting-modes">Prompting Modes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-attributes-reference">Prompt Attributes Reference</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#template-variables">Template Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#template-variables">Template Variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#system-variables">System Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-variables">Prompt Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#context-variables">Context Variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filters">Filters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-parsers">Output Parsers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-configurations">Example Configurations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-input">Self-Check Input</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-check-output">Self-Check Output</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fact-checking">Fact Checking</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-tasks-and-prompts">Custom Tasks and Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predefined-prompts">Predefined Prompts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variable">Environment Variable</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 </ul>
   </nav></div>
 

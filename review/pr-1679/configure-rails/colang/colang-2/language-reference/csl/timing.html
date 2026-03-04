@@ -535,6 +535,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -679,6 +680,26 @@
 <span class="sig-name descname"><span class="pre">wait</span> <span class="pre">$time_s</span> <span class="pre">$timer_id=&quot;wait_timer_{uid()}&quot;</span></span></dt>
 <dd><p>Wait the specified number of seconds before continuing</p>
 <p>Example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import timing
+import core
+
+flow delayed bot say $text
+    wait 0.5
+    bot say $text
+
+flow main
+    user said something
+    start delayed bot say &quot;I say this later&quot;
+    start bot say &quot;I say this first&quot;
+
+    wait indefinitely
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hello
+I say this first
+I say this later
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -686,6 +707,27 @@
 <span class="sig-name descname"><span class="pre">repeating</span> <span class="pre">timer</span> <span class="pre">$timer_id</span> <span class="pre">$interval_s</span></span></dt>
 <dd><p>Start a repeating timer</p>
 <p>Example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import timing
+import core
+
+
+flow reacting to my timer
+    match TimerBotAction.Finished(timer_name=&quot;my_timer&quot;)
+    bot say &quot;tick&quot;
+
+flow main
+    activate reacting to my timer
+
+    user said something
+    repeating timer &quot;my_timer&quot; 0.4 or wait 1.0
+    wait indefinitely
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; test
+tick
+tick
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -693,6 +735,28 @@
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">was</span> <span class="pre">silent</span> <span class="pre">$time_s</span></span></dt>
 <dd><p>Wait for when the user was silent for $time_s seconds</p>
 <p>Example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import timing
+import core
+
+
+flow reacting to user silence
+    user was silent 5.0
+    bot say &quot;Can I help you with anything else?&quot;
+
+flow main
+    activate reacting to user silence
+
+    while True
+        user said something
+        bot say &quot;sounds interesting&quot;
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; I am going to the zoo
+sounds interesting
+# (Wait for more than 5 seconds)
+Can I help you with anything else?
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -700,6 +764,31 @@
 <span class="sig-name descname"><span class="pre">user</span> <span class="pre">didnt</span> <span class="pre">respond</span> <span class="pre">$time_s</span></span></dt>
 <dd><p>Wait for when the user was silent for $time_s seconds while the bot was silent</p>
 <p>Example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import timing
+import core
+
+
+flow repeating if no user response
+    global $last_bot_script
+    user didnt respond 5.0
+    bot say $last_bot_script
+
+
+flow main
+    activate tracking bot talking state
+    activate repeating if no user response
+
+    user said something
+    bot say &quot;How can I help you today?&quot;
+    user said something
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; hi
+How can I help you today?
+# (Wait for more than 5 seconds)
+How can I help you today?
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -707,6 +796,31 @@
 <span class="sig-name descname"><span class="pre">bot</span> <span class="pre">was</span> <span class="pre">silent</span> <span class="pre">$time_s</span></span></dt>
 <dd><p>Wait for the bot to be silent (no utterance) for given time</p>
 <p>Example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import timing
+import core
+
+flow inform processing time
+    user said something
+    bot was silent 2.0
+    bot say &quot;This is taking a bit longer&quot;
+
+flow processing user request
+    user said &quot;place the order&quot;
+    wait 4.0
+    bot say &quot;order was placed successfully&quot;
+
+flow main
+    activate inform processing time
+    activate processing user request
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt; place the order
+# After about 2 seconds:
+This is taking a bit longer
+# After and additional 2 seconds:
+order was placed successfully
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

@@ -539,6 +539,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -695,11 +696,11 @@
 <section id="defining-user-and-bot-intents">
 <h2>Defining User and Bot Intents<a class="headerlink" href="#defining-user-and-bot-intents" title="Link to this heading">#</a></h2>
 <p>The special <code class="docutils literal notranslate"><span class="pre">define</span> <span class="pre">user</span> <span class="pre">...</span></code> and <code class="docutils literal notranslate"><span class="pre">define</span> <span class="pre">bot</span> <span class="pre">...</span></code> syntax is no longer supported. When defining example utterances, in Colang 2.0 you have to use a more explicit syntax:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow user expressed greeting
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow user expressed greeting
   user said &quot;hi&quot; or user said &quot;hello&quot;
 </pre></div>
 </div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow user expressed greeting
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow user expressed greeting
   user said &quot;hi&quot;
     or user said &quot;hello&quot;
     or user said &quot;Good evening!&quot;
@@ -708,7 +709,7 @@
 </div>
 <p>Why? For example, now you can mix other types of events and modalities, e.g., <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">gesture</span> <span class="pre">&quot;wave&quot;</span></code>.</p>
 <p>Similarly, for bot intents:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow bot express greeting
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow bot express greeting
   bot say &quot;Hello world!&quot;
     or bot say &quot;Hi there!&quot;
 </pre></div>
@@ -782,7 +783,7 @@ Any Colang module or package that is exists in the <code class="docutils literal
 <section id="llm-invocation">
 <h2>LLM invocation<a class="headerlink" href="#llm-invocation" title="Link to this heading">#</a></h2>
 <p>In Colang 1.0, as soon as you defined a user intent, the dialog rails would be automatically activated and the LLM would be used. In Colang 2.0, to use the LLM, you have to activate the mechanism explicitly:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
   activate llm continuation
 </pre></div>
 </div>
