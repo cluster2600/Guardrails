@@ -231,7 +231,7 @@ save = ["vl-convert-python (>=1.7.0)"]
 name = "annotated-doc"
 version = "0.0.3"
 description = "Document parameters, class attributes, return types, and variables inline, with Annotated."
-optional = true
+optional = false
 python-versions = ">=3.8"
 files = [
     {file = "annotated_doc-0.0.3-py3-none-any.whl", hash = "sha256:348ec6664a76f1fd3be81f43dffbee4c7e8ce931ba71ec67cc7f4ade7fbbb580"},
@@ -1004,7 +1004,7 @@ robust-downloader = ">=0.0.2"
 name = "fastapi"
 version = "0.121.0"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
-optional = true
+optional = false
 python-versions = ">=3.8"
 files = [
     {file = "fastapi-0.121.0-py3-none-any.whl", hash = "sha256:8bdf1b15a55f4e4b0d6201033da9109ea15632cb76cf156e7b8b4019f2172106"},
@@ -6926,4 +6926,4 @@ tracing = ["aiofiles", "opentelemetry-api"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.14"
-content-hash = "9a9b4eaff9948a0102af7cddecf77c1eec6fde375e1d4e3e31d68009735a1131"
+content-hash = "7115b4c5a1a6e44e637ceca647abe9efb598db578eb66fda3f8479b78b06b661"
