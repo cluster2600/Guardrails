@@ -410,7 +410,41 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../configuration-reference.html">YAML Schema Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../guardrail-catalog/index.html">Guardrail Catalog</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/content-safety.html">Content Safety</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/jailbreak-protection.html">Jailbreak Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/topic-control.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/pii-detection.html">PII Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/agentic-security.html">Agentic Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/fact-checking.html">Hallucinations &amp; Fact-Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../guardrail-catalog/self-check.html">LLM Self-Check</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../guardrail-catalog/third-party.html">Third-Party APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/active-fence.html">ActiveFence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/alignscore.html">AlignScore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/auto-align.html">AutoAlign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/ai-defense.html">Cisco AI Defense</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/clavata.html">Clavata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/cleanlab.html">Cleanlab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/crowdstrike-aidr.html">CrowdStrike AIDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/fiddler.html">Fiddler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/gcp-text-moderations.html">GCP Text Moderation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/gliner.html">GLiNER PII</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/guardrails-ai.html">GuardrailsAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/llama-guard.html">Llama Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/pangea.html">Pangea AI Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/patronus-evaluate-api.html">Patronus Evaluate API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/patronus-lynx.html">Patronus Lynx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/policyai.html">PolicyAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/presidio.html">Presidio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/privateai.html">Private AI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/prompt-security.html">Prompt Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/regex.html">Regex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../guardrail-catalog/community/trend-micro.html">Trend Micro</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../actions/built-in-actions.html">Built-in Actions</a></li>
@@ -506,6 +540,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -644,20 +679,20 @@
 <p>This guide builds on the <a class="reference internal" href="../1-hello-world/README.html"><span class="std std-doc">Hello World guide</span></a> and introduces the core Colang concepts you should understand to get started with NeMo Guardrails.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
-<p>This “Hello World” guardrails configuration uses the OpenAI <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo-instruct</span></code> model.</p>
+<p>This “Hello World” guardrails configuration uses the OpenAI <code class="docutils literal notranslate"><span class="pre">gpt-4o-mini</span></code> model.</p>
 <ol class="arabic simple">
 <li><p>Install the <code class="docutils literal notranslate"><span class="pre">openai</span></code> package:</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>openai
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
+<ol class="arabic simple">
 <li><p>Set the <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> environment variable:</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="nv">$OPENAI_API_KEY</span><span class="w">  </span><span class="c1"># Replace with your own key</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
+<ol class="arabic simple">
 <li><p>If you’re running this inside a notebook, patch the AsyncIO loop.</p></li>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nest_asyncio</span>
@@ -702,7 +737,7 @@
 <section id="flows">
 <h3>Flows<a class="headerlink" href="#flows" title="Link to this heading">#</a></h3>
 <p>In Colang, <em>flows</em> represent patterns of interaction between the user and the bot. In their simplest form, they are sequences of user and bot messages. In the “Hello World” example, the <code class="docutils literal notranslate"><span class="pre">greeting</span></code> flow is defined as:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>define flow greeting
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define flow greeting
   user express greeting
   bot express greeting
   bot ask how are you
@@ -785,7 +820,7 @@
 <p>After an utterance, such as  “Hello!” in the previous example, is received from the user, the guardrails instance uses the LLM to compute the corresponding canonical form.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>NeMo Guardrails uses a task-oriented interaction model with the LLM. Every time the LLM is called, it uses a specific task prompt template, such as <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code>, <code class="docutils literal notranslate"><span class="pre">generate_next_step</span></code>, <code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code>. See the <a class="reference internal" href="#../../../nemoguardrails/llm/prompts/general.yml"><span class="xref myst">default template prompts</span></a> for details.</p>
+<p>NeMo Guardrails uses a task-oriented interaction model with the LLM. Every time the LLM is called, it uses a specific task prompt template, such as <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code>, <code class="docutils literal notranslate"><span class="pre">generate_next_step</span></code>, <code class="docutils literal notranslate"><span class="pre">generate_bot_message</span></code>. See the <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/nemoguardrails/llm/prompts/general.yml" rel="noreferer noopener" target="_blank">default template prompts</a> for details.</p>
 </div>
 <p>In the case of the “Hello!” message, a single LLM call is made using the <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code> task prompt template. The prompt looks like the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">llm_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">prompt</span><span class="p">)</span>
@@ -842,9 +877,9 @@
 </div>
 <p>The prompt has four logical sections:</p>
 <ol class="arabic simple">
-<li><p>A set of general instructions. These can be <a class="reference internal" href="#../../user-guides/configuration-guide.md#general-instructions"><span class="xref myst">configured</span></a> using the <code class="docutils literal notranslate"><span class="pre">instructions</span></code> key in <em>config.yml</em>.</p></li>
-<li><p>A sample conversation, which can also be <a class="reference internal" href="#../../user-guides/configuration-guide.md#sample-conversation"><span class="xref myst">configured</span></a> using the <code class="docutils literal notranslate"><span class="pre">sample_conversation</span></code> key in <em>config.yml</em>.</p></li>
-<li><p>A set of examples for converting user utterances to canonical forms. The top five most relevant examples are chosen by performing a vector search against all the user message examples. For more details see <a class="reference internal" href="#../../../examples/bots/abc/README.md"><span class="xref myst">ABC Bot</span></a>.</p></li>
+<li><p>A set of general instructions. These can be <a class="reference internal" href="../../../../configuration-reference.html#instructions"><span class="std std-ref">configured</span></a> using the <code class="docutils literal notranslate"><span class="pre">instructions</span></code> key in <em>config.yml</em>.</p></li>
+<li><p>A sample conversation, which can also be <a class="reference internal" href="../../../../configuration-reference.html#sample-conversation"><span class="std std-ref">configured</span></a> using the <code class="docutils literal notranslate"><span class="pre">sample_conversation</span></code> key in <em>config.yml</em>.</p></li>
+<li><p>A set of examples for converting user utterances to canonical forms. The top five most relevant examples are chosen by performing a vector search against all the user message examples. For more details see <a class="reference external" href="https://github.com/NVIDIA-NeMo/Guardrails/blob/develop/examples/bots/abc/README.md" rel="noreferer noopener" target="_blank">ABC Bot</a>.</p></li>
 <li><p>The current conversation preceded by the first two turns from the sample conversation.</p></li>
 </ol>
 <p>For the <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code> task, the LLM must predict the canonical form for the last user utterance.</p>
@@ -854,7 +889,7 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  express greeting</span>
 </pre></div>
 </div>
-<p>As we can see, the LLM correctly predicted the <code class="docutils literal notranslate"><span class="pre">express</span> <span class="pre">greeting</span></code> canonical form. It even went further to predict what the bot should do, which is <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code>, and the utterance that should be used. However, for the <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code> task, only the first predicted line is used. If you want the LLM to predict everything in a single call, you can enable the <a class="reference internal" href="#"><span class="xref myst">single LLM call option</span></a> in <em>config.yml</em> by setting the <code class="docutils literal notranslate"><span class="pre">rails.dialog.single_call</span></code> key to <strong>True</strong>.</p>
+<p>As we can see, the LLM correctly predicted the <code class="docutils literal notranslate"><span class="pre">express</span> <span class="pre">greeting</span></code> canonical form. It even went further to predict what the bot should do, which is <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">express</span> <span class="pre">greeting</span></code>, and the utterance that should be used. However, for the <code class="docutils literal notranslate"><span class="pre">generate_user_intent</span></code> task, only the first predicted line is used. If you want the LLM to predict everything in a single call, you can enable the <a class="reference internal" href="../../../../configuration-reference.html#dialog-rails"><span class="std std-ref">single LLM call option</span></a> in <em>config.yml</em> by setting the <code class="docutils literal notranslate"><span class="pre">rails.dialog.single_call</span></code> key to <strong>True</strong>.</p>
 </section>
 <section id="step-2-determine-the-next-step">
 <h3>Step 2: Determine the next step<a class="headerlink" href="#step-2-determine-the-next-step" title="Link to this heading">#</a></h3>
@@ -882,7 +917,7 @@
 <section id="the-follow-up-question">
 <h2>The follow-up question<a class="headerlink" href="#the-follow-up-question" title="Link to this heading">#</a></h2>
 <p>In the previous example, the LLM is prompted once. The following figure provides a summary of the outlined sequence of steps:</p>
-<a class="reference internal image-reference" href="configure-rails/colang/colang-1/_static/puml/core_colang_concepts_fig_1.png"><img alt="Sequence diagram showing the three main steps of processing a user greeting: 1) Computing the canonical form of the user message, 2) Determining the next step using flows, and 3) Generating the bot's response message" class="align-center" src="configure-rails/colang/colang-1/_static/puml/core_colang_concepts_fig_1.png" style="width: 486px;" />
+<a class="reference internal image-reference" href="../../../../../_images/core_colang_concepts_fig_1.png"><img alt="Sequence diagram showing the three main steps of processing a user greeting: 1) Computing the canonical form of the user message, 2) Determining the next step using flows, and 3) Generating the bot's response message" class="align-center" src="../../../../../_images/core_colang_concepts_fig_1.png" style="width: 486px;" />
 </a>
 <p>Let’s examine the same process for the follow-up question “What is the capital of France?”.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="p">[{</span>
@@ -918,12 +953,12 @@
 </pre></div>
 </div>
 <p>Based on these steps, we can see that the <code class="docutils literal notranslate"><span class="pre">ask</span> <span class="pre">general</span> <span class="pre">question</span></code> canonical form is predicted for the user utterance “What is the capital of France?”. Since there is no flow that matches it, the LLM is asked to predict the next step, which in this case is <code class="docutils literal notranslate"><span class="pre">bot</span> <span class="pre">response</span> <span class="pre">for</span> <span class="pre">general</span> <span class="pre">question</span></code>. Also, since there is no predefined response, the LLM is asked a third time to predict the final message.</p>
-<a class="reference internal image-reference" href="configure-rails/colang/colang-1/_static/puml/core_colang_concepts_fig_2.png"><img alt="Sequence diagram showing the three main steps of processing a follow-up question in NeMo Guardrails: 1) Computing the canonical form of the user message, such as 'ask general question' for 'What is the capital of France?', 2) Determining the next step using the LLM, such as 'bot response for general question', and 3) Generating the bot's response message. These are the steps to handle a question that doesn't have a predefined flow." class="align-center" src="configure-rails/colang/colang-1/_static/puml/core_colang_concepts_fig_2.png" style="width: 586px;" />
+<a class="reference internal image-reference" href="../../../../../_images/core_colang_concepts_fig_2.png"><img alt="Sequence diagram showing the three main steps of processing a follow-up question in NeMo Guardrails: 1) Computing the canonical form of the user message, such as 'ask general question' for 'What is the capital of France?', 2) Determining the next step using the LLM, such as 'bot response for general question', and 3) Generating the bot's response message. These are the steps to handle a question that doesn't have a predefined flow." class="align-center" src="../../../../../_images/core_colang_concepts_fig_2.png" style="width: 586px;" />
 </a>
 </section>
 <section id="wrapping-up">
 <h2>Wrapping up<a class="headerlink" href="#wrapping-up" title="Link to this heading">#</a></h2>
-<p>This guide provides a detailed overview of two core Colang concepts: <em>messages</em> and <em>flows</em>. It also looked at how the message and flow definitions are used under the hood and how the LLM is prompted. For more details, see the reference documentation for the <a class="reference internal" href="#../../user-guides/python-api.md"><span class="xref myst">Python API</span></a> and the <a class="reference internal" href="#../../user-guides/colang-language-syntax-guide.md"><span class="xref myst">Colang Language Syntax</span></a>.</p>
+<p>This guide provides a detailed overview of two core Colang concepts: <em>messages</em> and <em>flows</em>. It also looked at how the message and flow definitions are used under the hood and how the LLM is prompted. For more details, see the reference documentation for the <a class="reference internal" href="../../../../../reference/python-api/index.html"><span class="std std-doc">Python API</span></a> and the <a class="reference internal" href="../../colang-language-syntax-guide.html"><span class="std std-doc">Colang Language Syntax</span></a>.</p>
 </section>
 <section id="next">
 <h2>Next<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>

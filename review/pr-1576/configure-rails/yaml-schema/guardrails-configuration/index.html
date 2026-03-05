@@ -410,7 +410,41 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configuration-reference.html">YAML Schema Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../guardrail-catalog/index.html">Guardrail Catalog</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guardrail-catalog/content-safety.html">Content Safety</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../guardrail-catalog/jailbreak-protection.html">Jailbreak Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guardrail-catalog/topic-control.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guardrail-catalog/pii-detection.html">PII Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guardrail-catalog/agentic-security.html">Agentic Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guardrail-catalog/fact-checking.html">Hallucinations &amp; Fact-Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guardrail-catalog/self-check.html">LLM Self-Check</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../guardrail-catalog/third-party.html">Third-Party APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/active-fence.html">ActiveFence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/alignscore.html">AlignScore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/auto-align.html">AutoAlign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/ai-defense.html">Cisco AI Defense</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/clavata.html">Clavata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/cleanlab.html">Cleanlab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/crowdstrike-aidr.html">CrowdStrike AIDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/fiddler.html">Fiddler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/gcp-text-moderations.html">GCP Text Moderation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/gliner.html">GLiNER PII</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/guardrails-ai.html">GuardrailsAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/llama-guard.html">Llama Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/pangea.html">Pangea AI Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/patronus-evaluate-api.html">Patronus Evaluate API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/patronus-lynx.html">Patronus Lynx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/policyai.html">PolicyAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/presidio.html">Presidio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/privateai.html">Private AI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/prompt-security.html">Prompt Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/regex.html">Regex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../guardrail-catalog/community/trend-micro.html">Trend Micro</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../actions/built-in-actions.html">Built-in Actions</a></li>
@@ -506,6 +540,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -666,7 +701,7 @@ Rails are organized into five categories based on when they trigger during the g
 </tr>
 <tr class="row-odd"><td><p><strong>Execution rails</strong></p></td>
 <td><p>Before/after action execution</p></td>
-<td><p>Control tool and action calls</p></td>
+<td><p>Control custom action calls</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Output rails</strong></p></td>
 <td><p>When LLM generates output</p></td>
@@ -685,7 +720,7 @@ Rails are organized into five categories based on when they trigger during the g
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check jailbreak</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak detection heuristics</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mask sensitive data on input</span>
 
 <span class="w">  </span><span class="nt">output</span><span class="p">:</span>
@@ -706,12 +741,12 @@ Rails are organized into five categories based on when they trigger during the g
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rails</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span><span class="w">           </span><span class="c1"># LLM-based input validation</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check jailbreak</span><span class="w">            </span><span class="c1"># Jailbreak detection</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mask sensitive data on input</span><span class="w">  </span><span class="c1"># PII masking</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span><span class="w">                </span><span class="c1"># LLM-based input validation</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak detection heuristics</span><span class="w">  </span><span class="c1"># Jailbreak detection</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mask sensitive data on input</span><span class="w">    </span><span class="c1"># PII masking</span>
 </pre></div>
 </div>
-<p>For a complete list of available input flows, refer to the <a class="reference internal" href="#../configuration-reference.md#input-rails"><code class="xref myst docutils literal notranslate"><span class="pre">../configuration-reference.md#input-rails</span></code></a>.</p>
+<p>For a complete list of available input flows, refer to the <a class="reference internal" href="../../configuration-reference.html#input-rails"><span class="std std-ref">Input Rails</span></a>.</p>
 </section>
 <section id="output-rails">
 <h2>Output Rails<a class="headerlink" href="#output-rails" title="Link to this heading">#</a></h2>
@@ -725,7 +760,7 @@ Rails are organized into five categories based on when they trigger during the g
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mask sensitive data on output</span><span class="w">  </span><span class="c1"># PII masking</span>
 </pre></div>
 </div>
-<p>For a complete list of available output flows, refer to the <a class="reference internal" href="#../configuration-reference.md#output-rails"><code class="xref myst docutils literal notranslate"><span class="pre">../configuration-reference.md#output-rails</span></code></a>.</p>
+<p>For a complete list of available output flows, refer to the <a class="reference internal" href="../../configuration-reference.html#output-rails"><span class="std std-ref">Output Rails</span></a>.</p>
 </section>
 <section id="retrieval-rails">
 <h2>Retrieval Rails<a class="headerlink" href="#retrieval-rails" title="Link to this heading">#</a></h2>
@@ -736,7 +771,7 @@ Rails are organized into five categories based on when they trigger during the g
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check retrieval sensitive data</span>
 </pre></div>
 </div>
-<p>For a complete list of available retrieval flows, refer to the <a class="reference internal" href="#../configuration-reference.md#retrieval-rails"><code class="xref myst docutils literal notranslate"><span class="pre">../configuration-reference.md#retrieval-rails</span></code></a>.</p>
+<p>For a complete list of available retrieval flows, refer to the <a class="reference internal" href="../../configuration-reference.html#retrieval-rails"><span class="std std-ref">Retrieval Rails</span></a>.</p>
 </section>
 <section id="dialog-rails">
 <h2>Dialog Rails<a class="headerlink" href="#dialog-rails" title="Link to this heading">#</a></h2>
@@ -751,7 +786,7 @@ Rails are organized into five categories based on when they trigger during the g
 <span class="w">      </span><span class="nt">embeddings_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
-<p>For a complete list of available dialog flows, refer to the <a class="reference internal" href="#../configuration-reference.md#dialog-rails"><code class="xref myst docutils literal notranslate"><span class="pre">../configuration-reference.md#dialog-rails</span></code></a>.</p>
+<p>For a complete list of available dialog flows, refer to the <a class="reference internal" href="../../configuration-reference.html#dialog-rails"><span class="std std-ref">Dialog Rails</span></a>.</p>
 </section>
 <section id="execution-rails">
 <h2>Execution Rails<a class="headerlink" href="#execution-rails" title="Link to this heading">#</a></h2>
@@ -802,7 +837,7 @@ Rails are organized into five categories based on when they trigger during the g
 <span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">flows</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self check input</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check jailbreak</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jailbreak detection heuristics</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mask sensitive data on input</span>
 
 <span class="w">  </span><span class="c1"># Output validation</span>

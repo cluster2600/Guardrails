@@ -410,7 +410,41 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configuration-reference.html">YAML Schema Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../guardrail-catalog/index.html">Guardrail Catalog</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/content-safety.html">Content Safety</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/jailbreak-protection.html">Jailbreak Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/topic-control.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/pii-detection.html">PII Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/agentic-security.html">Agentic Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/fact-checking.html">Hallucinations &amp; Fact-Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/self-check.html">LLM Self-Check</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../guardrail-catalog/third-party.html">Third-Party APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/active-fence.html">ActiveFence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/alignscore.html">AlignScore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/auto-align.html">AutoAlign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/ai-defense.html">Cisco AI Defense</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/clavata.html">Clavata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/cleanlab.html">Cleanlab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/crowdstrike-aidr.html">CrowdStrike AIDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/fiddler.html">Fiddler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/gcp-text-moderations.html">GCP Text Moderation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/gliner.html">GLiNER PII</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/guardrails-ai.html">GuardrailsAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/llama-guard.html">Llama Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/pangea.html">Pangea AI Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/patronus-evaluate-api.html">Patronus Evaluate API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/patronus-lynx.html">Patronus Lynx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/policyai.html">PolicyAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/presidio.html">Presidio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/privateai.html">Private AI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/prompt-security.html">Prompt Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/regex.html">Regex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/trend-micro.html">Trend Micro</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../actions/built-in-actions.html">Built-in Actions</a></li>
@@ -506,6 +540,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -659,7 +694,7 @@
 <p>Variables in Colang behave exactly like in Python. As a consequence, mutable data types like a list will not be copied for a new variable assignment but only referenced by the new variable.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">variables/assignment/main.co</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     $value = &quot;Hi&quot;
     $value_copy = $value # Copy of the value
     await UtteranceBotAction(script=$value_copy)
@@ -670,7 +705,7 @@
 <p>Note that Colang references are also mutable and therefore point to the same underlying object:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">variables/references/main.co</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     match UtteranceUserAction.Finished() as $ref
     $ref_copy = $ref # Both references are pointing to same event object
     await UtteranceBotAction(script=$ref_copy.final_transcript)
@@ -688,7 +723,7 @@
 </ul>
 </div>
 <p>Here are some variable assignment examples:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$string_value = &quot;Hi&quot;
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$string_value = &quot;Hi&quot;
 $integer_value = 42
 $float_value = 3.14159
 $list_of_strings = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]
@@ -701,7 +736,7 @@ $dictionary = {&quot;value_a&quot;:1, &quot;value_b&quot;: 2}
 <section id="expression-evaluation">
 <h2>Expression Evaluation<a class="headerlink" href="#expression-evaluation" title="Link to this heading">#</a></h2>
 <p>Colang supports evaluation of common Python expressions for simple and compound data types (see <a class="reference external" href="https://github.com/danthedeckie/simpleeval">Simple Eval</a>):</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Arithmetic expressions
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Arithmetic expressions
 21 + 21
 21 + 19 / 7 + (8 % 3) ** 9
 
@@ -749,7 +784,7 @@ flows_info() -&gt; dict # Returns a dictionary that contains more information ab
 </pre></div>
 </div>
 <p>Here is how expression can be used within Colang:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Expression in an assignment
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Expression in an assignment
 $dict = {&quot;value&quot;: 2 + 3}
 
 # Expression as standalone statement
@@ -767,7 +802,7 @@ bot count to (int(&quot;3&quot;))
 <p>By default, variables defined in a flow have a local scope and are not accessible from outside the flow. One way to enable access to them is by declaring them as flow attributes using the notation shown in <a class="reference internal" href="defining-flows.html#defining-flows"><span class="std std-ref">Defining Flows</span></a> in the flow definition:</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">variables/flow_attributes/main.co</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     await user said something as $ref
     await UtteranceBotAction(script=$ref.transcript)
     match AnEvent()
@@ -782,7 +817,7 @@ flow user said something -&gt; $transcript
 <p>Another way to share information between flows using variables is to make them global by using the keyword <code class="docutils literal notranslate"><span class="pre">global</span></code>.</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">variables/global_variables/main.co</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     global $transcript
     await bot said something
     await UtteranceBotAction(script=$transcript)
@@ -802,7 +837,7 @@ flow bot said something
 <p>As in Python’s formatted string literals, we can use braces to evaluate an expression inside a string <code class="docutils literal notranslate"><span class="pre">&quot;{$variable}&quot;</span></code>:</p>
 <div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption"><span class="caption-text">variables/string_expression_evaluation/main.co</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     $user_name = &quot;John&quot;
     await UtteranceBotAction(script=&quot;Hi {$user_name}!&quot;)
     match AnEvent()
@@ -814,7 +849,7 @@ flow bot said something
 <section id="flow-member-variables">
 <h2>Flow Member Variables<a class="headerlink" href="#flow-member-variables" title="Link to this heading">#</a></h2>
 <p>To access a flow instance’s member variables, you can use a reference or the reserved variable <code class="docutils literal notranslate"><span class="pre">$self</span></code> from within the flow itself:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$ref.uid: str # The unique id of the flow instance
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ref.uid: str # The unique id of the flow instance
 $ref.flow_id: str # The name of the flow
 $ref.status.value: str # Name of the low state (&quot;waiting&quot;, &quot;starting&quot;, &quot;started&quot;, &quot;stopping&quot;, &quot;stopped&quot;, &quot;finished&quot;)
 $ref.loop_id: Optional[str] # The interaction loop id of the flow
@@ -834,7 +869,7 @@ $ref.new_instance_started: bool # True if new instance was started of an activat
 <section id="action-member-variables">
 <h2>Action Member Variables<a class="headerlink" href="#action-member-variables" title="Link to this heading">#</a></h2>
 <p>To access the member variables of an action, you can use an action reference:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$ref.uid: str # The unique id of the action instance
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ref.uid: str # The unique id of the action instance
 $ref.name: str # The name of the action
 $ref.flow_uid: str # The flow that started the action
 $ref.status.value: str # The action status (&quot;initialized&quot;, &quot;starting&quot;, &quot;started&quot;, &quot;stopping&quot;, &quot;finished&quot;)
@@ -846,7 +881,7 @@ $ref.start_event_arguments: dict # Contains all action start arguments
 <section id="event-member-variables">
 <h2>Event Member Variables<a class="headerlink" href="#event-member-variables" title="Link to this heading">#</a></h2>
 <p>To access the member variables of an event, you can use an event reference:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$ref.name: str # The name of the event
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ref.name: str # The name of the event
 $ref.arguments: dict # A dictionary with all the event arguments
 
 # Only for flow events
@@ -857,7 +892,7 @@ $ref.flow: FlowReference # A reference to the flow of the event
 <section id="system-and-bot-configuration-values">
 <h2>System and Bot Configuration Values<a class="headerlink" href="#system-and-bot-configuration-values" title="Link to this heading">#</a></h2>
 <p>To access system or bot specific configuration variables, you can use <code class="docutils literal notranslate"><span class="pre">$system</span></code>:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$system.config # Current bot configuration object (YAML)
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$system.config # Current bot configuration object (YAML)
 $system.state # The bots current runtime state object
 </pre></div>
 </div>
@@ -866,7 +901,7 @@ $system.state # The bots current runtime state object
 </pre></div>
 </div>
 <p>you can access and print it like this:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>print $system.config.streaming
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>print $system.config.streaming
 </pre></div>
 </div>
 <p>Next, we learn how to use <a class="reference internal" href="flow-control.html#flow-control"><span class="std std-ref">Flow control</span></a> to create branching or looping interaction patterns.</p>

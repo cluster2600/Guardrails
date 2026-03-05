@@ -410,7 +410,41 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration-reference.html">YAML Schema Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guardrail-catalog/index.html">Guardrail Catalog</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guardrail-catalog/content-safety.html">Content Safety</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../guardrail-catalog/jailbreak-protection.html">Jailbreak Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guardrail-catalog/topic-control.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guardrail-catalog/pii-detection.html">PII Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guardrail-catalog/agentic-security.html">Agentic Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guardrail-catalog/fact-checking.html">Hallucinations &amp; Fact-Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guardrail-catalog/self-check.html">LLM Self-Check</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guardrail-catalog/third-party.html">Third-Party APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/active-fence.html">ActiveFence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/alignscore.html">AlignScore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/auto-align.html">AutoAlign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/ai-defense.html">Cisco AI Defense</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/clavata.html">Clavata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/cleanlab.html">Cleanlab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/crowdstrike-aidr.html">CrowdStrike AIDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/fiddler.html">Fiddler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/gcp-text-moderations.html">GCP Text Moderation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/gliner.html">GLiNER PII</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/guardrails-ai.html">GuardrailsAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/llama-guard.html">Llama Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/pangea.html">Pangea AI Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/patronus-evaluate-api.html">Patronus Evaluate API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/patronus-lynx.html">Patronus Lynx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/policyai.html">PolicyAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/presidio.html">Presidio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/privateai.html">Private AI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/prompt-security.html">Prompt Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/regex.html">Regex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guardrail-catalog/community/trend-micro.html">Trend Micro</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Custom Actions</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="built-in-actions.html">Built-in Actions</a></li>
@@ -506,6 +540,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -666,13 +701,18 @@
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_system_action</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td><p>Mark as system action (runs in guardrails context)</p></td>
+<td><p>Always run locally, bypassing the actions server</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">execute_async</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
-<td><p>Execute asynchronously without blocking</p></td>
+<td><p>Don’t block event processing while the action runs (Colang 2.x only)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">output_mapping</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Callable[[Any],</span> <span class="pre">bool]</span></code></p></td>
+<td><p>Function to interpret the action result for blocking decisions</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">default_output_mapping</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -687,13 +727,17 @@
 </pre></div>
 </div>
 <p>Call from Colang:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$is_valid = execute validate_user_input(text=$user_message)
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$is_valid = execute validate_user_input(text=$user_message)
 </pre></div>
 </div>
 </section>
 <section id="system-actions">
 <h3>System Actions<a class="headerlink" href="#system-actions" title="Link to this heading">#</a></h3>
-<p>System actions have access to the guardrails context and are typically used for input/output validation:</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">is_system_action=True</span></code>, the action always runs locally, even when an <code class="docutils literal notranslate"><span class="pre">actions_server_url</span></code> is configured. This is important for actions that need access to special parameters like <code class="docutils literal notranslate"><span class="pre">context</span></code>, <code class="docutils literal notranslate"><span class="pre">llm</span></code>, <code class="docutils literal notranslate"><span class="pre">config</span></code>, and <code class="docutils literal notranslate"><span class="pre">events</span></code>, which are only injected for locally-run actions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When no <code class="docutils literal notranslate"><span class="pre">actions_server_url</span></code> is configured, all actions run locally and receive special parameters regardless of the <code class="docutils literal notranslate"><span class="pre">is_system_action</span></code> setting. The flag only affects behavior when an actions server is in use.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@action</span><span class="p">(</span><span class="n">is_system_action</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_policy_compliance</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if message complies with policy.&quot;&quot;&quot;</span>
@@ -705,12 +749,50 @@
 </section>
 <section id="async-execution">
 <h3>Async Execution<a class="headerlink" href="#async-execution" title="Link to this heading">#</a></h3>
-<p>For long-running operations, use <code class="docutils literal notranslate"><span class="pre">execute_async=True</span></code> to prevent blocking:</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">execute_async=True</span></code>, the event processing loop does not wait for the action to complete before continuing. The action runs in the background and the result is picked up later via polling. This is useful for long-running operations where you don’t need the result immediately.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This flag is only supported in the Colang 2.x runtime. In the Colang 1.0 runtime, it is stored in metadata but has no effect.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@action</span><span class="p">(</span><span class="n">execute_async</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">call_external_api</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Call an external API without blocking.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Call an external API without blocking event processing.&quot;&quot;&quot;</span>
     <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">http_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="output-mapping">
+<h3>Output Mapping<a class="headerlink" href="#output-mapping" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">output_mapping</span></code> parameter controls how the action’s return value is interpreted to determine if output should be blocked. It accepts a callable that takes the return value and returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the output is <strong>not safe</strong> (should be blocked).</p>
+<p>When no <code class="docutils literal notranslate"><span class="pre">output_mapping</span></code> is provided, the default behavior is:</p>
+<ul class="simple">
+<li><p><strong>Boolean results</strong>: <code class="docutils literal notranslate"><span class="pre">True</span></code> means allowed, <code class="docutils literal notranslate"><span class="pre">False</span></code> means blocked</p></li>
+<li><p><strong>Numeric results</strong>: Values below <code class="docutils literal notranslate"><span class="pre">0.5</span></code> are blocked</p></li>
+<li><p><strong>Other types</strong>: Allowed by default</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@action</span><span class="p">(</span><span class="n">output_mapping</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_hallucination</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if hallucination detected (blocked), False if safe.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">detect_hallucination</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bot_message&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@action</span><span class="p">(</span><span class="n">is_system_action</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_mapping</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="ow">not</span> <span class="n">value</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_output_safety</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if safe (allowed), mapped to not-blocked.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">is_safe</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bot_message&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>You can also define a custom mapping function for more complex logic:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_custom_mapping</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.7</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+<span class="nd">@action</span><span class="p">(</span><span class="n">output_mapping</span><span class="o">=</span><span class="n">my_custom_mapping</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">score_safety</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a dict with a safety score.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">compute_score</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bot_message&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))}</span>
 </pre></div>
 </div>
 </section>
@@ -757,7 +839,7 @@
 </pre></div>
 </div>
 <p>Call from Colang:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>$greeting = execute greet_user(name=&quot;Alice&quot;, formal=True)
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$greeting = execute greet_user(name=&quot;Alice&quot;, formal=True)
 </pre></div>
 </div>
 </section>
@@ -953,6 +1035,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-action-name">Custom Action Name</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#system-actions">System Actions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#async-execution">Async Execution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-mapping">Output Mapping</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#function-parameters">Function Parameters</a><ul class="nav section-nav flex-column">

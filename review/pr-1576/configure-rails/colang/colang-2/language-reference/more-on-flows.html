@@ -412,7 +412,41 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configuration-reference.html">YAML Schema Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../guardrail-catalog/index.html">Guardrail Catalog</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/content-safety.html">Content Safety</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/jailbreak-protection.html">Jailbreak Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/topic-control.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/pii-detection.html">PII Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/agentic-security.html">Agentic Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/fact-checking.html">Hallucinations &amp; Fact-Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/self-check.html">LLM Self-Check</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../guardrail-catalog/third-party.html">Third-Party APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/active-fence.html">ActiveFence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/alignscore.html">AlignScore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/auto-align.html">AutoAlign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/ai-defense.html">Cisco AI Defense</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/clavata.html">Clavata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/cleanlab.html">Cleanlab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/crowdstrike-aidr.html">CrowdStrike AIDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/fiddler.html">Fiddler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/gcp-text-moderations.html">GCP Text Moderation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/gliner.html">GLiNER PII</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/guardrails-ai.html">GuardrailsAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/llama-guard.html">Llama Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/pangea.html">Pangea AI Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/patronus-evaluate-api.html">Patronus Evaluate API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/patronus-lynx.html">Patronus Lynx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/policyai.html">PolicyAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/presidio.html">Presidio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/privateai.html">Private AI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/prompt-security.html">Prompt Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/regex.html">Regex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/trend-micro.html">Trend Micro</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../actions/built-in-actions.html">Built-in Actions</a></li>
@@ -508,6 +542,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -658,7 +693,7 @@
 <li><p>Only and-groups are supported, not or-groups</p></li>
 </ul>
 <p>Examples:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Activate a single flow
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Activate a single flow
 activate handling user presents
 
 # Activate two different instances of the same flow with parameters
@@ -672,7 +707,7 @@ activate handling user presents and handling question repetition 5.0
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">more_on_flows/activate_flow/main.co</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 
 flow main
     activate managing user greeting
@@ -717,7 +752,7 @@ Hello again
 <p>Activating a flow will start a flow and automatically restart it when it has ended (finished or failed) to match to reoccurring interaction patterns.</p>
 </div>
 <p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">&#64;active</span></code> decorator notation to activate a flow at the start as a child of the main flow:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 
 flow main
     bot say &quot;Welcome&quot;
@@ -739,7 +774,7 @@ flow managing user greeting
 <p>There is one exception though from this rule! If a flow does not contain any statement that waits for an event and immediately finishes, it will run only once when activated and it will stay activated, since otherwise you would get an infinite loop.</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">more_on_flows/non-repeating-flows/main.co</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 
 flow main
     activate managing user greeting
@@ -771,7 +806,7 @@ Hello again
 <p>In some cases, it is not enough to restart a flow only once it has finished, since this can miss certain pattern repetitions:</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">more_on_flows/restart_flow_instance/main.co</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 
 flow main
     activate managing user presence
@@ -808,7 +843,7 @@ Hello again
 <p>If we want to start an new instance before the end of the current instance, we can achieve that by adding a label called <code class="docutils literal notranslate"><span class="pre">start_new_flow_instance</span></code> at the corresponding position in the interaction sequence:</p>
 <div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption"><span class="caption-text">more_on_flows/start_new_flow_instance/main.co</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># ...
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># ...
 
 flow managing user presence
     user said &quot;Hi&quot;
@@ -857,7 +892,7 @@ Since the first instance already started a new instance (second one) it will not
 </pre></div>
 </div>
 <p>Examples:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># Deactivate a single flow
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Deactivate a single flow
 deactivate handling user presents
 
 # Deactivate two different instances of the same flow with different parameters
@@ -867,14 +902,14 @@ deactivate handling user said &quot;Bye&quot;
 </div>
 </div>
 <p>Under the hood the <cite>deactivate</cite> keyword will abort the flow and disable the restart. It is a shortcut for this statement:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>send StopFlow(flow_id=&quot;flow name&quot;, deactivate=True)
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>send StopFlow(flow_id=&quot;flow name&quot;, deactivate=True)
 </pre></div>
 </div>
 </section>
 <section id="override-flows">
 <span id="more-on-flows-override-flows"></span><h2>Override Flows<a class="headerlink" href="#override-flows" title="Link to this heading">#</a></h2>
 <p>A flow can be overridden by another flow with the same name by using the override decorator:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow bot greet
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow bot greet
     bot say &quot;Hi&quot;
 
 @override
@@ -883,7 +918,7 @@ flow bot greet
 </pre></div>
 </div>
 <p>In this example, the second ‘<cite>bot greet</cite>’ flow will override the first one. This is particularly useful when working with imported Colang modules from a library to override. For example, you can extend the ‘<cite>bot say</cite>’ flow from the core module of the standard library to include an additional log statement:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 
 flow main
     bot say &quot;Hi&quot;
@@ -906,7 +941,7 @@ flow bot say $text
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Interaction loop syntax definition:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>@loop([id=]&quot;&lt;loop_name&gt;&quot;[,[priority=]&lt;integer_number&gt;])
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>@loop([id=]&quot;&lt;loop_name&gt;&quot;[,[priority=]&lt;integer_number&gt;])
 flow &lt;name of flow&gt; ...
 </pre></div>
 </div>
@@ -915,7 +950,7 @@ flow &lt;name of flow&gt; ...
 <p>By default, any flow without an explicit interaction loop inherits the interaction loop of its parent flow and has priority level 0. Let’s see now an example of a second interaction loop to design flows that augment the main interaction rather than compete with it:</p>
 <div class="literal-block-wrapper docutils container" id="id6">
 <div class="code-block-caption"><span class="caption-text">more_on_flows/interaction_loops/main.co</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>import core
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>import core
 import avatars
 
 flow main
@@ -969,7 +1004,7 @@ Goodbye
 <span id="more-on-flows-flow-conflict-resolution-prioritization"></span><h2>Flow Conflict Resolution Prioritization<a class="headerlink" href="#flow-conflict-resolution-prioritization" title="Link to this heading">#</a></h2>
 <p>In section <a class="reference internal" href="defining-flows.html#defining-flows-concurrent-pattern-matching"><span class="std std-ref">Defining Flows</span></a>, we have already learned a bit about the mechanics of resolving an action conflict between flows. We will now look at this in more detail.</p>
 <p>For every successful match statement, a matching score is computed that is greater than <span class="math notranslate nohighlight">\(0.0\)</span> (no match) and smaller or equal to <span class="math notranslate nohighlight">\(1.0\)</span> (perfect match). A perfect match is when all parameters of the expected event match with all the parameters from the actual event. If the actual event has more parameters than the expected event, the matching score will be decreased by multiplying it by a factor of <span class="math notranslate nohighlight">\(0.9\)</span> for every missing parameter. So let’s say we have a matching event containing five parameters, but we only specified two of them, the score would be <span class="math notranslate nohighlight">\(0.9^{5-2} = 0.729\)</span>. Since a system event can trigger a chain of internal events, we need to take into account all the generated matching scores in that sequence. Let’s use the following example to better illustrate that:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     activate pattern a and pattern b
 
 flow pattern a
@@ -991,17 +1026,17 @@ flow bot say $text
 </pre></div>
 </div>
 <p>After starting the main flow, the two flows <cite>‘pattern a’</cite> and <cite>‘pattern b’</cite> will be active and waiting for the user to say something. Let’s look at the two event generation chains triggered by the event <code class="docutils literal notranslate"><span class="pre">UtteranceUserActionFinished(final_transcript=&quot;Hi&quot;)</span></code>:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>1) UtteranceUserActionFinished(final_transcript=&quot;Hi&quot;) -&gt; send FlowFinished(flow_id=&quot;user said&quot;, text=&quot;Hi&quot;) -&gt; send StartFlow(flow_id=&quot;bot say&quot;, text=&quot;Hello&quot;) -&gt; send StartUtteranceBotAction(text=&quot;Hello&quot;)
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1) UtteranceUserActionFinished(final_transcript=&quot;Hi&quot;) -&gt; send FlowFinished(flow_id=&quot;user said&quot;, text=&quot;Hi&quot;) -&gt; send StartFlow(flow_id=&quot;bot say&quot;, text=&quot;Hello&quot;) -&gt; send StartUtteranceBotAction(text=&quot;Hello&quot;)
 2) UtteranceUserActionFinished(final_transcript=&quot;Hi&quot;) -&gt; send FlowFinished(flow_id=&quot;user said something&quot;) -&gt; send StartFlow(flow_id=&quot;bot say&quot;, text=&quot;Sure&quot;) -&gt; send StartUtteranceBotAction(text=&quot;Sure&quot;)
 </pre></div>
 </div>
 <p>Because the resulting action events at the end of these chains are different, there will be a conflict that needs to be resolved. Let’s look at the corresponding match statements in these chains:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>1) match UtteranceUserActionFinished(final_transcript=&quot;Hi&quot;) -&gt; match FlowFinished(flow_id=&quot;user said&quot;, text=&quot;Hi&quot;) -&gt; match StartFlow(flow_id=&quot;bot say&quot;, text=&quot;Hello&quot;)
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1) match UtteranceUserActionFinished(final_transcript=&quot;Hi&quot;) -&gt; match FlowFinished(flow_id=&quot;user said&quot;, text=&quot;Hi&quot;) -&gt; match StartFlow(flow_id=&quot;bot say&quot;, text=&quot;Hello&quot;)
 2) match UtteranceUserActionFinished() -&gt; match FlowFinished(flow_id=&quot;user said something&quot;) -&gt; match StartFlow(flow_id=&quot;bot say&quot;, text=&quot;Sure&quot;)
 </pre></div>
 </div>
 <p>Comparing these match statements to the events will result in the following matching scores:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>1) 1.0 -&gt; 1.0 -&gt; 1.0
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1) 1.0 -&gt; 1.0 -&gt; 1.0
 2) 0.9 -&gt; 1.0 -&gt; 1.0
 </pre></div>
 </div>
@@ -1012,7 +1047,7 @@ Hello
 </pre></div>
 </div>
 <p>In some cases, you might want to influence the matching score of some matches to change the conflict resolution outcome. You can do this by specifying a flow priority with the statement <code class="docutils literal notranslate"><span class="pre">priority</span> <span class="pre">&lt;float_value&gt;</span></code> where the value is between <span class="math notranslate nohighlight">\(0.0\)</span> and <span class="math notranslate nohighlight">\(1.0\)</span>. Each match in the flow will then be multiplied by the current flow priority. Since this approach currently can only reduce the matching score, you cannot use it to increase the priority of a match. A work around that can sometimes be employed is to improve the matching score of a non-perfect match by adding missing parameters using a regular expression that matches any value like that <code class="docutils literal notranslate"><span class="pre">regex(&quot;.*&quot;)</span></code>:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span># ...
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># ...
 
 flow user said something
     match UtteranceUserActionFinished(final_transcript=regex(&quot;.*&quot;))

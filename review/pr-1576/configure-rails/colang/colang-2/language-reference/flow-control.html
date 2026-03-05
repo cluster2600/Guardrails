@@ -410,7 +410,41 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configuration-reference.html">YAML Schema Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../guardrail-catalog.html">Guardrail Catalog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../guardrail-catalog/index.html">Guardrail Catalog</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/content-safety.html">Content Safety</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/jailbreak-protection.html">Jailbreak Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/topic-control.html">Topic Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/pii-detection.html">PII Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/agentic-security.html">Agentic Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/fact-checking.html">Hallucinations &amp; Fact-Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guardrail-catalog/self-check.html">LLM Self-Check</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../guardrail-catalog/third-party.html">Third-Party APIs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/active-fence.html">ActiveFence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/alignscore.html">AlignScore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/auto-align.html">AutoAlign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/ai-defense.html">Cisco AI Defense</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/clavata.html">Clavata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/cleanlab.html">Cleanlab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/crowdstrike-aidr.html">CrowdStrike AIDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/fiddler.html">Fiddler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/gcp-text-moderations.html">GCP Text Moderation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/gliner.html">GLiNER PII</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/guardrails-ai.html">GuardrailsAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/llama-guard.html">Llama Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/pangea.html">Pangea AI Guard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/patronus-evaluate-api.html">Patronus Evaluate API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/patronus-lynx.html">Patronus Lynx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/policyai.html">PolicyAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/presidio.html">Presidio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/privateai.html">Private AI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/prompt-security.html">Prompt Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/regex.html">Regex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../guardrail-catalog/community/trend-micro.html">Trend Micro</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../actions/index.html">Custom Actions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../actions/creating-actions.html">Creating Actions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../actions/built-in-actions.html">Built-in Actions</a></li>
@@ -506,6 +540,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/run-guardrails-server.html">Run the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/chat-with-guardrailed-model.html">Chat Completions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-guardrail-configs.html">List Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/list-models.html">List Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../run-rails/using-fastapi-server/actions-server.html">Actions Server</a></li>
 </ul>
 </details></li>
@@ -662,7 +697,7 @@
 <p>The conditional branching is a well known concept and works identical to Python:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">control_flow_tools/conditional_branching/main.co</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     $number_of_users = 1
     if $number_of_users == 0
         await user became present
@@ -702,7 +737,7 @@
 <p>With the concurrent pattern matching mechanism, we have already seen one way to design a branching interaction pattern based on the user’s input:</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">control_flow_tools/concurrent_patterns/main.co</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     bot say &quot;How are you?&quot;
     bot react to user feeling good or bot react to user feeling bad
 
@@ -719,7 +754,7 @@ flow bot react to user feeling bad
 <p>Depending on the user’s answer we will get a different bot reaction. Although this concurrent flow mechanism is very powerful, it is sometimes better to have everything in a single flow with the help of the <code class="docutils literal notranslate"><span class="pre">when</span></code> construct:</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">control_flow_tools/event_branching/main.co</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     bot say &quot;How are you?&quot;
     bot react to user wellbeing
 
@@ -740,7 +775,7 @@ flow bot react to user wellbeing
 <p>We can also use this construct to easily create a branching for a flow that either finishes or fails:</p>
 <div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption"><span class="caption-text">control_flow_tools/catch_failing_flow/main.co</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     start pattern a
     when pattern b
         bot say &quot;Pattern b has finished&quot;
@@ -772,7 +807,7 @@ Pattern b has finished
 </pre></div>
 </div>
 <p>It is considered “bad design” when used with action-like flows that start with an action:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow bot greet then comment
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow bot greet then comment
     when bot say &quot;Hi there!&quot;
         bot say &quot;I am done talking first&quot;
     or when bot gesture &quot;Wave with one hand&quot;
@@ -786,7 +821,7 @@ flow bot gesture $gesture
 </pre></div>
 </div>
 <p>This example will not work correctly because only one of the two actions will be started due to the action conflict between <code class="docutils literal notranslate"><span class="pre">UtteranceBotAction</span></code> and <code class="docutils literal notranslate"><span class="pre">GestureBotAction</span></code>. Note that such cases can be easily detected when following a proper flow <a class="reference internal" href="defining-flows.html#flow-naming-conventions"><span class="std std-ref">naming convention</span></a> since <code class="docutils literal notranslate"><span class="pre">when</span> <span class="pre">bot</span> <span class="pre">say</span> <span class="pre">&quot;Hi</span> <span class="pre">there!&quot;</span></code> is grammatically incorrect. The example above would need to be implemented like this:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow bot greet then comment
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow bot greet then comment
     start bot say &quot;Hi there!&quot; as $action_1_ref
         and bot gesture &quot;Wave with one hand&quot; as $action_2_ref
     when $action_1_ref.Finished()
@@ -813,7 +848,7 @@ flow bot gesture $gesture
 <p>In this example, the bot will count from one to ten:</p>
 <div class="literal-block-wrapper docutils container" id="id6">
 <div class="code-block-caption"><span class="caption-text">control_flow_tools/loop/main.co</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     bot count to 10
 
 flow bot count to $number
@@ -825,7 +860,7 @@ flow bot count to $number
 </div>
 </div>
 <p>In order to abort the loop early or to skip the rest of the current loop iteration, the keywords <code class="docutils literal notranslate"><span class="pre">break</span></code> and <code class="docutils literal notranslate"><span class="pre">continue</span></code> can be used, respectively:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow bot count to $number
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow bot count to $number
     $current_number = 0 # Initialized it with 0
     while True # Endless loop
         bot say &quot;{$current_number}&quot;
@@ -840,7 +875,7 @@ flow bot count to $number
 <section id="finish-or-abort-a-flow-return-abort">
 <span id="flow-control-return-abort"></span><h2>Finish or abort a flow (<code class="docutils literal notranslate"><span class="pre">return/abort</span></code>)<a class="headerlink" href="#finish-or-abort-a-flow-return-abort" title="Link to this heading">#</a></h2>
 <p>Flows can be finished or failed at any point from within the flow using the keywords <code class="docutils literal notranslate"><span class="pre">return</span></code> and <code class="docutils literal notranslate"><span class="pre">abort</span></code>, respectively:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     user greeted then expressed feeling unwell
 
 flow user greeted then expressed feeling unwell
@@ -853,7 +888,7 @@ flow user greeted then expressed feeling unwell
 </pre></div>
 </div>
 <p>Additionally, <code class="docutils literal notranslate"><span class="pre">return</span></code> takes an optional value such that you can use a flow like a common function:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     $result = await multiply 3 4
     bot say &quot;{$result}&quot;
 
@@ -870,7 +905,7 @@ flow multiply $number_1 $number_2
 <section id="no-op-operation-pass">
 <h2>No-op operation (<code class="docutils literal notranslate"><span class="pre">pass</span></code>)<a class="headerlink" href="#no-op-operation-pass" title="Link to this heading">#</a></h2>
 <p>Sometimes, it is useful to have a no-operation keyword <code class="docutils literal notranslate"><span class="pre">pass</span></code>, for example as a placeholder to make the syntax valid:</p>
-<div class="highlight-colang notranslate"><div class="highlight"><pre><span></span>flow main
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flow main
     user greeted then expressed feeling unwell
 
 flow user greeted then expressed feeling unwell
