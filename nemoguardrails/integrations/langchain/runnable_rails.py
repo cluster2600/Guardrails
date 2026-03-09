@@ -852,24 +852,53 @@ class RunnableRails(Runnable[Input, Output]):
 
     def transform(
         self,
-        input: Input,
+        input: Iterator[Input],
         config: Optional[RunnableConfig] = None,
         **kwargs: Optional[Any],
-    ) -> Output:
-        """Transform the input.
+    ) -> Iterator[Output]:
+        """Transform an input iterator by consuming it and streaming the output.
 
-        This is just an alias for invoke.
+        Follows the LangChain Runnable protocol: gathers input chunks into a
+        single value, then delegates to stream() so this runnable can be used
+        inside a RunnableSequence pipeline.
         """
-        return self.invoke(input, config, **kwargs)
+        final: Input
+        got_first_val = False
+        for chunk in input:
+            if not got_first_val:
+                final = chunk
+                got_first_val = True
+            else:
+                try:
+                    final = final + chunk  # type: ignore[operator]
+                except TypeError:
+                    final = chunk
+        if got_first_val:
+            yield from self.stream(final, config, **kwargs)
 
     async def atransform(
         self,
-        input: Input,
+        input: AsyncIterator[Input],
         config: Optional[RunnableConfig] = None,
         **kwargs: Optional[Any],
-    ) -> Output:
-        """Transform the input asynchronously.
+    ) -> AsyncIterator[Output]:
+        """Transform an async input iterator by consuming it and streaming the output.
 
-        This is just an alias for ainvoke.
+        Follows the LangChain Runnable protocol: gathers input chunks into a
+        single value, then delegates to astream() so this runnable can be used
+        inside a RunnableSequence pipeline with astream.
         """
-        return await self.ainvoke(input, config, **kwargs)
+        final: Input
+        got_first_val = False
+        async for chunk in input:
+            if not got_first_val:
+                final = chunk
+                got_first_val = True
+            else:
+                try:
+                    final = final + chunk  # type: ignore[operator]
+                except TypeError:
+                    final = chunk
+        if got_first_val:
+            async for output in self.astream(final, config, **kwargs):
+                yield output
