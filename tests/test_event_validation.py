@@ -13,27 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import importlib
-import sys
-
 import pytest
 
-
-def _import_utils():
-    """Import nemoguardrails.utils directly, bypassing the top-level package __init__."""
-    spec = importlib.util.spec_from_file_location(
-        "nemoguardrails.utils",
-        "nemoguardrails/utils.py",
-    )
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = mod
-    spec.loader.exec_module(mod)
-    return mod
-
-
-utils = _import_utils()
-ensure_valid_event = utils.ensure_valid_event
-is_valid_event = utils.is_valid_event
+from nemoguardrails.utils import ensure_valid_event, is_valid_event
 
 
 def _make_base_event(event_type, **extra):
