@@ -125,14 +125,28 @@ class KnowledgeBase:
         cache_file = os.path.join(CACHE_FOLDER, f"{hash_value}.ann")
         embedding_size_file = os.path.join(CACHE_FOLDER, f"{hash_value}.esize")
 
+        # Determine which index backend to use
+        try:
+            from annoy import AnnoyIndex
+
+            _annoy_available = True
+        except ImportError:
+            _annoy_available = False
+
+        # When using the numpy fallback the cache file extension is .npy
+        # instead of .ann; check for both so that caches from either
+        # backend are honoured.
+        npy_cache_file = cache_file[:-4] + ".npy" if cache_file.endswith(".ann") else cache_file + ".npy"
+
+        has_ann_cache = os.path.exists(cache_file) and _annoy_available
+        has_npy_cache = os.path.exists(npy_cache_file)
+
         # If we have already computed this before, we use it
         if (
             self.config.embedding_search_provider.name == "default"
-            and os.path.exists(cache_file)
+            and (has_ann_cache or has_npy_cache)
             and os.path.exists(embedding_size_file)
         ):
-            from annoy import AnnoyIndex
-
             from nemoguardrails.embeddings.basic import BasicEmbeddingsIndex
 
             log.info(cache_file)
@@ -146,8 +160,14 @@ class KnowledgeBase:
             with open(embedding_size_file, "r") as f:
                 embedding_size = int(f.read())
 
-            ann_index = AnnoyIndex(embedding_size, "angular")
-            ann_index.load(cache_file)
+            if has_ann_cache and _annoy_available:
+                ann_index = AnnoyIndex(embedding_size, "angular")
+                ann_index.load(cache_file)
+            else:
+                from nemoguardrails.embeddings.numpy_index import NumpyAnnoyIndex
+
+                ann_index = NumpyAnnoyIndex(embedding_size, "angular")
+                ann_index.load(npy_cache_file)
 
             self.index.embeddings_index = ann_index
 
@@ -159,8 +179,9 @@ class KnowledgeBase:
             await self.index.add_items(index_items)
             await self.index.build()
 
-            # For the default Embedding Search provider, which uses annoy, we also
-            # persist the index after it's computed.
+            # For the default Embedding Search provider, which uses annoy
+            # (or the numpy fallback), we also persist the index after
+            # it is computed.
             if self.config.embedding_search_provider.name == "default":
                 from nemoguardrails.embeddings.basic import BasicEmbeddingsIndex
 

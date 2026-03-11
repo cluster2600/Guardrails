@@ -17,8 +17,6 @@ import asyncio
 import logging
 from typing import Any, Dict, List, Optional, Union
 
-from annoy import AnnoyIndex
-
 from nemoguardrails.embeddings.cache import cache_embeddings
 from nemoguardrails.embeddings.index import EmbeddingsIndex, IndexItem
 from nemoguardrails.embeddings.providers import EmbeddingModel, init_embedding_model
@@ -26,17 +24,27 @@ from nemoguardrails.rails.llm.config import EmbeddingsCacheConfig
 
 log = logging.getLogger(__name__)
 
+try:
+    from annoy import AnnoyIndex
+except ImportError:
+    AnnoyIndex = None
+    log.info(
+        "annoy is not installed; falling back to numpy-based nearest-neighbour "
+        "search.  Install annoy for faster index lookups on large knowledge bases."
+    )
+
 
 class BasicEmbeddingsIndex(EmbeddingsIndex):
     """Basic implementation of an embeddings index.
 
     It uses the `sentence-transformers/all-MiniLM-L6-v2` model to compute embeddings.
-    Annoy is employed for efficient nearest-neighbor search.
+    Annoy is employed for efficient nearest-neighbor search when available;
+    otherwise a numpy-based brute-force fallback is used.
 
     Attributes:
         embedding_model (str): The model for computing embeddings.
         embedding_engine (str): The engine for computing embeddings.
-        index (AnnoyIndex): The current embedding index.
+        index: The current embedding index (AnnoyIndex or NumpyAnnoyIndex).
         embedding_size (int): The size of the embeddings.
         cache_config (EmbeddingsCacheConfig): The cache configuration.
         embeddings (List[List[float]]): The computed embeddings.
@@ -48,7 +56,6 @@ class BasicEmbeddingsIndex(EmbeddingsIndex):
     embedding_model: str
     embedding_engine: str
     embedding_params: Dict[str, Any]
-    index: AnnoyIndex
     embedding_size: int
     cache_config: EmbeddingsCacheConfig
     embeddings: List[List[float]]
@@ -189,8 +196,17 @@ class BasicEmbeddingsIndex(EmbeddingsIndex):
             self._embedding_size = len(self._embeddings[0])
 
     async def build(self):
-        """Builds the Annoy index."""
-        self._index = AnnoyIndex(len(self._embeddings[0]), "angular")
+        """Builds the embeddings index.
+
+        Uses Annoy when available, otherwise falls back to a numpy-based
+        brute-force index (sufficient for typical guardrails index sizes).
+        """
+        if AnnoyIndex is not None:
+            self._index = AnnoyIndex(len(self._embeddings[0]), "angular")
+        else:
+            from nemoguardrails.embeddings.numpy_index import NumpyAnnoyIndex
+
+            self._index = NumpyAnnoyIndex(len(self._embeddings[0]), "angular")
         for i in range(len(self._embeddings)):
             self._index.add_item(i, self._embeddings[i])
         self._index.build(10)
