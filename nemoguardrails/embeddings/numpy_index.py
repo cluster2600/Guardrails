@@ -113,8 +113,12 @@ class NumpyAnnoyIndex:
 
         # Get top-n indices (lowest distance first)
         n = min(n, len(distances))
-        top_indices = np.argpartition(distances, n)[:n]
-        top_indices = top_indices[np.argsort(distances[top_indices])]
+        if n == len(distances):
+            # All items requested -- just argsort the whole array
+            top_indices = np.argsort(distances)[:n]
+        else:
+            top_indices = np.argpartition(distances, n)[:n]
+            top_indices = top_indices[np.argsort(distances[top_indices])]
 
         ids = top_indices.tolist()
         if include_distances:
