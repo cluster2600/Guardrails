@@ -39,26 +39,29 @@ _NEEDS_PATCH = sys.version_info >= (3, 14)
 
 
 def _patch_langchain_dict_shadow():
-    """Inject ``builtins.dict`` into langchain module namespaces.
+    """Inject ``builtins.dict`` and ``builtins.list`` into langchain module namespaces.
 
     On Python >= 3.14, PEP 649 evaluates annotations lazily using the
-    module-level globals.  By injecting the real ``dict`` builtin into
-    the module's namespace *before* pydantic triggers annotation
-    evaluation, we prevent the ``Chain.dict`` method from shadowing it.
+    module-level globals.  By injecting the real builtins into the
+    module's namespace *before* pydantic triggers annotation evaluation,
+    we prevent methods like ``Chain.dict()`` from shadowing them.
 
     This must be called **before** any langchain class that defines a
-    ``dict()`` method is used by pydantic.
+    ``dict()`` method is used by pydantic.  It is safe to call multiple
+    times -- already-patched modules are skipped via a sentinel attribute.
     """
     if not _NEEDS_PATCH:
         return
 
-    # Modules whose classes define a dict() method that shadows the builtin.
-    # These are the known offenders in langchain 0.3.x.
+    # Modules whose classes define a dict()/list() method that shadows builtins.
+    # These are the known offenders in langchain 0.3.x and langchain_core.
     _MODULES_TO_PATCH = [
         "langchain.chains.base",
         "langchain.chains",
         "langchain.schema",
         "langchain.schema.runnable.base",
+        "langchain_core.runnables.base",
+        "langchain_core.load.serializable",
     ]
 
     patched = []
@@ -66,24 +69,29 @@ def _patch_langchain_dict_shadow():
         mod = sys.modules.get(mod_name)
         if mod is not None and not hasattr(mod, "__dict_patched__"):
             mod.dict = builtins.dict  # type: ignore[attr-defined]
+            mod.list = builtins.list  # type: ignore[attr-defined]
             mod.__dict_patched__ = True  # type: ignore[attr-defined]
             patched.append(mod_name)
 
     if patched:
-        log.debug("Patched builtins.dict into langchain modules: %s", patched)
+        log.debug("Patched builtins into langchain modules: %s", patched)
 
 
 def safe_import_langchain():
     """Import the ``langchain`` package with PEP 649 safety.
 
     Returns the imported ``langchain`` module, or raises a clear error
-    if langchain 0.3.x cannot be loaded on Python >= 3.14.
+    if langchain is not installed or if langchain 0.3.x cannot be
+    loaded on Python >= 3.14.
     """
     try:
         import langchain
-
-        _patch_langchain_dict_shadow()
-        return langchain
+    except ImportError:
+        raise ImportError(
+            "langchain is not installed.  Install it with: "
+            "pip install langchain  "
+            "(On Python >= 3.14, langchain >= 1.0.0 is required.)"
+        )
     except TypeError as exc:
         if _NEEDS_PATCH and "not subscriptable" in str(exc):
             raise ImportError(
@@ -96,12 +104,17 @@ def safe_import_langchain():
             ) from exc
         raise
 
+    _patch_langchain_dict_shadow()
+    return langchain
+
 
 def import_init_chat_model():
     """Import ``init_chat_model`` with fallback for langchain 1.x.
 
     In langchain 1.x the import path may differ from 0.3.x.
     """
+    _patch_langchain_dict_shadow()
+
     try:
         from langchain.chat_models import init_chat_model
 
@@ -128,6 +141,8 @@ def import_chat_models_base():
 
     Used by providers.py to discover supported chat providers.
     """
+    _patch_langchain_dict_shadow()
+
     try:
         import langchain.chat_models.base as _base
 

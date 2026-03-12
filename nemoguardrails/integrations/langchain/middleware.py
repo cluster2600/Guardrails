@@ -18,6 +18,10 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
+from nemoguardrails._langchain_compat import _patch_langchain_dict_shadow
+
+_patch_langchain_dict_shadow()
+
 try:
     from langchain.agents.middleware.types import AgentMiddleware, AgentState, hook_config
 except (ImportError, TypeError):
