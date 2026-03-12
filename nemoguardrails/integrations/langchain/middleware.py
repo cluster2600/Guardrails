@@ -33,7 +33,7 @@ except (ImportError, TypeError):
             "Could not import AgentMiddleware from langchain. "
             "On Python >= 3.14, langchain >= 1.0.0 is required."
         )
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage  # noqa: E402
 
 if TYPE_CHECKING:
     from langgraph.runtime import Runtime as LangGraphRuntime
