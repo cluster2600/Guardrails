@@ -33,7 +33,8 @@ import os
 from unittest.mock import patch
 
 import pytest
-import yara
+
+yara = pytest.importorskip("yara", reason="yara-python not available on Python 3.14 (no native wheel)")
 from pydantic import ValidationError
 
 from nemoguardrails import RailsConfig
