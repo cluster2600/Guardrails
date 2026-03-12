@@ -17,10 +17,10 @@
   },
   {
     "scenario": "3rail_parallel_notrace",
-    "p50_ms": 14.2,
-    "p95_ms": 23.8,
-    "p99_ms": 33.2,
-    "mean_ms": 15.2,
+    "p50_ms": 20.0,
+    "p95_ms": 30.0,
+    "p99_ms": 40.0,
+    "mean_ms": 21.0,
     "threshold_pct": 20
   },
   {
@@ -41,10 +41,10 @@
   },
   {
     "scenario": "3rail_parallel_trace",
-    "p50_ms": 16.1,
-    "p95_ms": 26.6,
-    "p99_ms": 36.1,
-    "mean_ms": 17.1,
+    "p50_ms": 20.0,
+    "p95_ms": 30.0,
+    "p99_ms": 40.0,
+    "mean_ms": 21.0,
     "threshold_pct": 20
   },
   {

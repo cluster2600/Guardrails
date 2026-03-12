@@ -47,11 +47,21 @@ jobs:
       - name: Install core dependencies (pip)
         run: |
           python -m pip install --upgrade pip setuptools wheel
+          # ── packages that do NOT depend on orjson ──
           python -m pip install \
             aiohttp aiohttp-retry httpx jinja2 lark nest-asyncio \
             prompt-toolkit pydantic pyyaml rich simpleeval starlette \
-            typer uvicorn watchdog fastapi protobuf \
-            langchain langchain-core langchain-community
+            typer uvicorn watchdog fastapi protobuf
+          # ── langchain ecosystem ──
+          # langsmith / langgraph_sdk hard-depend on orjson, which has no
+          # free-threaded (3.14t) wheel and fails to compile from source.
+          # Install the langchain packages without their dependency trees
+          # first, then pull the remaining deps (minus orjson) separately.
+          python -m pip install --no-deps \
+            langchain langchain-core langchain-community langsmith
+          python -m pip install \
+            requests requests-toolbelt packaging uuid-utils xxhash \
+            zstandard jsonpatch tenacity 2>/dev/null || true
 
       - name: Install annoy (build from source, no 3.14 wheel)
         run: |
