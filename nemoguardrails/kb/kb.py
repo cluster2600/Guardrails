@@ -153,7 +153,7 @@ class KnowledgeBase:
         ):
             from nemoguardrails.embeddings.basic import BasicEmbeddingsIndex
 
-            log.info(cache_file)
+            log.info(cache_file if has_ann_cache else npy_cache_file)
             self.index = cast(
                 BasicEmbeddingsIndex,
                 self._get_embeddings_search_instance(
