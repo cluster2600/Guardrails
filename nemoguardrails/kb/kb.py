@@ -136,7 +136,11 @@ class KnowledgeBase:
         # When using the numpy fallback the cache file extension is .npy
         # instead of .ann; check for both so that caches from either
         # backend are honoured.
-        npy_cache_file = cache_file[:-4] + ".npy" if cache_file.endswith(".ann") else cache_file + ".npy"
+        npy_cache_file = (
+            cache_file[:-4] + ".npy"
+            if cache_file.endswith(".ann")
+            else cache_file + ".npy"
+        )
 
         has_ann_cache = os.path.exists(cache_file) and _annoy_available
         has_npy_cache = os.path.exists(npy_cache_file)
