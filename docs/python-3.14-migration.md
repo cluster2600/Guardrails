@@ -25,6 +25,7 @@ Python 3.14 introduces several changes that affect NeMo Guardrails:
 | langchain | 0.3.x *or* 1.x | 0.3.x requires the compat shim; 1.x works natively |
 | langchain-core | 0.3.x *or* 1.x | Must match langchain version |
 | pydantic | >= 2.0 | Required for PEP 649 annotation handling |
+| rich | any | Required at import time by `nemoguardrails.utils` |
 
 If you are starting a new project, we recommend **langchain >= 1.0.0** (also
 called `langchain-classic`) which includes the upstream fix for the `dict()`
@@ -143,6 +144,25 @@ transitive dependencies on 3.14.  If you rely on OTel tracing:
 1. Install explicitly: `pip install opentelemetry-api opentelemetry-sdk`
 2. Pin to a version that supports 3.14, or disable tracing until a compatible
    release is available.
+
+### Pydantic V1 compatibility warning from langchain_core
+
+When running on Python 3.14, `langchain_core` emits the following warning at
+import time:
+
+```
+UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+```
+
+This warning **does not block functionality** — NeMo Guardrails operates
+correctly despite it.  The warning originates from langchain_core's internal
+Pydantic V1 compatibility layer and will be resolved in a future langchain
+release.  You can suppress it in your application if desired:
+
+```python
+import warnings
+warnings.filterwarnings("ignore", message="Core Pydantic V1 functionality")
+```
 
 ## Running on Python 3.14 with Docker
 
