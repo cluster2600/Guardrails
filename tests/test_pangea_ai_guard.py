@@ -14,6 +14,8 @@
 # limitations under the License.
 
 import pytest
+
+pytest.importorskip("pytest_httpx", reason="pytest-httpx not installed")
 from pytest_httpx import HTTPXMock
 
 from nemoguardrails import RailsConfig
