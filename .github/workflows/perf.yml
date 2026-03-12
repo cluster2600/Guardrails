@@ -1,0 +1,213 @@
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Performance regression gate (PR) and nightly extended benchmarks.
+#
+# PR gate:    latency smoke, import cold-start           ~2 min
+# Nightly:    throughput, streaming, memory, CPU-heavy    ~8 min
+#
+# Results are compared against perf_baselines/*.json.
+# See perf_baselines/README.md for how to update baselines.
+
+name: Performance
+
+on:
+  pull_request:
+    paths:
+      - "nemoguardrails/**"
+      - "benchmarks/**"
+      - "perf_baselines/**"
+      - "pyproject.toml"
+  push:
+    branches: [main, develop]
+  schedule:
+    # Nightly at 04:00 UTC (weekdays)
+    - cron: "0 4 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "Benchmark suite to run"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - all
+          - latency
+          - throughput
+          - streaming
+          - import
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # PR gate — fast latency + import benchmarks
+  # ---------------------------------------------------------------------------
+  pr-perf:
+    name: "Perf · ${{ matrix.python-version }}"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.14"]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install \
+            aiohttp httpx jinja2 lark nest-asyncio \
+            pydantic pyyaml simpleeval starlette \
+            langchain langchain-core langchain-community
+
+      - name: Verify benchmark harness imports
+        run: |
+          python -c "from benchmarks.conftest import PerfResult; print('conftest OK')"
+          python -c "from benchmarks.scenarios import LATENCY_SMOKE; print(f'{len(LATENCY_SMOKE)} latency scenarios')"
+          python -c "from benchmarks.fake_provider import FakeProvider; print('fake_provider OK')"
+
+      - name: Run latency smoke benchmarks
+        run: |
+          python -m benchmarks.run_latency --output /tmp/perf-latency.json
+
+      - name: Run import / cold-start benchmarks
+        run: |
+          python -m benchmarks.run_import --output /tmp/perf-import.json
+
+      - name: Check latency regressions
+        run: |
+          BASELINE="perf_baselines/linux-py${{ matrix.python-version == '3.14' && '314' || '312' }}.json"
+          python -m benchmarks.compare \
+            --baseline "$BASELINE" \
+            --current /tmp/perf-latency.json \
+            --max-p95-regression 5 \
+            --max-first-token-regression-ms 20 \
+            --max-mean-regression 10
+
+      - name: Upload benchmark results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-pr-py${{ matrix.python-version }}
+          path: /tmp/perf-*.json
+          retention-days: 30
+
+  # ---------------------------------------------------------------------------
+  # Nightly — extended benchmarks (throughput, streaming, memory)
+  # ---------------------------------------------------------------------------
+  nightly-perf:
+    name: "Nightly · ${{ matrix.python-version }}${{ matrix.free-threaded && 't' || '' }}"
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.14"]
+        free-threaded: [false]
+        include:
+          - python-version: "3.14"
+            free-threaded: true
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}${{ matrix.free-threaded && 't' || '' }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ matrix.python-version }}${{ matrix.free-threaded && 't' || '' }}"
+          allow-prereleases: true
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install \
+            aiohttp httpx jinja2 lark nest-asyncio \
+            pydantic pyyaml simpleeval starlette \
+            langchain langchain-core langchain-community
+
+      - name: Show Python info
+        run: |
+          python -c "
+          import sys, sysconfig
+          print(f'Python {sys.version}')
+          gil = sysconfig.get_config_var('Py_GIL_DISABLED')
+          print(f'GIL disabled: {bool(gil)}')
+          "
+
+      # --- Latency (always run) ---
+      - name: Run latency benchmarks
+        run: python -m benchmarks.run_latency --output /tmp/perf-latency.json
+
+      # --- Throughput ---
+      - name: Run throughput benchmarks
+        if: >-
+          github.event_name == 'schedule' ||
+          (github.event.inputs.suite == 'all' || github.event.inputs.suite == 'throughput')
+        run: python -m benchmarks.run_throughput --output /tmp/perf-throughput.json
+
+      # --- Streaming ---
+      - name: Run streaming benchmarks
+        if: >-
+          github.event_name == 'schedule' ||
+          (github.event.inputs.suite == 'all' || github.event.inputs.suite == 'streaming')
+        run: python -m benchmarks.run_streaming --output /tmp/perf-streaming.json
+
+      # --- Import / cold-start ---
+      - name: Run import benchmarks
+        run: python -m benchmarks.run_import --output /tmp/perf-import.json
+
+      # --- Regression checks ---
+      - name: Check latency regressions
+        run: |
+          PY_TAG="${{ matrix.python-version == '3.14' && '314' || '312' }}"
+          SUFFIX="${{ matrix.free-threaded && 't' || '' }}"
+          BASELINE="perf_baselines/linux-py${PY_TAG}${SUFFIX}.json"
+          python -m benchmarks.compare \
+            --baseline "$BASELINE" \
+            --current /tmp/perf-latency.json \
+            --max-p95-regression 5 \
+            --max-first-token-regression-ms 20 \
+            --max-mean-regression 10
+
+      - name: Upload nightly results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-nightly-py${{ matrix.python-version }}${{ matrix.free-threaded && 't' || '' }}
+          path: /tmp/perf-*.json
+          retention-days: 90
+
+  # ---------------------------------------------------------------------------
+  # Summary gates
+  # ---------------------------------------------------------------------------
+  pr-perf-summary:
+    name: PR Performance Summary
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    needs: pr-perf
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm all performance checks passed
+        run: echo "All PR performance checks completed successfully ✓"
+
+  nightly-perf-summary:
+    name: Nightly Performance Summary
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: nightly-perf
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm all nightly benchmarks completed
+        run: echo "All nightly performance benchmarks completed ✓"
