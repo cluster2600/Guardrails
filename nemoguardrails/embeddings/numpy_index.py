@@ -24,7 +24,7 @@ For the typical guardrails index sizes (tens to hundreds of items) the
 brute-force cosine search is more than fast enough.
 """
 
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
 
@@ -82,7 +82,7 @@ class NumpyAnnoyIndex:
 
     def get_nns_by_vector(
         self, vector, n: int, include_distances: bool = False
-    ) -> Tuple[List[int], ...]:
+    ) -> Union[List[int], Tuple[List[int], List[float]]]:
         """Return the *n* nearest neighbours of *vector*.
 
         When *include_distances* is ``True`` the return value is a tuple
@@ -141,6 +141,10 @@ class NumpyAnnoyIndex:
         always pass either an ``.ann`` path (which is converted here)
         or an explicit ``.npy`` path.
         """
+        if not self._built:
+            raise RuntimeError(
+                "NumpyAnnoyIndex.save() called before build(); call build() first."
+            )
         if path.endswith(".ann"):
             path = path[:-4] + ".npy"
         if self._vectors is not None:
