@@ -150,5 +150,6 @@ class NumpyAnnoyIndex:
         """Load a previously saved index from disk."""
         if path.endswith(".ann"):
             path = path[:-4] + ".npy"
+        self._vectors_dict = {}  # discard any pre-build state
         self._vectors = np.load(path).astype(np.float32)
         self._built = True

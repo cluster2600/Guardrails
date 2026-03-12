@@ -28,10 +28,19 @@ try:
     from annoy import AnnoyIndex
 except ImportError:
     AnnoyIndex = None
-    log.warning(
-        "annoy is not installed; falling back to numpy-based nearest-neighbour "
-        "search.  Install annoy for faster index lookups on large knowledge bases."
-    )
+    import sys
+
+    if sys.version_info >= (3, 13):
+        log.warning(
+            "annoy is not supported on Python 3.13+ (SIGILL in the C++ extension); "
+            "using numpy-based nearest-neighbour search instead."
+        )
+    else:
+        log.warning(
+            "annoy is not installed; falling back to numpy-based nearest-neighbour "
+            "search.  Install annoy (or use the [annoy] extra) for faster index "
+            "lookups on large knowledge bases."
+        )
 
 
 class BasicEmbeddingsIndex(EmbeddingsIndex):
