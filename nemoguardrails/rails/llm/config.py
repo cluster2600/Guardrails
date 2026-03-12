@@ -642,10 +642,10 @@ class InputRails(_RailSectionMixin):
         description="If True, the input rails are executed in parallel.",
     )
 
-    @root_validator(pre=True)
-    def _normalise_flows(cls, values):
-        """Accept both ``flows`` (legacy) and ``flow_configs`` as input."""
-        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
         values["flow_configs"] = _coerce_flow_list(raw)
         return values
 
