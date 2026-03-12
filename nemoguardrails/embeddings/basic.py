@@ -53,7 +53,7 @@ class BasicEmbeddingsIndex(EmbeddingsIndex):
         embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
         embedding_engine: str = "SentenceTransformers",
         embedding_params: Optional[Dict[str, Any]] = None,
-        index: Optional[AnnoyIndex] = None,
+        index: Optional["AnnoyIndex"] = None,
         cache_config: Optional[Union[EmbeddingsCacheConfig, Dict[str, Any]]] = None,
         search_threshold: float = float("inf"),
         use_batching: bool = False,

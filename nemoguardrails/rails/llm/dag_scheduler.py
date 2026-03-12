@@ -330,7 +330,7 @@ class RailDependencyGraph:
             elif hasattr(flow, "name"):
                 # FlowWithDeps or similar pydantic model
                 name = flow.name
-                deps = list(flow.depends_on) if hasattr(flow, "depends_on") else []
+                deps = list(getattr(flow, "depends_on", []))
                 rail_names.append(name)
                 rail_configs.append({"name": name, "depends_on": deps})
             else:
@@ -648,6 +648,6 @@ def has_dependencies(flows: List[Any]) -> bool:
     for flow in flows:
         if isinstance(flow, dict) and flow.get("depends_on"):
             return True
-        if hasattr(flow, "depends_on") and flow.depends_on:
+        if getattr(flow, "depends_on", None):
             return True
     return False

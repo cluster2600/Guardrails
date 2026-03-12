@@ -25,8 +25,8 @@ _pytest_httpx_available = find_spec("pytest_httpx") is not None
 needs_httpx = pytest.mark.skipif(
     not _pytest_httpx_available, reason="pytest-httpx not installed"
 )
-from nemoguardrails.actions.actions import ActionResult, action
-from tests.utils import TestChat
+from nemoguardrails.actions.actions import ActionResult, action  # noqa: E402
+from tests.utils import TestChat  # noqa: E402
 
 CONFIGS_FOLDER = os.path.join(os.path.dirname(__file__), ".", "test_configs")
 

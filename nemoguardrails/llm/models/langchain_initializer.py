@@ -26,7 +26,7 @@ from nemoguardrails._langchain_compat import import_init_chat_model
 
 init_chat_model = import_init_chat_model()
 
-from nemoguardrails.llm.providers.providers import (
+from nemoguardrails.llm.providers.providers import (  # noqa: E402
     _get_chat_completion_provider,
     _get_text_completion_provider,
     _parse_version,

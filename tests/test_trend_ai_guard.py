@@ -26,10 +26,10 @@ pytestmark = pytest.mark.skipif(
     reason="httpcore weak-ref bug on Python 3.14 (httpcore#XXXX)",
 )
 
-from pytest_httpx import HTTPXMock
+from pytest_httpx import HTTPXMock  # noqa: E402
 
-from nemoguardrails import RailsConfig
-from tests.utils import TestChat
+from nemoguardrails import RailsConfig  # noqa: E402
+from tests.utils import TestChat  # noqa: E402
 
 input_rail_config = RailsConfig.from_content(
     yaml_content="""

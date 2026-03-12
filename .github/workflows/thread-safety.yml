@@ -51,7 +51,7 @@ jobs:
           python -m pip install \
             aiohttp aiohttp-retry httpx jinja2 lark nest-asyncio \
             prompt-toolkit pydantic pyyaml rich simpleeval starlette \
-            typer uvicorn watchdog fastapi protobuf
+            typer uvicorn watchdog fastapi protobuf dataclasses-json
           # ── langchain ecosystem ──
           # langsmith / langgraph_sdk hard-depend on orjson, which has no
           # free-threaded (3.14t) wheel and fails to compile from source.

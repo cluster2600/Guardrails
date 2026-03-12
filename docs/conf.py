@@ -279,6 +279,7 @@ html_theme_options = {
             "type": "fontawesome",
         },
     ],
+    "check_switcher": False,
     "switcher": {
         "json_url": "../versions1.json",
         "version_match": release,

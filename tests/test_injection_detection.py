@@ -35,10 +35,10 @@ from unittest.mock import patch
 import pytest
 
 yara = pytest.importorskip("yara", reason="yara-python not available on Python 3.14 (no native wheel)")
-from pydantic import ValidationError
+from pydantic import ValidationError  # noqa: E402
 
-from nemoguardrails import RailsConfig
-from nemoguardrails.library.injection_detection.actions import (
+from nemoguardrails import RailsConfig  # noqa: E402
+from nemoguardrails.library.injection_detection.actions import (  # noqa: E402
     _check_yara_available,
     _extract_injection_config,
     _load_rules,
@@ -47,7 +47,7 @@ from nemoguardrails.library.injection_detection.actions import (
     _sanitize_injection,
     _validate_injection_config,
 )
-from tests.utils import TestChat
+from tests.utils import TestChat  # noqa: E402
 
 CONFIGS_FOLDER = os.path.join(os.path.dirname(__file__), ".", "test_configs")
 
