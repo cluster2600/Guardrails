@@ -164,7 +164,7 @@ class KnowledgeBase:
             with open(embedding_size_file, "r") as f:
                 embedding_size = int(f.read())
 
-            if has_ann_cache and _annoy_available:
+            if has_ann_cache:
                 ann_index = AnnoyIndex(embedding_size, "angular")
                 ann_index.load(cache_file)
             else:
