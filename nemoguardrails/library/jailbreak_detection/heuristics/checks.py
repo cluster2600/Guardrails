@@ -18,12 +18,21 @@ import os
 import torch
 from transformers import GPT2LMHeadModel, GPT2TokenizerFast
 
+try:
+    from nemoguardrails.rails.llm.thread_pool import cpu_bound
+except ImportError:
+
+    def cpu_bound(fn):
+        return fn
+
+
 device = os.environ.get("JAILBREAK_CHECK_DEVICE", "cpu")
 model_id = "gpt2-large"
 model = GPT2LMHeadModel.from_pretrained(model_id).to(device)
 tokenizer = GPT2TokenizerFast.from_pretrained(model_id)
 
 
+@cpu_bound
 def get_perplexity(input_string: str) -> bool:
     """
     Function to compute sliding window perplexity of `input_string`
@@ -61,6 +70,7 @@ def get_perplexity(input_string: str) -> bool:
     return perplexity.cpu().detach().numpy().item()
 
 
+@cpu_bound
 def check_jailbreak_length_per_perplexity(input_string: str, threshold: float) -> dict:
     """
     Check whether the input string has length/perplexity greater than the threshold.
@@ -75,6 +85,7 @@ def check_jailbreak_length_per_perplexity(input_string: str, threshold: float) -
     return result
 
 
+@cpu_bound
 def check_jailbreak_prefix_suffix_perplexity(input_string: str, threshold: float) -> dict:
     """
     Check whether the input string has prefix or suffix perplexity greater than the threshold.

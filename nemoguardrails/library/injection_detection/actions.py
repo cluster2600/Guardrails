@@ -28,6 +28,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
+import functools
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, TypedDict, Union
@@ -41,6 +43,14 @@ except ImportError:
 from nemoguardrails import RailsConfig  # noqa: E402
 from nemoguardrails.actions import action  # noqa: E402
 from nemoguardrails.library.injection_detection.yara_config import ActionOptions, Rules  # noqa: E402
+
+try:
+    from nemoguardrails.rails.llm.thread_pool import cpu_bound
+except ImportError:
+
+    def cpu_bound(fn):
+        return fn
+
 
 YARA_DIR = Path(__file__).resolve().parent.joinpath("yara_rules")
 
@@ -182,6 +192,7 @@ def _load_rules(
     return rules
 
 
+@cpu_bound
 def _omit_injection(text: str, matches: list["yara.Match"]) -> Tuple[bool, str]:
     """
     Attempts to strip the offending injection attempts from the provided text.
@@ -260,6 +271,7 @@ def _sanitize_injection(text: str, matches: list["yara.Match"]) -> Tuple[bool, s
     #     return False, sanitized_text_attempt
 
 
+@cpu_bound
 def _reject_injection(text: str, rules: "yara.Rules") -> Tuple[bool, List[str]]:
     """
     Detects whether the provided text contains potential injection attempts.
@@ -336,7 +348,13 @@ async def injection_detection(text: str, config: RailsConfig) -> InjectionDetect
         return InjectionDetectionResult(is_injection=False, text=text, detections=[])
 
     if action_option == "reject":
-        is_injection, detected_rules = _reject_injection(text, rules)
+        if getattr(_reject_injection, "_cpu_bound", False):
+            loop = asyncio.get_running_loop()
+            is_injection, detected_rules = await loop.run_in_executor(
+                None, functools.partial(_reject_injection, text, rules)
+            )
+        else:
+            is_injection, detected_rules = _reject_injection(text, rules)
         return InjectionDetectionResult(is_injection=is_injection, text=text, detections=detected_rules)
     else:
         matches = rules.match(data=text)
@@ -345,7 +363,13 @@ async def injection_detection(text: str, config: RailsConfig) -> InjectionDetect
             log.info(f"Input matched on rule {', '.join(detected_rules_list)}.")
 
             if action_option == "omit":
-                is_injection, result_text = _omit_injection(text, matches)
+                if getattr(_omit_injection, "_cpu_bound", False):
+                    loop = asyncio.get_running_loop()
+                    is_injection, result_text = await loop.run_in_executor(
+                        None, functools.partial(_omit_injection, text, matches)
+                    )
+                else:
+                    is_injection, result_text = _omit_injection(text, matches)
                 return InjectionDetectionResult(
                     is_injection=is_injection,
                     text=result_text,

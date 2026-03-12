@@ -28,6 +28,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
+import functools
 import logging
 from time import time
 from typing import Dict, Optional
@@ -74,8 +76,17 @@ async def jailbreak_detection_heuristics(
         )
 
         log.warning("No jailbreak detection endpoint set. Running in-process, NOT RECOMMENDED FOR PRODUCTION.")
-        lp_check = check_jailbreak_length_per_perplexity(prompt, lp_threshold)
-        ps_ppl_check = check_jailbreak_prefix_suffix_perplexity(prompt, ps_ppl_threshold)
+        if getattr(check_jailbreak_length_per_perplexity, "_cpu_bound", False):
+            loop = asyncio.get_running_loop()
+            lp_check = await loop.run_in_executor(
+                None, functools.partial(check_jailbreak_length_per_perplexity, prompt, lp_threshold)
+            )
+            ps_ppl_check = await loop.run_in_executor(
+                None, functools.partial(check_jailbreak_prefix_suffix_perplexity, prompt, ps_ppl_threshold)
+            )
+        else:
+            lp_check = check_jailbreak_length_per_perplexity(prompt, lp_threshold)
+            ps_ppl_check = check_jailbreak_prefix_suffix_perplexity(prompt, ps_ppl_threshold)
         jailbreak = any([lp_check["jailbreak"], ps_ppl_check["jailbreak"]])
         return jailbreak
 
@@ -137,7 +148,11 @@ async def jailbreak_detection_model(
 
         log.warning("No jailbreak detection endpoint set. Running in-process, NOT RECOMMENDED FOR PRODUCTION.")
         try:
-            jailbreak = check_jailbreak(prompt=prompt)
+            if getattr(check_jailbreak, "_cpu_bound", False):
+                loop = asyncio.get_running_loop()
+                jailbreak = await loop.run_in_executor(None, functools.partial(check_jailbreak, prompt=prompt))
+            else:
+                jailbreak = check_jailbreak(prompt=prompt)
             log.info(f"Local model jailbreak detection result: {jailbreak}")
             jailbreak_result = jailbreak["jailbreak"]
         except RuntimeError as e:
