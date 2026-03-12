@@ -1,0 +1,79 @@
+# Multi-stage Dockerfile for Python 3.14 testing and benchmarking.
+#
+# Usage:
+#   Test stage:   docker build --target test  -t guardrails-test-py314  -f Dockerfile.py314 .
+#   Bench stage:  docker build --target bench -t guardrails-bench-py314 -f Dockerfile.py314 .
+#
+#   docker run guardrails-test-py314
+#   docker run guardrails-bench-py314
+
+# ---- shared base ----
+FROM python:3.14 AS base
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir pip setuptools wheel --upgrade
+
+# Core runtime deps (shared between test and bench)
+# rich is needed by nemoguardrails.utils at import time
+RUN pip install --no-cache-dir \
+    aiohttp aiohttp-retry httpx jinja2 lark nest-asyncio \
+    pydantic pyyaml rich simpleeval starlette \
+    langchain langchain-core langchain-community 2>&1 | tail -5
+
+# annoy: no prebuilt wheel for 3.14, build from source (build-essential already present)
+RUN pip install --no-cache-dir annoy 2>&1 | tail -3
+
+# CLI / migration deps
+RUN pip install --no-cache-dir tqdm 2>&1 | tail -3
+
+# Copy source (needed by both stages)
+COPY pyproject.toml ./
+COPY nemoguardrails/ ./nemoguardrails/
+
+ENV PYTHONPATH=/app
+
+# Verify core imports (including annoy built from source)
+RUN python -c "import sys; print(f'Python {sys.version}')" && \
+    python -c "import langchain; print(f'langchain {langchain.__version__}')" && \
+    python -c "from annoy import AnnoyIndex; print('annoy OK')" && \
+    python -c "from nemoguardrails._langchain_compat import safe_import_langchain; lc = safe_import_langchain(); print(f'compat OK, langchain {lc.__version__}')"
+
+# ---- test stage: full test dependencies ----
+FROM base AS test
+
+# Additional runtime deps needed by tests (rich already in base)
+RUN pip install --no-cache-dir \
+    prompt-toolkit typer uvicorn watchdog fastapi protobuf 2>&1 | tail -3
+
+# Test framework
+RUN pip install --no-cache-dir \
+    pytest pytest-asyncio pytest-cov pytest-httpx aioresponses 2>&1 | tail -3
+
+# OTel tracing support (needed by tracing tests)
+RUN pip install --no-cache-dir opentelemetry-api opentelemetry-sdk 2>&1 | tail -3
+
+COPY tests/ ./tests/
+COPY chat-ui/ ./chat-ui/
+COPY examples/ ./examples/
+
+CMD ["python", "-m", "pytest", "tests/", "-x", "-v", "--timeout=60", "--tb=short", \
+     "-k", "not yara and not test_streaming and not test_server and not test_e2e"]
+
+# ---- bench stage: benchmark dependencies only ----
+FROM base AS bench
+
+COPY benchmarks/ ./benchmarks/
+COPY perf_baselines/ ./perf_baselines/
+
+# Validate benchmark imports
+RUN python -c "from benchmarks.conftest import PerfResult; print('conftest OK')" && \
+    python -c "from benchmarks.scenarios import LATENCY_SMOKE; print(f'{len(LATENCY_SMOKE)} latency scenarios')" && \
+    python -c "from benchmarks.fake_provider import FakeProvider; print('fake_provider OK')" && \
+    python -c "from benchmarks.fake_rails import build_rail_set; print('fake_rails OK')"
+
+CMD ["python", "-m", "benchmarks.run_latency", "--output", "/tmp/perf-latency.json"]
