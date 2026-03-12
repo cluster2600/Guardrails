@@ -187,8 +187,7 @@ class BasicEmbeddingsIndex(EmbeddingsIndex):
         """Builds the Annoy index."""
         if AnnoyIndex is None:
             raise ImportError(
-                "The annoy package is required for BasicEmbeddingsIndex. "
-                "Install it with: pip install annoy"
+                "The annoy package is required for BasicEmbeddingsIndex. Install it with: pip install annoy"
             )
         self._index = AnnoyIndex(len(self._embeddings[0]), "angular")
         for i in range(len(self._embeddings)):

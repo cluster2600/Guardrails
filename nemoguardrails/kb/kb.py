@@ -133,8 +133,7 @@ class KnowledgeBase:
                 from annoy import AnnoyIndex
             except ImportError:
                 raise ImportError(
-                    "The annoy package is required for loading cached embeddings. "
-                    "Install it with: pip install annoy"
+                    "The annoy package is required for loading cached embeddings. Install it with: pip install annoy"
                 )
 
             from nemoguardrails.embeddings.basic import BasicEmbeddingsIndex

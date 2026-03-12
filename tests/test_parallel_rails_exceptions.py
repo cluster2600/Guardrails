@@ -293,6 +293,7 @@ async def test_parallel_rails_context_updates_preserved():
     config = RailsConfig.from_path(os.path.join(CONFIGS_FOLDER, "parallel_rails_with_exceptions"))
 
     from nemoguardrails.rails.llm.config import FlowWithDeps
+
     config.rails.input.flow_configs.append(FlowWithDeps(name="check with context update"))
 
     chat = TestChat(

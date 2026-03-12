@@ -75,16 +75,18 @@ def build_comparison_rows(
     for scenario_name, result in sorted(results_idx.items()):
         baseline = baseline_idx.get(scenario_name)
         if baseline is None:
-            rows.append({
-                "scenario": scenario_name,
-                "baseline_p95": None,
-                "actual_p95": result.get("p95_ms", 0.0),
-                "delta_pct": 0.0,
-                "threshold_pct": 20,
-                "status": "SKIP",
-                "rss_delta": result.get("rss_mb_delta"),
-                "baseline_rss_delta": None,
-            })
+            rows.append(
+                {
+                    "scenario": scenario_name,
+                    "baseline_p95": None,
+                    "actual_p95": result.get("p95_ms", 0.0),
+                    "delta_pct": 0.0,
+                    "threshold_pct": 20,
+                    "status": "SKIP",
+                    "rss_delta": result.get("rss_mb_delta"),
+                    "baseline_rss_delta": None,
+                }
+            )
             continue
 
         baseline_p95 = baseline.get("p95_ms", 0.0)
@@ -93,16 +95,18 @@ def build_comparison_rows(
         delta = compute_delta_pct(baseline_p95, actual_p95)
         status = format_status(delta, threshold)
 
-        rows.append({
-            "scenario": scenario_name,
-            "baseline_p95": baseline_p95,
-            "actual_p95": actual_p95,
-            "delta_pct": delta,
-            "threshold_pct": threshold,
-            "status": status,
-            "rss_delta": result.get("rss_mb_delta"),
-            "baseline_rss_delta": baseline.get("rss_mb_delta"),
-        })
+        rows.append(
+            {
+                "scenario": scenario_name,
+                "baseline_p95": baseline_p95,
+                "actual_p95": actual_p95,
+                "delta_pct": delta,
+                "threshold_pct": threshold,
+                "status": status,
+                "rss_delta": result.get("rss_mb_delta"),
+                "baseline_rss_delta": baseline.get("rss_mb_delta"),
+            }
+        )
 
     return rows
 
@@ -145,9 +149,7 @@ def render_markdown(rows: list[dict], results_path: str, baseline_path: str) -> 
 
         status = row["status"]
 
-        lines.append(
-            f"| {scenario} | {bl_str} | {actual_str} | {delta_str} | {threshold_str} | {status} |"
-        )
+        lines.append(f"| {scenario} | {bl_str} | {actual_str} | {delta_str} | {threshold_str} | {status} |")
 
     # If any rows have meaningful memory data, add a memory section
     memory_rows = [r for r in rows if r.get("rss_delta") is not None and r["rss_delta"] != 0.0]
@@ -176,24 +178,14 @@ def render_markdown(rows: list[dict], results_path: str, baseline_path: str) -> 
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Performance dashboard: compare results against baselines"
+    parser = argparse.ArgumentParser(description="Performance dashboard: compare results against baselines")
+    parser.add_argument("--results", "-r", required=True, help="Path to benchmark results JSON file (single or array)")
+    parser.add_argument("--baseline", "-b", required=True, help="Path to baseline JSON file")
+    parser.add_argument(
+        "--output", "-o", default=None, help="Write markdown report to this file (default: stdout only)"
     )
     parser.add_argument(
-        "--results", "-r", required=True,
-        help="Path to benchmark results JSON file (single or array)"
-    )
-    parser.add_argument(
-        "--baseline", "-b", required=True,
-        help="Path to baseline JSON file"
-    )
-    parser.add_argument(
-        "--output", "-o", default=None,
-        help="Write markdown report to this file (default: stdout only)"
-    )
-    parser.add_argument(
-        "--threshold-override", type=float, default=None,
-        help="Override per-scenario threshold_pct with a global value"
+        "--threshold-override", type=float, default=None, help="Override per-scenario threshold_pct with a global value"
     )
     args = parser.parse_args()
 

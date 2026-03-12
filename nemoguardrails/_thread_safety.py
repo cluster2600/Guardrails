@@ -53,12 +53,9 @@ from typing import (
     Dict,
     Hashable,
     Iterator,
-    List,
     Optional,
     Tuple,
     TypeVar,
-    Union,
-    overload,
 )
 
 __all__ = [

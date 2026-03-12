@@ -82,8 +82,12 @@ async def run_scenario(scenario: BenchmarkScenario) -> PerfResult:
     # Warmup
     for _ in range(3):
         await stream_with_checks(
-            provider, "warmup", scenario.chunk_size, scenario.context_size,
-            scenario.stream_first, rail_rounds=50,
+            provider,
+            "warmup",
+            scenario.chunk_size,
+            scenario.context_size,
+            scenario.stream_first,
+            rail_rounds=50,
         )
 
     ftl_list: list[float] = []
@@ -92,9 +96,12 @@ async def run_scenario(scenario: BenchmarkScenario) -> PerfResult:
 
     for _ in range(scenario.iterations):
         info = await stream_with_checks(
-            provider, "benchmark prompt",
-            scenario.chunk_size, scenario.context_size,
-            scenario.stream_first, rail_rounds=scenario.cpu_work_units,
+            provider,
+            "benchmark prompt",
+            scenario.chunk_size,
+            scenario.context_size,
+            scenario.stream_first,
+            rail_rounds=scenario.cpu_work_units,
         )
         ftl_list.append(info["first_token_ms"])
         total_list.append(info["total_ms"])
@@ -122,8 +129,7 @@ async def run_scenario(scenario: BenchmarkScenario) -> PerfResult:
 async def main():
     parser = argparse.ArgumentParser(description="Streaming benchmark")
     parser.add_argument("--output", "-o", help="Output JSON file")
-    parser.add_argument("--max-scenarios", type=int, default=24,
-                        help="Cap scenario count for quick runs")
+    parser.add_argument("--max-scenarios", type=int, default=24, help="Cap scenario count for quick runs")
     args = parser.parse_args()
 
     scenarios = list(STREAMING_SWEEP)[: args.max_scenarios]

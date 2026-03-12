@@ -221,9 +221,7 @@ class ActionDispatcher:
         name = self._normalize_action_name(name)
         return self._registered_actions.get(name, None)
 
-    def _atomic_instantiate_action(
-        self, action_name: str, cls: Type
-    ) -> Callable[..., Any]:
+    def _atomic_instantiate_action(self, action_name: str, cls: Type) -> Callable[..., Any]:
         """Instantiate a class-based action exactly once (thread-safe).
 
         On free-threaded Python multiple threads may call ``execute_action``
@@ -338,9 +336,7 @@ class ActionDispatcher:
                                 "Dispatching cpu_bound action `%s.run` to thread pool.",
                                 action_name,
                             )
-                            result = await self._thread_pool.dispatch(
-                                fn_run_func_with_signature, **params
-                            )
+                            result = await self._thread_pool.dispatch(fn_run_func_with_signature, **params)
                         else:
                             result = fn_run_func_with_signature(**params)
                     return result, "success"

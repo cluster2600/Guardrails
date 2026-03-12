@@ -122,19 +122,17 @@ async def run_scenario(
 
         stats = snapshot_after.compare_to(snapshot_before, "lineno")
         total_new_blocks = sum(s.count_diff for s in stats if s.count_diff > 0)
-        allocations_per_req = (
-            total_new_blocks // scenario.iterations
-            if scenario.iterations > 0
-            else 0
-        )
+        allocations_per_req = total_new_blocks // scenario.iterations if scenario.iterations > 0 else 0
 
         # Capture top allocators for diagnostic detail
         for stat in stats[:10]:
-            top_allocators.append({
-                "file": str(stat.traceback),
-                "count_diff": stat.count_diff,
-                "size_diff_kb": round(stat.size_diff / 1024, 1),
-            })
+            top_allocators.append(
+                {
+                    "file": str(stat.traceback),
+                    "count_diff": stat.count_diff,
+                    "size_diff_kb": round(stat.size_diff / 1024, 1),
+                }
+            )
 
     # ---- Compute latency stats ----
     stats_dict = compute_stats(latencies)
@@ -143,10 +141,7 @@ async def run_scenario(
     extra: dict = {
         "rss_before_mb": round(rss_before, 2),
         "rss_after_mb": round(rss_after, 2),
-        "rss_snapshots": [
-            {"iteration": it, "rss_mb": round(rss, 2)}
-            for it, rss in rss_snapshots
-        ],
+        "rss_snapshots": [{"iteration": it, "rss_mb": round(rss, 2)} for it, rss in rss_snapshots],
         "gc_counts": list(gc.get_count()),
     }
     if top_allocators:
@@ -200,17 +195,14 @@ async def main():
         wanted = set(args.scenarios)
         scenarios = [s for s in scenarios if s.name in wanted]
         if not scenarios:
-            print(f"No matching scenarios found. Available: "
-                  f"{[s.name for s in MEMORY_LONGRUN]}", file=sys.stderr)
+            print(f"No matching scenarios found. Available: {[s.name for s in MEMORY_LONGRUN]}", file=sys.stderr)
             sys.exit(1)
 
-    print(f"Running {len(scenarios)} memory scenarios "
-          f"(tracemalloc={'on' if args.tracemalloc else 'off'})...\n")
+    print(f"Running {len(scenarios)} memory scenarios (tracemalloc={'on' if args.tracemalloc else 'off'})...\n")
 
     results: list[PerfResult] = []
     for scenario in scenarios:
-        print(f"  {scenario.name} ({scenario.iterations} iterations) ... ",
-              end="", flush=True)
+        print(f"  {scenario.name} ({scenario.iterations} iterations) ... ", end="", flush=True)
 
         result = await run_scenario(
             scenario,
@@ -219,13 +211,8 @@ async def main():
         )
 
         rss_info = f"RSS delta={result.rss_mb_delta:+.1f}MiB"
-        alloc_info = (
-            f"  allocs/req={result.allocations_per_req}"
-            if args.tracemalloc
-            else ""
-        )
-        print(f"p95={result.p95_ms:.1f}ms  {rss_info}{alloc_info}  "
-              f"wall={result.wall_time_s:.1f}s")
+        alloc_info = f"  allocs/req={result.allocations_per_req}" if args.tracemalloc else ""
+        print(f"p95={result.p95_ms:.1f}ms  {rss_info}{alloc_info}  wall={result.wall_time_s:.1f}s")
 
         results.append(result)
 

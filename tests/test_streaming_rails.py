@@ -36,22 +36,22 @@ from nemoguardrails.rails.llm.buffer import (
 )
 from nemoguardrails.rails.llm.config import OutputRailsStreamingConfig
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 async def _async_iter(tokens: List[str]) -> AsyncIterator[str]:
     for t in tokens:
         yield t
 
+
 async def _async_iter_dicts(tokens: List[str]) -> AsyncIterator[dict]:
     for t in tokens:
         yield {"text": t}
 
-async def _collect_batches(
-    buffer: RollingBuffer, tokens: List[str], as_dicts: bool = False
-) -> List[ChunkBatch]:
+
+async def _collect_batches(buffer: RollingBuffer, tokens: List[str], as_dicts: bool = False) -> List[ChunkBatch]:
     stream = _async_iter_dicts(tokens) if as_dicts else _async_iter(tokens)
     batches: List[ChunkBatch] = []
     async for batch in buffer.process_stream(stream):
@@ -63,8 +63,8 @@ async def _collect_batches(
 #  GARDR-23 -- Chunk-boundary dispatcher tests
 # ===========================================================================
 
-class TestGARDR23ChunkBoundaryDispatcher:
 
+class TestGARDR23ChunkBoundaryDispatcher:
     @pytest.mark.asyncio
     async def test_yields_at_chunk_size_threshold(self):
         buf = RollingBuffer(buffer_context_size=2, buffer_chunk_size=5)
@@ -230,8 +230,8 @@ class TestGARDR23ChunkBoundaryDispatcher:
 #  GARDR-24 -- stream_first mode / OutputRailsStreamingConfig tests
 # ===========================================================================
 
-class TestGARDR24StreamFirstConfig:
 
+class TestGARDR24StreamFirstConfig:
     def test_default_enabled_is_false(self):
         assert OutputRailsStreamingConfig().enabled is False
 
@@ -265,7 +265,10 @@ class TestGARDR24StreamFirstConfig:
 
     def test_all_custom_values(self):
         cfg = OutputRailsStreamingConfig(
-            enabled=True, chunk_size=100, context_size=25, stream_first=False,
+            enabled=True,
+            chunk_size=100,
+            context_size=25,
+            stream_first=False,
         )
         assert cfg.enabled is True
         assert cfg.chunk_size == 100
@@ -274,7 +277,9 @@ class TestGARDR24StreamFirstConfig:
 
     def test_extra_fields_allowed(self):
         cfg = OutputRailsStreamingConfig(
-            enabled=True, custom_param="hello", another_extra=42,
+            enabled=True,
+            custom_param="hello",
+            another_extra=42,
         )
         assert cfg.custom_param == "hello"
         assert cfg.another_extra == 42
@@ -285,17 +290,13 @@ class TestGARDR24StreamFirstConfig:
         assert cfg.context_size == 50
 
     def test_dict_round_trip(self):
-        original = OutputRailsStreamingConfig(
-            enabled=True, chunk_size=64, context_size=8, stream_first=False
-        )
+        original = OutputRailsStreamingConfig(enabled=True, chunk_size=64, context_size=8, stream_first=False)
         restored = OutputRailsStreamingConfig(**original.model_dump())
         assert restored.enabled == original.enabled
         assert restored.chunk_size == original.chunk_size
 
     def test_json_round_trip(self):
-        original = OutputRailsStreamingConfig(
-            enabled=True, chunk_size=128, context_size=16, stream_first=True
-        )
+        original = OutputRailsStreamingConfig(enabled=True, chunk_size=128, context_size=16, stream_first=True)
         restored = OutputRailsStreamingConfig(**json.loads(original.model_dump_json()))
         assert restored.enabled == original.enabled
         assert restored.chunk_size == original.chunk_size
@@ -326,8 +327,8 @@ class TestGARDR24StreamFirstConfig:
 #  GARDR-25 -- Sliding-window context tests
 # ===========================================================================
 
-class TestGARDR25SlidingWindowContext:
 
+class TestGARDR25SlidingWindowContext:
     @pytest.mark.asyncio
     async def test_context_tokens_retained_between_chunks(self):
         buf = RollingBuffer(buffer_context_size=2, buffer_chunk_size=5)
@@ -441,8 +442,7 @@ class TestGARDR25SlidingWindowContext:
     async def test_full_text_reconstruction_with_context(self):
         for ctx in (1, 3, 10, 50):
             buf = RollingBuffer(buffer_context_size=ctx, buffer_chunk_size=4)
-            tokens = ["The ", "quick ", "brown ", "fox ", "jumps ", "over ",
-                       "the ", "lazy ", "dog."]
+            tokens = ["The ", "quick ", "brown ", "fox ", "jumps ", "over ", "the ", "lazy ", "dog."]
             batches = await _collect_batches(buf, tokens)
             reconstructed = [t for b in batches for t in b.user_output_chunks]
             assert reconstructed == tokens, f"Failed with context_size={ctx}"

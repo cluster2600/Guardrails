@@ -131,8 +131,7 @@ def import_init_chat_model():
         pass
 
     raise ImportError(
-        "Could not import init_chat_model from langchain.  "
-        "On Python >= 3.14, langchain >= 1.0.0 is required."
+        "Could not import init_chat_model from langchain.  On Python >= 3.14, langchain >= 1.0.0 is required."
     )
 
 

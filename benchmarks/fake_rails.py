@@ -30,6 +30,7 @@ _PATTERNS = [_SSN_RE, _EMAIL_RE, _PHONE_RE, _CREDIT_RE]
 # I/O-bound rail
 # ---------------------------------------------------------------------------
 
+
 async def io_bound_rail(text: str, latency_ms: int = 50) -> dict:
     """Simulate an external moderation API call."""
     await asyncio.sleep(latency_ms / 1000)
@@ -39,6 +40,7 @@ async def io_bound_rail(text: str, latency_ms: int = 50) -> dict:
 def io_bound_rail_sync(text: str, latency_ms: int = 50) -> dict:
     """Sync variant for thread-pool benchmarks."""
     import time
+
     time.sleep(latency_ms / 1000)
     return {"ok": True, "kind": "io", "length": len(text)}
 
@@ -46,6 +48,7 @@ def io_bound_rail_sync(text: str, latency_ms: int = 50) -> dict:
 # ---------------------------------------------------------------------------
 # CPU-bound rail
 # ---------------------------------------------------------------------------
+
 
 def cpu_bound_scan(text: str, rounds: int = 500) -> dict:
     """CPU-intensive content scan.
@@ -95,6 +98,7 @@ async def cpu_bound_rail_threaded(text: str, rounds: int = 500) -> dict:
 # Mixed rail set builder
 # ---------------------------------------------------------------------------
 
+
 def build_rail_set(
     num_rails: int,
     cpu_work_units: int = 500,
@@ -111,29 +115,34 @@ def build_rail_set(
     rails = []
     for i in range(num_rails):
         if i % 2 == 0:
-            rails.append({
-                "name": f"cpu_rail_{i}",
-                "kind": "cpu",
-                "fn": cpu_bound_rail,
-                "kwargs": {"rounds": cpu_work_units},
-                "stream_safe": True,
-                "mutates_input": False,
-            })
+            rails.append(
+                {
+                    "name": f"cpu_rail_{i}",
+                    "kind": "cpu",
+                    "fn": cpu_bound_rail,
+                    "kwargs": {"rounds": cpu_work_units},
+                    "stream_safe": True,
+                    "mutates_input": False,
+                }
+            )
         else:
-            rails.append({
-                "name": f"io_rail_{i}",
-                "kind": "io",
-                "fn": io_bound_rail,
-                "kwargs": {"latency_ms": io_latency_ms},
-                "stream_safe": True,
-                "mutates_input": False,
-            })
+            rails.append(
+                {
+                    "name": f"io_rail_{i}",
+                    "kind": "io",
+                    "fn": io_bound_rail,
+                    "kwargs": {"latency_ms": io_latency_ms},
+                    "stream_safe": True,
+                    "mutates_input": False,
+                }
+            )
     return rails
 
 
 # ---------------------------------------------------------------------------
 # Minimal execution helpers (used by runners, not by NeMo itself)
 # ---------------------------------------------------------------------------
+
 
 async def run_rails_serial(text: str, rails: list[dict]) -> list[dict]:
     """Execute rails one-by-one."""

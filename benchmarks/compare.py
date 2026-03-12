@@ -60,8 +60,7 @@ def check_regression(
         pct = ((c_p95 - b_p95) / b_p95) * 100
         if pct > max_p95_pct:
             failures.append(
-                f"[{scenario}] p95 regression: {b_p95:.1f}ms → {c_p95:.1f}ms "
-                f"({pct:+.1f}%, threshold: {max_p95_pct}%)"
+                f"[{scenario}] p95 regression: {b_p95:.1f}ms → {c_p95:.1f}ms ({pct:+.1f}%, threshold: {max_p95_pct}%)"
             )
 
     # First-token latency regression
@@ -93,12 +92,18 @@ def main():
     parser = argparse.ArgumentParser(description="Benchmark regression checker")
     parser.add_argument("--baseline", required=True, help="Baseline results JSON")
     parser.add_argument("--current", required=True, help="Current results JSON")
-    parser.add_argument("--max-p95-regression", type=float, default=5.0,
-                        help="Max allowed p95 regression in %% (default: 5)")
-    parser.add_argument("--max-first-token-regression-ms", type=float, default=20.0,
-                        help="Max allowed first-token regression in ms (default: 20)")
-    parser.add_argument("--max-mean-regression", type=float, default=10.0,
-                        help="Max allowed mean regression in %% (default: 10)")
+    parser.add_argument(
+        "--max-p95-regression", type=float, default=5.0, help="Max allowed p95 regression in %% (default: 5)"
+    )
+    parser.add_argument(
+        "--max-first-token-regression-ms",
+        type=float,
+        default=20.0,
+        help="Max allowed first-token regression in ms (default: 20)",
+    )
+    parser.add_argument(
+        "--max-mean-regression", type=float, default=10.0, help="Max allowed mean regression in %% (default: 10)"
+    )
     args = parser.parse_args()
 
     if not Path(args.baseline).exists():
@@ -120,7 +125,8 @@ def main():
 
         baseline = baseline_results[scenario_name]
         failures = check_regression(
-            baseline, current,
+            baseline,
+            current,
             max_p95_pct=args.max_p95_regression,
             max_ftl_ms=args.max_first_token_regression_ms,
             max_mean_pct=args.max_mean_regression,

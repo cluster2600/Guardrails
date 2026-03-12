@@ -15,10 +15,8 @@
 
 """Tests for the CPU-bound thread-pool dispatch (GARDR-20, GARDR-21)."""
 
-import asyncio
 import os
 import threading
-from unittest.mock import patch
 
 import pytest
 
@@ -28,7 +26,6 @@ from nemoguardrails.rails.llm.thread_pool import (
     cpu_bound,
     is_free_threaded,
 )
-
 
 # ---------------------------------------------------------------------------
 # @cpu_bound decorator tests

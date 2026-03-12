@@ -22,25 +22,23 @@ Python 3.12 and 3.14.
 """
 
 import builtins
-import importlib
 import sys
 import types
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
 from nemoguardrails._langchain_compat import (
-    _NEEDS_PATCH,
     _patch_langchain_dict_shadow,
     import_chat_models_base,
     import_init_chat_model,
     safe_import_langchain,
 )
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _make_fake_module(name, attrs=None):
     """Create a fake module object and insert it into sys.modules."""
@@ -55,14 +53,13 @@ def _make_fake_module(name, attrs=None):
 # Tests for _patch_langchain_dict_shadow
 # ---------------------------------------------------------------------------
 
+
 class TestPatchLangchainDictShadow:
     """Tests for the builtins patching function."""
 
     def test_noop_on_python_below_314(self, monkeypatch):
         """On Python < 3.14 the patch should be a no-op."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", False
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", False)
         # Even if a target module exists, nothing should be patched.
         fake = _make_fake_module("langchain.chains.base")
         monkeypatch.setitem(sys.modules, "langchain.chains.base", fake)
@@ -74,9 +71,7 @@ class TestPatchLangchainDictShadow:
 
     def test_patches_loaded_modules(self, monkeypatch):
         """Modules already in sys.modules should get dict/list injected."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", True
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", True)
         fake = _make_fake_module("langchain.chains.base")
         monkeypatch.setitem(sys.modules, "langchain.chains.base", fake)
         try:
@@ -89,9 +84,7 @@ class TestPatchLangchainDictShadow:
 
     def test_idempotent(self, monkeypatch):
         """Calling the patch multiple times should not re-patch."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", True
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", True)
         fake = _make_fake_module("langchain.chains.base")
         monkeypatch.setitem(sys.modules, "langchain.chains.base", fake)
         try:
@@ -108,9 +101,7 @@ class TestPatchLangchainDictShadow:
 
     def test_patches_langchain_core_modules(self, monkeypatch):
         """langchain_core modules should also be patched."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", True
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", True)
         fake_core = _make_fake_module("langchain_core.runnables.base")
         monkeypatch.setitem(sys.modules, "langchain_core.runnables.base", fake_core)
         try:
@@ -123,9 +114,7 @@ class TestPatchLangchainDictShadow:
 
     def test_skips_missing_modules(self, monkeypatch):
         """Modules not in sys.modules should be silently skipped."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", True
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", True)
         # Ensure none of the target modules are loaded.
         for mod_name in [
             "langchain.chains.base",
@@ -144,6 +133,7 @@ class TestPatchLangchainDictShadow:
 # ---------------------------------------------------------------------------
 # Tests for safe_import_langchain
 # ---------------------------------------------------------------------------
+
 
 class TestSafeImportLangchain:
     """Tests for the safe_import_langchain function."""
@@ -169,9 +159,7 @@ class TestSafeImportLangchain:
 
     def test_type_error_on_py314_gives_clear_message(self, monkeypatch):
         """TypeError with 'not subscriptable' on Python 3.14+ gets a clear error."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", True
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", True)
         real_import = builtins.__import__
 
         def fake_import(name, *args, **kwargs):
@@ -185,9 +173,7 @@ class TestSafeImportLangchain:
 
     def test_type_error_non_subscriptable_reraised(self, monkeypatch):
         """A TypeError that is NOT the dict-shadow issue is re-raised as-is."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", True
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", True)
         real_import = builtins.__import__
 
         def fake_import(name, *args, **kwargs):
@@ -203,6 +189,7 @@ class TestSafeImportLangchain:
 # ---------------------------------------------------------------------------
 # Tests for import_init_chat_model
 # ---------------------------------------------------------------------------
+
 
 class TestImportInitChatModel:
     """Tests for the import_init_chat_model helper."""
@@ -249,6 +236,7 @@ class TestImportInitChatModel:
 # Tests for import_chat_models_base
 # ---------------------------------------------------------------------------
 
+
 class TestImportChatModelsBase:
     """Tests for the import_chat_models_base helper."""
 
@@ -280,6 +268,7 @@ class TestImportChatModelsBase:
 # Tests for edge case: langchain_core present but langchain absent
 # ---------------------------------------------------------------------------
 
+
 class TestLangchainCoreWithoutLangchain:
     """Test behavior when langchain_core is installed but langchain is not."""
 
@@ -298,9 +287,7 @@ class TestLangchainCoreWithoutLangchain:
 
     def test_patch_still_works_for_langchain_core(self, monkeypatch):
         """Even without langchain, langchain_core modules should be patchable."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", True
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", True)
         fake_core = _make_fake_module("langchain_core.runnables.base")
         monkeypatch.setitem(sys.modules, "langchain_core.runnables.base", fake_core)
 
@@ -323,6 +310,7 @@ class TestLangchainCoreWithoutLangchain:
 # ---------------------------------------------------------------------------
 # Tests for edge case: old langchain (< 0.1) installed
 # ---------------------------------------------------------------------------
+
 
 class TestOldLangchain:
     """Test behavior with very old langchain versions."""
@@ -347,6 +335,7 @@ class TestOldLangchain:
 # Tests for edge case: langchain installed without langchain_community
 # ---------------------------------------------------------------------------
 
+
 class TestLangchainWithoutCommunity:
     """Test that the compat shim works when langchain_community is missing."""
 
@@ -359,9 +348,7 @@ class TestLangchainWithoutCommunity:
 
     def test_patch_does_not_require_community(self, monkeypatch):
         """_patch_langchain_dict_shadow should work without langchain_community."""
-        monkeypatch.setattr(
-            "nemoguardrails._langchain_compat._NEEDS_PATCH", True
-        )
+        monkeypatch.setattr("nemoguardrails._langchain_compat._NEEDS_PATCH", True)
         # Remove langchain_community from sys.modules if present.
         monkeypatch.delitem(sys.modules, "langchain_community", raising=False)
 

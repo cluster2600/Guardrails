@@ -95,10 +95,7 @@ class ThreadPoolConfig(BaseModel):
     )
     max_workers: Optional[int] = Field(
         default=None,
-        description=(
-            "Maximum number of worker threads. "
-            "Defaults to min(4, os.cpu_count()) when None."
-        ),
+        description=("Maximum number of worker threads. Defaults to min(4, os.cpu_count()) when None."),
     )
     thread_name_prefix: str = Field(
         default="nemo-rail-cpu",

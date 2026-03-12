@@ -24,25 +24,21 @@ Covers:
 """
 
 import asyncio
-from typing import Any, Dict
 
 import pytest
 
 from nemoguardrails.rails.llm.dag_scheduler import (
     CyclicDependencyError,
-    ExecutionGroup,
     RailDependencyGraph,
-    RailNode,
-    TopologicalScheduler,
     UnknownRailError,
     build_scheduler_from_config,
     has_dependencies,
 )
 
-
 # ---------------------------------------------------------------------------
 # RailDependencyGraph tests
 # ---------------------------------------------------------------------------
+
 
 class TestRailDependencyGraph:
     """Tests for the DAG data structure."""
@@ -206,6 +202,7 @@ class TestRailDependencyGraph:
 # TopologicalScheduler tests
 # ---------------------------------------------------------------------------
 
+
 class TestTopologicalScheduler:
     """Tests for the scheduler execution engine."""
 
@@ -223,11 +220,13 @@ class TestTopologicalScheduler:
         assert s.max_parallelism == 3
 
     def test_linear_chain_groups(self):
-        s = self._make_scheduler([
-            {"name": "a"},
-            {"name": "b", "depends_on": ["a"]},
-            {"name": "c", "depends_on": ["b"]},
-        ])
+        s = self._make_scheduler(
+            [
+                {"name": "a"},
+                {"name": "b", "depends_on": ["a"]},
+                {"name": "c", "depends_on": ["b"]},
+            ]
+        )
         assert s.num_groups == 3
         assert s.max_parallelism == 1
 
@@ -250,10 +249,12 @@ class TestTopologicalScheduler:
     @pytest.mark.asyncio
     async def test_execute_with_block(self):
         """A rail that returns block should stop execution."""
-        s = self._make_scheduler([
-            {"name": "a"},
-            {"name": "b", "depends_on": ["a"]},
-        ])
+        s = self._make_scheduler(
+            [
+                {"name": "a"},
+                {"name": "b", "depends_on": ["a"]},
+            ]
+        )
 
         async def executor(rail_name, ctx):
             if rail_name == "a":
@@ -268,11 +269,13 @@ class TestTopologicalScheduler:
     @pytest.mark.asyncio
     async def test_execute_dependency_order(self):
         """Rails must execute in dependency order."""
-        s = self._make_scheduler([
-            {"name": "a"},
-            {"name": "b", "depends_on": ["a"]},
-            {"name": "c", "depends_on": ["b"]},
-        ])
+        s = self._make_scheduler(
+            [
+                {"name": "a"},
+                {"name": "b", "depends_on": ["a"]},
+                {"name": "c", "depends_on": ["b"]},
+            ]
+        )
 
         execution_order = []
 
@@ -286,11 +289,13 @@ class TestTopologicalScheduler:
     @pytest.mark.asyncio
     async def test_execute_parallel_group(self):
         """Independent rails in the same group run concurrently."""
-        s = self._make_scheduler([
-            {"name": "a"},
-            {"name": "b"},
-            {"name": "c", "depends_on": ["a", "b"]},
-        ])
+        s = self._make_scheduler(
+            [
+                {"name": "a"},
+                {"name": "b"},
+                {"name": "c", "depends_on": ["a", "b"]},
+            ]
+        )
 
         started = []
         finished = []
@@ -338,6 +343,7 @@ class TestTopologicalScheduler:
 # has_dependencies tests
 # ---------------------------------------------------------------------------
 
+
 class TestHasDependencies:
     """Tests for the fast-path dependency check."""
 
@@ -348,10 +354,15 @@ class TestHasDependencies:
         assert has_dependencies([{"name": "a"}, {"name": "b"}]) is False
 
     def test_has_dependencies_dict(self):
-        assert has_dependencies([
-            {"name": "a"},
-            {"name": "b", "depends_on": ["a"]},
-        ]) is True
+        assert (
+            has_dependencies(
+                [
+                    {"name": "a"},
+                    {"name": "b", "depends_on": ["a"]},
+                ]
+            )
+            is True
+        )
 
     def test_has_dependencies_flowwithdeps(self):
         from nemoguardrails.rails.llm.config import FlowWithDeps
@@ -370,6 +381,7 @@ class TestHasDependencies:
 # Integration with config models
 # ---------------------------------------------------------------------------
 
+
 class TestConfigIntegration:
     """Tests for DAG scheduler integration with InputRails/OutputRails."""
 
@@ -385,20 +397,30 @@ class TestConfigIntegration:
         """Dict flows with depends_on should be parsed correctly."""
         from nemoguardrails.rails.llm.config import InputRails
 
-        ir = InputRails(**{"parallel": True, "flows": [
-            "flow_a",
-            {"name": "flow_b", "depends_on": ["flow_a"]},
-        ]})
+        ir = InputRails(
+            **{
+                "parallel": True,
+                "flows": [
+                    "flow_a",
+                    {"name": "flow_b", "depends_on": ["flow_a"]},
+                ],
+            }
+        )
         assert ir.flows == ["flow_a", "flow_b"]
         assert ir.has_dependencies is True
 
     def test_output_rails_with_dependencies(self):
         from nemoguardrails.rails.llm.config import OutputRails
 
-        ors = OutputRails(**{"parallel": True, "flows": [
-            {"name": "check_a"},
-            {"name": "check_b", "depends_on": ["check_a"]},
-        ]})
+        ors = OutputRails(
+            **{
+                "parallel": True,
+                "flows": [
+                    {"name": "check_a"},
+                    {"name": "check_b", "depends_on": ["check_a"]},
+                ],
+            }
+        )
         assert ors.has_dependencies is True
         assert len(ors.flow_configs) == 2
 
@@ -406,11 +428,16 @@ class TestConfigIntegration:
         """Build a scheduler from InputRails config."""
         from nemoguardrails.rails.llm.config import InputRails
 
-        ir = InputRails(**{"parallel": True, "flows": [
-            {"name": "a"},
-            {"name": "b", "depends_on": ["a"]},
-            {"name": "c"},
-        ]})
+        ir = InputRails(
+            **{
+                "parallel": True,
+                "flows": [
+                    {"name": "a"},
+                    {"name": "b", "depends_on": ["a"]},
+                    {"name": "c"},
+                ],
+            }
+        )
         scheduler = build_scheduler_from_config(ir.flow_configs)
         assert scheduler.num_groups == 2
         groups = scheduler.groups

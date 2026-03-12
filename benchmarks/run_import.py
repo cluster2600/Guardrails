@@ -15,8 +15,6 @@ import json
 import statistics
 import subprocess
 import sys
-import time
-
 
 # We measure import time by spawning fresh Python processes to avoid
 # module caching.  Each subprocess imports nemoguardrails and prints
@@ -87,13 +85,17 @@ def main():
 
     print("Measuring: import nemoguardrails ...")
     import_stats = measure_subprocess(_IMPORT_SCRIPT, rounds=args.rounds)
-    print(f"  mean={import_stats['mean_ms']:.0f}ms  min={import_stats['min_ms']:.0f}ms  max={import_stats['max_ms']:.0f}ms")
+    print(
+        f"  mean={import_stats['mean_ms']:.0f}ms  min={import_stats['min_ms']:.0f}ms  max={import_stats['max_ms']:.0f}ms"
+    )
     if import_stats["errors"]:
         print(f"  errors: {import_stats['errors'][:3]}")
 
     print("\nMeasuring: import RailsConfig ...")
     config_stats = measure_subprocess(_COLD_START_SCRIPT, rounds=args.rounds)
-    print(f"  mean={config_stats['mean_ms']:.0f}ms  min={config_stats['min_ms']:.0f}ms  max={config_stats['max_ms']:.0f}ms")
+    print(
+        f"  mean={config_stats['mean_ms']:.0f}ms  min={config_stats['min_ms']:.0f}ms  max={config_stats['max_ms']:.0f}ms"
+    )
     if config_stats["errors"]:
         print(f"  errors: {config_stats['errors'][:3]}")
 

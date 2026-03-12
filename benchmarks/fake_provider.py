@@ -10,7 +10,7 @@ orchestration cost from provider I/O in benchmark results.
 import asyncio
 import json
 import time
-from typing import Any, AsyncIterator
+from typing import AsyncIterator
 
 
 class FakeProvider:
@@ -43,8 +43,20 @@ class FakeStreamingProvider:
     ):
         self.latency_ms = latency_ms
         self.tokens = tokens or [
-            "The ", "capital ", "of ", "France ", "is ", "Paris.", " ",
-            "It ", "is ", "known ", "for ", "the ", "Eiffel ", "Tower.",
+            "The ",
+            "capital ",
+            "of ",
+            "France ",
+            "is ",
+            "Paris.",
+            " ",
+            "It ",
+            "is ",
+            "known ",
+            "for ",
+            "the ",
+            "Eiffel ",
+            "Tower.",
         ]
         self.inter_token_ms = inter_token_ms
         self._call_count = 0

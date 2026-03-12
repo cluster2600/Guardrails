@@ -548,12 +548,8 @@ class RuntimeV1_0(Runtime):
                 if isinstance(event, dict):
                     if event.get("type") == "ContextUpdate":
                         pass  # Already merged
-                    elif (
-                        event.get("type") == "BotIntent"
-                        and event.get("intent") == "stop"
-                    ) or (
-                        isinstance(event.get("type", ""), str)
-                        and event["type"].endswith("Exception")
+                    elif (event.get("type") == "BotIntent" and event.get("intent") == "stop") or (
+                        isinstance(event.get("type", ""), str) and event["type"].endswith("Exception")
                     ):
                         has_stop = True
 
@@ -561,8 +557,7 @@ class RuntimeV1_0(Runtime):
 
             if has_stop:
                 log.info(
-                    "DAG scheduler: group %s triggered stop/block, "
-                    "skipping remaining groups.",
+                    "DAG scheduler: group %s triggered stop/block, skipping remaining groups.",
                     [r for r in group_flows],
                 )
                 break

@@ -43,7 +43,6 @@ import argparse
 import asyncio
 import os
 import sys
-import sysconfig
 import time
 from typing import Sequence
 
@@ -106,22 +105,16 @@ async def run_inline(text: str, num_rails: int, rounds: int) -> float:
 async def run_threadpool(text: str, num_rails: int, rounds: int) -> float:
     """Run *num_rails* CPU-bound rails via ``loop.run_in_executor()``."""
     start = time.perf_counter()
-    tasks = [
-        asyncio.create_task(cpu_bound_rail_threaded(text, rounds))
-        for _ in range(num_rails)
-    ]
+    tasks = [asyncio.create_task(cpu_bound_rail_threaded(text, rounds)) for _ in range(num_rails)]
     await asyncio.gather(*tasks)
     return time.perf_counter() - start
 
 
-async def run_decorator(
-    text: str, num_rails: int, rounds: int, pool: RailThreadPool
-) -> float:
+async def run_decorator(text: str, num_rails: int, rounds: int, pool: RailThreadPool) -> float:
     """Run *num_rails* CPU-bound rails via the ``@cpu_bound`` / RailThreadPool path."""
     start = time.perf_counter()
     tasks = [
-        asyncio.create_task(pool.dispatch(cpu_bound_scan_decorated, text, rounds=rounds))
-        for _ in range(num_rails)
+        asyncio.create_task(pool.dispatch(cpu_bound_scan_decorated, text, rounds=rounds)) for _ in range(num_rails)
     ]
     await asyncio.gather(*tasks)
     return time.perf_counter() - start
@@ -251,16 +244,11 @@ def print_summary(results: list[PerfResult]) -> None:
     for r in results:
         sp = speedups.get(r.scenario, 0.0)
         sp_str = f"{sp:.2f}x"
-        print(
-            f"{r.scenario:<40} {r.mean_ms:>9.2f} {r.p95_ms:>9.2f} {r.rps:>9.1f} {sp_str:>9}"
-        )
+        print(f"{r.scenario:<40} {r.mean_ms:>9.2f} {r.p95_ms:>9.2f} {r.rps:>9.1f} {sp_str:>9}")
 
     print()
     if is_free_threaded():
-        print(
-            "NOTE: Free-threaded build -- thread-pool and decorator modes can "
-            "achieve real CPU parallelism."
-        )
+        print("NOTE: Free-threaded build -- thread-pool and decorator modes can achieve real CPU parallelism.")
     else:
         print(
             "NOTE: Standard GIL build -- thread-pool dispatch still avoids "
@@ -275,9 +263,7 @@ def print_summary(results: list[PerfResult]) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Benchmark thread-pool dispatch vs inline execution."
-    )
+    parser = argparse.ArgumentParser(description="Benchmark thread-pool dispatch vs inline execution.")
     parser.add_argument(
         "--output",
         "-o",
@@ -304,9 +290,11 @@ async def async_main(
     for sc in scenarios:
         if name_filters and not any(f in sc.name for f in name_filters):
             continue
-        print(f">>> Running scenario: {sc.name}  "
-              f"(rails={sc.num_rails}, rounds={sc.cpu_work_units}, "
-              f"iters={sc.iterations})")
+        print(
+            f">>> Running scenario: {sc.name}  "
+            f"(rails={sc.num_rails}, rounds={sc.cpu_work_units}, "
+            f"iters={sc.iterations})"
+        )
         sc_results = await bench_scenario(sc)
         all_results.extend(sc_results)
 
@@ -316,9 +304,7 @@ async def async_main(
 def main() -> None:
     args = parse_args()
 
-    results = asyncio.run(
-        async_main(THROUGHPUT_THREADPOOL, name_filters=args.scenarios)
-    )
+    results = asyncio.run(async_main(THROUGHPUT_THREADPOOL, name_filters=args.scenarios))
 
     if not results:
         print("No scenarios matched. Nothing to report.", file=sys.stderr)

@@ -209,7 +209,4 @@ class RailThreadPool:
 
     def __repr__(self) -> str:
         state = "enabled" if self._enabled else "disabled"
-        return (
-            f"<RailThreadPool {state} workers={self._max_workers} "
-            f"free_threaded={is_free_threaded()}>"
-        )
+        return f"<RailThreadPool {state} workers={self._max_workers} free_threaded={is_free_threaded()}>"

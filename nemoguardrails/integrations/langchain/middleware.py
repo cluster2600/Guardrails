@@ -27,11 +27,14 @@ try:
 except (ImportError, TypeError):
     # langchain 1.x (langchain-classic) or Python 3.14 fallback
     try:
-        from langchain_classic.agents.middleware.types import AgentMiddleware, AgentState, hook_config  # type: ignore[no-redef]
+        from langchain_classic.agents.middleware.types import (  # type: ignore[no-redef]
+            AgentMiddleware,
+            AgentState,
+            hook_config,
+        )
     except ImportError:
         raise ImportError(
-            "Could not import AgentMiddleware from langchain. "
-            "On Python >= 3.14, langchain >= 1.0.0 is required."
+            "Could not import AgentMiddleware from langchain. On Python >= 3.14, langchain >= 1.0.0 is required."
         )
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage  # noqa: E402
 

@@ -3,12 +3,10 @@
 """Shared helpers for benchmark runners."""
 
 import json
-import os
 import platform
 import statistics
 import sys
 import sysconfig
-import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Sequence
@@ -22,8 +20,12 @@ class PerfResult:
     """
 
     scenario: str
-    python: str = field(default_factory=lambda: f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
-    mode: str = field(default_factory=lambda: "free-threaded" if sysconfig.get_config_var("Py_GIL_DISABLED") else "standard")
+    python: str = field(
+        default_factory=lambda: f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+    )
+    mode: str = field(
+        default_factory=lambda: "free-threaded" if sysconfig.get_config_var("Py_GIL_DISABLED") else "standard"
+    )
     platform: str = field(default_factory=lambda: f"{platform.system()}-{platform.machine()}")
     count: int = 0
     p50_ms: float = 0.0
@@ -90,6 +92,7 @@ def get_rss_mb() -> float:
     """Return current RSS in MiB (Linux/macOS)."""
     try:
         import resource
+
         # ru_maxrss is in KiB on Linux, bytes on macOS
         rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
         if platform.system() == "Darwin":

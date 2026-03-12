@@ -7,7 +7,7 @@ to measure without prescribing *how* to wire it up.  Runners import
 scenarios and iterate over them.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Sequence
 
 

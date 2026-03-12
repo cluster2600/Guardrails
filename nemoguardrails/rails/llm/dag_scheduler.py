@@ -49,7 +49,7 @@ import logging
 import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from typing import Any, Callable, Coroutine, Dict, FrozenSet, List, Optional, Set, Tuple
+from typing import Any, Callable, Coroutine, Dict, FrozenSet, List, Optional, Set
 
 log = logging.getLogger(__name__)
 
@@ -298,9 +298,7 @@ class RailDependencyGraph:
         return frozenset(self._forward.get(rail_name, set()))
 
     @classmethod
-    def from_flow_config(
-        cls, flows: List[Any]
-    ) -> "RailDependencyGraph":
+    def from_flow_config(cls, flows: List[Any]) -> "RailDependencyGraph":
         """Build a dependency graph from a rails flow configuration.
 
         Supports two flow config formats:
@@ -347,11 +345,7 @@ class RailDependencyGraph:
         for config in rail_configs:
             name = config.get("name", config.get("flow_name", ""))
             depends_on = config.get("depends_on", [])
-            metadata = {
-                k: v
-                for k, v in config.items()
-                if k not in ("name", "flow_name", "depends_on")
-            }
+            metadata = {k: v for k, v in config.items() if k not in ("name", "flow_name", "depends_on")}
 
             if depends_on:
                 node = graph._nodes[name]
@@ -363,9 +357,7 @@ class RailDependencyGraph:
                         raise UnknownRailError(name, dep)
 
                 # Update node
-                graph._nodes[name] = RailNode(
-                    name=name, depends_on=deps, metadata=metadata
-                )
+                graph._nodes[name] = RailNode(name=name, depends_on=deps, metadata=metadata)
 
                 # Add edges
                 for dep in deps:
@@ -386,10 +378,7 @@ class RailDependencyGraph:
         return graph
 
     def __repr__(self) -> str:
-        return (
-            f"RailDependencyGraph(nodes={self.node_count}, "
-            f"edges={self.edge_count})"
-        )
+        return f"RailDependencyGraph(nodes={self.node_count}, edges={self.edge_count})"
 
 
 class TopologicalScheduler:
@@ -441,9 +430,7 @@ class TopologicalScheduler:
 
     async def execute(
         self,
-        rail_executor: Callable[
-            [str, Dict[str, Any]], Coroutine[Any, Any, Any]
-        ],
+        rail_executor: Callable[[str, Dict[str, Any]], Coroutine[Any, Any, Any]],
         context: Optional[Dict[str, Any]] = None,
         early_exit_on_block: bool = True,
     ) -> Dict[str, Any]:
@@ -477,16 +464,12 @@ class TopologicalScheduler:
                 # Single rail — no need for gather overhead
                 rail_name = group_rails[0]
                 try:
-                    result = await self._execute_with_timeout(
-                        rail_executor, rail_name, ctx
-                    )
+                    result = await self._execute_with_timeout(rail_executor, rail_name, ctx)
                     results[rail_name] = result
 
                     if early_exit_on_block and self._is_block(result):
                         blocked_by = rail_name
-                        log.info(
-                            "Rail '%s' blocked — stopping execution", rail_name
-                        )
+                        log.info("Rail '%s' blocked — stopping execution", rail_name)
                         break
                 except Exception as e:
                     log.error("Rail '%s' failed: %s", rail_name, e)
@@ -498,9 +481,7 @@ class TopologicalScheduler:
                 # Multiple rails — run in parallel
                 tasks = {
                     rail_name: asyncio.create_task(
-                        self._execute_with_timeout(
-                            rail_executor, rail_name, ctx
-                        ),
+                        self._execute_with_timeout(rail_executor, rail_name, ctx),
                         name=f"rail-{rail_name}",
                     )
                     for rail_name in group_rails
@@ -509,16 +490,12 @@ class TopologicalScheduler:
                 try:
                     if early_exit_on_block:
                         # Process as they complete for early exit
-                        blocked_by = await self._gather_with_early_exit(
-                            tasks, results
-                        )
+                        blocked_by = await self._gather_with_early_exit(tasks, results)
                         if blocked_by:
                             break
                     else:
                         # Wait for all to complete
-                        gathered = await asyncio.gather(
-                            *tasks.values(), return_exceptions=True
-                        )
+                        gathered = await asyncio.gather(*tasks.values(), return_exceptions=True)
                         for rail_name, result in zip(tasks.keys(), gathered):
                             if isinstance(result, Exception):
                                 results[rail_name] = {
@@ -572,9 +549,7 @@ class TopologicalScheduler:
         pending = set(tasks.values())
 
         while pending:
-            done, pending = await asyncio.wait(
-                pending, return_when=asyncio.FIRST_COMPLETED
-            )
+            done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
 
             for task in done:
                 # Find the rail name for this task
