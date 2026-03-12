@@ -20,6 +20,7 @@ from typing import Any, Callable, List, Optional, Tuple
 from nemoguardrails.actions.action_dispatcher import ActionDispatcher
 from nemoguardrails.llm.taskmanager import LLMTaskManager
 from nemoguardrails.rails.llm.config import RailsConfig
+from nemoguardrails.rails.llm.thread_pool import RailThreadPool
 
 log = logging.getLogger(__name__)
 
@@ -31,10 +32,22 @@ class Runtime:
         self.config = config
         self.verbose = verbose
 
+        # Build the thread pool for CPU-bound actions (if enabled in config).
+        tp_config = config.thread_pool
+        if tp_config.enabled:
+            self._thread_pool: Optional[RailThreadPool] = RailThreadPool(
+                max_workers=tp_config.max_workers,
+                thread_name_prefix=tp_config.thread_name_prefix,
+                enabled=True,
+            )
+        else:
+            self._thread_pool = None
+
         # Register the actions with the dispatcher.
         self.action_dispatcher = ActionDispatcher(
             config_path=config.config_path,
             import_paths=list(config.imported_paths.values()),
+            thread_pool=self._thread_pool,
         )
 
         if hasattr(self, "_run_output_rails_in_parallel_streaming"):
