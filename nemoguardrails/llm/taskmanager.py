@@ -94,6 +94,29 @@ class LLMTaskManager:
         # in the prompt.
         self.prompt_context = {}
 
+        # M3: Cache compiled templates and their variable sets to avoid
+        # re-parsing on every _render_string() call.
+        self._template_cache: Dict[str, Any] = {}
+        self._variables_cache: Dict[str, frozenset] = {}
+
+    def _get_compiled_template(self, template_str: str):
+        """Return a compiled Jinja2 template, using a cache to avoid re-parsing."""
+        cached = self._template_cache.get(template_str)
+        if cached is not None:
+            return cached
+        template = self.env.from_string(template_str)
+        self._template_cache[template_str] = template
+        return template
+
+    def _get_template_variables(self, template_str: str) -> frozenset:
+        """Return the undeclared variables in a template, cached."""
+        cached = self._variables_cache.get(template_str)
+        if cached is not None:
+            return cached
+        variables = meta.find_undeclared_variables(self.env.parse(template_str))
+        self._variables_cache[template_str] = frozenset(variables)
+        return self._variables_cache[template_str]
+
     def _get_general_instructions(self):
         """Helper to extract the general instructions."""
         text = ""
@@ -122,10 +145,9 @@ class LLMTaskManager:
         :return: The rendered template.
         :rtype: str.
         """
-        template = self.env.from_string(template_str)
-
-        # First, we extract all the variables from the template.
-        variables = meta.find_undeclared_variables(self.env.parse(template_str))
+        # M3: Use cached template compilation and variable extraction
+        template = self._get_compiled_template(template_str)
+        variables = self._get_template_variables(template_str)
 
         # This is the context that will be passed to the template when rendering.
         render_context = {

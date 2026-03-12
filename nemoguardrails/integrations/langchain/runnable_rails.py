@@ -105,6 +105,10 @@ class RunnableRails(Runnable[Input, Output]):
             for tool in tools:
                 self.rails.register_action(tool, tool.name)
 
+        # M6: Pre-create the GenerationOptions used on every invoke/ainvoke call
+        # to avoid re-constructing Pydantic models on every request.
+        self._default_gen_options = GenerationOptions(output_vars=True)
+
         # If we have a passthrough Runnable, we need to register a passthrough fn
         # that will call it
         if self.passthrough_runnable:
@@ -635,8 +639,8 @@ class RunnableRails(Runnable[Input, Output]):
         # Store run manager if available for callbacks
         run_manager = kwargs.get("run_manager", None)
 
-        # Generate response from rails
-        res = self.rails.generate(messages=input_messages, options=GenerationOptions(output_vars=True))
+        # M6: Use pre-created GenerationOptions to avoid Pydantic construction overhead.
+        res = self.rails.generate(messages=input_messages, options=self._default_gen_options)
         context = res.output_data
         result = res.response
 
@@ -699,8 +703,8 @@ class RunnableRails(Runnable[Input, Output]):
         # Store run manager if available for callbacks
         run_manager = kwargs.get("run_manager", None)
 
-        # Generate response from rails asynchronously
-        res = await self.rails.generate_async(messages=input_messages, options=GenerationOptions(output_vars=True))
+        # M6: Use pre-created GenerationOptions to avoid Pydantic construction overhead.
+        res = await self.rails.generate_async(messages=input_messages, options=self._default_gen_options)
         context = res.output_data
         result = res.response
 
