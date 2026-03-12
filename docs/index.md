@@ -269,3 +269,12 @@ Troubleshooting <troubleshooting>
 
 Security <resources/security/guidelines.md>
 ```
+
+```{toctree}
+:caption: Architecture & Migration
+:hidden:
+
+ADR: DAG Rail Scheduler <adr/001-dag-rail-scheduler.md>
+Parallel Rail Execution <parallel-rail-execution.md>
+Python 3.14 Migration <python-3.14-migration.md>
+```

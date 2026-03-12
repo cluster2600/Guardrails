@@ -64,8 +64,8 @@ jobs:
       - name: Install test dependencies (pip)
         run: |
           python -m pip install \
-            pytest "pytest-asyncio<1" pytest-cov pytest-httpx aioresponses \
-            opentelemetry-api opentelemetry-sdk tqdm
+            pytest "pytest-asyncio<1" pytest-cov pytest-httpx pytest-timeout \
+            aioresponses opentelemetry-api opentelemetry-sdk tqdm
 
       - name: Verify imports
         run: |

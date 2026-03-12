@@ -61,7 +61,7 @@ jobs:
             langchain langchain-core langchain-community langsmith
           python -m pip install \
             requests requests-toolbelt packaging uuid-utils xxhash \
-            zstandard jsonpatch tenacity 2>/dev/null || true
+            zstandard jsonpatch tenacity httpx-sse 2>/dev/null || true
 
       - name: Install annoy (build from source, no 3.14 wheel)
         run: |
