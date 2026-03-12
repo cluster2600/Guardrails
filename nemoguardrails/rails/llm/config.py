@@ -73,6 +73,39 @@ colang_path_dirs.append(standard_library_path)
 colang_path_dirs.append(guardrails_stdlib_path)
 
 
+class ThreadPoolConfig(BaseModel):
+    """Configuration for the CPU-bound thread-pool executor.
+
+    When ``enabled`` is *True* (the default), synchronous action functions
+    decorated with ``@cpu_bound`` are dispatched to a
+    :class:`~nemoguardrails.rails.llm.thread_pool.RailThreadPool` instead
+    of blocking the asyncio event loop.
+
+    On a free-threaded (no-GIL) Python 3.14+ build this yields true
+    parallelism for CPU-bound work.  On regular builds the pool still
+    prevents event-loop starvation.
+    """
+
+    enabled: bool = Field(
+        default=True,
+        description=(
+            "Whether CPU-bound actions should be dispatched to a thread pool. "
+            "Set to False to disable thread-pool dispatch globally."
+        ),
+    )
+    max_workers: Optional[int] = Field(
+        default=None,
+        description=(
+            "Maximum number of worker threads. "
+            "Defaults to min(4, os.cpu_count()) when None."
+        ),
+    )
+    thread_name_prefix: str = Field(
+        default="nemo-rail-cpu",
+        description="Prefix for worker thread names (useful for debugging).",
+    )
+
+
 class CacheStatsConfig(BaseModel):
     """Configuration for cache statistics tracking and logging."""
 
@@ -533,7 +566,75 @@ class CoreConfig(BaseModel):
     )
 
 
-class InputRails(BaseModel):
+class FlowWithDeps(BaseModel):
+    """A rail flow entry that can carry dependency metadata.
+
+    In ``config.yml`` a flow can be specified as a plain string (backward
+    compatible) or as a mapping with ``name`` and optional ``depends_on``::
+
+        flows:
+          - content safety check input        # plain string
+          - name: jailbreak detection          # mapping with dependency
+            depends_on:
+              - content safety check input
+    """
+
+    name: str = Field(..., description="The flow name (or flow name with params).")
+    depends_on: List[str] = Field(
+        default_factory=list,
+        description="Flow names that must complete before this flow starts.",
+    )
+
+    # Allow extra keys so that future extensions don't break validation.
+    model_config = ConfigDict(extra="allow")
+
+
+def _coerce_flow_list(raw: List) -> List[FlowWithDeps]:
+    """Normalise a list of flow entries to ``FlowWithDeps`` objects.
+
+    Accepts a mix of plain strings and dicts (or ``FlowWithDeps`` instances).
+    """
+    result: List[FlowWithDeps] = []
+    for item in raw:
+        if isinstance(item, str):
+            result.append(FlowWithDeps(name=item))
+        elif isinstance(item, dict):
+            result.append(FlowWithDeps(**item))
+        elif isinstance(item, FlowWithDeps):
+            result.append(item)
+        else:
+            raise ValueError(f"Invalid flow entry: {item!r}")
+    return result
+
+
+class _RailSectionMixin(BaseModel):
+    """Mixin that provides dependency-aware flow helpers.
+
+    Subclasses expose:
+    * ``flow_configs`` — the canonical ``FlowWithDeps`` list.
+    * ``flows`` — backward-compatible ``List[str]`` of flow names
+      (used throughout the codebase).
+    * ``has_dependencies`` — fast check for whether any ``depends_on``
+      has been declared.
+    """
+
+    flow_configs: List[FlowWithDeps] = Field(
+        default_factory=list,
+        description="Rail flow entries with optional dependency metadata.",
+    )
+
+    @property
+    def flows(self) -> List[str]:  # type: ignore[override]
+        """Return the list of flow name strings (backward compatible)."""
+        return [fc.name for fc in self.flow_configs]
+
+    @property
+    def has_dependencies(self) -> bool:
+        """Return *True* if any flow declares ``depends_on``."""
+        return any(fc.depends_on for fc in self.flow_configs)
+
+
+class InputRails(_RailSectionMixin):
     """Configuration of input rails."""
 
     parallel: Optional[bool] = Field(
@@ -541,10 +642,12 @@ class InputRails(BaseModel):
         description="If True, the input rails are executed in parallel.",
     )
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement input rails.",
-    )
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        """Accept both ``flows`` (legacy) and ``flow_configs`` as input."""
+        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class OutputRailsStreamingConfig(BaseModel):
@@ -566,7 +669,7 @@ class OutputRailsStreamingConfig(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
-class OutputRails(BaseModel):
+class OutputRails(_RailSectionMixin):
     """Configuration of output rails."""
 
     parallel: Optional[bool] = Field(
@@ -574,24 +677,27 @@ class OutputRails(BaseModel):
         description="If True, the output rails are executed in parallel.",
     )
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement output rails.",
-    )
-
     streaming: OutputRailsStreamingConfig = Field(
         default_factory=OutputRailsStreamingConfig,
         description="Configuration for streaming output rails.",
     )
 
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        """Accept both ``flows`` (legacy) and ``flow_configs`` as input."""
+        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
-class RetrievalRails(BaseModel):
+
+class RetrievalRails(_RailSectionMixin):
     """Configuration of retrieval rails."""
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement retrieval rails.",
-    )
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class ActionRails(BaseModel):
@@ -610,38 +716,42 @@ class ActionRails(BaseModel):
     )
 
 
-class ToolOutputRails(BaseModel):
+class ToolOutputRails(_RailSectionMixin):
     """Configuration of tool output rails.
 
     Tool output rails are applied to tool calls before they are executed.
     They can validate tool names, parameters, and context to ensure safe tool usage.
     """
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement tool output rails.",
-    )
     parallel: Optional[bool] = Field(
         default=False,
         description="If True, the tool output rails are executed in parallel.",
     )
 
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
-class ToolInputRails(BaseModel):
+
+class ToolInputRails(_RailSectionMixin):
     """Configuration of tool input rails.
 
     Tool input rails are applied to tool results before they are processed.
     They can validate, filter, or transform tool outputs for security and safety.
     """
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement tool input rails.",
-    )
     parallel: Optional[bool] = Field(
         default=False,
         description="If True, the tool input rails are executed in parallel.",
     )
+
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class SingleCallConfig(BaseModel):
@@ -1592,6 +1702,11 @@ class RailsConfig(BaseModel):
         description="Configuration for tracing.",
     )
 
+    thread_pool: ThreadPoolConfig = Field(
+        default_factory=ThreadPoolConfig,
+        description="Configuration for the CPU-bound thread-pool executor.",
+    )
+
     @root_validator(pre=True)
     def check_model_exists_for_input_rails(cls, values):
         """Make sure we have a model for each input rail where one is provided using $model=<model_type>"""
@@ -2043,21 +2158,36 @@ def _generate_rails_flows(flows):
 MODEL_PREFIX = "$model="
 
 
+def _flow_entry_to_str(flow) -> str:
+    """Extract the flow name string from a raw config entry.
+
+    Handles both plain strings (legacy) and dict/FlowWithDeps entries.
+    """
+    if isinstance(flow, str):
+        return flow
+    if isinstance(flow, dict):
+        return flow.get("name", "")
+    if hasattr(flow, "name"):
+        return flow.name
+    return str(flow)
+
+
 def _get_flow_name(flow_text) -> Optional[str]:
     """Helper to return a model name from a flow definition"""
-    return _normalize_flow_id(flow_text)
+    return _normalize_flow_id(_flow_entry_to_str(flow_text))
 
 
 def _get_flow_model(flow_text) -> Optional[str]:
     """Helper to return a model name from a flow definition"""
-    if MODEL_PREFIX not in flow_text:
+    text = _flow_entry_to_str(flow_text)
+    if MODEL_PREFIX not in text:
         return None
-    return flow_text.split(MODEL_PREFIX)[-1].strip()
+    return text.split(MODEL_PREFIX)[-1].strip()
 
 
-def _validate_rail_prompts(rails: list[str], prompts: list[Any], validation_rail: str) -> None:
+def _validate_rail_prompts(rails: list, prompts: list[Any], validation_rail: str) -> None:
     for rail in rails:
-        flow_id = _normalize_flow_id(rail)
+        flow_id = _normalize_flow_id(_flow_entry_to_str(rail))
         flow_model = _get_flow_model(rail)
         if flow_id == validation_rail:
             prompt_flow_id = flow_id.replace(" ", "_")

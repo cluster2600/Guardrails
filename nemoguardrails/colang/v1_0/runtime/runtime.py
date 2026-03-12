@@ -36,6 +36,9 @@ from nemoguardrails.colang.v1_0.runtime.flows import (
     compute_next_steps,
 )
 from nemoguardrails.logging.processing_log import processing_log_var
+from nemoguardrails.rails.llm.dag_scheduler import (
+    build_scheduler_from_config,
+)
 from nemoguardrails.utils import new_event_dict, new_uuid
 
 log = logging.getLogger(__name__)
@@ -438,7 +441,22 @@ class RuntimeV1_0(Runtime):
         )
 
     async def _run_input_rails_in_parallel(self, flows: List[str], events: List[dict]) -> ActionResult:
-        """Run the input rails in parallel."""
+        """Run the input rails in parallel.
+
+        When the input rails have dependency annotations (``depends_on``)
+        in the config, the DAG scheduler is used to execute them in
+        topological order.  Otherwise falls through to the flat-parallel
+        ``_run_flows_in_parallel`` for backward compatibility.
+        """
+        # Check if the config carries dependency metadata.
+        if self.config.rails.input.has_dependencies:
+            return await self._run_flows_with_dag_scheduler(
+                flow_configs=self.config.rails.input.flow_configs,
+                flows=flows,
+                events=events,
+                event_type_prefix="Input",
+            )
+
         pre_events = [(await create_event({"_type": "StartInputRail", "flow_id": flow})).events[0] for flow in flows]
         post_events = [
             (await create_event({"_type": "InputRailFinished", "flow_id": flow})).events[0] for flow in flows
@@ -449,7 +467,18 @@ class RuntimeV1_0(Runtime):
         )
 
     async def _run_output_rails_in_parallel(self, flows: List[str], events: List[dict]) -> ActionResult:
-        """Run the output rails in parallel."""
+        """Run the output rails in parallel.
+
+        See :meth:`_run_input_rails_in_parallel` for DAG-scheduler behavior.
+        """
+        if self.config.rails.output.has_dependencies:
+            return await self._run_flows_with_dag_scheduler(
+                flow_configs=self.config.rails.output.flow_configs,
+                flows=flows,
+                events=events,
+                event_type_prefix="Output",
+            )
+
         pre_events = [(await create_event({"_type": "StartOutputRail", "flow_id": flow})).events[0] for flow in flows]
         post_events = [
             (await create_event({"_type": "OutputRailFinished", "flow_id": flow})).events[0] for flow in flows
@@ -457,6 +486,90 @@ class RuntimeV1_0(Runtime):
 
         return await self._run_flows_in_parallel(
             flows=flows, events=events, pre_events=pre_events, post_events=post_events
+        )
+
+    async def _run_flows_with_dag_scheduler(
+        self,
+        flow_configs: List[Any],
+        flows: List[str],
+        events: List[dict],
+        event_type_prefix: str = "Input",
+    ) -> ActionResult:
+        """Execute flows in dependency-aware parallel groups.
+
+        Uses the DAG scheduler to partition flows into execution groups
+        (topological order).  Flows within each group run concurrently;
+        groups execute sequentially.
+
+        This method reuses the same event-driven execution pattern as
+        ``_run_flows_in_parallel`` but dispatches one group at a time.
+
+        Args:
+            flow_configs: The ``FlowWithDeps`` list from the rail section config.
+            flows: Flat list of flow name strings (for backward compat).
+            events: Current event list.
+            event_type_prefix: "Input" or "Output" for event type naming.
+        """
+        scheduler = build_scheduler_from_config(flow_configs)
+        groups = scheduler.groups
+
+        all_results: List[dict] = []
+        context_updates: dict = {}
+        stopped_task_results: List[dict] = []
+
+        for group in groups:
+            group_flows = list(group.rails)
+
+            # Build pre/post events for this group
+            pre_events = [
+                (await create_event({"_type": f"Start{event_type_prefix}Rail", "flow_id": f})).events[0]
+                for f in group_flows
+            ]
+            post_events = [
+                (await create_event({"_type": f"{event_type_prefix}RailFinished", "flow_id": f})).events[0]
+                for f in group_flows
+            ]
+
+            # Dispatch group flows in parallel
+            result = await self._run_flows_in_parallel(
+                flows=group_flows,
+                events=events,
+                pre_events=pre_events,
+                post_events=post_events,
+            )
+
+            # Merge results
+            if result.context_updates:
+                context_updates = {**context_updates, **result.context_updates}
+
+            # Check for stop/block in this group's events
+            has_stop = False
+            for event in result.events:
+                if isinstance(event, dict):
+                    if event.get("type") == "ContextUpdate":
+                        pass  # Already merged
+                    elif (
+                        event.get("type") == "BotIntent"
+                        and event.get("intent") == "stop"
+                    ) or (
+                        isinstance(event.get("type", ""), str)
+                        and event["type"].endswith("Exception")
+                    ):
+                        has_stop = True
+
+            all_results.extend(result.events)
+
+            if has_stop:
+                log.info(
+                    "DAG scheduler: group %s triggered stop/block, "
+                    "skipping remaining groups.",
+                    [r for r in group_flows],
+                )
+                break
+
+        return ActionResult(
+            events=all_results,
+            context_updates=context_updates,
         )
 
     async def _run_output_rails_in_parallel_streaming(
