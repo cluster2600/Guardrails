@@ -135,6 +135,11 @@ class NumpyAnnoyIndex:
         If the caller supplies a path ending in ``.ann`` (the annoy
         convention), we silently swap the extension to ``.npy`` so that
         both backends can coexist in the same cache directory.
+
+        Note: ``numpy.save`` automatically appends ``.npy`` when the
+        path does not already end with that suffix, so callers should
+        always pass either an ``.ann`` path (which is converted here)
+        or an explicit ``.npy`` path.
         """
         if path.endswith(".ann"):
             path = path[:-4] + ".npy"

@@ -168,6 +168,11 @@ class KnowledgeBase:
                 ann_index = AnnoyIndex(embedding_size, "angular")
                 ann_index.load(cache_file)
             else:
+                # NOTE: if annoy is installed but only a .npy cache exists
+                # (e.g. first run was on Python 3.13 without annoy, then the
+                # user installed annoy), we load via the numpy backend rather
+                # than regenerating an .ann cache.  The cache will be rebuilt
+                # automatically the next time the KB content hash changes.
                 from nemoguardrails.embeddings.numpy_index import NumpyAnnoyIndex
 
                 ann_index = NumpyAnnoyIndex(embedding_size, "angular")

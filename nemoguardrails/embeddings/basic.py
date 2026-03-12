@@ -28,7 +28,7 @@ try:
     from annoy import AnnoyIndex
 except ImportError:
     AnnoyIndex = None
-    log.info(
+    log.warning(
         "annoy is not installed; falling back to numpy-based nearest-neighbour "
         "search.  Install annoy for faster index lookups on large knowledge bases."
     )
