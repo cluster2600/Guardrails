@@ -40,10 +40,9 @@ COPY nemoguardrails/ ./nemoguardrails/
 
 ENV PYTHONPATH=/app
 
-# Install package metadata so importlib.metadata.version("nemoguardrails") works
-# (full pip install may fail on 3.14, so just install in editable/dev mode for metadata)
-RUN pip install --no-cache-dir --no-deps -e . 2>&1 | tail -3 || \
-    python -c "import pathlib, tomllib; d = tomllib.loads(pathlib.Path('pyproject.toml').read_text()); v = d.get('project',{}).get('version','0.0.0'); n = d.get('project',{}).get('name','nemoguardrails'); meta = f'Metadata-Version: 2.1\nName: {n}\nVersion: {v}\n'; dist = pathlib.Path(f'/usr/local/lib/python3.14/site-packages/{n}-{v}.dist-info'); dist.mkdir(parents=True, exist_ok=True); (dist / 'METADATA').write_text(meta); (dist / 'INSTALLER').write_text('pip'); print(f'Created metadata for {n}=={v}')"
+# Create package metadata so importlib.metadata.version("nemoguardrails") works.
+# Full pip install fails on 3.14, so create .dist-info manually.
+RUN python -c "import pathlib, tomllib, sysconfig; d = tomllib.loads(pathlib.Path('pyproject.toml').read_text()); poetry = d.get('tool', {}).get('poetry', {}); n = poetry.get('name', d.get('project', {}).get('name', 'nemoguardrails')); v = poetry.get('version', d.get('project', {}).get('version', '0.0.0')); sp = sysconfig.get_path('purelib'); dist = pathlib.Path(sp) / f'{n}-{v}.dist-info'; dist.mkdir(parents=True, exist_ok=True); (dist / 'METADATA').write_text(f'Metadata-Version: 2.1\nName: {n}\nVersion: {v}\n'); (dist / 'INSTALLER').write_text('pip'); (dist / 'RECORD').write_text(''); print(f'Created metadata for {n}=={v} at {dist}')"
 
 # Verify core imports (including annoy built from source)
 RUN python -c "import sys; print(f'Python {sys.version}')" && \
