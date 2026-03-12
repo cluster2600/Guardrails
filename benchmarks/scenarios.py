@@ -111,3 +111,16 @@ MEMORY_LONGRUN: Sequence[BenchmarkScenario] = (
         concurrency=8,
     ),
 )
+
+THROUGHPUT_THREADPOOL: Sequence[BenchmarkScenario] = tuple(
+    BenchmarkScenario(
+        name=f"tpool_{n}rail_r{r}",
+        num_rails=n,
+        parallel=n > 1,
+        cpu_work_units=r,
+        provider_latency_ms=0,
+        iterations=100,
+    )
+    for n in (1, 2, 4, 8)
+    for r in (100, 500, 2000)
+)
