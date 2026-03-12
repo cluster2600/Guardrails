@@ -67,7 +67,6 @@ class NumpyAnnoyIndex:
         self._vectors_dict[i] = np.asarray(vector, dtype=np.float32)
 
     def build(self, n_trees: int = 10) -> None:
-    def build(self, n_trees: int = 10) -> None:
         """Finalise the index.  The *n_trees* parameter is ignored (kept
         for API compatibility with Annoy)."""
         if not self._vectors_dict:
