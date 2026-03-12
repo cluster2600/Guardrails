@@ -46,6 +46,10 @@ class NumpyAnnoyIndex:
     """
 
     def __init__(self, embedding_size: int, metric: str = "angular"):
+        if metric != "angular":
+            raise ValueError(
+                f"NumpyAnnoyIndex only supports metric='angular', got {metric!r}"
+            )
         self._embedding_size = embedding_size
         self._metric = metric
         # Sparse storage during build phase (id -> vector)
@@ -74,6 +78,7 @@ class NumpyAnnoyIndex:
             )
             for idx, vec in self._vectors_dict.items():
                 self._vectors[idx] = vec
+        self._vectors_dict = {}  # release per-item dict memory now stored in _vectors
         self._built = True
 
     # ------------------------------------------------------------------
