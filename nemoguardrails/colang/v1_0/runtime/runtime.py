@@ -304,17 +304,19 @@ class RuntimeV1_0(Runtime):
 
         # Create a task for each flow but don't await them yet
         tasks = []
+        # Snapshot the base events once; each flow gets a shallow copy
+        # with only its own start_flow event appended.  This avoids
+        # copying the (potentially large) events list N times when most
+        # of the content is shared and read-only.
+        base_events = tuple(events)
         for index, flow_name in enumerate(flows):
-            # Copy the events to avoid modifying the original list
-            _events = events.copy()
-
             flow_params = _get_flow_params(flow_name)
             flow_id = _normalize_flow_id(flow_name)
 
             if flow_params:
-                _events.append({"type": "start_flow", "flow_id": flow_id, "params": flow_params})
+                _events = list(base_events) + [{"type": "start_flow", "flow_id": flow_id, "params": flow_params}]
             else:
-                _events.append({"type": "start_flow", "flow_id": flow_id})
+                _events = list(base_events) + [{"type": "start_flow", "flow_id": flow_id}]
 
             # Generate a unique flow ID
             flow_uid = f"{flow_id}:{str(uuid.uuid4())}"

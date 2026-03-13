@@ -52,6 +52,11 @@ class ActionDispatcher:
 
         self._registered_actions: Dict[str, Union[Type, Callable[..., Any]]] = {}
 
+        # Cache for normalised action names — avoids repeated string
+        # transformations (endswith, replace, camelcase_to_snakecase)
+        # on every execute_action() call.
+        self._normalised_names: Dict[str, str] = {}
+
         if load_all_actions:
             # TODO: check for better way to find actions dir path or use constants.py
             current_file_path = Path(__file__).resolve()
@@ -138,6 +143,9 @@ class ActionDispatcher:
             return
 
         self._registered_actions[action_name] = action
+        # Invalidate the normalisation cache — a new registration may
+        # change which name a lookup resolves to.
+        self._normalised_names.clear()
 
     def register_actions(self, actions_obj: Any, override: bool = True):
         """Registers all the actions from the given object.
@@ -155,12 +163,23 @@ class ActionDispatcher:
                 self.register_action(val, override=override)
 
     def _normalize_action_name(self, name: str) -> str:
-        """Normalize the action name to the required format."""
-        if name not in self.registered_actions:
-            if name.endswith("Action"):
-                name = name.replace("Action", "")
-            name = utils.camelcase_to_snakecase(name)
-        return name
+        """Normalize the action name to the required format.
+
+        Results are cached in ``_normalised_names`` so that repeated
+        calls for the same action skip the string transformations.
+        """
+        cached = self._normalised_names.get(name)
+        if cached is not None:
+            return cached
+
+        normalised = name
+        if normalised not in self.registered_actions:
+            if normalised.endswith("Action"):
+                normalised = normalised.replace("Action", "")
+            normalised = utils.camelcase_to_snakecase(normalised)
+
+        self._normalised_names[name] = normalised
+        return normalised
 
     def has_registered(self, name: str) -> bool:
         """Check if an action is registered."""

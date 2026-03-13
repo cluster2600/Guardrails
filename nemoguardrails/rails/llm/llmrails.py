@@ -115,7 +115,35 @@ from nemoguardrails.utils import (
 
 log = logging.getLogger(__name__)
 
-process_events_semaphore = asyncio.Semaphore(1)
+
+class _LRUDict(dict):
+    """A dict subclass with a bounded size using LRU eviction.
+
+    When the dict exceeds *maxsize* entries the least-recently inserted
+    key is evicted.  This provides a drop-in replacement for a plain
+    ``dict`` used as a cache while preventing unbounded memory growth.
+    """
+
+    def __init__(self, maxsize: int = 1024):
+        super().__init__()
+        self._maxsize = maxsize
+        self._order: list = []
+
+    def __setitem__(self, key, value):
+        if key not in self:
+            if len(self) >= self._maxsize:
+                # Evict the oldest entry
+                oldest = self._order.pop(0)
+                super().__delitem__(oldest)
+            self._order.append(key)
+        super().__setitem__(key, value)
+
+    def __delitem__(self, key):
+        super().__delitem__(key)
+        try:
+            self._order.remove(key)
+        except ValueError:
+            pass
 
 
 class LLMRails:
@@ -143,6 +171,13 @@ class LLMRails:
         self.llm = llm
         self.verbose = verbose
 
+        # Per-instance semaphore for process_events serialisation.
+        # This replaces the previous module-level global semaphore that
+        # serialised ALL LLMRails instances behind a single lock,
+        # preventing concurrent request processing across different
+        # configurations.
+        self._process_events_semaphore = asyncio.Semaphore(1)
+
         if self.verbose:
             set_verbose(True, llm_calls=True)
 
@@ -158,7 +193,11 @@ class LLMRails:
         # We keep a cache of the events history associated with a sequence of user messages.
         # TODO: when we update the interface to allow to return a "state object", this
         #   should be removed
-        self.events_history_cache = {}
+        # Use a bounded LRU cache to prevent unbounded memory growth in
+        # long-running instances.  The maxsize can be tuned via the
+        # NEMOGUARDRAILS_EVENTS_CACHE_SIZE environment variable.
+        self._events_cache_maxsize = int(os.environ.get("NEMOGUARDRAILS_EVENTS_CACHE_SIZE", "1024"))
+        self.events_history_cache = _LRUDict(maxsize=self._events_cache_maxsize)
 
         # We also load the default flows from the `default_flows.yml` file in the current folder.
         # But only for version 1.0.
@@ -1378,9 +1417,11 @@ class LLMRails:
         llm_stats_var.set(llm_stats)
 
         # Compute the new events.
-        # We need to protect 'process_events' to be called only once at a time
-        # TODO (cschueller): Why is this?
-        async with process_events_semaphore:
+        # Serialise process_events per-instance to protect Colang runtime
+        # state from concurrent mutations.  Using a per-instance semaphore
+        # (instead of the old module-level global) allows different LLMRails
+        # instances to process requests concurrently.
+        async with self._process_events_semaphore:
             output_events, output_state = await self.runtime.process_events(events, state, blocking)
 
         took = time.time() - t0
