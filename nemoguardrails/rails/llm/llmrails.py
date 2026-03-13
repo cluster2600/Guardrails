@@ -140,7 +140,7 @@ class _LRUDict(OrderedDict):
     def __setitem__(self, key, value):
         OrderedDict.__setitem__(self, key, value)
         OrderedDict.move_to_end(self, key)
-        if len(self) > self._maxsize:
+        if self._maxsize > 0 and len(self) > self._maxsize:
             OrderedDict.popitem(self, last=False)
 
 
