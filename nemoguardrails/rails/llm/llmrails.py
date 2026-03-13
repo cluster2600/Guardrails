@@ -118,14 +118,26 @@ log = logging.getLogger(__name__)
 
 
 class _LRUDict(OrderedDict):
-    """An OrderedDict subclass with bounded size and true LRU eviction.
+    """An ``OrderedDict`` subclass with bounded size and true LRU eviction.
 
-    Both reads (``__getitem__``) and writes (``__setitem__``) move the
-    accessed key to the most-recently-used position.  When the dict
-    exceeds *maxsize* entries the least-recently-used key is evicted.
+    Used for ``events_history_cache`` in ``LLMRails`` to prevent unbounded
+    memory growth in long-running services.  The cache size is configurable
+    via the ``NEMOGUARDRAILS_EVENTS_CACHE_SIZE`` environment variable
+    (default 1024).
 
-    All operations are O(1) amortized thanks to the underlying
-    ``OrderedDict``.
+    Both reads (``__getitem__``) and writes (``__setitem__``) promote the
+    accessed key to the most-recently-used (MRU) position.  When the dict
+    exceeds *maxsize* entries the least-recently-used (LRU) key is evicted
+    via ``popitem(last=False)``.
+
+    All operations are O(1) amortised thanks to the underlying doubly-linked
+    list inside ``OrderedDict``.
+
+    Note on the ``__getitem__`` try/except: on CPython 3.10,
+    ``OrderedDict.popitem(last=False)`` has been observed to internally
+    call ``__getitem__`` on the evicted key *after* it has already been
+    removed from the dict.  The ``try/except KeyError`` guard prevents
+    this phantom access from raising during eviction.
     """
 
     def __init__(self, maxsize: int = 1024):
@@ -135,11 +147,9 @@ class _LRUDict(OrderedDict):
         self._maxsize = maxsize
 
     def __getitem__(self, key):
+        """Retrieve *key* and promote it to MRU position."""
         value = OrderedDict.__getitem__(self, key)
-        # On CPython 3.10, OrderedDict.popitem(last=False) internally
-        # calls __getitem__ on the evicted key *after* it has been
-        # removed from the dict.  The try/except prevents the
-        # subsequent move_to_end from raising on that phantom access.
+        # See class docstring for why this is wrapped in try/except.
         try:
             OrderedDict.move_to_end(self, key)
         except KeyError:
@@ -147,9 +157,11 @@ class _LRUDict(OrderedDict):
         return value
 
     def __setitem__(self, key, value):
+        """Insert or update *key*, promoting it to MRU and evicting LRU if full."""
         OrderedDict.__setitem__(self, key, value)
         OrderedDict.move_to_end(self, key)
         if len(self) > self._maxsize:
+            # Evict the least-recently-used entry (head of the ordered dict).
             OrderedDict.popitem(self, last=False)
 
 

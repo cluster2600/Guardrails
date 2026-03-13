@@ -13,7 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Module for the calling proper action endpoints based on events received at action server endpoint"""
+"""Module for dispatching action calls to the appropriate registered handler.
+
+This module is responsible for:
+  1. Discovering and registering action functions/classes from the filesystem.
+  2. Normalising action names (CamelCase -> snake_case, stripping the
+     ``"Action"`` suffix) with a bounded cache to avoid repeated work.
+  3. Dispatching execution to the correct handler, supporting:
+       - Plain synchronous functions (called inline, with a warning)
+       - Async coroutine functions (awaited transparently)
+       - Class-based actions (lazily instantiated, then their ``run``
+         method is called)
+       - LangChain ``Runnable`` instances (invoked via ``ainvoke``)
+"""
 
 import importlib.util
 import inspect
@@ -165,10 +177,24 @@ class ActionDispatcher:
                 self.register_action(val, override=override)
 
     def _normalize_action_name(self, name: str) -> str:
-        """Normalize the action name to the required format.
+        """Normalise the action name to its canonical snake_case form.
 
-        Results are cached in ``_normalised_names`` so that repeated
-        calls for the same action skip the string transformations.
+        The normalisation strips a trailing ``"Action"`` suffix and
+        converts CamelCase to snake_case.  Results are cached in
+        ``_normalised_names`` so that repeated lookups for the same
+        action name (which happen on every ``execute_action()`` call)
+        skip the string transformations entirely.
+
+        The cache is bounded to ``_normalised_names_maxsize`` entries
+        (default 4096) to guard against unbounded memory growth if
+        action names are derived from external input.  When the limit
+        is reached the entire cache is cleared — this is acceptable
+        because the action name space is finite in normal usage and
+        the cache rebuilds quickly.
+
+        The cache is also invalidated on every ``register_action()``
+        call, since a new registration may change which canonical name
+        a lookup resolves to.
         """
         cached = self._normalised_names.get(name)
         if cached is not None:
@@ -176,10 +202,12 @@ class ActionDispatcher:
 
         normalised = name
         if normalised not in self.registered_actions:
+            # Try stripping "Action" suffix and converting to snake_case.
             if normalised.endswith("Action"):
                 normalised = normalised.replace("Action", "")
             normalised = utils.camelcase_to_snakecase(normalised)
 
+        # Evict the entire cache if the bound is reached.
         if len(self._normalised_names) >= self._normalised_names_maxsize:
             self._normalised_names.clear()
         self._normalised_names[name] = normalised

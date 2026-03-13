@@ -13,13 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Tests for performance optimisations.
+"""Tests for the performance optimisations introduced in this PR.
 
-Covers:
-  - _LRUDict bounded eviction
-  - Per-instance process_events semaphore
-  - Action name normalisation cache
-  - Jinja2 template and variable caching in LLMTaskManager
+Each test class exercises one of the five optimisations:
+
+  1. ``_LRUDict`` — bounded LRU eviction using ``OrderedDict``, including
+     the CPython 3.10 ``popitem`` edge case and the ``maxsize < 1`` guard.
+  2. Per-instance ``process_events`` semaphore — verifies that the
+     module-level global semaphore has been removed.
+  3. Action name normalisation cache — checks population, hits,
+     invalidation on new registrations, and CamelCase handling.
+  4. Jinja2 template and variable caching — ensures that
+     ``_BoundedCache`` stores compiled templates and ``frozenset``
+     variable sets, returning the same cached object on repeated lookups.
 """
 
 from nemoguardrails.actions.action_dispatcher import ActionDispatcher

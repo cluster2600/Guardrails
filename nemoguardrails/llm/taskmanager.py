@@ -54,27 +54,50 @@ from nemoguardrails.llm.prompts import get_prompt
 from nemoguardrails.llm.types import Task
 from nemoguardrails.rails.llm.config import MessageTemplate, RailsConfig
 
+# Sentinel object used to distinguish "key not in cache" from a cached
+# ``None`` value.  Using a sentinel instead of ``None`` as the default
+# return from ``_BoundedCache.get()`` ensures that if a ``None`` value
+# were ever stored, it would not be incorrectly treated as a cache miss.
 _MISSING = object()
 
 
 class _BoundedCache:
-    """A simple bounded LRU cache backed by OrderedDict."""
+    """A simple bounded LRU cache backed by ``OrderedDict``.
+
+    Provides the same interface as a dict but with bounded memory usage:
+    when the number of entries exceeds *maxsize*, the least-recently-used
+    entry is evicted.
+
+    Both ``get()`` and ``put()`` promote the accessed key to the MRU
+    position, ensuring true LRU eviction semantics.
+
+    This is used for Jinja2 template and variable caches in
+    ``LLMTaskManager``.  The cache size is configurable via the
+    ``NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE`` environment variable.
+    """
 
     def __init__(self, maxsize: int = 512):
         self._maxsize = maxsize
         self._data: OrderedDict = OrderedDict()
 
     def get(self, key, default=_MISSING):
+        """Return the cached value for *key*, or *default* if not present.
+
+        A cache hit promotes the key to MRU position.
+        """
         if key in self._data:
             self._data.move_to_end(key)
             return self._data[key]
         return default
 
     def put(self, key, value):
+        """Store *key* → *value*, evicting the LRU entry if the cache is full."""
         if key in self._data:
+            # Key already exists — promote to MRU before updating.
             self._data.move_to_end(key)
         self._data[key] = value
         if self._maxsize > 0 and len(self._data) > self._maxsize:
+            # Evict the oldest (LRU) entry.
             self._data.popitem(last=False)
 
     def __len__(self):
@@ -125,16 +148,28 @@ class LLMTaskManager:
         # in the prompt.
         self.prompt_context = {}
 
-        # Caches for compiled Jinja2 templates and their variable sets.
-        # Avoids re-parsing and re-compiling the same template string on
-        # every _render_string() call (M3 optimisation).
-        # Bounded to prevent unbounded memory growth with dynamic templates.
+        # M3 optimisation: cache compiled Jinja2 templates and their
+        # extracted variable sets to avoid the expensive ``env.from_string()``
+        # and ``meta.find_undeclared_variables()`` calls on every
+        # ``_render_string()`` invocation.
+        #
+        # The cache size can be tuned via the environment variable
+        # ``NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE`` (default 512).  In
+        # long-running services with partially dynamic templates (e.g.
+        # per-user prompt strings), the bounded LRU eviction prevents
+        # unbounded memory growth.
         _cache_size = int(os.environ.get("NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE", "512"))
         self._template_cache: _BoundedCache = _BoundedCache(maxsize=_cache_size)
         self._variables_cache: _BoundedCache = _BoundedCache(maxsize=_cache_size)
 
     def _get_compiled_template(self, template_str: str):
-        """Return a compiled Jinja2 template, using the cache."""
+        """Return a compiled Jinja2 template, using the bounded cache.
+
+        On a cache hit this is a single ``_BoundedCache.get()`` (O(1)).
+        On a miss, the template is compiled via ``env.from_string()``
+        and stored for subsequent calls.  The ``_MISSING`` sentinel
+        distinguishes a genuine cache miss from a stored ``None``.
+        """
         cached = self._template_cache.get(template_str)
         if cached is not _MISSING:
             return cached
@@ -143,7 +178,11 @@ class LLMTaskManager:
         return compiled
 
     def _get_template_variables(self, template_str: str) -> frozenset:
-        """Return the set of undeclared variables in a template, using the cache."""
+        """Return the undeclared variables referenced in a template, cached.
+
+        Returns a ``frozenset`` (immutable) so that callers cannot
+        accidentally mutate the cached value and corrupt future lookups.
+        """
         cached = self._variables_cache.get(template_str)
         if cached is not _MISSING:
             return cached

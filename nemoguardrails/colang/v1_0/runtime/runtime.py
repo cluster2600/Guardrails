@@ -302,12 +302,15 @@ class RuntimeV1_0(Runtime):
                 args[1].append({"type": "event", "timestamp": time(), "data": post_event})
             return flow_uid, result
 
-        # Create a task for each flow but don't await them yet
+        # Create a task for each flow but don't await them yet.
         tasks = []
-        # Snapshot the base events once; each flow gets a shallow copy
-        # with only its own start_flow event appended.  This avoids
-        # copying the (potentially large) events list N times when most
-        # of the content is shared and read-only.
+        # Copy-on-write optimisation: snapshot the base events as a tuple
+        # once.  Each flow then creates its own list by converting the
+        # tuple back and appending only its own ``start_flow`` event.
+        # This avoids copying the (potentially large) events list N times
+        # when most of the content is shared and read-only — the tuple is
+        # immutable, so concurrent flows cannot accidentally mutate each
+        # other's event histories.
         base_events = tuple(events)
         for index, flow_name in enumerate(flows):
             flow_params = _get_flow_params(flow_name)
