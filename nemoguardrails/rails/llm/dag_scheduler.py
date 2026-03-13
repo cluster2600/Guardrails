@@ -63,12 +63,50 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import os
+import sys
 import time
 from collections import defaultdict, deque
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import Any, Callable, Coroutine, Dict, FrozenSet, List, Optional, Set
 
 log = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Python version feature flags — used to gate optimisations that require
+# specific interpreter versions.
+# ---------------------------------------------------------------------------
+
+_PY_VERSION = sys.version_info[:2]
+
+# Python 3.12+ provides ``asyncio.eager_task_factory`` which lets coroutines
+# that complete synchronously (e.g. cache hits) bypass the event-loop
+# scheduling round-trip entirely.
+_HAS_EAGER_TASK_FACTORY: bool = _PY_VERSION >= (3, 12)
+
+# Free-threaded Python 3.13t / 3.14t builds disable the GIL, allowing true
+# thread-level parallelism for CPU-bound rails.  We detect this via the
+# ``Py_GIL_DISABLED`` sysconfig flag (PEP 703).
+_IS_FREE_THREADED: bool = bool(getattr(sys, "_is_gil_enabled", lambda: True)() is False)
+
+# Shared thread-pool for CPU-bound rail work.  On free-threaded builds we
+# size it to the number of cores so that CPU-bound guardrail checks (regex,
+# PII, YARA) can run in true parallel.  On standard (GIL) builds we still
+# use a pool to avoid blocking the event loop, but the GIL limits actual
+# CPU parallelism.
+_CPU_POOL: Optional[ThreadPoolExecutor] = None
+
+if _IS_FREE_THREADED:
+    _cpu_count = os.cpu_count() or 4
+    _CPU_POOL = ThreadPoolExecutor(
+        max_workers=_cpu_count,
+        thread_name_prefix="rail-cpu",
+    )
+    log.info(
+        "Free-threaded Python detected — using %d-thread pool for CPU-bound rails",
+        _cpu_count,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -617,82 +655,100 @@ class TopologicalScheduler:
         blocked_by: Optional[str] = None
         start = time.monotonic()
 
-        for group in self._groups:
-            group_rails = list(group.rails)
-            # Record which rails were attempted in this group, useful for
-            # debugging and observability.
-            execution_order.append(group_rails)
+        # -----------------------------------------------------------------
+        # Python 3.12+ optimisation: install the eager task factory for the
+        # duration of this execute() call.  Eager tasks start executing
+        # immediately when created (before the next event-loop tick), so
+        # coroutines that complete synchronously — e.g. cache hits or
+        # trivially fast checks — never pay the scheduling round-trip.
+        # -----------------------------------------------------------------
+        loop = asyncio.get_running_loop()
+        previous_task_factory = None
+        if _HAS_EAGER_TASK_FACTORY:
+            previous_task_factory = loop.get_task_factory()
+            loop.set_task_factory(asyncio.eager_task_factory)
 
-            if len(group_rails) == 1:
-                # -------------------------------------------------------
-                # Fast path: single rail in the group — execute it
-                # directly without the overhead of creating asyncio tasks
-                # and calling gather/wait.
-                # -------------------------------------------------------
-                rail_name = group_rails[0]
-                try:
-                    result = await self._execute_with_timeout(rail_executor, rail_name, ctx)
-                    results[rail_name] = result
+        try:
+            for group in self._groups:
+                group_rails = list(group.rails)
+                # Record which rails were attempted in this group, useful for
+                # debugging and observability.
+                execution_order.append(group_rails)
 
-                    # Check whether this rail's result blocks further
-                    # execution (e.g. the input was refused).
-                    if early_exit_on_block and self._is_block(result):
-                        blocked_by = rail_name
-                        log.info("Rail '%s' blocked — stopping execution", rail_name)
-                        break
-                except Exception as e:
-                    log.error("Rail '%s' failed: %s", rail_name, e)
-                    results[rail_name] = {
-                        "action": "error",
-                        "error": str(e),
-                    }
-            else:
-                # -------------------------------------------------------
-                # Parallel path: multiple independent rails in this group.
-                # Create an asyncio.Task for each rail so they run
-                # concurrently on the event loop.
-                # -------------------------------------------------------
-                tasks = {
-                    rail_name: asyncio.create_task(
-                        self._execute_with_timeout(rail_executor, rail_name, ctx),
-                        name=f"rail-{rail_name}",
-                    )
-                    for rail_name in group_rails
-                }
+                if len(group_rails) == 1:
+                    # -------------------------------------------------------
+                    # Fast path: single rail in the group — execute it
+                    # directly without the overhead of creating asyncio tasks
+                    # and calling gather/wait.
+                    # -------------------------------------------------------
+                    rail_name = group_rails[0]
+                    try:
+                        result = await self._execute_with_timeout(rail_executor, rail_name, ctx)
+                        results[rail_name] = result
 
-                try:
-                    if early_exit_on_block:
-                        # Use the custom early-exit gatherer which watches
-                        # tasks as they complete and cancels the rest if
-                        # a blocking result is observed.
-                        blocked_by = await self._gather_with_early_exit(tasks, results)
-                        if blocked_by:
+                        # Check whether this rail's result blocks further
+                        # execution (e.g. the input was refused).
+                        if early_exit_on_block and self._is_block(result):
+                            blocked_by = rail_name
+                            log.info("Rail '%s' blocked — stopping execution", rail_name)
                             break
-                    else:
-                        # No early exit — simply wait for all tasks to
-                        # finish, collecting exceptions as values rather
-                        # than raising them (return_exceptions=True).
-                        gathered = await asyncio.gather(*tasks.values(), return_exceptions=True)
-                        for rail_name, result in zip(tasks.keys(), gathered):
-                            if isinstance(result, Exception):
-                                results[rail_name] = {
-                                    "action": "error",
-                                    "error": str(result),
-                                }
-                            else:
-                                results[rail_name] = result
-                finally:
-                    # Defensive cleanup: cancel any tasks that are still
-                    # pending (e.g. due to an unexpected exception in the
-                    # loop above).  We await each cancelled task to ensure
-                    # it has fully terminated before moving on.
-                    for task in tasks.values():
-                        if not task.done():
-                            task.cancel()
-                            try:
-                                await task
-                            except (asyncio.CancelledError, Exception):
-                                pass
+                    except Exception as e:
+                        log.error("Rail '%s' failed: %s", rail_name, e)
+                        results[rail_name] = {
+                            "action": "error",
+                            "error": str(e),
+                        }
+                else:
+                    # -------------------------------------------------------
+                    # Parallel path: multiple independent rails in this group.
+                    # Create an asyncio.Task for each rail so they run
+                    # concurrently on the event loop.
+                    # -------------------------------------------------------
+                    tasks = {
+                        rail_name: asyncio.create_task(
+                            self._execute_with_timeout(rail_executor, rail_name, ctx),
+                            name=f"rail-{rail_name}",
+                        )
+                        for rail_name in group_rails
+                    }
+
+                    try:
+                        if early_exit_on_block:
+                            # Use the custom early-exit gatherer which watches
+                            # tasks as they complete and cancels the rest if
+                            # a blocking result is observed.
+                            blocked_by = await self._gather_with_early_exit(tasks, results)
+                            if blocked_by:
+                                break
+                        else:
+                            # No early exit — simply wait for all tasks to
+                            # finish, collecting exceptions as values rather
+                            # than raising them (return_exceptions=True).
+                            gathered = await asyncio.gather(*tasks.values(), return_exceptions=True)
+                            for rail_name, result in zip(tasks.keys(), gathered):
+                                if isinstance(result, Exception):
+                                    results[rail_name] = {
+                                        "action": "error",
+                                        "error": str(result),
+                                    }
+                                else:
+                                    results[rail_name] = result
+                    finally:
+                        # Defensive cleanup: cancel any tasks that are still
+                        # pending (e.g. due to an unexpected exception in the
+                        # loop above).  We await each cancelled task to ensure
+                        # it has fully terminated before moving on.
+                        for task in tasks.values():
+                            if not task.done():
+                                task.cancel()
+                                try:
+                                    await task
+                                except (asyncio.CancelledError, Exception):
+                                    pass
+        finally:
+            # Restore the previous task factory so we don't leak state.
+            if _HAS_EAGER_TASK_FACTORY:
+                loop.set_task_factory(previous_task_factory)
 
         elapsed_ms = (time.monotonic() - start) * 1000
 
@@ -842,6 +898,21 @@ def build_scheduler_from_config(
     """
     graph = RailDependencyGraph.from_flow_config(flows)
     return TopologicalScheduler(graph, timeout_per_group=timeout_per_group)
+
+
+def get_cpu_executor() -> Optional[ThreadPoolExecutor]:
+    """Return the shared CPU-bound thread pool, if available.
+
+    On free-threaded Python (3.13t / 3.14t) this returns a
+    ``ThreadPoolExecutor`` sized to the CPU count, enabling true
+    parallel execution of CPU-bound guardrail checks (regex matching,
+    PII detection, YARA scanning, etc.).
+
+    On standard GIL-enabled Python this returns ``None`` — callers
+    should fall back to ``loop.run_in_executor(None, ...)`` which uses
+    the default thread pool.
+    """
+    return _CPU_POOL
 
 
 def has_dependencies(flows: List[Any]) -> bool:

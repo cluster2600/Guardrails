@@ -73,7 +73,7 @@ from benchmarks.fake_rails import cpu_bound_scan
 
 WARMUP = 5
 ROUNDS = 30
-_SECTION_CHOICES = ["threading", "template", "import", "gc", "asyncio", "dag", "all"]
+_SECTION_CHOICES = ["threading", "template", "import", "gc", "asyncio", "dag", "eager", "scheduler", "all"]
 
 
 def _python_info() -> dict:
@@ -653,6 +653,206 @@ def bench_dag_scheduler(iterations: int = 500) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
+# Section 7: Eager Task Factory benchmark
+# ---------------------------------------------------------------------------
+
+
+def bench_eager_task_factory(
+    rail_counts: tuple[int, ...] = (4, 8, 16, 32),
+    iterations: int = 500,
+) -> list[dict]:
+    """Benchmark eager_task_factory vs standard task creation.
+
+    On Python 3.12+ the eager factory lets coroutines that complete
+    synchronously skip the event-loop scheduling round-trip. This is
+    the exact optimisation we installed in TopologicalScheduler.execute().
+    """
+    has_eager = hasattr(asyncio, "eager_task_factory")
+    results = []
+
+    for n in rail_counts:
+        # Fast-completing coroutines (simulates cache hits / trivial checks)
+        async def _instant_rail():
+            return {"action": "continue"}
+
+        # --- Standard task creation ---
+        async def _run_standard():
+            loop = asyncio.get_running_loop()
+            # Force standard factory
+            old = loop.get_task_factory() if has_eager else None
+            if has_eager:
+                loop.set_task_factory(None)
+            try:
+                tasks = [asyncio.create_task(_instant_rail()) for _ in range(n)]
+                await asyncio.gather(*tasks)
+            finally:
+                if has_eager and old is not None:
+                    loop.set_task_factory(old)
+
+        # --- Eager task creation ---
+        async def _run_eager():
+            loop = asyncio.get_running_loop()
+            old = loop.get_task_factory() if has_eager else None
+            if has_eager:
+                loop.set_task_factory(asyncio.eager_task_factory)
+            try:
+                tasks = [asyncio.create_task(_instant_rail()) for _ in range(n)]
+                await asyncio.gather(*tasks)
+            finally:
+                if has_eager:
+                    loop.set_task_factory(old)
+
+        # Warmup
+        for _ in range(10):
+            asyncio.run(_run_standard())
+            if has_eager:
+                asyncio.run(_run_eager())
+
+        # Benchmark standard
+        std_times = []
+        for _ in range(iterations):
+            t0 = time.perf_counter_ns()
+            asyncio.run(_run_standard())
+            std_times.append((time.perf_counter_ns() - t0) / 1e6)
+
+        # Benchmark eager (or repeat standard if unavailable)
+        eager_times = []
+        run_fn = _run_eager if has_eager else _run_standard
+        for _ in range(iterations):
+            t0 = time.perf_counter_ns()
+            asyncio.run(run_fn())
+            eager_times.append((time.perf_counter_ns() - t0) / 1e6)
+
+        std_stats = compute_stats(std_times)
+        eager_stats = compute_stats(eager_times)
+        speedup = std_stats["mean_ms"] / eager_stats["mean_ms"] if eager_stats["mean_ms"] > 0 else 1.0
+
+        results.append(
+            {
+                "test": "eager_task_factory",
+                "tasks": n,
+                "eager_available": has_eager,
+                "standard_mean_ms": round(std_stats["mean_ms"], 4),
+                "standard_p99_ms": round(std_stats["p99_ms"], 4),
+                "eager_mean_ms": round(eager_stats["mean_ms"], 4),
+                "eager_p99_ms": round(eager_stats["p99_ms"], 4),
+                "speedup": round(speedup, 2),
+            }
+        )
+
+        label = "eager" if has_eager else "N/A (< 3.12)"
+        print(
+            f"  {n:2d} tasks: standard={std_stats['mean_ms']:.4f}ms  "
+            f"{label}={eager_stats['mean_ms']:.4f}ms  "
+            f"({speedup:.2f}x)"
+        )
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Section 8: Full DAG scheduler execute() with real executor path
+# ---------------------------------------------------------------------------
+
+
+def bench_scheduler_execute(iterations: int = 300) -> list[dict]:
+    """Benchmark the actual TopologicalScheduler.execute() method.
+
+    Unlike Section 6 which manually calls asyncio.gather on groups,
+    this runs through the real execute() codepath which includes:
+    - Eager task factory installation (3.12+)
+    - Early-exit on block detection
+    - Per-group timeout handling
+    - CPU pool dispatch on free-threaded builds
+    """
+    try:
+        from nemoguardrails.rails.llm.dag_scheduler import TopologicalScheduler  # noqa: F401
+    except ImportError:
+        print("  DAG scheduler not available, skipping")
+        return []
+
+    results = []
+
+    topologies = {
+        "wide_4": lambda: _build_graph(["A", "B", "C", "D"], {}),
+        "wide_8": lambda: _build_graph([chr(65 + i) for i in range(8)], {}),
+        "diamond": lambda: _build_graph(
+            ["A", "B", "C", "D"],
+            {"B": ["A"], "C": ["A"], "D": ["B", "C"]},
+        ),
+        "fan_out_8": lambda: _build_graph(
+            ["root"] + [f"leaf_{i}" for i in range(8)],
+            {f"leaf_{i}": ["root"] for i in range(8)},
+        ),
+        "deep_pipeline_6": lambda: _build_graph(
+            [f"stage_{i}" for i in range(6)],
+            {f"stage_{i}": [f"stage_{i - 1}"] for i in range(1, 6)},
+        ),
+    }
+
+    for topo_name, build_fn in topologies.items():
+        graph = build_fn()
+        scheduler = TopologicalScheduler(graph)
+
+        # Rail executor: simulates 5ms I/O per rail
+        async def rail_executor(rail_name: str, context: dict) -> dict:
+            await asyncio.sleep(0.005)
+            return {"action": "continue", "rail": rail_name}
+
+        # Warmup
+        for _ in range(5):
+            asyncio.run(scheduler.execute(rail_executor))
+
+        # Benchmark
+        times = []
+        for _ in range(iterations):
+            t0 = time.perf_counter()
+            result = asyncio.run(scheduler.execute(rail_executor))
+            times.append((time.perf_counter() - t0) * 1000)
+
+        stats = compute_stats(times)
+        n_rails = graph.node_count
+        n_groups = scheduler.num_groups
+        serial_ms = n_rails * 5.0
+        speedup = serial_ms / stats["mean_ms"] if stats["mean_ms"] > 0 else 0
+
+        results.append(
+            {
+                "test": "scheduler_execute",
+                "topology": topo_name,
+                "rails": n_rails,
+                "groups": n_groups,
+                "serial_ms": serial_ms,
+                "actual_mean_ms": round(stats["mean_ms"], 2),
+                "actual_p99_ms": round(stats["p99_ms"], 2),
+                "actual_stdev_ms": round(stats["stdev_ms"], 2),
+                "speedup_vs_serial": round(speedup, 2),
+            }
+        )
+
+        print(
+            f"  {topo_name:18s}: {n_groups} groups, {n_rails} rails  "
+            f"serial={serial_ms:.0f}ms  actual={stats['mean_ms']:.1f}ms  "
+            f"({speedup:.2f}x)"
+        )
+
+    return results
+
+
+def _build_graph(
+    rail_names: list[str],
+    deps: dict[str, list[str]],
+) -> "RailDependencyGraph":
+    """Helper to build a dependency graph from names and dependencies."""
+    from nemoguardrails.rails.llm.dag_scheduler import RailDependencyGraph
+
+    g = RailDependencyGraph()
+    for name in rail_names:
+        g.add_rail(name, depends_on=deps.get(name))
+    return g
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -689,6 +889,8 @@ def main():
         ("gc", "Section 4: GC tail latency under pressure", bench_gc_pauses),
         ("asyncio", "Section 5: Asyncio gather with real rails", bench_asyncio_rails),
         ("dag", "Section 6: DAG scheduler parallelism", bench_dag_scheduler),
+        ("eager", "Section 7: Eager task factory (3.12+ optimisation)", bench_eager_task_factory),
+        ("scheduler", "Section 8: Full scheduler execute() path", bench_scheduler_execute),
     ]
 
     for key, title, bench_fn in sections:
@@ -746,6 +948,21 @@ def main():
             wide = next((r for r in dag if r["topology"] == "wide_4"), None)
             if wide:
                 print(f"  DAG:        {wide['parallelism_ratio']:.2f}x parallelism (wide_4, {wide['groups']} groups)")
+
+    if "eager" in all_results["sections"]:
+        eager = all_results["sections"]["eager"]
+        if eager:
+            best = max(eager, key=lambda r: r["speedup"])
+            avail = "available" if best["eager_available"] else "unavailable (< 3.12)"
+            print(f"  Eager:      {best['speedup']:.2f}x speedup @ {best['tasks']} tasks ({avail})")
+
+    if "scheduler" in all_results["sections"]:
+        sched = all_results["sections"]["scheduler"]
+        if sched:
+            best = max(sched, key=lambda r: r["speedup_vs_serial"])
+            print(
+                f"  Scheduler:  {best['speedup_vs_serial']:.2f}x vs serial ({best['topology']}, {best['rails']} rails)"
+            )
 
     print()
 

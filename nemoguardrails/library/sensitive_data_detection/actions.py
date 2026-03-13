@@ -33,6 +33,7 @@ from nemoguardrails.rails.llm.config import (
     SensitiveDataDetection,
     SensitiveDataDetectionOptions,
 )
+from nemoguardrails.rails.llm.dag_scheduler import get_cpu_executor
 
 log = logging.getLogger(__name__)
 
@@ -127,7 +128,7 @@ async def detect_sensitive_data(
     # this runs in true parallel with other guardrail checks.
     loop = asyncio.get_running_loop()
     results = await loop.run_in_executor(
-        None,
+        get_cpu_executor(),
         functools.partial(
             analyzer.analyze,
             text=text,
@@ -183,4 +184,4 @@ async def mask_sensitive_data(source: str, text: str, config: RailsConfig):
         return masked_results.text
 
     loop = asyncio.get_running_loop()
-    return await loop.run_in_executor(None, _analyse_and_mask)
+    return await loop.run_in_executor(get_cpu_executor(), _analyse_and_mask)

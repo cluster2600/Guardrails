@@ -43,6 +43,7 @@ except ImportError:
 from nemoguardrails import RailsConfig  # noqa: E402
 from nemoguardrails.actions import action  # noqa: E402
 from nemoguardrails.library.injection_detection.yara_config import ActionOptions, Rules  # noqa: E402
+from nemoguardrails.rails.llm.dag_scheduler import get_cpu_executor  # noqa: E402
 
 YARA_DIR = Path(__file__).resolve().parent.joinpath("yara_rules")
 
@@ -449,14 +450,14 @@ async def injection_detection(text: str, config: RailsConfig) -> InjectionDetect
         # Reject mode: determine whether any rule fires and return
         # the original text unchanged alongside the detection flag.
         is_injection, detected_rules = await loop.run_in_executor(
-            None, functools.partial(_reject_injection, text, rules)
+            get_cpu_executor(), functools.partial(_reject_injection, text, rules)
         )
         return InjectionDetectionResult(is_injection=is_injection, text=text, detections=detected_rules)
     else:
         # For omit / sanitise modes we need the full list of YARA
         # match objects (not just a boolean) so the helpers can
         # inspect individual string instances.
-        matches = await loop.run_in_executor(None, functools.partial(rules.match, data=text))
+        matches = await loop.run_in_executor(get_cpu_executor(), functools.partial(rules.match, data=text))
         if matches:
             detected_rules_list = [match_name.rule for match_name in matches]
             log.info(f"Input matched on rule {', '.join(detected_rules_list)}.")
@@ -467,7 +468,7 @@ async def injection_detection(text: str, config: RailsConfig) -> InjectionDetect
                 # iterates over potentially many match instances and
                 # performs repeated string replacements.
                 is_injection, result_text = await loop.run_in_executor(
-                    None, functools.partial(_omit_injection, text, matches)
+                    get_cpu_executor(), functools.partial(_omit_injection, text, matches)
                 )
                 return InjectionDetectionResult(
                     is_injection=is_injection,

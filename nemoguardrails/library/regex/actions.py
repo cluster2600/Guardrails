@@ -19,6 +19,7 @@ from typing import List, TypedDict
 
 from nemoguardrails import RailsConfig
 from nemoguardrails.actions import action
+from nemoguardrails.rails.llm.dag_scheduler import get_cpu_executor
 
 log = logging.getLogger(__name__)
 
@@ -83,7 +84,8 @@ async def detect_regex_pattern(
         return hits
 
     loop = asyncio.get_running_loop()
-    matched = await loop.run_in_executor(None, _match_patterns)
+    # Use the shared CPU pool on free-threaded Python for true parallelism.
+    matched = await loop.run_in_executor(get_cpu_executor(), _match_patterns)
 
     if matched:
         return RegexDetectionResult(is_match=True, text=text, detections=matched)
