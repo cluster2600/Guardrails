@@ -217,7 +217,7 @@ def _load_rules(
         # Gracefully degrade rather than crashing the entire guardrail
         # pipeline — log the error and return None so the caller can
         # decide how to proceed.
-        msg = f"Failed to initialise injection detection due to configuration or YARA rule error: YARA compilation failed: {e}"
+        msg = f"Failed to initialize injection detection due to configuration or YARA rule error: YARA compilation failed: {e}"
         log.error(msg)
         return None
     return rules
@@ -314,7 +314,7 @@ def _sanitize_injection(text: str, matches: list["yara.Match"]) -> Tuple[bool, s
     # Sanitisation logic has not been implemented yet.  Raising here
     # ensures callers fail loudly rather than silently passing through
     # potentially dangerous input.
-    raise NotImplementedError("Injection sanitisation is not yet implemented. Please use 'reject' or 'omit'")
+    raise NotImplementedError("Injection sanitization is not yet implemented. Please use 'reject' or 'omit'")
     # Hypothetical logic if implemented, to match existing behaviour in injection_detection:
     # sanitised_text_attempt = "..." # result of sanitisation
     # if sanitised_text_attempt != text:
