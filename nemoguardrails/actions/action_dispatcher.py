@@ -305,6 +305,12 @@ class ActionDispatcher:
                             )
                             result = await self._thread_pool.dispatch(fn, **params)
                         else:
+                            if is_cpu_bound:
+                                log.warning(
+                                    "Action `%s` is @cpu_bound but no thread pool is configured; "
+                                    "running inline and blocking the event loop.",
+                                    action_name,
+                                )
                             result = fn(**params)
 
                         if inspect.iscoroutine(result):
@@ -338,6 +344,12 @@ class ActionDispatcher:
                             )
                             result = await self._thread_pool.dispatch(fn_run_func_with_signature, **params)
                         else:
+                            if is_cpu_bound:
+                                log.warning(
+                                    "Action `%s.run` is @cpu_bound but no thread pool is configured; "
+                                    "running inline and blocking the event loop.",
+                                    action_name,
+                                )
                             result = fn_run_func_with_signature(**params)
                     return result, "success"
 
