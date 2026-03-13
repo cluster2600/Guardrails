@@ -113,7 +113,13 @@ class RuntimeV1_0(Runtime):
 
     def _init_flow_configs(self):
         """
-        Initialize the flow configurations.
+        Initialise the flow configurations.
+
+        This is called once during runtime construction.  It populates
+        ``self.flow_configs`` and, when the rail configuration contains
+        dependency metadata (``depends_on`` annotations), pre-builds the
+        DAG schedulers so they can be reused across every request without
+        re-parsing the dependency graph each time.
 
         Returns:
             None
@@ -123,7 +129,13 @@ class RuntimeV1_0(Runtime):
         for flow in self.config.flows:
             self._load_flow_config(flow)
 
-        # Pre-compute DAG schedulers once at init time (static config).
+        # --- DAG scheduler caching ----------------------------------------
+        # When rails declare inter-flow dependencies we build the topological
+        # execution schedule once here and cache it on the runtime instance.
+        # ``build_scheduler_from_config`` is deterministic for a given config,
+        # so there is no need to rebuild per-request.  If the config carries no
+        # dependency metadata the scheduler is left as ``None`` and the legacy
+        # flat-parallel path is used instead.
         self._input_dag_scheduler = (
             build_scheduler_from_config(self.config.rails.input.flow_configs)
             if self.config.rails.input.has_dependencies
@@ -285,13 +297,27 @@ class RuntimeV1_0(Runtime):
         """
         Run flows in parallel.
 
-        Running flows in parallel is done by triggering a separate event loop with a `start_flow` event for each flow, in the context of the current event loop.
+        Running flows in parallel is done by triggering a separate event loop
+        with a ``start_flow`` event for each flow, in the context of the
+        current event loop.
+
+        **Copy-on-write event snapshots** – each task receives a shallow copy
+        of *events* (``_events = events.copy()``) so that concurrent flows
+        cannot mutate one another's history.  The original list is treated as
+        the immutable *base* snapshot for the group.
+
+        Task results are reassembled in the original submission order (not
+        completion order) so that deterministic behaviour is preserved when
+        no stop/block occurs.
 
         Args:
             flows (List[str]): The list of flow names to run in parallel.
-            events (List[dict]): The current events.
-            pre_events (List[dict], optional): Events to be added before starting each flow.
-            post_events (List[dict], optional): Events to be added after finishing each flow.
+            events (List[dict]): The current events (used as a read-only base
+                snapshot – each task gets its own copy).
+            pre_events (List[dict], optional): Events to be added before
+                starting each flow.
+            post_events (List[dict], optional): Events to be added after
+                finishing each flow.
         """
 
         if pre_events is not None and len(pre_events) != len(flows):
@@ -299,11 +325,15 @@ class RuntimeV1_0(Runtime):
         if post_events is not None and len(post_events) != len(flows):
             raise ValueError("Number of post-events must match number of flows.")
 
-        unique_flow_ids = {}  # Keep track of unique flow IDs order
-        task_results: Dict[str, List] = {}  # Store results keyed by flow_id
+        # ``unique_flow_ids`` preserves insertion (i.e. submission) order so
+        # that results can be reassembled deterministically later.
+        unique_flow_ids = {}  # {flow_uid -> asyncio.Task}
+        task_results: Dict[str, List] = {}  # Store results keyed by flow_uid
         task_processing_logs: dict = {}  # Store resulting processing logs for each flow
 
-        # Wrapper function to help reverse map the task result to the flow ID
+        # Wrapper coroutine that tags the result with its flow_uid and
+        # conditionally appends the ``post_event`` (e.g. ``InputRailFinished``)
+        # unless the flow signalled a stop or raised an exception.
         async def task_call_helper(flow_uid, post_event, func, *args, **kwargs):
             result = await func(*args, **kwargs)
 
@@ -317,10 +347,13 @@ class RuntimeV1_0(Runtime):
                 args[1].append({"type": "event", "timestamp": time(), "data": post_event})
             return flow_uid, result
 
-        # Create a task for each flow but don't await them yet
+        # --- Task creation -------------------------------------------------
+        # Each flow receives its own *shallow copy* of the base event list so
+        # that appending the ``start_flow`` trigger and any subsequent events
+        # produced during ``generate_events`` does not leak across tasks.
         tasks = []
         for index, flow_name in enumerate(flows):
-            # Copy the events to avoid modifying the original list
+            # Copy-on-write: isolate each task's event history from others.
             _events = events.copy()
 
             flow_params = _get_flow_params(flow_name)
@@ -358,20 +391,24 @@ class RuntimeV1_0(Runtime):
         stopped_task_results: List[dict] = []
         stopped_task_processing_logs: List[dict] = []
 
-        # Process tasks as they complete using as_completed
+        # --- as_completed processing ---------------------------------------
+        # We iterate over futures as they resolve.  The *first* flow that
+        # emits a stop intent or an exception short-circuits the whole group:
+        # all remaining tasks are cancelled immediately to avoid unnecessary
+        # work and potential side-effects from later rails.
         try:
             for future in asyncio.as_completed(tasks):
                 try:
                     (flow_id, result) = await future
 
-                    # Check if this rail requested to stop
+                    # Check if this rail requested to stop or raised an exception.
                     has_stop = any(
                         (event["type"] == "BotIntent" and event["intent"] == "stop")
                         or event["type"].endswith("Exception")
                         for event in result
                     )
 
-                    # If this flow had a stop event
+                    # Early exit on stop/block: capture results and cancel peers.
                     if has_stop:
                         stopped_task_results = task_results[flow_id] + result
                         stopped_task_processing_logs = task_processing_logs[flow_id].copy()
@@ -413,10 +450,13 @@ class RuntimeV1_0(Runtime):
         context_updates: dict = {}
         processing_log = processing_log_var.get()
 
-        finished_task_processing_logs: List[dict] = []  # Collect all results in order
-        finished_task_results: List[dict] = []  # Collect all results in order
+        finished_task_processing_logs: List[dict] = []  # Collect processing logs in submission order
+        finished_task_results: List[dict] = []  # Collect event results in submission order
 
-        # Compose results in original flow order of all completed tasks
+        # Reassemble results in the original *submission* order (i.e. the
+        # insertion order of ``unique_flow_ids``) so that downstream consumers
+        # see a deterministic event sequence regardless of which task happened
+        # to finish first.
         for flow_id in unique_flow_ids:
             result = task_results[flow_id]
 
@@ -440,13 +480,18 @@ class RuntimeV1_0(Runtime):
             # again since they're already in the processing log from when they started
             filter_and_append(finished_task_processing_logs, processing_log)
 
-        # We pack all events into a single event to add it to the event history.
+        # Pack all *finished* (non-stopped) events into a single
+        # ``EventHistoryUpdate`` wrapper.  This is a serialisation envelope:
+        # ``generate_events`` will later unwrap the inner list and splice
+        # it back into the main event history.
         history_events = new_event_dict(
             "EventHistoryUpdate",
             data={"events": finished_task_results},
         )
 
-        # Return stopped_task_results separately so the caller knows to stop processing
+        # The stopped-task results are appended *outside* the history wrapper
+        # so that the caller (``generate_events``) can detect the stop intent
+        # at the top level and halt further processing.
         return ActionResult(
             events=[history_events] + stopped_task_results,
             context_updates=context_updates,
@@ -459,8 +504,13 @@ class RuntimeV1_0(Runtime):
         in the config, the DAG scheduler is used to execute them in
         topological order.  Otherwise falls through to the flat-parallel
         ``_run_flows_in_parallel`` for backward compatibility.
+
+        The branching logic ensures that existing configurations without
+        dependency metadata continue to behave exactly as before the DAG
+        scheduler was introduced — no behavioural change for legacy users.
         """
-        # Check if the config carries dependency metadata.
+        # If the configuration carries dependency metadata, delegate to the
+        # DAG-aware executor which respects topological ordering.
         if self.config.rails.input.has_dependencies:
             return await self._run_flows_with_dag_scheduler(
                 flow_configs=self.config.rails.input.flow_configs,
@@ -468,6 +518,8 @@ class RuntimeV1_0(Runtime):
                 event_type_prefix="Input",
             )
 
+        # Legacy path: no dependencies declared — run all input rails in a
+        # single flat-parallel group with matching start/finish marker events.
         pre_events = [(await create_event({"_type": "StartInputRail", "flow_id": flow})).events[0] for flow in flows]
         post_events = [
             (await create_event({"_type": "InputRailFinished", "flow_id": flow})).events[0] for flow in flows
@@ -480,8 +532,12 @@ class RuntimeV1_0(Runtime):
     async def _run_output_rails_in_parallel(self, flows: List[str], events: List[dict]) -> ActionResult:
         """Run the output rails in parallel.
 
-        See :meth:`_run_input_rails_in_parallel` for DAG-scheduler behavior.
+        Mirrors :meth:`_run_input_rails_in_parallel` but for the output rail
+        pipeline.  The same DAG-vs-flat branching applies: when dependency
+        metadata is present the DAG scheduler governs execution order;
+        otherwise all output rails execute as a single concurrent group.
         """
+        # DAG-aware path for output rails with declared dependencies.
         if self.config.rails.output.has_dependencies:
             return await self._run_flows_with_dag_scheduler(
                 flow_configs=self.config.rails.output.flow_configs,
@@ -489,6 +545,7 @@ class RuntimeV1_0(Runtime):
                 event_type_prefix="Output",
             )
 
+        # Legacy flat-parallel path — all output rails run concurrently.
         pre_events = [(await create_event({"_type": "StartOutputRail", "flow_id": flow})).events[0] for flow in flows]
         post_events = [
             (await create_event({"_type": "OutputRailFinished", "flow_id": flow})).events[0] for flow in flows
@@ -506,19 +563,32 @@ class RuntimeV1_0(Runtime):
     ) -> ActionResult:
         """Execute flows in dependency-aware parallel groups.
 
-        Uses the DAG scheduler to partition flows into execution groups
-        (topological order).  Flows within each group run concurrently;
-        groups execute sequentially.
+        The DAG scheduler partitions flows into *execution groups* derived
+        from a topological sort of the dependency graph.  Within each group
+        the flows have no mutual dependencies and can therefore run
+        concurrently.  Groups themselves are executed sequentially so that
+        every flow is guaranteed to see the results of its declared
+        dependencies before it starts.
 
         This method reuses the same event-driven execution pattern as
-        ``_run_flows_in_parallel`` but dispatches one group at a time.
+        ``_run_flows_in_parallel`` but dispatches one group at a time,
+        propagating context (event history and context updates) between
+        groups.
 
         Args:
-            flow_configs: The ``FlowWithDeps`` list from the rail section config.
-            events: Current event list.
-            event_type_prefix: "Input" or "Output" for event type naming.
+            flow_configs: The ``FlowWithDeps`` list from the rail section
+                config.
+            events: Current event list (the base snapshot before any group
+                executes).
+            event_type_prefix: ``"Input"`` or ``"Output"`` — used to
+                construct the correct ``Start*Rail`` / ``*RailFinished``
+                marker event types.
         """
-        # Use pre-computed scheduler cached at init time.
+        # --- Retrieve the pre-computed scheduler ---------------------------
+        # The scheduler was built once in ``_init_flow_configs`` and cached on
+        # the runtime instance.  The fallback call to
+        # ``build_scheduler_from_config`` is a defensive measure for edge
+        # cases where the cache was not populated (should not normally occur).
         if event_type_prefix == "Input":
             scheduler = self._input_dag_scheduler
         else:
@@ -531,12 +601,22 @@ class RuntimeV1_0(Runtime):
 
         all_results: List[dict] = []
         context_updates: dict = {}
+        # ``current_events`` is the *cumulative* event history that grows as
+        # each group completes.  Downstream groups receive this list so they
+        # can observe context produced by their dependencies.
         current_events = list(events)
 
+        # --- Group iteration -----------------------------------------------
+        # Each group contains rails whose dependencies have already been
+        # satisfied by earlier groups.
         for group in groups:
+            # Sorting the rails within a group ensures deterministic execution
+            # order when multiple rails have no ordering constraint between
+            # them.  Without this, Python set iteration order could cause
+            # non-reproducible behaviour across runs.
             group_flows = sorted(group.rails)
 
-            # Build pre/post events for this group
+            # Build the start/finish marker events for observability.
             pre_events = [
                 (await create_event({"_type": f"Start{event_type_prefix}Rail", "flow_id": f})).events[0]
                 for f in group_flows
@@ -546,8 +626,9 @@ class RuntimeV1_0(Runtime):
                 for f in group_flows
             ]
 
-            # Dispatch group flows in parallel, using the growing event
-            # history so that downstream groups see context from earlier ones.
+            # Dispatch this group's flows concurrently, passing the growing
+            # event history so that each flow can access results from earlier
+            # groups (context propagation).
             result = await self._run_flows_in_parallel(
                 flows=group_flows,
                 events=current_events,
@@ -555,24 +636,33 @@ class RuntimeV1_0(Runtime):
                 post_events=post_events,
             )
 
-            # Merge results
+            # --- Merge context updates from this group ---------------------
             if result.context_updates:
                 context_updates = {**context_updates, **result.context_updates}
 
-            # Check for stop/block in this group's events
+            # --- Early exit on stop/block ----------------------------------
+            # If any rail in the group signalled a stop intent or raised an
+            # exception, we must abort the remaining groups immediately.
+            # Continuing would violate the safety invariant — a blocking rail
+            # should prevent all downstream processing.
             has_stop = False
             for event in result.events:
                 if isinstance(event, dict):
                     if event.get("type") == "ContextUpdate":
-                        pass  # Already merged
+                        pass  # Already merged above
                     elif (event.get("type") == "BotIntent" and event.get("intent") == "stop") or (
                         isinstance(event.get("type"), str) and event.get("type", "").endswith("Exception")
                     ):
                         has_stop = True
 
             all_results.extend(result.events)
-            # Propagate only the inner events from EventHistoryUpdate
-            # wrappers so downstream groups see a flat event list.
+
+            # --- EventHistoryUpdate unwrapping -----------------------------
+            # ``_run_flows_in_parallel`` wraps completed-flow events inside
+            # an ``EventHistoryUpdate`` envelope.  For context propagation
+            # between groups we need the *raw* inner events — otherwise the
+            # next group would see a nested wrapper rather than individual
+            # events in its input history.
             group_raw_events: List[dict] = []
             for ev in result.events:
                 if isinstance(ev, dict) and ev.get("type") == "EventHistoryUpdate":

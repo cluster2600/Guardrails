@@ -15,16 +15,31 @@
 
 """DAG-based rail scheduler for dependency-aware parallel execution.
 
-This module implements a directed acyclic graph (DAG) scheduler that enables
-rails to declare dependencies on other rails and be executed in topological
-order. Rails within the same execution group (no mutual dependencies) run
-concurrently via asyncio, while respecting the ordering constraints defined
-by the dependency graph.
+Overall Architecture
+--------------------
+This module implements a three-stage pipeline for executing guardrail flows:
+
+    1. **Dependency graph construction** — each rail (guardrail flow) is added as
+       a node in a directed acyclic graph (DAG).  Edges encode "must run after"
+       relationships (e.g. ``content_safety`` depends on ``pii_detection``).
+
+    2. **Topological sort via Kahn's algorithm** — the DAG is partitioned into
+       *execution groups* (also called *topological levels*).  All rails within
+       the same group are independent of one another, so they may be executed
+       concurrently.  Groups themselves are processed sequentially, guaranteeing
+       that every rail's dependencies have completed before it starts.
+
+    3. **Parallel execution with early cancellation** — each group's rails are
+       dispatched as ``asyncio`` tasks.  If any rail signals a block (i.e. the
+       input should be refused), the scheduler cancels the remaining tasks and
+       short-circuits out, avoiding unnecessary work.
 
 Key components:
-    - RailDependencyGraph: DAG data structure with cycle detection
-    - TopologicalScheduler: Kahn's algorithm for execution group generation
-    - schedule_rails: High-level API for scheduling rail execution
+    - RailDependencyGraph: DAG data structure with eager cycle detection.
+    - TopologicalScheduler: Kahn's algorithm for execution-group generation,
+      plus the async executor that honours parallelisation and early exit.
+    - schedule_rails / build_scheduler_from_config: High-level API for
+      integrating the scheduler with the NeMo Guardrails configuration system.
 
 Example YAML configuration::
 
@@ -56,11 +71,23 @@ from typing import Any, Callable, Coroutine, Dict, FrozenSet, List, Optional, Se
 log = logging.getLogger(__name__)
 
 
+# ---------------------------------------------------------------------------
+# Exception types — raised at configuration time so that invalid dependency
+# graphs are caught early, before any rail execution takes place.
+# ---------------------------------------------------------------------------
+
+
 class CyclicDependencyError(ValueError):
-    """Raised when the rail dependency graph contains a cycle."""
+    """Raised when the rail dependency graph contains a cycle.
+
+    A cycle means there is no valid execution order — rail A depends on B
+    which depends on A (directly or transitively).  The offending node
+    names are stored in ``cycle_nodes`` for diagnostic purposes.
+    """
 
     def __init__(self, cycle_nodes: Set[str]):
         self.cycle_nodes = cycle_nodes
+        # Sort for deterministic error messages in logs and tests.
         cycle_str = " -> ".join(sorted(cycle_nodes))
         super().__init__(
             f"Cyclic dependency detected among rails: {cycle_str}. "
@@ -69,7 +96,11 @@ class CyclicDependencyError(ValueError):
 
 
 class UnknownRailError(ValueError):
-    """Raised when a dependency references a rail not in the graph."""
+    """Raised when a dependency references a rail not in the graph.
+
+    This catches typos and misconfiguration at graph-building time,
+    rather than letting the scheduler silently skip a missing rail.
+    """
 
     def __init__(self, rail: str, dependency: str):
         self.rail = rail
@@ -80,13 +111,22 @@ class UnknownRailError(ValueError):
         )
 
 
+# ---------------------------------------------------------------------------
+# Graph node — lightweight value object representing a single rail.
+# ---------------------------------------------------------------------------
+
+
 @dataclass
 class RailNode:
     """A node in the rail dependency graph.
 
+    Each node corresponds to a single guardrail flow.  It records the
+    flow's name, the set of rails it must wait for (``depends_on``), and
+    any optional metadata carried over from the YAML configuration.
+
     Attributes:
         name: Unique identifier for this rail (flow name).
-        depends_on: Set of rail names this rail depends on.
+        depends_on: Immutable set of rail names this rail depends on.
         metadata: Optional metadata dict (e.g., cpu_bound, timeout).
     """
 
@@ -94,6 +134,8 @@ class RailNode:
     depends_on: FrozenSet[str] = field(default_factory=frozenset)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
+    # Hashing and equality are based solely on the rail name, so that
+    # nodes can be stored in sets and used as dictionary keys.
     def __hash__(self) -> int:
         return hash(self.name)
 
@@ -103,12 +145,25 @@ class RailNode:
         return NotImplemented
 
 
+# ---------------------------------------------------------------------------
+# ExecutionGroup — an immutable bundle of rails that share the same
+# topological level and can therefore be executed concurrently.
+# ---------------------------------------------------------------------------
+
+
 @dataclass(frozen=True)
 class ExecutionGroup:
     """A group of rails that can be executed concurrently.
 
     All rails in a group have their dependencies satisfied by
-    previously completed groups.
+    previously completed groups.  The ``index`` field records the
+    topological level: group 0 contains rails with no dependencies,
+    group 1 contains rails whose dependencies are all in group 0,
+    and so on.
+
+    The scheduler iterates over groups in index order, executing all
+    rails within a group as parallel ``asyncio`` tasks before moving
+    on to the next group.
 
     Attributes:
         index: Topological level (0 = no dependencies).
@@ -119,18 +174,31 @@ class ExecutionGroup:
     rails: FrozenSet[str]
 
     def __len__(self) -> int:
+        """Return the number of rails in this group (supports ``len()``)."""
         return len(self.rails)
 
     def __iter__(self):
+        """Iterate over rail names in this group."""
         return iter(self.rails)
+
+
+# ---------------------------------------------------------------------------
+# RailDependencyGraph — the core DAG data structure.
+# ---------------------------------------------------------------------------
 
 
 class RailDependencyGraph:
     """Directed acyclic graph representing rail dependencies.
 
-    The graph uses an adjacency-list representation for O(V+E) traversal.
-    Cycle detection is performed eagerly on every edge addition to fail
-    fast at configuration time.
+    The graph uses a *dual adjacency-list* representation:
+      - ``_forward[A]`` = set of rails that depend on A  (A's dependents).
+      - ``_reverse[A]`` = set of rails that A depends on (A's prerequisites).
+
+    This dual representation allows O(1) look-ups in both directions and
+    enables Kahn's algorithm to run in O(V + E) time.
+
+    Cycle detection is performed eagerly on every edge addition so that
+    invalid configurations are caught immediately at graph-building time.
 
     Usage::
 
@@ -147,16 +215,22 @@ class RailDependencyGraph:
     """
 
     def __init__(self) -> None:
-        # Forward adjacency: node -> set of nodes that depend on it
+        # Forward adjacency: node -> set of nodes that depend on it.
+        # Used during Kahn's algorithm to propagate "this node is done"
+        # signals to its dependents.
         self._forward: Dict[str, Set[str]] = defaultdict(set)
-        # Reverse adjacency: node -> set of nodes it depends on
+
+        # Reverse adjacency: node -> set of nodes it depends on.
+        # The length of each set gives the node's in-degree, which is the
+        # key metric in Kahn's algorithm.
         self._reverse: Dict[str, Set[str]] = defaultdict(set)
-        # All registered rail nodes
+
+        # Canonical registry of all rail nodes, keyed by name.
         self._nodes: Dict[str, RailNode] = {}
 
     @property
     def nodes(self) -> Dict[str, RailNode]:
-        """All registered rail nodes."""
+        """Return a shallow copy of all registered rail nodes."""
         return dict(self._nodes)
 
     @property
@@ -166,7 +240,7 @@ class RailDependencyGraph:
 
     @property
     def edge_count(self) -> int:
-        """Number of dependency edges."""
+        """Number of dependency edges (total across all nodes)."""
         return sum(len(deps) for deps in self._forward.values())
 
     def add_rail(
@@ -191,30 +265,36 @@ class RailDependencyGraph:
         """
         deps = frozenset(depends_on or [])
 
-        # Validate all dependencies exist
+        # Validate that every dependency has already been registered.
+        # This enforces a declaration-before-use discipline.
         for dep in deps:
             if dep not in self._nodes and dep != name:
                 raise UnknownRailError(name, dep)
 
-        # Self-dependency check
+        # A rail depending on itself is the simplest possible cycle.
         if name in deps:
             raise CyclicDependencyError({name})
 
         node = RailNode(name=name, depends_on=deps, metadata=metadata or {})
         self._nodes[name] = node
 
-        # Ensure the node appears in adjacency lists
+        # Ensure the node has entries in both adjacency maps even if it
+        # has no edges yet — this simplifies iteration in Kahn's algorithm.
         if name not in self._forward:
             self._forward[name] = set()
         if name not in self._reverse:
             self._reverse[name] = set()
 
-        # Add edges: for each dependency, add forward edge dep -> name
+        # Add directed edges: for each dependency ``dep``, create an edge
+        # dep -> name (meaning ``name`` depends on ``dep``).  The forward
+        # map records dependents; the reverse map records prerequisites.
         for dep in deps:
             self._forward[dep].add(name)
             self._reverse[name].add(dep)
 
-        # Check for cycles after adding edges
+        # If any edges were added, re-run cycle detection across the
+        # entire graph.  This is intentionally eager so that invalid
+        # configurations fail fast.
         if deps:
             self._detect_cycles()
 
@@ -223,29 +303,39 @@ class RailDependencyGraph:
     def _detect_cycles(self) -> None:
         """Detect cycles using Kahn's algorithm.
 
-        If the topological sort cannot visit all nodes, the remaining
-        nodes form one or more cycles.
+        Kahn's algorithm works by repeatedly removing nodes with in-degree
+        zero (i.e. no unsatisfied dependencies).  If the algorithm
+        terminates before visiting every node, the unvisited nodes must
+        be part of one or more cycles — because each of those nodes still
+        has at least one predecessor that also could not be removed.
 
         Raises:
-            CyclicDependencyError: If the graph contains a cycle.
+            CyclicDependencyError: If the graph contains a cycle.  The
+                ``cycle_nodes`` attribute lists all nodes involved.
         """
+        # Initialise in-degree counts for every node.
         in_degree: Dict[str, int] = {n: 0 for n in self._nodes}
         for node, deps in self._reverse.items():
             if node in in_degree:
                 in_degree[node] = len(deps)
 
+        # Seed the queue with all nodes that have no prerequisites.
         queue = deque(n for n, d in in_degree.items() if d == 0)
         visited = 0
 
         while queue:
             node = queue.popleft()
             visited += 1
+            # For every dependent of the current node, decrement its
+            # in-degree.  When in-degree reaches zero, all of its
+            # prerequisites have been processed and it can be enqueued.
             for neighbor in self._forward.get(node, set()):
                 if neighbor in in_degree:
                     in_degree[neighbor] -= 1
                     if in_degree[neighbor] == 0:
                         queue.append(neighbor)
 
+        # If we could not visit all nodes, the remainder form cycles.
         if visited < len(self._nodes):
             cycle_nodes = {n for n, d in in_degree.items() if d > 0}
             raise CyclicDependencyError(cycle_nodes)
@@ -253,30 +343,42 @@ class RailDependencyGraph:
     def compute_execution_groups(self) -> List[ExecutionGroup]:
         """Compute execution groups via topological sort (Kahn's algorithm).
 
-        Rails with no dependencies form group 0. Rails whose dependencies
-        are all in group N form group N+1. This is a level-based BFS that
-        produces the minimum number of sequential steps.
+        This method performs a *level-by-level* (breadth-first) variant of
+        Kahn's algorithm.  Instead of emitting one node at a time, it
+        collects all nodes whose in-degree reaches zero at the same level
+        into a single ``ExecutionGroup``.
+
+        The result is the minimum number of sequential steps needed to
+        execute every rail whilst respecting all dependency constraints.
+        Rails within each group can be run concurrently because they are
+        guaranteed to have no mutual dependencies.
 
         Returns:
-            Ordered list of ExecutionGroups. Rails within each group
-            can be executed concurrently.
+            Ordered list of ExecutionGroups.  Group 0 contains rails with
+            no dependencies; group N+1 contains rails whose dependencies
+            are all satisfied by groups 0..N.
         """
         if not self._nodes:
             return []
 
+        # Build the initial in-degree map from the reverse adjacency list.
         in_degree: Dict[str, int] = {}
         for name in self._nodes:
             in_degree[name] = len(self._reverse.get(name, set()))
 
-        # Start with all zero-degree nodes
+        # Seed level 0 with all zero-in-degree nodes (no prerequisites).
         current_level = [n for n, d in in_degree.items() if d == 0]
         groups: List[ExecutionGroup] = []
         level = 0
 
         while current_level:
+            # Freeze the current level into an ExecutionGroup.
             group = ExecutionGroup(index=level, rails=frozenset(current_level))
             groups.append(group)
 
+            # Determine the next level: for every node we are "removing"
+            # in this level, decrement the in-degree of its dependents.
+            # Any dependent whose in-degree drops to zero is ready to run.
             next_level = []
             for node in current_level:
                 for neighbor in self._forward.get(node, set()):
@@ -290,7 +392,7 @@ class RailDependencyGraph:
         return groups
 
     def get_dependencies(self, rail_name: str) -> FrozenSet[str]:
-        """Get direct dependencies of a rail."""
+        """Get direct dependencies (prerequisites) of a rail."""
         if rail_name not in self._nodes:
             return frozenset()
         return self._nodes[rail_name].depends_on
@@ -303,9 +405,20 @@ class RailDependencyGraph:
     def from_flow_config(cls, flows: List[Any]) -> "RailDependencyGraph":
         """Build a dependency graph from a rails flow configuration.
 
-        Supports two flow config formats:
-        1. Simple string: "flow_name" (no dependencies)
-        2. Dict with depends_on: {"name": "flow_name", "depends_on": [...]}
+        This factory method supports the three flow-configuration formats
+        used across NeMo Guardrails:
+
+        1. **Simple string**: ``"flow_name"`` — a rail with no dependencies.
+        2. **Dictionary**: ``{"name": "flow_name", "depends_on": [...]}``
+           — explicit dependency list.
+        3. **Pydantic model**: any object with a ``.name`` attribute and an
+           optional ``.depends_on`` attribute (e.g. ``FlowWithDeps``).
+
+        The method uses a two-pass approach:
+          * **First pass** — register every rail name so that dependency
+            validation in the second pass can verify that all referenced
+            rails actually exist.
+          * **Second pass** — wire up dependency edges and attach metadata.
 
         Args:
             flows: List of flow names (str) or flow config dicts.
@@ -315,20 +428,26 @@ class RailDependencyGraph:
         """
         graph = cls()
 
-        # First pass: register all rails (needed for dependency validation)
+        # ------------------------------------------------------------------
+        # First pass: collect all rail names and normalise each flow entry
+        # into a uniform dict format.  This ensures that every rail is
+        # registered before we try to validate dependencies.
+        # ------------------------------------------------------------------
         rail_names = []
         rail_configs = []
 
         for flow in flows:
             if isinstance(flow, str):
+                # Format 1: bare string — no dependencies.
                 rail_names.append(flow)
                 rail_configs.append({"name": flow})
             elif isinstance(flow, dict):
+                # Format 2: configuration dictionary.
                 name = flow.get("name", flow.get("flow_name", ""))
                 rail_names.append(name)
                 rail_configs.append(flow)
             elif hasattr(flow, "name"):
-                # FlowWithDeps or similar pydantic model
+                # Format 3: Pydantic model (e.g. FlowWithDeps).
                 name = flow.name
                 deps = list(getattr(flow, "depends_on", []))
                 rail_names.append(name)
@@ -336,44 +455,55 @@ class RailDependencyGraph:
             else:
                 log.warning("Unexpected flow config type: %s", type(flow))
 
-        # Register all rails without dependencies first
+        # Register all rails *without* edges first.  This populates both
+        # adjacency maps with empty sets and creates placeholder RailNode
+        # objects so that the second pass can reference any rail by name.
         for name in rail_names:
             if name not in graph._nodes:
                 graph._nodes[name] = RailNode(name=name)
                 graph._forward[name] = set()
                 graph._reverse[name] = set()
 
-        # Second pass: add dependency edges
+        # ------------------------------------------------------------------
+        # Second pass: add dependency edges and attach metadata.
+        # ------------------------------------------------------------------
         for config in rail_configs:
             name = config.get("name", config.get("flow_name", ""))
             depends_on = config.get("depends_on", [])
+            # Collect any extra keys as metadata (everything that is not
+            # the rail's name or its dependency list).
             metadata = {k: v for k, v in config.items() if k not in ("name", "flow_name", "depends_on")}
 
             if depends_on:
                 node = graph._nodes[name]
                 deps = frozenset(depends_on)
 
-                # Validate dependencies
+                # Validate that every dependency references a known rail.
                 for dep in deps:
                     if dep not in graph._nodes:
                         raise UnknownRailError(name, dep)
 
-                # Update node
+                # Replace the placeholder node with the fully populated one.
                 graph._nodes[name] = RailNode(name=name, depends_on=deps, metadata=metadata)
 
-                # Add edges
+                # Wire up forward and reverse adjacency edges.
                 for dep in deps:
                     graph._forward[dep].add(name)
                     graph._reverse[name].add(dep)
 
             elif metadata:
+                # No dependencies, but metadata was supplied — preserve it
+                # on the existing node without altering its edges.
                 graph._nodes[name] = RailNode(
                     name=name,
                     depends_on=graph._nodes[name].depends_on,
                     metadata=metadata,
                 )
 
-        # Final cycle check
+        # Run a final cycle check across the whole graph.  This catches
+        # cycles that span multiple rails added in the second pass (the
+        # incremental check in ``add_rail`` is not used here because we
+        # batch-insert edges for efficiency).
         if graph.edge_count > 0:
             graph._detect_cycles()
 
@@ -383,11 +513,23 @@ class RailDependencyGraph:
         return f"RailDependencyGraph(nodes={self.node_count}, edges={self.edge_count})"
 
 
+# ---------------------------------------------------------------------------
+# TopologicalScheduler — the async executor that walks the execution groups
+# and dispatches rails as asyncio tasks with optional early cancellation.
+# ---------------------------------------------------------------------------
+
+
 class TopologicalScheduler:
     """Scheduler that executes rails in topological order.
 
-    Groups of independent rails run concurrently via asyncio.gather().
-    Groups are executed sequentially in dependency order.
+    The scheduler pre-computes execution groups from the dependency graph
+    at initialisation time.  At execution time it iterates over groups
+    sequentially; within each group, independent rails are dispatched as
+    concurrent ``asyncio`` tasks via ``asyncio.gather`` (or a custom
+    early-exit loop).
+
+    This design maximises parallelisation whilst guaranteeing that every
+    rail's prerequisites have finished before it begins.
 
     Usage::
 
@@ -411,21 +553,27 @@ class TopologicalScheduler:
     ) -> None:
         self._graph = graph
         self._timeout = timeout_per_group
+        # Pre-compute execution groups once at construction time so that
+        # repeated calls to ``execute`` do not re-run the topological sort.
         self._groups = graph.compute_execution_groups()
 
     @property
     def groups(self) -> List[ExecutionGroup]:
-        """The computed execution groups."""
+        """Return a copy of the computed execution groups."""
         return list(self._groups)
 
     @property
     def num_groups(self) -> int:
-        """Number of sequential execution steps."""
+        """Number of sequential execution steps (topological levels)."""
         return len(self._groups)
 
     @property
     def max_parallelism(self) -> int:
-        """Maximum number of rails that can run concurrently."""
+        """Maximum number of rails that can run concurrently.
+
+        This equals the size of the largest execution group and gives an
+        upper bound on the degree of parallelisation.
+        """
         if not self._groups:
             return 0
         return max(len(g) for g in self._groups)
@@ -437,6 +585,17 @@ class TopologicalScheduler:
         early_exit_on_block: bool = True,
     ) -> Dict[str, Any]:
         """Execute all rails in topological order.
+
+        The method walks through execution groups sequentially.  Within
+        each group it either:
+          * runs a single rail directly (avoiding ``gather`` overhead), or
+          * dispatches multiple rails concurrently as ``asyncio`` tasks.
+
+        When ``early_exit_on_block`` is enabled, the scheduler monitors
+        task results as they complete and cancels all remaining tasks in
+        the current group (and skips subsequent groups) as soon as any
+        rail returns a blocking result.  This avoids wasted computation
+        when a guardrail has already decided to refuse the input.
 
         Args:
             rail_executor: Async callable(rail_name, context) -> result.
@@ -460,15 +619,23 @@ class TopologicalScheduler:
 
         for group in self._groups:
             group_rails = list(group.rails)
+            # Record which rails were attempted in this group, useful for
+            # debugging and observability.
             execution_order.append(group_rails)
 
             if len(group_rails) == 1:
-                # Single rail — no need for gather overhead
+                # -------------------------------------------------------
+                # Fast path: single rail in the group — execute it
+                # directly without the overhead of creating asyncio tasks
+                # and calling gather/wait.
+                # -------------------------------------------------------
                 rail_name = group_rails[0]
                 try:
                     result = await self._execute_with_timeout(rail_executor, rail_name, ctx)
                     results[rail_name] = result
 
+                    # Check whether this rail's result blocks further
+                    # execution (e.g. the input was refused).
                     if early_exit_on_block and self._is_block(result):
                         blocked_by = rail_name
                         log.info("Rail '%s' blocked — stopping execution", rail_name)
@@ -480,7 +647,11 @@ class TopologicalScheduler:
                         "error": str(e),
                     }
             else:
-                # Multiple rails — run in parallel
+                # -------------------------------------------------------
+                # Parallel path: multiple independent rails in this group.
+                # Create an asyncio.Task for each rail so they run
+                # concurrently on the event loop.
+                # -------------------------------------------------------
                 tasks = {
                     rail_name: asyncio.create_task(
                         self._execute_with_timeout(rail_executor, rail_name, ctx),
@@ -491,12 +662,16 @@ class TopologicalScheduler:
 
                 try:
                     if early_exit_on_block:
-                        # Process as they complete for early exit
+                        # Use the custom early-exit gatherer which watches
+                        # tasks as they complete and cancels the rest if
+                        # a blocking result is observed.
                         blocked_by = await self._gather_with_early_exit(tasks, results)
                         if blocked_by:
                             break
                     else:
-                        # Wait for all to complete
+                        # No early exit — simply wait for all tasks to
+                        # finish, collecting exceptions as values rather
+                        # than raising them (return_exceptions=True).
                         gathered = await asyncio.gather(*tasks.values(), return_exceptions=True)
                         for rail_name, result in zip(tasks.keys(), gathered):
                             if isinstance(result, Exception):
@@ -507,7 +682,10 @@ class TopologicalScheduler:
                             else:
                                 results[rail_name] = result
                 finally:
-                    # Cancel any pending tasks
+                    # Defensive cleanup: cancel any tasks that are still
+                    # pending (e.g. due to an unexpected exception in the
+                    # loop above).  We await each cancelled task to ensure
+                    # it has fully terminated before moving on.
                     for task in tasks.values():
                         if not task.done():
                             task.cancel()
@@ -531,7 +709,12 @@ class TopologicalScheduler:
         rail_name: str,
         context: Dict[str, Any],
     ) -> Any:
-        """Execute a single rail with optional timeout."""
+        """Execute a single rail, optionally enforcing a timeout.
+
+        If ``self._timeout`` is set, the coroutine is wrapped in
+        ``asyncio.wait_for`` which raises ``asyncio.TimeoutError`` if the
+        rail does not complete in time.
+        """
         if self._timeout:
             return await asyncio.wait_for(
                 rail_executor(rail_name, context),
@@ -546,23 +729,50 @@ class TopologicalScheduler:
     ) -> Optional[str]:
         """Run tasks concurrently, stopping on first block.
 
-        Returns the name of the blocking rail, or None.
+        Unlike ``asyncio.gather``, this method processes tasks *as they
+        complete* (using ``asyncio.wait`` with ``FIRST_COMPLETED``).
+        After each completion it inspects the result; if the result is a
+        blocking action, it cancels all still-pending tasks and returns
+        immediately.
+
+        The ``task_to_rail`` reverse mapping is necessary because
+        ``asyncio.wait`` returns generic ``Task`` objects — we need a way
+        to map each finished task back to the rail name that spawned it
+        so we can store the result under the correct key in ``results``
+        and report which rail caused the block.
+
+        Args:
+            tasks: Mapping of rail name -> asyncio.Task.
+            results: Mutable dict that receives rail_name -> result entries.
+
+        Returns:
+            The name of the blocking rail, or ``None`` if all tasks
+            completed without blocking.
         """
+        # Build a reverse lookup: Task object -> rail name.  This is
+        # required because ``asyncio.wait`` returns a set of Task objects
+        # with no reference to the rail names we originally associated
+        # with them.
         task_to_rail = {task: name for name, task in tasks.items()}
         pending = set(tasks.values())
 
         while pending:
+            # Wait until at least one task finishes.  ``FIRST_COMPLETED``
+            # allows us to inspect results incrementally rather than
+            # waiting for the entire group.
             done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
 
             for task in done:
+                # Look up which rail this task corresponds to.
                 rail_name = task_to_rail[task]
 
                 try:
                     result = task.result()
                     results[rail_name] = result
 
+                    # If this rail blocked, cancel every remaining task
+                    # in the group to avoid unnecessary work.
                     if self._is_block(result):
-                        # Cancel remaining tasks
                         for p in pending:
                             p.cancel()
                         return rail_name
@@ -574,15 +784,39 @@ class TopologicalScheduler:
                         "error": str(e),
                     }
 
+        # All tasks completed without any blocking result.
         return None
 
     @staticmethod
     def _is_block(result: Any) -> bool:
-        """Check if a rail result indicates blocking."""
+        """Check whether a rail result indicates a blocking outcome.
+
+        A blocking result means the guardrail has decided to refuse or
+        stop processing.  The method recognises three action values:
+          - ``"block"``   — the input is explicitly blocked.
+          - ``"stop"``    — processing should be halted.
+          - ``"refused"`` — the request has been refused.
+
+        Any other action value (including ``"continue"``) is considered
+        non-blocking.
+
+        Args:
+            result: The value returned by the rail executor.
+
+        Returns:
+            ``True`` if the result signals that execution should be
+            halted; ``False`` otherwise.
+        """
         if isinstance(result, dict):
             action = result.get("action", "")
             return action in ("block", "stop", "refused")
         return False
+
+
+# ---------------------------------------------------------------------------
+# Public convenience functions — thin wrappers that build the graph and
+# scheduler in one step, suitable for use by the NeMo Guardrails runtime.
+# ---------------------------------------------------------------------------
 
 
 def build_scheduler_from_config(
@@ -613,14 +847,17 @@ def build_scheduler_from_config(
 def has_dependencies(flows: List[Any]) -> bool:
     """Check if any flow in the config declares dependencies.
 
-    This is used as a fast path to skip DAG construction when no
-    dependencies are declared (backward compatibility).
+    This serves as a fast-path check so that the runtime can skip DAG
+    construction entirely when no dependencies are declared.  This
+    preserves backward compatibility with configurations that predate
+    the dependency-aware scheduler — those flows are simply executed
+    in their original declaration order.
 
     Args:
         flows: List of flow names (str) or flow config dicts.
 
     Returns:
-        True if any flow has a "depends_on" field.
+        True if any flow has a "depends_on" field with a non-empty value.
     """
     for flow in flows:
         if isinstance(flow, dict) and flow.get("depends_on"):

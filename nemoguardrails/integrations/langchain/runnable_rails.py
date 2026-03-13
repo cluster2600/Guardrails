@@ -642,7 +642,10 @@ class RunnableRails(Runnable[Input, Output]):
         # Store run manager if available for callbacks
         run_manager = kwargs.get("run_manager", None)
 
-        # M6: Use pre-created GenerationOptions to avoid Pydantic construction overhead.
+        # M6: Reuse a pre-created GenerationOptions instance to avoid the
+        # Pydantic model construction overhead on every invocation.  The
+        # instance is shared across calls but is treated as read-only —
+        # callers must not mutate it (see _default_gen_options comment).
         res = self.rails.generate(messages=input_messages, options=self._default_gen_options)
         context = res.output_data
         result = res.response

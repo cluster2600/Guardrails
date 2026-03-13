@@ -97,14 +97,26 @@ class LLMTaskManager:
         # in the prompt.
         self.prompt_context = {}
 
-        # M3: Cache compiled templates and their variable sets to avoid
-        # re-parsing on every _render_string() call.  Use ThreadSafeCache
-        # for bounded LRU eviction and thread-safety on free-threaded builds.
+        # M3 optimisation: cache compiled Jinja2 templates and their
+        # extracted variable sets to avoid the expensive env.from_string()
+        # and meta.find_undeclared_variables() calls on every
+        # _render_string() invocation.
+        #
+        # ThreadSafeCache provides:
+        #   - Bounded LRU eviction (prevents unbounded memory growth when
+        #     templates are partially dynamic, e.g. per-user prompt strings)
+        #   - Thread-safe access for free-threaded Python 3.14t builds
+        #     where the GIL no longer protects dict operations
         self._template_cache: ThreadSafeCache = ThreadSafeCache(maxsize=512)
         self._variables_cache: ThreadSafeCache = ThreadSafeCache(maxsize=512)
 
     def _get_compiled_template(self, template_str: str):
-        """Return a compiled Jinja2 template, using a cache to avoid re-parsing."""
+        """Return a compiled Jinja2 template, using a bounded cache.
+
+        On a cache hit this is a single dict lookup (O(1)).  On a miss,
+        the template is compiled via ``env.from_string()`` and stored
+        for subsequent calls.
+        """
         cached = self._template_cache.get(template_str)
         if cached is not None:
             return cached
@@ -113,7 +125,11 @@ class LLMTaskManager:
         return template
 
     def _get_template_variables(self, template_str: str) -> frozenset:
-        """Return the undeclared variables in a template, cached."""
+        """Return the undeclared variables referenced in a template, cached.
+
+        Returns a ``frozenset`` (immutable) so that callers cannot
+        accidentally mutate the cached value and corrupt future lookups.
+        """
         cached = self._variables_cache.get(template_str)
         if cached is not None:
             return cached
@@ -149,7 +165,9 @@ class LLMTaskManager:
         :return: The rendered template.
         :rtype: str.
         """
-        # M3: Use cached template compilation and variable extraction
+        # M3: retrieve the compiled template and its variable set from
+        # the bounded caches.  On the hot path (cache hit) this avoids
+        # both the Jinja2 parse/compile step and the variable extraction.
         template = self._get_compiled_template(template_str)
         variables = self._get_template_variables(template_str)
 

@@ -33,17 +33,23 @@ import sys
 
 log = logging.getLogger(__name__)
 
+# On Python 3.14+, PEP 649 deferred annotations may cause TypeErrors
+# when importing OTel modules that use complex annotations.
 _NEEDS_PEP649_GUARD = sys.version_info >= (3, 14)
 
-# Sentinel indicating OTel is not available
+# Module-level flag consumed by tracing adapters to gate OTel usage.
+# Set once at import time and never changed afterwards.
 OTEL_AVAILABLE = False
 
 try:
+    # Attempt the two core OTel imports that the tracing subsystem requires.
     from opentelemetry import trace  # noqa: F401
     from opentelemetry.trace import NoOpTracerProvider  # noqa: F401
 
     OTEL_AVAILABLE = True
 except (ImportError, TypeError) as exc:
+    # TypeError is caught for PEP 649 annotation resolution failures.
+    # ImportError covers the case where OTel is simply not installed.
     if _NEEDS_PEP649_GUARD and isinstance(exc, TypeError):
         log.warning(
             "OpenTelemetry API import failed on Python %s due to a TypeError "
