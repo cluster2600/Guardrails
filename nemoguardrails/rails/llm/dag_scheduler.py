@@ -665,8 +665,8 @@ class TopologicalScheduler:
         loop = asyncio.get_running_loop()
         previous_task_factory = None
         if _HAS_EAGER_TASK_FACTORY:
-            previous_task_factory = loop.get_task_factory()
-            loop.set_task_factory(asyncio.eager_task_factory)
+            previous_task_factory = loop.get_task_factory()  # type: ignore[attr-defined]
+            loop.set_task_factory(asyncio.eager_task_factory)  # type: ignore[attr-defined]
 
         try:
             for group in self._groups:
@@ -748,7 +748,7 @@ class TopologicalScheduler:
         finally:
             # Restore the previous task factory so we don't leak state.
             if _HAS_EAGER_TASK_FACTORY:
-                loop.set_task_factory(previous_task_factory)
+                loop.set_task_factory(previous_task_factory)  # type: ignore[attr-defined]
 
         elapsed_ms = (time.monotonic() - start) * 1000
 
