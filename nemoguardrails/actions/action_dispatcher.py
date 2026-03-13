@@ -54,8 +54,10 @@ class ActionDispatcher:
 
         # Cache for normalised action names — avoids repeated string
         # transformations (endswith, replace, camelcase_to_snakecase)
-        # on every execute_action() call.
+        # on every execute_action() call.  Bounded to prevent memory
+        # growth if action names are derived from external input.
         self._normalised_names: Dict[str, str] = {}
+        self._normalised_names_maxsize = 4096
 
         if load_all_actions:
             # TODO: check for better way to find actions dir path or use constants.py
@@ -178,6 +180,8 @@ class ActionDispatcher:
                 normalised = normalised.replace("Action", "")
             normalised = utils.camelcase_to_snakecase(normalised)
 
+        if len(self._normalised_names) >= self._normalised_names_maxsize:
+            self._normalised_names.clear()
         self._normalised_names[name] = normalised
         return normalised
 

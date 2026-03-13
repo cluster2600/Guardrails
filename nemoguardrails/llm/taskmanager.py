@@ -54,6 +54,8 @@ from nemoguardrails.llm.prompts import get_prompt
 from nemoguardrails.llm.types import Task
 from nemoguardrails.rails.llm.config import MessageTemplate, RailsConfig
 
+_MISSING = object()
+
 
 class _BoundedCache:
     """A simple bounded LRU cache backed by OrderedDict."""
@@ -62,7 +64,7 @@ class _BoundedCache:
         self._maxsize = maxsize
         self._data: OrderedDict = OrderedDict()
 
-    def get(self, key, default=None):
+    def get(self, key, default=_MISSING):
         if key in self._data:
             self._data.move_to_end(key)
             return self._data[key]
@@ -134,7 +136,7 @@ class LLMTaskManager:
     def _get_compiled_template(self, template_str: str):
         """Return a compiled Jinja2 template, using the cache."""
         cached = self._template_cache.get(template_str)
-        if cached is not None:
+        if cached is not _MISSING:
             return cached
         compiled = self.env.from_string(template_str)
         self._template_cache.put(template_str, compiled)
@@ -143,7 +145,7 @@ class LLMTaskManager:
     def _get_template_variables(self, template_str: str) -> frozenset:
         """Return the set of undeclared variables in a template, using the cache."""
         cached = self._variables_cache.get(template_str)
-        if cached is not None:
+        if cached is not _MISSING:
             return cached
         variables = frozenset(meta.find_undeclared_variables(self.env.parse(template_str)))
         self._variables_cache.put(template_str, variables)
