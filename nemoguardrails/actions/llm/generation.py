@@ -742,22 +742,24 @@ class LLMGenerationActions:
         Returns:
             The rendered string.
         """
-        # First, if we have any direct usage of variables in the string,
-        # we replace with correct Jinja syntax.
-        # M3: Use pre-compiled regex instead of re-compiling on every call.
-        for param in _DOLLAR_VAR_RE.findall(template_str):
-            template_str = template_str.replace(f"${param}", "{{" + param + "}}")
+        # M3: Cache lookup uses the original template string as key so that
+        # the $variable → {{variable}} regex substitution is skipped on hits.
+        cache_key = template_str
+        cached_tpl = self._template_cache.get(cache_key)
+        cached_vars = self._variables_cache.get(cache_key)
 
-        # M3: Use cached template compilation and variable extraction.
-        cached_tpl = self._template_cache.get(template_str)
-        if cached_tpl is None:
-            cached_tpl = self.env.from_string(template_str)
-            self._template_cache.put(template_str, cached_tpl)
+        if cached_tpl is None or cached_vars is None:
+            # Replace $variable with Jinja2 syntax only on cache miss.
+            for param in _DOLLAR_VAR_RE.findall(template_str):
+                template_str = template_str.replace(f"${param}", "{{" + param + "}}")
 
-        cached_vars = self._variables_cache.get(template_str)
-        if cached_vars is None:
-            cached_vars = frozenset(meta.find_undeclared_variables(self.env.parse(template_str)))
-            self._variables_cache.put(template_str, cached_vars)
+            if cached_tpl is None:
+                cached_tpl = self.env.from_string(template_str)
+                self._template_cache.put(cache_key, cached_tpl)
+
+            if cached_vars is None:
+                cached_vars = frozenset(meta.find_undeclared_variables(self.env.parse(template_str)))
+                self._variables_cache.put(cache_key, cached_vars)
 
         # This is the context that will be passed to the template when rendering.
         render_context = {}

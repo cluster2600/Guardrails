@@ -534,7 +534,7 @@ class RuntimeV1_0(Runtime):
         current_events = list(events)
 
         for group in groups:
-            group_flows = list(group.rails)
+            group_flows = sorted(group.rails)
 
             # Build pre/post events for this group
             pre_events = [
