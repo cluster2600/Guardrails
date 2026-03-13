@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
+import functools
 import logging
 from functools import lru_cache
 
@@ -119,11 +121,20 @@ async def detect_sensitive_data(
         return False
 
     analyzer = _get_analyzer(score_threshold=default_score_threshold)
-    results = analyzer.analyze(
-        text=text,
-        language="en",
-        entities=options.entities,
-        ad_hoc_recognizers=_get_ad_hoc_recognizers(sdd_config),
+
+    # Offload the Presidio/spacy NLP analysis to a worker thread so it
+    # doesn't block the asyncio event loop.  On free-threaded Python 3.14t
+    # this runs in true parallel with other guardrail checks.
+    loop = asyncio.get_running_loop()
+    results = await loop.run_in_executor(
+        None,
+        functools.partial(
+            analyzer.analyze,
+            text=text,
+            language="en",
+            entities=options.entities,
+            ad_hoc_recognizers=_get_ad_hoc_recognizers(sdd_config),
+        ),
     )
 
     # If we have any
@@ -159,13 +170,17 @@ async def mask_sensitive_data(source: str, text: str, config: RailsConfig):
     for entity in options.entities:
         operators[entity] = OperatorConfig("replace")
 
-    results = analyzer.analyze(
-        text=text,
-        language="en",
-        entities=options.entities,
-        ad_hoc_recognizers=_get_ad_hoc_recognizers(sdd_config),
-    )
-    anonymizer = AnonymizerEngine()
-    masked_results = anonymizer.anonymize(text=text, analyzer_results=results, operators=operators)
+    # Offload the NLP analysis and anonymisation to a worker thread.
+    def _analyse_and_mask() -> str:
+        results = analyzer.analyze(
+            text=text,
+            language="en",
+            entities=options.entities,
+            ad_hoc_recognizers=_get_ad_hoc_recognizers(sdd_config),
+        )
+        anonymizer = AnonymizerEngine()
+        masked_results = anonymizer.anonymize(text=text, analyzer_results=results, operators=operators)
+        return masked_results.text
 
-    return masked_results.text
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(None, _analyse_and_mask)

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import logging
 from typing import List, TypedDict
 
@@ -70,12 +71,19 @@ async def detect_regex_pattern(
         log.debug("Empty text provided, skipping regex check.")
         return RegexDetectionResult(is_match=False, text=text, detections=[])
 
-    # Match against pre-compiled patterns and collect all matches.
-    matched: List[str] = []
-    for compiled, raw_pattern in zip(compiled_patterns, options.patterns):
-        if compiled.search(text):
-            log.info("Regex pattern matched: %s", raw_pattern)
-            matched.append(raw_pattern)
+    # Offload the CPU-intensive pattern matching loop to a worker thread
+    # so it doesn't block the asyncio event loop.  On free-threaded Python
+    # 3.14t builds this runs in true parallel with other guardrail checks.
+    def _match_patterns() -> List[str]:
+        hits: List[str] = []
+        for compiled, raw_pattern in zip(compiled_patterns, options.patterns):
+            if compiled.search(text):
+                log.info("Regex pattern matched: %s", raw_pattern)
+                hits.append(raw_pattern)
+        return hits
+
+    loop = asyncio.get_running_loop()
+    matched = await loop.run_in_executor(None, _match_patterns)
 
     if matched:
         return RegexDetectionResult(is_match=True, text=text, detections=matched)
