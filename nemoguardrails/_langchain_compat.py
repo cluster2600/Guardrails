@@ -106,11 +106,11 @@ def _patch_langchain_dict_shadow():
     # modules should be appended here.
     # -----------------------------------------------------------------
     _MODULES_TO_PATCH = [
-        "langchain.chains.base",       # Chain.dict()
-        "langchain.chains",            # Re-exported Chain class
-        "langchain.schema",            # Various schema base classes
+        "langchain.chains.base",  # Chain.dict()
+        "langchain.chains",  # Re-exported Chain class
+        "langchain.schema",  # Various schema base classes
         "langchain.schema.runnable.base",  # Runnable / RunnableSerializable
-        "langchain_core.runnables.base",   # Core Runnable hierarchy
+        "langchain_core.runnables.base",  # Core Runnable hierarchy
         "langchain_core.load.serializable",  # Serializable.dict()
     ]
 
