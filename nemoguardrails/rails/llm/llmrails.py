@@ -134,13 +134,7 @@ class _LRUDict(OrderedDict):
 
     def __getitem__(self, key):
         value = OrderedDict.__getitem__(self, key)
-        # Guard: popitem() internally calls __getitem__ on the evicted
-        # key *after* removal in some Python versions, so the key may
-        # no longer be present when move_to_end runs.
-        try:
-            OrderedDict.move_to_end(self, key)
-        except KeyError:
-            pass
+        OrderedDict.move_to_end(self, key)
         return value
 
     def __setitem__(self, key, value):
