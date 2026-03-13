@@ -14,8 +14,10 @@
 # limitations under the License.
 
 import logging
+import os
 import re
 from ast import literal_eval
+from collections import OrderedDict
 from typing import Any, Callable, Dict, List, Optional, Union
 
 from jinja2 import meta
@@ -51,6 +53,33 @@ from nemoguardrails.llm.output_parsers import (
 from nemoguardrails.llm.prompts import get_prompt
 from nemoguardrails.llm.types import Task
 from nemoguardrails.rails.llm.config import MessageTemplate, RailsConfig
+
+
+class _BoundedCache:
+    """A simple bounded LRU cache backed by OrderedDict."""
+
+    def __init__(self, maxsize: int = 512):
+        self._maxsize = maxsize
+        self._data: OrderedDict = OrderedDict()
+
+    def get(self, key, default=None):
+        if key in self._data:
+            self._data.move_to_end(key)
+            return self._data[key]
+        return default
+
+    def put(self, key, value):
+        if key in self._data:
+            self._data.move_to_end(key)
+        self._data[key] = value
+        if self._maxsize > 0 and len(self._data) > self._maxsize:
+            self._data.popitem(last=False)
+
+    def __len__(self):
+        return len(self._data)
+
+    def __contains__(self, key):
+        return key in self._data
 
 
 class LLMTaskManager:
@@ -97,8 +126,10 @@ class LLMTaskManager:
         # Caches for compiled Jinja2 templates and their variable sets.
         # Avoids re-parsing and re-compiling the same template string on
         # every _render_string() call (M3 optimisation).
-        self._template_cache: Dict[str, Any] = {}
-        self._variables_cache: Dict[str, set] = {}
+        # Bounded to prevent unbounded memory growth with dynamic templates.
+        _cache_size = int(os.environ.get("NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE", "512"))
+        self._template_cache: _BoundedCache = _BoundedCache(maxsize=_cache_size)
+        self._variables_cache: _BoundedCache = _BoundedCache(maxsize=_cache_size)
 
     def _get_compiled_template(self, template_str: str):
         """Return a compiled Jinja2 template, using the cache."""
@@ -106,7 +137,7 @@ class LLMTaskManager:
         if cached is not None:
             return cached
         compiled = self.env.from_string(template_str)
-        self._template_cache[template_str] = compiled
+        self._template_cache.put(template_str, compiled)
         return compiled
 
     def _get_template_variables(self, template_str: str) -> set:
@@ -115,7 +146,7 @@ class LLMTaskManager:
         if cached is not None:
             return cached
         variables = meta.find_undeclared_variables(self.env.parse(template_str))
-        self._variables_cache[template_str] = variables
+        self._variables_cache.put(template_str, variables)
         return variables
 
     def _get_general_instructions(self):

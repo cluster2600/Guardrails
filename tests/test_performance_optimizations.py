@@ -87,6 +87,21 @@ class TestLRUDict:
         d = _LRUDict(maxsize=10)
         assert isinstance(d, dict)
 
+    def test_access_promotes_to_mru(self):
+        """Reading a key should move it to the MRU position, preventing eviction."""
+        d = _LRUDict(maxsize=3)
+        d["a"] = 1
+        d["b"] = 2
+        d["c"] = 3
+        # Access "a" to promote it
+        _ = d["a"]
+        # Insert "d" — should evict "b" (LRU), not "a"
+        d["d"] = 4
+        assert "a" in d
+        assert "b" not in d
+        assert "c" in d
+        assert "d" in d
+
     def test_stress(self):
         d = _LRUDict(maxsize=100)
         for i in range(1000):

@@ -24,6 +24,7 @@ import re
 import threading
 import time
 import warnings
+from collections import OrderedDict
 from functools import partial
 from typing import (
     Any,
@@ -116,34 +117,37 @@ from nemoguardrails.utils import (
 log = logging.getLogger(__name__)
 
 
-class _LRUDict(dict):
-    """A dict subclass with a bounded size using LRU eviction.
+class _LRUDict(OrderedDict):
+    """An OrderedDict subclass with bounded size and true LRU eviction.
 
-    When the dict exceeds *maxsize* entries the least-recently inserted
-    key is evicted.  This provides a drop-in replacement for a plain
-    ``dict`` used as a cache while preventing unbounded memory growth.
+    Both reads (``__getitem__``) and writes (``__setitem__``) move the
+    accessed key to the most-recently-used position.  When the dict
+    exceeds *maxsize* entries the least-recently-used key is evicted.
+
+    All operations are O(1) amortized thanks to the underlying
+    ``OrderedDict``.
     """
 
     def __init__(self, maxsize: int = 1024):
         super().__init__()
         self._maxsize = maxsize
-        self._order: list = []
+
+    def __getitem__(self, key):
+        value = OrderedDict.__getitem__(self, key)
+        # Guard: popitem() internally calls __getitem__ on the evicted
+        # key *after* removal in some Python versions, so the key may
+        # no longer be present when move_to_end runs.
+        try:
+            OrderedDict.move_to_end(self, key)
+        except KeyError:
+            pass
+        return value
 
     def __setitem__(self, key, value):
-        if key not in self:
-            if len(self) >= self._maxsize:
-                # Evict the oldest entry
-                oldest = self._order.pop(0)
-                super().__delitem__(oldest)
-            self._order.append(key)
-        super().__setitem__(key, value)
-
-    def __delitem__(self, key):
-        super().__delitem__(key)
-        try:
-            self._order.remove(key)
-        except ValueError:
-            pass
+        OrderedDict.__setitem__(self, key, value)
+        OrderedDict.move_to_end(self, key)
+        if len(self) > self._maxsize:
+            OrderedDict.popitem(self, last=False)
 
 
 class LLMRails:
