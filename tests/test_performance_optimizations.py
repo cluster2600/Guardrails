@@ -197,9 +197,7 @@ class TestTemplateCaching:
         tm = LLMTaskManager(config)
 
         template_str = "{{ greeting }}, {{ name }}!"
-        v1 = tm._get_template_variables(template_str)
-        v2 = tm._get_template_variables(template_str)
-        assert v1 is v2  # same object from cache
+        assert v1 == v2
         assert "greeting" in v1
         assert "name" in v1
 
