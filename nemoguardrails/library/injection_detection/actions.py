@@ -28,8 +28,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import asyncio
-import functools
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, TypedDict, Union
@@ -348,13 +346,7 @@ async def injection_detection(text: str, config: RailsConfig) -> InjectionDetect
         return InjectionDetectionResult(is_injection=False, text=text, detections=[])
 
     if action_option == "reject":
-        if getattr(_reject_injection, "_cpu_bound", False):
-            loop = asyncio.get_running_loop()
-            is_injection, detected_rules = await loop.run_in_executor(
-                None, functools.partial(_reject_injection, text, rules)
-            )
-        else:
-            is_injection, detected_rules = _reject_injection(text, rules)
+        is_injection, detected_rules = _reject_injection(text, rules)
         return InjectionDetectionResult(is_injection=is_injection, text=text, detections=detected_rules)
     else:
         matches = rules.match(data=text)
@@ -363,13 +355,7 @@ async def injection_detection(text: str, config: RailsConfig) -> InjectionDetect
             log.info(f"Input matched on rule {', '.join(detected_rules_list)}.")
 
             if action_option == "omit":
-                if getattr(_omit_injection, "_cpu_bound", False):
-                    loop = asyncio.get_running_loop()
-                    is_injection, result_text = await loop.run_in_executor(
-                        None, functools.partial(_omit_injection, text, matches)
-                    )
-                else:
-                    is_injection, result_text = _omit_injection(text, matches)
+                is_injection, result_text = _omit_injection(text, matches)
                 return InjectionDetectionResult(
                     is_injection=is_injection,
                     text=result_text,
