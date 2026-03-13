@@ -71,6 +71,8 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import Any, Callable, Coroutine, Dict, FrozenSet, List, Optional, Set
 
+from nemoguardrails._thread_safety import is_free_threaded as _is_free_threaded_fn
+
 log = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -88,7 +90,7 @@ _HAS_EAGER_TASK_FACTORY: bool = _PY_VERSION >= (3, 12)
 # Free-threaded Python 3.13t / 3.14t builds disable the GIL, allowing true
 # thread-level parallelism for CPU-bound rails.  We detect this via the
 # ``Py_GIL_DISABLED`` sysconfig flag (PEP 703).
-_IS_FREE_THREADED: bool = bool(getattr(sys, "_is_gil_enabled", lambda: True)() is False)
+_IS_FREE_THREADED: bool = _is_free_threaded_fn()
 
 # Shared thread-pool for CPU-bound rail work.  On free-threaded builds we
 # size it to the number of cores so that CPU-bound guardrail checks (regex,

@@ -403,7 +403,7 @@ async def _format_streaming_response(
             processed_chunk = process_chunk(chunk)
             if isinstance(processed_chunk, ChunkError):
                 # Yield the error and stop streaming
-                yield f"data: {json.dumps(processed_chunk.model_dump())}\n\n"
+                yield f"data: {processed_chunk.model_dump_json()}\n\n"
                 return
             else:
                 yield format_streaming_chunk_as_sse(processed_chunk, model, chunk_id)

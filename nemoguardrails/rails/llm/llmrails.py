@@ -26,6 +26,7 @@ import re
 import threading
 import time
 import warnings
+from collections import OrderedDict
 from functools import partial
 from typing import (
     Any,
@@ -122,6 +123,8 @@ _START_ACTION_RE = re.compile(r"Start(.*Action)")
 
 process_events_semaphore = asyncio.Semaphore(1)
 
+_HISTORY_CACHE_MAX_SIZE = 1024
+
 
 class LLMRails:
     """Rails based on a given configuration."""
@@ -163,7 +166,7 @@ class LLMRails:
         # We keep a cache of the events history associated with a sequence of user messages.
         # TODO: when we update the interface to allow to return a "state object", this
         #   should be removed
-        self.events_history_cache = {}
+        self.events_history_cache: OrderedDict = OrderedDict()
 
         # We also load the default flows from the `default_flows.yml` file in the current folder.
         # But only for version 1.0.
@@ -304,7 +307,7 @@ class LLMRails:
         # There are still some edge cases not covered by nest_asyncio.
         # Using a separate thread always for now.
         loop = get_or_create_event_loop()
-        if True or check_sync_call_from_async_loop():
+        if check_sync_call_from_async_loop():
             t = threading.Thread(target=asyncio.run, args=(self._init_kb(),))
             t.start()
             t.join()
@@ -604,6 +607,8 @@ class LLMRails:
                 cache_key = get_history_cache_key(messages[0:p])
                 if cache_key in self.events_history_cache:
                     events = self.events_history_cache[cache_key].copy()
+                    # LRU: move accessed key to the end
+                    self.events_history_cache.move_to_end(cache_key)
                     break
 
                 p -= 1
@@ -971,6 +976,9 @@ class LLMRails:
                 # Save the new events in the history and update the cache
                 cache_key = get_history_cache_key((messages) + [new_message])  # type: ignore
                 self.events_history_cache[cache_key] = events
+                # LRU eviction
+                if len(self.events_history_cache) > _HISTORY_CACHE_MAX_SIZE:
+                    self.events_history_cache.popitem(last=False)
             else:
                 output_state = {"events": events}
 

@@ -228,7 +228,8 @@ class StreamingHandler(AsyncIterator):
             if self.pipe_to:
                 # only add explicit empty strings, not ones created during processing
                 if chunk is END_OF_STREAM or chunk is not None:
-                    asyncio.create_task(self.pipe_to.push_chunk(chunk))
+                    task = asyncio.create_task(self.pipe_to.push_chunk(chunk))
+                    task.add_done_callback(lambda t: t.exception() if not t.cancelled() and t.exception() else None)
                 if chunk is END_OF_STREAM:
                     self.streaming_finished_event.set()
                     self.top_k_nonempty_lines_event.set()
