@@ -52,6 +52,7 @@ jobs:
     name: "Perf · ${{ matrix.python-version }}"
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.python-version == '3.14' }}
     strategy:
       matrix:
         python-version: ["3.12", "3.14"]

@@ -685,7 +685,8 @@ class OutputRails(_RailSectionMixin):
     @root_validator(pre=True)
     def _normalise_flows(cls, values):
         """Accept both ``flows`` (legacy) and ``flow_configs`` as input."""
-        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
         values["flow_configs"] = _coerce_flow_list(raw)
         return values
 
@@ -695,7 +696,8 @@ class RetrievalRails(_RailSectionMixin):
 
     @root_validator(pre=True)
     def _normalise_flows(cls, values):
-        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
         values["flow_configs"] = _coerce_flow_list(raw)
         return values
 
@@ -730,7 +732,8 @@ class ToolOutputRails(_RailSectionMixin):
 
     @root_validator(pre=True)
     def _normalise_flows(cls, values):
-        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
         values["flow_configs"] = _coerce_flow_list(raw)
         return values
 
@@ -749,7 +752,8 @@ class ToolInputRails(_RailSectionMixin):
 
     @root_validator(pre=True)
     def _normalise_flows(cls, values):
-        raw = values.pop("flows", None) or values.get("flow_configs", [])
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
         values["flow_configs"] = _coerce_flow_list(raw)
         return values
 

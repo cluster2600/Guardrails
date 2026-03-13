@@ -107,6 +107,9 @@ class RunnableRails(Runnable[Input, Output]):
 
         # M6: Pre-create the GenerationOptions used on every invoke/ainvoke call
         # to avoid re-constructing Pydantic models on every request.
+        # SAFETY: This shared instance must NOT be mutated in-place.
+        # generate_async() already deep-copies when tracing is enabled;
+        # any new code path that mutates options must do the same.
         self._default_gen_options = GenerationOptions(output_vars=True)
 
         # If we have a passthrough Runnable, we need to register a passthrough fn

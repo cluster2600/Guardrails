@@ -84,6 +84,12 @@ class Runtime:
         # The maximum number of events to be processed in a processing loop
         self.max_events = 500
 
+    def shutdown(self, wait: bool = True) -> None:
+        """Release the thread pool and any other managed resources."""
+        if self._thread_pool is not None:
+            self._thread_pool.shutdown(wait=wait)
+            self._thread_pool = None
+
     @abstractmethod
     def _init_flow_configs(self) -> None:
         pass

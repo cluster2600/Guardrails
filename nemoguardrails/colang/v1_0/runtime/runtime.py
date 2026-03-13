@@ -123,6 +123,18 @@ class RuntimeV1_0(Runtime):
         for flow in self.config.flows:
             self._load_flow_config(flow)
 
+        # Pre-compute DAG schedulers once at init time (static config).
+        self._input_dag_scheduler = (
+            build_scheduler_from_config(self.config.rails.input.flow_configs)
+            if self.config.rails.input.has_dependencies
+            else None
+        )
+        self._output_dag_scheduler = (
+            build_scheduler_from_config(self.config.rails.output.flow_configs)
+            if self.config.rails.output.has_dependencies
+            else None
+        )
+
     async def generate_events(self, events: List[dict], processing_log: Optional[List[dict]] = None) -> List[dict]:
         """Generates the next events based on the provided history.
 
@@ -452,7 +464,6 @@ class RuntimeV1_0(Runtime):
         if self.config.rails.input.has_dependencies:
             return await self._run_flows_with_dag_scheduler(
                 flow_configs=self.config.rails.input.flow_configs,
-                flows=flows,
                 events=events,
                 event_type_prefix="Input",
             )
@@ -474,7 +485,6 @@ class RuntimeV1_0(Runtime):
         if self.config.rails.output.has_dependencies:
             return await self._run_flows_with_dag_scheduler(
                 flow_configs=self.config.rails.output.flow_configs,
-                flows=flows,
                 events=events,
                 event_type_prefix="Output",
             )
@@ -491,7 +501,6 @@ class RuntimeV1_0(Runtime):
     async def _run_flows_with_dag_scheduler(
         self,
         flow_configs: List[Any],
-        flows: List[str],
         events: List[dict],
         event_type_prefix: str = "Input",
     ) -> ActionResult:
@@ -506,16 +515,23 @@ class RuntimeV1_0(Runtime):
 
         Args:
             flow_configs: The ``FlowWithDeps`` list from the rail section config.
-            flows: Flat list of flow name strings (for backward compat).
             events: Current event list.
             event_type_prefix: "Input" or "Output" for event type naming.
         """
-        scheduler = build_scheduler_from_config(flow_configs)
+        # Use pre-computed scheduler cached at init time.
+        if event_type_prefix == "Input":
+            scheduler = self._input_dag_scheduler
+        else:
+            scheduler = self._output_dag_scheduler
+
+        if scheduler is None:
+            scheduler = build_scheduler_from_config(flow_configs)
+
         groups = scheduler.groups
 
         all_results: List[dict] = []
         context_updates: dict = {}
-        stopped_task_results: List[dict] = []
+        current_events = list(events)
 
         for group in groups:
             group_flows = list(group.rails)
@@ -530,10 +546,11 @@ class RuntimeV1_0(Runtime):
                 for f in group_flows
             ]
 
-            # Dispatch group flows in parallel
+            # Dispatch group flows in parallel, using the growing event
+            # history so that downstream groups see context from earlier ones.
             result = await self._run_flows_in_parallel(
                 flows=group_flows,
-                events=events,
+                events=current_events,
                 pre_events=pre_events,
                 post_events=post_events,
             )
@@ -549,11 +566,14 @@ class RuntimeV1_0(Runtime):
                     if event.get("type") == "ContextUpdate":
                         pass  # Already merged
                     elif (event.get("type") == "BotIntent" and event.get("intent") == "stop") or (
-                        isinstance(event.get("type", ""), str) and event["type"].endswith("Exception")
+                        isinstance(event.get("type"), str) and event.get("type", "").endswith("Exception")
                     ):
                         has_stop = True
 
             all_results.extend(result.events)
+            # Propagate this group's output events so downstream groups
+            # can see context updates produced by their dependencies.
+            current_events = current_events + result.events
 
             if has_stop:
                 log.info(

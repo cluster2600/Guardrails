@@ -31,6 +31,7 @@ from jinja2 import meta
 from jinja2.sandbox import SandboxedEnvironment
 from langchain_core.language_models import BaseChatModel, BaseLLM
 
+from nemoguardrails._thread_safety import ThreadSafeCache
 from nemoguardrails.actions.actions import ActionResult, action
 from nemoguardrails.actions.llm.utils import (
     flow_to_colang,
@@ -113,8 +114,9 @@ class LLMGenerationActions:
         self.env = SandboxedEnvironment()
 
         # M3: Cache compiled templates and variable sets to avoid re-parsing.
-        self._template_cache: Dict[str, Any] = {}
-        self._variables_cache: Dict[str, frozenset] = {}
+        # Use ThreadSafeCache for bounded LRU eviction and thread-safety.
+        self._template_cache: ThreadSafeCache = ThreadSafeCache(maxsize=512)
+        self._variables_cache: ThreadSafeCache = ThreadSafeCache(maxsize=512)
 
         # If set, in passthrough mode, this function will be used instead of
         # calling the LLM with the user input.
@@ -750,12 +752,12 @@ class LLMGenerationActions:
         cached_tpl = self._template_cache.get(template_str)
         if cached_tpl is None:
             cached_tpl = self.env.from_string(template_str)
-            self._template_cache[template_str] = cached_tpl
+            self._template_cache.put(template_str, cached_tpl)
 
         cached_vars = self._variables_cache.get(template_str)
         if cached_vars is None:
             cached_vars = frozenset(meta.find_undeclared_variables(self.env.parse(template_str)))
-            self._variables_cache[template_str] = cached_vars
+            self._variables_cache.put(template_str, cached_vars)
 
         # This is the context that will be passed to the template when rendering.
         render_context = {}

@@ -23,6 +23,7 @@ from typing import Any, Callable, Dict, List, Optional, Union
 from jinja2 import meta
 from jinja2.sandbox import SandboxedEnvironment
 
+from nemoguardrails._thread_safety import ThreadSafeCache
 from nemoguardrails.llm.filters import (
     co_v2,
     colang,
@@ -97,9 +98,10 @@ class LLMTaskManager:
         self.prompt_context = {}
 
         # M3: Cache compiled templates and their variable sets to avoid
-        # re-parsing on every _render_string() call.
-        self._template_cache: Dict[str, Any] = {}
-        self._variables_cache: Dict[str, frozenset] = {}
+        # re-parsing on every _render_string() call.  Use ThreadSafeCache
+        # for bounded LRU eviction and thread-safety on free-threaded builds.
+        self._template_cache: ThreadSafeCache = ThreadSafeCache(maxsize=512)
+        self._variables_cache: ThreadSafeCache = ThreadSafeCache(maxsize=512)
 
     def _get_compiled_template(self, template_str: str):
         """Return a compiled Jinja2 template, using a cache to avoid re-parsing."""
@@ -107,7 +109,7 @@ class LLMTaskManager:
         if cached is not None:
             return cached
         template = self.env.from_string(template_str)
-        self._template_cache[template_str] = template
+        self._template_cache.put(template_str, template)
         return template
 
     def _get_template_variables(self, template_str: str) -> frozenset:
@@ -115,9 +117,9 @@ class LLMTaskManager:
         cached = self._variables_cache.get(template_str)
         if cached is not None:
             return cached
-        variables = meta.find_undeclared_variables(self.env.parse(template_str))
-        self._variables_cache[template_str] = frozenset(variables)
-        return self._variables_cache[template_str]
+        variables = frozenset(meta.find_undeclared_variables(self.env.parse(template_str)))
+        self._variables_cache.put(template_str, variables)
+        return variables
 
     def _get_general_instructions(self):
         """Helper to extract the general instructions."""

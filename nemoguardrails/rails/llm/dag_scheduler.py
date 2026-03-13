@@ -548,14 +548,14 @@ class TopologicalScheduler:
 
         Returns the name of the blocking rail, or None.
         """
+        task_to_rail = {task: name for name, task in tasks.items()}
         pending = set(tasks.values())
 
         while pending:
             done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
 
             for task in done:
-                # Find the rail name for this task
-                rail_name = task.get_name().removeprefix("rail-")
+                rail_name = task_to_rail[task]
 
                 try:
                     result = task.result()

@@ -20,8 +20,6 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from nemoguardrails._langchain_compat import _patch_langchain_dict_shadow
 
-_patch_langchain_dict_shadow()
-
 try:
     from langchain.agents.middleware.types import AgentMiddleware, AgentState, hook_config
 except (ImportError, TypeError):
@@ -37,6 +35,9 @@ except (ImportError, TypeError):
             "Could not import AgentMiddleware from langchain. On Python >= 3.14, langchain >= 1.0.0 is required."
         )
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage  # noqa: E402
+
+# Patch after langchain modules are in sys.modules so the shim can find them.
+_patch_langchain_dict_shadow()
 
 if TYPE_CHECKING:
     from langgraph.runtime import Runtime as LangGraphRuntime
