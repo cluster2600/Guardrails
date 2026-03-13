@@ -15,6 +15,8 @@
 
 """A set of actions for generating various types of completions using an LLMs."""
 
+from __future__ import annotations
+
 import asyncio
 import logging
 import random

@@ -88,6 +88,11 @@ jobs:
         run: |
           python -m benchmarks.run_import --output /tmp/perf-import.json
 
+      - name: Run Python 3.14 advantages benchmarks
+        run: |
+          python -m benchmarks.bench_py314_advantages \
+            --output /tmp/perf-py314-advantages.json
+
       - name: Check latency regressions
         run: |
           BASELINE="perf_baselines/linux-py${{ matrix.python-version == '3.14' && '314' || '312' }}.json"
@@ -169,6 +174,12 @@ jobs:
       # --- Import / cold-start ---
       - name: Run import benchmarks
         run: python -m benchmarks.run_import --output /tmp/perf-import.json
+
+      # --- Python 3.14 advantages ---
+      - name: Run Python 3.14 advantages benchmarks
+        run: |
+          python -m benchmarks.bench_py314_advantages \
+            --output /tmp/perf-py314-advantages.json
 
       # --- Regression checks ---
       - name: Check latency regressions

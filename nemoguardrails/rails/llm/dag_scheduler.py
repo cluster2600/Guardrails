@@ -44,6 +44,8 @@ In this example:
     - Group 2: final_gate (depends on jailbreak_check, content_safety)
 """
 
+from __future__ import annotations
+
 import asyncio
 import logging
 import time
