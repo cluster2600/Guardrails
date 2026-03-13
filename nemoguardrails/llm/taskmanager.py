@@ -80,7 +80,7 @@ class _BoundedCache:
         self._maxsize = maxsize
         self._data: OrderedDict = OrderedDict()
 
-    def get(self, key, default=_MISSING):
+    def get(self, key, default=_MISSING) -> Any:
         """Return the cached value for *key*, or *default* if not present.
 
         A cache hit promotes the key to MRU position.
