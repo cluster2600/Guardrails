@@ -70,9 +70,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -e ".[dev]"
           python -m pip install \
-            aiohttp httpx jinja2 lark nest-asyncio \
-            pydantic pyyaml simpleeval starlette \
             langchain langchain-core langchain-community
 
       - name: Verify benchmark harness imports
@@ -140,9 +139,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -e ".[dev]"
           python -m pip install \
-            aiohttp httpx jinja2 lark nest-asyncio \
-            pydantic pyyaml simpleeval starlette \
             langchain langchain-core langchain-community
 
       - name: Show Python info

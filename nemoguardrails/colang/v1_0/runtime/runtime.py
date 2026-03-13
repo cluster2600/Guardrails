@@ -571,9 +571,15 @@ class RuntimeV1_0(Runtime):
                         has_stop = True
 
             all_results.extend(result.events)
-            # Propagate this group's output events so downstream groups
-            # can see context updates produced by their dependencies.
-            current_events = current_events + result.events
+            # Propagate only the inner events from EventHistoryUpdate
+            # wrappers so downstream groups see a flat event list.
+            group_raw_events: List[dict] = []
+            for ev in result.events:
+                if isinstance(ev, dict) and ev.get("type") == "EventHistoryUpdate":
+                    group_raw_events.extend(ev.get("data", {}).get("events", []))
+                else:
+                    group_raw_events.append(ev)
+            current_events = current_events + group_raw_events
 
             if has_stop:
                 log.info(

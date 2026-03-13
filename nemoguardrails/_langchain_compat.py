@@ -113,11 +113,10 @@ def import_init_chat_model():
 
     In langchain 1.x the import path may differ from 0.3.x.
     """
-    _patch_langchain_dict_shadow()
-
     try:
         from langchain.chat_models import init_chat_model
 
+        _patch_langchain_dict_shadow()
         return init_chat_model
     except (ImportError, TypeError):
         pass
@@ -126,6 +125,7 @@ def import_init_chat_model():
     try:
         from langchain_classic.chat_models import init_chat_model  # type: ignore[import-not-found]
 
+        _patch_langchain_dict_shadow()
         return init_chat_model
     except ImportError:
         pass
@@ -140,11 +140,10 @@ def import_chat_models_base():
 
     Used by providers.py to discover supported chat providers.
     """
-    _patch_langchain_dict_shadow()
-
     try:
         import langchain.chat_models.base as _base
 
+        _patch_langchain_dict_shadow()
         return _base
     except (ImportError, TypeError):
         pass
@@ -152,6 +151,7 @@ def import_chat_models_base():
     try:
         import langchain_classic.chat_models.base as _base  # type: ignore[import-not-found]
 
+        _patch_langchain_dict_shadow()
         return _base
     except ImportError:
         pass
