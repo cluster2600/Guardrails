@@ -144,7 +144,7 @@ class LLMTaskManager:
         """Return the set of undeclared variables in a template, using the cache."""
         cached = self._variables_cache.get(template_str)
         if cached is not None:
-            return cached
+            return set(cached)
         variables = meta.find_undeclared_variables(self.env.parse(template_str))
         self._variables_cache.put(template_str, variables)
         return variables
