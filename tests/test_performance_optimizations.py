@@ -83,6 +83,12 @@ class TestLRUDict:
         assert "a" not in d
         assert d["b"] == 2
 
+    def test_maxsize_zero_raises(self):
+        import pytest
+
+        with pytest.raises(ValueError, match="maxsize must be at least 1"):
+            _LRUDict(maxsize=0)
+
     def test_is_dict_subclass(self):
         d = _LRUDict(maxsize=10)
         assert isinstance(d, dict)

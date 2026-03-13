@@ -140,12 +140,12 @@ class LLMTaskManager:
         self._template_cache.put(template_str, compiled)
         return compiled
 
-    def _get_template_variables(self, template_str: str) -> set:
+    def _get_template_variables(self, template_str: str) -> frozenset:
         """Return the set of undeclared variables in a template, using the cache."""
         cached = self._variables_cache.get(template_str)
         if cached is not None:
-            return set(cached)
-        variables = meta.find_undeclared_variables(self.env.parse(template_str))
+            return cached
+        variables = frozenset(meta.find_undeclared_variables(self.env.parse(template_str)))
         self._variables_cache.put(template_str, variables)
         return variables
 

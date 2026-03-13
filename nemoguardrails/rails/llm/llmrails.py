@@ -130,17 +130,26 @@ class _LRUDict(OrderedDict):
 
     def __init__(self, maxsize: int = 1024):
         super().__init__()
+        if maxsize < 1:
+            raise ValueError("maxsize must be at least 1")
         self._maxsize = maxsize
 
     def __getitem__(self, key):
         value = OrderedDict.__getitem__(self, key)
-        OrderedDict.move_to_end(self, key)
+        # On CPython 3.10, OrderedDict.popitem(last=False) internally
+        # calls __getitem__ on the evicted key *after* it has been
+        # removed from the dict.  The try/except prevents the
+        # subsequent move_to_end from raising on that phantom access.
+        try:
+            OrderedDict.move_to_end(self, key)
+        except KeyError:
+            pass
         return value
 
     def __setitem__(self, key, value):
         OrderedDict.__setitem__(self, key, value)
         OrderedDict.move_to_end(self, key)
-        if self._maxsize > 0 and len(self) > self._maxsize:
+        if len(self) > self._maxsize:
             OrderedDict.popitem(self, last=False)
 
 
