@@ -166,17 +166,19 @@ def bench_threading(rail_counts=(1, 2, 4, 8), cpu_rounds: int = 2000) -> list[di
         speedup_thr = seq_mean / thr_mean if thr_mean > 0 else 0
         speedup_async = seq_mean / async_mean if async_mean > 0 else 0
 
-        results.append({
-            "test": "cpu_parallel",
-            "rails": n_rails,
-            "cpu_rounds": cpu_rounds,
-            "sequential_ms": round(seq_mean, 2),
-            "threadpool_ms": round(thr_mean, 2),
-            "async_executor_ms": round(async_mean, 2),
-            "speedup_threadpool": round(speedup_thr, 2),
-            "speedup_async_executor": round(speedup_async, 2),
-            "workers": workers,
-        })
+        results.append(
+            {
+                "test": "cpu_parallel",
+                "rails": n_rails,
+                "cpu_rounds": cpu_rounds,
+                "sequential_ms": round(seq_mean, 2),
+                "threadpool_ms": round(thr_mean, 2),
+                "async_executor_ms": round(async_mean, 2),
+                "speedup_threadpool": round(speedup_thr, 2),
+                "speedup_async_executor": round(speedup_async, 2),
+                "workers": workers,
+            }
+        )
 
         print(
             f"  {n_rails} rails: seq={seq_mean:.1f}ms  "
@@ -206,7 +208,11 @@ def bench_import(modules=None, iterations: int = 5) -> list[dict]:
     for mod in modules:
         times = []
         for _ in range(iterations):
-            cmd = [sys.executable, "-c", f"import time; t=time.perf_counter(); import {mod}; print(time.perf_counter()-t)"]
+            cmd = [
+                sys.executable,
+                "-c",
+                f"import time; t=time.perf_counter(); import {mod}; print(time.perf_counter()-t)",
+            ]
             try:
                 out = subprocess.check_output(cmd, stderr=subprocess.DEVNULL, timeout=30)
                 times.append(float(out.strip()) * 1000)
@@ -216,14 +222,16 @@ def bench_import(modules=None, iterations: int = 5) -> list[dict]:
 
         if times:
             mean_ms = statistics.mean(times)
-            results.append({
-                "test": "import_time",
-                "module": mod,
-                "mean_ms": round(mean_ms, 1),
-                "min_ms": round(min(times), 1),
-                "max_ms": round(max(times), 1),
-                "stdev_ms": round(statistics.stdev(times), 1) if len(times) > 1 else 0,
-            })
+            results.append(
+                {
+                    "test": "import_time",
+                    "module": mod,
+                    "mean_ms": round(mean_ms, 1),
+                    "min_ms": round(min(times), 1),
+                    "max_ms": round(max(times), 1),
+                    "stdev_ms": round(statistics.stdev(times), 1) if len(times) > 1 else 0,
+                }
+            )
             print(f"  {mod}: {mean_ms:.1f}ms (min={min(times):.1f}, max={max(times):.1f})")
 
     return results
@@ -266,20 +274,19 @@ def bench_gc_pauses(iterations: int = 5000, cpu_rounds: int = 200) -> list[dict]
         p99 = latencies[int(n * 0.99)]
         mean = statistics.mean(latencies)
 
-        results.append({
-            "test": "gc_tail_latency",
-            "scenario": label,
-            "iterations": iterations,
-            "p50_ms": round(p50, 3),
-            "p95_ms": round(p95, 3),
-            "p99_ms": round(p99, 3),
-            "mean_ms": round(mean, 3),
-            "p99_p50_ratio": round(p99 / p50, 2) if p50 > 0 else 0,
-        })
-        print(
-            f"  {label}: p50={p50:.3f}ms  p95={p95:.3f}ms  "
-            f"p99={p99:.3f}ms  ratio={p99/p50:.2f}x"
+        results.append(
+            {
+                "test": "gc_tail_latency",
+                "scenario": label,
+                "iterations": iterations,
+                "p50_ms": round(p50, 3),
+                "p95_ms": round(p95, 3),
+                "p99_ms": round(p99, 3),
+                "mean_ms": round(mean, 3),
+                "p99_p50_ratio": round(p99 / p50, 2) if p50 > 0 else 0,
+            }
         )
+        print(f"  {label}: p50={p50:.3f}ms  p95={p95:.3f}ms  p99={p99:.3f}ms  ratio={p99 / p50:.2f}x")
 
     return results
 
@@ -318,17 +325,19 @@ def bench_asyncio(task_counts=(10, 50, 100, 500), iterations: int = 100) -> list
         noop_mean = statistics.mean(noop_times)
         light_mean = statistics.mean(light_times)
 
-        results.append({
-            "test": "asyncio_gather",
-            "tasks": n_tasks,
-            "noop_mean_ms": round(noop_mean, 3),
-            "light_mean_ms": round(light_mean, 3),
-            "overhead_per_task_us": round((noop_mean / n_tasks) * 1000, 2),
-        })
+        results.append(
+            {
+                "test": "asyncio_gather",
+                "tasks": n_tasks,
+                "noop_mean_ms": round(noop_mean, 3),
+                "light_mean_ms": round(light_mean, 3),
+                "overhead_per_task_us": round((noop_mean / n_tasks) * 1000, 2),
+            }
+        )
         print(
             f"  {n_tasks} tasks: noop={noop_mean:.3f}ms  "
             f"light={light_mean:.3f}ms  "
-            f"overhead={noop_mean/n_tasks*1000:.1f}us/task"
+            f"overhead={noop_mean / n_tasks * 1000:.1f}us/task"
         )
 
     return results
@@ -348,7 +357,8 @@ def main():
     parser = argparse.ArgumentParser(description="Python 3.14 performance advantages benchmark")
     parser.add_argument("--output", "-o", default=None, help="JSON output path")
     parser.add_argument(
-        "--section", "-s",
+        "--section",
+        "-s",
         choices=["threading", "import", "gc", "asyncio", "all"],
         default="all",
         help="Which benchmark section to run",
@@ -391,11 +401,15 @@ def main():
         thr = all_results["sections"]["threading"]
         best = max(thr, key=lambda r: r["speedup_threadpool"])
         if info["gil_disabled"]:
-            print(f"  Thread parallelism: {best['speedup_threadpool']:.2f}x speedup "
-                  f"({best['rails']} rails, free-threaded)")
+            print(
+                f"  Thread parallelism: {best['speedup_threadpool']:.2f}x speedup "
+                f"({best['rails']} rails, free-threaded)"
+            )
         else:
-            print(f"  Thread parallelism: {best['speedup_threadpool']:.2f}x "
-                  f"({best['rails']} rails, GIL limits parallelism)")
+            print(
+                f"  Thread parallelism: {best['speedup_threadpool']:.2f}x "
+                f"({best['rails']} rails, GIL limits parallelism)"
+            )
 
     if "gc" in all_results["sections"]:
         gc_results = all_results["sections"]["gc"]
@@ -406,14 +420,14 @@ def main():
     if "asyncio" in all_results["sections"]:
         aio = all_results["sections"]["asyncio"]
         if aio:
-            print(f"  Asyncio overhead: {aio[0]['overhead_per_task_us']:.1f}us/task "
-                  f"({aio[0]['tasks']} tasks)")
+            print(f"  Asyncio overhead: {aio[0]['overhead_per_task_us']:.1f}us/task ({aio[0]['tasks']} tasks)")
 
     print()
 
     blob = json.dumps(all_results, indent=2)
     if args.output:
         from pathlib import Path
+
         Path(args.output).parent.mkdir(parents=True, exist_ok=True)
         with open(args.output, "w") as f:
             f.write(blob + "\n")
