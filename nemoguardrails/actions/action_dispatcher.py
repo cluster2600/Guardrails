@@ -18,7 +18,8 @@
 This module is responsible for:
   1. Discovering and registering action functions/classes from the filesystem.
   2. Normalising action names (CamelCase -> snake_case, stripping the
-     ``"Action"`` suffix) with a bounded cache to avoid repeated work.
+     ``"Action"`` suffix) with a thread-safe bounded cache to avoid
+     repeated work.
   3. Dispatching execution to the correct handler, supporting:
        - Plain synchronous functions (called inline, with a warning)
        - Async coroutine functions (awaited transparently)
@@ -27,10 +28,13 @@ This module is responsible for:
        - LangChain ``Runnable`` instances (invoked via ``ainvoke``)
 """
 
+from __future__ import annotations
+
 import importlib.util
 import inspect
 import logging
 import os
+import threading
 from importlib.machinery import ModuleSpec
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union, cast
@@ -68,8 +72,12 @@ class ActionDispatcher:
         # transformations (endswith, replace, camelcase_to_snakecase)
         # on every execute_action() call.  Bounded to prevent memory
         # growth if action names are derived from external input.
+        #
+        # Protected by a lock for free-threaded Python 3.14t (no-GIL)
+        # where concurrent cache access could corrupt the dict.
         self._normalised_names: Dict[str, str] = {}
         self._normalised_names_maxsize = 4096
+        self._normalised_names_lock = threading.Lock()
 
         if load_all_actions:
             # TODO: check for better way to find actions dir path or use constants.py
@@ -159,7 +167,8 @@ class ActionDispatcher:
         self._registered_actions[action_name] = action
         # Invalidate the normalisation cache — a new registration may
         # change which name a lookup resolves to.
-        self._normalised_names.clear()
+        with self._normalised_names_lock:
+            self._normalised_names.clear()
 
     def register_actions(self, actions_obj: Any, override: bool = True):
         """Registers all the actions from the given object.
@@ -196,22 +205,23 @@ class ActionDispatcher:
         call, since a new registration may change which canonical name
         a lookup resolves to.
         """
-        cached = self._normalised_names.get(name)
-        if cached is not None:
-            return cached
+        with self._normalised_names_lock:
+            cached = self._normalised_names.get(name)
+            if cached is not None:
+                return cached
 
-        normalised = name
-        if normalised not in self.registered_actions:
-            # Try stripping "Action" suffix and converting to snake_case.
-            if normalised.endswith("Action"):
-                normalised = normalised.replace("Action", "")
-            normalised = utils.camelcase_to_snakecase(normalised)
+            normalised = name
+            if normalised not in self.registered_actions:
+                # Try stripping "Action" suffix and converting to snake_case.
+                if normalised.endswith("Action"):
+                    normalised = normalised.replace("Action", "")
+                normalised = utils.camelcase_to_snakecase(normalised)
 
-        # Evict the entire cache if the bound is reached.
-        if len(self._normalised_names) >= self._normalised_names_maxsize:
-            self._normalised_names.clear()
-        self._normalised_names[name] = normalised
-        return normalised
+            # Evict the entire cache if the bound is reached.
+            if len(self._normalised_names) >= self._normalised_names_maxsize:
+                self._normalised_names.clear()
+            self._normalised_names[name] = normalised
+            return normalised
 
     def has_registered(self, name: str) -> bool:
         """Check if an action is registered."""
