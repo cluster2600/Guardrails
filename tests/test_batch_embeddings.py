@@ -18,6 +18,8 @@ from time import time
 
 import pytest
 
+pytest.importorskip("annoy", reason="annoy not available on Python 3.14 (no native wheel)")
+
 from nemoguardrails.embeddings.basic import BasicEmbeddingsIndex
 from nemoguardrails.embeddings.index import IndexItem
 

@@ -14,14 +14,18 @@
 # limitations under the License.
 
 import os
+from importlib.util import find_spec
 from unittest.mock import MagicMock, patch
 
+import pytest
 from typer.testing import CliRunner
 
 from nemoguardrails import __version__
 from nemoguardrails.cli import app
 
 runner = CliRunner()
+
+_openai_available = find_spec("openai") is not None
 
 
 def test_app():
@@ -147,6 +151,7 @@ class TestChatCommand:
         mock_run_chat.assert_called_once()
 
 
+@pytest.mark.skipif(not _openai_available, reason="openai is required for server CLI tests")
 class TestServerCommand:
     @patch("uvicorn.run")
     @patch("nemoguardrails.server.api.app")

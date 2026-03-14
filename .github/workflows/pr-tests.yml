@@ -25,9 +25,19 @@ jobs:
       image: ${{ matrix.image }}
       python-version: ${{ matrix.python-version }}
       with-coverage: ${{ matrix.with-coverage || false }}
+
+  # Python 3.14 — experimental, uses pip instead of poetry
+  pr-tests-py314:
+    uses: ./.github/workflows/_test-py314.yml
+    secrets: inherit
+    with:
+      image: ubuntu-latest
+      python-version: "3.14"
+      continue-on-error: true
+
   pr-tests-summary:
     name: PR Tests Summary
-    needs: pr-tests-matrix
+    needs: [pr-tests-matrix, pr-tests-py314]
     runs-on: ubuntu-latest
     steps:
       - name: Confirm all PR tests passed

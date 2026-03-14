@@ -17,7 +17,10 @@ import asyncio
 import logging
 from typing import Any, Dict, List, Optional, Union, cast
 
-from annoy import AnnoyIndex  # type: ignore
+try:
+    from annoy import AnnoyIndex  # type: ignore
+except ImportError:
+    AnnoyIndex = None  # type: ignore[assignment,misc]
 
 from nemoguardrails.embeddings.cache import cache_embeddings
 from nemoguardrails.embeddings.index import EmbeddingsIndex, IndexItem
@@ -50,7 +53,7 @@ class BasicEmbeddingsIndex(EmbeddingsIndex):
         embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
         embedding_engine: str = "SentenceTransformers",
         embedding_params: Optional[Dict[str, Any]] = None,
-        index: Optional[AnnoyIndex] = None,
+        index: Optional["AnnoyIndex"] = None,  # pyright: ignore[reportInvalidTypeForm]
         cache_config: Optional[Union[EmbeddingsCacheConfig, Dict[str, Any]]] = None,
         search_threshold: float = float("inf"),
         use_batching: bool = False,
@@ -182,6 +185,10 @@ class BasicEmbeddingsIndex(EmbeddingsIndex):
 
     async def build(self):
         """Builds the Annoy index."""
+        if AnnoyIndex is None:
+            raise ImportError(
+                "The annoy package is required for BasicEmbeddingsIndex. Install it with: pip install annoy"
+            )
         self._index = AnnoyIndex(len(self._embeddings[0]), "angular")
         for i in range(len(self._embeddings)):
             self._index.add_item(i, self._embeddings[i])

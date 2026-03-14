@@ -14,11 +14,15 @@
 # limitations under the License.
 
 import os
+from importlib.util import find_spec
 
 import pytest
 
 from nemoguardrails import RailsConfig
 from tests.utils import TestChat
+
+_pytest_httpx_available = find_spec("pytest_httpx") is not None
+needs_httpx = pytest.mark.skipif(not _pytest_httpx_available, reason="pytest-httpx not installed")
 
 # Note: we don't call the action directly in these tests; we exercise it via flows.
 
@@ -773,6 +777,7 @@ async def test_ai_defense_inspect_missing_input():
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_user_prompt_success(httpx_mock):
@@ -828,6 +833,7 @@ async def test_ai_defense_inspect_user_prompt_success(httpx_mock):
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_bot_response_blocked(httpx_mock):
@@ -888,6 +894,7 @@ async def test_ai_defense_inspect_bot_response_blocked(httpx_mock):
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_with_user_metadata(httpx_mock):
@@ -941,6 +948,7 @@ async def test_ai_defense_inspect_with_user_metadata(httpx_mock):
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_http_error(httpx_mock):
@@ -985,6 +993,7 @@ async def test_ai_defense_inspect_http_error(httpx_mock):
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_http_504_gateway_timeout(httpx_mock):
@@ -1029,6 +1038,7 @@ async def test_ai_defense_inspect_http_504_gateway_timeout(httpx_mock):
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_default_safe_response(httpx_mock):
@@ -1155,6 +1165,7 @@ def test_ai_defense_config_combined():
     assert ai_defense_config.fail_open is True
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_api_failure_fail_closed(httpx_mock):
@@ -1205,6 +1216,7 @@ async def test_ai_defense_inspect_api_failure_fail_closed(httpx_mock):
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_api_failure_fail_open(httpx_mock):
@@ -1256,6 +1268,7 @@ async def test_ai_defense_inspect_api_failure_fail_open(httpx_mock):
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_malformed_response_fail_closed(httpx_mock):
@@ -1308,6 +1321,7 @@ async def test_ai_defense_inspect_malformed_response_fail_closed(httpx_mock):
             del os.environ["AI_DEFENSE_API_ENDPOINT"]
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_inspect_malformed_response_fail_open(httpx_mock):
@@ -1630,6 +1644,7 @@ def test_ai_defense_colang_2_missing_env_vars(monkeypatch):
     chat << ""
 
 
+@needs_httpx
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_ai_defense_http_404_with_fail_closed(httpx_mock):

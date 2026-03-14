@@ -59,6 +59,24 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - *(docs)* Remove AI Virtual Assistant Blueprint notebook ([#1682](https://github.com/NVIDIA-NeMo/Guardrails/issues/1682))
 - Update dependencies ahead of v0.21 release ([#1617](https://github.com/NVIDIA-NeMo/Guardrails/issues/1617))
 
+## [Unreleased]
+
+### 🚀 Features
+
+- *(compat)* Add Python 3.14 support with PEP 649 langchain compatibility shim ([#1720](https://github.com/NVIDIA-NeMo/Guardrails/issues/1720))
+- *(compat)* Add `_langchain_compat.py` module providing safe import wrappers for langchain 0.3.x and 1.x on Python >= 3.14
+- *(perf)* Add comprehensive benchmark harness: latency, throughput, streaming, import, and free-threaded benchmarks ([#1721](https://github.com/NVIDIA-NeMo/Guardrails/pull/1721))
+- *(perf)* Add CI performance regression gate (`.github/workflows/perf.yml`) with baseline comparison
+- *(threading)* Experimental support for free-threaded Python 3.14t (no-GIL) enabling true parallel rail execution
+
+### 🐛 Bug Fixes
+
+- *(asyncio)* Fix `get_or_create_event_loop()` to handle closed loops returned by Python 3.14's stricter asyncio lifecycle ([#1720](https://github.com/NVIDIA-NeMo/Guardrails/issues/1720))
+
+### 📚 Documentation
+
+- Add Python 3.14 migration guide (`docs/python-3.14-migration.md`)
+
 ## [0.20.0] - 2026-01-22
 
 ### 🚀 Features

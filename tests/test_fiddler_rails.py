@@ -16,6 +16,8 @@ import os
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
+pytest.importorskip("aioresponses", reason="aioresponses not installed")
 from aioresponses import aioresponses
 
 from nemoguardrails import RailsConfig

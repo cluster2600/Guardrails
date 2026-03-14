@@ -232,10 +232,15 @@ class EnhancedJsonEncoder(json.JSONEncoder):
 def get_or_create_event_loop():
     """Helper to return the current asyncio loop.
 
-    If one does not exist, it will be created.
+    If one does not exist or the current one is closed, a new one
+    will be created.  Python 3.14 tightened asyncio lifecycle rules
+    and may return a closed loop from get_event_loop().
     """
     try:
         loop = asyncio.get_event_loop()
+        if loop.is_closed():
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
     except RuntimeError:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)

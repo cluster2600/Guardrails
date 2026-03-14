@@ -14,13 +14,17 @@
 # limitations under the License.
 
 import os
+from importlib.util import find_spec
 from typing import Optional
 
 import pytest
 
 from nemoguardrails import RailsConfig
-from nemoguardrails.actions.actions import ActionResult, action
-from tests.utils import TestChat
+
+_pytest_httpx_available = find_spec("pytest_httpx") is not None
+needs_httpx = pytest.mark.skipif(not _pytest_httpx_available, reason="pytest-httpx not installed")
+from nemoguardrails.actions.actions import ActionResult, action  # noqa: E402
+from tests.utils import TestChat  # noqa: E402
 
 CONFIGS_FOLDER = os.path.join(os.path.dirname(__file__), ".", "test_configs")
 
@@ -46,6 +50,7 @@ async def retrieve_relevant_chunks():
     )
 
 
+@needs_httpx
 @pytest.mark.asyncio
 async def test_groundness_correct(httpx_mock):
     config = RailsConfig.from_path(os.path.join(CONFIGS_FOLDER, "autoalign_groundness"))
@@ -97,6 +102,7 @@ async def test_groundness_correct(httpx_mock):
     )
 
 
+@needs_httpx
 @pytest.mark.asyncio
 async def test_groundness_check_wrong(httpx_mock):
     # Test  - Very low score - Not factual

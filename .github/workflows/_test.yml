@@ -105,6 +105,7 @@ jobs:
       - name: Upload coverage to Codecov
         if: inputs.with-coverage
         uses: codecov/codecov-action@v5
+        continue-on-error: true
         with:
           directory: ./coverage/reports/
           env_vars: PYTHON
