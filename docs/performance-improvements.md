@@ -91,7 +91,7 @@ relative to a hypothetical no-tracing build (per existing benchmark suite).
 
 ---
 
-### M3 — Deterministic artifact caching
+### M3 — Deterministic artefact caching
 
 **Problem:** The `_render_string()` method in both `LLMTaskManager` and the
 LLM generation actions re-parsed and re-compiled Jinja2 templates on every
@@ -458,7 +458,7 @@ When comparing results across Python versions, focus on:
 4. **Asyncio overhead per task** — measures event-loop improvements.
 
 Do *not* compare absolute latencies across different machines — hardware
-differences dominate. Compare ratios and speedups insead.
+differences dominate. Compare ratios and speedups instead.
 
 ---
 

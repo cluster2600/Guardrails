@@ -1,6 +1,6 @@
 # Python 3.14 Performance Optimisations for NeMo Guardrails
 
-This document describes the performance optimisations impelemented to take
+This document describes the performance optimisations implemented to take
 advantage of Python 3.12 / 3.14 / 3.14t (free-threaded) improvements in the
 NeMo Guardrails framework.  All changes are backwards-compatible with Python
 3.10+ and are version-gated at import time so that no runtime overhead is

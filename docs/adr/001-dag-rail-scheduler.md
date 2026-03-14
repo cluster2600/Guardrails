@@ -82,7 +82,7 @@ request time.
 When no `depends_on` fields are declared:
 
 * If `parallel: true`, every rail has in-degree zero and they all land in the
-  first ready-set -- equivalent to today's all-parallel behavior.
+  first ready-set -- equivalent to today's all-parallel behaviour.
 * If `parallel: false` (or omitted), the scheduler is bypassed and rails
   execute sequentially in declaration order, preserving the current default.
 
@@ -172,7 +172,7 @@ N run before tier N+1.
   than sequential.  Logging must clearly label which group and which rail
   produced each log line.
 * **Thread-pool sizing**: The default thread-pool size must be tuned.  Too few
-  threads under-utilize cores; too many waste memory.
+  threads under-utilise cores; too many waste memory.
 
 ### Risks
 
