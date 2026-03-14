@@ -16,9 +16,9 @@
 
 """Benchmark: Python 3.14 performance advantages for NeMo Guardrails.
 
-Measures concrete improvements across eight areas, using the real guardrails
-infrastructure (fake_rails, conftest, Jinja2 template engine, DAG scheduler)
-rather than toy synthetic workloads.
+Measures concrete improvements across twelve areas, using the real guardrails
+infrastructure (fake_rails, conftest, Jinja2 template engine, DAG scheduler,
+ThreadSafeCache, ActionDispatcher) rather than toy synthetic workloads.
 
 Sections:
     1. **Free-threaded parallel CPU rails** — Sequential vs ThreadPoolExecutor
@@ -51,6 +51,21 @@ Sections:
     8. **Scheduler execute (before/after)** — Runs the actual
        TopologicalScheduler.execute() codepath with and without the eager
        task factory to prove the code change delivers measurable improvement.
+
+    9. **Action name normalisation cache** — Measures the benefit of caching
+       normalised action names vs re-computing CamelCase→snake_case on every
+       dispatch call.
+
+   10. **ThreadSafeCache contention** — Measures ThreadSafeCache throughput
+       under multi-threaded contention (1, 2, 4, 8 threads) to quantify
+       lock overhead on both GIL and free-threaded builds.
+
+   11. **End-to-end pipeline simulation** — Full request path: template
+       rendering + action dispatch + rail evaluation + response assembly,
+       measuring total framework overhead per request.
+
+   12. **Memory efficiency** — Tracks per-request RSS delta and allocation
+       counts via tracemalloc to detect memory leaks from caching.
 
 Run:
     python -m benchmarks.bench_py314_advantages
@@ -91,6 +106,10 @@ _SECTION_CHOICES = [
     "dag",
     "eager",
     "scheduler",
+    "action_cache",
+    "cache_contention",
+    "pipeline",
+    "memory",
     "all",
 ]
 
@@ -995,6 +1014,489 @@ def bench_scheduler_execute(iterations: int = 500) -> list[dict]:
     return results
 
 
+# ---------------------------------------------------------------------------
+# Section 9: Action name normalisation cache
+# ---------------------------------------------------------------------------
+
+
+def bench_action_name_cache(iterations: int = 50000) -> list[dict]:
+    """Benchmark action name normalisation with and without caching.
+
+    The ActionDispatcher._normalize_action_name() method converts CamelCase
+    names to snake_case on every dispatch call.  This benchmark measures the
+    cost of that conversion vs a simple dict lookup (cached result).
+
+    On a typical deployment with 20-50 registered actions, each request
+    dispatches 3-8 actions — so caching saves 15-40 string operations
+    per request.
+    """
+    try:
+        from nemoguardrails import utils
+    except ImportError:
+        print("  nemoguardrails.utils not available, skipping")
+        return []
+
+    # Realistic action names from the codebase
+    action_names = [
+        "GenerateUserIntentAction",
+        "GenerateBotMessageAction",
+        "CheckContentSafetyAction",
+        "RetrieveRelevantChunksAction",
+        "GenerateValueAction",
+        "CheckFactsAction",
+        "OutputModerationAction",
+        "InputModerationAction",
+        "SelfCheckInputAction",
+        "SelfCheckOutputAction",
+        "CheckHallucinationAction",
+        "GenerateFlowContinuationAction",
+        "GenerateFlowFromInstructionsAction",
+        "GenerateFlowFromNameAction",
+        "apify_search",  # Already snake_case
+        "retrieve_relevant_chunks",  # Already snake_case
+        "check_jailbreak",  # Already snake_case
+        "check_output_moderation",  # Already snake_case
+    ]
+
+    results = []
+
+    # --- Uncached: full normalisation every time ---
+    uncached_times = []
+    for _ in range(WARMUP):
+        for name in action_names:
+            n = name
+            if n.endswith("Action"):
+                n = n.replace("Action", "")
+            utils.camelcase_to_snakecase(n)
+
+    for _ in range(iterations):
+        t0 = time.perf_counter_ns()
+        for name in action_names:
+            n = name
+            if n.endswith("Action"):
+                n = n.replace("Action", "")
+            utils.camelcase_to_snakecase(n)
+        uncached_times.append((time.perf_counter_ns() - t0) / 1e6)
+
+    # --- Cached: pre-populated dict lookup ---
+    cache: dict[str, str] = {}
+    for name in action_names:
+        n = name
+        if n.endswith("Action"):
+            n = n.replace("Action", "")
+        cache[name] = utils.camelcase_to_snakecase(n)
+
+    cached_times = []
+    for _ in range(WARMUP):
+        for name in action_names:
+            cache[name]
+
+    for _ in range(iterations):
+        t0 = time.perf_counter_ns()
+        for name in action_names:
+            cache[name]
+        cached_times.append((time.perf_counter_ns() - t0) / 1e6)
+
+    uncached_stats = compute_stats(uncached_times)
+    cached_stats = compute_stats(cached_times)
+    speedup = uncached_stats["mean_ms"] / cached_stats["mean_ms"] if cached_stats["mean_ms"] > 0 else 0
+
+    results.append(
+        {
+            "test": "action_name_cache",
+            "action_count": len(action_names),
+            "iterations": iterations,
+            "uncached_mean_ms": round(uncached_stats["mean_ms"], 4),
+            "uncached_p99_ms": round(uncached_stats["p99_ms"], 4),
+            "cached_mean_ms": round(cached_stats["mean_ms"], 4),
+            "cached_p99_ms": round(cached_stats["p99_ms"], 4),
+            "speedup": round(speedup, 2),
+            "savings_per_dispatch_us": round(
+                (uncached_stats["mean_ms"] - cached_stats["mean_ms"]) * 1000 / len(action_names), 2
+            ),
+        }
+    )
+
+    print(
+        f"  {len(action_names)} actions: uncached={uncached_stats['mean_ms']:.4f}ms  "
+        f"cached={cached_stats['mean_ms']:.4f}ms  "
+        f"({speedup:.2f}x, saves {(uncached_stats['mean_ms'] - cached_stats['mean_ms']) * 1000 / len(action_names):.2f}us/dispatch)"
+    )
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Section 10: ThreadSafeCache contention benchmark
+# ---------------------------------------------------------------------------
+
+
+def bench_cache_contention(
+    thread_counts: tuple[int, ...] = (1, 2, 4, 8),
+    operations_per_thread: int = 50000,
+) -> list[dict]:
+    """Measure ThreadSafeCache throughput under multi-threaded contention.
+
+    This benchmark reveals the lock overhead of ThreadSafeCache compared to
+    a plain dict.  On GIL builds the lock is uncontended and near-zero cost.
+    On free-threaded builds the lock is the only protection and its overhead
+    determines whether caching is net-positive.
+
+    Each thread performs a mix of 80% reads (cache hits) and 20% writes
+    (cache misses / updates), matching the expected production access pattern.
+    """
+    from nemoguardrails._thread_safety import ThreadSafeCache
+
+    results = []
+
+    for n_threads in thread_counts:
+        cache = ThreadSafeCache(maxsize=256)
+        # Pre-populate with 200 entries
+        for i in range(200):
+            cache.put(f"template_{i}", f"compiled_result_{i}")
+
+        barrier = threading.Barrier(n_threads)
+        thread_times: list[float] = []
+
+        def _worker(tid: int):
+            barrier.wait()
+            t0 = time.perf_counter()
+            for i in range(operations_per_thread):
+                key = f"template_{(tid * 1000 + i) % 250}"
+                if i % 5 == 0:
+                    # 20% writes
+                    cache.put(key, f"result_{i}")
+                else:
+                    # 80% reads
+                    cache.get(key)
+            elapsed = time.perf_counter() - t0
+            thread_times.append(elapsed)
+
+        threads = [threading.Thread(target=_worker, args=(t,)) for t in range(n_threads)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        total_ops = n_threads * operations_per_thread
+        wall_time = max(thread_times)
+        throughput = total_ops / wall_time
+
+        # Also measure plain dict for comparison (single-threaded baseline)
+        plain_cache: dict[str, str] = {f"template_{i}": f"compiled_result_{i}" for i in range(200)}
+        t0 = time.perf_counter()
+        for i in range(operations_per_thread):
+            key = f"template_{i % 250}"
+            if i % 5 == 0:
+                plain_cache[key] = f"result_{i}"
+            else:
+                plain_cache.get(key)
+        plain_time = time.perf_counter() - t0
+        plain_throughput = operations_per_thread / plain_time
+
+        results.append(
+            {
+                "test": "cache_contention",
+                "threads": n_threads,
+                "operations_per_thread": operations_per_thread,
+                "total_operations": total_ops,
+                "wall_time_ms": round(wall_time * 1000, 2),
+                "throughput_ops_per_sec": round(throughput),
+                "plain_dict_throughput": round(plain_throughput),
+                "lock_overhead_ratio": round(plain_throughput / throughput, 2) if throughput > 0 else 0,
+                "cache_hit_rate": round(cache.stats.get("hits", 0) / max(1, cache.stats.get("hits", 0) + cache.stats.get("misses", 0)), 3),
+            }
+        )
+
+        print(
+            f"  {n_threads} threads: {throughput:,.0f} ops/s  "
+            f"(plain dict: {plain_throughput:,.0f} ops/s, "
+            f"overhead: {plain_throughput / throughput:.2f}x)  "
+            f"wall={wall_time * 1000:.1f}ms"
+        )
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Section 11: End-to-end pipeline simulation
+# ---------------------------------------------------------------------------
+
+
+def bench_pipeline(iterations: int = 2000) -> list[dict]:
+    """Simulate a full guardrails request pipeline and measure overhead.
+
+    Pipeline stages (per request):
+      1. Template rendering (system + user intent prompts)
+      2. Action name normalisation (3 actions)
+      3. Rail evaluation (2 I/O-bound + 1 CPU-bound)
+      4. Response template rendering
+
+    This measures the total framework overhead exclusive of LLM call time,
+    which is the overhead users actually experience.
+    """
+    from jinja2 import meta
+    from jinja2.sandbox import SandboxedEnvironment
+
+    try:
+        from nemoguardrails import utils
+    except ImportError:
+        print("  nemoguardrails.utils not available, skipping")
+        return []
+
+    env = SandboxedEnvironment()
+    env.filters["last_turns"] = lambda msgs, n: msgs[-n:]
+
+    # Pre-build template caches (simulating M3 optimisation)
+    templates = {
+        "system": "You are a helpful assistant.\n{{ general_instructions }}",
+        "user_intent": (
+            "{% for msg in history | last_turns(3) %}"
+            "{{ msg.role }}: {{ msg.content }}\n"
+            "{% endfor %}\n"
+            "User intent: "
+        ),
+        "bot_response": (
+            "Intent: {{ bot_intent }}\n"
+            "Context: {{ context_summary }}\n"
+            "Response: "
+        ),
+    }
+
+    template_cache: dict[str, Any] = {}
+    variables_cache: dict[str, frozenset] = {}
+    for tpl_str in templates.values():
+        template_cache[tpl_str] = env.from_string(tpl_str)
+        variables_cache[tpl_str] = frozenset(meta.find_undeclared_variables(env.parse(tpl_str)))
+
+    context = {
+        "general_instructions": "Be safe and accurate.",
+        "history": [{"role": "user", "content": f"Message {i}"} for i in range(10)],
+        "bot_intent": "provide_answer",
+        "context_summary": "General conversation",
+    }
+
+    # Pre-build action name cache
+    action_names_raw = ["GenerateUserIntentAction", "CheckContentSafetyAction", "GenerateBotMessageAction"]
+    action_cache: dict[str, str] = {}
+    for name in action_names_raw:
+        n = name.replace("Action", "") if name.endswith("Action") else name
+        action_cache[name] = utils.camelcase_to_snakecase(n)
+
+    # Simulate rail evaluation (sync CPU work)
+    def _eval_rail(text: str) -> dict:
+        # Minimal CPU work simulating a fast rail check
+        count = sum(1 for c in text if c.isdigit())
+        return {"ok": count < 10, "digits": count}
+
+    results = []
+
+    # --- Optimised pipeline (with all caches) ---
+    optimised_times = []
+    for _ in range(WARMUP * 2):
+        for tpl_str in templates.values():
+            cached_t = template_cache[tpl_str]
+            cached_v = variables_cache[tpl_str]
+            cached_t.render({k: v for k, v in context.items() if k in cached_v})
+        for name in action_names_raw:
+            action_cache[name]
+        _eval_rail("test input with 123-45-6789")
+
+    for _ in range(iterations):
+        t0 = time.perf_counter_ns()
+
+        # Stage 1: Render templates (system + user_intent + bot_response)
+        for tpl_str in templates.values():
+            cached_t = template_cache[tpl_str]
+            cached_v = variables_cache[tpl_str]
+            cached_t.render({k: v for k, v in context.items() if k in cached_v})
+
+        # Stage 2: Normalise action names
+        for name in action_names_raw:
+            action_cache[name]
+
+        # Stage 3: Evaluate rails
+        for payload in SAMPLE_PAYLOADS[:3]:
+            _eval_rail(payload)
+
+        # Stage 4: Render response template
+        cached_t = template_cache[templates["bot_response"]]
+        cached_v = variables_cache[templates["bot_response"]]
+        cached_t.render({k: v for k, v in context.items() if k in cached_v})
+
+        optimised_times.append((time.perf_counter_ns() - t0) / 1e6)
+
+    # --- Unoptimised pipeline (no caches, reparse every time) ---
+    unoptimised_times = []
+    for _ in range(WARMUP * 2):
+        for tpl_str in templates.values():
+            t = env.from_string(tpl_str)
+            vs = meta.find_undeclared_variables(env.parse(tpl_str))
+            t.render({k: v for k, v in context.items() if k in vs})
+
+    for _ in range(iterations):
+        t0 = time.perf_counter_ns()
+
+        # Stage 1: Render templates (reparse each time)
+        for tpl_str in templates.values():
+            t = env.from_string(tpl_str)
+            vs = meta.find_undeclared_variables(env.parse(tpl_str))
+            t.render({k: v for k, v in context.items() if k in vs})
+
+        # Stage 2: Normalise action names (recompute each time)
+        for name in action_names_raw:
+            n = name.replace("Action", "") if name.endswith("Action") else name
+            utils.camelcase_to_snakecase(n)
+
+        # Stage 3: Evaluate rails
+        for payload in SAMPLE_PAYLOADS[:3]:
+            _eval_rail(payload)
+
+        # Stage 4: Render response template (reparse)
+        tpl_str = templates["bot_response"]
+        t = env.from_string(tpl_str)
+        vs = meta.find_undeclared_variables(env.parse(tpl_str))
+        t.render({k: v for k, v in context.items() if k in vs})
+
+        unoptimised_times.append((time.perf_counter_ns() - t0) / 1e6)
+
+    opt_stats = compute_stats(optimised_times)
+    unopt_stats = compute_stats(unoptimised_times)
+    speedup = unopt_stats["mean_ms"] / opt_stats["mean_ms"] if opt_stats["mean_ms"] > 0 else 0
+
+    results.append(
+        {
+            "test": "pipeline",
+            "iterations": iterations,
+            "stages": "template_render + action_normalise + rail_eval + response_render",
+            "optimised_mean_ms": round(opt_stats["mean_ms"], 4),
+            "optimised_p50_ms": round(opt_stats["p50_ms"], 4),
+            "optimised_p99_ms": round(opt_stats["p99_ms"], 4),
+            "optimised_stdev_ms": round(opt_stats["stdev_ms"], 4),
+            "unoptimised_mean_ms": round(unopt_stats["mean_ms"], 4),
+            "unoptimised_p50_ms": round(unopt_stats["p50_ms"], 4),
+            "unoptimised_p99_ms": round(unopt_stats["p99_ms"], 4),
+            "unoptimised_stdev_ms": round(unopt_stats["stdev_ms"], 4),
+            "speedup": round(speedup, 2),
+            "savings_per_request_ms": round(unopt_stats["mean_ms"] - opt_stats["mean_ms"], 4),
+        }
+    )
+
+    print(
+        f"  Pipeline: optimised={opt_stats['mean_ms']:.4f}ms  "
+        f"unoptimised={unopt_stats['mean_ms']:.4f}ms  "
+        f"({speedup:.2f}x, saves {unopt_stats['mean_ms'] - opt_stats['mean_ms']:.4f}ms/request)"
+    )
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Section 12: Memory efficiency
+# ---------------------------------------------------------------------------
+
+
+def bench_memory(iterations: int = 5000) -> list[dict]:
+    """Track per-request memory allocation using tracemalloc.
+
+    Measures:
+    - Peak RSS delta over N requests
+    - Allocation count per request (via tracemalloc snapshots)
+    - Cache memory footprint (template cache, variable cache)
+
+    This validates that caching does not cause memory leaks — a common
+    concern when introducing unbounded caches.  Our ThreadSafeCache is
+    bounded (LRU eviction), so memory should plateau.
+    """
+    import tracemalloc
+
+    from jinja2 import meta
+    from jinja2.sandbox import SandboxedEnvironment
+
+    from benchmarks.conftest import get_rss_mb
+
+    env = SandboxedEnvironment()
+    env.filters["last_turns"] = lambda msgs, n: msgs[-n:]
+
+    from nemoguardrails._thread_safety import ThreadSafeCache
+
+    template_cache = ThreadSafeCache(maxsize=64)
+    variables_cache = ThreadSafeCache(maxsize=64)
+
+    context = {
+        "general_instructions": "Be safe.",
+        "history": [{"role": "user", "content": f"Msg {i}"} for i in range(5)],
+    }
+
+    results = []
+
+    # Start tracking
+    rss_before = get_rss_mb()
+    tracemalloc.start()
+    snap_before = tracemalloc.take_snapshot()
+
+    for i in range(iterations):
+        # Generate unique-ish template strings to stress cache eviction
+        # (64 unique templates, then they repeat — testing LRU eviction)
+        tpl_key = i % 128
+        tpl_str = f"Template {tpl_key}: {{{{ general_instructions }}}} " + "x" * (tpl_key % 20)
+
+        cached_t = template_cache.get(tpl_str)
+        if cached_t is None:
+            cached_t = env.from_string(tpl_str)
+            template_cache.put(tpl_str, cached_t)
+
+        cached_v = variables_cache.get(tpl_str)
+        if cached_v is None:
+            cached_v = frozenset(meta.find_undeclared_variables(env.parse(tpl_str)))
+            variables_cache.put(tpl_str, cached_v)
+
+        render_ctx = {k: v for k, v in context.items() if k in cached_v}
+        cached_t.render(render_ctx)
+
+    snap_after = tracemalloc.take_snapshot()
+    rss_after = get_rss_mb()
+    tracemalloc.stop()
+
+    # Compute allocation delta
+    stats_diff = snap_after.compare_to(snap_before, "lineno")
+    total_alloc_delta = sum(s.size_diff for s in stats_diff if s.size_diff > 0)
+    total_freed = sum(abs(s.size_diff) for s in stats_diff if s.size_diff < 0)
+
+    cache_stats = template_cache.stats
+
+    results.append(
+        {
+            "test": "memory_efficiency",
+            "iterations": iterations,
+            "unique_templates": 128,
+            "cache_maxsize": 64,
+            "rss_before_mb": round(rss_before, 2),
+            "rss_after_mb": round(rss_after, 2),
+            "rss_delta_mb": round(rss_after - rss_before, 2),
+            "alloc_delta_bytes": total_alloc_delta,
+            "freed_bytes": total_freed,
+            "alloc_per_request_bytes": round(total_alloc_delta / iterations, 1),
+            "cache_hits": cache_stats.get("hits", 0),
+            "cache_misses": cache_stats.get("misses", 0),
+            "cache_hit_rate": round(
+                cache_stats.get("hits", 0) / max(1, cache_stats.get("hits", 0) + cache_stats.get("misses", 0)), 3
+            ),
+            "cache_evictions": cache_stats.get("evictions", 0),
+        }
+    )
+
+    hit_rate = cache_stats.get("hits", 0) / max(1, cache_stats.get("hits", 0) + cache_stats.get("misses", 0))
+    print(
+        f"  {iterations} requests: RSS delta={rss_after - rss_before:.2f}MB  "
+        f"alloc/req={total_alloc_delta / iterations:.0f}B  "
+        f"cache hit rate={hit_rate:.1%}  "
+        f"evictions={cache_stats.get('evictions', 0)}"
+    )
+
+    return results
+
+
 def _build_graph(
     rail_names: list[str],
     deps: dict[str, list[str]],
@@ -1047,6 +1549,10 @@ def main():
         ("dag", "Section 6: DAG scheduler parallelism", bench_dag_scheduler),
         ("eager", "Section 7: Eager task factory (persistent loop)", bench_eager_task_factory),
         ("scheduler", "Section 8: Scheduler execute() before/after", bench_scheduler_execute),
+        ("action_cache", "Section 9: Action name normalisation cache", bench_action_name_cache),
+        ("cache_contention", "Section 10: ThreadSafeCache contention", bench_cache_contention),
+        ("pipeline", "Section 11: End-to-end pipeline simulation", bench_pipeline),
+        ("memory", "Section 12: Memory efficiency", bench_memory),
     ]
 
     for key, title, bench_fn in sections:
@@ -1123,6 +1629,39 @@ def main():
             print(
                 f"  Scheduler:  {best['eager_speedup']:.2f}x with eager "
                 f"({best['topology']}, {improvement:+.1f}% faster)"
+            )
+
+    if "action_cache" in all_results["sections"]:
+        ac = all_results["sections"]["action_cache"]
+        if ac:
+            print(
+                f"  ActionCache:{ac[0]['speedup']:.2f}x normalisation cache "
+                f"(saves {ac[0]['savings_per_dispatch_us']:.1f}us/dispatch)"
+            )
+
+    if "cache_contention" in all_results["sections"]:
+        cc = all_results["sections"]["cache_contention"]
+        if cc:
+            best = max(cc, key=lambda r: r["threads"])
+            print(
+                f"  Contention: {best['throughput_ops_per_sec']:,.0f} ops/s @ {best['threads']} threads "
+                f"(overhead: {best['lock_overhead_ratio']:.2f}x vs plain dict)"
+            )
+
+    if "pipeline" in all_results["sections"]:
+        pip = all_results["sections"]["pipeline"]
+        if pip:
+            print(
+                f"  Pipeline:   {pip[0]['speedup']:.2f}x end-to-end "
+                f"(saves {pip[0]['savings_per_request_ms']:.3f}ms/request)"
+            )
+
+    if "memory" in all_results["sections"]:
+        mem = all_results["sections"]["memory"]
+        if mem:
+            print(
+                f"  Memory:     {mem[0]['rss_delta_mb']:.1f}MB delta over {mem[0]['iterations']} requests, "
+                f"cache hit rate={mem[0]['cache_hit_rate']:.1%}"
             )
 
     print()
