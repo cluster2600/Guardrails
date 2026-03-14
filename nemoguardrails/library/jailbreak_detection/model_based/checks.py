@@ -19,6 +19,14 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Union
 
+try:
+    from nemoguardrails.rails.llm.thread_pool import cpu_bound
+except ImportError:
+
+    def cpu_bound(fn):
+        return fn
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -48,6 +56,7 @@ def initialize_model() -> Union[None, "JailbreakClassifier"]:
     return jailbreak_classifier
 
 
+@cpu_bound
 def check_jailbreak(
     prompt: str,
     classifier=None,

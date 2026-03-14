@@ -13,20 +13,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Module for the calling proper action endpoints based on events received at action server endpoint"""
+"""Module for dispatching action calls to the appropriate registered handler.
+
+This module is responsible for:
+  1. Discovering and registering action functions/classes from the filesystem.
+  2. Normalising action names (CamelCase -> snake_case, stripping "Action" suffix).
+  3. Dispatching execution to the correct handler, supporting:
+       - Plain synchronous functions
+       - Async coroutine functions
+       - Class-based actions (with a ``run`` method)
+       - LangChain ``Runnable`` instances
+  4. Optionally offloading ``@cpu_bound``-decorated synchronous actions to a
+     :class:`~nemoguardrails.rails.llm.thread_pool.RailThreadPool` so they
+     do not block the asyncio event loop.
+  5. Ensuring thread safety on free-threaded (no-GIL) Python builds by
+     using :class:`ThreadSafeDict` for the action registry and per-action
+     locks for lazy class instantiation.
+"""
+
+from __future__ import annotations
 
 import importlib.util
 import inspect
 import logging
 import os
+import threading
 from importlib.machinery import ModuleSpec
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union, cast
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type, Union, cast
 
 from langchain_core.runnables import Runnable
 
 from nemoguardrails import utils
+
+# ThreadSafeDict wraps a plain dict with a reentrant lock, providing
+# atomic read/write operations.  ``is_free_threaded()`` returns True
+# when the interpreter was built with ``--disable-gil`` (PEP 703).
+from nemoguardrails._thread_safety import ThreadSafeDict, is_free_threaded
 from nemoguardrails.exceptions import LLMCallException
+
+if TYPE_CHECKING:
+    # Imported only for type-checking to avoid circular imports at runtime.
+    from nemoguardrails.rails.llm.thread_pool import RailThreadPool
 
 log = logging.getLogger(__name__)
 
@@ -37,6 +65,7 @@ class ActionDispatcher:
         load_all_actions: bool = True,
         config_path: Optional[str] = None,
         import_paths: Optional[List[str]] = None,
+        thread_pool: Optional["RailThreadPool"] = None,
     ):
         """
         Initializes an actions dispatcher.
@@ -47,50 +76,99 @@ class ActionDispatcher:
                 If there are actions at the specified path, it loads them as well.
             import_paths (List[str], optional): Additional imported paths from which actions
                 should be loaded.
+            thread_pool (Optional[RailThreadPool]): An optional thread-pool executor for
+                dispatching ``@cpu_bound``-decorated synchronous action functions.
+                When *None*, cpu_bound actions are executed inline (backward-compatible).
         """
-        log.info("Initializing action dispatcher")
+        log.info("Initialising action dispatcher")
 
-        self._registered_actions: Dict[str, Union[Type, Callable[..., Any]]] = {}
+        # ------------------------------------------------------------------
+        # Thread pool integration
+        # ------------------------------------------------------------------
+        # The thread pool is used to offload ``@cpu_bound``-decorated
+        # synchronous action functions so that they do not block the
+        # asyncio event loop.  It may be ``None`` at construction time and
+        # set later via the ``thread_pool`` property (e.g. when
+        # ``LLMRails`` builds the pool from its configuration).
+        self._thread_pool = thread_pool
 
+        # ------------------------------------------------------------------
+        # ThreadSafeDict usage on free-threaded Python
+        # ------------------------------------------------------------------
+        # On free-threaded (no-GIL) builds, concurrent dict mutations are
+        # *not* protected by the GIL, so we use ``ThreadSafeDict`` – a
+        # dict subclass guarded by a reentrant lock – to prevent data
+        # races when actions are registered or looked up from multiple
+        # threads.  On standard GIL-enabled builds, a plain ``dict`` is
+        # used for zero overhead (dict operations are already atomic under
+        # the GIL).
+        self._registered_actions: Dict[str, Union[Type, Callable[..., Any]]] = (
+            ThreadSafeDict() if is_free_threaded() else {}
+        )
+
+        # ------------------------------------------------------------------
+        # Per-action locking for lazy class instantiation
+        # ------------------------------------------------------------------
+        # Class-based actions are registered as *classes* and only
+        # instantiated on first invocation (see ``_atomic_instantiate_action``).
+        # On GIL-enabled builds the dict write is atomic, but on
+        # free-threaded builds two threads could race and construct the
+        # same action class twice.  We therefore maintain a *per-action-name*
+        # lock so that unrelated actions are never serialised against one
+        # another.
+        #
+        # ``_init_locks_guard`` protects *creation* of new entries in
+        # ``_init_locks``; each value in ``_init_locks`` protects a single
+        # action's class-to-instance promotion.
+        self._init_locks: Dict[str, threading.Lock] = {}
+        self._init_locks_guard = threading.Lock()
+
+        # ------------------------------------------------------------------
+        # Action discovery / loading
+        # ------------------------------------------------------------------
+        # Actions are discovered in a well-defined priority order so that
+        # later registrations override earlier ones of the same name:
+        #   1. Built-in package ``actions/`` directory
+        #   2. Per-feature ``library/*/actions`` directories
+        #   3. Current working directory (user project root)
+        #   4. Explicit ``config_path`` (may be comma-separated)
+        #   5. Explicit ``import_paths``
         if load_all_actions:
             # TODO: check for better way to find actions dir path or use constants.py
             current_file_path = Path(__file__).resolve()
             parent_directory_path = current_file_path.parents[1]
 
-            # First, we load all actions from the actions folder
+            # 1. Load built-in actions shipped with the package.
             self.load_actions_from_path(parent_directory_path)
-            # self.load_actions_from_path(os.path.join(os.path.dirname(__file__), ".."))
 
-            # Next, we load all actions from the library folder
+            # 2. Walk the ``library/`` tree and load any sub-package that
+            #    exposes an ``actions/`` folder or ``actions.py`` file.
             library_path = parent_directory_path / "library"
 
             for root, dirs, files in os.walk(library_path):
-                # We only load the actions if there is an `actions` sub-folder or
-                # an `actions.py` file.
                 if "actions" in dirs or "actions.py" in files:
                     self.load_actions_from_path(Path(root))
 
-            # Next, we load all actions from the current working directory
+            # 3. Load user-defined actions from the current working directory.
             # TODO: add support for an explicit ACTIONS_PATH
             self.load_actions_from_path(Path.cwd())
 
-            # Last, but not least, if there was a config path, we try to load actions
-            # from there as well.
+            # 4. Load actions from the configuration path(s), if provided.
+            #    ``config_path`` may be a comma-separated list of paths.
             if config_path:
                 split_config_path: List[str] = config_path.split(",")
 
-                # Don't load actions if we have an empty list
                 if split_config_path:
                     for path in split_config_path:
                         self.load_actions_from_path(Path(path.strip()))
 
-            # If there are any imported paths, we load the actions from there as well.
+            # 5. Load actions from any additional import paths.
             if import_paths:
                 for import_path in import_paths:
                     self.load_actions_from_path(Path(import_path.strip()))
 
         log.info(f"Registered Actions :: {sorted(self._registered_actions.keys())}")
-        log.info("Action dispatcher initialized")
+        log.info("Action dispatcher initialised")
 
     @property
     def registered_actions(self):
@@ -100,6 +178,33 @@ class ActionDispatcher:
             dict: A dictionary where keys are action names and values are callable action functions.
         """
         return self._registered_actions
+
+    # ------------------------------------------------------------------
+    # Thread pool property
+    # ------------------------------------------------------------------
+
+    @property
+    def thread_pool(self) -> Optional["RailThreadPool"]:
+        """Return the thread-pool executor used for ``@cpu_bound`` actions, if any.
+
+        The pool wraps a :class:`concurrent.futures.ThreadPoolExecutor` and
+        exposes an ``async dispatch(fn, **kwargs)`` helper that runs *fn* in
+        a worker thread and awaits the result, keeping the asyncio event loop
+        free.
+        """
+        return self._thread_pool
+
+    @thread_pool.setter
+    def thread_pool(self, pool: Optional["RailThreadPool"]) -> None:
+        """Set (or replace) the thread-pool executor.
+
+        This allows the pool to be attached *after* the dispatcher is
+        constructed -- for instance when the :class:`LLMRails` instance
+        builds the pool from its configuration.  It is safe to call this
+        setter at any time; subsequent ``execute_action`` calls will pick
+        up the new pool reference.
+        """
+        self._thread_pool = pool
 
     def load_actions_from_path(self, path: Path):
         """Loads all actions from the specified path.
@@ -155,7 +260,20 @@ class ActionDispatcher:
                 self.register_action(val, override=override)
 
     def _normalize_action_name(self, name: str) -> str:
-        """Normalize the action name to the required format."""
+        """Normalise an action name to its canonical snake_case form.
+
+        The normalisation proceeds as follows:
+          1. If the name already exists verbatim in the registry, return it
+             immediately (fast path, avoids unnecessary string work).
+          2. Strip a trailing ``"Action"`` suffix if present
+             (e.g. ``"GenerateUserIntentAction"`` -> ``"GenerateUserIntent"``).
+          3. Convert from CamelCase to snake_case using
+             :func:`nemoguardrails.utils.camelcase_to_snakecase`.
+
+        Note: on this branch there is no normalisation cache.  If profiling
+        shows ``_normalize_action_name`` as a hot-spot, a bounded LRU cache
+        keyed on *name* would be a straightforward optimisation.
+        """
         if name not in self.registered_actions:
             if name.endswith("Action"):
                 name = name.replace("Action", "")
@@ -179,6 +297,75 @@ class ActionDispatcher:
         name = self._normalize_action_name(name)
         return self._registered_actions.get(name, None)
 
+    # ------------------------------------------------------------------
+    # Atomic class-to-instance promotion (per-action locking)
+    # ------------------------------------------------------------------
+
+    def _atomic_instantiate_action(self, action_name: str, cls: Type) -> Callable[..., Any]:
+        """Instantiate a class-based action exactly once (thread-safe).
+
+        Class-based actions are stored in the registry as their *class*
+        object and promoted to a singleton *instance* on first use.  This
+        lazy initialisation avoids paying the cost of constructing actions
+        that are never invoked.
+
+        **Free-threaded Python path:**
+
+        Without the GIL, two (or more) threads calling ``execute_action``
+        for the same class-based action could both see ``inspect.isclass``
+        return ``True`` and race to construct the instance.  To prevent
+        duplicate construction we employ a *double-checked locking* pattern
+        with per-action-name granularity:
+
+          1. Acquire ``_init_locks_guard`` (a coarse lock) just long enough
+             to obtain or create the per-action ``threading.Lock``.
+          2. Acquire the per-action lock.
+          3. Re-read the registry entry (the *double check*).  If another
+             thread has already replaced the class with an instance, return
+             that instance immediately.
+          4. Otherwise, construct the instance, store it in the registry,
+             and return it.
+
+        Using per-action locks ensures that instantiation of *unrelated*
+        actions is never serialised against each other, keeping contention
+        to a minimum.
+
+        **GIL-enabled Python path:**
+
+        On standard CPython with the GIL, dict operations are already
+        atomic, so no locking is required.  We take the simple path and
+        instantiate directly.
+
+        Args:
+            action_name: The canonical (normalised) name of the action.
+            cls: The action class to instantiate.
+
+        Returns:
+            The callable instance that has replaced *cls* in the registry.
+        """
+        if is_free_threaded():
+            # Step 1 -- obtain (or create) a dedicated lock for this action.
+            with self._init_locks_guard:
+                if action_name not in self._init_locks:
+                    self._init_locks[action_name] = threading.Lock()
+                lock = self._init_locks[action_name]
+
+            # Step 2 -- acquire the per-action lock and double-check.
+            with lock:
+                current = self._registered_actions.get(action_name)
+                if current is not None and not inspect.isclass(current):
+                    # Another thread already completed the promotion.
+                    return cast(Callable[..., Any], current)
+                # First thread to arrive -- construct and store the instance.
+                instance = cls()
+                self._registered_actions[action_name] = instance
+                return instance
+        else:
+            # GIL build -- no race possible; instantiate directly.
+            instance = cls()
+            self._registered_actions[action_name] = instance
+            return instance
+
     async def execute_action(
         self, action_name: str, params: Dict[str, Any]
     ) -> Tuple[Union[Optional[str], Dict[str, Any]], str]:
@@ -201,21 +388,40 @@ class ActionDispatcher:
                 raise Exception(f"Action '{action_name}' is not registered.")
 
             fn = cast(Callable, maybe_fn)
-            # Actions that are registered as classes are initialized lazy, when
-            # they are first used.
+            # Actions that are registered as classes are initialized lazily,
+            # when they are first used.  On free-threaded Python, two threads
+            # could race here, so we use a per-action lock to ensure each
+            # class is instantiated exactly once.
             if inspect.isclass(fn):
-                fn = fn()
-                self._registered_actions[action_name] = fn
+                fn = self._atomic_instantiate_action(action_name, fn)
 
             if fn:
                 try:
                     # We support both functions and classes as actions
                     if inspect.isfunction(fn) or inspect.ismethod(fn):
                         # We support both sync and async actions.
-                        result = fn(**params)
+                        # Check if the function is marked @cpu_bound and we
+                        # have a thread pool configured.
+                        is_cpu_bound = getattr(fn, "_cpu_bound", False)
+
+                        if is_cpu_bound and self._thread_pool is not None:
+                            log.info(
+                                "Dispatching cpu_bound action `%s` to thread pool.",
+                                action_name,
+                            )
+                            result = await self._thread_pool.dispatch(fn, **params)
+                        else:
+                            if is_cpu_bound:
+                                log.warning(
+                                    "Action `%s` is @cpu_bound but no thread pool is configured; "
+                                    "running inline and blocking the event loop.",
+                                    action_name,
+                                )
+                            result = fn(**params)
+
                         if inspect.iscoroutine(result):
                             result = await result
-                        else:
+                        elif not is_cpu_bound:
                             log.warning(f"Synchronous action `{action_name}` has been called.")
 
                     elif isinstance(fn, Runnable):
@@ -229,11 +435,28 @@ class ActionDispatcher:
                         if not callable(fn_run_func):
                             raise Exception(f"No 'run' method defined for action '{action_name}'.")
 
+                        # Check if the class's run method is @cpu_bound.
+                        is_cpu_bound = getattr(fn_run_func, "_cpu_bound", False)
+
                         fn_run_func_with_signature = cast(
                             Callable[[], Union[Optional[str], Dict[str, Any]]],
                             fn_run_func,
                         )
-                        result = fn_run_func_with_signature(**params)
+
+                        if is_cpu_bound and self._thread_pool is not None:
+                            log.info(
+                                "Dispatching cpu_bound action `%s.run` to thread pool.",
+                                action_name,
+                            )
+                            result = await self._thread_pool.dispatch(fn_run_func_with_signature, **params)
+                        else:
+                            if is_cpu_bound:
+                                log.warning(
+                                    "Action `%s.run` is @cpu_bound but no thread pool is configured; "
+                                    "running inline and blocking the event loop.",
+                                    action_name,
+                                )
+                            result = fn_run_func_with_signature(**params)
                     return result, "success"
 
                 # We forward LLM Call exceptions
