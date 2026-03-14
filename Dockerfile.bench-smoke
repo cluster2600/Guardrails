@@ -1,0 +1,26 @@
+# Smoke-test the benchmark harness on Python 3.14
+FROM python:3.14
+
+WORKDIR /app
+
+COPY pyproject.toml ./
+COPY nemoguardrails/ ./nemoguardrails/
+COPY benchmarks/ ./benchmarks/
+COPY perf_baselines/ ./perf_baselines/
+
+RUN pip install --no-cache-dir pip setuptools wheel --upgrade && \
+    pip install --no-cache-dir \
+        aiohttp httpx jinja2 lark nest-asyncio \
+        pydantic pyyaml simpleeval starlette \
+        langchain langchain-core langchain-community 2>&1 | tail -3
+
+ENV PYTHONPATH=/app
+
+# Validate imports
+RUN python -c "from benchmarks.conftest import PerfResult; print('conftest OK')" && \
+    python -c "from benchmarks.scenarios import LATENCY_SMOKE; print(f'{len(LATENCY_SMOKE)} latency scenarios')" && \
+    python -c "from benchmarks.fake_provider import FakeProvider; print('fake_provider OK')" && \
+    python -c "from benchmarks.fake_rails import build_rail_set; print('fake_rails OK')"
+
+# Run the latency smoke benchmark (fast, ~10s)
+CMD ["python", "-m", "benchmarks.run_latency", "--output", "/tmp/perf-latency.json"]
