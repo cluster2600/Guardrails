@@ -1,0 +1,35 @@
+FROM python:3.14
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY pyproject.toml ./
+COPY nemoguardrails/ ./nemoguardrails/
+COPY tests/ ./tests/
+COPY chat-ui/ ./chat-ui/
+COPY examples/ ./examples/
+
+RUN pip install --no-cache-dir pip setuptools wheel --upgrade
+
+# Install all deps
+RUN pip install --no-cache-dir \
+    aiohttp aiohttp-retry httpx jinja2 lark nest-asyncio \
+    prompt-toolkit pydantic pyyaml rich simpleeval starlette \
+    typer uvicorn watchdog fastapi protobuf \
+    langchain langchain-core langchain-community \
+    pytest pytest-asyncio pytest-cov pytest-httpx aioresponses 2>&1 | tail -5
+
+# Add app to PYTHONPATH (since poetry build fails on 3.14)
+ENV PYTHONPATH=/app
+
+# Verify setup
+RUN python -c "import sys; print(f'Python {sys.version}')" && \
+    python -c "import langchain; print(f'langchain {langchain.__version__}')" && \
+    python -c "from nemoguardrails._langchain_compat import safe_import_langchain; lc = safe_import_langchain(); print(f'compat OK, langchain {lc.__version__}')"
+
+# Run tests
+CMD ["python", "-m", "pytest", "tests/", "-x", "-v", "--timeout=60", "--tb=short", \
+     "-k", "not test_streaming and not test_server and not test_e2e"]

@@ -16,6 +16,8 @@
 from typing import Any, Dict, Optional
 
 import pytest
+
+pytest.importorskip("aioresponses", reason="aioresponses not installed")
 from aioresponses import aioresponses
 
 from nemoguardrails import RailsConfig
