@@ -22,6 +22,7 @@ import os
 import re
 import time
 import uuid
+from collections import OrderedDict
 from contextlib import asynccontextmanager
 from typing import Any, AsyncIterator, Callable, List, Optional, Union
 
@@ -364,7 +365,7 @@ def _get_rails(config_ids: List[str], model_name: Optional[str] = None) -> LLMRa
     llm_rails_instances[configs_cache_key] = llm_rails
 
     # If we have a cache for the events, we restore it
-    llm_rails.events_history_cache = llm_rails_events_history_cache.get(configs_cache_key, {})
+    llm_rails.events_history_cache = llm_rails_events_history_cache.get(configs_cache_key, OrderedDict())
 
     return llm_rails
 
