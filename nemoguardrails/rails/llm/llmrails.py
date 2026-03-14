@@ -26,6 +26,7 @@ import re
 import threading
 import time
 import warnings
+from collections import OrderedDict
 from functools import partial
 from typing import (
     Any,
@@ -163,7 +164,13 @@ class LLMRails:
         # We keep a cache of the events history associated with a sequence of user messages.
         # TODO: when we update the interface to allow to return a "state object", this
         #   should be removed
-        self.events_history_cache = {}
+        # Bounded LRU cache (OrderedDict) prevents unbounded memory growth in
+        # long-running processes.  Default limit is 1024 entries; override via
+        # the NEMOGUARDRAILS_EVENTS_CACHE_SIZE environment variable.
+        self._events_cache_maxsize = int(
+            os.environ.get("NEMOGUARDRAILS_EVENTS_CACHE_SIZE", "1024")
+        )
+        self.events_history_cache: OrderedDict = OrderedDict()
 
         # We also load the default flows from the `default_flows.yml` file in the current folder.
         # But only for version 1.0.
@@ -598,11 +605,14 @@ class LLMRails:
 
         if self.config.colang_version == "1.0":
             # We try to find the longest prefix of messages for which we have a cache
-            # of events.
+            # of events.  Start from the longest prefix and work downwards.
             p = len(messages) - 1
             while p > 0:
                 cache_key = get_history_cache_key(messages[0:p])
                 if cache_key in self.events_history_cache:
+                    # Promote to MRU position so frequently accessed prefixes
+                    # are retained longer.
+                    self.events_history_cache.move_to_end(cache_key)
                     events = self.events_history_cache[cache_key].copy()
                     break
 
@@ -968,9 +978,17 @@ class LLMRails:
 
             # If a state object is not used, then we use the implicit caching
             if state is None:
-                # Save the new events in the history and update the cache
+                # Save the new events in the history and update the cache.
+                # Uses OrderedDict as a bounded LRU: new entries go to the
+                # end; when the cache exceeds its limit the oldest (least
+                # recently used) entry is evicted.
                 cache_key = get_history_cache_key((messages) + [new_message])  # type: ignore
                 self.events_history_cache[cache_key] = events
+                if (
+                    self._events_cache_maxsize > 0
+                    and len(self.events_history_cache) > self._events_cache_maxsize
+                ):
+                    self.events_history_cache.popitem(last=False)
             else:
                 output_state = {"events": events}
 

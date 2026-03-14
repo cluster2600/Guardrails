@@ -2064,11 +2064,34 @@ def _unique_list_concat(list1, list2):
     """
     Concatenates two lists ensuring all elements are unique.
     Handles unhashable types like dictionaries.
+
+    Uses a ``set`` for O(1) membership checks on hashable items and falls
+    back to linear search only for unhashable items (e.g. dicts).  This
+    reduces the overall complexity from O(n*m) to O(n+m) for the common
+    case where all items are hashable.
     """
     result = list(list1)
+    # Build a seen-set for O(1) membership checks on hashable items.
+    seen: set = set()
+    # Track unhashable items separately (must use linear scan).
+    unhashable: list = []
+    for item in result:
+        try:
+            seen.add(item)
+        except TypeError:
+            unhashable.append(item)
+
     for item in list2:
-        if item not in result:
-            result.append(item)
+        try:
+            if item in seen:
+                continue
+            seen.add(item)
+        except TypeError:
+            # Unhashable type — fall back to linear search.
+            if item in unhashable:
+                continue
+            unhashable.append(item)
+        result.append(item)
     return result
 
 
