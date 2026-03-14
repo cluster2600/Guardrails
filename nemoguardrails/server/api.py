@@ -269,7 +269,7 @@ async def list_models(request: Request):
 
 # One instance of LLMRails per config id
 llm_rails_instances: dict[str, LLMRails] = {}
-llm_rails_events_history_cache: dict[str, dict] = {}
+llm_rails_events_history_cache: dict[str, OrderedDict] = {}
 
 
 def _generate_cache_key(config_ids: List[str], model_name: Optional[str] = None) -> str:

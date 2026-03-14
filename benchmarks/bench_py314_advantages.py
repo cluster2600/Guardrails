@@ -85,6 +85,7 @@ import statistics
 import subprocess
 import sys
 import sysconfig
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any
@@ -1204,7 +1205,7 @@ def bench_cache_contention(
                 "throughput_ops_per_sec": round(throughput),
                 "plain_dict_throughput": round(plain_throughput),
                 "lock_overhead_ratio": round(plain_throughput / throughput, 2) if throughput > 0 else 0,
-                "cache_hit_rate": round(cache.stats.get("hits", 0) / max(1, cache.stats.get("hits", 0) + cache.stats.get("misses", 0)), 3),
+                "cache_hit_rate": round(cache.stats().get("hits", 0) / max(1, cache.stats().get("hits", 0) + cache.stats().get("misses", 0)), 3),
             }
         )
 
