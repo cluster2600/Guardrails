@@ -26,6 +26,7 @@ from collections import OrderedDict
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def bench(fn, iterations=10_000, warmup=100, label=""):
     """Run *fn* for *iterations* and print timing stats."""
     # warmup
@@ -57,6 +58,7 @@ def bench(fn, iterations=10_000, warmup=100, label=""):
 # 1. _LRUDict vs plain dict vs OrderedDict
 # ---------------------------------------------------------------------------
 
+
 def bench_lru_dict():
     from nemoguardrails.rails.llm.llmrails import _LRUDict
 
@@ -68,6 +70,7 @@ def bench_lru_dict():
 
     # --- _LRUDict ---
     lru = _LRUDict(maxsize=SIZE)
+
     def lru_insert():
         for i in range(1000):
             lru[f"key_{i}"] = i
@@ -76,6 +79,7 @@ def bench_lru_dict():
 
     # --- plain dict (unbounded) ---
     plain = {}
+
     def plain_insert():
         for i in range(1000):
             plain[f"key_{i}"] = i
@@ -84,6 +88,7 @@ def bench_lru_dict():
 
     # --- OrderedDict with manual eviction ---
     od = OrderedDict()
+
     def od_insert():
         for i in range(1000):
             od[f"key_{i}"] = i
@@ -92,14 +97,14 @@ def bench_lru_dict():
 
     t_od = bench(od_insert, iterations=100, warmup=5, label="OrderedDict + popitem (maxsize=256, 1k inserts/iter)")
 
-    print(f"  Summary: _LRUDict is {t_plain / t_lru:.1f}x vs plain dict, "
-          f"{t_od / t_lru:.1f}x vs OrderedDict")
+    print(f"  Summary: _LRUDict is {t_plain / t_lru:.1f}x vs plain dict, {t_od / t_lru:.1f}x vs OrderedDict")
     print()
 
 
 # ---------------------------------------------------------------------------
 # 2. Action name normalisation: cached vs uncached
 # ---------------------------------------------------------------------------
+
 
 def bench_action_name_cache():
     from nemoguardrails.actions.action_dispatcher import ActionDispatcher
@@ -119,8 +124,9 @@ def bench_action_name_cache():
         for n in names:
             d._normalize_action_name(n)
 
-    t_cached = bench(cached_lookup, iterations=5_000, warmup=100,
-                     label="cached _normalize_action_name (100 names/iter)")
+    t_cached = bench(
+        cached_lookup, iterations=5_000, warmup=100, label="cached _normalize_action_name (100 names/iter)"
+    )
 
     # --- Uncached (clear cache each time) ---
     def uncached_lookup():
@@ -128,8 +134,9 @@ def bench_action_name_cache():
         for n in names:
             d._normalize_action_name(n)
 
-    t_uncached = bench(uncached_lookup, iterations=5_000, warmup=100,
-                       label="uncached _normalize_action_name (100 names/iter)")
+    t_uncached = bench(
+        uncached_lookup, iterations=5_000, warmup=100, label="uncached _normalize_action_name (100 names/iter)"
+    )
 
     print(f"  Summary: cache speedup = {t_uncached / t_cached:.1f}x")
     print()
@@ -138,6 +145,7 @@ def bench_action_name_cache():
 # ---------------------------------------------------------------------------
 # 3. Jinja2 template caching: cached vs uncached
 # ---------------------------------------------------------------------------
+
 
 def bench_template_cache():
     from nemoguardrails.llm.taskmanager import LLMTaskManager
@@ -163,8 +171,9 @@ def bench_template_cache():
         for t in templates:
             tm._get_compiled_template(t)
 
-    t_cached = bench(cached_compile, iterations=10_000, warmup=100,
-                     label="cached _get_compiled_template (5 templates/iter)")
+    t_cached = bench(
+        cached_compile, iterations=10_000, warmup=100, label="cached _get_compiled_template (5 templates/iter)"
+    )
 
     # --- Uncached (clear cache each time) ---
     def uncached_compile():
@@ -172,8 +181,9 @@ def bench_template_cache():
         for t in templates:
             tm._get_compiled_template(t)
 
-    t_uncached = bench(uncached_compile, iterations=10_000, warmup=100,
-                       label="uncached _get_compiled_template (5 templates/iter)")
+    t_uncached = bench(
+        uncached_compile, iterations=10_000, warmup=100, label="uncached _get_compiled_template (5 templates/iter)"
+    )
 
     print(f"  Summary: cache speedup = {t_uncached / t_cached:.1f}x")
     print()
@@ -187,16 +197,16 @@ def bench_template_cache():
         for t in templates:
             tm._get_template_variables(t)
 
-    t_cv = bench(cached_vars, iterations=10_000, warmup=100,
-                 label="cached _get_template_variables (5 templates/iter)")
+    t_cv = bench(cached_vars, iterations=10_000, warmup=100, label="cached _get_template_variables (5 templates/iter)")
 
     def uncached_vars():
         tm._variables_cache.clear()
         for t in templates:
             tm._get_template_variables(t)
 
-    t_uv = bench(uncached_vars, iterations=10_000, warmup=100,
-                 label="uncached _get_template_variables (5 templates/iter)")
+    t_uv = bench(
+        uncached_vars, iterations=10_000, warmup=100, label="uncached _get_template_variables (5 templates/iter)"
+    )
 
     print(f"  Summary: cache speedup = {t_uv / t_cv:.1f}x")
     print()
@@ -205,6 +215,7 @@ def bench_template_cache():
 # ---------------------------------------------------------------------------
 # 4. Copy-on-write event snapshot: tuple vs list.copy
 # ---------------------------------------------------------------------------
+
 
 def bench_event_snapshot():
     print("=" * 60)
@@ -219,16 +230,16 @@ def bench_event_snapshot():
         for _ in range(10):
             _ = list(base) + [{"type": "start_flow"}]
 
-    t_tuple = bench(tuple_snapshot, iterations=5_000, warmup=100,
-                    label="tuple snapshot + 10 list(base) expansions (200 events)")
+    t_tuple = bench(
+        tuple_snapshot, iterations=5_000, warmup=100, label="tuple snapshot + 10 list(base) expansions (200 events)"
+    )
 
     def list_copy_snapshot():
         for _ in range(10):
             _ = events.copy()
             _.append({"type": "start_flow"})
 
-    t_copy = bench(list_copy_snapshot, iterations=5_000, warmup=100,
-                   label="10x list.copy() + append (200 events)")
+    t_copy = bench(list_copy_snapshot, iterations=5_000, warmup=100, label="10x list.copy() + append (200 events)")
 
     print(f"  Summary: tuple approach is {t_copy / t_tuple:.1f}x vs list.copy()")
     print()
@@ -237,6 +248,7 @@ def bench_event_snapshot():
 # ---------------------------------------------------------------------------
 # 5. _render_string end-to-end (cached vs cold)
 # ---------------------------------------------------------------------------
+
 
 def bench_render_string():
     from nemoguardrails.llm.taskmanager import LLMTaskManager
@@ -259,8 +271,7 @@ def bench_render_string():
     def cached_render():
         tm._render_string(template, context=context)
 
-    t_cached = bench(cached_render, iterations=10_000, warmup=100,
-                     label="cached _render_string")
+    t_cached = bench(cached_render, iterations=10_000, warmup=100, label="cached _render_string")
 
     # --- Uncached ---
     def uncached_render():
@@ -268,8 +279,9 @@ def bench_render_string():
         tm._variables_cache.clear()
         tm._render_string(template, context=context)
 
-    t_uncached = bench(uncached_render, iterations=10_000, warmup=100,
-                       label="uncached _render_string (caches cleared each call)")
+    t_uncached = bench(
+        uncached_render, iterations=10_000, warmup=100, label="uncached _render_string (caches cleared each call)"
+    )
 
     print(f"  Summary: cache speedup = {t_uncached / t_cached:.1f}x")
     print()
