@@ -98,9 +98,16 @@ class TestLRUDict:
         assert "a" not in d
         assert d["b"] == 2
 
-    def test_maxsize_zero_raises(self):
-        with pytest.raises(ValueError, match="maxsize must be at least 1"):
-            _LRUDict(maxsize=0)
+    def test_maxsize_zero_unbounded(self):
+        """maxsize=0 disables eviction (unbounded growth)."""
+        d = _LRUDict(maxsize=0)
+        for i in range(200):
+            d[f"key_{i}"] = i
+        assert len(d) == 200  # no eviction
+
+    def test_maxsize_negative_raises(self):
+        with pytest.raises(ValueError, match="maxsize must be >= 0"):
+            _LRUDict(maxsize=-1)
 
     def test_is_dict_subclass(self):
         d = _LRUDict(maxsize=10)
@@ -129,6 +136,21 @@ class TestLRUDict:
         # Only the last 100 should remain
         assert "key_999" in d
         assert "key_0" not in d
+
+    def test_iter_is_snapshot(self):
+        """Iteration should return a snapshot, safe against concurrent mutation."""
+        d = _LRUDict(maxsize=10)
+        d["a"] = 1
+        d["b"] = 2
+        d["c"] = 3
+        keys = list(d)
+        assert set(keys) == {"a", "b", "c"}
+
+    def test_len_is_locked(self):
+        d = _LRUDict(maxsize=10)
+        d["a"] = 1
+        d["b"] = 2
+        assert len(d) == 2
 
     def test_has_lock(self):
         """_LRUDict should have a threading lock for free-threaded safety."""
@@ -257,6 +279,25 @@ class TestActionNameCache:
             t.join()
 
         assert len(errors) == 0, f"Concurrent normalisation errors: {errors}"
+
+    def test_eviction_is_single_entry(self):
+        """Cache overflow should evict one entry, not clear the entire cache."""
+        d = ActionDispatcher(load_all_actions=False)
+        d._normalised_names_maxsize = 5
+
+        for i in range(5):
+            d.register_action(lambda **kw: None, name=f"act_{i}")
+        # Clear the cache that register_action triggers
+        d._normalised_names.clear()
+
+        # Fill the cache to capacity
+        for i in range(5):
+            d._normalize_action_name(f"act_{i}")
+        assert len(d._normalised_names) == 5
+
+        # Overflow — should evict one, not clear all
+        d._normalize_action_name("act_5")
+        assert len(d._normalised_names) == 5  # still 5, not 1
 
 
 # ---------------------------------------------------------------------------

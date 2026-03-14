@@ -138,13 +138,23 @@ class ActionDispatcher:
             path (str): A string representing the path from which to load actions.
 
         """
+        changed = False
+
         actions_path = path / "actions"
         if os.path.exists(actions_path):
             self._registered_actions.update(self._find_actions(actions_path))
+            changed = True
 
         actions_py_path = os.path.join(path, "actions.py")
         if os.path.exists(actions_py_path):
             self._registered_actions.update(self._load_actions_from_module(actions_py_path))
+            changed = True
+
+        # Invalidate the normalisation cache — newly loaded actions may
+        # change which canonical name a lookup resolves to.
+        if changed:
+            with self._normalised_names_lock:
+                self._normalised_names.clear()
 
     def register_action(self, action: Callable, name: Optional[str] = None, override: bool = True):
         """Registers an action with the given name.
@@ -197,13 +207,13 @@ class ActionDispatcher:
         The cache is bounded to ``_normalised_names_maxsize`` entries
         (default 4096) to guard against unbounded memory growth if
         action names are derived from external input.  When the limit
-        is reached the entire cache is cleared — this is acceptable
-        because the action name space is finite in normal usage and
-        the cache rebuilds quickly.
+        is reached the oldest entry is evicted (FIFO) — this is
+        acceptable because the action name space is finite in normal
+        usage and stale entries rebuild cheaply.
 
         The cache is also invalidated on every ``register_action()``
-        call, since a new registration may change which canonical name
-        a lookup resolves to.
+        and ``load_actions_from_path()`` call, since new registrations
+        may change which canonical name a lookup resolves to.
         """
         with self._normalised_names_lock:
             cached = self._normalised_names.get(name)
@@ -217,9 +227,12 @@ class ActionDispatcher:
                     normalised = normalised.replace("Action", "")
                 normalised = utils.camelcase_to_snakecase(normalised)
 
-            # Evict the entire cache if the bound is reached.
+            # Evict the oldest entry if the bound is reached.
             if len(self._normalised_names) >= self._normalised_names_maxsize:
-                self._normalised_names.clear()
+                # Remove the first (oldest) entry — dict preserves
+                # insertion order since Python 3.7.
+                oldest_key = next(iter(self._normalised_names))
+                del self._normalised_names[oldest_key]
             self._normalised_names[name] = normalised
             return normalised
 

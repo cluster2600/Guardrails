@@ -363,8 +363,12 @@ def _get_rails(config_ids: List[str], model_name: Optional[str] = None) -> LLMRa
     llm_rails = LLMRails(config=full_llm_rails_config, verbose=True)
     llm_rails_instances[configs_cache_key] = llm_rails
 
-    # If we have a cache for the events, we restore it
-    llm_rails.events_history_cache = llm_rails_events_history_cache.get(configs_cache_key, {})  # type: ignore[assignment]
+    # If we have a previously saved events cache, restore it into the
+    # existing _LRUDict rather than replacing it with a plain dict.
+    saved_cache = llm_rails_events_history_cache.get(configs_cache_key)
+    if saved_cache is not None:
+        for k, v in saved_cache.items():
+            llm_rails.events_history_cache[k] = v
 
     return llm_rails
 

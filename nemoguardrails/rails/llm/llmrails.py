@@ -160,21 +160,21 @@ class _LRUDict(OrderedDict):
     All operations are O(1) amortised thanks to the underlying doubly-linked
     list inside ``OrderedDict``.
 
-    Thread safety: all mutations are protected by a ``threading.RLock``,
-    making this safe on free-threaded Python 3.14t (no-GIL) where
-    concurrent dict mutations would otherwise cause data corruption.
+    Thread safety: ``__getitem__``, ``__setitem__``, ``__contains__``,
+    ``__delitem__``, ``__len__``, and ``__iter__`` are protected by a
+    ``threading.RLock``.  In practise, ``events_history_cache`` is only
+    accessed via these methods, so the coverage is sufficient.  If you
+    need full dict-API safety, use ``ThreadSafeDict`` from
+    ``_thread_safety`` instead.
 
-    Note on the ``__getitem__`` try/except: on CPython 3.10,
-    ``OrderedDict.popitem(last=False)`` has been observed to internally
-    call ``__getitem__`` on the evicted key *after* it has already been
-    removed from the dict.  The ``try/except KeyError`` guard prevents
-    this phantom access from raising during eviction.
+    A *maxsize* of ``0`` disables eviction (unbounded growth) — use with
+    care in long-running services.
     """
 
     def __init__(self, maxsize: int = 1024):
         super().__init__()
-        if maxsize < 1:
-            raise ValueError("maxsize must be at least 1")
+        if maxsize < 0:
+            raise ValueError("maxsize must be >= 0 (0 means unbounded)")
         self._maxsize = maxsize
         self._lock = threading.RLock()
 
@@ -182,7 +182,9 @@ class _LRUDict(OrderedDict):
         """Retrieve *key* and promote it to MRU position."""
         with self._lock:
             value = OrderedDict.__getitem__(self, key)
-            # See class docstring for why this is wrapped in try/except.
+            # On CPython 3.10, OrderedDict.popitem(last=False) internally
+            # calls __getitem__ on the evicted key *after* removal.
+            # The try/except prevents this phantom access from raising.
             try:
                 OrderedDict.move_to_end(self, key)
             except KeyError:
@@ -192,15 +194,29 @@ class _LRUDict(OrderedDict):
     def __setitem__(self, key, value):
         """Insert or update *key*, promoting it to MRU and evicting LRU if full."""
         with self._lock:
+            if key in self:
+                # Existing key — promote to MRU before updating.
+                OrderedDict.move_to_end(self, key)
             OrderedDict.__setitem__(self, key, value)
-            OrderedDict.move_to_end(self, key)
-            if len(self) > self._maxsize:
+            if self._maxsize > 0 and len(self) > self._maxsize:
                 # Evict the least-recently-used entry (head of the ordered dict).
                 OrderedDict.popitem(self, last=False)
 
     def __contains__(self, key):
         with self._lock:
             return OrderedDict.__contains__(self, key)
+
+    def __delitem__(self, key):
+        with self._lock:
+            OrderedDict.__delitem__(self, key)
+
+    def __len__(self):
+        with self._lock:
+            return OrderedDict.__len__(self)
+
+    def __iter__(self):
+        with self._lock:
+            return iter(list(OrderedDict.keys(self)))
 
 
 class LLMRails:
