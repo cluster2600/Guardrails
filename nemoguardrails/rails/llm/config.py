@@ -2069,6 +2069,11 @@ def _unique_list_concat(list1, list2):
     back to linear search only for unhashable items (e.g. dicts).  This
     reduces the overall complexity from O(n*m) to O(n+m) for the common
     case where all items are hashable.
+
+    Note: hashable and unhashable items are tracked in separate structures
+    (``seen`` set vs ``unhashable`` list), so cross-type equality is not
+    checked.  This is acceptable because config flow lists are homogeneous
+    in practice — either all strings or all dicts, never mixed.
     """
     result = list(list1)
     # Build a seen-set for O(1) membership checks on hashable items.
