@@ -11,7 +11,7 @@ across Python 3.10, 3.12, 3.14, and 3.14t (free-threaded).*
 1. [Executive Summary](#1-executive-summary)
 2. [Optimisation Inventory](#2-optimisation-inventory)
    - [M2 — Zero-overhead tracing path](#m2--zero-overhead-tracing-path)
-   - [M3 — Deterministic artifact caching](#m3--deterministic-artifact-caching)
+   - [M3 — Deterministic artefact caching](#m3--deterministic-artefact-caching)
    - [M6 — Wrapper overhead reduction](#m6--wrapper-overhead-reduction)
    - [PEP 649 — Deferred annotation evaluation](#pep-649--deferred-annotation-evaluation)
 3. [Benchmark Suite](#3-benchmark-suite)
