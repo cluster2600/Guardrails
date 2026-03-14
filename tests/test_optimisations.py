@@ -24,7 +24,6 @@ import os
 from collections import OrderedDict
 from unittest.mock import MagicMock, patch
 
-import pytest
 
 
 # ---------------------------------------------------------------------------
@@ -132,54 +131,65 @@ class TestEventsHistoryCacheBounded:
         assert isinstance(rails.events_history_cache, OrderedDict)
 
     def test_cache_eviction_on_overflow(self):
+        """Use the production _put_events_cache method to verify eviction."""
         rails = self._make_rails("3")
-        cache = rails.events_history_cache
 
-        cache["k1"] = [{"type": "event1"}]
-        cache["k2"] = [{"type": "event2"}]
-        cache["k3"] = [{"type": "event3"}]
+        rails._put_events_cache("k1", [{"type": "event1"}])
+        rails._put_events_cache("k2", [{"type": "event2"}])
+        rails._put_events_cache("k3", [{"type": "event3"}])
 
-        # Add a 4th entry — should evict k1
-        cache["k4"] = [{"type": "event4"}]
-        if rails._events_cache_maxsize > 0 and len(cache) > rails._events_cache_maxsize:
-            cache.popitem(last=False)
+        # Add a 4th entry — should evict k1 (oldest)
+        rails._put_events_cache("k4", [{"type": "event4"}])
 
-        assert "k1" not in cache
-        assert len(cache) == 3
-        assert list(cache.keys()) == ["k2", "k3", "k4"]
+        assert "k1" not in rails.events_history_cache
+        assert len(rails.events_history_cache) == 3
+        assert list(rails.events_history_cache.keys()) == ["k2", "k3", "k4"]
 
     def test_move_to_end_on_access(self):
+        """Production read path promotes to MRU; verify eviction order."""
         rails = self._make_rails("3")
-        cache = rails.events_history_cache
 
-        cache["k1"] = [{"type": "event1"}]
-        cache["k2"] = [{"type": "event2"}]
-        cache["k3"] = [{"type": "event3"}]
+        rails._put_events_cache("k1", [{"type": "event1"}])
+        rails._put_events_cache("k2", [{"type": "event2"}])
+        rails._put_events_cache("k3", [{"type": "event3"}])
 
-        # Access k1 — should become MRU
-        cache.move_to_end("k1")
+        # Simulate a cache read promoting k1 to MRU (mirrors llmrails.py line 615)
+        rails.events_history_cache.move_to_end("k1")
 
         # Add k4 — should evict k2 (now the oldest)
-        cache["k4"] = [{"type": "event4"}]
-        if rails._events_cache_maxsize > 0 and len(cache) > rails._events_cache_maxsize:
-            cache.popitem(last=False)
+        rails._put_events_cache("k4", [{"type": "event4"}])
 
-        assert "k2" not in cache
-        assert "k1" in cache
-        assert list(cache.keys()) == ["k3", "k1", "k4"]
+        assert "k2" not in rails.events_history_cache
+        assert "k1" in rails.events_history_cache
+        assert list(rails.events_history_cache.keys()) == ["k3", "k1", "k4"]
+
+    def test_write_promotes_existing_key_to_mru(self):
+        """Overwriting an existing key should promote it to MRU position."""
+        rails = self._make_rails("3")
+
+        rails._put_events_cache("k1", [{"type": "event1"}])
+        rails._put_events_cache("k2", [{"type": "event2"}])
+        rails._put_events_cache("k3", [{"type": "event3"}])
+
+        # Re-write k1 with new value — should promote to MRU
+        rails._put_events_cache("k1", [{"type": "event1_updated"}])
+
+        # k1 is now MRU, so adding k4 should evict k2 (oldest)
+        rails._put_events_cache("k4", [{"type": "event4"}])
+
+        assert "k2" not in rails.events_history_cache
+        assert rails.events_history_cache["k1"] == [{"type": "event1_updated"}]
+        assert list(rails.events_history_cache.keys()) == ["k3", "k1", "k4"]
 
     def test_env_var_controls_size(self):
         rails = self._make_rails("100")
         assert rails._events_cache_maxsize == 100
 
     def test_zero_means_unlimited(self):
+        """maxsize=0 disables eviction via the production method."""
         rails = self._make_rails("0")
-        cache = rails.events_history_cache
 
         for i in range(200):
-            cache[f"k{i}"] = [{"type": f"event{i}"}]
-            # Zero maxsize — never evict
-            if rails._events_cache_maxsize > 0 and len(cache) > rails._events_cache_maxsize:
-                cache.popitem(last=False)
+            rails._put_events_cache(f"k{i}", [{"type": f"event{i}"}])
 
-        assert len(cache) == 200
+        assert len(rails.events_history_cache) == 200
