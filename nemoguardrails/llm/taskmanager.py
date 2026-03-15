@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import re
 from ast import literal_eval
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -98,31 +99,35 @@ class LLMTaskManager:
         self.prompt_context = {}
 
         # M3 optimisation: cache compiled Jinja2 templates and their
-        # extracted variable sets to avoid the expensive env.from_string()
-        # and meta.find_undeclared_variables() calls on every
-        # _render_string() invocation.
+        # extracted variable sets to avoid the expensive ``env.from_string()``
+        # and ``meta.find_undeclared_variables()`` calls on every
+        # ``_render_string()`` invocation.
         #
-        # ThreadSafeCache provides:
-        #   - Bounded LRU eviction (prevents unbounded memory growth when
-        #     templates are partially dynamic, e.g. per-user prompt strings)
-        #   - Thread-safe access for free-threaded Python 3.14t builds
-        #     where the GIL no longer protects dict operations
-        self._template_cache: ThreadSafeCache = ThreadSafeCache(maxsize=512)
-        self._variables_cache: ThreadSafeCache = ThreadSafeCache(maxsize=512)
+        # Uses ``ThreadSafeCache`` from ``_thread_safety`` — a bounded LRU
+        # cache backed by ``OrderedDict`` with ``RLock`` protection.  This
+        # is safe on free-threaded Python 3.14t (no-GIL) where concurrent
+        # cache access from multiple threads would otherwise corrupt the
+        # underlying dict.
+        #
+        # The cache size can be tuned via the environment variable
+        # ``NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE`` (default 512).
+        _cache_size = int(os.environ.get("NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE", "512"))
+        self._template_cache: ThreadSafeCache = ThreadSafeCache(maxsize=_cache_size)
+        self._variables_cache: ThreadSafeCache = ThreadSafeCache(maxsize=_cache_size)
 
     def _get_compiled_template(self, template_str: str):
-        """Return a compiled Jinja2 template, using a bounded cache.
+        """Return a compiled Jinja2 template, using the thread-safe cache.
 
-        On a cache hit this is a single dict lookup (O(1)).  On a miss,
-        the template is compiled via ``env.from_string()`` and stored
-        for subsequent calls.
+        On a cache hit this is a single lock-protected ``get()`` (O(1)).
+        On a miss, the template is compiled via ``env.from_string()``
+        and stored for subsequent calls.
         """
         cached = self._template_cache.get(template_str)
         if cached is not None:
             return cached
-        template = self.env.from_string(template_str)
-        self._template_cache.put(template_str, template)
-        return template
+        compiled = self.env.from_string(template_str)
+        self._template_cache.put(template_str, compiled)
+        return compiled
 
     def _get_template_variables(self, template_str: str) -> frozenset:
         """Return the undeclared variables referenced in a template, cached.
@@ -165,10 +170,9 @@ class LLMTaskManager:
         :return: The rendered template.
         :rtype: str.
         """
-        # M3: retrieve the compiled template and its variable set from
-        # the bounded caches.  On the hot path (cache hit) this avoids
-        # both the Jinja2 parse/compile step and the variable extraction.
         template = self._get_compiled_template(template_str)
+
+        # First, we extract all the variables from the template.
         variables = self._get_template_variables(template_str)
 
         # This is the context that will be passed to the template when rendering.

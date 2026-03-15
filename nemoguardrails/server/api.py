@@ -47,7 +47,7 @@ from nemoguardrails.server.schemas.utils import (
     create_error_chat_completion,
     extract_bot_message_from_response,
     fetch_models,
-    format_streaming_chunk_as_sse,  # Formats a single token/chunk into SSE wire format
+    format_streaming_chunk_as_sse,
     generation_response_to_chat_completion,
 )
 
@@ -78,8 +78,7 @@ registered_loggers: List[Callable] = []
 
 api_description = """Guardrails Sever API."""
 
-# Per-request header storage via ContextVar — ensures each async coroutine sees
-# its own request headers without cross-contamination between concurrent requests.
+# The headers for each request
 api_request_headers: contextvars.ContextVar = contextvars.ContextVar("headers")
 
 # The datastore that the Server should use.
@@ -99,23 +98,19 @@ async def lifespan(app: GuardrailsApp):
         with open(challenges_files) as f:
             register_challenges(json.load(f))
 
-    # Detect single-config mode: when the rails_config_path itself contains a
-    # config.yml/yaml, the server serves exactly one guardrails configuration
-    # rather than a directory of multiple named configs.
+    # If there is a `config.yml` in the root `app.rails_config_path`, then
+    # that means we are in single config mode.
     if os.path.exists(os.path.join(app.rails_config_path, "config.yml")) or os.path.exists(
         os.path.join(app.rails_config_path, "config.yaml")
     ):
         app.single_config_mode = True
         app.single_config_id = os.path.basename(app.rails_config_path)
     else:
-        # Multi-config mode: optionally load a server-level config.py that can
-        # register custom loggers, set the default config, or otherwise
-        # customise the app instance before it starts serving.
+        # If we're not in single-config mode, we check if we have a config.py for the
+        # server configuration.
         filepath = os.path.join(app.rails_config_path, "config.py")
         if os.path.exists(filepath):
             filename = os.path.basename(filepath)
-            # Dynamically import the config module using importlib so it can
-            # execute arbitrary Python at server startup.
             spec = importlib.util.spec_from_file_location(filename, filepath)
             if spec is not None and spec.loader is not None:
                 config_module = importlib.util.module_from_spec(spec)
@@ -123,8 +118,7 @@ async def lifespan(app: GuardrailsApp):
             else:
                 config_module = None
 
-            # Convention: if the module exposes an `init(app)` function, call
-            # it so operators can programmatically configure the server.
+            # If there is an `init` function, we call it with the reference to the app.
             if config_module is not None and hasattr(config_module, "init"):
                 config_module.init(app)
 
@@ -149,9 +143,7 @@ async def lifespan(app: GuardrailsApp):
 
     if app.auto_reload:
         app.loop = asyncio.get_running_loop()
-        # Run the watchdog file observer in a thread-pool executor so it
-        # does not block the async event loop. The returned Future is kept
-        # so we can cancel it on shutdown.
+        # Store the future directly as task
         app.task = app.loop.run_in_executor(None, start_auto_reload_monitoring)
 
     yield
@@ -274,33 +266,13 @@ async def list_models(request: Request):
     return OpenAIModelsList(data=models)
 
 
-# Module-level cache of LLMRails instances, keyed by a composite string of
-# config IDs (and optionally model name). This avoids re-initialising the
-# (potentially expensive) LLMRails pipeline on every request.
-# NOTE: This dict is *not* thread-safe — it relies on the GIL for basic
-# atomicity and on the assumption that FastAPI's async handlers serialise
-# dict mutations within a single event loop. If the server were to use
-# multiple worker processes (e.g. gunicorn with >1 worker), each process
-# would hold its own independent copy of this cache.
+# One instance of LLMRails per config id
 llm_rails_instances: dict[str, LLMRails] = {}
-
-# Separate cache that preserves conversation event histories across config
-# reloads (triggered by the auto-reload watcher). When a config changes on
-# disc, the corresponding LLMRails instance is evicted from
-# llm_rails_instances, but its events_history_cache is stashed here so the
-# newly created instance can resume with the same conversational state.
 llm_rails_events_history_cache: dict[str, dict] = {}
 
 
 def _generate_cache_key(config_ids: List[str], model_name: Optional[str] = None) -> str:
     """Generates a cache key for the given config ids and model name."""
-    # Concatenate all config IDs with a hyphen separator, then append the
-    # model name (if any) after a colon. This ensures that the same set of
-    # configs with different model overrides produces distinct cache entries.
-    # e.g. "configA-configB:gpt-4" vs "configA-configB:gpt-3.5-turbo"
-    # CAVEAT: config IDs containing hyphens could theoretically collide
-    # (e.g. ["a-b", "c"] vs ["a", "b-c"]), though this is unlikely in
-    # practice because config IDs are typically simple directory names.
     key = "-".join(config_ids)
     if model_name:
         key = f"{key}:{model_name}"
@@ -312,28 +284,21 @@ def _update_models_in_config(config: RailsConfig, main_model: Model) -> RailsCon
 
     If a model with type="main" exists, it replaces it. Otherwise, adds it.
     """
-    models = config.models.copy()  # Shallow copy to avoid mutating the original config
+    models = config.models.copy()
     main_model_index = None
 
-    # Locate the existing model entry that shares the same type (e.g. "main")
     for index, model in enumerate(models):
         if model.type == main_model.type:
             main_model_index = index
             break
 
     if main_model_index is not None:
-        # Merge parameters: the existing config's parameters serve as defaults,
-        # and the new model's parameters override them. This allows callers to
-        # supply only the parameters they wish to change (e.g. base_url) whilst
-        # retaining any provider-specific defaults already set in the YAML config.
         parameters = {**models[main_model_index].parameters, **main_model.parameters}
         models[main_model_index] = main_model
         models[main_model_index].parameters = parameters
     else:
-        # No existing model of this type — simply append the new one
         models.append(main_model)
 
-    # Return a new RailsConfig instance (immutable update via Pydantic)
     return config.model_copy(update={"models": models})
 
 
@@ -346,38 +311,28 @@ def _get_rails(config_ids: List[str], model_name: Optional[str] = None) -> LLMRa
     """
     configs_cache_key = _generate_cache_key(config_ids, model_name)
 
-    # Fast path: return the cached LLMRails instance if one already exists
-    # for this exact combination of config IDs + model name.
     if configs_cache_key in llm_rails_instances:
         return llm_rails_instances[configs_cache_key]
-
-    # --- Cache miss: build a new LLMRails instance from scratch ---
 
     # In single-config mode, we only load the main config directory
     if app.single_config_mode:
         if config_ids != [app.single_config_id]:
             raise ValueError(f"Invalid configuration ids: {config_ids}")
 
-        # Replace with empty string so os.path.join(base_path, "") == base_path
+        # We set this to an empty string so tha when joined with the root path, we
+        # get the same thing.
         config_ids = [""]
 
     full_llm_rails_config: Optional[RailsConfig] = None
 
-    # Iterate through each requested config and merge them together.
-    # The first config becomes the base; subsequent configs are merged via
-    # the RailsConfig.__add__ operator, which layers additional rails,
-    # prompts, and flows on top of the base configuration.
     for config_id in config_ids:
         base_path = os.path.abspath(app.rails_config_path)
         full_path = os.path.normpath(os.path.join(base_path, config_id))
 
-        # Path-traversal guard: reject config IDs containing slashes or ".."
-        # to prevent directory-traversal attacks via crafted config_id values.
+        # @NOTE: (Rdinu) Reject config_ids that contain dangerous characters or sequences
         if re.search(r"[\\/]|(\.\.)", config_id):
             raise ValueError("Invalid config_id.")
 
-        # Secondary traversal guard: ensure the resolved path remains within
-        # the configured base directory (belt-and-braces defence).
         if os.path.commonprefix([full_path, base_path]) != base_path:
             raise ValueError("Access to the specified path is not allowed.")
 
@@ -386,16 +341,11 @@ def _get_rails(config_ids: List[str], model_name: Optional[str] = None) -> LLMRa
         if not full_llm_rails_config:
             full_llm_rails_config = rails_config
         else:
-            # Merge: layers the new config's rails/flows onto the accumulated config
             full_llm_rails_config += rails_config
 
     if full_llm_rails_config is None:
         raise ValueError("No valid rails configuration found.")
 
-    # If the caller specified a model name (via the OpenAI-compatible `model`
-    # field), override the "main" model in the merged config. The engine and
-    # base_url are sourced from environment variables, allowing operators to
-    # point the server at different LLM providers without changing YAML configs.
     if model_name:
         engine = os.environ.get("MAIN_MODEL_ENGINE")
         if not engine:
@@ -410,14 +360,15 @@ def _get_rails(config_ids: List[str], model_name: Optional[str] = None) -> LLMRa
         main_model = Model(model=model_name, type="main", engine=engine, parameters=parameters)
         full_llm_rails_config = _update_models_in_config(full_llm_rails_config, main_model)
 
-    # Initialise the LLMRails pipeline (loads models, compiles Colang, etc.)
     llm_rails = LLMRails(config=full_llm_rails_config, verbose=True)
-    # Store in the module-level cache for subsequent requests
     llm_rails_instances[configs_cache_key] = llm_rails
 
-    # Restore any previously saved events history (preserved across auto-reloads)
-    # so that ongoing conversations are not lost when a config file changes on disc.
-    llm_rails.events_history_cache = llm_rails_events_history_cache.get(configs_cache_key, {})
+    # If we have a previously saved events cache, restore it into the
+    # existing _LRUDict rather than replacing it with a plain dict.
+    saved_cache = llm_rails_events_history_cache.get(configs_cache_key)
+    if saved_cache is not None:
+        for k, v in saved_cache.items():
+            llm_rails.events_history_cache[k] = v
 
     return llm_rails
 
@@ -446,29 +397,23 @@ async def _format_streaming_response(
     Yields:
         SSE-formatted strings (data: {...}\n\n)
     """
+    # Use "unknown" as default if model_name is None
     model = model_name or "unknown"
-    # Generate a single completion ID shared across all chunks in this stream,
-    # matching OpenAI's behaviour where every chunk in a streamed response
-    # carries the same `id` field.
     chunk_id = f"chatcmpl-{uuid.uuid4()}"
 
     try:
         async for chunk in stream_iterator:
-            # Each chunk may be a plain text token or a JSON error object.
-            # process_chunk() attempts to parse it as a ChunkError; if it
-            # succeeds, the stream is terminated early with the error payload.
+            # Format the chunk as SSE using the utility function
             processed_chunk = process_chunk(chunk)
             if isinstance(processed_chunk, ChunkError):
-                # Yield the error as a single SSE event, then halt the stream
+                # Yield the error and stop streaming
                 yield f"data: {json.dumps(processed_chunk.model_dump())}\n\n"
                 return
             else:
-                # Normal token — wrap in the OpenAI streaming delta format
                 yield format_streaming_chunk_as_sse(processed_chunk, model, chunk_id)
 
     finally:
-        # The SSE protocol requires a sentinel [DONE] message so clients know
-        # the stream has finished (mirrors the OpenAI streaming API contract).
+        # Always send [DONE] event when stream ends
         yield "data: [DONE]\n\n"
 
 
@@ -483,27 +428,25 @@ def process_chunk(chunk: Any) -> Union[Any, ChunkError]:
     Returns:
         Union[Any, StreamingError]: StreamingError instance for errors or the original chunk.
     """
-    # Normalise the chunk to a JSON string so we can attempt Pydantic validation.
-    # Most chunks are plain str tokens; dicts are serialised, other types coerced.
+    # Convert chunk to string for JSON parsing if needed
     chunk_str = chunk if isinstance(chunk, str) else json.dumps(chunk) if isinstance(chunk, dict) else str(chunk)
 
     try:
-        # Attempt to parse the chunk as a structured error (e.g. from upstream LLM).
-        # If the chunk does not match the ChunkError schema, Pydantic raises
-        # ValidationError and we fall through to treat it as a normal token.
         validated_data = ChunkError.model_validate_json(chunk_str)
-        return validated_data
+        return validated_data  # Return the StreamingError instance directly
     except ValidationError:
-        pass  # Not an error payload — treat as a normal content token
+        # Not an error, just a normal token
+        pass
     except json.JSONDecodeError:
-        pass  # Malformed JSON — safe to treat as a regular token
+        # Invalid JSON format, treat as normal token
+        pass
     except Exception as e:
         log.warning(
             f"Unexpected error processing stream chunk: {type(e).__name__}: {str(e)}",
             extra={"chunk": chunk_str},
         )
 
-    # Pass the original chunk through unchanged for downstream SSE formatting
+    # Return the original chunk
     return chunk
 
 
@@ -518,17 +461,14 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
     TODO: add support for explicit state object.
     """
     log.info("Got request for config %s", body.guardrails.config_id)
-    # Fire-and-forget: dispatch logging tasks without blocking the response.
-    # Each registered logger runs as an independent async task on the event loop.
     for logger in registered_loggers:
-        asyncio.get_running_loop().create_task(logger({"endpoint": "/v1/chat/completions", "body": body.json()}))
+        asyncio.get_event_loop().create_task(logger({"endpoint": "/v1/chat/completions", "body": body.json()}))
 
-    # Stash the incoming HTTP headers in the ContextVar so that downstream
-    # code (e.g. LLM provider calls) can forward authorisation tokens.
+    # Save the request headers in a context variable.
     api_request_headers.set(request.headers)
 
-    # Resolve config IDs: prefer the request-level override, fall back to
-    # the server-wide default. Absence of both is a client error (422).
+    # Use Request config_ids if set, otherwise use the FastAPI default config.
+    # If neither is available we can't generate any completions as we have no config_id
     config_ids = body.guardrails.config_ids
 
     if not config_ids:
@@ -553,8 +493,6 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
 
     try:
         messages = body.messages or []
-        # Inject any caller-supplied context as a synthetic "context" role message
-        # at the beginning of the conversation, ahead of user/assistant turns.
         if body.guardrails.context:
             messages.insert(0, {"role": "context", "content": body.guardrails.context})
 
@@ -564,8 +502,7 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
         if body.guardrails.thread_id:
             if datastore is None:
                 raise RuntimeError("No DataStore has been configured.")
-            # Enforce a minimum length to discourage trivially guessable thread IDs
-            # (mitigates enumeration attacks against the datastore).
+            # We make sure the `thread_id` meets the minimum complexity requirement.
             if len(body.guardrails.thread_id) < 16:
                 return create_error_chat_completion(
                     model=body.model,
@@ -573,12 +510,12 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
                     config_id=config_ids[0] if config_ids else None,
                 )
 
-            # Namespace datastore keys with a "thread-" prefix to avoid
-            # collisions with other data stored in the same backend.
+            # Fetch the existing thread messages. For easier management, we prepend
+            # the string `thread-` to all thread keys.
             datastore_key = "thread-" + body.guardrails.thread_id
             thread_messages = json.loads(await datastore.get(datastore_key) or "[]")
 
-            # Prepend historical messages so the LLM sees the full conversation
+            # And prepend them.
             messages = thread_messages + messages
 
         generation_options = body.guardrails.options
@@ -591,12 +528,11 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
                     detail="Invalid state format: state must contain 'events' or 'state' key. Use an empty dict {} to start a new conversation.",
                 )
 
-        # Ensure llm_params dict exists before populating it
+        # Initialize llm_params if not already set
         if generation_options.llm_params is None:
             generation_options.llm_params = {}
 
-        # Forward standard OpenAI-compatible sampling/generation parameters
-        # into the guardrails options so they reach the underlying LLM call.
+        # Set OpenAI-compatible parameters in llm_params
         if body.max_tokens:
             generation_options.llm_params["max_tokens"] = body.max_tokens
         if body.temperature is not None:
@@ -611,17 +547,13 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
             generation_options.llm_params["frequency_penalty"] = body.frequency_penalty
 
         if body.stream:
-            # Streaming branch: yields Server-Sent Events (SSE) as each token
-            # arrives from the LLM. Output rails are still applied via
-            # stream_async, which may buffer or filter tokens before yielding.
+            # Use stream_async for streaming with output rails support
             stream_iterator = llm_rails.stream_async(
                 messages=messages,
                 options=generation_options,
                 state=body.guardrails.state,
             )
 
-            # StreamingResponse consumes the async generator lazily, keeping
-            # the connection open until the generator is exhausted or errors.
             return StreamingResponse(
                 _format_streaming_response(stream_iterator, model_name=body.model),
                 media_type="text/event-stream",
@@ -633,17 +565,15 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
                 state=body.guardrails.state,
             )
 
-            # Extract the assistant's reply so we can persist it in the thread
+            # Extract bot message for thread storage if needed
             bot_message = extract_bot_message_from_response(res)
 
-            # Persist the updated conversation (original + new turn) back to the
-            # datastore so subsequent requests with the same thread_id see it.
+            # If we're using threads, we also need to update the data before returning
+            # the message.
             if body.guardrails.thread_id and datastore is not None and datastore_key is not None:
                 await datastore.set(datastore_key, json.dumps(messages + [bot_message]))
 
-            # Return the result in an OpenAI-compatible chat completion envelope.
-            # GenerationResponse carries richer metadata (guardrails log, etc.);
-            # plain dicts are wrapped in a minimal completion structure.
+            # Build the response with OpenAI-compatible format using utility function
             if isinstance(res, GenerationResponse):
                 return generation_response_to_chat_completion(
                     response=res,
@@ -671,10 +601,8 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
                 )
 
     except HTTPException:
-        raise  # Re-raise HTTP exceptions so FastAPI returns the correct status code
+        raise
     except Exception as ex:
-        # Catch-all: log the full traceback but return a sanitised error to the
-        # client to avoid leaking internal details.
         log.exception(ex)
         return create_error_chat_completion(
             model=body.model,
@@ -725,13 +653,6 @@ def start_auto_reload_monitoring():
         from watchdog.observers import Observer
 
         class Handler(FileSystemEventHandler):
-            # NOTE on thread safety: watchdog fires events from a background
-            # OS thread, whilst the LLMRails cache is read/written from the
-            # async event loop thread. Python's GIL protects the dict from
-            # corruption, but there is a small race window where a request
-            # could read a stale instance just before it is deleted. In
-            # practice this is benign — the stale instance still works, and
-            # the next request will pick up the fresh config.
             def on_any_event(self, event):
                 if event.is_directory:
                     return None
@@ -739,29 +660,26 @@ def start_auto_reload_monitoring():
                 elif event.event_type == "created" or event.event_type == "modified":
                     log.info(f"Watchdog received {event.event_type} event for file {event.src_path}")
 
-                    # Derive the config_id from the first path component relative
-                    # to the configs root directory.
+                    # Compute the relative path
                     src_path_str = str(event.src_path)
                     rel_path = os.path.relpath(src_path_str, app.rails_config_path)
 
+                    # The config_id is the first component
                     parts = rel_path.split(os.path.sep)
                     config_id = parts[0]
 
-                    # Skip hidden files and Jupyter checkpoint artefacts
                     if (
                         not parts[-1].startswith(".")
                         and ".ipynb_checkpoints" not in parts
                         and os.path.isfile(src_path_str)
                     ):
-                        # Evict the cached LLMRails instance so the next request
-                        # triggers a full rebuild with the updated config files.
+                        # We just remove the config from the cache so that a new one is used next time
                         if config_id in llm_rails_instances:
                             instance = llm_rails_instances[config_id]
                             del llm_rails_instances[config_id]
                             if instance:
-                                # Preserve the events history so ongoing
-                                # conversations survive a config reload.
                                 val = instance.events_history_cache
+                                # We save the events history cache, to restore it on the new instance
                                 llm_rails_events_history_cache[config_id] = val
 
                             log.info(f"Configuration {config_id} has changed. Clearing cache.")
