@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,45 +19,21 @@ These tests run against actual Guardrails validators when installed.
 They can be skipped in CI/environments where validators aren't available.
 """
 
+from unittest.mock import Mock
+
 import pytest
 
-GUARDRAILS_AVAILABLE = False
+from nemoguardrails.imports import check_optional_dependency
+
+GUARDRAILS_AVAILABLE = check_optional_dependency("guardrails")
 VALIDATORS_AVAILABLE = {}
 
-try:
-    from guardrails import Guard
-
-    GUARDRAILS_AVAILABLE = True
-
-    try:
-        from guardrails.hub import ToxicLanguage
-
-        VALIDATORS_AVAILABLE["toxic_language"] = True
-    except ImportError:
-        VALIDATORS_AVAILABLE["toxic_language"] = False
-
-    try:
-        from guardrails.hub import RegexMatch
-
-        VALIDATORS_AVAILABLE["regex_match"] = True
-    except ImportError:
-        VALIDATORS_AVAILABLE["regex_match"] = False
-
-    try:
-        from guardrails.hub import ValidLength
-
-        VALIDATORS_AVAILABLE["valid_length"] = True
-    except ImportError:
-        VALIDATORS_AVAILABLE["valid_length"] = False
-
-    try:
-        from guardrails.hub import CompetitorCheck
-
-        VALIDATORS_AVAILABLE["competitor_check"] = True
-    except ImportError:
-        VALIDATORS_AVAILABLE["competitor_check"] = False
-
-except ImportError:
+if GUARDRAILS_AVAILABLE:
+    VALIDATORS_AVAILABLE["toxic_language"] = check_optional_dependency("guardrails.hub")
+    VALIDATORS_AVAILABLE["regex_match"] = check_optional_dependency("guardrails.hub")
+    VALIDATORS_AVAILABLE["valid_length"] = check_optional_dependency("guardrails.hub")
+    VALIDATORS_AVAILABLE["competitor_check"] = check_optional_dependency("guardrails.hub")
+else:
     GUARDRAILS_AVAILABLE = False
 
 
@@ -110,9 +86,7 @@ class TestGuardrailsAIE2EIntegration:
         """E2E test: ValidLength validator."""
         from nemoguardrails.library.guardrails_ai.actions import validate_guardrails_ai
 
-        result_pass = validate_guardrails_ai(
-            validator_name="valid_length", text="Hello", min=1, max=10, on_fail="noop"
-        )
+        result_pass = validate_guardrails_ai(validator_name="valid_length", text="Hello", min=1, max=10, on_fail="noop")
 
         assert result_pass["validation_result"].validation_passed is True
 
@@ -127,8 +101,7 @@ class TestGuardrailsAIE2EIntegration:
         assert result_fail["validation_result"].validation_passed is False
 
     @pytest.mark.skipif(
-        not GUARDRAILS_AVAILABLE
-        or not VALIDATORS_AVAILABLE.get("toxic_language", False),
+        not GUARDRAILS_AVAILABLE or not VALIDATORS_AVAILABLE.get("toxic_language", False),
         reason="Guardrails or ToxicLanguage validator not installed. Install with: guardrails hub install hub://guardrails/toxic_language",
     )
     def test_toxic_language_e2e(self):
@@ -147,8 +120,7 @@ class TestGuardrailsAIE2EIntegration:
         assert result_safe["validation_result"].validation_passed is True
 
     @pytest.mark.skipif(
-        not GUARDRAILS_AVAILABLE
-        or not VALIDATORS_AVAILABLE.get("competitor_check", False),
+        not GUARDRAILS_AVAILABLE or not VALIDATORS_AVAILABLE.get("competitor_check", False),
         reason="Guardrails or CompetitorCheck validator not installed",
     )
     def test_competitor_check_e2e(self):
@@ -177,7 +149,7 @@ class TestGuardrailsAIE2EIntegration:
 
     @pytest.mark.skipif(not GUARDRAILS_AVAILABLE, reason="Guardrails not installed")
     def test_validation_mapping_e2e(self):
-        """E2E test: Validation mapping with real validation results."""
+        """E2E test: Validation mapping returns boolean (validation_passed)."""
         from nemoguardrails.library.guardrails_ai.actions import (
             guardrails_ai_validation_mapping,
             validate_guardrails_ai,
@@ -192,8 +164,7 @@ class TestGuardrailsAIE2EIntegration:
             )
 
             mapped = guardrails_ai_validation_mapping(result)
-            assert mapped["valid"] is True
-            assert "validation_result" in mapped
+            assert mapped is True
 
             result_fail = validate_guardrails_ai(
                 validator_name="regex_match",
@@ -203,7 +174,39 @@ class TestGuardrailsAIE2EIntegration:
             )
 
             mapped_fail = guardrails_ai_validation_mapping(result_fail)
-            assert mapped_fail["valid"] is False
+            assert mapped_fail is False
+
+    @pytest.mark.skipif(not GUARDRAILS_AVAILABLE, reason="Guardrails not installed")
+    def test_action_returns_valid_for_colang_flows_e2e(self):
+        """E2E test: Actions return both validation_result and valid for Colang flows."""
+        from nemoguardrails.library.guardrails_ai.actions import (
+            validate_guardrails_ai_input,
+            validate_guardrails_ai_output,
+        )
+
+        if VALIDATORS_AVAILABLE.get("regex_match", False):
+            mock_config = Mock()
+            mock_config.rails.config.guardrails_ai.get_validator_config.return_value = Mock(
+                parameters={"regex": "^[A-Z].*", "on_fail": "noop"}, metadata={}
+            )
+
+            result_input = validate_guardrails_ai_input(
+                validator="regex_match",
+                config=mock_config,
+                text="Hello world",
+            )
+            assert "validation_result" in result_input
+            assert "valid" in result_input
+            assert result_input["valid"] is True
+
+            result_output = validate_guardrails_ai_output(
+                validator="regex_match",
+                config=mock_config,
+                text="hello world",
+            )
+            assert "validation_result" in result_output
+            assert "valid" in result_output
+            assert result_output["valid"] is False
 
     @pytest.mark.skipif(not GUARDRAILS_AVAILABLE, reason="Guardrails not installed")
     def test_metadata_parameter_e2e(self):
@@ -252,9 +255,7 @@ class TestGuardrailsAIE2EIntegration:
 
         # Test with completely unknown validator
         with pytest.raises(GuardrailsAIValidationError) as exc_info:
-            validate_guardrails_ai(
-                validator_name="completely_unknown_validator", text="Test text"
-            )
+            validate_guardrails_ai(validator_name="completely_unknown_validator", text="Test text")
 
         assert "Validation failed" in str(exc_info.value)
 
@@ -273,9 +274,7 @@ class TestGuardrailsAIE2EIntegration:
 
         # run each available validator
         for validator_name, params in available_validators:
-            result = validate_guardrails_ai(
-                validator_name=validator_name, text=test_text, on_fail="noop", **params
-            )
+            result = validate_guardrails_ai(validator_name=validator_name, text=test_text, on_fail="noop", **params)
 
             assert "validation_result" in result
             assert hasattr(result["validation_result"], "validation_passed")

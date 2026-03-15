@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +19,14 @@ import json
 import sys
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Union
+from unittest.mock import AsyncMock, MagicMock
 
-from langchain.callbacks.manager import (
+from langchain_core.callbacks.manager import (
     AsyncCallbackManagerForLLMRun,
     CallbackManagerForLLMRun,
 )
-from langchain_core.language_models.llms import LLM
+from langchain_core.language_models import LLM
+from langchain_core.messages import AIMessage
 
 from nemoguardrails import LLMRails, RailsConfig
 from nemoguardrails.colang import parse_colang_file
@@ -35,10 +37,9 @@ from nemoguardrails.colang.v2_x.runtime.runtime import (
 from nemoguardrails.colang.v2_x.runtime.statemachine import initialize_state
 from nemoguardrails.utils import EnhancedJsonEncoder, new_event_dict, new_uuid
 
-# test providers that are known to support token usage reporting during streaming
-# use this to simulate realistic behavior in tests: providers in this list will
-# return token usage data when stream_usage=True is passed, others won't.
-_TEST_PROVIDERS_WITH_TOKEN_USAGE_SUPPORT = ["openai", "azure_openai", "nim"]
+# test providers that are known to support token usage reporting
+# providers in this list will return token usage data in tests, others won't.
+_TEST_PROVIDERS_WITH_TOKEN_USAGE = ["openai", "azure_openai", "nim"]
 
 
 class FakeLLM(LLM):
@@ -49,7 +50,7 @@ class FakeLLM(LLM):
     streaming: bool = False
     exception: Optional[Exception] = None
     token_usage: Optional[List[Dict[str, int]]] = None  # Token usage per response
-    should_enable_stream_usage: bool = False
+    should_return_token_usage: bool = False
 
     @property
     def _llm_type(self) -> str:
@@ -98,23 +99,41 @@ class FakeLLM(LLM):
 
         self.i += 1
 
-        if self.streaming and run_manager:
-            # To mock streaming, we just split in chunk by spaces
-            chunks = response.split(" ")
-            for i in range(len(chunks)):
-                if i < len(chunks) - 1:
-                    chunk = chunks[i] + " "
-                else:
-                    chunk = chunks[i]
-
-                await asyncio.sleep(0.05)
-                await run_manager.on_llm_new_token(token=chunk, chunk=chunk)
-
         return response
 
-    def _get_token_usage_for_response(
-        self, response_index: int, kwargs: Dict[str, Any]
-    ) -> Dict[str, Any]:
+    async def _astream(
+        self,
+        prompt: str,
+        stop: Optional[List[str]] = None,
+        run_manager: Optional[AsyncCallbackManagerForLLMRun] = None,
+        **kwargs: Any,
+    ):
+        from langchain_core.outputs import GenerationChunk
+
+        if self.i >= len(self.responses):
+            raise RuntimeError(
+                f"No responses available for query number {self.i + 1} in FakeLLM. "
+                "Most likely, too many LLM calls are made or additional responses need to be provided."
+            )
+
+        response = self.responses[self.i]
+        self.i += 1
+
+        if self.exception:
+            raise self.exception
+
+        # To mock streaming, we just split in chunk by spaces
+        chunks = response.split(" ")
+        for i in range(len(chunks)):
+            if i < len(chunks) - 1:
+                chunk = chunks[i] + " "
+            else:
+                chunk = chunks[i]
+
+            await asyncio.sleep(0.05)
+            yield GenerationChunk(text=chunk)
+
+    def _get_token_usage_for_response(self, response_index: int) -> Dict[str, Any]:
         """Get token usage data for the given response index if conditions are met."""
 
         llm_output = {}
@@ -122,7 +141,7 @@ class FakeLLM(LLM):
             self.token_usage
             and response_index >= 0
             and response_index < len(self.token_usage)
-            and (kwargs.get("stream_usage", False) or self.should_enable_stream_usage)
+            and self.should_return_token_usage
         ):
             llm_output = {"token_usage": self.token_usage[response_index]}
         return llm_output
@@ -130,26 +149,20 @@ class FakeLLM(LLM):
     def _generate(self, prompts, stop=None, run_manager=None, **kwargs):
         """Override _generate to provide token usage in LLMResult."""
 
-        from langchain.schema import Generation, LLMResult
+        from langchain_core.outputs import Generation, LLMResult
 
-        generations = [
-            [Generation(text=self._call(prompt, stop, run_manager, **kwargs))]
-            for prompt in prompts
-        ]
+        generations = [[Generation(text=self._call(prompt, stop, run_manager, **kwargs))] for prompt in prompts]
 
-        llm_output = self._get_token_usage_for_response(self.i - 1, kwargs)
+        llm_output = self._get_token_usage_for_response(self.i - 1)
         return LLMResult(generations=generations, llm_output=llm_output)
 
     async def _agenerate(self, prompts, stop=None, run_manager=None, **kwargs):
         """Override _agenerate to provide token usage in LLMResult."""
-        from langchain.schema import Generation, LLMResult
+        from langchain_core.outputs import Generation, LLMResult
 
-        generations = [
-            [Generation(text=await self._acall(prompt, stop, run_manager, **kwargs))]
-            for prompt in prompts
-        ]
+        generations = [[Generation(text=await self._acall(prompt, stop, run_manager, **kwargs))] for prompt in prompts]
 
-        llm_output = self._get_token_usage_for_response(self.i - 1, kwargs)
+        llm_output = self._get_token_usage_for_response(self.i - 1)
         return LLMResult(generations=generations, llm_output=llm_output)
 
     @property
@@ -192,28 +205,18 @@ class TestChat:
             llm_completions: The completions that should be generated by the fake LLM.
             streaming: Whether to simulate streaming responses.
             llm_exception: An exception to be raised by the LLM (for testing error handling).
-            token_usage: Optional token usage data to simulate stream_usage=True behavior.
+            token_usage: Optional token usage data for simulating token usage reporting.
         """
         self.llm = None
         if llm_completions is not None:
-            # check if we should simulate stream_usage=True behavior
-            # this mirrors the logic in LLMRails._prepare_model_kwargs
-            should_enable_stream_usage = False
-            if config.streaming:
-                main_model = next(
-                    (model for model in config.models if model.type == "main"), None
-                )
-                if (
-                    main_model
-                    and main_model.engine in _TEST_PROVIDERS_WITH_TOKEN_USAGE_SUPPORT
-                ):
-                    should_enable_stream_usage = True
+            main_model = next((model for model in config.models if model.type == "main"), None)
+            should_return_token_usage = bool(main_model and main_model.engine in _TEST_PROVIDERS_WITH_TOKEN_USAGE)
 
             self.llm = FakeLLM(
                 responses=llm_completions,
                 streaming=streaming,
                 token_usage=token_usage,
-                should_enable_stream_usage=should_enable_stream_usage,
+                should_return_token_usage=should_return_token_usage,
             )
             if llm_exception:
                 self.llm.exception = llm_exception
@@ -251,21 +254,15 @@ class TestChat:
                             final_transcript=msg,
                             action_uid=uid,
                             is_success=True,
-                            event_created_at=(
-                                datetime.now(timezone.utc) + timedelta(milliseconds=1)
-                            ).isoformat(),
-                            action_finished_at=(
-                                datetime.now(timezone.utc) + timedelta(milliseconds=1)
-                            ).isoformat(),
+                            event_created_at=(datetime.now(timezone.utc) + timedelta(milliseconds=1)).isoformat(),
+                            action_finished_at=(datetime.now(timezone.utc) + timedelta(milliseconds=1)).isoformat(),
                         ),
                     ]
                 )
             elif "type" in msg:
                 self.input_events.append(msg)
             else:
-                raise ValueError(
-                    f"Invalid user message: {msg}. Must be either str or event"
-                )
+                raise ValueError(f"Invalid user message: {msg}. Must be either str or event")
         else:
             raise Exception(f"Invalid colang version: {self.config.colang_version}")
 
@@ -273,9 +270,7 @@ class TestChat:
         if self.config.colang_version == "1.0":
             result = self.app.generate(messages=self.history)
             assert result, "Did not receive any result"
-            assert (
-                result["content"] == expected
-            ), f"Expected `{expected}` and received `{result['content']}`"
+            assert result["content"] == expected, f"Expected `{expected}` and received `{result['content']}`"
             self.history.append(result)
 
         elif self.config.colang_version == "2.x":
@@ -316,9 +311,7 @@ class TestChat:
 
             output_msg = "\n".join(output_msgs)
             if isinstance(expected, str):
-                assert (
-                    output_msg == expected
-                ), f"Expected `{expected}` and received `{output_msg}`"
+                assert output_msg == expected, f"Expected `{expected}` and received `{output_msg}`"
             else:
                 if isinstance(expected, dict):
                     expected = [expected]
@@ -330,9 +323,7 @@ class TestChat:
     async def bot_async(self, msg: str):
         result = await self.app.generate_async(messages=self.history)
         assert result, "Did not receive any result"
-        assert (
-            result["content"] == msg
-        ), f"Expected `{msg}` and received `{result['content']}`"
+        assert result["content"] == msg, f"Expected `{msg}` and received `{result['content']}`"
         self.history.append(result)
 
     def __rshift__(self, msg: Union[str, dict]):
@@ -371,22 +362,16 @@ def event_conforms(event_subset: Dict[str, Any], event_to_test: Dict[str, Any]) 
             if not event_conforms(value, event_to_test[key]):
                 return False
         elif isinstance(value, list) and isinstance(event_to_test[key], list):
-            return all(
-                [event_conforms(s, e) for s, e in zip(value, event_to_test[key])]
-            )
+            return all([event_conforms(s, e) for s, e in zip(value, event_to_test[key])])
         elif value != event_to_test[key]:
             return False
 
     return True
 
 
-def event_sequence_conforms(
-    event_subset_list: Iterable[Dict[str, Any]], event_list: Iterable[Dict[str, Any]]
-) -> bool:
+def event_sequence_conforms(event_subset_list: Iterable[Dict[str, Any]], event_list: Iterable[Dict[str, Any]]) -> bool:
     if len(event_subset_list) != len(event_list):
-        raise Exception(
-            f"Different lengths: {len(event_subset_list)} vs {len(event_list)}"
-        )
+        raise Exception(f"Different lengths: {len(event_subset_list)} vs {len(event_list)}")
 
     for subset, event in zip(event_subset_list, event_list):
         if not event_conforms(subset, event):
@@ -395,25 +380,18 @@ def event_sequence_conforms(
     return True
 
 
-def any_event_conforms(
-    event_subset: Dict[str, Any], event_list: Iterable[Dict[str, Any]]
-) -> bool:
+def any_event_conforms(event_subset: Dict[str, Any], event_list: Iterable[Dict[str, Any]]) -> bool:
     """Returns true iff one of the events in the list conform to the event_subset provided."""
     return any([event_conforms(event_subset, e) for e in event_list])
 
 
-def is_data_in_events(
-    events: List[Dict[str, Any]], event_data: List[Dict[str, Any]]
-) -> bool:
+def is_data_in_events(events: List[Dict[str, Any]], event_data: List[Dict[str, Any]]) -> bool:
     """Returns 'True' if provided data is contained in event."""
     if len(events) != len(event_data):
         return False
 
     for event, data in zip(events, event_data):
-        if not (
-            all(key in event for key in data)
-            and all(data[key] == event[key] for key in data)
-        ):
+        if not (all(key in event for key in data) and all(data[key] == event[key] for key in data)):
             return False
     return True
 
@@ -438,3 +416,21 @@ def _init_state(colang_content, yaml_content: Optional[str] = None) -> State:
     json.dump(state.flow_configs, sys.stdout, indent=4, cls=EnhancedJsonEncoder)
 
     return state
+
+
+def get_bound_llm_magic_mock(ainvoke_return_value: Union[AIMessage, dict]) -> MagicMock:
+    mock_llm = MagicMock()
+    mock_llm.return_value = mock_llm
+
+    bound_llm_mock = AsyncMock()
+    if isinstance(ainvoke_return_value, dict):
+        bound_llm_mock.ainvoke.return_value = MagicMock(**ainvoke_return_value)
+    else:
+        bound_llm_mock.ainvoke.return_value = ainvoke_return_value
+
+    mock_llm.bind.return_value = bound_llm_mock
+    if isinstance(ainvoke_return_value, dict):
+        mock_llm.ainvoke = AsyncMock(return_value=MagicMock(**ainvoke_return_value))
+    else:
+        mock_llm.ainvoke = AsyncMock(return_value=ainvoke_return_value)
+    return mock_llm

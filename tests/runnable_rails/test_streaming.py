@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,6 @@
 """
 Tests for streaming functionality in RunnableRails.
 """
-
-import asyncio
 
 import pytest
 from langchain_core.messages import AIMessage, AIMessageChunk, HumanMessage
@@ -49,13 +47,26 @@ class StreamingFakeLLM(FakeLLM):
 
     async def _astream(self, messages, stop=None, run_manager=None, **kwargs):
         """Async stream the response by breaking it into tokens."""
-        response = await self._acall(messages, stop, run_manager, **kwargs)
+        from langchain_core.outputs import GenerationChunk
+
+        if self.exception:
+            raise self.exception
+
+        if self.i >= len(self.responses):
+            raise RuntimeError(
+                f"No responses available for query number {self.i + 1} in FakeLLM. "
+                "Most likely, too many LLM calls are made or additional responses need to be provided."
+            )
+
+        response = self.responses[self.i]
+        self.i += 1
+
         tokens = response.split()
         for i, token in enumerate(tokens):
             if i == 0:
-                yield token
+                yield GenerationChunk(text=token)
             else:
-                yield " " + token
+                yield GenerationChunk(text=" " + token)
 
 
 def test_runnable_rails_basic_streaming():
@@ -70,9 +81,7 @@ def test_runnable_rails_basic_streaming():
 
     assert len(chunks) > 1
 
-    full_content = "".join(
-        chunk if isinstance(chunk, str) else chunk.content for chunk in chunks
-    )
+    full_content = "".join(chunk if isinstance(chunk, str) else chunk.content for chunk in chunks)
     assert "Hello there!" in full_content
 
 
@@ -89,9 +98,7 @@ async def test_runnable_rails_async_streaming():
 
     assert len(chunks) > 1
 
-    full_content = "".join(
-        chunk if isinstance(chunk, str) else chunk.content for chunk in chunks
-    )
+    full_content = "".join(chunk if isinstance(chunk, str) else chunk.content for chunk in chunks)
     assert "Hello there!" in full_content
 
 
@@ -119,9 +126,7 @@ def test_runnable_rails_message_streaming():
 
             assert isinstance(chunk, AIMessageChunk)
 
-    full_content = "".join(
-        chunk.content for chunk in chunks if hasattr(chunk, "content")
-    )
+    full_content = "".join(chunk.content for chunk in chunks if hasattr(chunk, "content"))
     assert "Hello there!" in full_content
 
 
@@ -145,10 +150,7 @@ def test_runnable_rails_dict_streaming():
     else:
         assert False, "No valid answer chunk found"
 
-    full_content = "".join(
-        chunk["answer"] if isinstance(chunk, dict) and "answer" in chunk else ""
-        for chunk in chunks
-    )
+    full_content = "".join(chunk["answer"] if isinstance(chunk, dict) and "answer" in chunk else "" for chunk in chunks)
     assert "Paris" in full_content
 
 
@@ -213,9 +215,7 @@ def test_runnable_rails_input_rail_streaming():
     assert len(blocked_chunks) > 1
 
     full_blocked_content = "".join(
-        chunk if isinstance(chunk, str) else chunk.content
-        for chunk in blocked_chunks
-        if chunk
+        chunk if isinstance(chunk, str) else chunk.content for chunk in blocked_chunks if chunk
     )
     assert "I apologize" in full_blocked_content
 
@@ -230,9 +230,7 @@ def test_runnable_rails_input_rail_streaming():
     assert len(allowed_chunks) > 1
 
     full_allowed_content = "".join(
-        chunk if isinstance(chunk, str) else chunk.content
-        for chunk in allowed_chunks
-        if chunk
+        chunk if isinstance(chunk, str) else chunk.content for chunk in allowed_chunks if chunk
     )
     assert "Hello there" in full_allowed_content
 
@@ -296,12 +294,12 @@ def test_auto_streaming_without_streaming_flag():
     """Test that streaming works without explicitly setting streaming=True on the LLM."""
     llm = StreamingFakeLLM(responses=["Auto-streaming test response"])
 
-    assert llm.streaming == True
+    assert llm.streaming
 
     from tests.utils import FakeLLM
 
     non_streaming_llm = FakeLLM(responses=["Auto-streaming test response"])
-    assert getattr(non_streaming_llm, "streaming", False) == False
+    assert not getattr(non_streaming_llm, "streaming", False)
 
     config = RailsConfig.from_content(config={"models": []})
     rails = RunnableRails(config, llm=non_streaming_llm)
@@ -312,9 +310,7 @@ def test_auto_streaming_without_streaming_flag():
 
     assert len(chunks) > 1
 
-    full_content = "".join(
-        chunk.content if hasattr(chunk, "content") else str(chunk) for chunk in chunks
-    )
+    full_content = "".join(chunk.content if hasattr(chunk, "content") else str(chunk) for chunk in chunks)
     assert "Auto-streaming test response" in full_content
 
 
@@ -330,7 +326,7 @@ async def test_streaming_state_restoration():
     rails = RunnableRails(config, llm=llm)
 
     original_streaming = llm.streaming
-    assert original_streaming == False
+    assert not original_streaming
 
     chunks = []
     async for chunk in rails.astream("Test state restoration"):
@@ -339,7 +335,7 @@ async def test_streaming_state_restoration():
     assert len(chunks) > 0
 
     assert llm.streaming == original_streaming
-    assert llm.streaming == False
+    assert not llm.streaming
 
 
 def test_langchain_parity_ux():
@@ -348,7 +344,7 @@ def test_langchain_parity_ux():
 
     llm = FakeLLM(responses=["LangChain parity test"])
 
-    assert getattr(llm, "streaming", False) == False
+    assert not getattr(llm, "streaming", False)
 
     config = RailsConfig.from_content(config={"models": []})
     rails = RunnableRails(config, llm=llm)
@@ -364,9 +360,7 @@ def test_langchain_parity_ux():
         if hasattr(chunk, "content"):
             assert isinstance(chunk.content, str)
 
-    full_content = "".join(
-        chunk.content if hasattr(chunk, "content") else str(chunk) for chunk in chunks
-    )
+    full_content = "".join(chunk.content if hasattr(chunk, "content") else str(chunk) for chunk in chunks)
     assert "LangChain parity test" in full_content
 
 
@@ -374,9 +368,7 @@ def test_mixed_streaming_and_non_streaming_calls():
     """Test that streaming and non-streaming calls work together seamlessly."""
     from tests.utils import FakeLLM
 
-    llm = FakeLLM(
-        responses=["Mixed call test 1", "Mixed call test 2", "Mixed call test 3"]
-    )
+    llm = FakeLLM(responses=["Mixed call test 1", "Mixed call test 2", "Mixed call test 3"])
     llm.streaming = False
 
     config = RailsConfig.from_content(config={"models": []})
@@ -384,18 +376,18 @@ def test_mixed_streaming_and_non_streaming_calls():
 
     response1 = rails.invoke("First call")
     assert "Mixed call test" in str(response1)
-    assert llm.streaming == False
+    assert not llm.streaming
 
     chunks = []
     for chunk in rails.stream("Second call"):
         chunks.append(chunk)
 
     assert len(chunks) > 1
-    assert llm.streaming == False
+    assert not llm.streaming
 
     response2 = rails.invoke("Third call")
     assert "Mixed call test" in str(response2)
-    assert llm.streaming == False
+    assert not llm.streaming
 
 
 def test_streaming_with_different_input_types():
@@ -440,15 +432,10 @@ def test_streaming_with_different_input_types():
                 for chunk in chunks
             )
         else:
-            full_content = "".join(
-                chunk.content if hasattr(chunk, "content") else str(chunk)
-                for chunk in chunks
-            )
-        assert (
-            "Input type test" in full_content
-        ), f"Failed for {input_type}: {full_content}"
+            full_content = "".join(chunk.content if hasattr(chunk, "content") else str(chunk) for chunk in chunks)
+        assert "Input type test" in full_content, f"Failed for {input_type}: {full_content}"
 
-    assert llm.streaming == False
+    assert not llm.streaming
 
 
 def test_streaming_metadata_preservation():

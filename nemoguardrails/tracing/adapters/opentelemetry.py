@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,11 +63,15 @@ try:
     from opentelemetry import trace  # type: ignore
     from opentelemetry.trace import NoOpTracerProvider  # type: ignore
 
-except ImportError:
+except (ImportError, TypeError) as _exc:
+    # ImportError: opentelemetry-api not installed
+    # TypeError: PEP 649 (Python 3.14+) deferred annotation evaluation failure
     raise ImportError(
-        "OpenTelemetry API is not installed. Please install NeMo Guardrails with tracing support: "
-        "`pip install nemoguardrails[tracing]` or install the API directly: `pip install opentelemetry-api`."
-    )
+        "OpenTelemetry API is not installed or not compatible with this Python version. "
+        "Please install NeMo Guardrails with tracing support: "
+        "`pip install nemoguardrails[tracing]` or install the API directly: `pip install opentelemetry-api`. "
+        f"Original error: {_exc}"
+    ) from _exc
 
 from nemoguardrails.tracing.adapters.base import InteractionLogAdapter
 from nemoguardrails.tracing.span_formatting import extract_span_attributes
@@ -106,7 +110,7 @@ class OpenTelemetryAdapter(InteractionLogAdapter):
                 "No OpenTelemetry TracerProvider configured. Traces will not be exported. "
                 "Please configure OpenTelemetry in your application code before using NeMo Guardrails. "
                 "See setup guide at: "
-                "https://github.com/NVIDIA/NeMo-Guardrails/blob/main/examples/configs/tracing/README.md#opentelemetry-setup",
+                "https://github.com/NVIDIA-NeMo/Guardrails/blob/main/examples/configs/tracing/README.md#opentelemetry-setup",
                 UserWarning,
                 stacklevel=2,
             )
@@ -126,12 +130,8 @@ class OpenTelemetryAdapter(InteractionLogAdapter):
         spans: Dict[str, Any] = {}
 
         for span_data in interaction_log.trace:
-            parent_span = (
-                spans.get(span_data.parent_id) if span_data.parent_id else None
-            )
-            parent_context = (
-                trace.set_span_in_context(parent_span) if parent_span else None
-            )
+            parent_span = spans.get(span_data.parent_id) if span_data.parent_id else None
+            parent_context = trace.set_span_in_context(parent_span) if parent_span else None
 
             self._create_span(
                 span_data,
@@ -149,12 +149,8 @@ class OpenTelemetryAdapter(InteractionLogAdapter):
         spans: Dict[str, Any] = {}
 
         for span_data in interaction_log.trace:
-            parent_span = (
-                spans.get(span_data.parent_id) if span_data.parent_id else None
-            )
-            parent_context = (
-                trace.set_span_in_context(parent_span) if parent_span else None
-            )
+            parent_span = spans.get(span_data.parent_id) if span_data.parent_id else None
+            parent_context = trace.set_span_in_context(parent_span) if parent_span else None
             self._create_span(
                 span_data,
                 parent_context,
@@ -227,9 +223,7 @@ class OpenTelemetryAdapter(InteractionLogAdapter):
                         if body_key not in event_attrs:
                             event_attrs[body_key] = body_value
 
-                span.add_event(
-                    name=event.name, attributes=event_attrs, timestamp=event_time_ns
-                )
+                span.add_event(name=event.name, attributes=event_attrs, timestamp=event_time_ns)
 
         spans[span_data.span_id] = span
 
@@ -245,10 +239,7 @@ def _get_base_time_ns(interaction_log: InteractionLog) -> int:
     Returns:
         Base time in nanoseconds, either from the first activated rail or current time
     """
-    if (
-        interaction_log.activated_rails
-        and interaction_log.activated_rails[0].started_at
-    ):
+    if interaction_log.activated_rails and interaction_log.activated_rails[0].started_at:
         return int(interaction_log.activated_rails[0].started_at * 1_000_000_000)
     else:
         # This shouldn't happen in normal operation, but provide a fallback

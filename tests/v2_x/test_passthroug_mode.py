@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
+import sys
 import unittest
+
+import pytest
 
 from nemoguardrails import RailsConfig
 from tests.utils import TestChat
@@ -57,6 +60,10 @@ models:
 config = RailsConfig.from_content(colang_content, yaml_content)
 
 
+@pytest.mark.skipif(
+    sys.version_info >= (3, 14),
+    reason="IsolatedAsyncioTestCase teardown crashes on Python 3.14 (bpo-XXXXX: Timeout outside task)",
+)
 class TestPassthroughLLMActionLogging(unittest.IsolatedAsyncioTestCase):
     def test_passthrough_llm_action_not_invoked_via_logs(self):
         chat = TestChat(
@@ -71,19 +78,12 @@ class TestPassthroughLLMActionLogging(unittest.IsolatedAsyncioTestCase):
             messages = [{"role": "user", "content": "hi"}]
             response = rails.generate(messages=messages)
             # Check that 'StartPassthroughLLMAction' is not in the logs
-            passthrough_invoked = any(
-                "PassthroughLLMActionFinished" in message for message in log.output
-            )
-            self.assertFalse(
-                passthrough_invoked, "PassthroughLLMAction was invoked unexpectedly."
-            )
+            passthrough_invoked = any("PassthroughLLMActionFinished" in message for message in log.output)
+            self.assertFalse(passthrough_invoked, "PassthroughLLMAction was invoked unexpectedly.")
 
             self.assertIn("content", response)
             self.assertIsInstance(response["content"], str)
 
-    @unittest.skip(
-        reason="Github issue https://github.com/NVIDIA/NeMo-Guardrails/issues/1378"
-    )
     def test_passthrough_llm_action_invoked_via_logs(self):
         chat = TestChat(
             config,
@@ -97,12 +97,8 @@ class TestPassthroughLLMActionLogging(unittest.IsolatedAsyncioTestCase):
             messages = [{"role": "user", "content": "What can you do?"}]
             response = rails.generate(messages=messages)
             # Check that 'StartPassthroughLLMAction' is in the logs
-            passthrough_invoked = any(
-                "StartPassthroughLLMAction" in message for message in log.output
-            )
-            self.assertTrue(
-                passthrough_invoked, "PassthroughLLMAction was not invoked."
-            )
+            passthrough_invoked = any("StartPassthroughLLMAction" in message for message in log.output)
+            self.assertTrue(passthrough_invoked, "PassthroughLLMAction was not invoked.")
 
             self.assertIn("content", response)
             self.assertIsInstance(response["content"], str)

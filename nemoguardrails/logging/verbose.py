@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,13 +112,9 @@ class VerboseHandler(logging.StreamHandler):
 
                             # We're adding a new line before action events, to
                             # make it more readable.
-                            if event_type.startswith("Start") and event_type.endswith(
-                                "Action"
-                            ):
+                            if event_type.startswith("Start") and event_type.endswith("Action"):
                                 title = f"[magenta][bold]Start[/]{event_type[5:]}[/]"
-                            elif event_type.startswith("Stop") and event_type.endswith(
-                                "Action"
-                            ):
+                            elif event_type.startswith("Stop") and event_type.endswith("Action"):
                                 title = f"[magenta][bold]Stop[/]{event_type[4:]}[/]"
                             elif event_type.endswith("ActionUpdated"):
                                 title = f"[magenta]{event_type[:-7]}[bold]Updated[/][/]"
@@ -129,6 +125,8 @@ class VerboseHandler(logging.StreamHandler):
                                     title = f"[magenta]{event_type[:-8]}[bold]Finished[/][/]"
                             elif event_type.endswith("ActionFailed"):
                                 title = f"[magenta]{event_type[:-6]}[bold]Failed[/][/]"
+                            elif event_type == "BotThinking":
+                                title = f"[yellow bold]{event_type}[/]"
                             else:
                                 title = event_type
                         else:

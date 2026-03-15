@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,9 +70,7 @@ async def jailbreak_detection_heuristics_request(
     async with aiohttp.ClientSession() as session:
         async with session.post(api_url, json=payload) as resp:
             if resp.status != 200:
-                log.error(
-                    f"Jailbreak check API request failed with status {resp.status}"
-                )
+                log.error(f"Jailbreak check API request failed with status {resp.status}")
                 return None
 
             result = await resp.json()
@@ -97,9 +95,7 @@ async def jailbreak_detection_model_request(
     async with aiohttp.ClientSession() as session:
         async with session.post(api_url, json=payload) as resp:
             if resp.status != 200:
-                log.error(
-                    f"Jailbreak check API request failed with status {resp.status}"
-                )
+                log.error(f"Jailbreak check API request failed with status {resp.status}")
                 return None
 
             result = await resp.json()
@@ -130,13 +126,9 @@ async def jailbreak_nim_request(
             try:
                 if nim_auth_token is not None:
                     headers["Authorization"] = f"Bearer {nim_auth_token}"
-                async with session.post(
-                    endpoint, json=payload, headers=headers, timeout=30
-                ) as resp:
+                async with session.post(endpoint, json=payload, headers=headers, timeout=30) as resp:
                     if resp.status != 200:
-                        log.error(
-                            f"NemoGuard JailbreakDetect NIM request failed with status {resp.status}"
-                        )
+                        log.error(f"NemoGuard JailbreakDetect NIM request failed with status {resp.status}")
                         return None
 
                     result = await resp.json()

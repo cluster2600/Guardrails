@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,10 +27,9 @@ import logging
 import warnings
 from typing import Dict, List, Set, Type
 
-from langchain.chat_models.base import BaseChatModel
 from langchain_community import llms
 from langchain_community.chat_models import _module_lookup
-from langchain_core.language_models.llms import BaseLLM
+from langchain_core.language_models import BaseChatModel, BaseLLM
 
 from .trtllm.llm import TRTLLM
 
@@ -87,9 +86,21 @@ _CUSTOM_CHAT_PROVIDERS = {"nim"}
 
 
 def _discover_langchain_partner_chat_providers() -> Set[str]:
-    from langchain.chat_models.base import _SUPPORTED_PROVIDERS
+    from nemoguardrails._langchain_compat import import_chat_models_base
 
-    return _SUPPORTED_PROVIDERS | _CUSTOM_CHAT_PROVIDERS
+    _base = import_chat_models_base()
+    if _base is None:
+        return _CUSTOM_CHAT_PROVIDERS
+
+    # The internal variable listing supported providers was renamed across langchain versions:
+    # _SUPPORTED_PROVIDERS (<=1.2.1, set) -> _SUPPORTED_PROVIDERS (1.2.1, dict) -> _BUILTIN_PROVIDERS (>=1.2.10, dict)
+    _PROVIDERS = getattr(_base, "_BUILTIN_PROVIDERS", None) or getattr(_base, "_SUPPORTED_PROVIDERS", None)
+    if _PROVIDERS is None:
+        return _CUSTOM_CHAT_PROVIDERS
+
+    if isinstance(_PROVIDERS, dict):
+        return set(_PROVIDERS.keys()) | _CUSTOM_CHAT_PROVIDERS
+    return _PROVIDERS | _CUSTOM_CHAT_PROVIDERS
 
 
 def _discover_langchain_community_chat_providers():
@@ -124,11 +135,7 @@ async def _acall(self, *args, **kwargs):
 def _patch_acall_method_to(llm_providers: Dict[str, Type[BaseLLM]]):
     for provider_cls in llm_providers.values():
         # If the "_acall" method is not defined, we add it.
-        if (
-            provider_cls
-            and issubclass(provider_cls, BaseLLM)
-            and "_acall" not in provider_cls.__dict__
-        ):
+        if provider_cls and issubclass(provider_cls, BaseLLM) and "_acall" not in provider_cls.__dict__:
             log.debug("Adding async support to %s", provider_cls.__name__)
             setattr(provider_cls, "_acall", _acall)
 
@@ -148,9 +155,7 @@ _chat_providers = _discover_langchain_community_chat_providers()
 def register_llm_provider(name: str, provider_cls: Type[BaseLLM]):
     """Register an additional LLM provider."""
     if not hasattr(provider_cls, "_acall"):
-        raise TypeError(
-            f"The provider class {provider_cls.__name__} must implement an '_acall' method."
-        )
+        raise TypeError(f"The provider class {provider_cls.__name__} must implement an '_acall' method.")
     _llm_providers[name] = provider_cls
 
 

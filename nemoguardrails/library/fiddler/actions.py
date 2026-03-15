@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,13 +47,9 @@ async def call_fiddler_guardrail(
 
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.post(
-                endpoint, headers=headers, json={"data": data}
-            ) as response:
+            async with session.post(endpoint, headers=headers, json={"data": data}) as response:
                 if response.status != 200:
-                    log.error(
-                        f"{guardrail_name} could not be run. Fiddler API returned status code {response.status}"
-                    )
+                    log.error(f"{guardrail_name} could not be run. Fiddler API returned status code {response.status}")
                     return False
 
                 response_json = await response.json()
@@ -71,6 +67,7 @@ async def call_fiddler_guardrail(
                             "fdl_harassing",
                             "fdl_hateful",
                             "fdl_sexist",
+                            "fdl_roleplaying",
                         ]
                     )
                 else:
@@ -95,12 +92,10 @@ async def call_fiddler_safety_user(config: RailsConfig, context: Optional[dict] 
 
     user_message = context.get("user_message", "")
     if not user_message:
-        log.error(
-            "Fiddler Jailbreak Guardrails could not be run. User message must be provided."
-        )
+        log.error("Fiddler Jailbreak Guardrails could not be run. User message must be provided.")
         return False
 
-    data = {"prompt": [user_message]}
+    data = {"input": user_message}
     return await call_fiddler_guardrail(
         endpoint=base_url + "/v3/guardrails/ftl-safety",
         data=data,
@@ -123,12 +118,10 @@ async def call_fiddler_safety_bot(config: RailsConfig, context: Optional[dict] =
 
     bot_message = context.get("bot_message", "")
     if not bot_message:
-        log.error(
-            "Fiddler Safety Guardrails could not be run. Bot message must be provided."
-        )
+        log.error("Fiddler Safety Guardrails could not be run. Bot message must be provided.")
         return False
 
-    data = {"prompt": [bot_message]}
+    data = {"input": bot_message}
     return await call_fiddler_guardrail(
         endpoint=base_url + "/v3/guardrails/ftl-safety",
         data=data,
@@ -141,9 +134,7 @@ async def call_fiddler_safety_bot(config: RailsConfig, context: Optional[dict] =
 
 
 @action(name="call fiddler faithfulness", is_system_action=True)
-async def call_fiddler_faithfulness(
-    config: RailsConfig, context: Optional[dict] = None
-):
+async def call_fiddler_faithfulness(config: RailsConfig, context: Optional[dict] = None):
     fiddler_config: FiddlerGuardrails = getattr(config.rails.config, "fiddler")
     base_url = fiddler_config.fiddler_endpoint
 
@@ -152,14 +143,12 @@ async def call_fiddler_faithfulness(
         return False
 
     bot_message = context.get("bot_message", "")
-    knowledge = context.get("relevant_chunks", [])
+    knowledge = context.get("relevant_chunks", "")
     if not bot_message:
-        log.error(
-            "Fiddler Faithfulness Guardrails could not be run. Chatbot message must be provided."
-        )
+        log.error("Fiddler Faithfulness Guardrails could not be run. Chatbot message must be provided.")
         return False
 
-    data = {"response": [bot_message], "context": [knowledge]}
+    data = {"context": knowledge, "response": bot_message}
     return await call_fiddler_guardrail(
         endpoint=base_url + "/v3/guardrails/ftl-response-faithfulness",
         data=data,

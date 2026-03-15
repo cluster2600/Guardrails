@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -161,9 +161,7 @@ def test_generation_response_empty_tool_calls():
 
 
 def test_generation_response_serialization_with_tool_calls():
-    test_tool_calls = [
-        {"name": "test_func", "args": {}, "id": "call_test", "type": "tool_call"}
-    ]
+    test_tool_calls = [{"name": "test_func", "args": {}, "id": "call_test", "type": "tool_call"}]
 
     response = GenerationResponse(response="Response text", tool_calls=test_tool_calls)
 
@@ -193,3 +191,54 @@ def test_generation_response_model_validation():
     assert isinstance(response.tool_calls, list)
     assert len(response.tool_calls) == 2
     assert response.llm_output["token_usage"]["total_tokens"] == 50
+
+
+def test_generation_response_with_reasoning_content():
+    test_reasoning = "Step 1: Analyze\nStep 2: Respond"
+
+    response = GenerationResponse(response="Final answer", reasoning_content=test_reasoning)
+
+    assert response.reasoning_content == test_reasoning
+    assert response.response == "Final answer"
+
+
+def test_generation_response_reasoning_content_defaults_to_none():
+    response = GenerationResponse(response="Answer")
+
+    assert response.reasoning_content is None
+
+
+def test_generation_response_reasoning_content_can_be_empty_string():
+    response = GenerationResponse(response="Answer", reasoning_content="")
+
+    assert response.reasoning_content == ""
+
+
+def test_generation_response_serialization_with_reasoning_content():
+    test_reasoning = "Thinking process here"
+
+    response = GenerationResponse(response="Response", reasoning_content=test_reasoning)
+
+    response_dict = response.dict()
+    assert "reasoning_content" in response_dict
+    assert response_dict["reasoning_content"] == test_reasoning
+
+    response_json = response.json()
+    assert "reasoning_content" in response_json
+    assert test_reasoning in response_json
+
+
+def test_generation_response_with_all_fields():
+    test_tool_calls = [{"name": "test_func", "args": {}, "id": "call_123", "type": "tool_call"}]
+    test_reasoning = "Detailed reasoning"
+
+    response = GenerationResponse(
+        response=[{"role": "assistant", "content": "Response"}],
+        tool_calls=test_tool_calls,
+        reasoning_content=test_reasoning,
+        llm_output={"token_usage": {"total_tokens": 100}},
+    )
+
+    assert response.tool_calls == test_tool_calls
+    assert response.reasoning_content == test_reasoning
+    assert response.llm_output["token_usage"]["total_tokens"] == 100

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,8 +46,7 @@ def nim_config_content():
     models:
       - type: main
         engine: nim
-        model: meta/llama-3.1-70b-instruct
-        api_base: https://integrate.api.nvidia.com/v1
+        model: meta/llama-3.3-70b-instruct
     """
 
 
@@ -86,7 +85,9 @@ class TestLLMParamsOpenAI:
         config = RailsConfig.from_path(openai_config_path)
         rails = LLMRails(config, verbose=False)
 
-        prompt = "Say exactly 'Hello World' and nothing else and try to use a random word as a name, e.g Hello NVIDIAN!."
+        prompt = (
+            "Say exactly 'Hello World' and nothing else and try to use a random word as a name, e.g Hello NVIDIAN!."
+        )
 
         response1 = await rails.generate_async(
             messages=[{"role": "user", "content": prompt}],
@@ -168,9 +169,7 @@ class TestLLMParamsOpenAI:
         llm = rails.llm
         prompt = "Say 'test' and nothing else."
 
-        response = await llm_call(
-            llm, prompt, llm_params={"temperature": 0.0, "max_tokens": 5}
-        )
+        response = await llm_call(llm, prompt, llm_params={"temperature": 0.0, "max_tokens": 5})
 
         assert response is not None
         assert len(response) > 0
@@ -183,19 +182,39 @@ class TestLLMParamsOpenAI:
     async def test_openai_llm_params_streaming(self, openai_config_path):
         """Test llm_params work with streaming responses from OpenAI."""
         config = RailsConfig.from_path(openai_config_path)
-        config.streaming = True
         rails = LLMRails(config, verbose=False)
 
         prompt = "Count from 1 to 3."
 
-        response = await rails.generate_async(
+        chunks = []
+        async for chunk in rails.stream_async(
             messages=[{"role": "user", "content": prompt}],
             options={"llm_params": {"temperature": 0.0, "max_tokens": 20}},
+        ):
+            chunks.append(chunk)
+
+        content = "".join(chunks)
+        assert "1" in content
+
+    @pytest.mark.asyncio
+    @pytest.mark.skipif(
+        not os.getenv("OPENAI_API_KEY"),
+        reason="OpenAI API key not available for e2e testing",
+    )
+    async def test_openai_stop_tokens_without_llm_params(self, openai_config_path):
+        """Test stop tokens work without llm_params (regression test for 67de94723)."""
+        config = RailsConfig.from_path(openai_config_path)
+        rails = LLMRails(config, verbose=False)
+
+        response = await llm_call(
+            rails.llm,
+            "Count from 1 to 10, one number per line.",
+            stop=["5"],
+            llm_params=None,
         )
 
-        assert response.response is not None
-        content = response.response[-1]["content"]
-        assert "1" in content
+        assert "4" in response
+        assert "5" not in response
 
 
 @pytest.mark.skipif(
@@ -281,9 +300,7 @@ class TestLLMParamsNIM:
         llm = rails.llm
         prompt = "Say 'test'."
 
-        response = await llm_call(
-            llm, prompt, llm_params={"temperature": 0.2, "max_tokens": 10}
-        )
+        response = await llm_call(llm, prompt, llm_params={"temperature": 0.2, "max_tokens": 10})
 
         assert response is not None
         assert len(response) > 0
@@ -364,9 +381,7 @@ class TestLLMParamsIntegration:
 
         prompt = "Generate a response."
 
-        response_no_params = await rails.generate_async(
-            messages=[{"role": "user", "content": prompt}]
-        )
+        response_no_params = await rails.generate_async(messages=[{"role": "user", "content": prompt}])
 
         response_with_params = await rails.generate_async(
             messages=[{"role": "user", "content": prompt}],
@@ -396,7 +411,7 @@ class TestLLMParamsIntegration:
         models:
           - type: main
             engine: openai
-            model: o1-mini
+            model: o3-mini
         """
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -414,7 +429,4 @@ class TestLLMParamsIntegration:
 
             error_message = str(exc_info.value)
             assert "temperature" in error_message.lower()
-            assert (
-                "unsupported" in error_message.lower()
-                or "not support" in error_message.lower()
-            )
+            assert "unsupported" in error_message.lower() or "not support" in error_message.lower()

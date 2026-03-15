@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 import logging
 from typing import Optional
 
-from langchain_core.language_models.llms import BaseLLM
+from langchain_core.language_models import BaseLLM
 
 from nemoguardrails import RailsConfig
 from nemoguardrails.actions import action
@@ -81,11 +81,8 @@ async def self_check_facts(
     if llm_task_manager.has_output_parser(task):
         result = llm_task_manager.parse_task_output(task, output=response)
     else:
-        result = llm_task_manager.parse_task_output(
-            task, output=response, forced_output_parser="is_content_safe"
-        )
+        result = llm_task_manager.parse_task_output(task, output=response, forced_output_parser="is_content_safe")
 
-    result = result.text
     is_not_safe = result[0]
 
     result = float(not is_not_safe)

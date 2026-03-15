@@ -1,0 +1,338 @@
+---
+orphan: true
+---
+
+<!-- This document is marked as :orphan: so Sphinx will not warn about it being
+     absent from any toctree.  It is intentionally standalone — linked from PR
+     descriptions and the project wiki rather than the main documentation nav. -->
+
+# NeMo Guardrails Performance Research
+
+> A comprehensive analysis of performance optimisations, bottlenecks, and future
+> improvement opportunities for NVIDIA NeMo Guardrails.
+
+## Executive Summary
+
+The guardrails framework has undergone substantial performance work across three
+PRs spanning Python 3.14 compatibility, thread-safety primitives, and
+production-grade benchmarking infrastructure.  The result is a measurably faster
+pipeline with regression gates that prevent future degradation.
+
+This document consolidates the research findings, benchmarks, and actionable
+recommendations for further improvments.
+
+---
+
+## 1. Where Time Is Spent
+
+<!-- Methodology note: the "Typical Share" percentages below are derived from
+     profiling a representative pipeline (3 input rails, 2 output rails) against
+     an OpenAI GPT-4 endpoint.  The LLM call dominates so heavily that even
+     large relative improvements to framework layers yield only small absolute
+     gains — this is why the table is presented first, to calibrate expectations
+     before the optimisation detail that follows. -->
+
+A typical guardrails request traverses five layers.  Understanding their relative
+cost is essential before optimising anything:
+
+| Layer | Nature | Typical Share | Status |
+|-------|--------|--------------|--------|
+| LLM provider call (OpenAI, NIM, etc.) | I/O-bound | 80–95 % | Out of framework scope |
+| Rail evaluation (regex, PII, YARA) | CPU-bound | 2–15 % | Optimised: thread-pooled on 3.14t |
+| Orchestration (routing, DAG scheduling) | CPU-bound | 1–5 % | Optimised: DAG pre-computation |
+| Wrapper overhead (RunnableRails, middleware) | CPU-bound | < 2 % | Optimised: pre-created options |
+| Tracing / observability | Mixed | 0–5 % | Optimised: zero-cost when disabled |
+
+**Key insight**: the framework is already near-invisible in terms of overhead.
+Further gains come from parallelising CPU-bound rails and reducing scheduling
+latency.
+
+---
+
+## 2. Implemented Optimisations
+
+### 2.1 Template Compilation Cache (Milestone 3)
+
+<!-- The 512-entry bound was chosen empirically: a large deployment typically
+     has 50–200 distinct prompt templates, so 512 gives comfortable headroom
+     without unbounded memory growth.  LRU eviction means rarely-used templates
+     are reclaimed first, keeping the working set hot. -->
+
+Jinja2 templates for prompt rendering were being parsed and compiled on every
+call to `_render_string()`.  A bounded `ThreadSafeCache` (512 entries, LRU
+eviction) now caches compiled templates and their extracted variable sets.
+
+**File**: `nemoguardrails/llm/taskmanager.py` (lines 100–138)
+
+| Template complexity | Cold (parse + compile) | Hot (cached) | Speedup |
+|---|---|---|---|
+| Simple | 0.211 ms | 0.005 ms | **45× ** |
+| Medium | 0.744 ms | 0.021 ms | **36× ** |
+| Complex | 1.252 ms | 0.010 ms | **121× ** |
+
+### 2.2 DAG-Based Rail Scheduler (Milestone 4)
+
+<!-- Architectural rationale: flat-parallel execution treated every rail as
+     independent, which meant rails with implicit ordering constraints had to be
+     serialised manually.  The DAG approach lets rails declare dependencies
+     explicitly, so the scheduler can maximise concurrency within each
+     topological level whilst still honouring ordering requirements.
+
+     The "Efficiency" column is computed as (serial_time / actual_time) / parallelism,
+     normalised to [0, 1].  Values above 0.85 indicate low scheduling overhead. -->
+
+Rails with declared dependencies are now executed in topologically sorted groups
+rather than flat-parallel.  The scheduler is pre-computed once at configuration
+load time and reused per request.
+
+**File**: `nemoguardrails/rails/llm/dag_scheduler.py`
+
+| Topology | Groups | Serial time | Actual time | Efficiency |
+|---|---|---|---|---|
+| linear_4 | 4 | 40 ms | 42.1 ms | 0.95 |
+| wide_4 | 1 | 40 ms | 11.2 ms | 0.89 |
+| diamond | 3 | 40 ms | 31.5 ms | 0.95 |
+| fan_out_8 | 2 | 85 ms | 16.8 ms | 0.89 |
+
+Early-exit semantics are preserved: if any rail in a group returns `stop` or
+raises, subsequent groups are cancelled immediately.
+
+### 2.3 Eager Task Factory (Python 3.12+)
+
+<!-- Why this matters: without eager dispatch, even a coroutine that returns
+     immediately still pays for one event-loop iteration (schedule → poll → resume).
+     With eager_task_factory, if the coroutine completes before its first `await`,
+     the result is available synchronously — eliminating that round-trip.  This
+     disproportionately benefits pipelines with many lightweight rails (e.g. cached
+     template lookups or trivial pass-through checks). -->
+
+`asyncio.eager_task_factory` is installed during scheduler execution, allowing
+coroutines that complete synchronously (cache hits, trivial checks) to bypass the
+event-loop round-trip entirely.
+
+| Concurrent tasks | Python 3.10 | Python 3.14 (eager) | Speedup |
+|---:|---:|---:|---:|
+| 4 | 0.094 ms | 0.042 ms | **2.2× ** |
+| 8 | 0.111 ms | 0.048 ms | **2.2× ** |
+| 16 | 0.136 ms | 0.058 ms | **2.2× ** |
+| 64 | 0.286 ms | 0.128 ms | **2.0× ** |
+
+### 2.4 Free-Threaded Python (3.14t) CPU Parallelism
+
+<!-- Data interpretation: note the 1-rail case shows 3.14t is *slower* (4.6 ms vs
+     3.4 ms) due to the overhead of dispatching to the thread pool when there is
+     nothing to parallelise.  The cross-over point is 2 rails, and the benefit
+     scales near-linearly with the number of concurrent CPU-bound rails.  This is
+     why the recommendation (Section 6) limits this to "latency-sensitive pipelines
+     with heavy CPU-bound rails" rather than suggesting it as a universal default. -->
+
+On Python 3.14t (no GIL), CPU-bound rails run in a shared `ThreadPoolExecutor`
+sized to `os.cpu_count()`.  All CPU-heavy actions (regex matching, PII detection,
+YARA rules, language detection) dispatch via `get_cpu_executor()`.
+
+| Concurrent CPU rails | 3.10 (GIL) | 3.14t parallel | Speedup |
+|---:|---:|---:|---:|
+| 1 | 3.4 ms | 4.6 ms | 1.0×  |
+| 2 | 6.9 ms | 4.8 ms | **1.9× ** |
+| 4 | 13.8 ms | 7.3 ms | **2.5× ** |
+| 8 | 27.6 ms | 9.2 ms | **4.1× ** |
+
+This is the single largest improvement for pipelines heavy on regex, PII, or
+YARA rails.
+
+### 2.5 Zero-Overhead Tracing (Milestone 2)
+
+The process-events semaphore was moved from a module-level global to a
+per-instance attribute on `LLMRails`.  When tracing is disabled, the measured
+overhead is < 2 % of total request time.
+
+### 2.6 Thread-Safety Primitives
+
+`nemoguardrails/_thread_safety.py` provides three primitives for free-threaded
+Python:
+
+- **`ThreadSafeDict`** — `dict` subclass with `RLock`-guarded operations.  Used
+  by `ActionDispatcher._registered_actions`.
+- **`ThreadSafeCache`** — bounded LRU with hit/miss counters.  Used for template
+  caching.
+- **`atomic_init`** — double-checked locking decorator for lazy initialisation.
+
+On GIL-enabled builds, the lock is uncontended and adds negligible overhead.
+
+### 2.7 Import Time Reduction (PEP 649)
+
+<!-- Clarification: `from __future__ import annotations` (PEP 563) defers
+     annotation evaluation to strings on all Python versions.  PEP 649 (lazy
+     annotations, landing in 3.14) provides a complementary mechanism at the
+     interpreter level.  The import-time savings shown below come from avoiding
+     eager resolution of complex type annotations during module import — this
+     is especially beneficial for modules that import heavy dependencies solely
+     for type-checking purposes. -->
+
+`from __future__ import annotations` was added to five hot-path modules,
+deferring annotation evaluation on Python 3.14:
+
+| Module | 3.10 | 3.14 | Improvement |
+|---|---|---|---|
+| `nemoguardrails.llm.taskmanager` | 1028 ms | 878 ms | +14.6 % |
+| `nemoguardrails.actions.action_dispatcher` | 1058 ms | 909 ms | +14.1 % |
+| `nemoguardrails.rails.llm.config` | 975 ms | 854 ms | +12.4 % |
+
+### 2.8 CI Regression Gates
+
+<!-- The thresholds below use different units (percentage vs. absolute ms)
+     deliberately.  p95 and mean latency are expressed as percentages because
+     their absolute values vary by hardware; first-token latency uses an
+     absolute threshold because users perceive it as a fixed-budget metric
+     (anything above ~20 ms feels sluggish regardless of total request time).
+     Cold-start import uses a percentage because it scales with dependency count. -->
+
+PR-blocking thresholds prevent performance regressions:
+
+- p95 orchestration latency: < 5 % regression
+- First-token latency: < 20 ms regression
+- Mean latency: < 10 % regression
+- Cold-start import: < 15 % regression
+
+---
+
+## 3. Remaining Bottlenecks and Opportunities
+
+### 3.1 LLM Response Caching (Partial)
+
+<!-- The distinction between literal and semantic deduplication is important:
+     literal matching requires byte-identical prompts, which fails when minor
+     formatting differences (whitespace, parameter ordering) produce functionally
+     equivalent requests.  Hashing a normalised representation of (prompt, model,
+     temperature, max_tokens) would catch these duplicates.  This is low-risk for
+     deterministic rails (temperature=0) but must be opt-in for stochastic ones. -->
+
+`nemoguardrails/llm/cache.py` implements an LFU cache interface, but semantic
+deduplication (hash prompts + model parameters rather than literal string match)
+is not yet explored.  For deterministic rails (e.g. content moderation with fixed
+system prompts), this could eliminate redundant LLM calls entirely.
+
+### 3.2 Vector Store Batching
+
+Embedding lookups currently execute individually.  Batching multiple similarity
+searches into a single API call could reduce round-trip overhead for
+retrieval-augmented rails.
+
+### 3.3 Memory Allocation in Event Loops
+
+The Colang v1.0 runtime allocates fresh `dict` objects for every event in
+`compute_next_steps()`.  Object pooling or pre-allocated event buffers would
+reduce GC pressure in high-throughput scenarios.
+
+### 3.4 Serialisation Costs (Colang v2.x)
+
+`colang/v2_x/runtime/serialization.py` marshals state to JSON on the hot path.
+Profiling may reveal that a faster serialisation library (e.g. `orjson`) or lazy
+serialisation (defer until state actually needs persisting) could save
+meaningful time.
+
+### 3.5 Subinterpreter Isolation (Speculative)
+
+<!-- This is deliberately labelled "speculative" because the C-extension
+     ecosystem dependency is a hard blocker, not a soft one.  Until NumPy and
+     similar libraries expose per-interpreter state, any subinterpreter-based
+     approach would be limited to pure-Python actions — which are rarely the
+     ones that need isolation.  Revisit once CPython 3.16+ matures. -->
+
+PEP 734 subinterpreters could provide memory-isolated execution of untrusted
+custom actions without the process-spawn overhead.  However, many C extensions
+(NumPy, PyTorch) do not yet support subinterpreters, making this a 2027+ target.
+
+### 3.6 Config Parsing Lazy Loading
+
+Complex YAML configurations are fully parsed at startup.  For deployments with
+many flow definitions where only a subset is invoked per request, lazy-loading
+per-flow config sections could reduce startup time.
+
+---
+
+## 4. PR-Level Review Summary
+
+### PR #1727 — NVIDIA-NeMo/Guardrails (main branch)
+
+**Branch**: `feat/python-3.14-langchain-migration`
+**CI Status**: 13/14 passing (only pre-existing Python 3.14 experimental failure)
+**Codecov**: Patch coverage passing after latest test additions
+**Review comments**: 30 inline comments (Greptile + CodeRabbit automated reviews)
+
+Key review findings:
+- CHANGELOG.md merge conflict (needs resolution before merge)
+- `flows=[]` is falsy but semantically valid (potential silent-skip bug)
+- Thread pool shutdown ordering on interpreter exit
+- Several documentation and style suggestions
+
+### PR #1 — cluster2600/Guardrails (fork)
+
+**Branch**: `feat/python-3.14-langchain-migration`
+**Review comments**: 13 inline comments
+
+Key review findings:
+- Langchain compatibility shim robustness
+- Error handling in `_langchain_compat.py`
+- Test coverage for edge cases in asyncio lifecycle fixes
+
+### PR #2 — cluster2600/Guardrails (fork)
+
+**Branch**: `feat/performance-optimizations`
+**Review comments**: 20 inline comments (7 addressed, 13 remaining)
+
+Key review findings (addressed):
+- `_LRUDict` thread safety and CPython 3.10 `popitem` quirk
+- `maxsize=0` semantics (unbounded vs. error)
+- Server API cache preservation during cold-start restoration
+- Action cache invalidation after `load_actions_from_path()`
+- Single-entry eviction instead of full cache clear
+
+---
+
+## 5. Benchmark Infrastructure
+
+<!-- The six runners below are designed to be composable: CI runs a subset
+     (latency + import + streaming) on every PR for fast feedback, whilst the
+     full suite (including memory and throughput) runs nightly or on-demand.
+     Baselines in perf_baselines/ are machine-specific — they must be regenerated
+     whenever the CI runner hardware changes. -->
+
+The benchmark suite in `benchmarks/` provides reproducible measurements across
+six dimensions:
+
+| Runner | What it measures | Key metrics |
+|---|---|---|
+| `run_latency.py` | End-to-end request latency | p50, p95, p99, mean |
+| `run_throughput.py` | Requests per second under load | RPS, error rate |
+| `run_streaming.py` | Token streaming latency | First-token, inter-token |
+| `run_import.py` | Cold-start import times | Module load time |
+| `run_memory.py` | RSS growth over sustained load | Peak RSS, leak rate |
+| `bench_py314_advantages.py` | Python 3.14 specific features | 12 benchmark sections |
+
+Baselines are stored in `perf_baselines/` and compared via `compare.py` with
+configurable regression thresholds.
+
+---
+
+## 6. Recommendations
+
+1. **Merge PR #1727** once the CHANGELOG conflict is resolved — it delivers the
+   most comprehensive set of improvements.
+
+2. **Promote free-threaded Python 3.14t** as an optional deployment target for
+   latency-sensitive pipelines with heavy CPU-bound rails.
+
+3. **Investigate LLM response caching** with semantic deduplication for
+   deterministic rail configurations.
+
+4. **Profile Colang v2.x serialisation** — if JSON marshalling is on the hot
+   path, switching to `orjson` could yield measurable gains.
+
+5. **Monitor subinterpreter maturity** — once major C extensions support
+   PEP 734, this becomes a viable isolation mechanism.
+
+---
+
+*Document generated 2026-03-14.  All benchmarks measured on Ubuntu 22.04,
+Intel Xeon (8 cores), 32 GiB RAM.*

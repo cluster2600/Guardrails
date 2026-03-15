@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,11 +42,7 @@ def validate_input(attribute: str, validators: Sequence[str] = (), **validation_
                 raise ValueError(f"Attribute {attribute} is empty.")
 
             if "length" in validators:
-                max_len = (
-                    validation_args["max_len"]
-                    if "max_len" in validation_args
-                    else MAX_LEN
-                )
+                max_len = validation_args["max_len"] if "max_len" in validation_args else MAX_LEN
                 if len(attribute_value) > max_len:
                     raise ValueError(f"Attribute {attribute} is too long.")
 

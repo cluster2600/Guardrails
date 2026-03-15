@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,11 @@
 
 """Module for the configuration of rails."""
 
+from __future__ import annotations
+
 import logging
 import os
+import re
 import warnings
 from enum import Enum
 from typing import Any, Dict, List, Literal, Optional, Set, Tuple, Union
@@ -26,18 +29,23 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    PrivateAttr,
     SecretStr,
+    computed_field,
     model_validator,
     root_validator,
     validator,
 )
-from pydantic.fields import Field
 
 from nemoguardrails import utils
 from nemoguardrails.colang import parse_colang_file, parse_flow_elements
+from nemoguardrails.colang.v1_0.runtime.flows import _normalize_flow_id
 from nemoguardrails.colang.v2_x.lang.utils import format_colang_parsing_error_message
 from nemoguardrails.colang.v2_x.runtime.errors import ColangParsingError
-from nemoguardrails.llm.types import Task
+from nemoguardrails.exceptions import (
+    InvalidModelConfigurationError,
+    InvalidRailsConfigurationError,
+)
 
 log = logging.getLogger(__name__)
 
@@ -48,12 +56,13 @@ with open(os.path.join(os.path.dirname(__file__), "default_config.yml")) as _fc:
 with open(os.path.join(os.path.dirname(__file__), "default_config_v2.yml")) as _fc:
     _default_config_v2 = yaml.safe_load(_fc)
 
+# Jailbreak-related strings
+JAILBREAK_FLOW_MODEL = "jailbreak detection model"
+JAILBREAK_FLOW_HEURISTICS = "jailbreak detection heuristics"
 
 # Extract the COLANGPATH directories.
 colang_path_dirs = [
-    _path.strip()
-    for _path in os.environ.get("COLANGPATH", "").split(os.pathsep)
-    if _path.strip() != ""
+    _path.strip() for _path in os.environ.get("COLANGPATH", "").split(os.pathsep) if _path.strip() != ""
 ]
 
 # We also make sure that the standard library is in the COLANGPATH.
@@ -62,39 +71,66 @@ standard_library_path = os.path.normpath(
 )
 
 # nemoguardrails/library
-guardrails_stdlib_path = os.path.normpath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "..")
-)
+guardrails_stdlib_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 colang_path_dirs.append(standard_library_path)
 colang_path_dirs.append(guardrails_stdlib_path)
 
 
-class ReasoningModelConfig(BaseModel):
-    """Configuration for reasoning models/LLMs, including start and end tokens for reasoning traces."""
+class ThreadPoolConfig(BaseModel):
+    """Configuration for the CPU-bound thread-pool executor.
 
-    remove_reasoning_traces: Optional[bool] = Field(
+    When ``enabled`` is *True* (the default), synchronous action functions
+    decorated with ``@cpu_bound`` are dispatched to a
+    :class:`~nemoguardrails.rails.llm.thread_pool.RailThreadPool` instead
+    of blocking the asyncio event loop.
+
+    On a free-threaded (no-GIL) Python 3.14+ build this yields true
+    parallelism for CPU-bound work.  On regular builds the pool still
+    prevents event-loop starvation.
+    """
+
+    enabled: bool = Field(
         default=True,
-        description="For reasoning models (e.g. DeepSeek-r1), if the output parser should remove reasoning traces.",
+        description=(
+            "Whether CPU-bound actions should be dispatched to a thread pool. "
+            "Set to False to disable thread-pool dispatch globally."
+        ),
     )
-    remove_thinking_traces: Optional[bool] = Field(
+    max_workers: Optional[int] = Field(
         default=None,
-        deprecated="The `remove_thinking_traces` field is deprecated use remove_reasoning_traces instead.",
+        description=("Maximum number of worker threads. Defaults to min(4, os.cpu_count()) when None."),
     )
-    start_token: Optional[str] = Field(
-        default="<think>",
-        description="The start token used for reasoning traces.",
-    )
-    end_token: Optional[str] = Field(
-        default="</think>",
-        description="The end token used for reasoning traces.",
+    thread_name_prefix: str = Field(
+        default="nemo-rail-cpu",
+        description="Prefix for worker thread names (useful for debugging).",
     )
 
-    @model_validator(mode="after")
-    def _migrate_thinking_traces(self) -> "ReasoningModelConfig":
-        # If someone uses the old field, propagate it silently
-        if self.remove_thinking_traces is not None:
-            self.remove_reasoning_traces = self.remove_thinking_traces
-        return self
+
+class CacheStatsConfig(BaseModel):
+    """Configuration for cache statistics tracking and logging."""
+
+    enabled: bool = Field(
+        default=False,
+        description="Whether cache statistics tracking is enabled",
+    )
+    log_interval: Optional[float] = Field(
+        default=None,
+        description="Seconds between periodic cache stats logging to logs (None disables logging)",
+    )
+
+
+class ModelCacheConfig(BaseModel):
+    """Configuration for model caching."""
+
+    enabled: bool = Field(
+        default=False,
+        description="Whether caching is enabled (default: False - no caching)",
+    )
+    maxsize: int = Field(default=50000, description="Maximum number of entries in the cache per model")
+    stats: CacheStatsConfig = Field(
+        default_factory=CacheStatsConfig,
+        description="Configuration for cache statistics tracking and logging",
+    )
 
 
 class Model(BaseModel):
@@ -118,15 +154,17 @@ class Model(BaseModel):
         default=None,
         description='Optional environment variable with model\'s API Key. Do not include "$".',
     )
-    reasoning_config: Optional[ReasoningModelConfig] = Field(
-        default_factory=ReasoningModelConfig,
-        description="Configuration parameters for reasoning LLMs.",
-    )
     parameters: Dict[str, Any] = Field(default_factory=dict)
 
     mode: Literal["chat", "text"] = Field(
         default="chat",
         description="Whether the mode is 'text' completion or 'chat' completion. Allowed values are 'chat' or 'text'.",
+    )
+
+    # Cache configuration specific to this model (for content safety models)
+    cache: Optional["ModelCacheConfig"] = Field(
+        default=None,
+        description="Cache configuration for this specific model (primarily used for content safety models)",
     )
 
     @model_validator(mode="before")
@@ -140,15 +178,12 @@ class Model(BaseModel):
             model_from_params = parameters.get("model_name") or parameters.get("model")
 
             if model_field and model_from_params:
-                raise ValueError(
-                    "Model name must be specified in exactly one place: either in the 'model' field or in parameters, not both."
+                raise InvalidModelConfigurationError(
+                    "Model name must be specified in exactly one place: either the `model` field, or in `parameters` (`parameters.model` or `parameters.model_name`).",
                 )
             if not model_field and model_from_params:
                 data["model"] = model_from_params
-                if (
-                    "model_name" in parameters
-                    and parameters["model_name"] == model_from_params
-                ):
+                if "model_name" in parameters and parameters["model_name"] == model_from_params:
                     parameters.pop("model_name")
                 elif "model" in parameters and parameters["model"] == model_from_params:
                     parameters.pop("model")
@@ -158,8 +193,8 @@ class Model(BaseModel):
     def model_must_be_none_empty(self) -> "Model":
         """Validate that a model name is present either directly or in parameters."""
         if not self.model or not self.model.strip():
-            raise ValueError(
-                "Model name must be specified either directly in the 'model' field or through 'model_name'/'model' in parameters"
+            raise InvalidModelConfigurationError(
+                "Model name must be specified in exactly one place: either the `model` field, or in `parameters` (`parameters.model` or `parameters.model_name`)."
             )
         return self
 
@@ -246,6 +281,56 @@ class SensitiveDataDetection(BaseModel):
     )
 
 
+class RegexDetectionOptions(BaseModel):
+    """Configuration options for regex pattern detection on a specific source."""
+
+    patterns: List[str] = Field(
+        default_factory=list,
+        description="List of regex patterns to match against the text.",
+    )
+    case_insensitive: bool = Field(
+        default=False,
+        description="Whether to perform case-insensitive matching.",
+    )
+
+    _compiled_patterns: List["re.Pattern[str]"] = PrivateAttr(default_factory=list)
+
+    @model_validator(mode="after")
+    def compile_patterns(self) -> "RegexDetectionOptions":
+        """Pre-compile regex patterns at config load time."""
+        flags = re.IGNORECASE if self.case_insensitive else 0
+        compiled = []
+        for i, pattern in enumerate(self.patterns):
+            try:
+                compiled.append(re.compile(pattern, flags))
+            except re.error as e:
+                raise ValueError(f"Invalid regex pattern at index {i} ({pattern!r}): {e}") from e
+        object.__setattr__(self, "_compiled_patterns", compiled)
+        return self
+
+    @property
+    def compiled_patterns(self) -> List["re.Pattern[str]"]:
+        """Return the pre-compiled regex patterns."""
+        return self._compiled_patterns
+
+
+class RegexDetection(BaseModel):
+    """Configuration for regex pattern detection."""
+
+    input: RegexDetectionOptions = Field(
+        default_factory=RegexDetectionOptions,
+        description="Configuration for regex patterns to detect on user input.",
+    )
+    output: RegexDetectionOptions = Field(
+        default_factory=RegexDetectionOptions,
+        description="Configuration for regex patterns to detect on bot output.",
+    )
+    retrieval: RegexDetectionOptions = Field(
+        default_factory=RegexDetectionOptions,
+        description="Configuration for regex patterns to detect on retrieved relevant chunks.",
+    )
+
+
 class PrivateAIDetectionOptions(BaseModel):
     """Configuration options for Private AI."""
 
@@ -276,6 +361,52 @@ class PrivateAIDetection(BaseModel):
     )
 
 
+class GLiNERDetectionOptions(BaseModel):
+    """Configuration options for GLiNER."""
+
+    entities: List[str] = Field(
+        default_factory=list,
+        description="The list of entity labels to detect (e.g., 'email', 'phone_number', 'ssn').",
+    )
+
+
+class GLiNERDetection(BaseModel):
+    """Configuration for GLiNER PII detection."""
+
+    server_endpoint: str = Field(
+        default="http://localhost:1235/v1/extract",
+        description="The endpoint for the GLiNER detection server.",
+    )
+    threshold: float = Field(
+        default=0.5,
+        description="Confidence threshold for entity detection (0.0 to 1.0).",
+    )
+    chunk_length: int = Field(
+        default=384,
+        description="Length of text chunks for processing.",
+    )
+    overlap: int = Field(
+        default=128,
+        description="Overlap between chunks.",
+    )
+    flat_ner: bool = Field(
+        default=False,
+        description="Whether to use flat NER mode. Setting to False allows for nested entities.",
+    )
+    input: GLiNERDetectionOptions = Field(
+        default_factory=GLiNERDetectionOptions,
+        description="Configuration of the entities to be detected on the user input.",
+    )
+    output: GLiNERDetectionOptions = Field(
+        default_factory=GLiNERDetectionOptions,
+        description="Configuration of the entities to be detected on the bot output.",
+    )
+    retrieval: GLiNERDetectionOptions = Field(
+        default_factory=GLiNERDetectionOptions,
+        description="Configuration of the entities to be detected on retrieved relevant chunks.",
+    )
+
+
 class FiddlerGuardrails(BaseModel):
     """Configuration for Fiddler Guardrails."""
 
@@ -296,9 +427,7 @@ class FiddlerGuardrails(BaseModel):
 class MessageTemplate(BaseModel):
     """Template for a message structure."""
 
-    type: str = Field(
-        description="The type of message, e.g., 'assistant', 'user', 'system'."
-    )
+    type: str = Field(description="The type of message, e.g., 'assistant', 'user', 'system'.")
     content: str = Field(description="The content of the message.")
 
 
@@ -306,9 +435,7 @@ class TaskPrompt(BaseModel):
     """Configuration for prompts that will be used for a specific task."""
 
     task: str = Field(description="The id of the task associated with this prompt.")
-    content: Optional[str] = Field(
-        default=None, description="The content of the prompt, if it's a string."
-    )
+    content: Optional[str] = Field(default=None, description="The content of the prompt, if it's a string.")
     messages: Optional[List[Union[MessageTemplate, str]]] = Field(
         default=None,
         description="The list of messages included in the prompt. Used for chat models.",
@@ -345,10 +472,10 @@ class TaskPrompt(BaseModel):
     @root_validator(pre=True, allow_reuse=True)
     def check_fields(cls, values):
         if not values.get("content") and not values.get("messages"):
-            raise ValueError("One of `content` or `messages` must be provided.")
+            raise InvalidRailsConfigurationError("One of `content` or `messages` must be provided.")
 
         if values.get("content") and values.get("messages"):
-            raise ValueError("Only one of `content` or `messages` must be provided.")
+            raise InvalidRailsConfigurationError("Only one of `content` or `messages` must be provided.")
 
         return values
 
@@ -439,7 +566,86 @@ class CoreConfig(BaseModel):
     )
 
 
-class InputRails(BaseModel):
+class FlowWithDeps(BaseModel):
+    """A rail flow entry that can carry dependency metadata.
+
+    In ``config.yml`` a flow can be specified as a plain string (backward
+    compatible) or as a mapping with ``name`` and optional ``depends_on``::
+
+        flows:
+          - content safety check input        # plain string
+          - name: jailbreak detection          # mapping with dependency
+            depends_on:
+              - content safety check input
+    """
+
+    name: str = Field(..., description="The flow name (or flow name with params).")
+    depends_on: List[str] = Field(
+        default_factory=list,
+        description="Flow names that must complete before this flow starts.",
+    )
+
+    # Allow extra keys so that future extensions don't break validation.
+    model_config = ConfigDict(extra="allow")
+
+
+def _coerce_flow_list(raw: List) -> List[FlowWithDeps]:
+    """Normalise a list of flow entries to ``FlowWithDeps`` objects.
+
+    Accepts a mix of plain strings and dicts (or ``FlowWithDeps`` instances).
+    """
+    result: List[FlowWithDeps] = []
+    for item in raw:
+        if isinstance(item, str):
+            result.append(FlowWithDeps(name=item))
+        elif isinstance(item, dict):
+            result.append(FlowWithDeps(**item))
+        elif isinstance(item, FlowWithDeps):
+            result.append(item)
+        else:
+            raise ValueError(f"Invalid flow entry: {item!r}")
+    return result
+
+
+class _RailSectionMixin(BaseModel):
+    """Mixin that provides dependency-aware flow helpers.
+
+    Subclasses expose:
+    * ``flow_configs`` — the canonical ``FlowWithDeps`` list.
+    * ``flows`` — backward-compatible ``List[str]`` of flow names
+      (used throughout the codebase).
+    * ``has_dependencies`` — fast check for whether any ``depends_on``
+      has been declared.
+    """
+
+    flow_configs: List[FlowWithDeps] = Field(
+        default_factory=list,
+        description="Rail flow entries with optional dependency metadata.",
+    )
+
+    # @computed_field makes this @property visible to Pydantic's serialisation
+    # machinery (.model_dump(), .model_dump_json(), JSON Schema generation, etc.).
+    # A plain @property would be invisible to Pydantic v2 — the field would be
+    # silently omitted from serialised output.  Because much of the codebase
+    # (and downstream YAML/JSON consumers) still expects a top-level "flows"
+    # list of strings, we derive it dynamically from the richer flow_configs
+    # list whilst keeping it present in every serialised representation.
+    #
+    # The ``# type: ignore[prop-decorator]`` suppresses a mypy false-positive:
+    # mypy does not yet understand that @computed_field can decorate a @property.
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def flows(self) -> List[str]:  # type: ignore[override]
+        """Return the list of flow name strings (backward compatible)."""
+        return [fc.name for fc in self.flow_configs]
+
+    @property
+    def has_dependencies(self) -> bool:
+        """Return *True* if any flow declares ``depends_on``."""
+        return any(fc.depends_on for fc in self.flow_configs)
+
+
+class InputRails(_RailSectionMixin):
     """Configuration of input rails."""
 
     parallel: Optional[bool] = Field(
@@ -447,18 +653,19 @@ class InputRails(BaseModel):
         description="If True, the input rails are executed in parallel.",
     )
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement input rails.",
-    )
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        """Accept both ``flows`` (legacy) and ``flow_configs`` as input."""
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class OutputRailsStreamingConfig(BaseModel):
     """Configuration for managing streaming output of LLM tokens."""
 
-    enabled: bool = Field(
-        default=False, description="Enables streaming mode when True."
-    )
+    enabled: bool = Field(default=False, description="Enables streaming mode when True.")
     chunk_size: int = Field(
         default=200,
         description="The number of tokens in each processing chunk. This is the size of the token block on which output rails are applied.",
@@ -474,7 +681,7 @@ class OutputRailsStreamingConfig(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
-class OutputRails(BaseModel):
+class OutputRails(_RailSectionMixin):
     """Configuration of output rails."""
 
     parallel: Optional[bool] = Field(
@@ -482,33 +689,29 @@ class OutputRails(BaseModel):
         description="If True, the output rails are executed in parallel.",
     )
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement output rails.",
-    )
-
     streaming: OutputRailsStreamingConfig = Field(
         default_factory=OutputRailsStreamingConfig,
         description="Configuration for streaming output rails.",
     )
 
-    apply_to_reasoning_traces: bool = Field(
-        default=False,
-        description=(
-            "If True, output rails will apply guardrails to both reasoning traces and output response. "
-            "If False, output rails will only apply guardrails to the output response excluding the reasoning traces, "
-            "thus keeping reasoning traces unaltered."
-        ),
-    )
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        """Accept both ``flows`` (legacy) and ``flow_configs`` as input."""
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
-class RetrievalRails(BaseModel):
+class RetrievalRails(_RailSectionMixin):
     """Configuration of retrieval rails."""
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement retrieval rails.",
-    )
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class ActionRails(BaseModel):
@@ -527,38 +730,44 @@ class ActionRails(BaseModel):
     )
 
 
-class ToolOutputRails(BaseModel):
+class ToolOutputRails(_RailSectionMixin):
     """Configuration of tool output rails.
 
     Tool output rails are applied to tool calls before they are executed.
     They can validate tool names, parameters, and context to ensure safe tool usage.
     """
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement tool output rails.",
-    )
     parallel: Optional[bool] = Field(
         default=False,
         description="If True, the tool output rails are executed in parallel.",
     )
 
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
-class ToolInputRails(BaseModel):
+
+class ToolInputRails(_RailSectionMixin):
     """Configuration of tool input rails.
 
     Tool input rails are applied to tool results before they are processed.
     They can validate, filter, or transform tool outputs for security and safety.
     """
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement tool input rails.",
-    )
     parallel: Optional[bool] = Field(
         default=False,
         description="If True, the tool input rails are executed in parallel.",
     )
+
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class SingleCallConfig(BaseModel):
@@ -620,11 +829,9 @@ class JailbreakDetectionConfig(BaseModel):
         default=None,
         description="The endpoint for the jailbreak detection heuristics/model container.",
     )
-    length_per_perplexity_threshold: float = Field(
-        default=89.79, description="The length/perplexity threshold."
-    )
+    length_per_perplexity_threshold: float = Field(default=89.79, gt=0, description="The length/perplexity threshold.")
     prefix_suffix_perplexity_threshold: float = Field(
-        default=1845.65, description="The prefix/suffix perplexity threshold."
+        default=1845.65, gt=0, description="The prefix/suffix perplexity threshold."
     )
     nim_base_url: Optional[str] = Field(
         default=None,
@@ -664,6 +871,15 @@ class JailbreakDetectionConfig(BaseModel):
         if self.nim_url and not self.nim_base_url:
             port = self.nim_port or 8000
             self.nim_base_url = f"http://{self.nim_url}:{port}/v1"
+        return self
+
+    @model_validator(mode="after")
+    def validate_urls(self) -> "JailbreakDetectionConfig":
+        """Validate URL formats for endpoints."""
+        if self.nim_base_url and not self.nim_base_url.startswith(("http://", "https://")):
+            raise ValueError(f"nim_base_url must start with 'http://' or 'https://', got '{self.nim_base_url}'")
+        if self.server_endpoint and not self.server_endpoint.startswith(("http://", "https://")):
+            raise ValueError(f"server_endpoint must start with 'http://' or 'https://', got '{self.server_endpoint}'")
         return self
 
     def get_api_key(self) -> Optional[str]:
@@ -808,6 +1024,15 @@ class ClavataRailConfig(BaseModel):
     )
 
 
+class CrowdStrikeAIDRRailConfig(BaseModel):
+    """Configuration data for the CrowdStrike AIDR API"""
+
+    timeout: float = Field(
+        default=30.0,
+        description="Timeout in seconds for API requests to CrowdStrike AIDR",
+    )
+
+
 class PangeaRailOptions(BaseModel):
     """Configuration data for the Pangea AI Guard API"""
 
@@ -867,14 +1092,26 @@ class GuardrailsAIRailConfig(BaseModel):
 class TrendMicroRailConfig(BaseModel):
     """Configuration data for the Trend Micro AI Guard API"""
 
-    v1_url: Optional[str] = Field(
-        default="https://api.xdr.trendmicro.com/beta/aiSecurity/guard",
-        description="The endpoint for the Trend Micro AI Guard API",
+    v1_url: str = Field(
+        default="https://api.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails",
+        description="The endpoint for the Trend Micro AI Guard API. For other regions, use: https://api.{region}.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails where region is eu, jp, au, in, sg, or mea.",
     )
 
     api_key_env_var: Optional[str] = Field(
         default=None,
         description="Environment variable containing API key for Trend Micro AI Guard",
+    )
+
+    application_name: str = Field(
+        default="nemo-guardrails",
+        description="Application name for TMV1-Application-Name header (REQUIRED). Must contain only letters, numbers, hyphens, and underscores, with a maximum length of 64 characters.",
+        pattern=r"^[a-zA-Z0-9_-]+$",
+        max_length=64,
+    )
+
+    detailed_response: bool = Field(
+        default=False,
+        description="If True, returns detailed AI Guard results with confidence scores (Prefer: return=representation). If False, returns minimal response with only action and reasons (Prefer: return=minimal).",
     )
 
     def get_api_key(self) -> Optional[str]:
@@ -895,6 +1132,61 @@ class TrendMicroRailConfig(BaseModel):
             )
 
         return None
+
+
+class AIDefenseRailConfig(BaseModel):
+    """Configuration data for the Cisco AI Defense API"""
+
+    timeout: float = Field(
+        default=30.0,
+        description="Timeout in seconds for API requests to AI Defense service",
+    )
+
+    fail_open: bool = Field(
+        default=False,
+        description="If True, allow content when AI Defense API call fails (fail open). If False, block content when API call fails (fail closed). Does not affect missing configuration validation.",
+    )
+
+
+class MultilingualConfig(BaseModel):
+    """Configuration for multilingual refusal messages."""
+
+    enabled: bool = Field(
+        default=False,
+        description="If True, detect the language of user input and return refusal messages in the same language. "
+        "Supported languages: en (English), es (Spanish), zh (Chinese), de (German), fr (French), "
+        "hi (Hindi), ja (Japanese), ar (Arabic), th (Thai).",
+    )
+    refusal_messages: Optional[Dict[str, str]] = Field(
+        default=None,
+        description="Custom refusal messages per language code. "
+        "If not specified, built-in defaults are used. "
+        "Example: {'en': 'Sorry, I cannot help.', 'es': 'Lo siento, no puedo ayudar.'}",
+    )
+
+
+class ReasoningConfig(BaseModel):
+    """Configuration for reasoning mode in content safety models."""
+
+    enabled: bool = Field(
+        default=False,
+        description="If True, enable reasoning mode (with <think> traces) for content safety models. "
+        "If False, use low-latency mode without reasoning traces.",
+    )
+
+
+class ContentSafetyConfig(BaseModel):
+    """Configuration data for content safety rails."""
+
+    multilingual: MultilingualConfig = Field(
+        default_factory=MultilingualConfig,
+        description="Configuration for multilingual refusal messages.",
+    )
+
+    reasoning: ReasoningConfig = Field(
+        default_factory=ReasoningConfig,
+        description="Configuration for reasoning mode in content safety models.",
+    )
 
 
 class RailsConfigData(BaseModel):
@@ -920,6 +1212,11 @@ class RailsConfigData(BaseModel):
         description="Configuration for detecting sensitive data.",
     )
 
+    regex_detection: Optional[RegexDetection] = Field(
+        default_factory=RegexDetection,
+        description="Configuration for regex pattern detection.",
+    )
+
     jailbreak_detection: Optional[JailbreakDetectionConfig] = Field(
         default_factory=JailbreakDetectionConfig,
         description="Configuration for jailbreak detection.",
@@ -935,6 +1232,11 @@ class RailsConfigData(BaseModel):
         description="Configuration for Private AI.",
     )
 
+    gliner: Optional[GLiNERDetection] = Field(
+        default_factory=GLiNERDetection,
+        description="Configuration for GLiNER PII detection.",
+    )
+
     fiddler: Optional[FiddlerGuardrails] = Field(
         default_factory=FiddlerGuardrails,
         description="Configuration for Fiddler Guardrails.",
@@ -943,6 +1245,11 @@ class RailsConfigData(BaseModel):
     clavata: Optional[ClavataRailConfig] = Field(
         default_factory=ClavataRailConfig,
         description="Configuration for Clavata.",
+    )
+
+    crowdstrike_aidr: Optional[CrowdStrikeAIDRRailConfig] = Field(
+        default_factory=CrowdStrikeAIDRRailConfig,
+        description="Configuration for CrowdStrike AIDR.",
     )
 
     pangea: Optional[PangeaRailConfig] = Field(
@@ -960,6 +1267,16 @@ class RailsConfigData(BaseModel):
         description="Configuration for Trend Micro.",
     )
 
+    ai_defense: Optional[AIDefenseRailConfig] = Field(
+        default_factory=AIDefenseRailConfig,
+        description="Configuration for Cisco AI Defense.",
+    )
+
+    content_safety: Optional[ContentSafetyConfig] = Field(
+        default_factory=ContentSafetyConfig,
+        description="Configuration for content safety rails.",
+    )
+
 
 class Rails(BaseModel):
     """Configuration of specific rails."""
@@ -968,22 +1285,14 @@ class Rails(BaseModel):
         default_factory=RailsConfigData,
         description="Configuration data for specific rails that are supported out-of-the-box.",
     )
-    input: InputRails = Field(
-        default_factory=InputRails, description="Configuration of the input rails."
-    )
-    output: OutputRails = Field(
-        default_factory=OutputRails, description="Configuration of the output rails."
-    )
+    input: InputRails = Field(default_factory=InputRails, description="Configuration of the input rails.")
+    output: OutputRails = Field(default_factory=OutputRails, description="Configuration of the output rails.")
     retrieval: RetrievalRails = Field(
         default_factory=RetrievalRails,
         description="Configuration of the retrieval rails.",
     )
-    dialog: DialogRails = Field(
-        default_factory=DialogRails, description="Configuration of the dialog rails."
-    )
-    actions: ActionRails = Field(
-        default_factory=ActionRails, description="Configuration of action rails."
-    )
+    dialog: DialogRails = Field(default_factory=DialogRails, description="Configuration of the dialog rails.")
+    actions: ActionRails = Field(default_factory=ActionRails, description="Configuration of action rails.")
     tool_output: ToolOutputRails = Field(
         default_factory=ToolOutputRails,
         description="Configuration of tool output rails.",
@@ -1013,6 +1322,27 @@ def merge_two_dicts(dict_1: dict, dict_2: dict, ignore_keys: Set[str]) -> None:
 def _join_config(dest_config: dict, additional_config: dict):
     """Helper to join two configuration."""
 
+    # --- Merge strategy overview ---
+    # Configuration may be spread across several YAML files and programmatic
+    # dicts (e.g. from ``from_path`` or ``from_content``).  This function
+    # folds *additional_config* into *dest_config* **in place** using three
+    # distinct strategies depending on the field type:
+    #
+    #   1. **Dict fields** (user_messages, bot_messages, sensitive_data_detection,
+    #      embedding_search_provider): shallow-merged with {**dest, **additional},
+    #      so later values override earlier ones for the same key.
+    #
+    #   2. **List fields** (instructions, flows, models, prompts, docs):
+    #      concatenated — duplicates are *not* removed here (deduplication is
+    #      handled later where necessary, e.g. for import_paths).
+    #
+    #   3. **Scalar / last-writer-wins fields** (additional_fields list below):
+    #      the value from *additional_config* simply replaces whatever was in
+    #      *dest_config*.  This is the correct behaviour for settings like
+    #      ``thread_pool`` where partial merging would be confusing.
+
+    # Shallow-merge dict-typed message catalogues — later files override
+    # individual message keys whilst preserving ones they do not redefine.
     dest_config["user_messages"] = {
         **dest_config.get("user_messages", {}),
         **additional_config.get("user_messages", {}),
@@ -1023,45 +1353,54 @@ def _join_config(dest_config: dict, additional_config: dict):
         **additional_config.get("bot_messages", {}),
     }
 
-    dest_config["instructions"] = dest_config.get(
-        "instructions", []
-    ) + additional_config.get("instructions", [])
+    # List fields: plain concatenation — order matters for flow execution
+    # priority, so later configs append after earlier ones.
+    dest_config["instructions"] = dest_config.get("instructions", []) + additional_config.get("instructions", [])
 
-    dest_config["flows"] = dest_config.get("flows", []) + additional_config.get(
-        "flows", []
-    )
+    dest_config["flows"] = dest_config.get("flows", []) + additional_config.get("flows", [])
 
-    dest_config["models"] = dest_config.get("models", []) + additional_config.get(
-        "models", []
-    )
+    dest_config["models"] = dest_config.get("models", []) + additional_config.get("models", [])
 
-    dest_config["prompts"] = dest_config.get("prompts", []) + additional_config.get(
-        "prompts", []
-    )
+    dest_config["prompts"] = dest_config.get("prompts", []) + additional_config.get("prompts", [])
 
-    dest_config["docs"] = dest_config.get("docs", []) + additional_config.get(
-        "docs", []
-    )
+    dest_config["docs"] = dest_config.get("docs", []) + additional_config.get("docs", [])
 
-    dest_config["actions_server_url"] = dest_config.get(
+    # Scalar with fallback — use the first non-None URL encountered.
+    dest_config["actions_server_url"] = dest_config.get("actions_server_url", None) or additional_config.get(
         "actions_server_url", None
-    ) or additional_config.get("actions_server_url", None)
+    )
 
+    # Shallow-merge — individual detection sub-keys (input/output/retrieval)
+    # from the additional config override those in the destination.
     dest_config["sensitive_data_detection"] = {
         **dest_config.get("sensitive_data_detection", {}),
         **additional_config.get("sensitive_data_detection", {}),
     }
 
+    # First non-empty provider wins (falsy dict is treated as absent).
     dest_config["embedding_search_provider"] = dest_config.get(
         "embedding_search_provider", {}
     ) or additional_config.get("embedding_search_provider", {})
 
     # We join the arrays and keep only unique elements for import paths.
+    # Deduplication is essential here to avoid loading the same Colang
+    # library directory twice, which would produce duplicate flow definitions.
     dest_config["import_paths"] = dest_config.get("import_paths", [])
     for import_path in additional_config.get("import_paths", []):
         if import_path not in dest_config["import_paths"]:
             dest_config["import_paths"].append(import_path)
 
+    # --- Last-writer-wins fields ---
+    # These are scalar or structured settings where partial merging would be
+    # ambiguous or incorrect.  The *additional_config* value wholly replaces
+    # the *dest_config* value if present.
+    #
+    # ``thread_pool`` is included here so that a single authoritative
+    # ThreadPoolConfig dict (enabled, max_workers, thread_name_prefix) is
+    # propagated from whichever YAML file defines it — no attempt is made to
+    # merge individual sub-keys, because a half-overridden pool configuration
+    # (e.g. enabled=True from one file but max_workers from another) could
+    # lead to confusing behaviour.
     additional_fields = [
         "sample_conversation",
         "lowest_temperature",
@@ -1078,6 +1417,7 @@ def _join_config(dest_config: dict, additional_config: dict):
         "raw_llm_call_action",
         "enable_rails_exceptions",
         "tracing",
+        "thread_pool",  # whole-object replacement — see note above
     ]
 
     for field in additional_fields:
@@ -1085,6 +1425,10 @@ def _join_config(dest_config: dict, additional_config: dict):
             dest_config[field] = additional_config[field]
 
     # TODO: Rethink the best way to parse and load yaml config files
+    # Build the set of field names that have already been explicitly handled
+    # above.  Anything left over in additional_config is treated as opaque
+    # custom data and folded into dest_config["custom_data"], allowing users
+    # to pass arbitrary keys through their YAML without modifying this function.
     ignore_fields = set(additional_fields).union(
         {
             "user_messages",
@@ -1102,9 +1446,7 @@ def _join_config(dest_config: dict, additional_config: dict):
     )
 
     # Reads all the other fields and merges them with the custom_data field
-    merge_two_dicts(
-        dest_config.get("custom_data", {}), additional_config, ignore_fields
-    )
+    merge_two_dicts(dest_config.get("custom_data", {}), additional_config, ignore_fields)
 
 
 def _load_path(
@@ -1128,9 +1470,7 @@ def _load_path(
 
     # the first .railsignore file found from cwd down to its subdirectories
     railsignore_path = utils.get_railsignore_path(config_path)
-    ignore_patterns = (
-        utils.get_railsignore_patterns(railsignore_path) if railsignore_path else set()
-    )
+    ignore_patterns = utils.get_railsignore_patterns(railsignore_path) if railsignore_path else set()
 
     if os.path.isdir(config_path):
         for root, _, files in os.walk(config_path, followlinks=True):
@@ -1138,9 +1478,7 @@ def _load_path(
 
             for file in files:
                 # Verify railsignore to skip loading
-                ignored_by_railsignore = utils.is_ignored_by_railsignore(
-                    file, ignore_patterns
-                )
+                ignored_by_railsignore = utils.is_ignored_by_railsignore(file, ignore_patterns)
 
                 if ignored_by_railsignore:
                     continue
@@ -1157,9 +1495,7 @@ def _load_path(
                     _raw_config = {"docs": []}
                     if rel_path.endswith(".md"):
                         with open(full_path, encoding="utf-8") as f:
-                            _raw_config["docs"].append(
-                                {"format": "md", "content": f.read()}
-                            )
+                            _raw_config["docs"].append({"format": "md", "content": f.read()})
 
                 elif file.endswith(".yml") or file.endswith(".yaml"):
                     with open(full_path, "r", encoding="utf-8") as f:
@@ -1205,9 +1541,7 @@ def _load_imported_paths(raw_config: dict, colang_files: List[Tuple[str, str]]):
                         break
 
                     # We also check if we can load it as a file.
-                    if not import_path.endswith(".co") and os.path.exists(
-                        os.path.join(root, import_path + ".co")
-                    ):
+                    if not import_path.endswith(".co") and os.path.exists(os.path.join(root, import_path + ".co")):
                         actual_path = os.path.join(root, import_path + ".co")
                         break
             else:
@@ -1249,13 +1583,9 @@ def _parse_colang_files_recursively(
         with open(current_path, "r", encoding="utf-8") as f:
             content = f.read()
             try:
-                _parsed_config = parse_colang_file(
-                    current_file, content=content, version=colang_version
-                )
+                _parsed_config = parse_colang_file(current_file, content=content, version=colang_version)
             except ValueError as e:
-                raise ColangParsingError(
-                    f"Unsupported colang version {colang_version} for file: {current_path}"
-                ) from e
+                raise ColangParsingError(f"Unsupported colang version {colang_version} for file: {current_path}") from e
             except Exception as e:
                 raise ColangParsingError(
                     f"Error while parsing Colang file: {current_path}\n"
@@ -1282,9 +1612,7 @@ def _parse_colang_files_recursively(
 
         current_file = "INTRINSIC_FLOW_GENERATION"
 
-        _rails_parsed_config = parse_colang_file(
-            current_file, content=flow_definitions, version=colang_version
-        )
+        _rails_parsed_config = parse_colang_file(current_file, content=flow_definitions, version=colang_version)
 
         _DOCUMENTATION_LINK = "https://docs.nvidia.com/nemo/guardrails/colang-2/getting-started/dialog-rails.html"  # Replace with the actual documentation link
 
@@ -1310,9 +1638,7 @@ class RailsConfig(BaseModel):
     TODO: add typed config for user_messages, bot_messages, and flows.
     """
 
-    models: List[Model] = Field(
-        description="The list of models used by the rails configuration."
-    )
+    models: List[Model] = Field(description="The list of models used by the rails configuration.")
 
     user_messages: Dict[str, List[str]] = Field(
         default_factory=dict,
@@ -1362,9 +1688,7 @@ class RailsConfig(BaseModel):
         description="Allows choosing between different prompting strategies.",
     )
 
-    config_path: Optional[str] = Field(
-        default=None, description="The path from which the configuration was loaded."
-    )
+    config_path: Optional[str] = Field(default=None, description="The path from which the configuration was loaded.")
 
     import_paths: Optional[List[str]] = Field(
         default_factory=list,
@@ -1414,7 +1738,8 @@ class RailsConfig(BaseModel):
 
     streaming: bool = Field(
         default=False,
-        description="Whether this configuration should use streaming mode or not.",
+        deprecated="The 'streaming' field is no longer required. Use stream_async() method directly instead. This field will be removed in a future version.",
+        description="DEPRECATED: Use stream_async() method instead. This field is ignored.",
     )
 
     enable_rails_exceptions: bool = Field(
@@ -1438,132 +1763,124 @@ class RailsConfig(BaseModel):
         description="Configuration for tracing.",
     )
 
-    @root_validator(pre=True, allow_reuse=True)
-    def check_reasoning_traces_with_dialog_rails(cls, values):
-        """Check that reasoning traces are not enabled when dialog rails are present."""
+    # Top-level thread-pool configuration.  Declared here on RailsConfig so
+    # that it is propagated through _join_config's ``additional_fields``
+    # last-writer-wins list.  At runtime, the LLMRails initialiser reads
+    # this value to decide whether to instantiate a RailThreadPool and, if
+    # so, with how many workers.  Keeping it at the top level (rather than
+    # nested under ``rails``) ensures a single, unambiguous source of truth
+    # that applies to every rail section (input, output, retrieval, etc.).
+    thread_pool: ThreadPoolConfig = Field(
+        default_factory=ThreadPoolConfig,
+        description="Configuration for the CPU-bound thread-pool executor.",
+    )
 
-        models = values.get("models", [])
+    @root_validator(pre=True)
+    def check_model_exists_for_input_rails(cls, values):
+        """Make sure we have a model for each input rail where one is provided using $model=<model_type>"""
         rails = values.get("rails", {})
-        dialog_rails = rails.get("dialog", {})
+        input_flows = rails.get("input", {}).get("flows", [])
 
-        # dialog rail tasks that should not have reasoning traces
-        dialog_rail_tasks = [
-            # Task.GENERATE_BOT_MESSAGE,
-            Task.GENERATE_USER_INTENT,
-            Task.GENERATE_NEXT_STEPS,
-            Task.GENERATE_INTENT_STEPS_MESSAGE,
-        ]
+        # If no flows have a model, early-out
+        input_flows_without_model = [_get_flow_model(flow) is None for flow in input_flows]
+        if all(input_flows_without_model):
+            return values
 
-        embeddings_only = dialog_rails.get("user_messages", {}).get(
-            "embeddings_only", False
-        )
+        models = values.get("models", []) or []
+        model_types = {model.type if isinstance(model, Model) else model["type"] for model in models}
 
-        has_dialog_rail_configs = (
-            bool(values.get("user_messages"))
-            or bool(values.get("bot_messages"))
-            or bool(values.get("flows"))
-        )
-
-        # dialog rails are activated (explicitly or implicitly) and require validation
-        # skip validation when embeddings_only is True
-        has_dialog_rails = (
-            bool(dialog_rails) or has_dialog_rail_configs
-        ) and not embeddings_only
-
-        if has_dialog_rails:
-            main_model = next(
-                (model for model in models if model.get("type") == "main"), None
-            )
-
-            violations = []
-
-            for task in dialog_rail_tasks:
-                task_model = next(
-                    (model for model in models if model.get("type") == task.value), None
+        for flow in input_flows:
+            flow_model = _get_flow_model(flow)
+            if not flow_model:
+                continue
+            if flow_model not in model_types:
+                flow_id = _normalize_flow_id(flow)
+                available_types = ", ".join(f"'{str(t)}'" for t in sorted(model_types)) if model_types else "none"
+                raise InvalidRailsConfigurationError(
+                    f"Input flow '{flow_id}' references model type '{flow_model}' that is not defined in the configuration. Detected model types: {available_types}."
                 )
-
-                if task_model:
-                    reasoning_config = (
-                        task_model.reasoning_config
-                        if hasattr(task_model, "reasoning_config")
-                        else task_model.get("reasoning_config", {})
-                    )
-                    if not reasoning_config.get("remove_reasoning_traces", True):
-                        violations.append(
-                            f"Model '{task_model.get('type')}' has reasoning traces enabled in config.yml. "
-                            f"Reasoning traces must be disabled for dialog rail tasks. "
-                            f"Please update your config.yml to set 'remove_reasoning_traces: true' under reasoning_config for this model."
-                        )
-                elif main_model:
-                    reasoning_config = (
-                        main_model.reasoning_config
-                        if hasattr(main_model, "reasoning_config")
-                        else main_model.get("reasoning_config", {})
-                    )
-                    if not reasoning_config.get("remove_reasoning_traces", True):
-                        violations.append(
-                            f"Main model has reasoning traces enabled in config.yml and is being used for dialog rail task '{task.value}'. "
-                            f"Reasoning traces must be disabled when dialog rails are present. "
-                            f"Please update your config.yml to set 'remove_reasoning_traces: true' under reasoning_config for the main model."
-                        )
-
-            if violations:
-                raise ValueError("\n".join(violations))
-
         return values
 
-    @root_validator(pre=True, allow_reuse=True)
+    @root_validator(pre=True)
+    def check_model_exists_for_output_rails(cls, values):
+        """Make sure we have a model for each output rail where one is provided using $model=<model_type>"""
+        rails = values.get("rails", {})
+        output_flows = rails.get("output", {}).get("flows", [])
+
+        # If no flows have a model, early-out
+        output_flows_without_model = [_get_flow_model(flow) is None for flow in output_flows]
+        if all(output_flows_without_model):
+            return values
+
+        models = values.get("models", []) or []
+        model_types = {model.type if isinstance(model, Model) else model["type"] for model in models}
+
+        for flow in output_flows:
+            flow_model = _get_flow_model(flow)
+            if not flow_model:
+                continue
+            if flow_model not in model_types:
+                flow_id = _normalize_flow_id(flow)
+                available_types = ", ".join(f"'{str(t)}'" for t in sorted(model_types)) if model_types else "none"
+                raise InvalidRailsConfigurationError(
+                    f"Output flow '{flow_id}' references model type '{flow_model}' that is not defined in the configuration. Detected model types: {available_types}."
+                )
+        return values
+
+    @root_validator(pre=True)
     def check_prompt_exist_for_self_check_rails(cls, values):
         rails = values.get("rails", {})
         prompts = values.get("prompts", []) or []
 
         enabled_input_rails = rails.get("input", {}).get("flows", [])
         enabled_output_rails = rails.get("output", {}).get("flows", [])
-        provided_task_prompts = [
-            prompt.task if hasattr(prompt, "task") else prompt.get("task")
-            for prompt in prompts
-        ]
+        provided_task_prompts = [prompt.task if hasattr(prompt, "task") else prompt.get("task") for prompt in prompts]
 
         # Input moderation prompt verification
-        if (
-            "self check input" in enabled_input_rails
-            and "self_check_input" not in provided_task_prompts
-        ):
-            raise ValueError("You must provide a `self_check_input` prompt template.")
-        if (
-            "llama guard check input" in enabled_input_rails
-            and "llama_guard_check_input" not in provided_task_prompts
-        ):
-            raise ValueError(
-                "You must provide a `llama_guard_check_input` prompt template."
+        if "self check input" in enabled_input_rails and "self_check_input" not in provided_task_prompts:
+            raise InvalidRailsConfigurationError(
+                "Missing a `self_check_input` prompt template, which is required for the `self check input` rail."
+            )
+        if "llama guard check input" in enabled_input_rails and "llama_guard_check_input" not in provided_task_prompts:
+            raise InvalidRailsConfigurationError(
+                "Missing a `llama_guard_check_input` prompt template, which is required for the `llama guard check input` rail."
             )
 
+        # Only content-safety and topic-safety include a $model reference in the rail flow text
+        # Need to match rails with flow_id (excluding $model reference) and match prompts
+        # on the full flow_id (including $model reference)
+        _validate_rail_prompts(enabled_input_rails, provided_task_prompts, "content safety check input")
+        _validate_rail_prompts(enabled_input_rails, provided_task_prompts, "topic safety check input")
+
         # Output moderation prompt verification
-        if (
-            "self check output" in enabled_output_rails
-            and "self_check_output" not in provided_task_prompts
-        ):
-            raise ValueError("You must provide a `self_check_output` prompt template.")
+        if "self check output" in enabled_output_rails and "self_check_output" not in provided_task_prompts:
+            raise InvalidRailsConfigurationError(
+                "Missing a `self_check_output` prompt template, which is required for the `self check output` rail."
+            )
         if (
             "llama guard check output" in enabled_output_rails
             and "llama_guard_check_output" not in provided_task_prompts
         ):
-            raise ValueError(
-                "You must provide a `llama_guard_check_output` prompt template."
+            raise InvalidRailsConfigurationError(
+                "Missing a `llama_guard_check_output` prompt template, which is required for the `llama guard check output` rail."
             )
         if (
             "patronus lynx check output hallucination" in enabled_output_rails
             and "patronus_lynx_check_output_hallucination" not in provided_task_prompts
         ):
-            raise ValueError(
-                "You must provide a `patronus_lynx_check_output_hallucination` prompt template."
+            raise InvalidRailsConfigurationError(
+                "Missing a `patronus_lynx_check_output_hallucination` prompt template, which is required for the `patronus lynx check output hallucination` rail."
             )
 
-        if (
-            "self check facts" in enabled_output_rails
-            and "self_check_facts" not in provided_task_prompts
-        ):
-            raise ValueError("You must provide a `self_check_facts` prompt template.")
+        if "self check facts" in enabled_output_rails and "self_check_facts" not in provided_task_prompts:
+            raise InvalidRailsConfigurationError(
+                "Missing a `self_check_facts` prompt template, which is required for the `self check facts` rail."
+            )
+
+        # Only content-safety and topic-safety include a $model reference in the rail flow text
+        # Need to match rails with flow_id (excluding $model reference) and match prompts
+        # on the full flow_id (including $model reference)
+        _validate_rail_prompts(enabled_output_rails, provided_task_prompts, "content safety check output")
 
         return values
 
@@ -1579,25 +1896,69 @@ class RailsConfig(BaseModel):
         prompts = values.get("prompts") or []
         for prompt in prompts:
             task = prompt.task if hasattr(prompt, "task") else prompt.get("task")
-            output_parser = (
-                prompt.output_parser
-                if hasattr(prompt, "output_parser")
-                else prompt.get("output_parser")
-            )
+            output_parser = prompt.output_parser if hasattr(prompt, "output_parser") else prompt.get("output_parser")
 
-            if (
-                any(
-                    task.startswith(task_prefix)
-                    for task_prefix in tasks_requiring_output_parser
-                )
-                and not output_parser
-            ):
+            if any(task.startswith(task_prefix) for task_prefix in tasks_requiring_output_parser) and not output_parser:
                 log.info(
                     f"Deprecation Warning: Output parser is not registered for the task. "
                     f"The correct way is to register the 'output_parser' in the prompts.yml for '{task}' task. "
                     "It uses 'is_content safe' as the default output parser."
                     "This behavior will be deprecated in future versions."
                 )
+        return values
+
+    @root_validator(pre=True, allow_reuse=True)
+    def check_jailbreak_detection_config(cls, values):
+        """Validate jailbreak detection configuration against enabled flows."""
+        rails = values.get("rails") or {}
+        config_data = rails.get("config") or {}
+        input_flows = (rails.get("input") or {}).get("flows") or []
+
+        jailbreak_config = config_data.get("jailbreak_detection") or {}
+        has_model_flow = JAILBREAK_FLOW_MODEL in input_flows
+        has_heuristics_flow = JAILBREAK_FLOW_HEURISTICS in input_flows
+        has_any_jailbreak_flow = has_model_flow or has_heuristics_flow
+
+        # Case A: Config present but no flow references it
+        if jailbreak_config and not has_any_jailbreak_flow:
+            log.warning(
+                "Jailbreak detection configuration is present under "
+                "rails.config.jailbreak_detection but no jailbreak detection flow "
+                "is enabled. To use jailbreak detection, add 'jailbreak detection model' "
+                "or 'jailbreak detection heuristics' to rails.input.flows."
+            )
+
+        # Case B: "jailbreak detection model" flow is enabled
+        if has_model_flow:
+            nim_base_url = jailbreak_config.get("nim_base_url")
+            nim_url = jailbreak_config.get("nim_url")  # deprecated, migrated later
+            server_endpoint = jailbreak_config.get("server_endpoint")
+            nim_server_endpoint = jailbreak_config.get("nim_server_endpoint", "classify")
+
+            if nim_base_url or nim_url:
+                if not nim_server_endpoint:
+                    raise InvalidRailsConfigurationError(
+                        "nim_base_url is set for jailbreak detection model but "
+                        "nim_server_endpoint is empty. Both must be configured "
+                        "when using NIM-based jailbreak detection."
+                    )
+            elif not server_endpoint:
+                log.warning(
+                    "No endpoint configured for jailbreak detection model. "
+                    "Will fall back to local in-process detection, which is "
+                    "not recommended for production."
+                )
+
+        # Case C: "jailbreak detection heuristics" flow is enabled
+        if has_heuristics_flow:
+            server_endpoint = jailbreak_config.get("server_endpoint")
+            if not server_endpoint:
+                log.warning(
+                    "No server_endpoint configured for jailbreak detection heuristics. "
+                    "Will fall back to local in-process detection, which is "
+                    "not recommended for production."
+                )
+
         return values
 
     @root_validator(pre=True, allow_reuse=True)
@@ -1611,9 +1972,7 @@ class RailsConfig(BaseModel):
                 values["instructions"] = _default_config_v2["instructions"]
 
             if not sample_conversation:
-                values["sample_conversation"] = _default_config_v2[
-                    "sample_conversation"
-                ]
+                values["sample_conversation"] = _default_config_v2["sample_conversation"]
 
         return values
 
@@ -1623,9 +1982,7 @@ class RailsConfig(BaseModel):
         api_keys = [m.api_key_env_var for m in models]
         for api_key in api_keys:
             if api_key and not os.environ.get(api_key):
-                raise ValueError(
-                    f"Model API Key environment variable '{api_key}' not set."
-                )
+                raise InvalidRailsConfigurationError(f"Model API Key environment variable '{api_key}' not set.")
         return models
 
     raw_llm_call_action: Optional[str] = Field(
@@ -1656,9 +2013,7 @@ class RailsConfig(BaseModel):
                 _load_imported_paths(raw_config, colang_files)
 
             # Parse the colang files after we know the colang version
-            _parse_colang_files_recursively(
-                raw_config, colang_files, parsed_colang_files=[]
-            )
+            _parse_colang_files_recursively(raw_config, colang_files, parsed_colang_files=[])
 
         else:
             raise ValueError(f"Invalid config path {config_path}.")
@@ -1735,26 +2090,10 @@ class RailsConfig(BaseModel):
         if obj.get("colang_version", "1.0") == "1.0":
             for flow_data in obj.get("flows", []):
                 # If the first element in the flow does not have a "_type", we need to convert
-                if flow_data.get("elements") and not flow_data["elements"][0].get(
-                    "_type"
-                ):
+                if flow_data.get("elements") and not flow_data["elements"][0].get("_type"):
                     flow_data["elements"] = parse_flow_elements(flow_data["elements"])
 
         return cls.parse_obj(obj)
-
-    @property
-    def streaming_supported(self):
-        """Whether the current config supports streaming or not."""
-
-        if len(self.rails.output.flows) > 0:
-            # if we have output rails streaming enabled
-            # we keep it in case it was needed when we have
-            # support per rails
-            if self.rails.output.streaming and self.rails.output.streaming.enabled:
-                return True
-            return False
-
-        return True
 
     def __add__(self, other):
         """Adds two RailsConfig objects."""
@@ -1768,6 +2107,10 @@ def _join_dict(dict1, dict2):
     - If values are lists, it concatenates them, ensuring unique elements.
     - For other types, values from dict2 overwrite dict1.
     """
+    # NOTE: This is a *deep* recursive merge, unlike _join_config which uses
+    # shallow strategies per field.  It is used by _join_rails_configs (the
+    # RailsConfig.__add__ path) where two fully-formed RailsConfig objects
+    # are combined and every nested dict/list must be reconciled.
     result = dict(dict1)  # Create a copy of dict1 to avoid modifying the original
 
     for key, value in dict2.items():
@@ -1790,16 +2133,20 @@ def _unique_list_concat(list1, list2):
     Concatenates two lists ensuring all elements are unique.
     Handles unhashable types like dictionaries.
     """
+    # Items from list1 take precedence (appear first) because _join_dict
+    # calls this with the *additional* config's value as list1, giving the
+    # later config higher priority.
     result = list(list1)
     for item in list2:
+        # ``in`` uses __eq__, so this works for unhashable types (dicts,
+        # lists) that cannot be placed in a set.  The trade-off is O(n*m)
+        # comparison cost, which is acceptable for configuration-sized lists.
         if item not in result:
             result.append(item)
     return result
 
 
-def _join_rails_configs(
-    base_rails_config: RailsConfig, updated_rails_config: RailsConfig
-):
+def _join_rails_configs(base_rails_config: RailsConfig, updated_rails_config: RailsConfig):
     """Helper to join two rails configuration."""
 
     config_old_types = {}
@@ -1809,20 +2156,14 @@ def _join_rails_configs(
     for model_new in updated_rails_config.models:
         if model_new.type in config_old_types:
             if model_new.engine != config_old_types[model_new.type].engine:
-                raise ValueError(
-                    "Both config files should have the same engine for the same model type"
-                )
+                raise ValueError("Both config files should have the same engine for the same model type")
             if model_new.model != config_old_types[model_new.type].model:
-                raise ValueError(
-                    "Both config files should have the same model for the same model type"
-                )
+                raise ValueError("Both config files should have the same model for the same model type")
 
     if base_rails_config.actions_server_url != updated_rails_config.actions_server_url:
         raise ValueError("Both config files should have the same actions_server_url")
 
-    combined_rails_config_dict = _join_dict(
-        base_rails_config.dict(), updated_rails_config.dict()
-    )
+    combined_rails_config_dict = _join_dict(base_rails_config.dict(), updated_rails_config.dict())
     # filter out empty strings to avoid leading/trailing commas
     config_paths = [
         base_rails_config.dict()["config_path"] or "",
@@ -1836,12 +2177,8 @@ def _join_rails_configs(
 def _has_input_output_config_rails(raw_config):
     """Checks if the raw configuration has input/output rails configured."""
 
-    has_input_rails = (
-        len(raw_config.get("rails", {}).get("input", {}).get("flows", [])) > 0
-    )
-    has_output_rails = (
-        len(raw_config.get("rails", {}).get("output", {}).get("flows", [])) > 0
-    )
+    has_input_rails = len(raw_config.get("rails", {}).get("input", {}).get("flows", [])) > 0
+    has_output_rails = len(raw_config.get("rails", {}).get("output", {}).get("flows", [])) > 0
     return has_input_rails or has_output_rails
 
 
@@ -1894,3 +2231,46 @@ def _generate_rails_flows(flows):
         flow_definitions.insert(1, _LIBRARY_IMPORT + _NEWLINE * 2)
 
     return flow_definitions
+
+
+MODEL_PREFIX = "$model="
+
+
+def _flow_entry_to_str(flow) -> str:
+    """Extract the flow name string from a raw config entry.
+
+    Handles both plain strings (legacy) and dict/FlowWithDeps entries.
+    """
+    if isinstance(flow, str):
+        return flow
+    if isinstance(flow, dict):
+        return flow.get("name", "")
+    if hasattr(flow, "name"):
+        return flow.name
+    return str(flow)
+
+
+def _get_flow_name(flow_text) -> Optional[str]:
+    """Helper to return a model name from a flow definition"""
+    return _normalize_flow_id(_flow_entry_to_str(flow_text))
+
+
+def _get_flow_model(flow_text) -> Optional[str]:
+    """Helper to return a model name from a flow definition"""
+    text = _flow_entry_to_str(flow_text)
+    if MODEL_PREFIX not in text:
+        return None
+    return text.split(MODEL_PREFIX)[-1].strip()
+
+
+def _validate_rail_prompts(rails: list, prompts: list[Any], validation_rail: str) -> None:
+    for rail in rails:
+        flow_id = _normalize_flow_id(_flow_entry_to_str(rail))
+        flow_model = _get_flow_model(rail)
+        if flow_id == validation_rail:
+            prompt_flow_id = flow_id.replace(" ", "_")
+            expected_prompt = f"{prompt_flow_id} $model={flow_model}"
+            if expected_prompt not in prompts:
+                raise InvalidRailsConfigurationError(
+                    f"Missing a `{expected_prompt}` prompt template, which is required for the `{validation_rail}` rail."
+                )

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -169,9 +169,7 @@ async def test_both_interfaces_identical():
 
     # process_stream interface
     results_process_stream = []
-    async for chunk_batch in buffer_strategy.process_stream(
-        realistic_streaming_handler()
-    ):
+    async for chunk_batch in buffer_strategy.process_stream(realistic_streaming_handler()):
         results_process_stream.append(
             (
                 chunk_batch.processing_context.copy(),
@@ -269,6 +267,50 @@ def test_format_chunks_realistic():
 
 
 @pytest.mark.asyncio
+async def test_process_stream_with_metadata_dicts():
+    """Test that process_stream normalizes dict chunks to strings."""
+
+    async def metadata_streaming_handler():
+        for token in ["Hello", " ", "world", "!"]:
+            yield {"text": token, "metadata": {"response_metadata": {"model_provider": "openai"}}}
+
+    buffer_strategy = RollingBuffer(buffer_context_size=1, buffer_chunk_size=2)
+
+    user_output_parts = []
+    async for chunk_batch in buffer_strategy(metadata_streaming_handler()):
+        for chunk in chunk_batch.processing_context:
+            assert isinstance(chunk, str)
+        formatted = buffer_strategy.format_chunks(chunk_batch.processing_context)
+        assert isinstance(formatted, str)
+        user_output_parts.append(buffer_strategy.format_chunks(chunk_batch.user_output_chunks))
+
+    full_text = "".join(user_output_parts)
+    assert full_text == "Hello world!"
+
+
+@pytest.mark.asyncio
+async def test_process_stream_with_mixed_chunk_types():
+    """Test that process_stream handles a mix of string and dict chunks."""
+
+    async def mixed_streaming_handler():
+        yield "Hello"
+        yield {"text": " ", "metadata": {"response_metadata": {"model_provider": "openai"}}}
+        yield {"text": "world", "metadata": {"response_metadata": {"model_provider": "openai"}}}
+        yield "!"
+
+    buffer_strategy = RollingBuffer(buffer_context_size=1, buffer_chunk_size=2)
+
+    user_output_parts = []
+    async for chunk_batch in buffer_strategy(mixed_streaming_handler()):
+        for chunk in chunk_batch.processing_context:
+            assert isinstance(chunk, str)
+        user_output_parts.append(buffer_strategy.format_chunks(chunk_batch.user_output_chunks))
+
+    full_text = "".join(user_output_parts)
+    assert full_text == "Hello world!"
+
+
+@pytest.mark.asyncio
 async def test_total_yielded_tracking():
     """Test that total_yielded is correctly tracked and reset."""
     buffer_strategy = RollingBuffer(buffer_context_size=1, buffer_chunk_size=2)
@@ -343,12 +385,8 @@ async def test_subword_token_preservation():
     assert "helping" in full_text, f"Expected 'helping' but got: {full_text}"
 
     # verify no extra spaces were introduced between subword tokens
-    assert (
-        "ass isting" not in full_text
-    ), f"Found extra space in subword tokens: {full_text}"
-    assert (
-        "help ing" not in full_text
-    ), f"Found extra space in subword tokens: {full_text}"
+    assert "ass isting" not in full_text, f"Found extra space in subword tokens: {full_text}"
+    assert "help ing" not in full_text, f"Found extra space in subword tokens: {full_text}"
 
     # expected result should be: "assisting with helping you"
     expected = "assisting with helping you"
@@ -464,9 +502,7 @@ async def test_complete_implementation_works():
                 if len(buffer) >= 2:
                     from nemoguardrails.rails.llm.buffer import ChunkBatch
 
-                    yield ChunkBatch(
-                        processing_context=buffer, user_output_chunks=buffer
-                    )
+                    yield ChunkBatch(processing_context=buffer, user_output_chunks=buffer)
                     buffer = []
 
             if buffer:

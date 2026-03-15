@@ -28,11 +28,10 @@ define flow run dialog rails
 
   # If the dialog_rails are disabled
   if $generation_options and $generation_options.rails.dialog == False
-    # If the output rails are also disabled, we just return user message.
-    if $generation_options.rails.output == False
+    # If output rails are disabled or there's no bot message to check, skip output rails.
+    if $generation_options.rails.output == False or $bot_message is None
       create event StartUtteranceBotAction(script=$user_message)
     else
-      # we take the $bot_message from context.
       create event BotMessage(text=$bot_message)
   else
     # If not, we continue the usual process
@@ -79,7 +78,7 @@ define flow generate next step
   priority 0.9
 
   user ...
-  execute generate_next_step
+  execute generate_next_steps
 
 
 define parallel extension flow generate bot message
@@ -163,6 +162,8 @@ define parallel flow process user tool messages
 
       create event ToolInputRailsFinished
       event ToolInputRailsFinished
+
+
 
 define parallel extension flow process bot message
   """Runs the output rails on a bot message."""

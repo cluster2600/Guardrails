@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,23 +20,47 @@ from typing import Any, Callable, List, Optional, Tuple
 from nemoguardrails.actions.action_dispatcher import ActionDispatcher
 from nemoguardrails.llm.taskmanager import LLMTaskManager
 from nemoguardrails.rails.llm.config import RailsConfig
+from nemoguardrails.rails.llm.thread_pool import RailThreadPool
 
 log = logging.getLogger(__name__)
 
 
 class Runtime:
-    """Base Colang Runtime implementation."""
+    """Base Colang Runtime implementation.
+
+    The Runtime is the central orchestrator for guardrail evaluation.
+    It owns the action dispatcher, the LLM task manager, and (optionally)
+    a thread pool for offloading CPU-bound actions.  Concrete subclasses
+    (e.g. ``RuntimeV1_0``) provide version-specific flow execution logic.
+    """
 
     def __init__(self, config: RailsConfig, verbose: bool = False):
         self.config = config
         self.verbose = verbose
 
-        # Register the actions with the dispatcher.
+        # Build the thread pool for CPU-bound actions (if enabled in config).
+        # On free-threaded Python 3.14t this allows true parallel execution
+        # of @cpu_bound-decorated actions without blocking the event loop.
+        tp_config = config.thread_pool
+        if tp_config.enabled:
+            self._thread_pool: Optional[RailThreadPool] = RailThreadPool(
+                max_workers=tp_config.max_workers,
+                thread_name_prefix=tp_config.thread_name_prefix,
+                enabled=True,
+            )
+        else:
+            self._thread_pool = None
+
+        # Initialise the action dispatcher, passing in the thread pool so
+        # that @cpu_bound actions can be dispatched to worker threads.
         self.action_dispatcher = ActionDispatcher(
             config_path=config.config_path,
             import_paths=list(config.imported_paths.values()),
+            thread_pool=self._thread_pool,
         )
 
+        # Register parallel-execution actions if the subclass provides them.
+        # These are invoked by Colang flows to run multiple rails concurrently.
         if hasattr(self, "_run_output_rails_in_parallel_streaming"):
             self.action_dispatcher.register_action(
                 self._run_output_rails_in_parallel_streaming,
@@ -44,9 +68,7 @@ class Runtime:
             )
 
         if hasattr(self, "_run_flows_in_parallel"):
-            self.action_dispatcher.register_action(
-                self._run_flows_in_parallel, name="run_flows_in_parallel"
-            )
+            self.action_dispatcher.register_action(self._run_flows_in_parallel, name="run_flows_in_parallel")
 
         if hasattr(self, "_run_input_rails_in_parallel"):
             self.action_dispatcher.register_action(
@@ -58,28 +80,39 @@ class Runtime:
                 self._run_output_rails_in_parallel, name="run_output_rails_in_parallel"
             )
 
-        # The list of additional parameters that can be passed to the actions.
+        # Additional parameters that can be injected into action callables
+        # at dispatch time (e.g. ``llm``, ``config``, ``state``).
         self.registered_action_params: dict = {}
 
         self._init_flow_configs()
 
-        # Initialize the prompt renderer as well.
+        # The LLM task manager handles prompt rendering and output parsing.
         self.llm_task_manager = LLMTaskManager(config)
 
-        # A set of watchers that are notified every time an event is processed.
-        # Used mainly for reporting the progress to the CLI.
+        # Watchers are notified on each event cycle — used by the CLI to
+        # report progress to the user.
         self.watchers = []
 
-        # The maximum number of events to be processed in a processing loop
+        # Safety limit to prevent infinite processing loops.
         self.max_events = 500
+
+    def shutdown(self, wait: bool = True) -> None:
+        """Release the thread pool and any other managed resources.
+
+        Callers (e.g. ``LLMRails``) should invoke this when the runtime
+        is no longer needed, to ensure deterministic cleanup of worker
+        threads.  If not called, the ``__del__`` method on the thread
+        pool will attempt best-effort cleanup.
+        """
+        if self._thread_pool is not None:
+            self._thread_pool.shutdown(wait=wait)
+            self._thread_pool = None
 
     @abstractmethod
     def _init_flow_configs(self) -> None:
         pass
 
-    def register_action(
-        self, action: Callable, name: Optional[str] = None, override: bool = True
-    ) -> None:
+    def register_action(self, action: Callable, name: Optional[str] = None, override: bool = True) -> None:
         """Registers an action with the given name.
 
         :param name: The name of the action.
@@ -105,9 +138,7 @@ class Runtime:
         """
         self.registered_action_params[name] = value
 
-    async def generate_events(
-        self, events: List[dict], processing_log: Optional[List[dict]] = None
-    ) -> List[dict]:
+    async def generate_events(self, events: List[dict], processing_log: Optional[List[dict]] = None) -> List[dict]:
         """Generates the next events based on the provided history.
 
         This is a wrapper around the `process_events` method, that will keep

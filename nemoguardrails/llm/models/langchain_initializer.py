@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,13 +20,13 @@ import warnings
 from importlib.metadata import version
 from typing import Any, Callable, Dict, Literal, Optional, Union
 
-from langchain.chat_models import init_chat_model
-from langchain_core._api.beta_decorator import LangChainBetaWarning
-from langchain_core._api.deprecation import LangChainDeprecationWarning
-from langchain_core.language_models import BaseChatModel
-from langchain_core.language_models.llms import BaseLLM
+from langchain_core.language_models import BaseChatModel, BaseLLM
 
-from nemoguardrails.llm.providers.providers import (
+from nemoguardrails._langchain_compat import import_init_chat_model
+
+init_chat_model = import_init_chat_model()
+
+from nemoguardrails.llm.providers.providers import (  # noqa: E402
     _get_chat_completion_provider,
     _get_text_completion_provider,
     _parse_version,
@@ -36,8 +36,8 @@ log = logging.getLogger(__name__)
 
 
 # Suppress specific LangChain warnings
-warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
-warnings.filterwarnings("ignore", category=LangChainBetaWarning)
+# warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
+# warnings.filterwarnings("ignore", category=LangChainBetaWarning)
 warnings.filterwarnings("ignore", module="langchain_nvidia_ai_endpoints._common")
 
 
@@ -47,9 +47,7 @@ class ModelInitializationError(Exception):
     pass
 
 
-ModelInitMethod = Callable[
-    [str, str, Dict[str, Any]], Optional[Union[BaseChatModel, BaseLLM]]
-]
+ModelInitMethod = Callable[[str, str, Dict[str, Any]], Optional[Union[BaseChatModel, BaseLLM]]]
 
 
 class ModelInitializer:
@@ -134,9 +132,7 @@ def init_langchain_model(
     if mode not in ["chat", "text"]:
         raise ValueError(f"Unsupported mode: {mode}")
     if not model_name:
-        raise ModelInitializationError(
-            f"Model name is required for provider {provider_name}"
-        )
+        raise ModelInitializationError(f"Model name is required for provider {provider_name}")
 
     # Define initialization methods in order of preference
     initializers: list[ModelInitializer] = [
@@ -177,10 +173,7 @@ def init_langchain_model(
             last_exception = e
             log.debug(f"Initialization failed with {initializer}: {e}")
     # build the final message, preferring that first ImportError if we saw one
-    base = (
-        f"Failed to initialize model {model_name!r} "
-        f"with provider {provider_name!r} in {mode!r} mode"
-    )
+    base = f"Failed to initialize model {model_name!r} with provider {provider_name!r} in {mode!r} mode"
 
     # if we ever hit an ImportError, surface its message:
     if first_import_error is not None:
@@ -197,9 +190,7 @@ def init_langchain_model(
     raise ModelInitializationError(base)
 
 
-def _init_chat_completion_model(
-    model_name: str, provider_name: str, kwargs: Dict[str, Any]
-) -> BaseChatModel:  # noqa #type: ignore
+def _init_chat_completion_model(model_name: str, provider_name: str, kwargs: Dict[str, Any]) -> BaseChatModel:  # noqa #type: ignore
     """Initialize a chat completion model.
 
     Args:
@@ -234,9 +225,7 @@ def _init_chat_completion_model(
         raise
 
 
-def _init_text_completion_model(
-    model_name: str, provider_name: str, kwargs: Dict[str, Any]
-) -> BaseLLM:
+def _init_text_completion_model(model_name: str, provider_name: str, kwargs: Dict[str, Any]) -> BaseLLM | None:
     """Initialize a text completion model.
 
     Args:
@@ -245,24 +234,21 @@ def _init_text_completion_model(
         kwargs: Additional arguments to pass to the model initialization
 
     Returns:
-        An initialized text completion model
-
-    Raises:
-        RuntimeError: If the provider is not found
+        An initialized text completion model, or None if the provider is not found
     """
-    provider_cls = _get_text_completion_provider(provider_name)
+    try:
+        provider_cls = _get_text_completion_provider(provider_name)
+    except RuntimeError:
+        return None
+
     if provider_cls is None:
-        raise ValueError()
+        return None
+
     kwargs = _update_model_kwargs(provider_cls, model_name, kwargs)
-    # remove stream_usage parameter as it's not supported by text completion APIs
-    # (e.g., OpenAI's AsyncCompletions.create() doesn't accept this parameter)
-    kwargs.pop("stream_usage", None)
     return provider_cls(**kwargs)
 
 
-def _init_community_chat_models(
-    model_name: str, provider_name: str, kwargs: Dict[str, Any]
-) -> BaseChatModel:
+def _init_community_chat_models(model_name: str, provider_name: str, kwargs: Dict[str, Any]) -> BaseChatModel | None:
     """Initialize community chat models.
 
     Args:
@@ -277,16 +263,19 @@ def _init_community_chat_models(
         ImportError: If langchain_community is not installed
         ModelInitializationError: If model initialization fails
     """
-    provider_cls = _get_chat_completion_provider(provider_name)
+    try:
+        provider_cls = _get_chat_completion_provider(provider_name)
+    except RuntimeError:
+        return None
+
     if provider_cls is None:
-        raise ValueError()
+        return None
+
     kwargs = _update_model_kwargs(provider_cls, model_name, kwargs)
     return provider_cls(**kwargs)
 
 
-def _init_gpt35_turbo_instruct(
-    model_name: str, provider_name: str, kwargs: Dict[str, Any]
-) -> BaseLLM:
+def _init_gpt35_turbo_instruct(model_name: str, provider_name: str, kwargs: Dict[str, Any]) -> BaseLLM | None:
     """Initialize GPT-3.5 Turbo Instruct model.
 
     Currently init_chat_model from langchain infers this as a chat model.
@@ -312,14 +301,10 @@ def _init_gpt35_turbo_instruct(
             kwargs=kwargs,
         )
     except Exception as e:
-        raise ModelInitializationError(
-            f"Failed to initialize text completion model {model_name}: {str(e)}"
-        )
+        raise ModelInitializationError(f"Failed to initialize text completion model {model_name}: {str(e)}")
 
 
-def _init_nvidia_model(
-    model_name: str, provider_name: str, kwargs: Dict[str, Any]
-) -> BaseChatModel:
+def _init_nvidia_model(model_name: str, provider_name: str, kwargs: Dict[str, Any]) -> BaseChatModel:
     """Initialize NVIDIA AI Endpoints model.
 
     Args:
@@ -335,9 +320,7 @@ def _init_nvidia_model(
         ModelInitializationError: If model initialization fails
     """
     try:
-        from nemoguardrails.llm.providers._langchain_nvidia_ai_endpoints_patch import (
-            ChatNVIDIA,
-        )
+        from langchain_nvidia_ai_endpoints import ChatNVIDIA  # type: ignore[import-not-found]
 
         package_version = version("langchain_nvidia_ai_endpoints")
 
@@ -348,20 +331,18 @@ def _init_nvidia_model(
             )
 
         return ChatNVIDIA(model=model_name, **kwargs)
-    except ImportError as e:
+    except ImportError:
         raise ImportError(
             "Could not import langchain_nvidia_ai_endpoints, please install it with "
             "`pip install langchain-nvidia-ai-endpoints`."
         )
 
 
-# special model handlers
 _SPECIAL_MODEL_INITIALIZERS = {
     "gpt-3.5-turbo-instruct": _init_gpt35_turbo_instruct,
 }
 
-# provider-specific handlers
-_PROVIDER_INITIALIZERS = {
+_PROVIDER_INITIALIZERS: Dict[str, Any] = {
     "nvidia_ai_endpoints": _init_nvidia_model,
     "nim": _init_nvidia_model,
 }
@@ -398,6 +379,8 @@ def _handle_model_special_cases(
         return None
 
     result = initializer(model_name, provider_name, kwargs)
+    if result is None:
+        return None
     if not isinstance(result, (BaseChatModel, BaseLLM)):
         raise TypeError("Initializer returned an invalid type")
     return result

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,9 +37,7 @@ async def create_event(
         ActionResult: An action result containing the created event.
     """
 
-    event_dict: Dict[str, Any] = new_event_dict(
-        event["_type"], **{k: v for k, v in event.items() if k != "_type"}
-    )
+    event_dict: Dict[str, Any] = new_event_dict(event["_type"], **{k: v for k, v in event.items() if k != "_type"})
 
     # We add basic support for referring variables as values
     for k, v in event_dict.items():

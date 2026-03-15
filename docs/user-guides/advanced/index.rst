@@ -6,7 +6,7 @@ Advanced
 .. toctree::
    :maxdepth: 2
 
-   align-score-deployment
+   AlignScore <align-score-deployment>
    bot-message-instructions
    embedding-search-providers
    event-based-api
@@ -15,10 +15,8 @@ Advanced
    jailbreak-detection-deployment
    llama-guard-deployment
    nested-async-loop
-   prompt-customization
    streaming
    using-docker
    vertexai-setup
-   nemoguard-contentsafety-deployment
+   nemotron-safety-guard-deployment
    nemoguard-topiccontrol-deployment
-   safeguarding-ai-virtual-assistant-blueprint

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,8 @@
 # isort: skip_file
 
 # start-prerequisites
-import base64
-import io
 import json
-import urllib.request
 
-import requests
 # end-prerequisites
 
 # start-config
@@ -43,7 +39,7 @@ image_reasoning_message = [{
   {
     "type": "image_url",
     "image_url": {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/SIG_Pro_by_Augustas_Didzgalvis.jpg/320px-SIG_Pro_by_Augustas_Didzgalvis.jpg"
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/SIG_Pro_by_Augustas_Didzgalvis.jpg/330px-SIG_Pro_by_Augustas_Didzgalvis.jpg"
     },
   }],
 }]
@@ -63,7 +59,7 @@ potentially_unsafe_message = [{
   {
     "type": "image_url",
     "image_url": {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/SIG_Pro_by_Augustas_Didzgalvis.jpg/320px-SIG_Pro_by_Augustas_Didzgalvis.jpg"
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/SIG_Pro_by_Augustas_Didzgalvis.jpg/330px-SIG_Pro_by_Augustas_Didzgalvis.jpg"
     },
   }],
 }]

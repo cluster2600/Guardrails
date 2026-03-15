@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from nemoguardrails import RailsConfig
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.llm.taskmanager import LLMTaskManager
 from nemoguardrails.rails.llm.config import Instruction, Model, RailsConfig
@@ -48,9 +47,7 @@ def test_general_instructions_get_included_when_no_canonical_forms_are_defined()
     chat << "Hello there!"
 
     info = chat.app.explain()
-    assert (
-        "This is a conversation between a user and a bot." in info.llm_calls[0].prompt
-    )
+    assert "This is a conversation between a user and a bot." in info.llm_calls[0].prompt
 
 
 def test_get_general_instructions_none():
@@ -161,7 +158,7 @@ async def test_search_flows_index_is_none():
 
 
 @pytest.mark.asyncio
-async def test_generate_next_step_empty_event_list():
+async def test_generate_next_steps_empty_event_list():
     """Check if we try and search the flows index when None we get None back"""
 
     config = RailsConfig(
@@ -177,10 +174,8 @@ async def test_generate_next_step_empty_event_list():
         get_embedding_search_provider_instance=MagicMock(),
     )
 
-    with pytest.raises(
-        RuntimeError, match="No last user intent found from which to generate next step"
-    ):
-        _ = await actions.generate_next_step(events=[])
+    with pytest.raises(RuntimeError, match="No last user intent found from which to generate next step"):
+        _ = await actions.generate_next_steps(events=[])
 
 
 #

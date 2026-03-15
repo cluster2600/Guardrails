@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import pytest
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 
 from nemoguardrails.actions.llm.utils import (
-    LLMCallException,
     _convert_messages_to_langchain_format,
     _extract_content,
     _store_tool_calls,
@@ -27,13 +26,12 @@ from nemoguardrails.actions.llm.utils import (
     llm_call,
 )
 from nemoguardrails.context import tool_calls_var
+from nemoguardrails.exceptions import LLMCallException
 from nemoguardrails.rails.llm.llmrails import GenerationResponse
 
 
 def test_get_and_clear_tool_calls_contextvar():
-    test_tool_calls = [
-        {"name": "test_func", "args": {}, "id": "call_123", "type": "tool_call"}
-    ]
+    test_tool_calls = [{"name": "test_func", "args": {}, "id": "call_123", "type": "tool_call"}]
     tool_calls_var.set(test_tool_calls)
 
     result = get_and_clear_tool_calls_contextvar()
@@ -149,9 +147,7 @@ def test_convert_messages_to_langchain_format_unknown_type():
 def test_store_tool_calls():
     """Test storing tool calls from response."""
     mock_response = MagicMock()
-    test_tool_calls = [
-        {"name": "another_func", "args": {}, "id": "call_789", "type": "tool_call"}
-    ]
+    test_tool_calls = [{"name": "another_func", "args": {}, "id": "call_789", "type": "tool_call"}]
     mock_response.tool_calls = test_tool_calls
 
     _store_tool_calls(mock_response)
@@ -228,9 +224,7 @@ async def test_llm_call_stores_tool_calls():
     mock_llm = AsyncMock()
     mock_response = MagicMock()
     mock_response.content = "Response with tools"
-    test_tool_calls = [
-        {"name": "test", "args": {}, "id": "call_test", "type": "tool_call"}
-    ]
+    test_tool_calls = [{"name": "test", "args": {}, "id": "call_test", "type": "tool_call"}]
     mock_response.tool_calls = test_tool_calls
     mock_llm.ainvoke.return_value = mock_response
 
@@ -255,7 +249,7 @@ async def test_llm_call_with_llm_params():
     result = await llm_call(mock_llm, "Test prompt", llm_params=llm_params)
 
     assert result == "LLM response with params"
-    mock_llm.bind.assert_called_once_with(stop=None, **llm_params)
+    mock_llm.bind.assert_called_once_with(**llm_params)
     mock_bound_llm.ainvoke.assert_called_once()
 
 
@@ -304,7 +298,7 @@ async def test_llm_call_with_llm_params_temperature_max_tokens():
     result = await llm_call(mock_llm, "Test prompt", llm_params=llm_params)
 
     assert result == "Response with temp and tokens"
-    mock_llm.bind.assert_called_once_with(stop=None, temperature=0.8, max_tokens=50)
+    mock_llm.bind.assert_called_once_with(temperature=0.8, max_tokens=50)
     mock_bound_llm.ainvoke.assert_called_once()
 
 
@@ -317,12 +311,8 @@ async def test_llm_call_with_none_llm_and_params():
 
 def test_generation_response_tool_calls_field():
     """Test that GenerationResponse can store tool calls."""
-    test_tool_calls = [
-        {"name": "test_function", "args": {}, "id": "call_test", "type": "tool_call"}
-    ]
+    test_tool_calls = [{"name": "test_function", "args": {}, "id": "call_test", "type": "tool_call"}]
 
-    response = GenerationResponse(
-        response=[{"role": "assistant", "content": "Hello"}], tool_calls=test_tool_calls
-    )
+    response = GenerationResponse(response=[{"role": "assistant", "content": "Hello"}], tool_calls=test_tool_calls)
 
     assert response.tool_calls == test_tool_calls

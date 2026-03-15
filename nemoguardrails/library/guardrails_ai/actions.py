@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,6 +39,14 @@ from nemoguardrails.actions import action
 from nemoguardrails.library.guardrails_ai.errors import GuardrailsAIValidationError
 from nemoguardrails.library.guardrails_ai.registry import get_validator_info
 from nemoguardrails.rails.llm.config import RailsConfig
+
+try:
+    from nemoguardrails.rails.llm.thread_pool import cpu_bound
+except ImportError:
+
+    def cpu_bound(fn):
+        return fn
+
 
 log = logging.getLogger(__name__)
 
@@ -92,6 +100,7 @@ def guardrails_ai_validation_mapping(result: Dict[str, Any]) -> bool:
     output_mapping=guardrails_ai_validation_mapping,
     is_system_action=False,
 )
+@cpu_bound
 def validate_guardrails_ai_input(
     validator: str,
     config: RailsConfig,
@@ -107,7 +116,7 @@ def validate_guardrails_ai_input(
         context: Optional context dictionary
 
     Returns:
-        Dict with validation_result
+        Dict with validation_result and valid (bool derived from validation_passed).
     """
 
     text = text or context.get("user_message", "")
@@ -120,10 +129,11 @@ def validate_guardrails_ai_input(
 
     joined_parameters = {**parameters, **metadata}
 
-    validation_result = validate_guardrails_ai(validator, text, **joined_parameters)
+    result = validate_guardrails_ai(validator, text, **joined_parameters)
+    valid = guardrails_ai_validation_mapping(result)
 
-    # Transform to the expected format for Colang flows
-    return validation_result
+    # Return both validation_result and valid for backward compatibility with Colang flows
+    return {**result, "valid": valid}
 
 
 @action(
@@ -131,6 +141,7 @@ def validate_guardrails_ai_input(
     output_mapping=guardrails_ai_validation_mapping,
     is_system_action=False,
 )
+@cpu_bound
 def validate_guardrails_ai_output(
     validator: str,
     context: Optional[dict] = None,
@@ -146,7 +157,7 @@ def validate_guardrails_ai_output(
         context: Optional context dictionary
 
     Returns:
-        Dict with validation_result
+        Dict with validation_result and valid (bool derived from validation_passed).
     """
 
     text = text or context.get("bot_message", "")
@@ -160,11 +171,14 @@ def validate_guardrails_ai_output(
     # join parameters and metadata into a single dict
     joined_parameters = {**parameters, **metadata}
 
-    validation_result = validate_guardrails_ai(validator, text, **joined_parameters)
+    result = validate_guardrails_ai(validator, text, **joined_parameters)
+    valid = guardrails_ai_validation_mapping(result)
 
-    return validation_result
+    # Return both validation_result and valid for backward compatibility with Colang flows
+    return {**result, "valid": valid}
 
 
+@cpu_bound
 def validate_guardrails_ai(validator_name: str, text: str, **kwargs) -> Dict[str, Any]:
     """Unified action for all Guardrails AI validators.
 
@@ -266,9 +280,7 @@ def _get_guard(validator_name: str, **validator_params) -> Guard:
         try:
             validator_instance = validator_class(**validator_params)
         except TypeError as e:
-            log.error(
-                f"Failed to instantiate {validator_name} with params {validator_params}: {str(e)}"
-            )
+            log.error(f"Failed to instantiate {validator_name} with params {validator_params}: {str(e)}")
             raise
 
         guard = Guard().use(validator_instance)

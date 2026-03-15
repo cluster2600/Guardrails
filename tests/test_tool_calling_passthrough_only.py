@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
 
 """Test that tool calling ONLY works in passthrough mode."""
 
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import MagicMock
 
 import pytest
 from langchain_core.messages import AIMessage
@@ -23,13 +23,12 @@ from langchain_core.messages import AIMessage
 from nemoguardrails import LLMRails, RailsConfig
 from nemoguardrails.actions.llm.generation import LLMGenerationActions
 from nemoguardrails.context import tool_calls_var
+from tests.utils import get_bound_llm_magic_mock
 
 
 @pytest.fixture
 def mock_llm_with_tool_calls():
     """Mock LLM that returns tool calls."""
-    llm = AsyncMock()
-
     mock_response = AIMessage(
         content="",
         tool_calls=[
@@ -41,8 +40,7 @@ def mock_llm_with_tool_calls():
             }
         ],
     )
-    llm.ainvoke.return_value = mock_response
-    llm.invoke.return_value = mock_response
+    llm = get_bound_llm_magic_mock(ainvoke_return_value=mock_response)
     return llm
 
 
@@ -106,9 +104,7 @@ class TestToolCallingPassthroughOnly:
         assert config_no_passthrough.passthrough is False
 
     @pytest.mark.asyncio
-    async def test_tool_calls_work_in_passthrough_mode(
-        self, config_passthrough, mock_llm_with_tool_calls
-    ):
+    async def test_tool_calls_work_in_passthrough_mode(self, config_passthrough, mock_llm_with_tool_calls):
         """Test that tool calls create BotToolCalls events in passthrough mode."""
         # Set up context with tool calls
         tool_calls = [
@@ -140,9 +136,7 @@ class TestToolCallingPassthroughOnly:
         assert result.events[0]["tool_calls"] == tool_calls
 
     @pytest.mark.asyncio
-    async def test_tool_calls_ignored_in_non_passthrough_mode(
-        self, config_no_passthrough, mock_llm_with_tool_calls
-    ):
+    async def test_tool_calls_ignored_in_non_passthrough_mode(self, config_no_passthrough, mock_llm_with_tool_calls):
         """Test that tool calls are ignored when not in passthrough mode."""
         tool_calls = [
             {
@@ -173,9 +167,7 @@ class TestToolCallingPassthroughOnly:
         assert "tool_calls" not in result.events[0]
 
     @pytest.mark.asyncio
-    async def test_no_tool_calls_creates_bot_message_in_passthrough(
-        self, config_passthrough, mock_llm_with_tool_calls
-    ):
+    async def test_no_tool_calls_creates_bot_message_in_passthrough(self, config_passthrough, mock_llm_with_tool_calls):
         """Test that no tool calls creates BotMessage event even in passthrough mode."""
         tool_calls_var.set(None)
 
@@ -200,17 +192,13 @@ class TestToolCallingPassthroughOnly:
         assert len(result.events) == 1
         assert result.events[0]["type"] == "BotMessage"
 
-    def test_llm_rails_integration_passthrough_mode(
-        self, config_passthrough, mock_llm_with_tool_calls
-    ):
+    def test_llm_rails_integration_passthrough_mode(self, config_passthrough, mock_llm_with_tool_calls):
         """Test LLMRails with passthrough mode allows tool calls."""
         rails = LLMRails(config=config_passthrough, llm=mock_llm_with_tool_calls)
 
         assert rails.config.passthrough is True
 
-    def test_llm_rails_integration_non_passthrough_mode(
-        self, config_no_passthrough, mock_llm_with_tool_calls
-    ):
+    def test_llm_rails_integration_non_passthrough_mode(self, config_no_passthrough, mock_llm_with_tool_calls):
         """Test LLMRails without passthrough mode."""
         rails = LLMRails(config=config_no_passthrough, llm=mock_llm_with_tool_calls)
 

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@ from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
-from langchain.schema import Generation, LLMResult
 from langchain_core.messages import (
     AIMessage,
     BaseMessage,
@@ -25,7 +24,7 @@ from langchain_core.messages import (
     SystemMessage,
     ToolMessage,
 )
-from langchain_core.outputs import ChatGeneration
+from langchain_core.outputs import ChatGeneration, Generation, LLMResult
 
 from nemoguardrails.context import explain_info_var, llm_call_info_var, llm_stats_var
 from nemoguardrails.logging.callbacks import LoggingCallbackHandler
@@ -35,7 +34,7 @@ from nemoguardrails.logging.stats import LLMStats
 
 @pytest.mark.asyncio
 async def test_token_usage_tracking_with_usage_metadata():
-    """Test that token usage is tracked when usage_metadata is available (stream_usage=True scenario)."""
+    """Test that token usage is tracked when usage_metadata is available."""
 
     llm_call_info = LLMCallInfo()
     llm_call_info_var.set(llm_call_info)
@@ -48,7 +47,7 @@ async def test_token_usage_tracking_with_usage_metadata():
 
     handler = LoggingCallbackHandler()
 
-    # simulate the LLM response with usage metadata (as would happen with stream_usage=True)
+    # simulate the LLM response with usage metadata
     ai_message = AIMessage(
         content="Hello! How can I help you?",
         usage_metadata={"input_tokens": 10, "output_tokens": 6, "total_tokens": 16},
@@ -123,7 +122,7 @@ async def test_no_token_usage_tracking_without_metadata():
 
     handler = LoggingCallbackHandler()
 
-    # simulate LLM response without usage metadata (stream_usage=False scenario)
+    # simulate LLM response without usage metadata
     ai_message = AIMessage(content="Hello! How can I help you?")
     chat_generation = ChatGeneration(message=ai_message)
     llm_result = LLMResult(generations=[[chat_generation]])
@@ -132,9 +131,7 @@ async def test_no_token_usage_tracking_without_metadata():
 
     assert llm_call_info.total_tokens is None or llm_call_info.total_tokens == 0
     assert llm_call_info.prompt_tokens is None or llm_call_info.prompt_tokens == 0
-    assert (
-        llm_call_info.completion_tokens is None or llm_call_info.completion_tokens == 0
-    )
+    assert llm_call_info.completion_tokens is None or llm_call_info.completion_tokens == 0
 
 
 @pytest.mark.asyncio

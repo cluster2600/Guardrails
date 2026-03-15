@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,17 +16,16 @@
 """Tests for metadata preservation in RunnableRails."""
 
 from typing import List, Optional
-from unittest.mock import MagicMock, Mock
+from unittest.mock import Mock
 
 import pytest
-from langchain.callbacks.manager import (
+from langchain_core.callbacks.manager import (
     AsyncCallbackManagerForLLMRun,
     CallbackManagerForLLMRun,
 )
-from langchain.chat_models.base import BaseChatModel
+from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
-from langchain_core.prompt_values import ChatPromptValue
 from langchain_core.prompts import ChatPromptTemplate
 
 from nemoguardrails import RailsConfig
@@ -201,9 +200,7 @@ def runnable_rails_with_metadata(mock_rails_config, mock_llm):
 class TestMetadataPreservation:
     """Test cases for metadata preservation in RunnableRails."""
 
-    def test_metadata_preserved_with_chat_prompt_value(
-        self, runnable_rails_with_metadata
-    ):
+    def test_metadata_preserved_with_chat_prompt_value(self, runnable_rails_with_metadata):
         """Test that metadata is preserved with ChatPromptValue input."""
         prompt = ChatPromptTemplate.from_messages([("human", "Test message")])
         chat_prompt_value = prompt.format_prompt()
@@ -254,9 +251,7 @@ class TestMetadataPreservation:
         assert result.additional_kwargs == {"custom_field": "custom_value"}
         assert result.usage_metadata is not None
 
-    def test_metadata_preserved_with_dict_input_base_message(
-        self, runnable_rails_with_metadata
-    ):
+    def test_metadata_preserved_with_dict_input_base_message(self, runnable_rails_with_metadata):
         """Test that metadata is preserved with dictionary input containing BaseMessage."""
         input_dict = {"input": HumanMessage(content="Test message")}
 
@@ -269,9 +264,7 @@ class TestMetadataPreservation:
         assert ai_message.content == "Test response from rails"
         assert ai_message.additional_kwargs == {"custom_field": "custom_value"}
 
-    def test_metadata_preserved_with_dict_input_message_list(
-        self, runnable_rails_with_metadata
-    ):
+    def test_metadata_preserved_with_dict_input_message_list(self, runnable_rails_with_metadata):
         """Test that metadata is preserved with dictionary input containing message list."""
         input_dict = {"input": [HumanMessage(content="Test message")]}
 
@@ -392,11 +385,11 @@ class TestMetadataPreservation:
             chunks = [
                 {
                     "text": "Hello ",
-                    "generation_info": {"model": "test-model", "finish_reason": "stop"},
+                    "metadata": {"model": "test-model", "finish_reason": "stop"},
                 },
                 {
                     "text": "world!",
-                    "generation_info": {"model": "test-model", "finish_reason": "stop"},
+                    "metadata": {"model": "test-model", "finish_reason": "stop"},
                 },
             ]
             for chunk in chunks:
@@ -413,9 +406,7 @@ class TestMetadataPreservation:
         for chunk in chunks:
             assert hasattr(chunk, "content")
             assert hasattr(chunk, "additional_kwargs") or hasattr(chunk, "model")
-            assert hasattr(chunk, "response_metadata") or hasattr(
-                chunk, "finish_reason"
-            )
+            assert hasattr(chunk, "response_metadata") or hasattr(chunk, "finish_reason")
 
     @pytest.mark.asyncio
     async def test_async_streaming_metadata_preservation(self, mock_rails_config):
@@ -426,8 +417,8 @@ class TestMetadataPreservation:
 
         async def mock_stream(*args, **kwargs):
             chunks = [
-                {"text": "Async ", "generation_info": {"model": "test-model"}},
-                {"text": "stream!", "generation_info": {"model": "test-model"}},
+                {"text": "Async ", "metadata": {"model": "test-model"}},
+                {"text": "stream!", "metadata": {"model": "test-model"}},
             ]
             for chunk in chunks:
                 yield chunk

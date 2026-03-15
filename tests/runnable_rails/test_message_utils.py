@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,6 @@ from nemoguardrails.integrations.langchain.message_utils import (
     create_tool_message,
     dict_to_message,
     dicts_to_messages,
-    get_message_class,
-    get_message_role,
     is_ai_message,
     is_base_message,
     is_human_message,
@@ -44,46 +42,6 @@ from nemoguardrails.integrations.langchain.message_utils import (
     message_to_dict,
     messages_to_dicts,
 )
-
-
-class TestMessageRoleAndClass:
-    def test_get_message_role_ai(self):
-        msg = AIMessage(content="test")
-        assert get_message_role(msg) == "assistant"
-
-    def test_get_message_role_human(self):
-        msg = HumanMessage(content="test")
-        assert get_message_role(msg) == "user"
-
-    def test_get_message_role_system(self):
-        msg = SystemMessage(content="test")
-        assert get_message_role(msg) == "system"
-
-    def test_get_message_role_tool(self):
-        msg = ToolMessage(content="test", tool_call_id="123")
-        assert get_message_role(msg) == "tool"
-
-    def test_get_message_class_user(self):
-        assert get_message_class("user") == HumanMessage
-
-    def test_get_message_class_assistant(self):
-        assert get_message_class("assistant") == AIMessage
-
-    def test_get_message_class_bot(self):
-        assert get_message_class("bot") == AIMessage
-
-    def test_get_message_class_system(self):
-        assert get_message_class("system") == SystemMessage
-
-    def test_get_message_class_developer(self):
-        assert get_message_class("developer") == SystemMessage
-
-    def test_get_message_class_tool(self):
-        assert get_message_class("tool") == ToolMessage
-
-    def test_get_message_class_unknown(self):
-        with pytest.raises(ValueError, match="Unknown message type"):
-            get_message_class("unknown")
 
 
 class TestMessageConversion:
@@ -214,9 +172,7 @@ class TestBatchConversion:
             HumanMessage(content="Hello", id="human-1"),
             AIMessage(
                 content="Hi there",
-                tool_calls=[
-                    {"name": "tool", "args": {}, "id": "c1", "type": "tool_call"}
-                ],
+                tool_calls=[{"name": "tool", "args": {}, "id": "c1", "type": "tool_call"}],
                 id="ai-1",
             ),
             ToolMessage(content="Tool result", tool_call_id="c1", name="tool"),
@@ -253,9 +209,7 @@ class TestBatchConversion:
             AIMessage(
                 content="Test 2",
                 id="a1",
-                tool_calls=[
-                    {"name": "func", "args": {"x": 1}, "id": "tc1", "type": "tool_call"}
-                ],
+                tool_calls=[{"name": "func", "args": {"x": 1}, "id": "tc1", "type": "tool_call"}],
             ),
             SystemMessage(content="Test 3", id="s1"),
             ToolMessage(content="Test 4", tool_call_id="tc1", name="func", id="t1"),

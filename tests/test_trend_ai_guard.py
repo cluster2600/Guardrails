@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-from pytest_httpx import HTTPXMock
+import sys
 
-from nemoguardrails import RailsConfig
-from tests.utils import TestChat
+import pytest
+
+pytest.importorskip("pytest_httpx", reason="pytest-httpx not installed")
+
+# httpcore has a Python 3.14 bug: "cannot create weak reference to 'NoneType' object"
+# in connection pool cleanup. Skip these tests until httpcore releases a fix.
+pytestmark = pytest.mark.skipif(
+    sys.version_info >= (3, 14),
+    reason="httpcore weak-ref bug on Python 3.14 (httpcore#XXXX)",
+)
+
+from pytest_httpx import HTTPXMock  # noqa: E402
+
+from nemoguardrails import RailsConfig  # noqa: E402
+from tests.utils import TestChat  # noqa: E402
 
 input_rail_config = RailsConfig.from_content(
     yaml_content="""
@@ -25,8 +37,9 @@ input_rail_config = RailsConfig.from_content(
         rails:
           config:
             trend_micro:
-              v1_url: "https://api.xdr.trendmicro.com/beta/aiSecurity/guard"
+              v1_url: "https://api.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails"
               api_key_env_var: "V1_API_KEY"
+              application_name: "test-app"
           input:
             flows:
               - trend ai guard input
@@ -38,11 +51,27 @@ output_rail_config = RailsConfig.from_content(
         rails:
           config:
             trend_micro:
-              v1_url: "https://api.xdr.trendmicro.com/beta/aiSecurity/guard"
+              v1_url: "https://api.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails"
               api_key_env_var: "V1_API_KEY"
+              application_name: "test-app"
           output:
             flows:
               - trend ai guard output
+    """
+)
+detailed_response_config = RailsConfig.from_content(
+    yaml_content="""
+        models: []
+        rails:
+          config:
+            trend_micro:
+              v1_url: "https://api.xdr.trendmicro.com/v3.0/aiSecurity/applyGuardrails"
+              api_key_env_var: "V1_API_KEY"
+              application_name: "test-app"
+              detailed_response: true
+          input:
+            flows:
+              - trend ai guard input
     """
 )
 
@@ -69,13 +98,9 @@ def test_trend_ai_guard_blocked(httpx_mock: HTTPXMock, monkeypatch: pytest.Monke
 
 @pytest.mark.unit
 @pytest.mark.parametrize("status_code", frozenset({400, 403, 429, 500}))
-def test_trend_ai_guard_error(
-    httpx_mock: HTTPXMock, monkeypatch: pytest.MonkeyPatch, status_code: int
-):
+def test_trend_ai_guard_error(httpx_mock: HTTPXMock, monkeypatch: pytest.MonkeyPatch, status_code: int):
     monkeypatch.setenv("V1_API_KEY", "test-token")
-    httpx_mock.add_response(
-        is_reusable=True, status_code=status_code, json={"result": {}}
-    )
+    httpx_mock.add_response(is_reusable=True, status_code=status_code, json={"result": {}})
 
     chat = TestChat(output_rail_config, llm_completions=["  Hello!"])
 
@@ -92,9 +117,7 @@ def test_trend_ai_guard_missing_env_var():
 
 
 @pytest.mark.unit
-def test_trend_ai_guard_malformed_response(
-    httpx_mock: HTTPXMock, monkeypatch: pytest.MonkeyPatch
-):
+def test_trend_ai_guard_malformed_response(httpx_mock: HTTPXMock, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("V1_API_KEY", "test-token")
     httpx_mock.add_response(is_reusable=True, text="definitely not valid JSON")
 
@@ -106,3 +129,29 @@ def test_trend_ai_guard_malformed_response(
     # Should fail open
     chat >> "What is the air-speed velocity of an unladen swallow?"
     chat << "I'm sorry, an internal error has occurred."
+
+
+@pytest.mark.unit
+def test_trend_ai_guard_detailed_response(httpx_mock: HTTPXMock, monkeypatch: pytest.MonkeyPatch):
+    """Test that detailed_response=true sets Prefer: return=representation header."""
+    monkeypatch.setenv("V1_API_KEY", "test-token")
+    httpx_mock.add_response(
+        is_reusable=True,
+        json={"action": "Allow", "reason": "No threats detected", "blocked": False},
+    )
+
+    chat = TestChat(
+        detailed_response_config,
+        llm_completions=[
+            "  Hi how can I help you today?",
+            '  "Hello there!"',
+        ],
+    )
+
+    chat >> "Hi!"
+    chat << "Hi how can I help you today?"
+
+    # Verify the Prefer header was set to return=representation
+    request = httpx_mock.get_request()
+    assert request is not None
+    assert request.headers.get("Prefer") == "return=representation"

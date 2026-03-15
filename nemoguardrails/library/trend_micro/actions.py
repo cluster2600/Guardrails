@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 # limitations under the License.
 
 import logging
-from typing import Literal, Optional
+from typing import Literal
 
 import httpx
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from pydantic import field_validator as validator
-from pydantic import model_validator
 from pydantic_core import to_json
 from typing_extensions import cast
 
@@ -34,10 +33,10 @@ class Guard(BaseModel):
     Represents a guard entity with a single string attribute.
 
     Attributes:
-        guard (str): The input text for guard analysis.
+        prompt (str): The input text for AI guard analysis.
     """
 
-    guard: str
+    prompt: str
 
 
 class GuardResult(BaseModel):
@@ -50,13 +49,9 @@ class GuardResult(BaseModel):
         reason (str): Explanation for the chosen action. Must be a non-empty string.
     """
 
-    action: Literal["Block", "Allow"] = Field(
-        ..., description="Action to take based on " "guard analysis"
-    )
+    action: Literal["Block", "Allow"] = Field(..., description="Action to take based on guard analysis")
     reason: str = Field(..., min_length=1, description="Explanation for the action")
-    blocked: bool = Field(
-        default=False, description="True if action is 'Block', else False"
-    )
+    blocked: bool = Field(default=False, description="True if action is 'Block', else False")
 
     @validator("action")
     def validate_action(cls, v):
@@ -84,10 +79,7 @@ def get_config(config: RailsConfig) -> TrendMicroRailConfig:
         TrendMicroRailConfig: The Trend Micro configuration, either from the provided
         config or a default instance.
     """
-    if (
-        not hasattr(config.rails.config, "trend_micro")
-        or config.rails.config.trend_micro is None
-    ):
+    if not hasattr(config.rails.config, "trend_micro") or config.rails.config.trend_micro is None:
         return TrendMicroRailConfig()
 
     return cast(TrendMicroRailConfig, config.rails.config.trend_micro)
@@ -99,9 +91,9 @@ def trend_ai_guard_mapping(result: GuardResult) -> bool:
 
 
 @action(is_system_action=True, output_mapping=trend_ai_guard_mapping)
-async def trend_ai_guard(config: RailsConfig, text: Optional[str] = None):
+async def trend_ai_guard(config: RailsConfig, text: str):
     """
-    Custom action to invoke the Trend Ai Guard
+    Custom action to invoke the Trend Micro AI Guard API.
     """
 
     trend_config = get_config(config)
@@ -117,16 +109,28 @@ async def trend_ai_guard(config: RailsConfig, text: Optional[str] = None):
             reason="Trend Micro Vision One API Key not found",
         )
 
+    app_name = trend_config.application_name
+
     async with httpx.AsyncClient() as client:
-        data = Guard(guard=text).model_dump()
+        data = Guard(prompt=text).model_dump()
+
+        # Build headers with required TMV1-Application-Name
+        headers = {
+            "Authorization": f"Bearer {v1_api_key}",
+            "Content-Type": "application/json",
+            "TMV1-Application-Name": app_name,
+        }
+
+        # Add Prefer header for detail level control
+        if trend_config.detailed_response:
+            headers["Prefer"] = "return=representation"
+        else:
+            headers["Prefer"] = "return=minimal"
 
         response = await client.post(
             v1_url,
             content=to_json(data),
-            headers={
-                "Authorization": f"Bearer {v1_api_key}",
-                "Content-Type": "application/json",
-            },
+            headers=headers,
         )
 
         try:

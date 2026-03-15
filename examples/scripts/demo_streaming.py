@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,7 @@
 # limitations under the License.
 
 """Demo script."""
+
 import asyncio
 import logging
 from typing import Optional
@@ -33,8 +34,6 @@ models:
   - type: main
     engine: openai
     model: gpt-4
-
-streaming: True
 """
 
 
@@ -66,9 +65,7 @@ async def demo_2():
 
     asyncio.create_task(process_tokens())
 
-    result = await app.generate_async(
-        messages=history, streaming_handler=streaming_handler
-    )
+    result = await app.generate_async(messages=history, streaming_handler=streaming_handler)
     print(result)
 
 
@@ -100,8 +97,6 @@ async def demo_streaming_from_custom_action():
                 dialog:
                     user_messages:
                         embeddings_only: True
-
-            streaming: True
         """,
         colang_content="""
             # We need to have at least on canonical form to enable dialog rails.
@@ -140,9 +135,7 @@ async def demo_streaming_from_custom_action():
 
     asyncio.create_task(process_tokens())
 
-    result = await app.generate_async(
-        messages=history, streaming_handler=streaming_handler
-    )
+    result = await app.generate_async(messages=history, streaming_handler=streaming_handler)
     print(result)
 
 

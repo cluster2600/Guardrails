@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,10 +29,10 @@ def cleanup():
 os.chdir(Path(__file__).parent)
 
 # start-generate-response
-import asyncio
+import asyncio  # noqa: E402
 
 # Load the guardrails configurations and create an LLMRails instance.
-from nemoguardrails import LLMRails, RailsConfig
+from nemoguardrails import LLMRails, RailsConfig  # noqa: E402
 
 config = RailsConfig.from_path("./config")
 rails = LLMRails(config)
