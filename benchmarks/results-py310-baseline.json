@@ -1,0 +1,584 @@
+{
+  "python": {
+    "version": "3.10.11",
+    "build": "standard",
+    "gil_disabled": false,
+    "cpu_count": 10
+  },
+  "sections": {
+    "threading": [
+      {
+        "test": "cpu_parallel",
+        "rails": 1,
+        "workers": 1,
+        "sequential_mean_ms": 3.54,
+        "sequential_p99_ms": 4.07,
+        "sequential_stdev_ms": 0.15,
+        "threadpool_mean_ms": 3.44,
+        "threadpool_p99_ms": 3.6,
+        "threadpool_stdev_ms": 0.07,
+        "async_executor_mean_ms": 3.84,
+        "async_executor_p99_ms": 3.99,
+        "speedup_threadpool": 1.03,
+        "speedup_async_executor": 0.92
+      },
+      {
+        "test": "cpu_parallel",
+        "rails": 2,
+        "workers": 2,
+        "sequential_mean_ms": 6.82,
+        "sequential_p99_ms": 6.98,
+        "sequential_stdev_ms": 0.1,
+        "threadpool_mean_ms": 6.93,
+        "threadpool_p99_ms": 7.13,
+        "threadpool_stdev_ms": 0.13,
+        "async_executor_mean_ms": 7.33,
+        "async_executor_p99_ms": 7.64,
+        "speedup_threadpool": 0.98,
+        "speedup_async_executor": 0.93
+      },
+      {
+        "test": "cpu_parallel",
+        "rails": 4,
+        "workers": 4,
+        "sequential_mean_ms": 13.67,
+        "sequential_p99_ms": 14.07,
+        "sequential_stdev_ms": 0.19,
+        "threadpool_mean_ms": 13.76,
+        "threadpool_p99_ms": 14.04,
+        "threadpool_stdev_ms": 0.21,
+        "async_executor_mean_ms": 14.25,
+        "async_executor_p99_ms": 14.75,
+        "speedup_threadpool": 0.99,
+        "speedup_async_executor": 0.96
+      },
+      {
+        "test": "cpu_parallel",
+        "rails": 8,
+        "workers": 8,
+        "sequential_mean_ms": 27.24,
+        "sequential_p99_ms": 27.86,
+        "sequential_stdev_ms": 0.32,
+        "threadpool_mean_ms": 27.26,
+        "threadpool_p99_ms": 27.78,
+        "threadpool_stdev_ms": 0.28,
+        "async_executor_mean_ms": 27.98,
+        "async_executor_p99_ms": 28.78,
+        "speedup_threadpool": 1.0,
+        "speedup_async_executor": 0.97
+      }
+    ],
+    "template": [
+      {
+        "test": "template_rendering",
+        "template": "simple",
+        "iterations": 5000,
+        "cold_mean_ms": 0.2054,
+        "cold_p99_ms": 0.3261,
+        "hot_mean_ms": 0.0046,
+        "hot_p99_ms": 0.005,
+        "speedup": 44.77,
+        "savings_us": 200.8
+      },
+      {
+        "test": "template_rendering",
+        "template": "medium",
+        "iterations": 5000,
+        "cold_mean_ms": 0.7217,
+        "cold_p99_ms": 0.9511,
+        "hot_mean_ms": 0.0201,
+        "hot_p99_ms": 0.0277,
+        "speedup": 35.87,
+        "savings_us": 701.6
+      },
+      {
+        "test": "template_rendering",
+        "template": "complex",
+        "iterations": 5000,
+        "cold_mean_ms": 1.2095,
+        "cold_p99_ms": 1.5362,
+        "hot_mean_ms": 0.0103,
+        "hot_p99_ms": 0.0109,
+        "speedup": 117.6,
+        "savings_us": 1199.2
+      }
+    ],
+    "import": [
+      {
+        "test": "import_time",
+        "module": "nemoguardrails",
+        "description": "top-level",
+        "iterations": 10,
+        "mean_ms": 948.4,
+        "p50_ms": 940.4,
+        "p99_ms": 1028.5,
+        "stdev_ms": 28.4,
+        "min_ms": 931.6,
+        "max_ms": 1028.5
+      },
+      {
+        "test": "import_time",
+        "module": "nemoguardrails.rails.llm.config",
+        "description": "annotation-heavy (200+ type hints)",
+        "iterations": 10,
+        "mean_ms": 946.4,
+        "p50_ms": 942.8,
+        "p99_ms": 998.1,
+        "stdev_ms": 19.2,
+        "min_ms": 931.8,
+        "max_ms": 998.1
+      },
+      {
+        "test": "import_time",
+        "module": "nemoguardrails.rails.llm.llmrails",
+        "description": "annotation-heavy (entry point)",
+        "iterations": 10,
+        "mean_ms": 938.5,
+        "p50_ms": 938.5,
+        "p99_ms": 944.5,
+        "stdev_ms": 3.8,
+        "min_ms": 931.4,
+        "max_ms": 944.5
+      },
+      {
+        "test": "import_time",
+        "module": "nemoguardrails.rails.llm.dag_scheduler",
+        "description": "annotation-heavy (dataclasses)",
+        "iterations": 10,
+        "mean_ms": 933.3,
+        "p50_ms": 934.1,
+        "p99_ms": 938.6,
+        "stdev_ms": 4.1,
+        "min_ms": 927.7,
+        "max_ms": 938.6
+      },
+      {
+        "test": "import_time",
+        "module": "nemoguardrails.llm.taskmanager",
+        "description": "annotation-heavy (Jinja2 types)",
+        "iterations": 10,
+        "mean_ms": 938.4,
+        "p50_ms": 936.6,
+        "p99_ms": 953.0,
+        "stdev_ms": 7.9,
+        "min_ms": 927.6,
+        "max_ms": 953.0
+      },
+      {
+        "test": "import_time",
+        "module": "nemoguardrails.actions.action_dispatcher",
+        "description": "annotation-heavy (dispatcher)",
+        "iterations": 10,
+        "mean_ms": 938.9,
+        "p50_ms": 939.2,
+        "p99_ms": 949.4,
+        "stdev_ms": 4.4,
+        "min_ms": 934.6,
+        "max_ms": 949.4
+      }
+    ],
+    "gc": [
+      {
+        "test": "gc_tail_latency",
+        "scenario": "baseline",
+        "iterations": 10000,
+        "cycle_count": 0,
+        "p50_ms": 0.877,
+        "p95_ms": 0.919,
+        "p99_ms": 0.963,
+        "p999_ms": 1.014,
+        "max_ms": 1.121,
+        "mean_ms": 0.88,
+        "stdev_ms": 0.024,
+        "p99_p50_ratio": 1.1,
+        "p999_p50_ratio": 1.16
+      },
+      {
+        "test": "gc_tail_latency",
+        "scenario": "light_pressure",
+        "iterations": 10000,
+        "cycle_count": 50,
+        "p50_ms": 0.878,
+        "p95_ms": 0.919,
+        "p99_ms": 0.958,
+        "p999_ms": 1.012,
+        "max_ms": 1.599,
+        "mean_ms": 0.881,
+        "stdev_ms": 0.026,
+        "p99_p50_ratio": 1.09,
+        "p999_p50_ratio": 1.15
+      },
+      {
+        "test": "gc_tail_latency",
+        "scenario": "heavy_pressure",
+        "iterations": 10000,
+        "cycle_count": 500,
+        "p50_ms": 0.879,
+        "p95_ms": 0.919,
+        "p99_ms": 0.965,
+        "p999_ms": 1.006,
+        "max_ms": 1.133,
+        "mean_ms": 0.882,
+        "stdev_ms": 0.023,
+        "p99_p50_ratio": 1.1,
+        "p999_p50_ratio": 1.14
+      },
+      {
+        "test": "gc_tail_latency",
+        "scenario": "burst_pressure",
+        "iterations": 10000,
+        "cycle_count": 2000,
+        "p50_ms": 0.879,
+        "p95_ms": 0.921,
+        "p99_ms": 0.964,
+        "p999_ms": 1.005,
+        "max_ms": 1.131,
+        "mean_ms": 0.882,
+        "stdev_ms": 0.023,
+        "p99_p50_ratio": 1.1,
+        "p999_p50_ratio": 1.14
+      }
+    ],
+    "asyncio": [
+      {
+        "test": "asyncio_rails",
+        "num_rails": 2,
+        "io_latency_ms": 20,
+        "serial_mean_ms": 45.83,
+        "serial_p99_ms": 60.21,
+        "parallel_mean_ms": 23.69,
+        "parallel_p99_ms": 34.71,
+        "speedup": 1.93,
+        "scheduling_efficiency": 0.84
+      },
+      {
+        "test": "asyncio_rails",
+        "num_rails": 4,
+        "io_latency_ms": 20,
+        "serial_mean_ms": 90.39,
+        "serial_p99_ms": 105.47,
+        "parallel_mean_ms": 23.66,
+        "parallel_p99_ms": 38.91,
+        "speedup": 3.82,
+        "scheduling_efficiency": 0.85
+      },
+      {
+        "test": "asyncio_rails",
+        "num_rails": 8,
+        "io_latency_ms": 20,
+        "serial_mean_ms": 179.04,
+        "serial_p99_ms": 198.04,
+        "parallel_mean_ms": 23.68,
+        "parallel_p99_ms": 30.79,
+        "speedup": 7.56,
+        "scheduling_efficiency": 0.84
+      },
+      {
+        "test": "asyncio_rails",
+        "num_rails": 16,
+        "io_latency_ms": 20,
+        "serial_mean_ms": 355.45,
+        "serial_p99_ms": 396.16,
+        "parallel_mean_ms": 24.18,
+        "parallel_p99_ms": 30.84,
+        "speedup": 14.7,
+        "scheduling_efficiency": 0.83
+      }
+    ],
+    "dag": [
+      {
+        "test": "dag_scheduler",
+        "topology": "linear_4",
+        "nodes": 4,
+        "groups": 4,
+        "total_serial_ms": 40,
+        "theoretical_parallel_ms": 40,
+        "actual_mean_ms": 51.17,
+        "actual_p99_ms": 66.84,
+        "actual_stdev_ms": 4.55,
+        "efficiency": 0.78,
+        "parallelism_ratio": 0.78
+      },
+      {
+        "test": "dag_scheduler",
+        "topology": "wide_4",
+        "nodes": 4,
+        "groups": 1,
+        "total_serial_ms": 40,
+        "theoretical_parallel_ms": 10,
+        "actual_mean_ms": 13.6,
+        "actual_p99_ms": 25.98,
+        "actual_stdev_ms": 2.62,
+        "efficiency": 0.74,
+        "parallelism_ratio": 2.94
+      },
+      {
+        "test": "dag_scheduler",
+        "topology": "diamond",
+        "nodes": 4,
+        "groups": 3,
+        "total_serial_ms": 40,
+        "theoretical_parallel_ms": 30,
+        "actual_mean_ms": 40.67,
+        "actual_p99_ms": 73.94,
+        "actual_stdev_ms": 34.14,
+        "efficiency": 0.74,
+        "parallelism_ratio": 0.98
+      },
+      {
+        "test": "dag_scheduler",
+        "topology": "fan_out_8",
+        "nodes": 9,
+        "groups": 2,
+        "total_serial_ms": 85,
+        "theoretical_parallel_ms": 15,
+        "actual_mean_ms": 20.47,
+        "actual_p99_ms": 32.59,
+        "actual_stdev_ms": 3.05,
+        "efficiency": 0.73,
+        "parallelism_ratio": 4.15
+      }
+    ],
+    "eager": [
+      {
+        "test": "eager_task_factory",
+        "tasks": 4,
+        "eager_available": false,
+        "instant_standard_mean_ms": 0.1068,
+        "instant_standard_p99_ms": 0.2298,
+        "instant_eager_mean_ms": 0.102,
+        "instant_eager_p99_ms": 0.1741,
+        "instant_speedup": 1.05,
+        "mixed_standard_mean_ms": 1.7657,
+        "mixed_eager_mean_ms": 2.049,
+        "mixed_speedup": 0.86
+      },
+      {
+        "test": "eager_task_factory",
+        "tasks": 8,
+        "eager_available": false,
+        "instant_standard_mean_ms": 0.1176,
+        "instant_standard_p99_ms": 0.2054,
+        "instant_eager_mean_ms": 0.1135,
+        "instant_eager_p99_ms": 0.1872,
+        "instant_speedup": 1.04,
+        "mixed_standard_mean_ms": 1.7701,
+        "mixed_eager_mean_ms": 2.1175,
+        "mixed_speedup": 0.84
+      },
+      {
+        "test": "eager_task_factory",
+        "tasks": 16,
+        "eager_available": false,
+        "instant_standard_mean_ms": 0.1473,
+        "instant_standard_p99_ms": 0.2341,
+        "instant_eager_mean_ms": 0.1379,
+        "instant_eager_p99_ms": 0.2137,
+        "instant_speedup": 1.07,
+        "mixed_standard_mean_ms": 1.9317,
+        "mixed_eager_mean_ms": 2.2741,
+        "mixed_speedup": 0.85
+      },
+      {
+        "test": "eager_task_factory",
+        "tasks": 32,
+        "eager_available": false,
+        "instant_standard_mean_ms": 0.1935,
+        "instant_standard_p99_ms": 0.2768,
+        "instant_eager_mean_ms": 0.1868,
+        "instant_eager_p99_ms": 0.2822,
+        "instant_speedup": 1.04,
+        "mixed_standard_mean_ms": 1.9553,
+        "mixed_eager_mean_ms": 2.3676,
+        "mixed_speedup": 0.83
+      },
+      {
+        "test": "eager_task_factory",
+        "tasks": 64,
+        "eager_available": false,
+        "instant_standard_mean_ms": 0.295,
+        "instant_standard_p99_ms": 0.4021,
+        "instant_eager_mean_ms": 0.285,
+        "instant_eager_p99_ms": 0.3795,
+        "instant_speedup": 1.03,
+        "mixed_standard_mean_ms": 2.0824,
+        "mixed_eager_mean_ms": 2.3253,
+        "mixed_speedup": 0.9
+      }
+    ],
+    "scheduler": [
+      {
+        "test": "scheduler_execute",
+        "topology": "wide_4",
+        "rails": 4,
+        "groups": 1,
+        "serial_ms": 0.4,
+        "without_eager_mean_ms": 0.2868,
+        "without_eager_p99_ms": 0.4572,
+        "with_eager_mean_ms": 0.2704,
+        "with_eager_p99_ms": 0.43,
+        "eager_speedup": 1.06,
+        "eager_available": false
+      },
+      {
+        "test": "scheduler_execute",
+        "topology": "wide_8",
+        "rails": 8,
+        "groups": 1,
+        "serial_ms": 0.8,
+        "without_eager_mean_ms": 0.2937,
+        "without_eager_p99_ms": 0.3971,
+        "with_eager_mean_ms": 0.2937,
+        "with_eager_p99_ms": 0.3773,
+        "eager_speedup": 1.0,
+        "eager_available": false
+      },
+      {
+        "test": "scheduler_execute",
+        "topology": "wide_16",
+        "rails": 16,
+        "groups": 1,
+        "serial_ms": 1.6,
+        "without_eager_mean_ms": 0.3352,
+        "without_eager_p99_ms": 0.4371,
+        "with_eager_mean_ms": 0.3342,
+        "with_eager_p99_ms": 0.4492,
+        "eager_speedup": 1.0,
+        "eager_available": false
+      },
+      {
+        "test": "scheduler_execute",
+        "topology": "diamond",
+        "rails": 4,
+        "groups": 3,
+        "serial_ms": 0.4,
+        "without_eager_mean_ms": 0.5663,
+        "without_eager_p99_ms": 0.705,
+        "with_eager_mean_ms": 0.5754,
+        "with_eager_p99_ms": 0.7076,
+        "eager_speedup": 0.98,
+        "eager_available": false
+      },
+      {
+        "test": "scheduler_execute",
+        "topology": "fan_out_8",
+        "rails": 9,
+        "groups": 2,
+        "serial_ms": 0.9,
+        "without_eager_mean_ms": 0.4478,
+        "without_eager_p99_ms": 0.6067,
+        "with_eager_mean_ms": 0.4426,
+        "with_eager_p99_ms": 0.5821,
+        "eager_speedup": 1.01,
+        "eager_available": false
+      },
+      {
+        "test": "scheduler_execute",
+        "topology": "deep_pipeline_6",
+        "rails": 6,
+        "groups": 6,
+        "serial_ms": 0.6000000000000001,
+        "without_eager_mean_ms": 0.9694,
+        "without_eager_p99_ms": 1.1073,
+        "with_eager_mean_ms": 0.9706,
+        "with_eager_p99_ms": 1.1289,
+        "eager_speedup": 1.0,
+        "eager_available": false
+      }
+    ],
+    "action_cache": [
+      {
+        "test": "action_name_cache",
+        "action_count": 18,
+        "iterations": 50000,
+        "uncached_mean_ms": 0.0463,
+        "uncached_p99_ms": 0.0588,
+        "cached_mean_ms": 0.0004,
+        "cached_p99_ms": 0.0005,
+        "speedup": 129.67,
+        "savings_per_dispatch_us": 2.55
+      }
+    ],
+    "cache_contention": [
+      {
+        "test": "cache_contention",
+        "threads": 1,
+        "operations_per_thread": 50000,
+        "total_operations": 50000,
+        "wall_time_ms": 19.63,
+        "throughput_ops_per_sec": 2546489,
+        "plain_dict_throughput": 6852092,
+        "lock_overhead_ratio": 2.69,
+        "cache_hit_rate": 0.8
+      },
+      {
+        "test": "cache_contention",
+        "threads": 2,
+        "operations_per_thread": 50000,
+        "total_operations": 100000,
+        "wall_time_ms": 27.82,
+        "throughput_ops_per_sec": 3595021,
+        "plain_dict_throughput": 6669223,
+        "lock_overhead_ratio": 1.86,
+        "cache_hit_rate": 0.8
+      },
+      {
+        "test": "cache_contention",
+        "threads": 4,
+        "operations_per_thread": 50000,
+        "total_operations": 200000,
+        "wall_time_ms": 78.55,
+        "throughput_ops_per_sec": 2546019,
+        "plain_dict_throughput": 6861926,
+        "lock_overhead_ratio": 2.7,
+        "cache_hit_rate": 0.8
+      },
+      {
+        "test": "cache_contention",
+        "threads": 8,
+        "operations_per_thread": 50000,
+        "total_operations": 400000,
+        "wall_time_ms": 117.69,
+        "throughput_ops_per_sec": 3398858,
+        "plain_dict_throughput": 6719339,
+        "lock_overhead_ratio": 1.98,
+        "cache_hit_rate": 0.8
+      }
+    ],
+    "pipeline": [
+      {
+        "test": "pipeline",
+        "iterations": 2000,
+        "stages": "template_render + action_normalise + rail_eval + response_render",
+        "optimised_mean_ms": 0.0268,
+        "optimised_p50_ms": 0.0262,
+        "optimised_p99_ms": 0.0383,
+        "optimised_stdev_ms": 0.0042,
+        "unoptimised_mean_ms": 1.666,
+        "unoptimised_p50_ms": 1.6232,
+        "unoptimised_p99_ms": 2.0596,
+        "unoptimised_stdev_ms": 0.7187,
+        "speedup": 62.09,
+        "savings_per_request_ms": 1.6392
+      }
+    ],
+    "memory": [
+      {
+        "test": "memory_efficiency",
+        "iterations": 5000,
+        "unique_templates": 128,
+        "cache_maxsize": 64,
+        "rss_before_mb": 121.67,
+        "rss_after_mb": 127.38,
+        "rss_delta_mb": 5.7,
+        "alloc_delta_bytes": 2889999,
+        "freed_bytes": 0,
+        "alloc_per_request_bytes": 578.0,
+        "cache_hits": 0,
+        "cache_misses": 5000,
+        "cache_hit_rate": 0.0,
+        "cache_evictions": 0
+      }
+    ]
+  }
+}
