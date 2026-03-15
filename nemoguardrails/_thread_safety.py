@@ -38,7 +38,7 @@ Public API
 
 ``atomic_init``
     A decorator that guarantees a callable is executed exactly once, even
-    when multiple threads race to trigger lazy initialization.
+    when multiple threads race to trigger lazy initialisation.
 """
 
 # PEP 563 deferred evaluation of annotations — avoids circular import
@@ -652,7 +652,7 @@ def atomic_init(fn: Callable[..., _T]) -> _AtomicInitWrapper:
     simply uncontended — so callers need not check ``is_free_threaded()``
     before using it.
 
-    This is useful for lazy, one-time initialization of expensive
+    This is useful for lazy, one-time initialisation of expensive
     resources (models, indices, etc.) that may be triggered from
     multiple threads simultaneously.
 

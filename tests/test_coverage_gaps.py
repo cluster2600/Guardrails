@@ -133,14 +133,14 @@ class TestAtomicInitFastPathReRaise:
     """Cover the fast-path branch at lines 482-484 of _thread_safety.py."""
 
     # Mocking strategy: no mocks needed; we rely on the real decorator's
-    # internal state.  The first call sets _initialized=True and caches the
+    # internal state.  The first call sets _initialised=True and caches the
     # exception; the second call hits the lock-free fast path and re-raises
     # the cached exception without invoking the wrapped function again.
     # Regression caught: if the fast-path check is removed, call_count would
     # increment to 2 on the second invocation, and the test would fail.
     def test_cached_exception_re_raised_on_fast_path(self):
         """After first call fails, the second call should hit the fast path
-        (self._initialized is True, self._exc is not None) and re-raise
+        (self._done is set, self._exc is not None) and re-raise
         without acquiring the lock again."""
         call_count = 0
 
