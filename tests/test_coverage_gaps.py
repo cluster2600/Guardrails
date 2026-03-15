@@ -23,18 +23,15 @@ Targets uncovered lines in:
   - colang/v1_0/runtime/runtime.py: DAG scheduler caching
 """
 
-import asyncio
 import concurrent.futures
-import sys
 import threading
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
 from nemoguardrails._thread_safety import (
     ThreadSafeCache,
     ThreadSafeDict,
-    _AtomicInitWrapper,
     atomic_init,
 )
 
@@ -265,8 +262,6 @@ class TestCpuBoundWarningPaths:
 
     @pytest.mark.asyncio
     async def test_function_cpu_bound_no_pool_logs_warning(self):
-        import logging
-
         from nemoguardrails.actions.action_dispatcher import ActionDispatcher
 
         d = ActionDispatcher(load_all_actions=False)
@@ -362,8 +357,6 @@ class TestRuntimeDagSchedulerInit:
 
     def test_scheduler_none_when_no_dependencies(self):
         """When rails have no dependencies, scheduler should be None."""
-        from unittest.mock import PropertyMock
-
         config = MagicMock()
         config.flows = []
         config.rails.input.has_dependencies = False
