@@ -141,7 +141,7 @@ def _ensure_eager_task_factory() -> None:
         return
     loop = asyncio.get_running_loop()
     if hasattr(loop, "get_task_factory") and loop.get_task_factory() is None:
-        loop.set_task_factory(asyncio.eager_task_factory)
+        loop.set_task_factory(asyncio.eager_task_factory)  # type: ignore[attr-defined]
 
 
 class _LRUDict(OrderedDict):
