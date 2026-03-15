@@ -110,7 +110,6 @@ async def jailbreak_detection_heuristics(
         # not block the async event loop.
         if getattr(check_jailbreak_length_per_perplexity, "_cpu_bound", False):
             loop = asyncio.get_running_loop()
-            # functools.partial freezes positional args for the executor.
             lp_check = await loop.run_in_executor(
                 None, functools.partial(check_jailbreak_length_per_perplexity, prompt, lp_threshold)
             )

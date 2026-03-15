@@ -32,6 +32,7 @@ from nemoguardrails.llm.cache.utils import (
 )
 from nemoguardrails.llm.taskmanager import LLMTaskManager
 from nemoguardrails.logging.explain import LLMCallInfo
+from nemoguardrails.rails.llm.dag_scheduler import get_cpu_executor
 
 # get_cpu_executor provides a shared thread-pool used to offload CPU-bound
 # work (e.g. language detection) so the async event loop is never blocked.
@@ -353,6 +354,7 @@ async def detect_language(
     # prevents it from blocking the async event loop, which would stall all
     # concurrent guardrail evaluations.  The shared CPU executor is obtained
     # via get_cpu_executor() so the thread-pool size is centrally managed.
+    # On free-threaded 3.14t this runs in true parallel.
     loop = asyncio.get_running_loop()
     lang = await loop.run_in_executor(get_cpu_executor(), _detect_language, user_message) or "en"
 

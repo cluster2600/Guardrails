@@ -22,6 +22,7 @@ import os
 import re
 import time
 import uuid
+from collections import OrderedDict
 from contextlib import asynccontextmanager
 from typing import Any, AsyncIterator, Callable, List, Optional, Union
 
@@ -268,7 +269,7 @@ async def list_models(request: Request):
 
 # One instance of LLMRails per config id
 llm_rails_instances: dict[str, LLMRails] = {}
-llm_rails_events_history_cache: dict[str, dict] = {}
+llm_rails_events_history_cache: dict[str, OrderedDict] = {}
 
 
 def _generate_cache_key(config_ids: List[str], model_name: Optional[str] = None) -> str:
@@ -407,7 +408,7 @@ async def _format_streaming_response(
             processed_chunk = process_chunk(chunk)
             if isinstance(processed_chunk, ChunkError):
                 # Yield the error and stop streaming
-                yield f"data: {json.dumps(processed_chunk.model_dump())}\n\n"
+                yield f"data: {processed_chunk.model_dump_json()}\n\n"
                 return
             else:
                 yield format_streaming_chunk_as_sse(processed_chunk, model, chunk_id)
@@ -462,7 +463,7 @@ async def chat_completion(body: GuardrailsChatCompletionRequest, request: Reques
     """
     log.info("Got request for config %s", body.guardrails.config_id)
     for logger in registered_loggers:
-        asyncio.get_event_loop().create_task(logger({"endpoint": "/v1/chat/completions", "body": body.json()}))
+        asyncio.get_running_loop().create_task(logger({"endpoint": "/v1/chat/completions", "body": body.json()}))
 
     # Save the request headers in a context variable.
     api_request_headers.set(request.headers)

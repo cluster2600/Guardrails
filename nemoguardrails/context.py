@@ -18,11 +18,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from nemoguardrails.logging.explain import LLMCallInfo
 from nemoguardrails.rails.llm.options import GenerationOptions
-from nemoguardrails.streaming import StreamingHandler
 
-streaming_handler_var: contextvars.ContextVar[Optional[StreamingHandler]] = contextvars.ContextVar(
-    "streaming_handler", default=None
-)
 if TYPE_CHECKING:
     from nemoguardrails.logging.explain import ExplainInfo
     from nemoguardrails.logging.stats import LLMStats

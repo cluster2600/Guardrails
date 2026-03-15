@@ -16,7 +16,8 @@
 """Prompts for the various steps in the interaction."""
 
 import os
-from typing import List, Optional, Union
+from collections import defaultdict
+from typing import Dict, List, Optional, Union
 
 import yaml
 
@@ -52,7 +53,24 @@ def _load_prompts() -> List[TaskPrompt]:
 _prompts = _load_prompts()
 
 
-def _get_prompt(task_name: str, model: str, prompting_mode: str, prompts: List) -> TaskPrompt:
+def _build_prompt_index(prompts: List[TaskPrompt]) -> Dict[str, List[TaskPrompt]]:
+    """Build an index mapping task_name -> list of TaskPrompt for fast lookup."""
+    index: Dict[str, List[TaskPrompt]] = defaultdict(list)
+    for prompt in prompts:
+        index[prompt.task].append(prompt)
+    return dict(index)
+
+
+_prompt_index = _build_prompt_index(_prompts)
+
+
+def _get_prompt(
+    task_name: str,
+    model: str,
+    prompting_mode: str,
+    prompts: List,
+    index: Optional[Dict[str, List[TaskPrompt]]] = None,
+) -> TaskPrompt:
     """Return the prompt for the given task.
 
     We intentionally update the matching model at equal score, to take the last one,
@@ -62,7 +80,18 @@ def _get_prompt(task_name: str, model: str, prompting_mode: str, prompts: List) 
     matching_score = 0
 
     model = model.lower()
-    for prompt in prompts:
+
+    # Use the index to narrow iteration to prompts for this task only.
+    if index is not None:
+        candidates = index.get(task_name, [])
+    else:
+        candidates = [p for p in prompts if p.task == task_name]
+
+    # Fall through to full list if no candidates found (backward compat).
+    if not candidates:
+        candidates = prompts
+
+    for prompt in candidates:
         if prompt.task != task_name:
             continue
 
@@ -159,8 +188,17 @@ def get_prompt(config: RailsConfig, task: Union[str, Task]) -> TaskPrompt:
         # if exists in config, overwrite, else, default to "standard"
         task_prompting_mode = config.prompting_mode
 
-    prompts = _prompts + (config.prompts or [])
-    prompt = _get_prompt(task_name, task_model, task_prompting_mode, prompts)
+    config_prompts = config.prompts or []
+    if not config_prompts:
+        # Use the pre-built module-level index for best performance.
+        prompts = _prompts
+        index = _prompt_index
+    else:
+        # Config adds extra prompts; build a temporary combined index.
+        prompts = _prompts + config_prompts
+        index = _build_prompt_index(prompts)
+
+    prompt = _get_prompt(task_name, task_model, task_prompting_mode, prompts, index)
 
     if prompt:
         return prompt

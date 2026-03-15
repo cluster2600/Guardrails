@@ -39,6 +39,7 @@ from nemoguardrails.rails.llm.config import (
 from nemoguardrails.rails.llm.dag_scheduler import (
     get_cpu_executor,  # Returns a thread-pool executor sized for CPU-bound work
 )
+from nemoguardrails.rails.llm.dag_scheduler import get_cpu_executor
 
 log = logging.getLogger(__name__)
 

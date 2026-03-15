@@ -144,6 +144,12 @@ def _ensure_eager_task_factory() -> None:
         loop.set_task_factory(asyncio.eager_task_factory)  # type: ignore[attr-defined]
 
 
+# M3: Pre-compile regex used in the Colang 2.x event processing hot path.
+_START_ACTION_RE = re.compile(r"Start(.*Action)")
+
+process_events_semaphore = asyncio.Semaphore(1)
+
+
 class _LRUDict(OrderedDict):
     """An ``OrderedDict`` subclass with bounded size and true LRU eviction.
 
@@ -217,6 +223,8 @@ class _LRUDict(OrderedDict):
     def __iter__(self):
         with self._lock:
             return iter(list(OrderedDict.keys(self)))
+
+_HISTORY_CACHE_MAX_SIZE = 1024
 
 
 class LLMRails:
@@ -372,12 +380,19 @@ class LLMRails:
 
         # InteractionLogAdapters used for tracing
         # We ensure that it is used after config.py is loaded
-        if config.tracing:
+        # Cache tracing config flags as instance attrs to avoid repeated attribute
+        # lookups on every generate_async() call (M2: zero-overhead path).
+        self._tracing_enabled: bool = bool(config.tracing and config.tracing.enabled)
+        if self._tracing_enabled:
             from nemoguardrails.tracing import create_log_adapters
 
             self._log_adapters = create_log_adapters(config.tracing)
+            self._tracing_span_format: str = getattr(config.tracing, "span_format", "opentelemetry")
+            self._tracing_content_capture: bool = getattr(config.tracing, "enable_content_capture", False)
         else:
             self._log_adapters = None
+            self._tracing_span_format = "opentelemetry"
+            self._tracing_content_capture = False
 
         # We run some additional checks on the config
         self._validate_config()
@@ -404,7 +419,7 @@ class LLMRails:
         # There are still some edge cases not covered by nest_asyncio.
         # Using a separate thread always for now.
         loop = get_or_create_event_loop()
-        if True or check_sync_call_from_async_loop():
+        if check_sync_call_from_async_loop():
             t = threading.Thread(target=asyncio.run, args=(self._init_kb(),))
             t.start()
             t.join()
@@ -704,6 +719,8 @@ class LLMRails:
                 cache_key = get_history_cache_key(messages[0:p])
                 if cache_key in self.events_history_cache:
                     events = self.events_history_cache[cache_key].copy()
+                    # LRU: move accessed key to the end
+                    self.events_history_cache.move_to_end(cache_key)
                     break
 
                 p -= 1
@@ -1028,7 +1045,7 @@ class LLMRails:
 
         else:
             for event in new_events:
-                start_action_match = re.match(r"Start(.*Action)", event["type"])
+                start_action_match = _START_ACTION_RE.match(event["type"])
 
                 if start_action_match:
                     action_name = start_action_match[1]
@@ -1077,6 +1094,9 @@ class LLMRails:
                 # Save the new events in the history and update the cache
                 cache_key = get_history_cache_key((messages) + [new_message])  # type: ignore
                 self.events_history_cache[cache_key] = events
+                # LRU eviction
+                if len(self.events_history_cache) > _HISTORY_CACHE_MAX_SIZE:
+                    self.events_history_cache.popitem(last=False)
             else:
                 output_state = {"events": events}
 
@@ -1097,7 +1117,7 @@ class LLMRails:
 
         # IF tracing is enabled we need to set GenerationLog attrs
         original_log_options = None
-        if self.config.tracing.enabled:
+        if self._tracing_enabled:
             if gen_options is None:
                 gen_options = GenerationOptions()
             else:
@@ -1209,20 +1229,17 @@ class LLMRails:
             if state is not None:
                 res.state = output_state
 
-            if self.config.tracing.enabled:
-                # TODO: move it to the top once resolved circular dependency of eval
+            if self._tracing_enabled:
                 # lazy import to avoid circular dependency
                 from nemoguardrails.tracing import Tracer
 
-                span_format = getattr(self.config.tracing, "span_format", "opentelemetry")
-                enable_content_capture = getattr(self.config.tracing, "enable_content_capture", False)
-                # Create a Tracer instance with instantiated adapters and span configuration
+                # Use pre-cached tracing config (M2: zero-overhead path)
                 tracer = Tracer(
                     input=messages,
                     response=res,
                     adapters=self._log_adapters,
-                    span_format=span_format,
-                    enable_content_capture=enable_content_capture,
+                    span_format=self._tracing_span_format,
+                    enable_content_capture=self._tracing_content_capture,
                 )
                 await tracer.export_async()
 
