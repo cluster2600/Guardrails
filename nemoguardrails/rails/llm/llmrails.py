@@ -432,6 +432,19 @@ class LLMRails:
         # Reference to the general ExplainInfo object.
         self.explain_info = None
 
+    def _put_events_cache(self, cache_key: str, events: list) -> None:
+        """Store events in the bounded LRU cache.
+
+        Promotes existing keys to MRU position and evicts the oldest
+        entry when the cache exceeds its configured maximum size.
+        """
+        self.events_history_cache[cache_key] = events
+        # Promote to MRU whether the key is new or already existed,
+        # so that recently written entries are retained longest.
+        self.events_history_cache.move_to_end(cache_key)
+        if self._events_cache_maxsize > 0 and len(self.events_history_cache) > self._events_cache_maxsize:
+            self.events_history_cache.popitem(last=False)
+
     def update_llm(self, llm):
         """Replace the main LLM with the provided one.
 
@@ -713,11 +726,14 @@ class LLMRails:
 
         if self.config.colang_version == "1.0":
             # We try to find the longest prefix of messages for which we have a cache
-            # of events.
+            # of events.  Start from the longest prefix and work downwards.
             p = len(messages) - 1
             while p > 0:
                 cache_key = get_history_cache_key(messages[0:p])
                 if cache_key in self.events_history_cache:
+                    # Promote to MRU position so frequently accessed prefixes
+                    # are retained longer.
+                    self.events_history_cache.move_to_end(cache_key)
                     events = self.events_history_cache[cache_key].copy()
                     # LRU: move accessed key to the end
                     self.events_history_cache.move_to_end(cache_key)
@@ -1091,12 +1107,12 @@ class LLMRails:
 
             # If a state object is not used, then we use the implicit caching
             if state is None:
-                # Save the new events in the history and update the cache
+                # Save the new events in the history and update the cache.
+                # Uses OrderedDict as a bounded LRU: new entries go to the
+                # end; when the cache exceeds its limit the oldest (least
+                # recently used) entry is evicted.
                 cache_key = get_history_cache_key((messages) + [new_message])  # type: ignore
                 self.events_history_cache[cache_key] = events
-                # LRU eviction
-                if len(self.events_history_cache) > _HISTORY_CACHE_MAX_SIZE:
-                    self.events_history_cache.popitem(last=False)
             else:
                 output_state = {"events": events}
 

@@ -2132,17 +2132,42 @@ def _unique_list_concat(list1, list2):
     """
     Concatenates two lists ensuring all elements are unique.
     Handles unhashable types like dictionaries.
+
+    Uses a ``set`` for O(1) membership checks on hashable items and falls
+    back to linear search only for unhashable items (e.g. dicts).  This
+    reduces the overall complexity from O(n*m) to O(n+m) for the common
+    case where all items are hashable.
+
+    Note: hashable and unhashable items are tracked in separate structures
+    (``seen`` set vs ``unhashable`` list), so cross-type equality is not
+    checked.  This is acceptable because config flow lists are homogeneous
+    in practice — either all strings or all dicts, never mixed.
     """
     # Items from list1 take precedence (appear first) because _join_dict
     # calls this with the *additional* config's value as list1, giving the
     # later config higher priority.
     result = list(list1)
+    # Build a seen-set for O(1) membership checks on hashable items.
+    seen: set = set()
+    # Track unhashable items separately (must use linear scan).
+    unhashable: list = []
+    for item in result:
+        try:
+            seen.add(item)
+        except TypeError:
+            unhashable.append(item)
+
     for item in list2:
-        # ``in`` uses __eq__, so this works for unhashable types (dicts,
-        # lists) that cannot be placed in a set.  The trade-off is O(n*m)
-        # comparison cost, which is acceptable for configuration-sized lists.
-        if item not in result:
-            result.append(item)
+        try:
+            if item in seen:
+                continue
+            seen.add(item)
+        except TypeError:
+            # Unhashable type — fall back to linear search.
+            if item in unhashable:
+                continue
+            unhashable.append(item)
+        result.append(item)
     return result
 
 
