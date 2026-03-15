@@ -1205,7 +1205,11 @@ def bench_cache_contention(
                 "throughput_ops_per_sec": round(throughput),
                 "plain_dict_throughput": round(plain_throughput),
                 "lock_overhead_ratio": round(plain_throughput / throughput, 2) if throughput > 0 else 0,
-                "cache_hit_rate": round(cache.stats().get("hits", 0) / max(1, cache.stats().get("hits", 0) + cache.stats().get("misses", 0)), 3),
+                "cache_hit_rate": round(
+                    cache.stats().get("hits", 0)
+                    / max(1, cache.stats().get("hits", 0) + cache.stats().get("misses", 0)),
+                    3,
+                ),
             }
         )
 
@@ -1252,16 +1256,9 @@ def bench_pipeline(iterations: int = 2000) -> list[dict]:
     templates = {
         "system": "You are a helpful assistant.\n{{ general_instructions }}",
         "user_intent": (
-            "{% for msg in history | last_turns(3) %}"
-            "{{ msg.role }}: {{ msg.content }}\n"
-            "{% endfor %}\n"
-            "User intent: "
+            "{% for msg in history | last_turns(3) %}{{ msg.role }}: {{ msg.content }}\n{% endfor %}\nUser intent: "
         ),
-        "bot_response": (
-            "Intent: {{ bot_intent }}\n"
-            "Context: {{ context_summary }}\n"
-            "Response: "
-        ),
+        "bot_response": ("Intent: {{ bot_intent }}\nContext: {{ context_summary }}\nResponse: "),
     }
 
     template_cache: dict[str, Any] = {}
@@ -1464,7 +1461,7 @@ def bench_memory(iterations: int = 5000) -> list[dict]:
     total_alloc_delta = sum(s.size_diff for s in stats_diff if s.size_diff > 0)
     total_freed = sum(abs(s.size_diff) for s in stats_diff if s.size_diff < 0)
 
-    cache_stats = template_cache.stats
+    cache_stats = template_cache.stats()
 
     results.append(
         {

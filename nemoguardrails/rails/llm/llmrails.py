@@ -167,9 +167,7 @@ class LLMRails:
         # Bounded LRU cache (OrderedDict) prevents unbounded memory growth in
         # long-running processes.  Default limit is 1024 entries; override via
         # the NEMOGUARDRAILS_EVENTS_CACHE_SIZE environment variable.
-        self._events_cache_maxsize = int(
-            os.environ.get("NEMOGUARDRAILS_EVENTS_CACHE_SIZE", "1024")
-        )
+        self._events_cache_maxsize = int(os.environ.get("NEMOGUARDRAILS_EVENTS_CACHE_SIZE", "1024"))
         self.events_history_cache: OrderedDict = OrderedDict()
 
         # We also load the default flows from the `default_flows.yml` file in the current folder.
@@ -334,10 +332,7 @@ class LLMRails:
         # Promote to MRU whether the key is new or already existed,
         # so that recently written entries are retained longest.
         self.events_history_cache.move_to_end(cache_key)
-        if (
-            self._events_cache_maxsize > 0
-            and len(self.events_history_cache) > self._events_cache_maxsize
-        ):
+        if self._events_cache_maxsize > 0 and len(self.events_history_cache) > self._events_cache_maxsize:
             self.events_history_cache.popitem(last=False)
 
     def update_llm(self, llm):

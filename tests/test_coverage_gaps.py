@@ -280,8 +280,7 @@ class TestCpuBoundWarningPaths:
         assert result == "inline"
         # Verify the warning was logged
         mock_log.warning.assert_any_call(
-            "Action `%s` is @cpu_bound but no thread pool is configured; "
-            "running inline and blocking the event loop.",
+            "Action `%s` is @cpu_bound but no thread pool is configured; running inline and blocking the event loop.",
             "sync_cpu",
         )
 
@@ -322,6 +321,7 @@ class TestJailbreakCpuBoundImport:
     def test_fallback_decorator_is_identity(self):
         """Simulate the ImportError path: the fallback cpu_bound decorator
         should be a no-op identity function."""
+
         # This replicates the exact fallback from checks.py lines 21-26
         def cpu_bound_fallback(fn):
             return fn
