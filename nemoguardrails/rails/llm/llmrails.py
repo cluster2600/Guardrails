@@ -273,7 +273,10 @@ class LLMRails:
         # Use a bounded LRU cache to prevent unbounded memory growth in
         # long-running instances.  The maxsize can be tuned via the
         # NEMOGUARDRAILS_EVENTS_CACHE_SIZE environment variable.
-        self._events_cache_maxsize = int(os.environ.get("NEMOGUARDRAILS_EVENTS_CACHE_SIZE", "1024"))
+        try:
+            self._events_cache_maxsize = int(os.environ.get("NEMOGUARDRAILS_EVENTS_CACHE_SIZE", "1024"))
+        except (ValueError, TypeError):
+            self._events_cache_maxsize = 1024
         self.events_history_cache = _LRUDict(maxsize=self._events_cache_maxsize)
 
         # We also load the default flows from the `default_flows.yml` file in the current folder.
