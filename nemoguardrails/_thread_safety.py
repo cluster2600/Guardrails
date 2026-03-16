@@ -136,6 +136,16 @@ class ThreadSafeDict(dict):
     On GIL-enabled Python the lock is still acquired but effectively
     uncontended, so the overhead is negligible.
 
+    **C-level bypass limitation:**
+    CPython's C-level ``dict_merge`` (used by ``dict.update()``,
+    ``dict.__or__()``, and ``**kwargs`` unpacking) reads the source dict's
+    internal hash table directly, bypassing Python-level method overrides.
+    This means an *external* plain ``dict`` calling
+    ``plain.update(thread_safe_dict)`` will read ``thread_safe_dict``
+    without acquiring its lock.  To avoid this, the merge operators below
+    snapshot ``self`` under the lock before passing data to C-level
+    operations.
+
     The class inherits from ``dict`` so it is a drop-in replacement
     everywhere a plain ``dict`` is expected (``isinstance`` checks,
     ``json.dumps``, etc.).
@@ -175,6 +185,10 @@ class ThreadSafeDict(dict):
     def update(self, __m: Any = (), **kwargs: Any) -> None:  # type: ignore[override]
         # Holding the lock for the entire update ensures that a batch of
         # insertions appears atomically to other threads.
+        # If the source is a ThreadSafeDict, snapshot it first so the
+        # C-level dict_merge reads a plain dict under its lock.
+        if isinstance(__m, ThreadSafeDict):
+            __m = dict(__m.items())
         with self._lock:
             super().update(__m, **kwargs)
 
@@ -272,19 +286,30 @@ class ThreadSafeDict(dict):
 
     def __or__(self, other: Any) -> "ThreadSafeDict":
         with self._lock:
-            merged = ThreadSafeDict(super().__or__(other))
+            # Snapshot self so the C-level dict_merge reads a plain dict,
+            # avoiding the C-level bypass of our Python-level lock.
+            snapshot = dict(super().items())
+        merged = ThreadSafeDict(snapshot)
+        merged.update(other)
         return merged
 
     def __ior__(self, other: Any) -> "ThreadSafeDict":
         with self._lock:
-            super().__ior__(other)
+            # If other is a ThreadSafeDict, snapshot it to avoid C-level
+            # bypass of the source's lock.
+            if isinstance(other, ThreadSafeDict):
+                other = dict(other.items())
+            super().update(other)
         return self
 
     def __ror__(self, other: Any) -> "ThreadSafeDict":
         with self._lock:
-            # other | self — create a new dict from other, then merge self into it.
-            merged = ThreadSafeDict(other)
-            merged.update(self)
+            # other | self — snapshot self under the lock so the C-level
+            # dict_merge in update() reads a plain dict, not our locked
+            # subclass.
+            snapshot = dict(super().items())
+        merged = ThreadSafeDict(other)
+        merged.update(snapshot)
         return merged
 
 
