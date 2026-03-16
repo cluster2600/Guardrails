@@ -516,7 +516,7 @@ class _AtomicInitWrapper:
     permanently failed (no retry), which prevents repeated expensive failures.
     """
 
-    def __init__(self, fn: Callable[..., _T]) -> None:
+    def __init__(self, fn: Callable[[], _T]) -> None:
         self._fn = fn
         # A plain Lock (not RLock) suffices here because the wrapped
         # function is not expected to call back into __call__.  Using a
@@ -554,7 +554,13 @@ class _AtomicInitWrapper:
         # function's identity rather than "_AtomicInitWrapper.__call__".
         functools.update_wrapper(self, fn)
 
-    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+    def __call__(self) -> Any:
+        """Execute the wrapped function exactly once and return its result.
+
+        This is a once-only initialiser, not a general-purpose memoiser.
+        The wrapped function must accept zero arguments.  Subsequent calls
+        return the cached result from the first invocation.
+        """
         # --- Fast path (lock-free) -----------------------------------------
         # This is the common-case hot path after initialisation is complete.
         # ``Event.is_set()`` provides an acquire-fence on ARM64, so when it
@@ -590,7 +596,7 @@ class _AtomicInitWrapper:
                 return self._result
 
             try:
-                self._result = self._fn(*args, **kwargs)
+                self._result = self._fn()
             except BaseException as exc:
                 # Store the exception so future callers receive the same
                 # error without re-running the (possibly expensive) function.
@@ -633,7 +639,7 @@ class _AtomicInitWrapper:
             self._exc = None
 
 
-def atomic_init(fn: Callable[..., _T]) -> _AtomicInitWrapper:
+def atomic_init(fn: Callable[[], _T]) -> _AtomicInitWrapper:
     """Decorator ensuring *fn* is executed exactly once (thread-safe).
 
     On the first invocation the wrapped function runs under a

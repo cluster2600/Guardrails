@@ -415,9 +415,14 @@ def _get_rails(config_ids: List[str], model_name: Optional[str] = None) -> LLMRa
     # Store in the module-level cache for subsequent requests
     llm_rails_instances[configs_cache_key] = llm_rails
 
-    # Restore any previously saved events history (preserved across auto-reloads)
-    # so that ongoing conversations are not lost when a config file changes on disc.
-    llm_rails.events_history_cache = llm_rails_events_history_cache.get(configs_cache_key, {})
+    # If we have a previously saved events cache, restore it into the
+    # existing _LRUDict rather than replacing it with a plain dict.
+    # This preserves ongoing conversations across auto-reloads when a
+    # config file changes on disc.
+    saved_cache = llm_rails_events_history_cache.get(configs_cache_key)
+    if saved_cache is not None:
+        for k, v in saved_cache.items():
+            llm_rails.events_history_cache[k] = v
 
     return llm_rails
 

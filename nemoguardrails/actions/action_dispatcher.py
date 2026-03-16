@@ -17,12 +17,15 @@
 
 This module is responsible for:
   1. Discovering and registering action functions/classes from the filesystem.
-  2. Normalising action names (CamelCase -> snake_case, stripping "Action" suffix).
+  2. Normalising action names (CamelCase -> snake_case, stripping the
+     ``"Action"`` suffix) with a thread-safe bounded cache to avoid
+     repeated work.
   3. Dispatching execution to the correct handler, supporting:
-       - Plain synchronous functions
-       - Async coroutine functions
-       - Class-based actions (with a ``run`` method)
-       - LangChain ``Runnable`` instances
+       - Plain synchronous functions (called inline, with a warning)
+       - Async coroutine functions (awaited transparently)
+       - Class-based actions (lazily instantiated, then their ``run``
+         method is called)
+       - LangChain ``Runnable`` instances (invoked via ``ainvoke``)
   4. Optionally offloading ``@cpu_bound``-decorated synchronous actions to a
      :class:`~nemoguardrails.rails.llm.thread_pool.RailThreadPool` so they
      do not block the asyncio event loop.
@@ -130,16 +133,18 @@ class ActionDispatcher:
         # action constructor itself runs.
         self._init_locks_guard = threading.Lock()
 
-        # ------------------------------------------------------------------
-        # Action discovery / loading
-        # ------------------------------------------------------------------
-        # Actions are discovered in a well-defined priority order so that
-        # later registrations override earlier ones of the same name:
-        #   1. Built-in package ``actions/`` directory
-        #   2. Per-feature ``library/*/actions`` directories
-        #   3. Current working directory (user project root)
-        #   4. Explicit ``config_path`` (may be comma-separated)
-        #   5. Explicit ``import_paths``
+        # Cache for normalised action names — avoids repeated string
+        # transformations (endswith, replace, camelcase_to_snakecase)
+        # on every execute_action() call.  Bounded to prevent memory
+        # growth if action names are derived from external input.
+        #
+        # Protected by a lock for free-threaded Python 3.14t (no-GIL)
+        # where concurrent cache access could corrupt the dict.
+        self._normalised_names: Dict[str, str] = {}
+        self._normalised_names_maxsize = 4096
+        self._normalised_names_lock = threading.Lock()
+
+
         if load_all_actions:
             # TODO: check for better way to find actions dir path or use constants.py
             current_file_path = Path(__file__).resolve()
@@ -229,15 +234,26 @@ class ActionDispatcher:
         # Two conventions are supported: a directory named ``actions/``
         # containing one-or-more .py files, *and* a single ``actions.py``
         # module at the path root.  Both may coexist.
+        changed = False
+
+
         actions_path = path / "actions"
         if os.path.exists(actions_path):
             # ``_find_actions`` recursively walks the directory, loading
             # every .py file that passes the ``is_action_file`` heuristic.
             self._registered_actions.update(self._find_actions(actions_path))
+            changed = True
 
         actions_py_path = os.path.join(path, "actions.py")
         if os.path.exists(actions_py_path):
             self._registered_actions.update(self._load_actions_from_module(actions_py_path))
+            changed = True
+
+        # Invalidate the normalisation cache — newly loaded actions may
+        # change which canonical name a lookup resolves to.
+        if changed:
+            with self._normalised_names_lock:
+                self._normalised_names.clear()
 
     def register_action(self, action: Callable, name: Optional[str] = None, override: bool = True):
         """Registers an action with the given name.
@@ -264,6 +280,10 @@ class ActionDispatcher:
         # Class-based actions remain as classes here and are only
         # instantiated lazily on first dispatch.
         self._registered_actions[action_name] = action
+        # Invalidate the normalisation cache — a new registration may
+        # change which name a lookup resolves to.
+        with self._normalised_names_lock:
+            self._normalised_names.clear()
 
     def register_actions(self, actions_obj: Any, override: bool = True):
         """Registers all the actions from the given object.
@@ -283,28 +303,45 @@ class ActionDispatcher:
                 self.register_action(val, override=override)
 
     def _normalize_action_name(self, name: str) -> str:
-        """Normalise an action name to its canonical snake_case form.
+        """Normalise the action name to its canonical snake_case form.
 
-        The normalisation proceeds as follows:
-          1. If the name already exists verbatim in the registry, return it
-             immediately (fast path, avoids unnecessary string work).
-          2. Strip a trailing ``"Action"`` suffix if present
-             (e.g. ``"GenerateUserIntentAction"`` -> ``"GenerateUserIntent"``).
-          3. Convert from CamelCase to snake_case using
-             :func:`nemoguardrails.utils.camelcase_to_snakecase`.
+        The normalisation strips a trailing ``"Action"`` suffix and
+        converts CamelCase to snake_case.  Results are cached in
+        ``_normalised_names`` so that repeated lookups for the same
+        action name (which happen on every ``execute_action()`` call)
+        skip the string transformations entirely.
 
-        Note: on this branch there is no normalisation cache.  If profiling
-        shows ``_normalize_action_name`` as a hot-spot, a bounded LRU cache
-        keyed on *name* would be a straightforward optimisation.
+        The cache is bounded to ``_normalised_names_maxsize`` entries
+        (default 4096) to guard against unbounded memory growth if
+        action names are derived from external input.  When the limit
+        is reached the oldest entry is evicted (FIFO) — this is
+        acceptable because the action name space is finite in normal
+        usage and stale entries rebuild cheaply.
+
+        The cache is also invalidated on every ``register_action()``
+        and ``load_actions_from_path()`` call, since new registrations
+        may change which canonical name a lookup resolves to.
         """
-        if name not in self.registered_actions:
-            # Strip the conventional ``Action`` suffix before converting
-            # case — e.g. ``"RetrieveRelevantChunksAction"`` becomes
-            # ``"RetrieveRelevantChunks"`` then ``"retrieve_relevant_chunks"``.
-            if name.endswith("Action"):
-                name = name.replace("Action", "")
-            name = utils.camelcase_to_snakecase(name)
-        return name
+        with self._normalised_names_lock:
+            cached = self._normalised_names.get(name)
+            if cached is not None:
+                return cached
+
+            normalised = name
+            if normalised not in self.registered_actions:
+                # Try stripping "Action" suffix and converting to snake_case.
+                if normalised.endswith("Action"):
+                    normalised = normalised.replace("Action", "")
+                normalised = utils.camelcase_to_snakecase(normalised)
+
+            # Evict the oldest entry if the bound is reached.
+            if len(self._normalised_names) >= self._normalised_names_maxsize:
+                # Remove the first (oldest) entry — dict preserves
+                # insertion order since Python 3.7.
+                oldest_key = next(iter(self._normalised_names))
+                del self._normalised_names[oldest_key]
+            self._normalised_names[name] = normalised
+            return normalised
 
     def has_registered(self, name: str) -> bool:
         """Check if an action is registered."""
