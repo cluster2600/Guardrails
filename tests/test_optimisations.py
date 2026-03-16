@@ -175,8 +175,10 @@ class TestEventsHistoryCacheBounded:
         rails.events_history_cache["k4"] = [{"type": "event4"}]
 
         assert "k2" not in rails.events_history_cache
+        # Note: reading k1 via __getitem__ promotes it to MRU again,
+        # so the final order is k3, k4, k1.
         assert rails.events_history_cache["k1"] == [{"type": "event1_updated"}]
-        assert list(rails.events_history_cache.keys()) == ["k3", "k1", "k4"]
+        assert list(rails.events_history_cache.keys()) == ["k3", "k4", "k1"]
 
     def test_env_var_controls_size(self):
         rails = self._make_rails("100")
@@ -184,6 +186,8 @@ class TestEventsHistoryCacheBounded:
 
     def test_zero_means_unlimited(self):
         """maxsize=0 disables eviction."""
+        from nemoguardrails.rails.llm.llmrails import _LRUDict
+
         cache = _LRUDict(maxsize=0)
 
         for i in range(200):
