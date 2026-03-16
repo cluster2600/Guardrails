@@ -31,6 +31,7 @@ from pydantic import (
     Field,
     PrivateAttr,
     SecretStr,
+    computed_field,
     model_validator,
     root_validator,
     validator,
@@ -622,6 +623,17 @@ class _RailSectionMixin(BaseModel):
         description="Rail flow entries with optional dependency metadata.",
     )
 
+    # @computed_field makes this @property visible to Pydantic's serialisation
+    # machinery (.model_dump(), .model_dump_json(), JSON Schema generation, etc.).
+    # A plain @property would be invisible to Pydantic v2 — the field would be
+    # silently omitted from serialised output.  Because much of the codebase
+    # (and downstream YAML/JSON consumers) still expects a top-level "flows"
+    # list of strings, we derive it dynamically from the richer flow_configs
+    # list whilst keeping it present in every serialised representation.
+    #
+    # The ``# type: ignore[prop-decorator]`` suppresses a mypy false-positive:
+    # mypy does not yet understand that @computed_field can decorate a @property.
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def flows(self) -> List[str]:  # type: ignore[override]
         """Return the list of flow name strings (backward compatible)."""
@@ -1310,6 +1322,27 @@ def merge_two_dicts(dict_1: dict, dict_2: dict, ignore_keys: Set[str]) -> None:
 def _join_config(dest_config: dict, additional_config: dict):
     """Helper to join two configuration."""
 
+    # --- Merge strategy overview ---
+    # Configuration may be spread across several YAML files and programmatic
+    # dicts (e.g. from ``from_path`` or ``from_content``).  This function
+    # folds *additional_config* into *dest_config* **in place** using three
+    # distinct strategies depending on the field type:
+    #
+    #   1. **Dict fields** (user_messages, bot_messages, sensitive_data_detection,
+    #      embedding_search_provider): shallow-merged with {**dest, **additional},
+    #      so later values override earlier ones for the same key.
+    #
+    #   2. **List fields** (instructions, flows, models, prompts, docs):
+    #      concatenated — duplicates are *not* removed here (deduplication is
+    #      handled later where necessary, e.g. for import_paths).
+    #
+    #   3. **Scalar / last-writer-wins fields** (additional_fields list below):
+    #      the value from *additional_config* simply replaces whatever was in
+    #      *dest_config*.  This is the correct behaviour for settings like
+    #      ``thread_pool`` where partial merging would be confusing.
+
+    # Shallow-merge dict-typed message catalogues — later files override
+    # individual message keys whilst preserving ones they do not redefine.
     dest_config["user_messages"] = {
         **dest_config.get("user_messages", {}),
         **additional_config.get("user_messages", {}),
@@ -1320,6 +1353,8 @@ def _join_config(dest_config: dict, additional_config: dict):
         **additional_config.get("bot_messages", {}),
     }
 
+    # List fields: plain concatenation — order matters for flow execution
+    # priority, so later configs append after earlier ones.
     dest_config["instructions"] = dest_config.get("instructions", []) + additional_config.get("instructions", [])
 
     dest_config["flows"] = dest_config.get("flows", []) + additional_config.get("flows", [])
@@ -1330,25 +1365,42 @@ def _join_config(dest_config: dict, additional_config: dict):
 
     dest_config["docs"] = dest_config.get("docs", []) + additional_config.get("docs", [])
 
+    # Scalar with fallback — use the first non-None URL encountered.
     dest_config["actions_server_url"] = dest_config.get("actions_server_url", None) or additional_config.get(
         "actions_server_url", None
     )
 
+    # Shallow-merge — individual detection sub-keys (input/output/retrieval)
+    # from the additional config override those in the destination.
     dest_config["sensitive_data_detection"] = {
         **dest_config.get("sensitive_data_detection", {}),
         **additional_config.get("sensitive_data_detection", {}),
     }
 
+    # First non-empty provider wins (falsy dict is treated as absent).
     dest_config["embedding_search_provider"] = dest_config.get(
         "embedding_search_provider", {}
     ) or additional_config.get("embedding_search_provider", {})
 
     # We join the arrays and keep only unique elements for import paths.
+    # Deduplication is essential here to avoid loading the same Colang
+    # library directory twice, which would produce duplicate flow definitions.
     dest_config["import_paths"] = dest_config.get("import_paths", [])
     for import_path in additional_config.get("import_paths", []):
         if import_path not in dest_config["import_paths"]:
             dest_config["import_paths"].append(import_path)
 
+    # --- Last-writer-wins fields ---
+    # These are scalar or structured settings where partial merging would be
+    # ambiguous or incorrect.  The *additional_config* value wholly replaces
+    # the *dest_config* value if present.
+    #
+    # ``thread_pool`` is included here so that a single authoritative
+    # ThreadPoolConfig dict (enabled, max_workers, thread_name_prefix) is
+    # propagated from whichever YAML file defines it — no attempt is made to
+    # merge individual sub-keys, because a half-overridden pool configuration
+    # (e.g. enabled=True from one file but max_workers from another) could
+    # lead to confusing behaviour.
     additional_fields = [
         "sample_conversation",
         "lowest_temperature",
@@ -1365,6 +1417,7 @@ def _join_config(dest_config: dict, additional_config: dict):
         "raw_llm_call_action",
         "enable_rails_exceptions",
         "tracing",
+        "thread_pool",  # whole-object replacement — see note above
     ]
 
     for field in additional_fields:
@@ -1372,6 +1425,10 @@ def _join_config(dest_config: dict, additional_config: dict):
             dest_config[field] = additional_config[field]
 
     # TODO: Rethink the best way to parse and load yaml config files
+    # Build the set of field names that have already been explicitly handled
+    # above.  Anything left over in additional_config is treated as opaque
+    # custom data and folded into dest_config["custom_data"], allowing users
+    # to pass arbitrary keys through their YAML without modifying this function.
     ignore_fields = set(additional_fields).union(
         {
             "user_messages",
@@ -1706,6 +1763,13 @@ class RailsConfig(BaseModel):
         description="Configuration for tracing.",
     )
 
+    # Top-level thread-pool configuration.  Declared here on RailsConfig so
+    # that it is propagated through _join_config's ``additional_fields``
+    # last-writer-wins list.  At runtime, the LLMRails initialiser reads
+    # this value to decide whether to instantiate a RailThreadPool and, if
+    # so, with how many workers.  Keeping it at the top level (rather than
+    # nested under ``rails``) ensures a single, unambiguous source of truth
+    # that applies to every rail section (input, output, retrieval, etc.).
     thread_pool: ThreadPoolConfig = Field(
         default_factory=ThreadPoolConfig,
         description="Configuration for the CPU-bound thread-pool executor.",
@@ -2043,6 +2107,10 @@ def _join_dict(dict1, dict2):
     - If values are lists, it concatenates them, ensuring unique elements.
     - For other types, values from dict2 overwrite dict1.
     """
+    # NOTE: This is a *deep* recursive merge, unlike _join_config which uses
+    # shallow strategies per field.  It is used by _join_rails_configs (the
+    # RailsConfig.__add__ path) where two fully-formed RailsConfig objects
+    # are combined and every nested dict/list must be reconciled.
     result = dict(dict1)  # Create a copy of dict1 to avoid modifying the original
 
     for key, value in dict2.items():
@@ -2075,6 +2143,9 @@ def _unique_list_concat(list1, list2):
     checked.  This is acceptable because config flow lists are homogeneous
     in practice — either all strings or all dicts, never mixed.
     """
+    # Items from list1 take precedence (appear first) because _join_dict
+    # calls this with the *additional* config's value as list1, giving the
+    # later config higher priority.
     result = list(list1)
     # Build a seen-set for O(1) membership checks on hashable items.
     seen: set = set()
@@ -2087,16 +2158,11 @@ def _unique_list_concat(list1, list2):
             unhashable.append(item)
 
     for item in list2:
-        try:
-            if item in seen:
-                continue
-            seen.add(item)
-        except TypeError:
-            # Unhashable type — fall back to linear search.
-            if item in unhashable:
-                continue
-            unhashable.append(item)
-        result.append(item)
+        # ``in`` uses __eq__, so this works for unhashable types (dicts,
+        # lists) that cannot be placed in a set.  The trade-off is O(n*m)
+        # comparison cost, which is acceptable for configuration-sized lists.
+        if item not in result:
+            result.append(item)
     return result
 
 

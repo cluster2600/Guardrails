@@ -79,16 +79,23 @@ log = logging.getLogger(__name__)
 # specific interpreter versions.
 # ---------------------------------------------------------------------------
 
-_PY_VERSION = sys.version_info[:2]
+_PY_VERSION = sys.version_info[:2]  # e.g. (3, 12) — used for feature-gating below
 
 # Python 3.12+ provides ``asyncio.eager_task_factory`` which lets coroutines
 # that complete synchronously (e.g. cache hits) bypass the event-loop
-# scheduling round-trip entirely.
+# scheduling round-trip entirely.  Without the eager factory, even a
+# coroutine that returns immediately still yields to the event loop once
+# before its caller sees the result — the eager factory eliminates that
+# unnecessary context switch, which is measurable when dozens of rails
+# resolve from cache in a single request.
 _HAS_EAGER_TASK_FACTORY: bool = _PY_VERSION >= (3, 12)
 
 # Free-threaded Python 3.13t / 3.14t builds disable the GIL, allowing true
 # thread-level parallelism for CPU-bound rails.  We detect this via the
 # ``Py_GIL_DISABLED`` sysconfig flag (PEP 703).
+# On free-threaded builds the GIL is absent, so ``sys._is_gil_enabled()``
+# returns False.  Standard CPython lacks the attribute entirely, hence
+# the ``getattr`` fallback that returns a callable yielding True.
 _IS_FREE_THREADED: bool = bool(getattr(sys, "_is_gil_enabled", lambda: True)() is False)
 
 # Shared thread-pool for CPU-bound rail work.  On free-threaded builds we
@@ -123,7 +130,12 @@ def _ensure_eager_task_factory(loop: asyncio.AbstractEventLoop) -> None:
     """
     if not _HAS_EAGER_TASK_FACTORY:
         return
+    # ``get_task_factory`` / ``set_task_factory`` were added in 3.12; the
+    # type: ignore markers suppress mypy complaints when type-checking
+    # against older stubs.
     current = loop.get_task_factory()  # type: ignore[attr-defined]
+    # Only install if not already set — this makes the call idempotent and
+    # safe for concurrent invocations sharing the same event loop.
     if current is not asyncio.eager_task_factory:  # type: ignore[attr-defined]
         loop.set_task_factory(asyncio.eager_task_factory)  # type: ignore[attr-defined]
 
@@ -144,7 +156,8 @@ class CyclicDependencyError(ValueError):
 
     def __init__(self, cycle_nodes: Set[str]):
         self.cycle_nodes = cycle_nodes
-        # Sort for deterministic error messages in logs and tests.
+        # Sort alphabetically for deterministic error messages — without
+        # this, set iteration order would make test assertions fragile.
         cycle_str = " -> ".join(sorted(cycle_nodes))
         super().__init__(
             f"Cyclic dependency detected among rails: {cycle_str}. "
@@ -188,18 +201,20 @@ class RailNode:
     """
 
     name: str
-    depends_on: FrozenSet[str] = field(default_factory=frozenset)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    depends_on: FrozenSet[str] = field(default_factory=frozenset)  # immutable — safe for hashing
+    metadata: Dict[str, Any] = field(default_factory=dict)  # arbitrary config carried from YAML
 
     # Hashing and equality are based solely on the rail name, so that
-    # nodes can be stored in sets and used as dictionary keys.
+    # nodes can be stored in sets and used as dictionary keys.  Two
+    # RailNode instances with the same name but different metadata are
+    # considered equal — the name is the canonical identity.
     def __hash__(self) -> int:
         return hash(self.name)
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, RailNode):
             return self.name == other.name
-        return NotImplemented
+        return NotImplemented  # delegate to the other operand's __eq__
 
 
 # ---------------------------------------------------------------------------
@@ -320,15 +335,18 @@ class RailDependencyGraph:
             UnknownRailError: If a dependency references an unregistered rail.
             CyclicDependencyError: If adding this rail creates a cycle.
         """
-        deps = frozenset(depends_on or [])
+        deps = frozenset(depends_on or [])  # normalise None / [] to an empty frozenset
 
         # Validate that every dependency has already been registered.
-        # This enforces a declaration-before-use discipline.
+        # This enforces a declaration-before-use discipline — rails must
+        # be added in dependency order (or use ``from_flow_config`` which
+        # performs a two-pass registration to avoid ordering constraints).
         for dep in deps:
             if dep not in self._nodes and dep != name:
                 raise UnknownRailError(name, dep)
 
-        # A rail depending on itself is the simplest possible cycle.
+        # A rail depending on itself is the simplest possible cycle —
+        # catch it cheaply before running full cycle detection.
         if name in deps:
             raise CyclicDependencyError({name})
 
@@ -370,15 +388,23 @@ class RailDependencyGraph:
             CyclicDependencyError: If the graph contains a cycle.  The
                 ``cycle_nodes`` attribute lists all nodes involved.
         """
+        # --- Kahn's algorithm for cycle detection ---
+        # The algorithm maintains a virtual "in-degree" for every node
+        # (the number of unprocessed prerequisites).  Nodes with in-degree
+        # zero are safe to "process" — doing so decrements the in-degree
+        # of their dependents.  If the algorithm stalls before visiting
+        # every node, the unvisited nodes are trapped in cycles.
+
         # Initialise in-degree counts for every node.
         in_degree: Dict[str, int] = {n: 0 for n in self._nodes}
         for node, deps in self._reverse.items():
-            if node in in_degree:
+            if node in in_degree:  # guard against stale keys from removed nodes
                 in_degree[node] = len(deps)
 
-        # Seed the queue with all nodes that have no prerequisites.
+        # Seed the BFS queue with all nodes whose in-degree is zero —
+        # these have no prerequisites and can be processed immediately.
         queue = deque(n for n, d in in_degree.items() if d == 0)
-        visited = 0
+        visited = 0  # counts how many nodes we successfully processed
 
         while queue:
             node = queue.popleft()
@@ -393,6 +419,8 @@ class RailDependencyGraph:
                         queue.append(neighbor)
 
         # If we could not visit all nodes, the remainder form cycles.
+        # Their in-degree is still > 0 because at least one predecessor
+        # is also stuck in the cycle and was never processed.
         if visited < len(self._nodes):
             cycle_nodes = {n for n, d in in_degree.items() if d > 0}
             raise CyclicDependencyError(cycle_nodes)
@@ -416,7 +444,15 @@ class RailDependencyGraph:
             are all satisfied by groups 0..N.
         """
         if not self._nodes:
-            return []
+            return []  # nothing to schedule
+
+        # --- Level-by-level Kahn's algorithm ---
+        # This is the same core logic as ``_detect_cycles``, but instead
+        # of merely counting visited nodes it collects each "wave" of
+        # zero-in-degree nodes into an ExecutionGroup.  Each group is one
+        # sequential step; rails within a group are independent and may
+        # run concurrently.  This yields the minimum number of sequential
+        # steps (the graph's critical-path length).
 
         # Build the initial in-degree map from the reverse adjacency list.
         in_degree: Dict[str, int] = {}
@@ -429,13 +465,14 @@ class RailDependencyGraph:
         level = 0
 
         while current_level:
-            # Freeze the current level into an ExecutionGroup.
+            # Freeze the current level into an immutable ExecutionGroup.
             group = ExecutionGroup(index=level, rails=frozenset(current_level))
             groups.append(group)
 
             # Determine the next level: for every node we are "removing"
             # in this level, decrement the in-degree of its dependents.
-            # Any dependent whose in-degree drops to zero is ready to run.
+            # Any dependent whose in-degree drops to zero is ready to run
+            # in the next group — all its prerequisites are now satisfied.
             next_level = []
             for node in current_level:
                 for neighbor in self._forward.get(node, set()):
@@ -443,7 +480,7 @@ class RailDependencyGraph:
                     if in_degree[neighbor] == 0:
                         next_level.append(neighbor)
 
-            current_level = next_level
+            current_level = next_level  # advance to the next topological level
             level += 1
 
         return groups
@@ -500,11 +537,14 @@ class RailDependencyGraph:
                 rail_configs.append({"name": flow})
             elif isinstance(flow, dict):
                 # Format 2: configuration dictionary.
+                # Support both "name" and legacy "flow_name" keys.
                 name = flow.get("name", flow.get("flow_name", ""))
                 rail_names.append(name)
                 rail_configs.append(flow)
             elif hasattr(flow, "name"):
-                # Format 3: Pydantic model (e.g. FlowWithDeps).
+                # Format 3: Pydantic model (e.g. FlowWithDeps).  We
+                # materialise depends_on into a plain list so the second
+                # pass can treat all configs uniformly as dicts.
                 name = flow.name
                 deps = list(getattr(flow, "depends_on", []))
                 rail_names.append(name)
@@ -512,11 +552,13 @@ class RailDependencyGraph:
             else:
                 log.warning("Unexpected flow config type: %s", type(flow))
 
-        # Register all rails *without* edges first.  This populates both
-        # adjacency maps with empty sets and creates placeholder RailNode
-        # objects so that the second pass can reference any rail by name.
+        # Register all rails *without* edges first (first pass).  This
+        # populates both adjacency maps with empty sets and creates
+        # placeholder RailNode objects so that the second pass can
+        # reference any rail by name — eliminating the ordering constraint
+        # that ``add_rail`` would otherwise impose.
         for name in rail_names:
-            if name not in graph._nodes:
+            if name not in graph._nodes:  # guard against duplicate names in config
                 graph._nodes[name] = RailNode(name=name)
                 graph._forward[name] = set()
                 graph._reverse[name] = set()
@@ -558,9 +600,11 @@ class RailDependencyGraph:
                 )
 
         # Run a final cycle check across the whole graph.  This catches
-        # cycles that span multiple rails added in the second pass (the
+        # cycles that span multiple rails added in the second pass.  The
         # incremental check in ``add_rail`` is not used here because we
-        # batch-insert edges for efficiency).
+        # batch-insert edges for efficiency — so we must validate the
+        # complete graph in one pass.  The ``edge_count > 0`` guard skips
+        # the check for trivially-independent configurations.
         if graph.edge_count > 0:
             graph._detect_cycles()
 
@@ -608,10 +652,12 @@ class TopologicalScheduler:
         graph: RailDependencyGraph,
         timeout_per_group: Optional[float] = None,
     ) -> None:
-        self._graph = graph
-        self._timeout = timeout_per_group
+        self._graph = graph  # retained for introspection (e.g. get_dependencies)
+        self._timeout = timeout_per_group  # per-group ceiling; None means unlimited
         # Pre-compute execution groups once at construction time so that
         # repeated calls to ``execute`` do not re-run the topological sort.
+        # The graph is treated as immutable after this point — adding rails
+        # to the graph after scheduler construction has no effect.
         self._groups = graph.compute_execution_groups()
 
     @property
@@ -668,15 +714,18 @@ class TopologicalScheduler:
                 - "execution_order": List of lists showing actual execution
                 - "elapsed_ms": Total execution time in milliseconds
         """
-        ctx = context or {}
-        results: Dict[str, Any] = {}
-        execution_order: List[List[str]] = []
-        blocked_by: Optional[str] = None
-        start = time.monotonic()
+        ctx = context or {}  # ensure a dict even if caller passes None
+        results: Dict[str, Any] = {}  # rail_name -> result accumulator
+        execution_order: List[List[str]] = []  # observability: records attempted rails per group
+        blocked_by: Optional[str] = None  # set if a rail triggers early exit
+        start = time.monotonic()  # monotonic clock avoids NTP-jump artefacts
 
         # Install the eager task factory once per event loop (idempotent).
-        # This avoids the race condition of per-call set/restore when
-        # multiple execute() calls run concurrently on the same loop.
+        # The eager factory (Python 3.12+) allows coroutines that resolve
+        # synchronously — e.g. cached look-ups — to complete without
+        # yielding to the event loop, eliminating a scheduling round-trip
+        # per task.  This is particularly beneficial when many rails in a
+        # group hit their cache and return immediately.
         _ensure_eager_task_factory(asyncio.get_running_loop())
 
         for group in self._groups:
@@ -714,6 +763,12 @@ class TopologicalScheduler:
                 # Create an asyncio.Task for each rail so they run
                 # concurrently on the event loop.
                 # -------------------------------------------------------
+                # Create one asyncio.Task per rail.  The ``name`` kwarg
+                # labels each task for debugging (visible in tracebacks
+                # and ``asyncio.all_tasks()``).  With the eager task
+                # factory installed, any of these coroutines that complete
+                # synchronously will resolve inline here, before the
+                # event loop regains control.
                 tasks = {
                     rail_name: asyncio.create_task(
                         self._execute_with_timeout(rail_executor, rail_name, ctx),
@@ -732,11 +787,16 @@ class TopologicalScheduler:
                             break
                     else:
                         # No early exit — simply wait for all tasks to
-                        # finish, collecting exceptions as values rather
-                        # than raising them (return_exceptions=True).
+                        # finish.  ``return_exceptions=True`` prevents a
+                        # single failing rail from cancelling its siblings;
+                        # exceptions are returned as values in the results
+                        # list and wrapped into error dicts below.
                         gathered = await asyncio.gather(*tasks.values(), return_exceptions=True)
                         for rail_name, result in zip(tasks.keys(), gathered):
                             if isinstance(result, Exception):
+                                # Normalise exceptions into the same dict
+                                # format the caller expects, so downstream
+                                # code can treat all results uniformly.
                                 results[rail_name] = {
                                     "action": "error",
                                     "error": str(result),
@@ -746,18 +806,24 @@ class TopologicalScheduler:
                 finally:
                     # Defensive cleanup: cancel any tasks that are still
                     # pending (e.g. due to an unexpected exception in the
-                    # loop above).  We await each cancelled task to ensure
-                    # it has fully terminated before moving on.
+                    # gather/early-exit logic above).  Awaiting each
+                    # cancelled task ensures its finally-blocks and
+                    # context-manager exits run before we proceed to the
+                    # next group — this prevents resource leaks (open
+                    # connections, held locks, etc.).
                     for task in tasks.values():
                         if not task.done():
                             task.cancel()
                             try:
-                                await task
+                                await task  # allow CancelledError to propagate inside the task
                             except (asyncio.CancelledError, Exception):
-                                pass
+                                pass  # suppressed — we only care about orderly teardown
 
-        elapsed_ms = (time.monotonic() - start) * 1000
+        elapsed_ms = (time.monotonic() - start) * 1000  # convert seconds to milliseconds
 
+        # Return a structured summary so callers can inspect individual
+        # rail outcomes, identify which rail (if any) caused a block,
+        # review the actual execution order, and measure latency.
         return {
             "results": results,
             "blocked_by": blocked_by,
@@ -778,10 +844,15 @@ class TopologicalScheduler:
         rail does not complete in time.
         """
         if self._timeout:
+            # ``wait_for`` wraps the coroutine in an internal task and
+            # cancels it if the deadline elapses, raising TimeoutError.
+            # The caller converts TimeoutError into an error-action dict.
             return await asyncio.wait_for(
                 rail_executor(rail_name, context),
                 timeout=self._timeout,
             )
+        # No timeout configured — run the coroutine directly without the
+        # overhead of ``wait_for``'s internal task wrapper.
         return await rail_executor(rail_name, context)
 
     async def _gather_with_early_exit(
@@ -816,12 +887,14 @@ class TopologicalScheduler:
         # with no reference to the rail names we originally associated
         # with them.
         task_to_rail = {task: name for name, task in tasks.items()}
-        pending = set(tasks.values())
+        pending = set(tasks.values())  # mutable set — shrinks as tasks complete
 
         while pending:
             # Wait until at least one task finishes.  ``FIRST_COMPLETED``
             # allows us to inspect results incrementally rather than
-            # waiting for the entire group.
+            # waiting for the entire group.  This is the key enabler for
+            # early cancellation: we can react to a blocking result as
+            # soon as it arrives instead of waiting for slower siblings.
             done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
 
             for task in done:
@@ -829,17 +902,25 @@ class TopologicalScheduler:
                 rail_name = task_to_rail[task]
 
                 try:
-                    result = task.result()
+                    result = task.result()  # may raise if the coroutine raised
                     results[rail_name] = result
 
                     # If this rail blocked, cancel every remaining task
-                    # in the group to avoid unnecessary work.
+                    # in the group to avoid unnecessary work.  Note: we
+                    # cancel but do not await here — the caller's finally
+                    # block handles awaiting cancelled tasks for orderly
+                    # teardown.
                     if self._is_block(result):
                         for p in pending:
                             p.cancel()
-                        return rail_name
+                        return rail_name  # signal to the caller which rail blocked
 
                 except Exception as e:
+                    # Rail raised an unhandled exception.  Log it and
+                    # record an error result so execution can continue
+                    # with the remaining rails in the group — a single
+                    # failing rail should not prevent other independent
+                    # rails from completing.
                     log.error("Rail '%s' failed: %s", rail_name, e)
                     results[rail_name] = {
                         "action": "error",
@@ -870,9 +951,12 @@ class TopologicalScheduler:
             halted; ``False`` otherwise.
         """
         if isinstance(result, dict):
-            action = result.get("action", "")
+            action = result.get("action", "")  # default to empty string if key absent
+            # These three sentinel values all indicate the rail wishes to
+            # halt further processing — the distinction is semantic only
+            # (e.g. "refused" may carry a user-facing message).
             return action in ("block", "stop", "refused")
-        return False
+        return False  # non-dict results (e.g. None) are treated as non-blocking
 
 
 # ---------------------------------------------------------------------------
@@ -902,6 +986,9 @@ def build_scheduler_from_config(
         CyclicDependencyError: If flows contain circular dependencies.
         UnknownRailError: If a dependency references an undefined flow.
     """
+    # Two-step construction: first build the DAG (which validates
+    # dependencies and detects cycles), then wrap it in a scheduler
+    # (which pre-computes execution groups via Kahn's algorithm).
     graph = RailDependencyGraph.from_flow_config(flows)
     return TopologicalScheduler(graph, timeout_per_group=timeout_per_group)
 
@@ -937,8 +1024,12 @@ def has_dependencies(flows: List[Any]) -> bool:
         True if any flow has a "depends_on" field with a non-empty value.
     """
     for flow in flows:
+        # Check dict-style config (the most common format in YAML).
         if isinstance(flow, dict) and flow.get("depends_on"):
             return True
+        # Check Pydantic-model-style config (attribute access).
         if getattr(flow, "depends_on", None):
             return True
+    # No flow declares dependencies — the runtime can use the legacy
+    # sequential executor and skip DAG construction entirely.
     return False

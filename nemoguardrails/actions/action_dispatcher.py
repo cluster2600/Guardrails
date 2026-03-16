@@ -17,12 +17,15 @@
 
 This module is responsible for:
   1. Discovering and registering action functions/classes from the filesystem.
-  2. Normalising action names (CamelCase -> snake_case, stripping "Action" suffix).
+  2. Normalising action names (CamelCase -> snake_case, stripping the
+     ``"Action"`` suffix) with a thread-safe bounded cache to avoid
+     repeated work.
   3. Dispatching execution to the correct handler, supporting:
-       - Plain synchronous functions
-       - Async coroutine functions
-       - Class-based actions (with a ``run`` method)
-       - LangChain ``Runnable`` instances
+       - Plain synchronous functions (called inline, with a warning)
+       - Async coroutine functions (awaited transparently)
+       - Class-based actions (lazily instantiated, then their ``run``
+         method is called)
+       - LangChain ``Runnable`` instances (invoked via ``ainvoke``)
   4. Optionally offloading ``@cpu_bound``-decorated synchronous actions to a
      :class:`~nemoguardrails.rails.llm.thread_pool.RailThreadPool` so they
      do not block the asyncio event loop.
@@ -93,18 +96,19 @@ class ActionDispatcher:
         self._thread_pool = thread_pool
 
         # ------------------------------------------------------------------
-        # ThreadSafeDict usage on free-threaded Python
+        # ThreadSafeDict for the action registry
         # ------------------------------------------------------------------
-        # On free-threaded (no-GIL) builds, concurrent dict mutations are
-        # *not* protected by the GIL, so we use ``ThreadSafeDict`` – a
-        # dict subclass guarded by a reentrant lock – to prevent data
-        # races when actions are registered or looked up from multiple
-        # threads.  On standard GIL-enabled builds, a plain ``dict`` is
-        # used for zero overhead (dict operations are already atomic under
-        # the GIL).
-        self._registered_actions: Dict[str, Union[Type, Callable[..., Any]]] = (
-            ThreadSafeDict() if is_free_threaded() else {}
-        )
+        # ``ThreadSafeDict`` is used unconditionally (GIL-enabled *and*
+        # free-threaded builds) because actions can be registered or
+        # looked up from multiple threads concurrently — e.g. during
+        # parallel rail evaluation or when the asyncio event loop
+        # dispatches actions from different tasks.  On GIL-enabled builds
+        # the lock inside ``ThreadSafeDict`` is effectively uncontended,
+        # so the overhead is negligible.
+        # Values are either raw callables (functions) or *classes* that will
+        # be lazily promoted to instances on first dispatch (see
+        # ``_atomic_instantiate_action``).
+        self._registered_actions: Dict[str, Union[Type, Callable[..., Any]]] = ThreadSafeDict()
 
         # ------------------------------------------------------------------
         # Per-action locking for lazy class instantiation
@@ -120,22 +124,33 @@ class ActionDispatcher:
         # ``_init_locks_guard`` protects *creation* of new entries in
         # ``_init_locks``; each value in ``_init_locks`` protects a single
         # action's class-to-instance promotion.
+        # Mapping from action name -> dedicated lock for that action's
+        # class-to-instance promotion.  Populated lazily in
+        # ``_atomic_instantiate_action``.
         self._init_locks: Dict[str, threading.Lock] = {}
+        # Coarse-grained guard protecting *creation* of new entries in
+        # ``_init_locks``.  Held only briefly; never held while the
+        # action constructor itself runs.
         self._init_locks_guard = threading.Lock()
 
-        # ------------------------------------------------------------------
-        # Action discovery / loading
-        # ------------------------------------------------------------------
-        # Actions are discovered in a well-defined priority order so that
-        # later registrations override earlier ones of the same name:
-        #   1. Built-in package ``actions/`` directory
-        #   2. Per-feature ``library/*/actions`` directories
-        #   3. Current working directory (user project root)
-        #   4. Explicit ``config_path`` (may be comma-separated)
-        #   5. Explicit ``import_paths``
+        # Cache for normalised action names — avoids repeated string
+        # transformations (endswith, replace, camelcase_to_snakecase)
+        # on every execute_action() call.  Bounded to prevent memory
+        # growth if action names are derived from external input.
+        #
+        # Protected by a lock for free-threaded Python 3.14t (no-GIL)
+        # where concurrent cache access could corrupt the dict.
+        self._normalised_names: Dict[str, str] = {}
+        self._normalised_names_maxsize = 4096
+        self._normalised_names_lock = threading.Lock()
+
+
         if load_all_actions:
             # TODO: check for better way to find actions dir path or use constants.py
             current_file_path = Path(__file__).resolve()
+            # Go up two levels: this file lives at
+            # nemoguardrails/actions/action_dispatcher.py, so parents[1]
+            # yields the top-level ``nemoguardrails/`` package directory.
             parent_directory_path = current_file_path.parents[1]
 
             # 1. Load built-in actions shipped with the package.
@@ -216,13 +231,29 @@ class ActionDispatcher:
             path (str): A string representing the path from which to load actions.
 
         """
+        # Two conventions are supported: a directory named ``actions/``
+        # containing one-or-more .py files, *and* a single ``actions.py``
+        # module at the path root.  Both may coexist.
+        changed = False
+
+
         actions_path = path / "actions"
         if os.path.exists(actions_path):
+            # ``_find_actions`` recursively walks the directory, loading
+            # every .py file that passes the ``is_action_file`` heuristic.
             self._registered_actions.update(self._find_actions(actions_path))
+            changed = True
 
         actions_py_path = os.path.join(path, "actions.py")
         if os.path.exists(actions_py_path):
             self._registered_actions.update(self._load_actions_from_module(actions_py_path))
+            changed = True
+
+        # Invalidate the normalisation cache — newly loaded actions may
+        # change which canonical name a lookup resolves to.
+        if changed:
+            with self._normalised_names_lock:
+                self._normalised_names.clear()
 
     def register_action(self, action: Callable, name: Optional[str] = None, override: bool = True):
         """Registers an action with the given name.
@@ -233,16 +264,26 @@ class ActionDispatcher:
             override (bool): If an action already exists, whether it should be overridden or not.
         """
         if name is None:
+            # Prefer the canonical name from the ``@action`` decorator's
+            # metadata dict; fall back to the raw Python function name.
             action_meta = getattr(action, "action_meta", None)
             action_name = action_meta["name"] if action_meta else action.__name__
         else:
             action_name = name
 
-        # If we're not allowed to override, we stop.
+        # If we're not allowed to override, we stop.  The ``in`` check
+        # on ThreadSafeDict is atomic, so no separate lock is needed.
         if action_name in self._registered_actions and not override:
             return
 
+        # Store the callable (or class) under its canonical name.
+        # Class-based actions remain as classes here and are only
+        # instantiated lazily on first dispatch.
         self._registered_actions[action_name] = action
+        # Invalidate the normalisation cache — a new registration may
+        # change which name a lookup resolves to.
+        with self._normalised_names_lock:
+            self._normalised_names.clear()
 
     def register_actions(self, actions_obj: Any, override: bool = True):
         """Registers all the actions from the given object.
@@ -252,7 +293,9 @@ class ActionDispatcher:
             override (bool): If an action already exists, whether it should be overridden or not.
         """
 
-        # Register the actions
+        # Iterate over every attribute of the object (module, class
+        # instance, etc.) and register anything decorated with ``@action``
+        # — the decorator stamps an ``action_meta`` dict onto the callable.
         for attr in dir(actions_obj):
             val = getattr(actions_obj, attr)
 
@@ -260,25 +303,45 @@ class ActionDispatcher:
                 self.register_action(val, override=override)
 
     def _normalize_action_name(self, name: str) -> str:
-        """Normalise an action name to its canonical snake_case form.
+        """Normalise the action name to its canonical snake_case form.
 
-        The normalisation proceeds as follows:
-          1. If the name already exists verbatim in the registry, return it
-             immediately (fast path, avoids unnecessary string work).
-          2. Strip a trailing ``"Action"`` suffix if present
-             (e.g. ``"GenerateUserIntentAction"`` -> ``"GenerateUserIntent"``).
-          3. Convert from CamelCase to snake_case using
-             :func:`nemoguardrails.utils.camelcase_to_snakecase`.
+        The normalisation strips a trailing ``"Action"`` suffix and
+        converts CamelCase to snake_case.  Results are cached in
+        ``_normalised_names`` so that repeated lookups for the same
+        action name (which happen on every ``execute_action()`` call)
+        skip the string transformations entirely.
 
-        Note: on this branch there is no normalisation cache.  If profiling
-        shows ``_normalize_action_name`` as a hot-spot, a bounded LRU cache
-        keyed on *name* would be a straightforward optimisation.
+        The cache is bounded to ``_normalised_names_maxsize`` entries
+        (default 4096) to guard against unbounded memory growth if
+        action names are derived from external input.  When the limit
+        is reached the oldest entry is evicted (FIFO) — this is
+        acceptable because the action name space is finite in normal
+        usage and stale entries rebuild cheaply.
+
+        The cache is also invalidated on every ``register_action()``
+        and ``load_actions_from_path()`` call, since new registrations
+        may change which canonical name a lookup resolves to.
         """
-        if name not in self.registered_actions:
-            if name.endswith("Action"):
-                name = name.replace("Action", "")
-            name = utils.camelcase_to_snakecase(name)
-        return name
+        with self._normalised_names_lock:
+            cached = self._normalised_names.get(name)
+            if cached is not None:
+                return cached
+
+            normalised = name
+            if normalised not in self.registered_actions:
+                # Try stripping "Action" suffix and converting to snake_case.
+                if normalised.endswith("Action"):
+                    normalised = normalised.replace("Action", "")
+                normalised = utils.camelcase_to_snakecase(normalised)
+
+            # Evict the oldest entry if the bound is reached.
+            if len(self._normalised_names) >= self._normalised_names_maxsize:
+                # Remove the first (oldest) entry — dict preserves
+                # insertion order since Python 3.7.
+                oldest_key = next(iter(self._normalised_names))
+                del self._normalised_names[oldest_key]
+            self._normalised_names[name] = normalised
+            return normalised
 
     def has_registered(self, name: str) -> bool:
         """Check if an action is registered."""
@@ -379,6 +442,8 @@ class ActionDispatcher:
             Tuple[Union[str, Dict[str, Any]], str]: A tuple containing the result and status.
         """
 
+        # Normalise so that e.g. ``"GenerateUserIntentAction"`` resolves
+        # to the same registry key as ``"generate_user_intent"``.
         action_name = self._normalize_action_name(action_name)
 
         if action_name in self._registered_actions:
@@ -388,23 +453,35 @@ class ActionDispatcher:
                 raise Exception(f"Action '{action_name}' is not registered.")
 
             fn = cast(Callable, maybe_fn)
-            # Actions that are registered as classes are initialized lazily,
+
+            # ----- Class-based action: lazy instantiation ------------------
+            # Actions that are registered as classes are initialised lazily,
             # when they are first used.  On free-threaded Python, two threads
             # could race here, so we use a per-action lock to ensure each
-            # class is instantiated exactly once.
+            # class is instantiated exactly once.  After this point ``fn``
+            # is always an *instance* (or a plain function).
             if inspect.isclass(fn):
                 fn = self._atomic_instantiate_action(action_name, fn)
 
             if fn:
                 try:
-                    # We support both functions and classes as actions
+                    # ===================================================
+                    # Dispatch path 1: plain function or bound method
+                    # ===================================================
                     if inspect.isfunction(fn) or inspect.ismethod(fn):
-                        # We support both sync and async actions.
-                        # Check if the function is marked @cpu_bound and we
-                        # have a thread pool configured.
+                        # The ``@cpu_bound`` decorator stamps a sentinel
+                        # attribute ``_cpu_bound = True`` on the function.
+                        # We check for it here to decide the execution
+                        # strategy.
                         is_cpu_bound = getattr(fn, "_cpu_bound", False)
 
                         if is_cpu_bound and self._thread_pool is not None:
+                            # Offload to the thread pool via
+                            # ``loop.run_in_executor()`` so the asyncio
+                            # event loop remains responsive.  On a
+                            # free-threaded build this yields true
+                            # parallelism; on a GIL build it still
+                            # prevents event-loop starvation.
                             log.info(
                                 "Dispatching cpu_bound action `%s` to thread pool.",
                                 action_name,
@@ -412,30 +489,57 @@ class ActionDispatcher:
                             result = await self._thread_pool.dispatch(fn, **params)
                         else:
                             if is_cpu_bound:
+                                # Graceful degradation: the action asked
+                                # for thread dispatch but no pool was
+                                # configured.  Run it inline but warn so
+                                # operators can remedy the configuration.
                                 log.warning(
                                     "Action `%s` is @cpu_bound but no thread pool is configured; "
                                     "running inline and blocking the event loop.",
                                     action_name,
                                 )
+                            # Call the function directly.  If it is an
+                            # ``async def``, the result will be a
+                            # coroutine that we await below.
                             result = fn(**params)
 
                         if inspect.iscoroutine(result):
+                            # The function was ``async def`` — await the
+                            # coroutine to obtain the actual return value.
                             result = await result
                         elif not is_cpu_bound:
+                            # Non-async, non-cpu_bound functions block the
+                            # event loop.  Log a warning so developers are
+                            # aware they should consider making the action
+                            # async or marking it ``@cpu_bound``.
                             log.warning(f"Synchronous action `{action_name}` has been called.")
 
+                    # ===================================================
+                    # Dispatch path 2: LangChain Runnable
+                    # ===================================================
                     elif isinstance(fn, Runnable):
-                        # If it's a Runnable, we invoke it as well
+                        # LangChain Runnables expose ``ainvoke`` for async
+                        # execution.  Params are passed as a single dict
+                        # (the Runnable ``input``).
                         runnable = fn
 
                         result = await runnable.ainvoke(input=params)
+
+                    # ===================================================
+                    # Dispatch path 3: class instance with a ``run`` method
+                    # ===================================================
                     else:
                         # TODO: there should be a common base class here
+                        # Fall back to calling the instance's ``run``
+                        # method — this is the convention for class-based
+                        # actions that are not LangChain Runnables.
                         fn_run_func = getattr(fn, "run", None)
                         if not callable(fn_run_func):
                             raise Exception(f"No 'run' method defined for action '{action_name}'.")
 
-                        # Check if the class's run method is @cpu_bound.
+                        # The ``@cpu_bound`` decorator may have been
+                        # applied to the ``run`` method rather than the
+                        # class itself — check for it on the method.
                         is_cpu_bound = getattr(fn_run_func, "_cpu_bound", False)
 
                         fn_run_func_with_signature = cast(
@@ -459,11 +563,14 @@ class ActionDispatcher:
                             result = fn_run_func_with_signature(**params)
                     return result, "success"
 
-                # We forward LLM Call exceptions
+                # LLMCallExceptions are re-raised verbatim so that
+                # upstream retry/fallback logic can handle them.
                 except LLMCallException as e:
                     raise e
 
                 except Exception as e:
+                    # Filter out bulky/sensitive params before logging to
+                    # avoid dumping entire state objects into the logs.
                     filtered_params = {k: v for k, v in params.items() if k not in ["state", "events", "llm"]}
                     log.warning(
                         "Error while execution '%s' with parameters '%s': %s",
@@ -473,6 +580,7 @@ class ActionDispatcher:
                     )
                     log.exception(e)
 
+        # If the action was not found or raised, return a failure tuple.
         return None, "failed"
 
     def get_registered_actions(self) -> List[str]:
@@ -504,8 +612,11 @@ class ActionDispatcher:
 
         try:
             log.debug(f"Analyzing file {filename}")
-            # Import the module from the file
 
+            # Dynamically import the .py file as a module without
+            # adding it to ``sys.modules``.  This avoids polluting the
+            # global module namespace and prevents name collisions when
+            # different config paths ship identically-named files.
             spec: Optional[ModuleSpec] = importlib.util.spec_from_file_location(filename, filepath)
             if not spec:
                 log.error(f"Failed to create a module spec from {filepath}.")
@@ -513,25 +624,38 @@ class ActionDispatcher:
 
             module = importlib.util.module_from_spec(spec)
             if spec.loader:
+                # Execute the module's top-level code so that all
+                # functions, classes, and decorators run and their
+                # ``action_meta`` attributes are populated.
                 spec.loader.exec_module(module)
 
-            # Loop through all members in the module and check for the `@action` decorator
-            # If class has action decorator is_action class member is true
+            # Scan every public member of the freshly loaded module.
+            # Only objects bearing an ``action_meta`` attribute (stamped
+            # by the ``@action`` decorator) are collected.  Both plain
+            # functions and classes qualify — classes are stored as-is
+            # and instantiated lazily on first dispatch.
             for name, obj in inspect.getmembers(module):
                 if (inspect.isfunction(obj) or inspect.isclass(obj)) and hasattr(obj, "action_meta"):
                     try:
+                        # The ``@action`` decorator writes the canonical
+                        # action name into ``action_meta["name"]``.
                         actionable_name: str = getattr(obj, "action_meta").get("name")
                         action_objects[actionable_name] = obj
                         log.info(f"Added {actionable_name} to actions")
                     except Exception as e:
                         log.error(f"Failed to register {name} in action dispatcher due to exception {e}")
         except Exception as e:
+            # If the module failed to load at all (``module is None``),
+            # we cannot recover — re-raise as a RuntimeError.
             if module is None:
                 raise RuntimeError(f"Failed to load actions from module at {filepath}.")
             if not module.__file__:
                 raise RuntimeError(f"No file found for module {module} at {filepath}.")
 
             try:
+                # Try to produce a shorter, human-friendly path for the
+                # error message; fall back to the absolute path if the
+                # module lives outside the working directory.
                 relative_filepath = Path(module.__file__).relative_to(Path.cwd())
             except ValueError:
                 relative_filepath = Path(module.__file__).resolve()
@@ -555,7 +679,10 @@ class ActionDispatcher:
             log.debug(f"_find_actions: {directory} does not exist.")
             return action_objects
 
-        # Loop through all files in the directory and its subdirectories
+        # Recursively walk the directory tree.  Every ``.py`` file that
+        # passes the ``is_action_file`` heuristic (currently: anything
+        # except ``__init__.py``) is loaded as a module and scanned for
+        # ``@action``-decorated callables.
         for root, dirs, files in os.walk(directory):
             for filename in files:
                 if filename.endswith(".py"):
@@ -574,6 +701,10 @@ def is_action_file(filepath):
 
     Currently, it only excludes the `__init__.py files.
     """
+    # ``__init__.py`` files are package markers and typically do not
+    # contain ``@action``-decorated callables.  Skipping them avoids
+    # redundant imports and potential side effects from re-executing
+    # package initialisation code.
     if "__init__.py" in filepath:
         return False
 
