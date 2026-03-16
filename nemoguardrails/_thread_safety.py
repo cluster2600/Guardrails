@@ -38,9 +38,11 @@ Public API
 
 ``atomic_init``
     A decorator that guarantees a callable is executed exactly once, even
-    when multiple threads race to trigger lazy initialization.
+    when multiple threads race to trigger lazy initialisation.
 """
 
+# PEP 563 deferred evaluation of annotations — avoids circular import
+# issues and allows forward references in type hints without quoting.
 from __future__ import annotations
 
 import functools
@@ -92,6 +94,10 @@ def is_free_threaded() -> bool:
               ``False`` otherwise.
     """
     global _FREE_THREADED
+    # This check-then-cache pattern is benign even without a lock: on
+    # GIL-enabled builds the GIL serialises access; on free-threaded builds
+    # the worst case is two threads both computing the same boolean and
+    # writing it — the result is idempotent so no corruption can occur.
     if _FREE_THREADED is None:
         # sysconfig.get_config_var("Py_GIL_DISABLED") returns 1 (truthy)
         # on free-threaded builds and None or 0 on standard builds.
@@ -103,9 +109,12 @@ def is_free_threaded() -> bool:
 # ThreadSafeDict
 # ---------------------------------------------------------------------------
 
-_KT = TypeVar("_KT")  # Key type variable for generic dict signatures.
-_VT = TypeVar("_VT")  # Value type variable for generic dict signatures.
-_DT = TypeVar("_DT")  # Default type variable for .get() / .pop() signatures.
+# TypeVars for generic dict signatures.  _KT/_VT mirror the conventional key/
+# value type parameters of Mapping; _DT is the default-value type for methods
+# like .get() and .pop() that accept an optional fallback argument.
+_KT = TypeVar("_KT")
+_VT = TypeVar("_VT")
+_DT = TypeVar("_DT")
 
 
 class ThreadSafeDict(dict):
@@ -150,8 +159,19 @@ class ThreadSafeDict(dict):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         # The lock is created *before* calling super().__init__ so that
         # any insertion triggered by the initial data is already guarded.
-        # We use an RLock to support re-entrant acquisition (see class
-        # docstring for rationale).
+        #
+        # RLock (re-entrant) rather than Lock: several dict methods are
+        # compound operations that call other overridden methods on self.
+        # For example, __ior__ calls update(), which itself acquires the
+        # lock.  A plain Lock would deadlock in this scenario because the
+        # same thread would attempt to acquire it twice.  RLock permits
+        # the owning thread to re-enter without blocking.
+        #
+        # On ARM64 (Apple Silicon), RLock.acquire()/release() issue the
+        # necessary memory barriers (dmb ish) through pthread_mutex, so
+        # stores made inside the critical section are visible to any
+        # thread that subsequently acquires the same lock — no additional
+        # fencing is required.
         self._lock = threading.RLock()
         super().__init__(*args, **kwargs)
 
@@ -161,6 +181,9 @@ class ThreadSafeDict(dict):
     # threads modify the dict concurrently on free-threaded Python.
 
     def __setitem__(self, key: Any, value: Any) -> None:
+        # Even single-slot writes need the lock on free-threaded Python:
+        # CPython's dict implementation may resize the internal hash table
+        # during insertion, and a concurrent read during resize can segfault.
         with self._lock:
             super().__setitem__(key, value)
 
@@ -169,6 +192,10 @@ class ThreadSafeDict(dict):
             super().__delitem__(key)
 
     def pop(self, key: Any, *args: Any) -> Any:  # type: ignore[override]
+        # *args captures the optional default; we cannot declare it as a
+        # keyword argument because dict.pop() uses a positional-only default
+        # and we must preserve the "raises KeyError if absent and no default"
+        # behaviour by forwarding the argument tuple verbatim.
         with self._lock:
             return super().pop(key, *args)
 
@@ -256,6 +283,14 @@ class ThreadSafeDict(dict):
     def __eq__(self, other: object) -> bool:
         # Lock is acquired to prevent the dict contents from changing while
         # the element-wise comparison is in progress.
+        #
+        # Note: if `other` is also a ThreadSafeDict, only *this* instance's
+        # lock is acquired.  Acquiring both locks would risk deadlock if
+        # two threads compare a == b and b == a simultaneously (lock
+        # ordering violation).  The risk of `other` mutating during the
+        # comparison is accepted as a pragmatic trade-off; callers needing
+        # a fully atomic comparison of two ThreadSafeDicts should hold an
+        # external lock.
         with self._lock:
             return super().__eq__(other)
 
@@ -264,6 +299,33 @@ class ThreadSafeDict(dict):
         # lock is acquired (the inherited dict.__bool__ would bypass it).
         with self._lock:
             return super().__len__() > 0
+
+    # -- PEP 584 merge operators (Python 3.9+) -----------------------------
+    # ``dict | dict``, ``dict |= dict``, and the reflected ``__ror__``
+    # must be overridden so that merged results are also ThreadSafeDict
+    # instances and the merge operation itself is guarded by the lock.
+
+    def __or__(self, other: Any) -> "ThreadSafeDict":
+        # self | other — the result is a *new* ThreadSafeDict with its own lock.
+        with self._lock:
+            merged = ThreadSafeDict(super().__or__(other))
+        return merged
+
+    def __ior__(self, other: Any) -> "ThreadSafeDict":
+        # self |= other — mutates in place; must hold the lock to prevent
+        # concurrent readers from seeing a partially merged state.
+        with self._lock:
+            super().__ior__(other)
+        return self
+
+    def __ror__(self, other: Any) -> "ThreadSafeDict":
+        with self._lock:
+            # other | self — `other` is a plain dict (otherwise Python would
+            # have dispatched to other.__or__).  We copy it into a new
+            # ThreadSafeDict then merge self's contents on top.
+            merged = ThreadSafeDict(other)
+            merged.update(self)
+        return merged
 
 
 # ---------------------------------------------------------------------------
@@ -300,15 +362,21 @@ class ThreadSafeCache:
     """
 
     def __init__(self, maxsize: int = 1024) -> None:
+        # maxsize of 0 is treated as unbounded (no eviction).
         self._maxsize = maxsize
         # OrderedDict is used because it supports O(1) move_to_end() and
         # popitem(last=False), which are the two operations needed for an
-        # efficient LRU eviction policy.
+        # efficient LRU eviction policy.  A plain dict preserves insertion
+        # order since Python 3.7, but does not offer move_to_end().
         self._data: OrderedDict[Hashable, Any] = OrderedDict()
+        # RLock rather than Lock for the same re-entrancy safety rationale
+        # as ThreadSafeDict — future methods may compose public calls.
         self._lock = threading.RLock()
         # Simple hit/miss counters for observability.  These are updated
         # under the lock so they remain consistent even on free-threaded
-        # builds where plain integer increments are not atomic.
+        # builds where plain integer increments (x += 1) are *not* atomic
+        # — the read-modify-write sequence can be interleaved by another
+        # thread without the GIL's implicit serialisation.
         self._hits: int = 0
         self._misses: int = 0
 
@@ -365,6 +433,10 @@ class ThreadSafeCache:
     def __contains__(self, key: Hashable) -> bool:
         # Note: this is a pure membership test and intentionally does *not*
         # promote the key (unlike get), so it does not affect eviction order.
+        # This is a deliberate design choice — callers who merely check
+        # existence should not perturb the LRU ordering, otherwise
+        # monitoring or health-check code would inadvertently keep entries
+        # alive and defeat the eviction policy.
         with self._lock:
             return key in self._data
 
@@ -379,6 +451,10 @@ class ThreadSafeCache:
 
     def clear(self) -> None:
         """Remove all entries and reset statistics."""
+        # Both the data and the counters are reset atomically under the
+        # same lock acquisition, so a concurrent stats() call will never
+        # observe a state where the counters are reset but old entries
+        # remain (or vice versa).
         with self._lock:
             self._data.clear()
             self._hits = 0
@@ -406,87 +482,144 @@ class ThreadSafeCache:
 # atomic_init decorator
 # ---------------------------------------------------------------------------
 
+# TypeVar for the return type of the wrapped callable in atomic_init.
 _T = TypeVar("_T")
 
 
 class _AtomicInitWrapper:
     """Internal descriptor that ensures a callable executes exactly once.
 
-    This implements the **double-checked locking** pattern:
+    This implements the **double-checked locking** pattern using a
+    ``threading.Event`` as a publication barrier:
 
-    1. **Fast path (no lock):** Check ``_initialised``.  If ``True``, return
-       the cached result immediately.  This avoids lock acquisition on every
-       call after initialisation, which is critical for hot paths.
+    1. **Fast path (no lock):** Check ``_done.is_set()``.  If ``True``,
+       return the cached result immediately.  ``Event.is_set()`` provides
+       an acquire-fence on weakly-ordered architectures (e.g. ARM64 /
+       Apple Silicon), guaranteeing that the ``_result`` / ``_exc`` stores
+       that preceded ``_done.set()`` are visible to the caller.
 
-    2. **Slow path (lock held):** If the flag is ``False``, acquire the lock
-       and check the flag *again* inside the critical section.  A second
+    2. **Slow path (lock held):** If the event is not set, acquire the lock
+       and check the event *again* inside the critical section.  A second
        thread may have completed initialisation between the first check and
        the lock acquisition (the "double check").
 
-    3. **Publish:** Set ``_initialised = True`` only *after* storing the
-       result.  On CPython, Python attribute stores have release semantics,
-       so a reader on another thread that observes ``_initialised == True``
-       is guaranteed to see the fully constructed ``_result``.
+    3. **Publish:** Call ``_done.set()`` only *after* storing the result.
+       ``Event.set()`` provides a release-fence, so any thread that
+       subsequently observes ``is_set() == True`` also sees the fully
+       constructed ``_result``.
 
     After the first successful call, subsequent calls return the cached
-    result immediately (fast-path only reads a ``bool`` flag which is safe
-    even under free-threading thanks to the atomic nature of Python object
-    attribute reads after publication).
+    result immediately via the fast path.
 
     If the wrapped callable raises an exception, that exception is stored and
     re-raised on every subsequent call — the initialisation is considered
     permanently failed (no retry), which prevents repeated expensive failures.
     """
 
-    def __init__(self, fn: Callable[..., _T]) -> None:
+    def __init__(self, fn: Callable[[], _T]) -> None:
         self._fn = fn
         # A plain Lock (not RLock) suffices here because the wrapped
-        # function is not expected to call back into __call__.
+        # function is not expected to call back into __call__.  Using a
+        # plain Lock is also marginally cheaper — no ownership tracking.
         self._lock = threading.Lock()
-        self._initialized = False
+        # ``threading.Event`` acts as a publication barrier.
+        #
+        # Memory ordering on ARM64 / Apple Silicon:
+        # ------------------------------------------
+        # ARM64 has a weakly-ordered memory model.  Without a barrier, a
+        # thread could observe ``_done`` as True (via a speculative load)
+        # whilst still seeing stale values for ``_result``.  Event
+        # internally uses a Condition (which wraps a pthread_mutex), and
+        # pthread_mutex_unlock issues a ``dmb ish`` (data memory barrier,
+        # inner shareable), which acts as a full release-fence.
+        # Event.is_set() acquires the internal lock momentarily, providing
+        # the corresponding acquire-fence.  Together, these guarantee
+        # happens-before ordering: any store preceding set() is visible
+        # to any thread that subsequently observes is_set() == True.
+        #
+        # This replaces a previous bare ``bool`` flag which lacked these
+        # barrier semantics and could silently return uninitialised data
+        # on weakly-ordered hardware.
+        self._done = threading.Event()
         self._result: Any = None
         # If the initialisation raises, the exception is captured here and
         # re-raised on every subsequent call, preserving fail-fast semantics.
+        # No retry is attempted — the rationale is that if initialisation
+        # of an expensive resource (model loading, index building) fails,
+        # it is likely a permanent or configuration error and retrying
+        # would waste resources.
         self._exc: Optional[BaseException] = None
-        # Preserve the original function's __name__, __doc__, etc.
+        # Preserve the original function's __name__, __doc__, etc., so
+        # that introspection, logging, and debuggers show the wrapped
+        # function's identity rather than "_AtomicInitWrapper.__call__".
         functools.update_wrapper(self, fn)
 
-    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+    def __call__(self) -> Any:
+        """Execute the wrapped function exactly once and return its result.
+
+        This is a once-only initialiser, not a general-purpose memoiser.
+        The wrapped function must accept zero arguments.  Subsequent calls
+        return the cached result from the first invocation.
+        """
         # --- Fast path (lock-free) -----------------------------------------
-        # After initialisation completes, _initialised is True and never
-        # reverts (except via reset()).  Reading a bool attribute is atomic
-        # on CPython, so this check is safe without holding the lock.
-        if self._initialized:
+        # This is the common-case hot path after initialisation is complete.
+        # ``Event.is_set()`` provides an acquire-fence on ARM64, so when it
+        # returns ``True`` we are guaranteed to see the fully written
+        # ``_result`` / ``_exc`` values that were stored before ``set()``.
+        #
+        # On x86-64, Total Store Order (TSO) makes this fence implicit, but
+        # the Event still provides correctness on weaker architectures
+        # (ARM64, RISC-V) without any code changes.
+        if self._done.is_set():
             if self._exc is not None:
                 raise self._exc
             return self._result
 
         # --- Slow path (lock held) -----------------------------------------
+        # Only contended during the very first call(s); once _done is set,
+        # all subsequent invocations take the fast path above.
         with self._lock:
             # Double-checked locking: another thread may have won the race
             # and completed initialisation between our fast-path check above
             # and acquiring the lock here.  Without this second check we
-            # would execute the function twice.
-            if self._initialized:
+            # would execute the function twice — defeating the "exactly once"
+            # guarantee.
+            #
+            # The pattern is:
+            #   1. Check without lock  (fast, racy but safe — only skips work)
+            #   2. Acquire lock
+            #   3. Check again         (authoritative — no race possible now)
+            #   4. Do the work if still needed
+            if self._done.is_set():
                 if self._exc is not None:
                     raise self._exc
                 return self._result
 
             try:
-                self._result = self._fn(*args, **kwargs)
+                self._result = self._fn()
             except BaseException as exc:
                 # Store the exception so future callers receive the same
                 # error without re-running the (possibly expensive) function.
                 self._exc = exc
-                # Mark as initialised *after* storing the exception, so
+                # Signal completion *after* storing the exception, so
                 # that the fast path above can see a consistent state.
-                self._initialized = True
+                # Ordering matters: _exc must be written before set(), and
+                # set()'s release-fence publishes both stores atomically
+                # from the perspective of any reader that observes is_set().
+                self._done.set()
                 raise
             else:
-                # Mark as initialised *after* storing the result, ensuring
-                # any thread that sees _initialised == True also sees the
-                # fully written _result value (publication safety).
-                self._initialized = True
+                # Signal completion *after* storing the result.
+                # ``Event.set()`` provides a release-fence, ensuring any
+                # thread that subsequently observes ``is_set() == True``
+                # also sees the fully written ``_result`` value.
+                #
+                # Crucially, the store to _result *must* precede set().
+                # If these were reordered (possible on ARM64 without a
+                # barrier), a reader could see is_set()==True but read a
+                # stale _result of None.  Event.set()'s internal mutex
+                # release prevents this reordering.
+                self._done.set()
                 return self._result
 
     def reset(self) -> None:
@@ -496,12 +629,17 @@ class _AtomicInitWrapper:
         that a concurrent __call__ does not observe a half-reset state.
         """
         with self._lock:
-            self._initialized = False
+            # Order matters: clear the event *first* so that any thread
+            # entering __call__ after this point takes the slow path and
+            # blocks on the lock.  If we cleared _result first, a
+            # concurrent fast-path reader could see is_set()==True but
+            # read _result=None.
+            self._done.clear()
             self._result = None
             self._exc = None
 
 
-def atomic_init(fn: Callable[..., _T]) -> _AtomicInitWrapper:
+def atomic_init(fn: Callable[[], _T]) -> _AtomicInitWrapper:
     """Decorator ensuring *fn* is executed exactly once (thread-safe).
 
     On the first invocation the wrapped function runs under a
@@ -520,7 +658,7 @@ def atomic_init(fn: Callable[..., _T]) -> _AtomicInitWrapper:
     simply uncontended — so callers need not check ``is_free_threaded()``
     before using it.
 
-    This is useful for lazy, one-time initialization of expensive
+    This is useful for lazy, one-time initialisation of expensive
     resources (models, indices, etc.) that may be triggered from
     multiple threads simultaneously.
 

@@ -11,7 +11,7 @@ across Python 3.10, 3.12, 3.14, and 3.14t (free-threaded).*
 1. [Executive Summary](#1-executive-summary)
 2. [Optimisation Inventory](#2-optimisation-inventory)
    - [M2 — Zero-overhead tracing path](#m2--zero-overhead-tracing-path)
-   - [M3 — Deterministic artifact caching](#m3--deterministic-artifact-caching)
+   - [M3 — Deterministic artefact caching](#m3--deterministic-artefact-caching)
    - [M6 — Wrapper overhead reduction](#m6--wrapper-overhead-reduction)
    - [PEP 649 — Deferred annotation evaluation](#pep-649--deferred-annotation-evaluation)
 3. [Benchmark Suite](#3-benchmark-suite)
@@ -91,7 +91,7 @@ relative to a hypothetical no-tracing build (per existing benchmark suite).
 
 ---
 
-### M3 — Deterministic artifact caching
+### M3 — Deterministic artefact caching
 
 **Problem:** The `_render_string()` method in both `LLMTaskManager` and the
 LLM generation actions re-parsed and re-compiled Jinja2 templates on every
@@ -458,7 +458,7 @@ When comparing results across Python versions, focus on:
 4. **Asyncio overhead per task** — measures event-loop improvements.
 
 Do *not* compare absolute latencies across different machines — hardware
-differences dominate. Compare ratios and speedups insead.
+differences dominate. Compare ratios and speedups instead.
 
 ---
 

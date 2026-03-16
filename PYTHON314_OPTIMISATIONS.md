@@ -1,6 +1,6 @@
 # Python 3.14 Performance Optimisations for NeMo Guardrails
 
-This document describes the performance optimisations impelemented to take
+This document describes the performance optimisations implemented to take
 advantage of Python 3.12 / 3.14 / 3.14t (free-threaded) improvements in the
 NeMo Guardrails framework.  All changes are backwards-compatible with Python
 3.10+ and are version-gated at import time so that no runtime overhead is
@@ -35,23 +35,33 @@ afterwards, so it does not leak state into the caller's event loop.
 **How it works:**
 
 ```python
-# In TopologicalScheduler.execute()
-loop = asyncio.get_running_loop()
-if _HAS_EAGER_TASK_FACTORY:
-    previous_task_factory = loop.get_task_factory()
-    loop.set_task_factory(asyncio.eager_task_factory)
-try:
-    # ... execute groups with asyncio.create_task() ...
-finally:
-    if _HAS_EAGER_TASK_FACTORY:
-        loop.set_task_factory(previous_task_factory)
+# Module-level idempotent installer (avoids race on concurrent execute() calls)
+def _ensure_eager_task_factory(loop):
+    if not _HAS_EAGER_TASK_FACTORY:
+        return
+    if loop.get_task_factory() is not asyncio.eager_task_factory:
+        loop.set_task_factory(asyncio.eager_task_factory)
+
+# Called once per event loop from TopologicalScheduler.execute()
+_ensure_eager_task_factory(asyncio.get_running_loop())
 ```
+
+The factory is installed once per event loop rather than set/restored on
+every `execute()` call.  This eliminates a race condition where concurrent
+`execute()` calls could corrupt each other's saved `previous_task_factory`.
 
 When a coroutine completes before its first suspension point (i.e. it does
 not `await` anything, or it `await`s a value that is already available),
 the eager factory returns the result immediately without scheduling a
 round-trip through the event loop.  This is precisely what happens when a
 guardrail check hits its cache or determines early that no action is needed.
+
+**Integration note:** The `TopologicalScheduler.execute()` method is a
+standalone async executor intended for use outside the Colang v2.x runtime.
+The existing Colang runtime (`_run_flows_with_dag_scheduler`) uses
+`scheduler.groups` to obtain the pre-computed execution groups and dispatches
+rails through its own flow engine.  `execute()` provides a self-contained
+alternative for programmatic use, benchmarks, and future runtime versions.
 
 ### 2. Shared CPU Thread Pool for Free-Threaded Python
 

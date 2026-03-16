@@ -50,13 +50,14 @@ async def test_streaming_generate_async_api(chat_1):
 
             # Or do something else with the token
 
-    asyncio.create_task(process_tokens())
+    consumer_task = asyncio.create_task(process_tokens())
 
     response = await chat_1.app.generate_async(
         messages=[{"role": "user", "content": "Hi!"}],
         streaming_handler=streaming_handler,
     )
 
+    await consumer_task
     assert chunks == ["Hello ", "there! ", "How ", "are ", "you?"]
     assert response == {"content": "Hello there! How are you?", "role": "assistant"}
 

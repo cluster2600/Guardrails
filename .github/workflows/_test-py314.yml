@@ -57,9 +57,13 @@ jobs:
             typer uvicorn watchdog fastapi protobuf \
             langchain langchain-core langchain-community
 
-      - name: Install annoy (build from source, no 3.14 wheel)
+      - name: Install annoy and fastembed (build from source, no 3.14 wheel)
         run: |
-          python -m pip install annoy
+          python -m pip install annoy fastembed
+
+      - name: Install nemoguardrails (editable, for package metadata)
+        run: |
+          python -m pip install -e . --no-deps
 
       - name: Install test dependencies (pip)
         run: |
@@ -72,6 +76,7 @@ jobs:
           python -c "import sys; print(f'Python {sys.version}')"
           python -c "import langchain; print(f'langchain {langchain.__version__}')"
           python -c "from annoy import AnnoyIndex; print('annoy OK')"
+          python -c "from fastembed import TextEmbedding; print('fastembed OK')"
           python -c "from nemoguardrails import RailsConfig; print('RailsConfig OK')"
 
       - name: Run pytest (skip yara-only tests)

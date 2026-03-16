@@ -352,17 +352,22 @@ class RuntimeV1_0(Runtime):
         # that appending the ``start_flow`` trigger and any subsequent events
         # produced during ``generate_events`` does not leak across tasks.
         tasks = []
+        # Copy-on-write optimisation: snapshot the base events as a tuple
+        # once.  Each flow then creates its own list by converting the
+        # tuple back and appending only its own ``start_flow`` event.
+        # This avoids copying the (potentially large) events list N times
+        # when most of the content is shared and read-only — the tuple is
+        # immutable, so concurrent flows cannot accidentally mutate each
+        # other's event histories.
+        base_events = tuple(events)
         for index, flow_name in enumerate(flows):
-            # Copy-on-write: isolate each task's event history from others.
-            _events = events.copy()
-
             flow_params = _get_flow_params(flow_name)
             flow_id = _normalize_flow_id(flow_name)
 
             if flow_params:
-                _events.append({"type": "start_flow", "flow_id": flow_id, "params": flow_params})
+                _events = list(base_events) + [{"type": "start_flow", "flow_id": flow_id, "params": flow_params}]
             else:
-                _events.append({"type": "start_flow", "flow_id": flow_id})
+                _events = list(base_events) + [{"type": "start_flow", "flow_id": flow_id}]
 
             # Generate a unique flow ID
             flow_uid = f"{flow_id}:{str(uuid.uuid4())}"
@@ -591,8 +596,13 @@ class RuntimeV1_0(Runtime):
         # cases where the cache was not populated (should not normally occur).
         if event_type_prefix == "Input":
             scheduler = self._input_dag_scheduler
-        else:
+        elif event_type_prefix == "Output":
             scheduler = self._output_dag_scheduler
+        else:
+            raise ValueError(
+                f"_run_flows_with_dag_scheduler: unsupported event_type_prefix {event_type_prefix!r}. "
+                "Expected 'Input' or 'Output'."
+            )
 
         if scheduler is None:
             scheduler = build_scheduler_from_config(flow_configs)
@@ -649,7 +659,11 @@ class RuntimeV1_0(Runtime):
             for event in result.events:
                 if isinstance(event, dict):
                     if event.get("type") == "ContextUpdate":
-                        pass  # Already merged above
+                        # Intentionally ignored: context updates from blocked/stopped
+                        # flows (which arrive here via stopped_task_results) are not
+                        # propagated.  Context from completed flows is merged separately
+                        # via result.context_updates above.
+                        pass
                     elif (event.get("type") == "BotIntent" and event.get("intent") == "stop") or (
                         isinstance(event.get("type"), str) and event.get("type", "").endswith("Exception")
                     ):

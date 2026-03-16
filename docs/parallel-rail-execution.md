@@ -140,9 +140,9 @@ Fix cycles by restructuring the dependencies so that the graph is acyclic.
 
 ---
 
-## Fallback Behavior
+## Fallback Behaviour
 
-| Configuration                          | Behavior                              |
+| Configuration                          | Behaviour                             |
 |----------------------------------------|---------------------------------------|
 | `parallel: false` (default)            | Sequential execution, declaration order |
 | `parallel: true`, no `depends_on`      | All rails run concurrently (same as today) |
@@ -280,7 +280,7 @@ standard GIL build the speedup is approximately 1.0x for CPU-bound work.
 
 ### General guidelines
 
-1. **Start sequential, then optimize.**  Get your rails working correctly in
+1. **Start sequential, then optimise.**  Get your rails working correctly in
    sequential mode first.  Add `parallel: true` only after confirming that
    the rails are independent or properly declaring dependencies.
 

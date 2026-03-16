@@ -32,16 +32,42 @@ import functools
 import inspect
 import logging
 import os
+import sysconfig
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Callable, Optional, TypeVar
-
-from nemoguardrails._thread_safety import is_free_threaded
 
 log = logging.getLogger(__name__)
 
 # Generic callable type variable, used to preserve the decorated
 # function's signature when applying the @cpu_bound decorator.
 F = TypeVar("F", bound=Callable[..., Any])
+
+# ---------------------------------------------------------------------------
+# Free-threaded build detection
+# ---------------------------------------------------------------------------
+
+# At module-load time, query the CPython build configuration to
+# determine whether the interpreter was compiled with the GIL disabled.
+# ``sysconfig.get_config_var("Py_GIL_DISABLED")`` returns 1 on a
+# free-threaded build and 0 (or None) otherwise.  The result is cached
+# in a module-level constant so that the check is performed only once.
+_GIL_DISABLED: bool = bool(sysconfig.get_config_var("Py_GIL_DISABLED"))
+"""True when running on a free-threaded (no-GIL) CPython build."""
+
+
+def is_free_threaded() -> bool:
+    """Return *True* when the interpreter was built with ``Py_GIL_DISABLED``.
+
+    On a free-threaded build, CPU-bound work dispatched to threads can
+    execute in true parallel.  On a regular build the GIL serialises
+    threads, so the thread pool still prevents event-loop starvation but
+    does not yield a speed-up for pure-Python CPU work.
+
+    This helper is used both internally (e.g. in ``__repr__``) and by
+    external callers who wish to adapt their behaviour depending on
+    whether genuine parallelism is available.
+    """
+    return _GIL_DISABLED
 
 
 # ---------------------------------------------------------------------------
