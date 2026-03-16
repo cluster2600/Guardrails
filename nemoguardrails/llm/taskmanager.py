@@ -111,7 +111,10 @@ class LLMTaskManager:
         #
         # The cache size can be tuned via the environment variable
         # ``NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE`` (default 512).
-        _cache_size = int(os.environ.get("NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE", "512"))
+        try:
+            _cache_size = int(os.environ.get("NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE", "512"))
+        except (ValueError, TypeError):
+            _cache_size = 512
         self._template_cache: ThreadSafeCache = ThreadSafeCache(maxsize=_cache_size)
         self._variables_cache: ThreadSafeCache = ThreadSafeCache(maxsize=_cache_size)
 
