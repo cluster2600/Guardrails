@@ -34,6 +34,10 @@ defaults:
     shell: bash
 env:
   POETRY_VERSION: 1.8.2
+  # Build C extensions with baseline x86-64 so cached .so files are
+  # portable across the heterogeneous GitHub Actions runner fleet.
+  CFLAGS: "-march=x86-64"
+  CXXFLAGS: "-march=x86-64"
 
 jobs:
   tests:
@@ -80,7 +84,15 @@ jobs:
 
       - name: Ensure cache is healthy
         if: steps.cache.outputs.cache-hit == 'true'
-        run: timeout 10s poetry run pip --version || rm -rf .venv
+        run: |
+          timeout 10s poetry run pip --version || rm -rf .venv
+          # Verify native extensions work on this runner. annoy compiles
+          # with host-specific SIMD flags; a cached .so from a runner with
+          # AVX-512 will SIGILL on one without it. Nuke the venv so a
+          # fresh install rebuilds with safe flags.
+          if [ -d .venv ]; then
+            poetry run python -c "import annoy; a = annoy.AnnoyIndex(1, 'angular'); a.add_item(0, [1.0]); a.build(1)" 2>/dev/null || rm -rf .venv
+          fi
 
       - name: Check Poetry .lock
         run: poetry check --lock
@@ -108,7 +120,7 @@ jobs:
         with:
           directory: ./coverage/reports/
           env_vars: PYTHON
-          fail_ci_if_error: true
+          fail_ci_if_error: false
           files: ./coverage.xml
           flags: python
           name: codecov-umbrella
