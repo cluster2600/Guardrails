@@ -204,11 +204,11 @@ class TestLRUDict:
 class TestPerInstanceSemaphore:
     """Tests for per-instance process_events semaphore."""
 
-    def test_no_global_semaphore(self):
-        """The module-level global semaphore should no longer exist."""
+    def test_global_semaphore_exists(self):
+        """The module-level semaphore is kept for backwards compatibility."""
         import nemoguardrails.rails.llm.llmrails as mod
 
-        assert not hasattr(mod, "process_events_semaphore")
+        assert hasattr(mod, "process_events_semaphore")
 
 
 # ---------------------------------------------------------------------------
