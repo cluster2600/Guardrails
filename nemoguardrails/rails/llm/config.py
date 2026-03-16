@@ -15,6 +15,8 @@
 
 """Module for the configuration of rails."""
 
+from __future__ import annotations
+
 import logging
 import os
 import re
@@ -29,6 +31,7 @@ from pydantic import (
     Field,
     PrivateAttr,
     SecretStr,
+    computed_field,
     model_validator,
     root_validator,
     validator,
@@ -71,6 +74,36 @@ standard_library_path = os.path.normpath(
 guardrails_stdlib_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 colang_path_dirs.append(standard_library_path)
 colang_path_dirs.append(guardrails_stdlib_path)
+
+
+class ThreadPoolConfig(BaseModel):
+    """Configuration for the CPU-bound thread-pool executor.
+
+    When ``enabled`` is *True* (the default), synchronous action functions
+    decorated with ``@cpu_bound`` are dispatched to a
+    :class:`~nemoguardrails.rails.llm.thread_pool.RailThreadPool` instead
+    of blocking the asyncio event loop.
+
+    On a free-threaded (no-GIL) Python 3.14+ build this yields true
+    parallelism for CPU-bound work.  On regular builds the pool still
+    prevents event-loop starvation.
+    """
+
+    enabled: bool = Field(
+        default=True,
+        description=(
+            "Whether CPU-bound actions should be dispatched to a thread pool. "
+            "Set to False to disable thread-pool dispatch globally."
+        ),
+    )
+    max_workers: Optional[int] = Field(
+        default=None,
+        description=("Maximum number of worker threads. Defaults to min(4, os.cpu_count()) when None."),
+    )
+    thread_name_prefix: str = Field(
+        default="nemo-rail-cpu",
+        description="Prefix for worker thread names (useful for debugging).",
+    )
 
 
 class CacheStatsConfig(BaseModel):
@@ -533,7 +566,86 @@ class CoreConfig(BaseModel):
     )
 
 
-class InputRails(BaseModel):
+class FlowWithDeps(BaseModel):
+    """A rail flow entry that can carry dependency metadata.
+
+    In ``config.yml`` a flow can be specified as a plain string (backward
+    compatible) or as a mapping with ``name`` and optional ``depends_on``::
+
+        flows:
+          - content safety check input        # plain string
+          - name: jailbreak detection          # mapping with dependency
+            depends_on:
+              - content safety check input
+    """
+
+    name: str = Field(..., description="The flow name (or flow name with params).")
+    depends_on: List[str] = Field(
+        default_factory=list,
+        description="Flow names that must complete before this flow starts.",
+    )
+
+    # Allow extra keys so that future extensions don't break validation.
+    model_config = ConfigDict(extra="allow")
+
+
+def _coerce_flow_list(raw: List) -> List[FlowWithDeps]:
+    """Normalise a list of flow entries to ``FlowWithDeps`` objects.
+
+    Accepts a mix of plain strings and dicts (or ``FlowWithDeps`` instances).
+    """
+    result: List[FlowWithDeps] = []
+    for item in raw:
+        if isinstance(item, str):
+            result.append(FlowWithDeps(name=item))
+        elif isinstance(item, dict):
+            result.append(FlowWithDeps(**item))
+        elif isinstance(item, FlowWithDeps):
+            result.append(item)
+        else:
+            raise ValueError(f"Invalid flow entry: {item!r}")
+    return result
+
+
+class _RailSectionMixin(BaseModel):
+    """Mixin that provides dependency-aware flow helpers.
+
+    Subclasses expose:
+    * ``flow_configs`` — the canonical ``FlowWithDeps`` list.
+    * ``flows`` — backward-compatible ``List[str]`` of flow names
+      (used throughout the codebase).
+    * ``has_dependencies`` — fast check for whether any ``depends_on``
+      has been declared.
+    """
+
+    flow_configs: List[FlowWithDeps] = Field(
+        default_factory=list,
+        description="Rail flow entries with optional dependency metadata.",
+    )
+
+    # @computed_field makes this @property visible to Pydantic's serialisation
+    # machinery (.model_dump(), .model_dump_json(), JSON Schema generation, etc.).
+    # A plain @property would be invisible to Pydantic v2 — the field would be
+    # silently omitted from serialised output.  Because much of the codebase
+    # (and downstream YAML/JSON consumers) still expects a top-level "flows"
+    # list of strings, we derive it dynamically from the richer flow_configs
+    # list whilst keeping it present in every serialised representation.
+    #
+    # The ``# type: ignore[prop-decorator]`` suppresses a mypy false-positive:
+    # mypy does not yet understand that @computed_field can decorate a @property.
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def flows(self) -> List[str]:  # type: ignore[override]
+        """Return the list of flow name strings (backward compatible)."""
+        return [fc.name for fc in self.flow_configs]
+
+    @property
+    def has_dependencies(self) -> bool:
+        """Return *True* if any flow declares ``depends_on``."""
+        return any(fc.depends_on for fc in self.flow_configs)
+
+
+class InputRails(_RailSectionMixin):
     """Configuration of input rails."""
 
     parallel: Optional[bool] = Field(
@@ -541,10 +653,13 @@ class InputRails(BaseModel):
         description="If True, the input rails are executed in parallel.",
     )
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement input rails.",
-    )
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        """Accept both ``flows`` (legacy) and ``flow_configs`` as input."""
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class OutputRailsStreamingConfig(BaseModel):
@@ -566,7 +681,7 @@ class OutputRailsStreamingConfig(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
-class OutputRails(BaseModel):
+class OutputRails(_RailSectionMixin):
     """Configuration of output rails."""
 
     parallel: Optional[bool] = Field(
@@ -574,24 +689,29 @@ class OutputRails(BaseModel):
         description="If True, the output rails are executed in parallel.",
     )
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement output rails.",
-    )
-
     streaming: OutputRailsStreamingConfig = Field(
         default_factory=OutputRailsStreamingConfig,
         description="Configuration for streaming output rails.",
     )
 
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        """Accept both ``flows`` (legacy) and ``flow_configs`` as input."""
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
-class RetrievalRails(BaseModel):
+
+class RetrievalRails(_RailSectionMixin):
     """Configuration of retrieval rails."""
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement retrieval rails.",
-    )
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class ActionRails(BaseModel):
@@ -610,38 +730,44 @@ class ActionRails(BaseModel):
     )
 
 
-class ToolOutputRails(BaseModel):
+class ToolOutputRails(_RailSectionMixin):
     """Configuration of tool output rails.
 
     Tool output rails are applied to tool calls before they are executed.
     They can validate tool names, parameters, and context to ensure safe tool usage.
     """
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement tool output rails.",
-    )
     parallel: Optional[bool] = Field(
         default=False,
         description="If True, the tool output rails are executed in parallel.",
     )
 
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
-class ToolInputRails(BaseModel):
+
+class ToolInputRails(_RailSectionMixin):
     """Configuration of tool input rails.
 
     Tool input rails are applied to tool results before they are processed.
     They can validate, filter, or transform tool outputs for security and safety.
     """
 
-    flows: List[str] = Field(
-        default_factory=list,
-        description="The names of all the flows that implement tool input rails.",
-    )
     parallel: Optional[bool] = Field(
         default=False,
         description="If True, the tool input rails are executed in parallel.",
     )
+
+    @root_validator(pre=True)
+    def _normalise_flows(cls, values):
+        raw_flows = values.pop("flows", None)
+        raw = raw_flows if raw_flows is not None else values.get("flow_configs", [])
+        values["flow_configs"] = _coerce_flow_list(raw)
+        return values
 
 
 class SingleCallConfig(BaseModel):
@@ -1196,6 +1322,27 @@ def merge_two_dicts(dict_1: dict, dict_2: dict, ignore_keys: Set[str]) -> None:
 def _join_config(dest_config: dict, additional_config: dict):
     """Helper to join two configuration."""
 
+    # --- Merge strategy overview ---
+    # Configuration may be spread across several YAML files and programmatic
+    # dicts (e.g. from ``from_path`` or ``from_content``).  This function
+    # folds *additional_config* into *dest_config* **in place** using three
+    # distinct strategies depending on the field type:
+    #
+    #   1. **Dict fields** (user_messages, bot_messages, sensitive_data_detection,
+    #      embedding_search_provider): shallow-merged with {**dest, **additional},
+    #      so later values override earlier ones for the same key.
+    #
+    #   2. **List fields** (instructions, flows, models, prompts, docs):
+    #      concatenated — duplicates are *not* removed here (deduplication is
+    #      handled later where necessary, e.g. for import_paths).
+    #
+    #   3. **Scalar / last-writer-wins fields** (additional_fields list below):
+    #      the value from *additional_config* simply replaces whatever was in
+    #      *dest_config*.  This is the correct behaviour for settings like
+    #      ``thread_pool`` where partial merging would be confusing.
+
+    # Shallow-merge dict-typed message catalogues — later files override
+    # individual message keys whilst preserving ones they do not redefine.
     dest_config["user_messages"] = {
         **dest_config.get("user_messages", {}),
         **additional_config.get("user_messages", {}),
@@ -1206,6 +1353,8 @@ def _join_config(dest_config: dict, additional_config: dict):
         **additional_config.get("bot_messages", {}),
     }
 
+    # List fields: plain concatenation — order matters for flow execution
+    # priority, so later configs append after earlier ones.
     dest_config["instructions"] = dest_config.get("instructions", []) + additional_config.get("instructions", [])
 
     dest_config["flows"] = dest_config.get("flows", []) + additional_config.get("flows", [])
@@ -1216,25 +1365,42 @@ def _join_config(dest_config: dict, additional_config: dict):
 
     dest_config["docs"] = dest_config.get("docs", []) + additional_config.get("docs", [])
 
+    # Scalar with fallback — use the first non-None URL encountered.
     dest_config["actions_server_url"] = dest_config.get("actions_server_url", None) or additional_config.get(
         "actions_server_url", None
     )
 
+    # Shallow-merge — individual detection sub-keys (input/output/retrieval)
+    # from the additional config override those in the destination.
     dest_config["sensitive_data_detection"] = {
         **dest_config.get("sensitive_data_detection", {}),
         **additional_config.get("sensitive_data_detection", {}),
     }
 
+    # First non-empty provider wins (falsy dict is treated as absent).
     dest_config["embedding_search_provider"] = dest_config.get(
         "embedding_search_provider", {}
     ) or additional_config.get("embedding_search_provider", {})
 
     # We join the arrays and keep only unique elements for import paths.
+    # Deduplication is essential here to avoid loading the same Colang
+    # library directory twice, which would produce duplicate flow definitions.
     dest_config["import_paths"] = dest_config.get("import_paths", [])
     for import_path in additional_config.get("import_paths", []):
         if import_path not in dest_config["import_paths"]:
             dest_config["import_paths"].append(import_path)
 
+    # --- Last-writer-wins fields ---
+    # These are scalar or structured settings where partial merging would be
+    # ambiguous or incorrect.  The *additional_config* value wholly replaces
+    # the *dest_config* value if present.
+    #
+    # ``thread_pool`` is included here so that a single authoritative
+    # ThreadPoolConfig dict (enabled, max_workers, thread_name_prefix) is
+    # propagated from whichever YAML file defines it — no attempt is made to
+    # merge individual sub-keys, because a half-overridden pool configuration
+    # (e.g. enabled=True from one file but max_workers from another) could
+    # lead to confusing behaviour.
     additional_fields = [
         "sample_conversation",
         "lowest_temperature",
@@ -1251,6 +1417,7 @@ def _join_config(dest_config: dict, additional_config: dict):
         "raw_llm_call_action",
         "enable_rails_exceptions",
         "tracing",
+        "thread_pool",  # whole-object replacement — see note above
     ]
 
     for field in additional_fields:
@@ -1258,6 +1425,10 @@ def _join_config(dest_config: dict, additional_config: dict):
             dest_config[field] = additional_config[field]
 
     # TODO: Rethink the best way to parse and load yaml config files
+    # Build the set of field names that have already been explicitly handled
+    # above.  Anything left over in additional_config is treated as opaque
+    # custom data and folded into dest_config["custom_data"], allowing users
+    # to pass arbitrary keys through their YAML without modifying this function.
     ignore_fields = set(additional_fields).union(
         {
             "user_messages",
@@ -1592,6 +1763,18 @@ class RailsConfig(BaseModel):
         description="Configuration for tracing.",
     )
 
+    # Top-level thread-pool configuration.  Declared here on RailsConfig so
+    # that it is propagated through _join_config's ``additional_fields``
+    # last-writer-wins list.  At runtime, the LLMRails initialiser reads
+    # this value to decide whether to instantiate a RailThreadPool and, if
+    # so, with how many workers.  Keeping it at the top level (rather than
+    # nested under ``rails``) ensures a single, unambiguous source of truth
+    # that applies to every rail section (input, output, retrieval, etc.).
+    thread_pool: ThreadPoolConfig = Field(
+        default_factory=ThreadPoolConfig,
+        description="Configuration for the CPU-bound thread-pool executor.",
+    )
+
     @root_validator(pre=True)
     def check_model_exists_for_input_rails(cls, values):
         """Make sure we have a model for each input rail where one is provided using $model=<model_type>"""
@@ -1924,6 +2107,10 @@ def _join_dict(dict1, dict2):
     - If values are lists, it concatenates them, ensuring unique elements.
     - For other types, values from dict2 overwrite dict1.
     """
+    # NOTE: This is a *deep* recursive merge, unlike _join_config which uses
+    # shallow strategies per field.  It is used by _join_rails_configs (the
+    # RailsConfig.__add__ path) where two fully-formed RailsConfig objects
+    # are combined and every nested dict/list must be reconciled.
     result = dict(dict1)  # Create a copy of dict1 to avoid modifying the original
 
     for key, value in dict2.items():
@@ -1946,8 +2133,14 @@ def _unique_list_concat(list1, list2):
     Concatenates two lists ensuring all elements are unique.
     Handles unhashable types like dictionaries.
     """
+    # Items from list1 take precedence (appear first) because _join_dict
+    # calls this with the *additional* config's value as list1, giving the
+    # later config higher priority.
     result = list(list1)
     for item in list2:
+        # ``in`` uses __eq__, so this works for unhashable types (dicts,
+        # lists) that cannot be placed in a set.  The trade-off is O(n*m)
+        # comparison cost, which is acceptable for configuration-sized lists.
         if item not in result:
             result.append(item)
     return result
@@ -2043,21 +2236,36 @@ def _generate_rails_flows(flows):
 MODEL_PREFIX = "$model="
 
 
+def _flow_entry_to_str(flow) -> str:
+    """Extract the flow name string from a raw config entry.
+
+    Handles both plain strings (legacy) and dict/FlowWithDeps entries.
+    """
+    if isinstance(flow, str):
+        return flow
+    if isinstance(flow, dict):
+        return flow.get("name", "")
+    if hasattr(flow, "name"):
+        return flow.name
+    return str(flow)
+
+
 def _get_flow_name(flow_text) -> Optional[str]:
     """Helper to return a model name from a flow definition"""
-    return _normalize_flow_id(flow_text)
+    return _normalize_flow_id(_flow_entry_to_str(flow_text))
 
 
 def _get_flow_model(flow_text) -> Optional[str]:
     """Helper to return a model name from a flow definition"""
-    if MODEL_PREFIX not in flow_text:
+    text = _flow_entry_to_str(flow_text)
+    if MODEL_PREFIX not in text:
         return None
-    return flow_text.split(MODEL_PREFIX)[-1].strip()
+    return text.split(MODEL_PREFIX)[-1].strip()
 
 
-def _validate_rail_prompts(rails: list[str], prompts: list[Any], validation_rail: str) -> None:
+def _validate_rail_prompts(rails: list, prompts: list[Any], validation_rail: str) -> None:
     for rail in rails:
-        flow_id = _normalize_flow_id(rail)
+        flow_id = _normalize_flow_id(_flow_entry_to_str(rail))
         flow_model = _get_flow_model(rail)
         if flow_id == validation_rail:
             prompt_flow_id = flow_id.replace(" ", "_")

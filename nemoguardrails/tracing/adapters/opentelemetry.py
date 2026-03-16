@@ -63,11 +63,15 @@ try:
     from opentelemetry import trace  # type: ignore
     from opentelemetry.trace import NoOpTracerProvider  # type: ignore
 
-except ImportError:
+except (ImportError, TypeError) as _exc:
+    # ImportError: opentelemetry-api not installed
+    # TypeError: PEP 649 (Python 3.14+) deferred annotation evaluation failure
     raise ImportError(
-        "OpenTelemetry API is not installed. Please install NeMo Guardrails with tracing support: "
-        "`pip install nemoguardrails[tracing]` or install the API directly: `pip install opentelemetry-api`."
-    )
+        "OpenTelemetry API is not installed or not compatible with this Python version. "
+        "Please install NeMo Guardrails with tracing support: "
+        "`pip install nemoguardrails[tracing]` or install the API directly: `pip install opentelemetry-api`. "
+        f"Original error: {_exc}"
+    ) from _exc
 
 from nemoguardrails.tracing.adapters.base import InteractionLogAdapter
 from nemoguardrails.tracing.span_formatting import extract_span_attributes

@@ -14,6 +14,8 @@
 # limitations under the License.
 
 import pytest
+
+pytest.importorskip("aioresponses", reason="aioresponses not installed")
 from aioresponses import aioresponses
 
 from nemoguardrails import RailsConfig

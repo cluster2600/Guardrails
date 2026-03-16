@@ -170,6 +170,9 @@ class LLMTaskManager:
         :return: The rendered template.
         :rtype: str.
         """
+        # M3: retrieve the compiled template and its variable set from
+        # the bounded caches.  On the hot path (cache hit) this avoids
+        # both the Jinja2 parse/compile step and the variable extraction.
         template = self._get_compiled_template(template_str)
 
         # First, we extract all the variables from the template.

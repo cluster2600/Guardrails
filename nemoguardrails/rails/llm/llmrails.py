@@ -119,6 +119,10 @@ from nemoguardrails.utils import (
 
 log = logging.getLogger(__name__)
 
+# M3: Pre-compile regex used in the Colang 2.x event processing hot path.
+_START_ACTION_RE = re.compile(r"Start(.*Action)")
+
+process_events_semaphore = asyncio.Semaphore(1)
 
 # Version-gated feature flags for Python 3.12+ and 3.14+.
 _PY_VERSION = sys.version_info[:2]
@@ -372,12 +376,19 @@ class LLMRails:
 
         # InteractionLogAdapters used for tracing
         # We ensure that it is used after config.py is loaded
-        if config.tracing:
+        # Cache tracing config flags as instance attrs to avoid repeated attribute
+        # lookups on every generate_async() call (M2: zero-overhead path).
+        self._tracing_enabled: bool = bool(config.tracing and config.tracing.enabled)
+        if self._tracing_enabled:
             from nemoguardrails.tracing import create_log_adapters
 
             self._log_adapters = create_log_adapters(config.tracing)
+            self._tracing_span_format: str = getattr(config.tracing, "span_format", "opentelemetry")
+            self._tracing_content_capture: bool = getattr(config.tracing, "enable_content_capture", False)
         else:
             self._log_adapters = None
+            self._tracing_span_format = "opentelemetry"
+            self._tracing_content_capture = False
 
         # We run some additional checks on the config
         self._validate_config()
@@ -1028,7 +1039,7 @@ class LLMRails:
 
         else:
             for event in new_events:
-                start_action_match = re.match(r"Start(.*Action)", event["type"])
+                start_action_match = _START_ACTION_RE.match(event["type"])
 
                 if start_action_match:
                     action_name = start_action_match[1]
@@ -1097,7 +1108,7 @@ class LLMRails:
 
         # IF tracing is enabled we need to set GenerationLog attrs
         original_log_options = None
-        if self.config.tracing.enabled:
+        if self._tracing_enabled:
             if gen_options is None:
                 gen_options = GenerationOptions()
             else:
@@ -1209,20 +1220,17 @@ class LLMRails:
             if state is not None:
                 res.state = output_state
 
-            if self.config.tracing.enabled:
-                # TODO: move it to the top once resolved circular dependency of eval
+            if self._tracing_enabled:
                 # lazy import to avoid circular dependency
                 from nemoguardrails.tracing import Tracer
 
-                span_format = getattr(self.config.tracing, "span_format", "opentelemetry")
-                enable_content_capture = getattr(self.config.tracing, "enable_content_capture", False)
-                # Create a Tracer instance with instantiated adapters and span configuration
+                # Use pre-cached tracing config (M2: zero-overhead path)
                 tracer = Tracer(
                     input=messages,
                     response=res,
                     adapters=self._log_adapters,
-                    span_format=span_format,
-                    enable_content_capture=enable_content_capture,
+                    span_format=self._tracing_span_format,
+                    enable_content_capture=self._tracing_content_capture,
                 )
                 await tracer.export_async()
 

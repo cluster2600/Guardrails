@@ -48,5 +48,8 @@ else:
     # Use the original LLMRails class
     from nemoguardrails.rails import LLMRails
 
-__version__ = version("nemoguardrails")
+try:
+    __version__ = version("nemoguardrails")
+except Exception:
+    __version__ = "0.0.0-dev"
 __all__ = ["LLMRails", "RailsConfig"]

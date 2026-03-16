@@ -1,0 +1,86 @@
+name: Reusable Tests (Python 3.14, pip-based)
+
+# Lightweight reusable workflow for Python 3.14 which doesn't yet work
+# with poetry.  Uses pip + PYTHONPATH instead.
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: "Runner image"
+        required: true
+        default: ubuntu-latest
+        type: string
+      python-version:
+        description: "Python version to test against"
+        required: true
+        default: "3.14"
+        type: string
+      continue-on-error:
+        description: "Allow this job to fail without blocking the caller"
+        required: false
+        default: true
+        type: boolean
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+
+jobs:
+  tests:
+    name: Ubuntu / Python ${{ inputs.python-version }} (experimental)
+    runs-on: ${{ inputs.image }}
+    continue-on-error: ${{ inputs.continue-on-error }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ inputs.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          allow-prereleases: true
+
+      - name: Install build tools for native extensions
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends g++
+
+      - name: Install core dependencies (pip)
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install \
+            aiohttp aiohttp-retry httpx jinja2 lark nest-asyncio \
+            prompt-toolkit pydantic pyyaml rich simpleeval starlette \
+            typer uvicorn watchdog fastapi protobuf \
+            langchain langchain-core langchain-community
+
+      - name: Install annoy and fastembed (build from source, no 3.14 wheel)
+        run: |
+          python -m pip install annoy fastembed
+
+      - name: Install nemoguardrails (editable, for package metadata)
+        run: |
+          python -m pip install -e . --no-deps
+
+      - name: Install test dependencies (pip)
+        run: |
+          python -m pip install \
+            pytest "pytest-asyncio<1" pytest-cov pytest-httpx pytest-timeout \
+            aioresponses opentelemetry-api opentelemetry-sdk tqdm
+
+      - name: Verify imports
+        run: |
+          python -c "import sys; print(f'Python {sys.version}')"
+          python -c "import langchain; print(f'langchain {langchain.__version__}')"
+          python -c "from annoy import AnnoyIndex; print('annoy OK')"
+          python -c "from fastembed import TextEmbedding; print('fastembed OK')"
+          python -c "from nemoguardrails import RailsConfig; print('RailsConfig OK')"
+
+      - name: Run pytest (skip yara-only tests)
+        run: |
+          python -m pytest tests/ -v --timeout=120 --tb=short \
+            -k "not yara" \
+            --ignore=tests/test_eval.py

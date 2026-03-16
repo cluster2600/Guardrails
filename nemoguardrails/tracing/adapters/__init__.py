@@ -24,7 +24,9 @@ try:
 
     register_log_adapter(OpenTelemetryAdapter, "OpenTelemetry")
 
-except ImportError:
+except (ImportError, TypeError):
+    # ImportError: opentelemetry-api not installed
+    # TypeError: PEP 649 (Python 3.14+) annotation resolution failure
     pass
 
 # __all__ = ["InteractionLogAdapter", "LogAdapterRegistry"]

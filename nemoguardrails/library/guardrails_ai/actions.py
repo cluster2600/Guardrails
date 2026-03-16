@@ -40,6 +40,14 @@ from nemoguardrails.library.guardrails_ai.errors import GuardrailsAIValidationEr
 from nemoguardrails.library.guardrails_ai.registry import get_validator_info
 from nemoguardrails.rails.llm.config import RailsConfig
 
+try:
+    from nemoguardrails.rails.llm.thread_pool import cpu_bound
+except ImportError:
+
+    def cpu_bound(fn):
+        return fn
+
+
 log = logging.getLogger(__name__)
 
 
@@ -92,6 +100,7 @@ def guardrails_ai_validation_mapping(result: Dict[str, Any]) -> bool:
     output_mapping=guardrails_ai_validation_mapping,
     is_system_action=False,
 )
+@cpu_bound
 def validate_guardrails_ai_input(
     validator: str,
     config: RailsConfig,
@@ -132,6 +141,7 @@ def validate_guardrails_ai_input(
     output_mapping=guardrails_ai_validation_mapping,
     is_system_action=False,
 )
+@cpu_bound
 def validate_guardrails_ai_output(
     validator: str,
     context: Optional[dict] = None,
@@ -168,6 +178,7 @@ def validate_guardrails_ai_output(
     return {**result, "valid": valid}
 
 
+@cpu_bound
 def validate_guardrails_ai(validator_name: str, text: str, **kwargs) -> Dict[str, Any]:
     """Unified action for all Guardrails AI validators.
 
