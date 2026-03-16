@@ -124,6 +124,8 @@ class TestEventsHistoryCacheBounded:
             return rails
 
     def test_cache_is_lru_dict(self):
+        from nemoguardrails.rails.llm.llmrails import _LRUDict
+
         rails = self._make_rails()
         assert isinstance(rails.events_history_cache, _LRUDict)
 
