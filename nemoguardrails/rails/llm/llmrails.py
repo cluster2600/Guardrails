@@ -182,7 +182,13 @@ class _LRUDict(OrderedDict):
         """Retrieve *key* and promote it to MRU position."""
         with self._lock:
             value = OrderedDict.__getitem__(self, key)
-            OrderedDict.move_to_end(self, key)
+            # On CPython 3.10, OrderedDict.popitem(last=False) internally
+            # triggers __getitem__ on the evicted key *after* removal.
+            # The try/except prevents this phantom access from raising.
+            try:
+                OrderedDict.move_to_end(self, key)
+            except KeyError:
+                pass
             return value
 
     def __setitem__(self, key, value):
