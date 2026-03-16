@@ -505,3 +505,85 @@ The following improvements are planned for subsequent releases:
 
 - **Colang v2 DAG integration** — extend the `TopologicalScheduler` to
   support Colang v2 flow definitions with explicit dependency declarations.
+
+---
+
+## 9. DGX Benchmark Results (2026-03-16)
+
+**Hardware:** NVIDIA GB10 (Grace Blackwell), ARM64
+**Software:** CUDA 13.0.2, Python 3.10.12, Ubuntu 22.04
+**Container:** AI Workbench `nvcr.io/nvidia/ai-workbench/python-cuda130:1.0.1`
+**Branch:** `develop` @ `60e2916`
+
+### 9.1 Test Suite
+
+```
+3435 passed, 0 failed, 144 skipped in 348.04s (0:05:48)
+```
+
+### 9.2 Optimisation Micro-benchmarks
+
+| Benchmark | Cached | Uncached | Speedup |
+|---|---|---|---|
+| Action name normalisation (100 names/iter, 5k iters) | 13.9 µs | 109.9 µs | **7.9x** |
+| Jinja2 template compilation (5 templates/iter, 10k iters) | 1.4 µs | 644.8 µs | **471.8x** |
+| Template variable extraction (5 templates/iter, 10k iters) | 1.4 µs | 391.2 µs | **282.9x** |
+| `_render_string` end-to-end (10k iters) | 5.1 µs | 243.7 µs | **47.7x** |
+
+### 9.3 Threading Benchmark
+
+```
+Python 3.10.12, GIL: ENABLED
+Sequential:  0.4012s ± 0.0004s
+Threaded:    0.4589s ± 0.0635s
+Speedup:     0.87x
+```
+
+As expected, GIL prevents parallel CPU speedup. This is the baseline; free-threaded
+Python 3.14t should show near-linear speedup on multi-core.
+
+### 9.4 Thread-pool vs Inline Dispatch
+
+| Rails | CPU rounds | Inline RPS | Threadpool RPS | Speedup |
+|---|---|---|---|---|
+| 1 | 100 | 33,762 | 7,588 | 0.22x |
+| 2 | 500 | 2,794 | 3,737 | **1.34x** |
+| 4 | 500 | 1,639 | 1,269 | 0.78x |
+| 8 | 500 | 1,016 | 757 | 0.75x |
+
+Thread-pool dispatch shows benefit at 2 rails / medium workload (I/O overlap).
+On GIL builds, overhead dominates for small workloads — expected to invert on 3.14t.
+
+### 9.5 Import Time
+
+```
+import nemoguardrails:  621ms ± 21ms
+import RailsConfig:     643ms ± 34ms
+```
+
+### 9.6 Memory Stability
+
+```
+Scenario:     10,000 iterations
+RSS before:   56.64 MiB
+RSS after:    56.64 MiB
+RSS delta:    0.0 MiB
+p95 latency:  21.1ms
+Throughput:   48.2 req/s
+```
+
+Zero memory growth across 10k iterations confirms the bounded LRU cache
+(`_LRUDict`, `ThreadSafeCache`) prevents unbounded memory accumulation
+in long-running services.
+
+### 9.7 _LRUDict vs Alternatives
+
+| Implementation | 1k inserts (100 iters) | vs plain dict |
+|---|---|---|
+| plain `dict` (unbounded) | 68 µs | 1.0x |
+| `OrderedDict` + `popitem` | 163 µs | 0.4x |
+| `_LRUDict` (maxsize=256) | 1,084 µs | 0.1x |
+
+The `_LRUDict` lock overhead is acceptable for the events cache hot path
+(~1µs per insert) and prevents the unbounded memory growth that was
+previously possible in long-running deployments.
