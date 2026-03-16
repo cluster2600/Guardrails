@@ -9,7 +9,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 >
 > The changes related to the Colang language and runtime have moved to [CHANGELOG-Colang](./CHANGELOG-Colang.md) file.
 
-<<<<<<< HEAD
 ## [0.21.0] - 2026-03-12
 
 ### 🚀 Features
