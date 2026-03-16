@@ -245,7 +245,6 @@ class ActionDispatcher:
         # module at the path root.  Both may coexist.
         changed = False
 
-
         actions_path = path / "actions"
         if os.path.exists(actions_path):
             # ``_find_actions`` recursively walks the directory, loading

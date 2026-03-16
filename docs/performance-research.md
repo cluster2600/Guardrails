@@ -5,7 +5,6 @@ orphan: true
 <!-- This document is marked as :orphan: so Sphinx will not warn about it being
      absent from any toctree.  It is intentionally standalone — linked from PR
      descriptions and the project wiki rather than the main documentation nav. -->
-
 # NeMo Guardrails Performance Research
 
 > A comprehensive analysis of performance optimisations, bottlenecks, and future
