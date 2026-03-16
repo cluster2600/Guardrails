@@ -709,8 +709,6 @@ class LLMRails:
                 cache_key = get_history_cache_key(messages[0:p])
                 if cache_key in self.events_history_cache:
                     events = self.events_history_cache[cache_key].copy()
-                    # LRU: move accessed key to the end
-                    self.events_history_cache.move_to_end(cache_key)
                     break
 
                 p -= 1
@@ -1084,9 +1082,6 @@ class LLMRails:
                 # Save the new events in the history and update the cache
                 cache_key = get_history_cache_key((messages) + [new_message])  # type: ignore
                 self.events_history_cache[cache_key] = events
-                # LRU eviction
-                if len(self.events_history_cache) > _HISTORY_CACHE_MAX_SIZE:
-                    self.events_history_cache.popitem(last=False)
             else:
                 output_state = {"events": events}
 

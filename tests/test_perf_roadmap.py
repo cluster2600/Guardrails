@@ -177,11 +177,12 @@ class TestUnifiedFreeThreading:
 class TestHistoryCacheBounds:
     """Test the bounded LRU history cache."""
 
-    def test_history_cache_is_ordered_dict(self):
-        # Can't instantiate LLMRails without config, so check the constant
-        from nemoguardrails.rails.llm.llmrails import _HISTORY_CACHE_MAX_SIZE
+    def test_history_cache_is_lru_dict(self):
+        # Verify _LRUDict is importable and has the expected default maxsize
+        from nemoguardrails.rails.llm.llmrails import _LRUDict
 
-        assert _HISTORY_CACHE_MAX_SIZE == 1024
+        cache = _LRUDict(maxsize=1024)
+        assert cache._maxsize == 1024
 
     def test_ordered_dict_lru_pattern(self):
         """Verify the LRU eviction pattern works correctly."""
