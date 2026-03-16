@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
 import logging
+import os
 import re
 from ast import literal_eval
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -21,6 +24,7 @@ from typing import Any, Callable, Dict, List, Optional, Union
 from jinja2 import meta
 from jinja2.sandbox import SandboxedEnvironment
 
+from nemoguardrails._thread_safety import ThreadSafeCache
 from nemoguardrails.llm.filters import (
     co_v2,
     colang,
@@ -94,6 +98,50 @@ class LLMTaskManager:
         # in the prompt.
         self.prompt_context = {}
 
+        # M3 optimisation: cache compiled Jinja2 templates and their
+        # extracted variable sets to avoid the expensive ``env.from_string()``
+        # and ``meta.find_undeclared_variables()`` calls on every
+        # ``_render_string()`` invocation.
+        #
+        # Uses ``ThreadSafeCache`` from ``_thread_safety`` — a bounded LRU
+        # cache backed by ``OrderedDict`` with ``RLock`` protection.  This
+        # is safe on free-threaded Python 3.14t (no-GIL) where concurrent
+        # cache access from multiple threads would otherwise corrupt the
+        # underlying dict.
+        #
+        # The cache size can be tuned via the environment variable
+        # ``NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE`` (default 512).
+        _cache_size = int(os.environ.get("NEMOGUARDRAILS_TEMPLATE_CACHE_SIZE", "512"))
+        self._template_cache: ThreadSafeCache = ThreadSafeCache(maxsize=_cache_size)
+        self._variables_cache: ThreadSafeCache = ThreadSafeCache(maxsize=_cache_size)
+
+    def _get_compiled_template(self, template_str: str):
+        """Return a compiled Jinja2 template, using the thread-safe cache.
+
+        On a cache hit this is a single lock-protected ``get()`` (O(1)).
+        On a miss, the template is compiled via ``env.from_string()``
+        and stored for subsequent calls.
+        """
+        cached = self._template_cache.get(template_str)
+        if cached is not None:
+            return cached
+        compiled = self.env.from_string(template_str)
+        self._template_cache.put(template_str, compiled)
+        return compiled
+
+    def _get_template_variables(self, template_str: str) -> frozenset:
+        """Return the undeclared variables referenced in a template, cached.
+
+        Returns a ``frozenset`` (immutable) so that callers cannot
+        accidentally mutate the cached value and corrupt future lookups.
+        """
+        cached = self._variables_cache.get(template_str)
+        if cached is not None:
+            return cached
+        variables = frozenset(meta.find_undeclared_variables(self.env.parse(template_str)))
+        self._variables_cache.put(template_str, variables)
+        return variables
+
     def _get_general_instructions(self):
         """Helper to extract the general instructions."""
         text = ""
@@ -122,10 +170,10 @@ class LLMTaskManager:
         :return: The rendered template.
         :rtype: str.
         """
-        template = self.env.from_string(template_str)
+        template = self._get_compiled_template(template_str)
 
         # First, we extract all the variables from the template.
-        variables = meta.find_undeclared_variables(self.env.parse(template_str))
+        variables = self._get_template_variables(template_str)
 
         # This is the context that will be passed to the template when rendering.
         render_context = {
