@@ -473,7 +473,13 @@ class _AtomicInitWrapper:
         # Preserve the original function's __name__, __doc__, etc.
         functools.update_wrapper(self, fn)
 
-    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+    def __call__(self) -> Any:
+        """Execute the wrapped function exactly once and return its result.
+
+        This is a once-only initialiser, not a general-purpose memoiser.
+        The wrapped function must accept zero arguments.  Subsequent calls
+        return the cached result from the first invocation.
+        """
         # --- Fast path (lock-free) -----------------------------------------
         # After initialisation completes, _initialised is True and never
         # reverts (except via reset()).  Reading a bool attribute is atomic
@@ -495,7 +501,7 @@ class _AtomicInitWrapper:
                 return self._result
 
             try:
-                self._result = self._fn(*args, **kwargs)
+                self._result = self._fn()
             except BaseException as exc:
                 # Store the exception so future callers receive the same
                 # error without re-running the (possibly expensive) function.
@@ -523,7 +529,7 @@ class _AtomicInitWrapper:
             self._exc = None
 
 
-def atomic_init(fn: Callable[..., _T]) -> _AtomicInitWrapper:
+def atomic_init(fn: Callable[[], _T]) -> _AtomicInitWrapper:
     """Decorator ensuring *fn* is executed exactly once (thread-safe).
 
     On the first invocation the wrapped function runs under a
