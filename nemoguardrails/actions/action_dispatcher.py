@@ -144,7 +144,6 @@ class ActionDispatcher:
         self._normalised_names_maxsize = 4096
         self._normalised_names_lock = threading.Lock()
 
-
         if load_all_actions:
             # TODO: check for better way to find actions dir path or use constants.py
             current_file_path = Path(__file__).resolve()
@@ -235,7 +234,6 @@ class ActionDispatcher:
         # containing one-or-more .py files, *and* a single ``actions.py``
         # module at the path root.  Both may coexist.
         changed = False
-
 
         actions_path = path / "actions"
         if os.path.exists(actions_path):
