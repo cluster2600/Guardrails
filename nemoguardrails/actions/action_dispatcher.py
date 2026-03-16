@@ -144,6 +144,16 @@ class ActionDispatcher:
         self._normalised_names_maxsize = 4096
         self._normalised_names_lock = threading.Lock()
 
+        # ------------------------------------------------------------------
+        # Action discovery / loading
+        # ------------------------------------------------------------------
+        # Actions are discovered in a well-defined priority order so that
+        # later registrations override earlier ones of the same name:
+        #   1. Built-in package ``actions/`` directory
+        #   2. Per-feature ``library/*/actions`` directories
+        #   3. Current working directory (user project root)
+        #   4. Explicit ``config_path`` (may be comma-separated)
+        #   5. Explicit ``import_paths``
         if load_all_actions:
             # TODO: check for better way to find actions dir path or use constants.py
             current_file_path = Path(__file__).resolve()
