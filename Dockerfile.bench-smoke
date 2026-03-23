@@ -12,9 +12,12 @@ RUN pip install --no-cache-dir pip setuptools wheel --upgrade && \
     pip install --no-cache-dir \
         aiohttp httpx jinja2 lark nest-asyncio \
         pydantic pyyaml simpleeval starlette \
-        langchain langchain-core langchain-community 2>&1 | tail -3
+        langchain langchain-core langchain-community
 
 ENV PYTHONPATH=/app
+
+RUN useradd -m -u 10001 appuser && chown -R appuser:appuser /app
+USER appuser
 
 # Validate imports
 RUN python -c "from benchmarks.conftest import PerfResult; print('conftest OK')" && \

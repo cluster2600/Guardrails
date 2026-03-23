@@ -75,8 +75,11 @@ def measure_subprocess(script: str, rounds: int = 5) -> dict:
             timings.append(float(output.split()[1]))
         elif output.startswith("ERR "):
             parts = output.split(maxsplit=2)
-            timings.append(float(parts[1]))
             errors.append(parts[2] if len(parts) > 2 else "unknown")
+        elif result.returncode != 0:
+            # Subprocess crashed without writing to stdout (e.g. SIGILL).
+            stderr_summary = (result.stderr or "").strip()[:200]
+            errors.append(f"exit {result.returncode}: {stderr_summary}")
 
     return {
         "timings_ms": timings,

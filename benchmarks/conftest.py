@@ -119,7 +119,13 @@ def write_results(results: Sequence[PerfResult], output: str | None = None):
 
 
 def get_rss_mb() -> float:
-    """Return current RSS in MiB (Linux/macOS)."""
+    """Return *peak* RSS in MiB (Linux/macOS).
+
+    Note: ``ru_maxrss`` reports the **maximum** (high-water mark) resident
+    set size, not the current RSS.  This is still useful for benchmarking
+    to detect memory regressions, but callers should be aware that the
+    value only ever increases over the lifetime of the process.
+    """
     try:
         import resource
 

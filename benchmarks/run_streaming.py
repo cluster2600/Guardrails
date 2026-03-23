@@ -43,6 +43,13 @@ async def stream_with_checks(
 ) -> dict:
     """Simulate a streaming request with chunk-boundary rail checks.
 
+    When *stream_first* is True the first token is yielded before any rail
+    scan runs (lower first-token latency).  Otherwise every chunk is scanned
+    before the next tokens are consumed.
+
+    *context_size* controls how much trailing context is appended to each
+    chunk before scanning, simulating a sliding-window guardrail.
+
     Returns timing info: first_token_ms, total_ms, tokens, chunks_checked.
     """
     t0 = time.perf_counter()
@@ -51,6 +58,7 @@ async def stream_with_checks(
     recent = ""
     total_tokens = 0
     chunks_checked = 0
+    first_chunk_scanned = False
 
     async for token in provider.stream(prompt):
         total_tokens += 1
@@ -63,15 +71,22 @@ async def stream_with_checks(
         buf_len = sum(len(t) for t in buf)
         if buf_len >= chunk_size:
             chunk = "".join(buf)
-            # Run a quick CPU check on the chunk
-            cpu_bound_scan(chunk, rounds=rail_rounds)
+            # When stream_first is set, skip the scan on the very first
+            # chunk so that the first tokens are emitted without delay.
+            if stream_first and not first_chunk_scanned:
+                first_chunk_scanned = True
+            else:
+                # Scan the chunk together with its trailing context window
+                scan_input = recent + chunk if context_size > 0 else chunk
+                cpu_bound_scan(scan_input, rounds=rail_rounds)
             chunks_checked += 1
             buf.clear()
 
     # Final partial chunk
     if buf:
         chunk = "".join(buf)
-        cpu_bound_scan(chunk, rounds=rail_rounds)
+        scan_input = recent + chunk if context_size > 0 else chunk
+        cpu_bound_scan(scan_input, rounds=rail_rounds)
         chunks_checked += 1
 
     total_ms = (time.perf_counter() - t0) * 1000

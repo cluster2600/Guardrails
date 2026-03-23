@@ -33,6 +33,7 @@ import inspect
 import logging
 import os
 import sysconfig
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Callable, Optional, TypeVar
 
@@ -167,6 +168,9 @@ class RailThreadPool:
         # threads in debuggers, log output, and ``threading.enumerate()``.
         self._thread_name_prefix = thread_name_prefix
 
+        # Guard _executor and _enabled against concurrent dispatch/shutdown.
+        self._lock = threading.Lock()
+
         # The underlying executor instance.  Set to None when disabled or
         # after shutdown(), which also serves as a guard in dispatch().
         self._executor: Optional[ThreadPoolExecutor] = None
@@ -215,7 +219,13 @@ class RailThreadPool:
         Returns:
             Whatever *fn* returns.
         """
-        if not self._enabled or self._executor is None:
+        # Capture the executor reference under the lock so that a
+        # concurrent shutdown() cannot pull it away between our check
+        # and the run_in_executor() call.
+        with self._lock:
+            executor = self._executor if self._enabled else None
+
+        if executor is None:
             # Fallback path: execute synchronously on the current thread.
             # This keeps behaviour identical to a system without the pool,
             # which is important both when the pool is explicitly disabled
@@ -236,7 +246,7 @@ class RailThreadPool:
         # completion.  The awaiting coroutine is suspended (yielding
         # control back to the event loop) until the worker thread
         # finishes, so other async tasks are not starved.
-        return await loop.run_in_executor(self._executor, call)
+        return await loop.run_in_executor(executor, call)
 
     # -- lifecycle -----------------------------------------------------------
 
@@ -249,19 +259,23 @@ class RailThreadPool:
             wait: Block until all pending futures finish.
             cancel_futures: Cancel pending futures that have not started.
         """
-        if self._executor is not None:
-            log.info("Shutting down RailThreadPool (wait=%s).", wait)
-            # Delegate to the stdlib executor's own shutdown.  The *wait*
-            # parameter controls whether this call blocks until every
-            # submitted task has completed; *cancel_futures* allows
-            # discarding tasks that are still queued but not yet running.
-            self._executor.shutdown(wait=wait, cancel_futures=cancel_futures)
+        with self._lock:
+            executor = self._executor
+            if executor is not None:
+                log.info("Shutting down RailThreadPool (wait=%s).", wait)
+                # Clear the reference and mark the pool as disabled so that
+                # concurrent and subsequent calls to dispatch() fall through
+                # to inline execution rather than submitting to a pool that
+                # is shutting down.
+                self._executor = None
+                self._enabled = False
 
-            # Clear the reference and mark the pool as disabled so that
-            # subsequent calls to dispatch() fall through to inline
-            # execution rather than raising.
-            self._executor = None
-            self._enabled = False
+        # Perform the actual shutdown outside the lock so that waiting
+        # on pending futures does not block other threads from entering
+        # the lock (e.g. dispatch() callers that will now take the
+        # inline fallback path).
+        if executor is not None:
+            executor.shutdown(wait=wait, cancel_futures=cancel_futures)
 
     def __del__(self) -> None:
         # Best-effort cleanup invoked by the garbage collector.  Callers
