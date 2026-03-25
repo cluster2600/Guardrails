@@ -351,9 +351,7 @@ async def test_wait_top_k_nonempty_lines():
 
     try:
         # Wait for top 2 non-empty lines with a timeout
-        top_k_lines = await asyncio.wait_for(
-            asyncio.create_task(handler.wait_top_k_nonempty_lines(2)), timeout=2.0
-        )
+        top_k_lines = await asyncio.wait_for(asyncio.create_task(handler.wait_top_k_nonempty_lines(2)), timeout=2.0)
 
         # verify we got the expected lines
         assert top_k_lines == "Line 1\nLine 2"
